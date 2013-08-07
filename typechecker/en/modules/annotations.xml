@@ -374,13 +374,6 @@ shared deprecated</programlisting>
             <comment><para>TODO: how hard would it be to add a <literal>recursive</literal>
             annotation to force the compiler to optimize a tail-recursive method or
             getter?</para></comment>
-                        
-            <para>A declaration may not be annotated both <literal>formal</literal> 
-            and <literal>default</literal>.</para>
-            
-            <para>If a declaration is annotated <literal>formal</literal>, 
-            <literal>default</literal>, or <literal>actual</literal> then it must 
-            also be annotated <literal>shared</literal>.</para>
             
         </section>
         

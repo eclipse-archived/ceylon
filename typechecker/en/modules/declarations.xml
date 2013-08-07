@@ -730,13 +730,12 @@ TypeConstraints?
             the type <literal>Object</literal> defined in 
             <literal>ceylon.language</literal>.</para>
             
-            <!--<para> 
-            At most one supertype of the interface may be a class. The remaining 
-            supertypes of an interface must be interfaces.
-            If an interface does not explicitly declare the class it satisfies using
-            <literal>satisfies</literal>, it satisfies the class 
-            <literal>ceylon.language.Object</literal>.
-            </para>-->
+            <!--
+            <para>At most one supertype of the interface may be a class. The remaining 
+            supertypes of an interface must be interfaces. If an interface does not 
+            explicitly declare the class it satisfies using <literal>satisfies</literal>, 
+            it satisfies the class <literal>Object</literal>.</para>
+            -->
              
             <para>An interface inherits all members (methods, attributes and member 
             types) of every supertype. That is, every member of every supertype of the 
@@ -744,9 +743,9 @@ TypeConstraints?
             by another supertype or by the interface itself.</para>
             
             <!--
-            <para>An interface inherits every class satisfied by every other interface the 
-            interface satisfies. There must exist a unique satisfied class that is a subclass
-            of all classes satisfied by the interface.</para>
+            <para>An interface inherits every class satisfied by every other interface 
+            the interface satisfies. There must exist a unique satisfied class that is 
+            a subclass of all classes satisfied by the interface.</para>
             -->
             
             <para>The schema of the inherited members is formed by substituting type 
@@ -802,10 +801,10 @@ TypeConstraints?
             <para>A class or interface may satisfy an interface alias, in which case, the
             class or interface inherits the aliased interface type.</para>
             
-            <!--para>Interface aliases are not reified types. The metamodel reference for an 
-            interface alias&mdash;for example, <literal>PeopleByName</literal>&mdash;returns 
+            <para>Interface aliases are not reified types. The metamodel reference for an 
+            interface alias type&mdash;for example, <literal>PeopleByName</literal>&mdash;returns 
             the metamodel object for the aliased interface&mdash;in this case, 
-            <literal>Map&lt;String,Person&gt;</literal>.</para-->
+            <literal>Map&lt;String,Person&gt;</literal>.</para>
         
         </section>
             
@@ -1080,11 +1079,8 @@ TypeConstraints?
             <para>However, the declarations in this second section may freely use 
             <literal>this</literal> and <literal>super</literal>, and may invoke any method,
             evaluate any attribute, or instantiate any member class of the class or its 
-            superclasses. <!--Furthermore, the usual restriction that a declaration may only 
-            be used within the lexical scope of the declaration is relaxed unless it is a 
-            <literal>value</literal> or <literal>function</literal> declaration with an 
-            inferred type.--></para>
-        
+            superclasses.</para>
+            
             <para>Within the declaration section of a class body, a <emphasis>super 
             reference</emphasis> is any occurrence of the expression <literal>super</literal>, 
             unless it also occurs in the body of a nested class or interface declaration. A 
@@ -1111,7 +1107,7 @@ TypeConstraints?
                   <literal>case (is ...)</literal>.</para>
                </listitem>
             </itemizedlist>
-                    
+            
         </section>
            
         <!--section id="classmembervisibility">
@@ -1270,133 +1266,133 @@ TypeConstraints?
             
         </section>
         
-    <section id="abstractandformalclasses">
-        <title>Abstract, final, formal, and default classes</title>
-        
-        <para>A toplevel or nested class may be annotated <literal>abstract</literal>
-        and is called an <literal>abstract</literal> class.</para>
-                
-        <para>A toplevel or nested class may be annotated <literal>final</literal>
-        and is called an <literal>final</literal> class.</para>
-                
-        <para>If a class annotated <literal>shared</literal> is a member of a containing 
-        class or interface, then the class may be annotated <literal>formal</literal>
-        and is called a <literal>formal</literal> member class, or, sometimes, an 
-        <emphasis>abstract member class</emphasis>.</para>
-        
-        <para>An <literal>abstract</literal> class or <literal>formal</literal> member
-        class may have <literal>formal</literal> members.</para>
-        
-        <para>An <literal>abstract</literal> class may not be instantiated.</para>
-        
-        <para>A <literal>formal</literal> member class may be instantiated.</para>
-        
-        <para>A class which is not annotated <literal>formal</literal> or 
-        <literal>abstract</literal> is called a <emphasis>concrete</emphasis> class.</para>
-                
-        <para>A concrete class may not have <literal>formal</literal> members.</para>
-        
-        <para>A class annotated <literal>final</literal> must be a concrete class.</para>
-        
-        <para>A class annotated <literal>final</literal> may not have <literal>default</literal> 
-        members.</para>
-        
-        <para>If a concrete class annotated <literal>shared</literal> is a member of a 
-        containing class or interface, then the class may be annotated 
-        <literal>default</literal> and is called a <literal>default</literal> member
-        class.</para>
-        
-        <para>A toplevel class may not be annotated <literal>formal</literal> or 
-        <literal>default</literal>.</para>
-        
-        <para>A block local class may not be annotated <literal>formal</literal> or 
-        <literal>default</literal>.</para>
-
-        <comment><para>Note: a <literal>formal</literal> member class would be a
-        reasonably syntax for declaring virtual types. We think we don't need 
-        virtual types because they don't offer much that type parameters don't
-        already provide. For example:</para>
-        <programlisting>shared formal class Buffer(Character...) 
+        <section id="abstractandformalclasses">
+            <title>Abstract, final, formal, and default classes</title>
+            
+            <para>A toplevel or nested class may be annotated <literal>abstract</literal>
+            and is called an <literal>abstract</literal> class.</para>
+                    
+            <para>A toplevel or nested class may be annotated <literal>final</literal>
+            and is called an <literal>final</literal> class.</para>
+                    
+            <para>If a class annotated <literal>shared</literal> is a member of a containing 
+            class or interface, then the class may be annotated <literal>formal</literal>
+            and is called a <literal>formal</literal> member class, or, sometimes, an 
+            <emphasis>abstract member class</emphasis>.</para>
+            
+            <para>An <literal>abstract</literal> class or <literal>formal</literal> member
+            class may have <literal>formal</literal> members.</para>
+            
+            <para>An <literal>abstract</literal> class may not be instantiated.</para>
+            
+            <para>A <literal>formal</literal> member class may be instantiated.</para>
+            
+            <para>A class which is not annotated <literal>formal</literal> or 
+            <literal>abstract</literal> is called a <emphasis>concrete</emphasis> class.</para>
+                    
+            <para>A concrete class may not have <literal>formal</literal> members.</para>
+            
+            <para>A class annotated <literal>final</literal> must be a concrete class.</para>
+            
+            <para>A class annotated <literal>final</literal> may not have <literal>default</literal> 
+            members.</para>
+            
+            <para>If a concrete class annotated <literal>shared</literal> is a member of a 
+            containing class or interface, then the class may be annotated 
+            <literal>default</literal> and is called a <literal>default</literal> member
+            class.</para>
+            
+            <para>A toplevel class may not be annotated <literal>formal</literal> or 
+            <literal>default</literal>.</para>
+            
+            <para>A block local class may not be annotated <literal>formal</literal> or 
+            <literal>default</literal>.</para>
+    
+            <comment><para>Note: a <literal>formal</literal> member class would be a
+            reasonably syntax for declaring virtual types. We think we don't need 
+            virtual types because they don't offer much that type parameters don't
+            already provide. For example:</para>
+            <programlisting>shared formal class Buffer(Character...) 
         satisfies Sequence&lt;Character&gt;;</programlisting></comment>
-        
-    </section>
             
-    <section id="refiningmemberclasses">
-        <title>Member class refinement</title>
-        
-        <para>Member class refinement is a unique feature of Ceylon, akin to the
-        "factory method" pattern of many other languages.</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>A member class annotated <literal>formal</literal> or
-                <literal>default</literal> may be refined by any class or 
-                interface which is a subtype of the class or interface which 
-                declares the member class.</para>
-            </listitem>
-            <listitem>
-                <para>A member class annotated <literal>formal</literal> 
-                <emphasis>must</emphasis> be refined by every concrete class 
-                which is a subtype of the class or interface that declares the 
-                member class, unless the class inherits a concrete member class 
-                from a superclass that refines the <literal>formal</literal> 
-                member class.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>A member class of a subtype <emphasis>refines</emphasis> a member 
-        class of a supertype if the member class of the supertype is
-        <literal>shared</literal> and the two classes have the same name. The 
-        first class is called the <emphasis>refining</emphasis> class, and the 
-        second class is called the <emphasis>refined</emphasis> class.</para>
-        
-        <para>Then, given the refined realization of the class it refines, as 
-        defined in <xref linkend="realizations"/>, and, after substituting the 
-        type parameters of the refined class for the type parameters of the 
-        refining class in the schema of the refining class, the refining class 
-        must:</para>
+        </section>
+                
+        <section id="classrefinement">
+            <title>Member class refinement</title>
             
-        <itemizedlist>
-            <listitem>
-                <para>have the same number of type parameters as the refined 
-                schema, and for each type parameter the intersection of its
-                upper bounds must be a supertype of the intersection of the 
-                upper bounds of the corresponding type parameter of the 
-                realization,</para>
-            </listitem>
-            <listitem>
-                <para>have a parameter list with the same signature as the 
-                realization, and</para>
-            </listitem>
-             <listitem>
-                <para>directly or indirectly extend the class it refines.</para>
-            </listitem>
-        </itemizedlist>
+            <para>Member class refinement is a unique feature of Ceylon, akin to the
+            "factory method" pattern of many other languages.</para>
             
-        <para>Furthermore:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the refining class must be annotated <literal>actual</literal>, 
-                and</para>
-            </listitem>
-            <listitem>
-                <para>the refined class must be annotated <literal>formal</literal>
-                or <literal>default</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>If a member class is annotated <literal>actual</literal>, it must 
-        refine some member class of a supertype.</para>
-        
-        <para>A member class may not, directly or indirectly, refine two different
-        member classes not themselves annotated <literal>actual</literal>.</para>
-        
-        <para>Then instantiation of the member class is polymorphic, and the actual
-        subtype instantiated depends upon the concrete type of the containing class
-        instance.</para>
-        
-        <programlisting>shared abstract class Reader() {
+            <itemizedlist>
+                <listitem>
+                    <para>A member class annotated <literal>formal</literal> or
+                    <literal>default</literal> may be refined by any class or 
+                    interface which is a subtype of the class or interface which 
+                    declares the member class.</para>
+                </listitem>
+                <listitem>
+                    <para>A member class annotated <literal>formal</literal> 
+                    <emphasis>must</emphasis> be refined by every concrete class 
+                    which is a subtype of the class or interface that declares the 
+                    member class, unless the class inherits a concrete member class 
+                    from a superclass that refines the <literal>formal</literal> 
+                    member class.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>A member class of a subtype <emphasis>refines</emphasis> a member 
+            class of a supertype if the member class of the supertype is
+            <literal>shared</literal> and the two classes have the same name. The 
+            first class is called the <emphasis>refining</emphasis> class, and the 
+            second class is called the <emphasis>refined</emphasis> class.</para>
+            
+            <para>Then, given the refined realization of the class it refines, as 
+            defined in <xref linkend="realizations"/>, and, after substituting the 
+            type parameters of the refined class for the type parameters of the 
+            refining class in the schema of the refining class, the refining class 
+            must:</para>
+                
+            <itemizedlist>
+                <listitem>
+                    <para>have the same number of type parameters as the refined 
+                    schema, and for each type parameter the intersection of its
+                    upper bounds must be a supertype of the intersection of the 
+                    upper bounds of the corresponding type parameter of the 
+                    realization,</para>
+                </listitem>
+                <listitem>
+                    <para>have a parameter list with the same signature as the 
+                    realization, and</para>
+                </listitem>
+                 <listitem>
+                    <para>directly or indirectly extend the class it refines.</para>
+                </listitem>
+            </itemizedlist>
+                
+            <para>Furthermore:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the refining class must be annotated <literal>actual</literal>, 
+                    and</para>
+                </listitem>
+                <listitem>
+                    <para>the refined class must be annotated <literal>formal</literal>
+                    or <literal>default</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>If a member class is annotated <literal>actual</literal>, it must 
+            refine some member class of a supertype.</para>
+            
+            <para>A member class may not, directly or indirectly, refine two different
+            member classes not themselves annotated <literal>actual</literal>.</para>
+            
+            <para>Then instantiation of the member class is polymorphic, and the actual
+            subtype instantiated depends upon the concrete type of the containing class
+            instance.</para>
+            
+            <programlisting>shared abstract class Reader() {
     shared formal class Buffer(Character* chars) 
             satisfies Character[] {}
     ...
@@ -1410,161 +1406,161 @@ TypeConstraints?
     }
     ...
 }</programlisting>
-        
-        <para>All of the above rules apply equally to member classes which are 
-        aliases.</para>
-        
-        <programlisting>shared abstract class Reader() {
+            
+            <para>All of the above rules apply equally to member classes which are 
+            aliases.</para>
+            
+            <programlisting>shared abstract class Reader() {
     shared formal class Buffer(Character* chars) => AbstractBuffer(*chars);
     ...
 }</programlisting>
-        
-        <programlisting>shared class FileReader(File file) 
+            
+            <programlisting>shared class FileReader(File file) 
         extends Reader() {
     shared actual class Buffer(Character* chars) => FileBuffer(*chars);
     ...
 }</programlisting>
+            
+        </section>
         
-    </section>
-    
-    <section id="anonymousclasses">
-        <title>Anonymous classes</title>
-        
-        <para>An <literal>object</literal> declaration makes it possible to define
-        a class, instantiate the class, and declare an attribute referring to the 
-        resulting class instance in a single declaration.</para>
-        
-        <synopsis>ObjectDeclaration: Annotations ObjectHeader ClassBody</synopsis>
-        
-        <para>An <literal>object</literal> has an initial lowercase identifier.
-        An <literal>object</literal> declaration does not specify parameters or
-        type parameters.</para>
-        
-         <synopsis>ObjectHeader: "object" MemberName ObjectInheritance</synopsis>
-         
-         <synopsis>ObjectInheritance: ExtendedType? SatisfiedTypes?</synopsis>
-         
-         <para>An <literal>object</literal> declaration specifies the name of the
-         attribute and the schema, supertypes, and implementation of the class. It
-         does not specify a type name. Instead, the type has a name assigned 
-         internally by the compiler that is not available at compilation time.</para>
-         
-         <para>An <literal>object</literal> class:</para>
-         
-         <itemizedlist>
-             <listitem>
-                 <para>is implicitly <literal>final</literal>,</para>
-             </listitem>
-             <listitem>
-                 <para>may not be extended by another class,</para>
-             </listitem>
-             <listitem>
-                 <para>may not be <literal>abstract</literal> or <literal>formal</literal>, 
-                 and</para>
-             </listitem>
-             <listitem>
-                 <para>may not declare <literal>default</literal> members.</para>
-             </listitem>
-         </itemizedlist>
-         
-         <para>If the <literal>object</literal> is annotated <literal>shared</literal>, 
-         the class is <literal>shared</literal>.</para>
-         
-         <para>This class never appears in types inferred by local declaration type 
-         inference or generic type argument inference. Instead, occurrences of the class 
-         are replaced with the intersection of the extended type with all satisfied
-         types.</para>
-         
-         <para>An <literal>object</literal> attribute:</para>
-         
-         <itemizedlist>
-             <listitem>
-                 <para>is non-<literal>variable</literal>, and</para>
-             </listitem>
-             <listitem>
-                 <para>may not be refined or declared <literal>default</literal>.</para>
-             </listitem>
-         </itemizedlist>
-         
-         <para>If the <literal>object</literal> is annotated <literal>shared</literal>, 
-         the attribute is <literal>shared</literal>. If the <literal>object</literal>
-         is annotated <literal>actual</literal>, it refines an attribute of a 
-         supertype.</para>
-         
-         <para>The following declaration:</para>
-         
-         <programlisting>shared object red extends Color('FF0000') {
+        <section id="anonymousclasses">
+            <title>Anonymous classes</title>
+            
+            <para>An <literal>object</literal> declaration makes it possible to define
+            a class, instantiate the class, and declare an attribute referring to the 
+            resulting class instance in a single declaration.</para>
+            
+            <synopsis>ObjectDeclaration: Annotations ObjectHeader ClassBody</synopsis>
+            
+            <para>An <literal>object</literal> has an initial lowercase identifier.
+            An <literal>object</literal> declaration does not specify parameters or
+            type parameters.</para>
+            
+             <synopsis>ObjectHeader: "object" MemberName ObjectInheritance</synopsis>
+             
+             <synopsis>ObjectInheritance: ExtendedType? SatisfiedTypes?</synopsis>
+             
+             <para>An <literal>object</literal> declaration specifies the name of the
+             attribute and the schema, supertypes, and implementation of the class. It
+             does not specify a type name. Instead, the type has a name assigned 
+             internally by the compiler that is not available at compilation time.</para>
+             
+             <para>An <literal>object</literal> class:</para>
+             
+             <itemizedlist>
+                 <listitem>
+                     <para>is implicitly <literal>final</literal>,</para>
+                 </listitem>
+                 <listitem>
+                     <para>may not be extended by another class,</para>
+                 </listitem>
+                 <listitem>
+                     <para>may not be <literal>abstract</literal> or <literal>formal</literal>, 
+                     and</para>
+                 </listitem>
+                 <listitem>
+                     <para>may not declare <literal>default</literal> members.</para>
+                 </listitem>
+             </itemizedlist>
+             
+             <para>If the <literal>object</literal> is annotated <literal>shared</literal>, 
+             the class is <literal>shared</literal>.</para>
+             
+             <para>This class never appears in types inferred by local declaration type 
+             inference or generic type argument inference. Instead, occurrences of the class 
+             are replaced with the intersection of the extended type with all satisfied
+             types.</para>
+             
+             <para>An <literal>object</literal> attribute:</para>
+             
+             <itemizedlist>
+                 <listitem>
+                     <para>is non-<literal>variable</literal>, and</para>
+                 </listitem>
+                 <listitem>
+                     <para>may not be refined or declared <literal>default</literal>.</para>
+                 </listitem>
+             </itemizedlist>
+             
+             <para>If the <literal>object</literal> is annotated <literal>shared</literal>, 
+             the attribute is <literal>shared</literal>. If the <literal>object</literal>
+             is annotated <literal>actual</literal>, it refines an attribute of a 
+             supertype.</para>
+             
+             <para>The following declaration:</para>
+             
+             <programlisting>shared object red extends Color('FF0000') {
      string => "Red";
 }</programlisting>
-
-         <para>Is exactly equivalent to:</para>
-         
-         <programlisting>final class Color_red extends Color('FF0000') {
+    
+             <para>Is exactly equivalent to:</para>
+             
+             <programlisting>final class Color_red extends Color('FF0000') {
      string => "Red";
 }
 
 shared Color_red red = Color_red();</programlisting>
-         
-         <para>Where <literal>Color_red</literal> is a name generated by the compiler.
-         The algorithm for generating this name is not specified here.</para>
-         
-         <para>Note that a member of an anonymous class that is not annotated 
-         <literal>actual</literal> may only be accessed from within the body of 
-         the anonymous class or by directly invoking the <literal>object</literal> 
-         attribute.</para>
-         
-         <programlisting>shared object sql {
+             
+             <para>Where <literal>Color_red</literal> is a name generated by the compiler.
+             The algorithm for generating this name is not specified here.</para>
+             
+             <para>Note that a member of an anonymous class that is not annotated 
+             <literal>actual</literal> may only be accessed from within the body of 
+             the anonymous class or by directly invoking the <literal>object</literal> 
+             attribute.</para>
+             
+             <programlisting>shared object sql {
     shared String escape(String string) { ... }
 }
 
 ...
 
 String escapedSearchString = sql.escape(searchString);</programlisting>
-
-        <!--comment><para>TODO: I'm increasingly inclined to think that this is backwards:
-        a class should be an <literal>object</literal> with parameters. We could rewrite
-        this stuff so that a <literal>class</literal> is equivalent to an interface with
-        a typeclass that satisfies <literal>Callable</literal> and returns a nested 
-        <literal>object</literal>. We might have to make an <literal>object</literal> a 
-        type, and give it an uppercase name, and/or let you <literal>extend</literal> an
-        <literal>object</literal> but that would end up a little more regular anyway, 
-        since the <literal>of</literal> clause would now always contain a list of types. 
-        The only oddity would be that some common values would getter uppercase names: 
-        <literal>True</literal>, <literal>False</literal>, <literal>Null</literal>, 
-        etc.</para></comment-->
-        
-        <!--comment><para>TODO: Alternatively, a different approach to making this feature
-        feel more regular, that is also perhaps more practically useful, would be to 
-        reconceptualize the syntax above as a kind of attribute declaration, and also
-        support a parameterized <literal>object</literal> declaration&mdash;which would
-        be a useful shortcut for specifying a callable parameter value in a named argument 
-        list or refining a method declaration when the callable parameter or method has an 
-        abstract return type.</para></comment-->
-        
-        <comment><para>TODO: Should we support <literal>object</literal>s as part of the
-        expression syntax, like anonymous classes in Java. The syntax would be:</para>
-        <programlisting>return object extends AbstractReader(stream) { ... };</programlisting>
-        <programlisting>return object satisfies Closeable { 
+    
+            <!--comment><para>TODO: I'm increasingly inclined to think that this is backwards:
+            a class should be an <literal>object</literal> with parameters. We could rewrite
+            this stuff so that a <literal>class</literal> is equivalent to an interface with
+            a typeclass that satisfies <literal>Callable</literal> and returns a nested 
+            <literal>object</literal>. We might have to make an <literal>object</literal> a 
+            type, and give it an uppercase name, and/or let you <literal>extend</literal> an
+            <literal>object</literal> but that would end up a little more regular anyway, 
+            since the <literal>of</literal> clause would now always contain a list of types. 
+            The only oddity would be that some common values would getter uppercase names: 
+            <literal>True</literal>, <literal>False</literal>, <literal>Null</literal>, 
+            etc.</para></comment-->
+            
+            <!--comment><para>TODO: Alternatively, a different approach to making this feature
+            feel more regular, that is also perhaps more practically useful, would be to 
+            reconceptualize the syntax above as a kind of attribute declaration, and also
+            support a parameterized <literal>object</literal> declaration&mdash;which would
+            be a useful shortcut for specifying a callable parameter value in a named argument 
+            list or refining a method declaration when the callable parameter or method has an 
+            abstract return type.</para></comment-->
+            
+            <comment><para>TODO: Should we support <literal>object</literal>s as part of the
+            expression syntax, like anonymous classes in Java. The syntax would be:</para>
+            <programlisting>return object extends AbstractReader(stream) { ... };</programlisting>
+            <programlisting>return object satisfies Closeable { 
         actual void begin() { ... } 
         actual void close(Exception? e) { ... } 
     };</programlisting>
-        </comment>
+            </comment>
+            
+        </section>
         
-    </section>
-    
-    <section id="classeswithcases">
-        <title>Classes with enumerated cases</title>
-        
-        <para>A class declaration may enumerate a list of cases of the class.</para>
-        
-        <programlisting>shared abstract class Boolean() 
+        <section id="classeswithcases">
+            <title>Classes with enumerated cases</title>
+            
+            <para>A class declaration may enumerate a list of cases of the class.</para>
+            
+            <programlisting>shared abstract class Boolean() 
         of true | false 
         extends Case() {}
         
 shared object true extends Boolean() {}
 shared object false extends Boolean() {}</programlisting>
-
-        <programlisting><![CDATA[shared abstract class Node<Element>(String name) 
+    
+            <programlisting><![CDATA[shared abstract class Node<Element>(String name) 
         of Branch<Element> | Leaf<Element> { ... }
         
 shared class Leaf<Element>(String name, Element element) 
@@ -1572,77 +1568,76 @@ shared class Leaf<Element>(String name, Element element)
         
 shared class Branch<Element>(String name, Node<Element> left, Node<Element> right) 
         extends Node<Element>(name) { ... }]]></programlisting>
-                
-        <para>The cases may be classes or toplevel anonymous classes. A case may 
-        be an <literal>abstract</literal> class. Each case must be a subclass of 
-        the class. A class may not be a case of itself. A class declaration may 
-        not list the same case twice.</para>
-                        
-        <para>If a class has an <literal>of</literal> clause, then another class 
-        may not directly <literal>extend</literal> the class unless it is of one 
-        of the enumerated cases of the class.</para>
-        
-        <para>A non-<literal>abstract</literal> class may not have an <literal>of</literal> 
-        clause.<!--A <literal>final</literal> class may not have an <literal>of</literal> 
-        clause. --></para>
-        
-        <comment><para>TODO: Should we introduce an abbreviated syntax like:</para>
-        <programlisting>shared abstract class Boolean() of object true | object false {}</programlisting>
-        </comment>
-        
-    </section>
-        
-    <section id="classaliases">
-        <title>Class aliases</title>
-        
-        <para>A class declaration which specifies a reference to another class type 
-        defines a <emphasis>class alias</emphasis> of the specified class type.</para>
-        
-        <synopsis>ClassSpecifier: "=>" ("super" ".")? TypeNameWithArguments PositionalArguments</synopsis>
-        
-        <para>The specified type must be a <emphasis>class type</emphasis>, that is,
-        a reference to a class with no type parameters, or an instaniation of a generic 
-        class. A class alias simply assigns an alternative name to the original class 
-        type. A reference to the alias may occur anywhere a reference to a class may 
-        occur.</para>
-        
-        <programlisting>shared class People(Person* people) => ArrayList&lt;Person&gt;(*people);</programlisting>
-        
-        <programlisting>class Named&lt;Value&gt;(String name, Value val) => Entry&lt;String,Value&gt;(name, val);</programlisting>
-        
-        <para>Arguments to the initializer parameters of the aliased class must be
-        specified.</para>
-        
-        <para>If the aliased class is a parameterized type, the aliased type must
-        explicitly specify type arguments.</para>
-        
-        <para>The type arguments may not be inferred from the initializer arguments.</para>
-        
-        <comment><para>Note: currently the compiler imposes a restriction that the 
-        callable type of the aliased class must be assignable to the callable type 
-        of the class alias. This restriction will be removed in future.</para></comment>
-        
-        <para>If a toplevel or block local class alias aliases an <literal>abstract</literal>
-        class, the alias must be annotation <literal>abstract</literal>, and it
-        may not be directly instantiated.</para>
-        
-        <para>If a <literal>shared </literal>class alias nested inside the body 
-        of a class or interface aliases an <literal>abstract</literal> class, the 
-        alias must be annotation <literal>abstract</literal> or <literal>formal</literal>.
-        If it is annotated <literal>formal</literal>, it is considered a member 
-        class of the containing class or interface. If it is annotated 
-        <literal>abstract</literal>, it is considered an abstract nested class of
-        the containing class or interface.</para>
-        
-        <para>A class or interface may extend a class alias, in which case, the 
-        class inherits the aliased class type.</para>
+                    
+            <para>The cases may be classes or toplevel anonymous classes. A case may 
+            be an <literal>abstract</literal> class. Each case must be a subclass of 
+            the class. A class may not be a case of itself. A class declaration may 
+            not list the same case twice.</para>
+                            
+            <para>If a class has an <literal>of</literal> clause, then every class 
+            that directly extends the class must be of one of the enumerated cases of 
+            the class.</para>
             
-        <!--para>Class aliases are not reified types. The metamodel reference for a class 
-        alias&mdash;for example, <literal>People</literal>&mdash;returns the metamodel 
-        object for the aliased class&mdash;in this case, 
-        <literal>ArrayList&lt;Person&gt;</literal>.</para-->
-    
-    </section>
+            <para>A non-<literal>abstract</literal> class may not have an 
+            <literal>of</literal> clause.></para>
+            
+            <comment><para>TODO: Should we introduce an abbreviated syntax like:</para>
+            <programlisting>shared abstract class Boolean() of object true | object false {}</programlisting>
+            </comment>
+            
+        </section>
+            
+        <section id="classaliases">
+            <title>Class aliases</title>
+            
+            <para>A class declaration which specifies a reference to another class type 
+            defines a <emphasis>class alias</emphasis> of the specified class type.</para>
+            
+            <synopsis>ClassSpecifier: "=>" ("super" ".")? TypeNameWithArguments PositionalArguments</synopsis>
+            
+            <para>The specified type must be a <emphasis>class type</emphasis>, that is,
+            a reference to a class with no type parameters, or an instaniation of a generic 
+            class. A class alias simply assigns an alternative name to the original class 
+            type. A reference to the alias may occur anywhere a reference to a class may 
+            occur.</para>
+            
+            <programlisting>shared class People(Person* people) => ArrayList&lt;Person&gt;(*people);</programlisting>
+            
+            <programlisting>class Named&lt;Value&gt;(String name, Value val) => Entry&lt;String,Value&gt;(name, val);</programlisting>
+            
+            <para>Arguments to the initializer parameters of the aliased class must be
+            specified.</para>
+            
+            <para>If the aliased class is a parameterized type, the aliased type must
+            explicitly specify type arguments.</para>
+            
+            <para>The type arguments may not be inferred from the initializer arguments.</para>
+            
+            <comment><para>Note: currently the compiler imposes a restriction that the 
+            callable type of the aliased class must be assignable to the callable type 
+            of the class alias. This restriction will be removed in future.</para></comment>
+            
+            <para>If a toplevel or block local class alias aliases an <literal>abstract</literal>
+            class, the alias must be annotation <literal>abstract</literal>, and it
+            may not be directly instantiated.</para>
+            
+            <para>If a <literal>shared </literal>class alias nested inside the body 
+            of a class or interface aliases an <literal>abstract</literal> class, the 
+            alias must be annotation <literal>abstract</literal> or <literal>formal</literal>.
+            If it is annotated <literal>formal</literal>, it is considered a member 
+            class of the containing class or interface. If it is annotated 
+            <literal>abstract</literal>, it is considered an abstract nested class of
+            the containing class or interface.</para>
+            
+            <para>A class or interface may extend a class alias, in which case, the 
+            class inherits the aliased class type.</para>
+                
+            <para>Class aliases are not reified types. The metamodel reference for a class 
+            alias type&mdash;for example, <literal>People</literal>&mdash;returns the metamodel 
+            object for the aliased class&mdash;in this case, 
+            <literal>ArrayList&lt;Person&gt;</literal>.</para>
+        
+        </section>
         
     </section>
     
@@ -1673,6 +1668,11 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         
         <para>A class or interface may not extend or satisfy a type alias.</para>
         
+        <para>Type aliases are not reified types. The metamodel reference for a type 
+        alias type&mdash;for example, <literal>Number</literal>&mdash;returns the metamodel 
+        object for the aliased type&mdash;in this case, 
+        <literal>Integer|Float|Decimal|Whole</literal>.</para>
+        
     </section>
         
     <section id="functions">
@@ -1697,9 +1697,6 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <synopsis>FunctionHeader: (Type | "function" | "void") MemberName TypeParameters? Parameters+ TypeConstraints?</synopsis>
         
         <para>The Ceylon compiler preserves the names of function parameters.</para>
-        
-        <!--<section id="methodbodies">
-            <title>Method bodies</title>-->
         
         <para>A function implementation may be specified using either:</para>
         
@@ -2029,7 +2026,7 @@ case (hexadecimal) {
             
         </section>
                 
-        <section id="refiningmethods">
+        <section id="methodrefinement">
             <title>Method refinement</title>
             
             <para>Methods may be refined, just like in other object-oriented languages.</para>
@@ -2435,7 +2432,7 @@ print(greeting);</programlisting>
 
         </section>
                 
-        <section id="refiningattributes">
+        <section id="attributerefinement">
             <title>Attribute refinement</title>
             
             <para>Ceylon allows attributes to be refined, just like methods. This helps

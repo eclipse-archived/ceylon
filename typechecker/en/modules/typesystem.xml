@@ -608,7 +608,7 @@
             
         </section>
         
-        <section id="typeofaprogramelement">
+        <section id="typeexpressions">
             <title>Type expressions</title>
         
             <para>Function and value declarations usually declare a type, by specifying
@@ -1197,7 +1197,38 @@ Item item = comp of Item;</programlisting>
             type.</para>
             
         </section>
-    
+        
+        <section id="genericenumeratedtypes">
+            <title>Generic enumerated types</title>
+            
+            <para>If a generic enumerated type <literal>X</literal> has a case type 
+            <literal>C</literal>, then <literal>C</literal> must directly extend or 
+            satisfy an instantiation <literal>Y</literal> of <literal>X</literal>, and 
+            for each type parameter <literal>T</literal> of <literal>X</literal> and 
+            corresponding argument <literal>A</literal> of <literal>T</literal> given 
+            in <literal>Y</literal>, either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>X</literal> is covariant in <literal>T</literal> and 
+                    <literal>A</literal> is exactly <literal>Nothing</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>X</literal> is contravariant in <literal>T</literal> 
+                    and <literal>A</literal> is exactly the intersection of all upper 
+                    bounds on <literal>T</literal>, or <literal>Anything</literal> if 
+                    <literal>T</literal> has not upper bounds, or</para>
+                </listitem>
+                <listitem>
+                    <para><literal>C</literal> is a generic type and <literal>A</literal> 
+                    is exactly <literal>S</literal> for some type parameter 
+                    <literal>S</literal> of <literal>C</literal>, and <literal>S</literal> 
+                    must have the same variance as <literal>T</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
+        
         <section id="disjointtypes">
             <title>Disjoint types</title>
             
@@ -2408,6 +2439,26 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             covariance, which is non-denoteable in Ceylon. In such cases, don't allow
             references to members of the intersection type.</para></comment>
             
+        </section>
+        
+        <section id="refinement">
+            <title>Refinement</title>
+            
+            <para>A class or interface may declare an <literal>actual</literal> member 
+            with the same name as a member that it inherits from a supertype if the supertype
+            member is declared <literal>formal</literal> or <literal>default</literal>.
+            Then we say that the first member <emphasis>refines</emphasis> the second
+            member, and it must obey restrictions defined in 
+            <xref linkend="classrefinement"/>, <xref linkend="methodrefinement"/>, or
+            <xref linkend="attributerefinement"/>.</para>
+            
+            <para>A declaration may not be annotated both <literal>formal</literal> 
+            and <literal>default</literal>.</para>
+            
+            <para>If a declaration is annotated <literal>formal</literal>, 
+            <literal>default</literal>, or <literal>actual</literal> then it must 
+            also be annotated <literal>shared</literal>.</para>
+            
             <para>For any class or interface <literal>X</literal>, and for every declared
             or inherited member of <literal>X</literal> that is not refined by some other
             declared or inherited member of <literal>X</literal>, and for every other member 
@@ -2416,6 +2467,32 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             principal instantiation for <literal>X</literal> of the type that declares the 
             first member must be a subtype of the principal instantiation for <literal>X</literal> 
             of the type that declares the second member.</para>
+            
+        </section>
+        
+        <section id="qualifiedtypes">
+            <title>Qualified types</title>
+            
+            <para>A type declaration that directly occurs in the body of another type, 
+            and is annotated <literal>shared</literal>, may be used in a type expression
+            outside the body in which it is declared, if and only if it occurs as a 
+            <emphasis>qualified type</emphasis>, as specified in 
+            <xref linkend="typeexpressions"/>.</para>
+            
+            <para>The qualified types <literal>X.U</literal> and <literal>Y.V</literal> 
+            are exactly the same types if and only if <literal>U</literal> is exactly 
+            the same type as <literal>V</literal>, and in the case that this type is
+            a member of a generic type <literal>Z</literal>, then the principal 
+            instantiation of <literal>Z</literal> for <literal>X</literal> is exactly
+            the same type as the principal instantiation of <literal>Z</literal> for
+            <literal>Y</literal>.</para>
+            
+            <para>A qualified type <literal>X.U</literal> is a subtype of a qualified
+            type <literal>Y.V</literal> if <literal>U</literal> is a subtype of 
+            <literal>V</literal>, and in the case that <literal>V</literal> is a member 
+            of a generic type <literal>Z</literal>, then <literal>X</literal> is a 
+            subtype of the principal instantiation of <literal>Z</literal> for 
+            <literal>Y</literal>.</para>
             
         </section>
         
@@ -2484,67 +2561,6 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             
         </section>
         
-        <section id="qualifiedtypes">
-            <title>Qualified types</title>
-            
-            <para>The qualified types <literal>X.U</literal> and <literal>Y.V</literal> 
-            are exactly the same types if and only if <literal>U</literal> is exactly 
-            the same type as <literal>V</literal>, and in the case that this type is
-            a member of a generic type <literal>Z</literal>, then the principal 
-            instantiation of <literal>Z</literal> for <literal>X</literal> is exactly
-            the same type as the principal instantiation of <literal>Z</literal> for
-            <literal>Y</literal>.</para>
-            
-            <para>A qualified type <literal>X.U</literal> is a subtype of a qualified
-            type <literal>Y.V</literal> if <literal>U</literal> is a subtype of 
-            <literal>V</literal>, and in the case that <literal>V</literal> is a member 
-            of a generic type <literal>Z</literal>, then <literal>X</literal> is a 
-            subtype of the principal instantiation of <literal>Z</literal> for 
-            <literal>Y</literal>.</para>
-            
-        </section>
-        
-        <section id="genericenumeratedtypes">
-            <title>Generic enumerated types</title>
-            
-            <para>If an enumerated type <literal>X&lt;*Ts&gt;</literal> has a case type 
-            <literal>C</literal> then <literal>C</literal> must have an inherited 
-            instantiation <literal>X&lt;*As&gt;</literal> of <literal>X</literal> for some 
-            list of type arguments <literal>As</literal>, and for each <literal>T</literal> 
-            in the type parameters <literal>Ts</literal> of <literal>X</literal> and 
-            corresponding argument <literal>A</literal> of <literal>T</literal> given in 
-            <literal>As</literal>, either:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para><literal>X</literal> is covariant in <literal>T</literal> and 
-                    <literal>A</literal> is exactly <literal>Nothing</literal>,</para>
-                </listitem>
-                <listitem>
-                    <para><literal>X</literal> is contravariant in <literal>T</literal> 
-                    and <literal>A</literal> is exactly the intersection of all upper 
-                    bounds on <literal>T</literal>, or <literal>Anything</literal> if 
-                    <literal>T</literal> has not upper bounds, or</para>
-                </listitem>
-                <listitem>
-                    <para><literal>A</literal> is exactly <literal>T</literal>, and 
-                    <literal>C</literal> is exactly <literal>Y&lt;*Bs&gt;</literal>
-                    for some generic type <literal>Y&lt;*Ss&gt;</literal> and list of
-                    type arguments <literal>Bs</literal> involving the type parameters 
-                    <literal>Ts</literal> of <literal>X</literal>, and, furthermore, 
-                    <literal>Y&lt;*Ss&gt;</literal> must extend or satisfy
-                    <literal>X&lt;*Ds&gt;</literal> for some list of type arguments 
-                    <literal>Ds</literal> involving the type parameters 
-                    <literal>Ss</literal> of <literal>Y</literal>. Then the argument
-                    <literal>D</literal> in <literal>Ds</literal> of <literal>T</literal> 
-                    must be exactly <literal>S</literal> for some type parameter 
-                    <literal>S</literal> in <literal>Ss</literal>, and <literal>S</literal> 
-                    must have the same variance as <literal>T</literal>.</para>
-                </listitem>
-            </itemizedlist>
-            
-        </section>
-    
     </section>
     
     <!--
