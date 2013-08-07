@@ -15,14 +15,12 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.redhat.ceylon.common.Versions;
-
 /**
  * Ceylon-specific class loader that knows how to find and add
  * all needed dependencies for compiler and runtime.
  * Implements child-first class loading to prevent mix-ups with
  * Java's own tool-chain.
- * 
+ *
  * @author Tako Schotanus
  *
  */
@@ -45,13 +43,13 @@ public class CeylonClassLoader extends URLClassLoader {
         }
         return urls;
     }
-    
+
     public static List<File> getClassPath() throws URISyntaxException, FileNotFoundException {
         // Determine the necessary folders
         File ceylonHome = LauncherUtil.determineHome();
         File ceylonRepo = LauncherUtil.determineRepo();
         File ceylonLib = LauncherUtil.determineLibs();
-        
+
         // Perform some sanity checks
         if (!ceylonHome.isDirectory()) {
             throw new FileNotFoundException("Could not determine the Ceylon home directory (" + ceylonHome + ")");
@@ -62,12 +60,12 @@ public class CeylonClassLoader extends URLClassLoader {
         if (!ceylonLib.isDirectory()) {
             throw new FileNotFoundException("The Ceylon system libraries could not be found (" + ceylonLib + ")");
         }
-        
+
         List<File> archives = new LinkedList<File>();
-        
+
         // List all the JARs we find in the LIB directory
         findLibraries(archives, ceylonLib);
-        
+
         // List all the necessary Ceylon JARs and CARs
         String version = LauncherUtil.determineSystemVersion();
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.compiler.java", version));
@@ -80,22 +78,23 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.maven-support", "main"));
         archives.add(getRepoJar(ceylonRepo, "org.jboss.jandex", "main"));
         archives.add(getRepoJar(ceylonRepo, "org.jboss.modules", "main"));
-        
+        archives.add(getRepoJar(ceylonRepo, "org.jboss.logmanager", "main"));
+
         return archives;
     }
-    
+
     private static File getRepoJar(File repo, String moduleName, String version) {
         return getRepoUrl(repo, moduleName, version, "jar");
     }
-    
+
     private static File getRepoCar(File repo, String moduleName, String version) {
         return getRepoUrl(repo, moduleName, version, "car");
     }
-    
+
     private static File getRepoUrl(File repo, String moduleName, String version, String extension) {
         return new File(repo, moduleName.replace('.', '/') + "/" + version + "/" + moduleName + "-" + version + "." + extension);
     }
-    
+
     private static void findLibraries(List<File> libs, File folder) {
         File[] items = folder.listFiles();
         for (File f : items) {
@@ -106,7 +105,7 @@ public class CeylonClassLoader extends URLClassLoader {
             }
         }
     }
-    
+
     @Override
     protected synchronized Class<?> loadClass(String name, boolean resolve)
             throws ClassNotFoundException {
@@ -163,7 +162,7 @@ public class CeylonClassLoader extends URLClassLoader {
             Iterator<URL> iter = urls.iterator();
 
             public boolean hasMoreElements() {
-                return iter.hasNext(); 
+                return iter.hasNext();
             }
             public URL nextElement() {
                 return iter.next();
