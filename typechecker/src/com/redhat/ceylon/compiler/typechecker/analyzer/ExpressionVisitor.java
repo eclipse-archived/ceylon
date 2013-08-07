@@ -3886,11 +3886,17 @@ public class ExpressionVisitor extends Visitor {
             }
             if (type.isPackageVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("package private type is not visible: " + name);
+                if (type instanceof Functional &&
+                        ((Functional) type).isOverloaded()) {
+                    that.addError("package private constructor is not visible: " + name);
+                }
+                else {
+                    that.addError("package private type is not visible: " + name);
+                }
             }
-            if (type instanceof Functional &&
+            if (type.isProtectedVisibility() &&
+                    type instanceof Functional &&
                     ((Functional) type).isOverloaded() && //identifies a Java constructor
-                    type.isProtectedVisibility() &&
                     !declaredInPackage(type, unit)) {
                 that.addError("protected constructor is not visible: " + name);
             }
