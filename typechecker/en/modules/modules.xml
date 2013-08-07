@@ -670,23 +670,23 @@ shared package org.hibernate.query;</programlisting>
             for a runnable module specifies an <emphasis>entry point</emphasis>, a 
             toplevel method or class with no parameters.</para-->
             
-            <synopsis>ModuleDescriptor: Annotations "module" (FullPackageName|QuotedLiteral) QuotedLiteral ModuleBody</synopsis>
+            <synopsis>ModuleDescriptor: Annotations "module" FullPackageName StringLiteral ModuleBody</synopsis>
             
-            <para>The name of the imported module may be specified using the usual syntax
-            for a module name, or as a quoted literal, to allow interoperation with
-            legacy module repositories existing outside the Ceylon ecosystem.</para>
-            
-            <comment><para>Note: this enables interoperation with Maven.</para></comment>
-            
-            <para>The quoted literal after the module name specifies the version of the
+            <para>The literal string after the module name specifies the version of the
             module.</para>
             
             <para>A module may import other modules.</para>
             
             <synopsis>ModuleBody: "{" ModuleImport* "}"</synopsis>
-            <synopsis>ModuleImport: Annotations "import" FullPackageName QuotedLiteral ";"</synopsis>
+            <synopsis>ModuleImport: Annotations "import" (FullPackageName|StringLiteral) StringLiteral ";"</synopsis>
             
-            <para>The quoted literal after the imported module name specifies the version 
+            <para>The name of the imported module may be specified using the usual syntax
+            for a module name, or as a literal string, to allow interoperation with
+            legacy module repositories existing outside the Ceylon ecosystem.</para>
+            
+            <comment><para>Note: this enables interoperation with Maven.</para></comment>
+            
+            <para>The string literal after the imported module name specifies the version 
             of the imported module.</para>
             
             <para>An imported module may be annotated <literal>optional</literal> and/or
@@ -714,15 +714,15 @@ shared package org.hibernate.query;</programlisting>
             
             <programlisting>"The best-ever ORM solution!"
 license "http://www.gnu.org/licenses/lgpl.html"
-module org.hibernate '3.0.0.beta' {
-    shared import ceylon.language '1.0.1';
-    import javax.sql '4.0';
+module org.hibernate "3.0.0.beta" {
+    shared import ceylon.language "1.0.1";
+    import javax.sql "4.0";
 }</programlisting>
             
             <programlisting>"The test suite for Hibernate"
 license "http://www.gnu.org/licenses/lgpl.html"
-module org.hibernate.test '3.0.0.beta' {
-    import org.hibernate '3.0.0.beta';
+module org.hibernate.test "3.0.0.beta" {
+    import org.hibernate "3.0.0.beta";
     TestSuite().run();
 }</programlisting>
             

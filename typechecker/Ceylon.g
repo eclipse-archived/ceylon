@@ -75,8 +75,13 @@ moduleDescriptor returns [ModuleDescriptor moduleDescriptor]
         $moduleDescriptor.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
       packagePath
       { $moduleDescriptor.setImportPath($packagePath.importPath); }
-      CHAR_LITERAL
-      { $moduleDescriptor.setVersion(new QuotedLiteral($CHAR_LITERAL)); }
+      (
+        CHAR_LITERAL
+        { $moduleDescriptor.setVersion(new QuotedLiteral($CHAR_LITERAL)); }
+      |
+        STRING_LITERAL
+        { $moduleDescriptor.setVersion(new QuotedLiteral($STRING_LITERAL)); }
+      )
       importModuleList
       { $moduleDescriptor.setImportModuleList($importModuleList.importModuleList); }
     ;
@@ -116,15 +121,24 @@ importModule returns [ImportModule importModule]
     : IMPORT
       { $importModule = new ImportModule($IMPORT); }
       ( 
-        q1=CHAR_LITERAL
-        { $importModule.setQuotedLiteral(new QuotedLiteral($q1)); }
+        c1=CHAR_LITERAL
+        { $importModule.setQuotedLiteral(new QuotedLiteral($c1)); }
+      |
+        s1=STRING_LITERAL
+        { $importModule.setQuotedLiteral(new QuotedLiteral($s1)); }
       |
         packagePath
         { $importModule.setImportPath($packagePath.importPath); }
       )
-      q2=CHAR_LITERAL
-      { $importModule.setVersion(new QuotedLiteral($q2)); 
-        expecting=SEMICOLON; }
+      (
+        c2=CHAR_LITERAL
+        { $importModule.setVersion(new QuotedLiteral($c2)); 
+          expecting=SEMICOLON; }
+      |
+        s2=STRING_LITERAL
+        { $importModule.setVersion(new QuotedLiteral($s2)); 
+          expecting=SEMICOLON; }
+      )
       SEMICOLON
       { $importModule.setEndToken($SEMICOLON); 
         expecting=-1; }
