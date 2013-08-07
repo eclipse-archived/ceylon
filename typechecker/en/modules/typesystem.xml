@@ -1275,7 +1275,7 @@ Item item = comp of Item;</programlisting>
                     <para><literal>X</literal> and <literal>Y</literal> inherit disjoint
                     instantiations of a generic type <literal>Z</literal>, that is, two 
                     instantiations of <literal>Z</literal> that have the intersection
-                    <literal>Nothing</literal>, as defined below, in <xref linkend="pii"/>.</para>
+                    <literal>Nothing</literal>, as defined below, in <xref linkend="principalinstantiationinheritance"/>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2258,7 +2258,7 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             
         </section>
         
-        <section id="pii">
+        <section id="principalinstantiationinheritance">
             <title>Principal instantiation inheritance</title>
             
             <para>If a class or interface type <literal>X</literal> has the inherited 
@@ -2356,7 +2356,7 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
         
         </section>
         
-        <section id="principalinstantiation">
+        <section id="principalinstantiationofasupertype">
             <title>Principal instantiation of a supertype</title>
                         
             <para>If a type <literal>X</literal> is a subtype of some instantiation 
@@ -2369,7 +2369,7 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             
             <para>We compute principal instantiations by making use of the identities
             observed above in <xref linkend="uniontypes"/>, <xref linkend="intersectiontypes"/>,
-            and <xref linkend="pii"/>. For any generic type <literal>X</literal>:</para>
+            and <xref linkend="principalinstantiationinheritance"/>. For any generic type <literal>X</literal>:</para>
             
             <itemizedlist>
                 <listitem>
