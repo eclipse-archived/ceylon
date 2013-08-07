@@ -6,7 +6,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -74,7 +73,7 @@ public class ValueVisitor extends Visitor {
             }
         }
     }
-    
+
     @Override
     public void visit(Tree.QualifiedMemberExpression that) {
         super.visit(that);
@@ -143,12 +142,21 @@ public class ValueVisitor extends Visitor {
     }    
     
     @Override
-    public void visit(LazySpecifierExpression that) {
+    public void visit(Tree.LazySpecifierExpression that) {
         boolean cs = enterCapturingScope();
         sameScope++;
         that.getExpression().visit(this);
         sameScope--;
         exitCapturingScope(cs);
+    }
+
+    @Override
+    public void visit(Tree.Parameter that) {
+        //Mark all class initializer parameters as captured
+        if (that.getParameterModel().getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+            that.getParameterModel().getModel().setCaptured(true);
+        }
+        super.visit(that);
     }
 
 }
