@@ -3889,7 +3889,7 @@ public class ExpressionVisitor extends Visitor {
             else if (type instanceof Functional &&
                     ((Functional) type).isOverloaded()) {  
                 //it is a Java constructor
-                Declaration at = type.getContainer().getDirectMember(name, null, false);
+                Declaration at = type.getContainer().getDirectMember(type.getName(), null, false);
                 if (at.isPackageVisibility() &&
                         !declaredInPackage(type, unit)) {
                     that.addError("package private type is not visible: " + name);
@@ -4058,7 +4058,7 @@ public class ExpressionVisitor extends Visitor {
                 else if (type instanceof Functional &&
                         ((Functional) type).isOverloaded()) {  
                     //it is a Java constructor
-                    Declaration at = type.getContainer().getDirectMember(name, null, false);
+                    Declaration at = type.getContainer().getDirectMember(type.getName(), null, false);
                     if (at.isProtectedVisibility() && 
                             !declaredInPackage(type, unit)) {
                         that.addError("protected member type is not visible: " +
