@@ -272,20 +272,20 @@ public class InteropTest extends CompilerTest {
     public void testIopExtendsDefaultAccessClassWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("access/ExtendsDefaultAccessClassWithOverloading",
-                new CompilerError(21, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types)")
+                new CompilerError(21, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types ()")
         );
     }
 
-    @Ignore("https://github.com/ceylon/ceylon-compiler/issues/773")
     @Test
     public void testIopExtendsDefaultAccessClassInAnotherPkg(){
         compile("access/JavaAccessModifiers.java");
         compile("access/JavaDefaultAccessClass3.java");
         assertErrors("ExtendsDefaultAccessClassInAnotherPkg",
-                new CompilerError(21, "imported declaration is not visible: JavaDefaultAccessClass"),
-                new CompilerError(22, "imported declaration is not visible: JavaDefaultAccessClass2"),
-                new CompilerError(27, "constructor is not visible something"),
-                new CompilerError(29, "constructor is not visible something")
+                new CompilerError(21, "imported package private declaration is not visible: JavaDefaultAccessClass"),
+                new CompilerError(22, "imported package private declaration is not visible: JavaDefaultAccessClass2"),
+                new CompilerError(27, "package private type is not visible: JavaDefaultAccessClass"),
+                new CompilerError(29, "package private type is not visible: JavaDefaultAccessClass2"),
+                new CompilerError(31, "package private constructor is not visible: JavaDefaultAccessClass3")
         );
     }
 
@@ -300,20 +300,19 @@ public class InteropTest extends CompilerTest {
     public void testIopCallsDefaultAccessClassWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("access/CallsDefaultAccessClassWithOverloading",
-                new CompilerError(22, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types)")
+                new CompilerError(22, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types ()")
         );
     }
 
-    @Ignore("https://github.com/ceylon/ceylon-compiler/issues/773")
     @Test
     public void testIopCallsDefaultAccessClassInAnotherPkg(){
         compile("access/JavaAccessModifiers.java");
         compile("access/JavaDefaultAccessClass3.java");
         assertErrors("CallsDefaultAccessClassInAnotherPkg",
-                new CompilerError(21, "imported declaration is not visible: JavaDefaultAccessClass"),
-                new CompilerError(22, "imported declaration is not visible: JavaDefaultAccessClass2"),
+                new CompilerError(21, "imported package private declaration is not visible: JavaDefaultAccessClass"),
+                new CompilerError(22, "imported package private declaration is not visible: JavaDefaultAccessClass2"),
                 new CompilerError(28, "package private type is not visible: JavaDefaultAccessClass"),
-                new CompilerError(29, "package private constructor is not visible: JavaDefaultAccessClass2"),
+                new CompilerError(29, "package private type is not visible: JavaDefaultAccessClass2"),
                 new CompilerError(30, "package private constructor is not visible: JavaDefaultAccessClass3")
         );
     }
@@ -322,7 +321,7 @@ public class InteropTest extends CompilerTest {
     public void testIopCallsDefaultAccessClassInAnotherPkgWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("CallsDefaultAccessClassInAnotherPkgWithOverloading",
-                new CompilerError(26, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types)"),
+                new CompilerError(26, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types ()"),
                 new CompilerError(27, "package private constructor is not visible: JavaDefaultAccessClass4"),
                 new CompilerError(28, "protected constructor is not visible: JavaDefaultAccessClass4")
         );
