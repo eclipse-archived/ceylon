@@ -2408,12 +2408,12 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             covariance, which is non-denoteable in Ceylon. In such cases, don't allow
             references to members of the intersection type.</para></comment>
             
-            <para>For every class or interface <literal>X</literal>, and for every declared
+            <para>For any class or interface <literal>X</literal>, and for every declared
             or inherited member of <literal>X</literal> that is not refined by some other
             declared or inherited member of <literal>X</literal>, and for every other member 
-            declared or inherited member by <literal>X</literal> that directly or indirectly 
-            refines a declaration that the first member itself directly or indirectly refines, 
-            the principal instantiation for <literal>X</literal> of the type that declares the 
+            declared or inherited by <literal>X</literal> that directly or indirectly refines 
+            a declaration that the first member itself directly or indirectly refines, the 
+            principal instantiation for <literal>X</literal> of the type that declares the 
             first member must be a subtype of the principal instantiation for <literal>X</literal> 
             of the type that declares the second member.</para>
             
