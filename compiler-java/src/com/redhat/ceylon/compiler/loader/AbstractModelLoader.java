@@ -42,6 +42,7 @@ import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.loader.mirror.AccessibleMirror;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotatedMirror;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
@@ -470,7 +471,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
         // set all the containers
         for(Declaration d : decls){
-            d.setShared(classMirror.isPublic());
         
             // add it to its Unit
             d.setUnit(unit);
@@ -577,13 +577,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
         checkBinaryCompatibility(classMirror);
         
+        boolean isCeylon = classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null;
+        
         // make it
         switch(type){
         case ATTRIBUTE:
             decl = makeToplevelAttribute(classMirror);
+            setDeclarationVisibility(decl, classMirror, true);
             break;
         case METHOD:
             decl = makeToplevelMethod(classMirror);
+            setDeclarationVisibility(decl, classMirror, true);
             break;
         case OBJECT:
             // we first make a class
@@ -596,37 +600,38 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             decls.add(objectDecl);
             // which one did we want?
             decl = declarationType == DeclarationType.TYPE ? objectClassDecl : objectDecl;
+            setDeclarationVisibility(objectClassDecl, classMirror, true);
+            setDeclarationVisibility(objectDecl, classMirror, true);
             break;
         case CLASS:
             if(classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION) != null){
                 decl = makeClassAlias(classMirror);
+                setDeclarationVisibility(decl, classMirror, true);
             }else if(classMirror.getAnnotation(CEYLON_TYPE_ALIAS_ANNOTATION) != null){
                 decl = makeTypeAlias(classMirror);
+                setDeclarationVisibility(decl, classMirror, true);
             }else{
                 List<MethodMirror> constructors = getClassConstructors(classMirror);
                 if (!constructors.isEmpty()) {
                     if (constructors.size() > 1) {
-                        // If the class has multiple constructors we make a copy of the class
-                        // for each one (each with it's own single constructor) and make them
-                        // a subclass of the original
-                        Class supercls = makeLazyClass(classMirror, null, null, false);
-                        supercls.setAbstraction(true);
-                        List<Declaration> overloads = new ArrayList<Declaration>(constructors.size());
-                        // all filtering is done in getClassConstructors
-                        for (MethodMirror constructor : constructors) {
-                            LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor, false);
-                            subdecl.setOverloaded(true);
-                            overloads.add(subdecl);
-                            decls.add(subdecl);
-                        }
-                        supercls.setOverloads(overloads);
-                        decl = supercls;
+                        decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
                     } else {
+                        // single constructor
                         MethodMirror constructor = constructors.get(0);
-                        decl = makeLazyClass(classMirror, null, constructor, false);
+                        // if the class and constructor have different visibility, we pretend there's an overload of one
+                        // if it's a ceylon class we don't care that they don't match sometimes, like for inner classes
+                        // where the constructor is protected because we want to use an accessor, in this case the class
+                        // visibility is to be used
+                        if(isCeylon || getJavaVisibility(classMirror) == getJavaVisibility(constructor)){
+                            decl = makeLazyClass(classMirror, null, constructor, false);
+                            setDeclarationVisibility(decl, classMirror, isCeylon);
+                        }else{
+                            decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
+                        }
                     }
                 } else {
                     decl = makeLazyClass(classMirror, null, null, false);
+                    setDeclarationVisibility(decl, classMirror, isCeylon);
                 }
             }
             break;
@@ -636,6 +641,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }else{
                 decl = makeLazyInterface(classMirror);
             }
+            setDeclarationVisibility(decl, classMirror, isCeylon);
             break;
         }
 
@@ -647,6 +653,52 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         
         return decl;
+    }
+
+    private Declaration makeOverloadedConstructor(List<MethodMirror> constructors, ClassMirror classMirror, List<Declaration> decls, boolean isCeylon) {
+        // If the class has multiple constructors we make a copy of the class
+        // for each one (each with it's own single constructor) and make them
+        // a subclass of the original
+        Class supercls = makeLazyClass(classMirror, null, null, false);
+        // the abstraction class gets the class modifiers
+        setDeclarationVisibility(supercls, classMirror, isCeylon);
+        supercls.setAbstraction(true);
+        List<Declaration> overloads = new ArrayList<Declaration>(constructors.size());
+        // all filtering is done in getClassConstructors
+        for (MethodMirror constructor : constructors) {
+            LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor, false);
+            // the subclasses class get the constructor modifiers
+            setDeclarationVisibility(subdecl, constructor, isCeylon);
+            subdecl.setOverloaded(true);
+            overloads.add(subdecl);
+            decls.add(subdecl);
+        }
+        supercls.setOverloads(overloads);
+        return supercls;
+    }
+
+    private void setDeclarationVisibility(Declaration decl, AccessibleMirror mirror, boolean isCeylon) {
+        if(isCeylon){
+            decl.setShared(mirror.isPublic());
+        }else{
+            decl.setShared(mirror.isPublic() || mirror.isDefaultAccess() || mirror.isProtected());
+            decl.setPackageVisibility(mirror.isDefaultAccess());
+            decl.setProtectedVisibility(mirror.isProtected());
+        }
+    }
+
+    private enum JavaVisibility {
+        PRIVATE, PACKAGE, PROTECTED, PUBLIC;
+    }
+    
+    private JavaVisibility getJavaVisibility(AccessibleMirror mirror) {
+        if(mirror.isPublic())
+            return JavaVisibility.PUBLIC;
+        if(mirror.isProtected())
+            return JavaVisibility.PROTECTED;
+        if(mirror.isDefaultAccess())
+            return JavaVisibility.PACKAGE;
+        return JavaVisibility.PRIVATE;
     }
 
     private Declaration makeClassAlias(ClassMirror classMirror) {
