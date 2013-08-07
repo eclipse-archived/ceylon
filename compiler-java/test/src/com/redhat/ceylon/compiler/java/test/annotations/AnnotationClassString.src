@@ -335,7 +335,7 @@ final class annotationClassStringStatic_ {
     
     private annotationClassStringStatic_() {
     }
-    static final .java.lang.String s = "bar";
+    static final .java.lang.String arg$s = "bar";
     
     @.ceylon.language.Annotation$annotation
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString annotationClassStringStatic() {
@@ -393,7 +393,7 @@ final class annotationClassStringDefaulted_ {
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotations({
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation(s = "baz"),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation(s = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassStringStatic_.s),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation(s = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassStringStatic_.arg$s),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation(s = "yes"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation(s = "yes")})
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted$annotation})

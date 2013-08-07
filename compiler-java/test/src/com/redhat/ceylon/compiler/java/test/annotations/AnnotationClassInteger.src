@@ -131,8 +131,8 @@ final class annotationClassIntegerStatic_ {
     
     private annotationClassIntegerStatic_() {
     }
-    static final long i = 40L;
-    static final long j = 41L;
+    static final long arg$i = 40L;
+    static final long arg$j = 41L;
     
     @.ceylon.language.Annotation$annotation
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger annotationClassIntegerStatic() {
@@ -160,8 +160,8 @@ final class annotationClassIntegerStatic_ {
                 i = 30L,
                 j = 31L),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation(
-                i = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassIntegerStatic_.i,
-                j = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassIntegerStatic_.j)})
+                i = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassIntegerStatic_.arg$i,
+                j = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassIntegerStatic_.arg$j)})
 class AnnotationClassInteger_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnotationClassInteger_callsite() {

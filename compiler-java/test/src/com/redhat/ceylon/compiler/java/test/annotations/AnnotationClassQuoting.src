@@ -118,10 +118,10 @@ final class annotationClassQuoting_ {
     
     private annotationClassQuoting_() {
     }
-    static final .java.lang.String string = "";
-    static final .java.lang.String toString = "";
-    static final int hash = (int)-1L;
-    static final long hashCode = 0L;
+    static final .java.lang.String arg$string = "";
+    static final .java.lang.String arg$toString = "";
+    static final int arg$hash = (int)-1L;
+    static final long arg$hashCode = 0L;
     
     @.ceylon.language.Annotation$annotation
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassQuoting annotationClassQuoting() {
@@ -152,10 +152,10 @@ final class annotationClassQuoting2_ {
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassQuoting$annotations({
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassQuoting$annotation(
-                string = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassQuoting_.string,
-                $toString = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassQuoting_.toString,
-                hash = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassQuoting_.hash,
-                $hashCode = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassQuoting_.hashCode),
+                string = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassQuoting_.arg$string,
+                $toString = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassQuoting_.arg$toString,
+                hash = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassQuoting_.arg$hash,
+                $hashCode = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassQuoting_.arg$hashCode),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassQuoting$annotation(
                 string = "",
                 $toString = "",
