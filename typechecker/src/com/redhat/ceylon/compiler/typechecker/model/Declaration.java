@@ -159,11 +159,12 @@ public abstract class Declaration
      * containing scope.
      */
     public boolean isVisible(Scope scope) {
-        if (getVisibleScope()==null) {
+        Scope vs = getVisibleScope();
+        if (vs==null) {
             return true;
         }
         else {
-            return contains(getVisibleScope(), scope);
+            return contains(vs, scope);
         }
         /*
         * Note that this implementation is not quite
