@@ -3593,7 +3593,9 @@ public class ExpressionVisitor extends Visitor {
     private void checkOverloadedReference(Tree.MemberOrTypeExpression that) {
         if (isAbstraction(that.getDeclaration())) {
             that.addError("ambiguous reference to overloaded method or class: " +
-                    that.getDeclaration().getName(unit));
+                    "there must be exactly one overloaded declaration of " + 
+                    that.getDeclaration().getName(unit) + 
+                    " that accepts the given arguments");
         }
     }
     
