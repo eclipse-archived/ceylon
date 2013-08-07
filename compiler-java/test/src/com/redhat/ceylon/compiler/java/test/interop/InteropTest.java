@@ -134,7 +134,6 @@ public class InteropTest extends CompilerTest {
         compareWithJavaSource("Enums");
     }
 
-    @Ignore("WIP")
     @Test
     public void testIopNesting(){
         compile("JavaNesting.java");
@@ -269,16 +268,15 @@ public class InteropTest extends CompilerTest {
         compareWithJavaSource("access/ExtendsDefaultAccessClass");
     }
 
-    @Ignore("WIP")
     @Test
     public void testIopExtendsDefaultAccessClassWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("access/ExtendsDefaultAccessClassWithOverloading",
-                new CompilerError(21, "ambiguous reference to overloaded method or class: JavaDefaultAccessClass4")
+                new CompilerError(21, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types)")
         );
     }
 
-    @Ignore("WIP")
+    @Ignore("https://github.com/ceylon/ceylon-compiler/issues/773")
     @Test
     public void testIopExtendsDefaultAccessClassInAnotherPkg(){
         compile("access/JavaAccessModifiers.java");
@@ -286,9 +284,8 @@ public class InteropTest extends CompilerTest {
         assertErrors("ExtendsDefaultAccessClassInAnotherPkg",
                 new CompilerError(21, "imported declaration is not visible: JavaDefaultAccessClass"),
                 new CompilerError(22, "imported declaration is not visible: JavaDefaultAccessClass2"),
-                new CompilerError(23, "imported declaration is not visible: JavaDefaultAccessClass3"),
-                new CompilerError(27, "com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass is not public in com.redhat.ceylon.compiler.java.test.interop.access; cannot be accessed from outside package"),
-                new CompilerError(29, "com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass2 is not public in com.redhat.ceylon.compiler.java.test.interop.access; cannot be accessed from outside package")
+                new CompilerError(27, "constructor is not visible something"),
+                new CompilerError(29, "constructor is not visible something")
         );
     }
 
@@ -307,7 +304,7 @@ public class InteropTest extends CompilerTest {
         );
     }
 
-    @Ignore("WIP")
+    @Ignore("https://github.com/ceylon/ceylon-compiler/issues/773")
     @Test
     public void testIopCallsDefaultAccessClassInAnotherPkg(){
         compile("access/JavaAccessModifiers.java");
@@ -316,17 +313,18 @@ public class InteropTest extends CompilerTest {
                 new CompilerError(21, "imported declaration is not visible: JavaDefaultAccessClass"),
                 new CompilerError(22, "imported declaration is not visible: JavaDefaultAccessClass2"),
                 new CompilerError(28, "package private type is not visible: JavaDefaultAccessClass"),
-                new CompilerError(29, "package private type is not visible: JavaDefaultAccessClass2"),
-                new CompilerError(30, "package private type is not visible: JavaDefaultAccessClass3")
+                new CompilerError(29, "package private constructor is not visible: JavaDefaultAccessClass2"),
+                new CompilerError(30, "package private constructor is not visible: JavaDefaultAccessClass3")
         );
     }
 
-    @Ignore("WIP")
     @Test
     public void testIopCallsDefaultAccessClassInAnotherPkgWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("CallsDefaultAccessClassInAnotherPkgWithOverloading",
-                new CompilerError(22, "ambiguous reference to overloaded method or class: JavaDefaultAccessClass4")
+                new CompilerError(26, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types)"),
+                new CompilerError(27, "package private constructor is not visible: JavaDefaultAccessClass4"),
+                new CompilerError(28, "protected constructor is not visible: JavaDefaultAccessClass4")
         );
     }
 
@@ -346,20 +344,19 @@ public class InteropTest extends CompilerTest {
                 new CompilerError(27, "refined declaration is not visible: defaultAccessMethod in JavaAccessModifiers"));
     }
 
-    @Ignore("WIP")
     @Test
     public void testIopNamedInvocations(){
         assertErrors("NamedInvocations",
                 new CompilerError(30, "could not determine type of function or value reference: createTempFile"),
                 new CompilerError(30, "overloaded declarations may not be called using named arguments: createTempFile"),
-                new CompilerError(30, "ambiguous reference to overloaded method or class: createTempFile"),
+                new CompilerError(30, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of createTempFile that accepts the given argument types"),
                 new CompilerError(30, "named invocations of Java methods not supported"),
                 new CompilerError(32, "named invocations of Java methods not supported"),
                 new CompilerError(35, "could not determine type of method or attribute reference: createTempFile of File"),
                 new CompilerError(35, "named invocations of Java methods not supported"),
                 new CompilerError(35, "could not determine type of method or attribute reference: createTempFile of File"),
                 new CompilerError(35, "overloaded declarations may not be called using named arguments: createTempFile"),
-                new CompilerError(35, "ambiguous reference to overloaded method or class: createTempFile"),
+                new CompilerError(35, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of createTempFile that accepts the given argument types"),
                 new CompilerError(37, "named invocations of Java methods not supported")
         );
     }

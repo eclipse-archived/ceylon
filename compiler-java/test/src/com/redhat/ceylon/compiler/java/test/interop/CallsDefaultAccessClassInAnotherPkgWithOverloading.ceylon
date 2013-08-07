@@ -23,8 +23,8 @@ import com.redhat.ceylon.compiler.java.test.interop.access{
 
 @noanno
 void callsDefaultAccessClassInAnotherPkgWithOverloading(JavaDefaultAccessClass4 useIt){
-    //JavaDefaultAccessClass4();
-    //JavaDefaultAccessClass4(1);
+    JavaDefaultAccessClass4();
+    JavaDefaultAccessClass4(1);
     JavaDefaultAccessClass4(1,2);
     JavaDefaultAccessClass4(1,2,3);
 }

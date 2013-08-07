@@ -29,8 +29,3 @@ class ExtendsDefaultAccessClassInAnotherPkg() extends JavaDefaultAccessClass() {
 class ExtendsDefaultAccessClassInAnotherPkg2() extends JavaDefaultAccessClass2() {}
 @noanno
 class ExtendsDefaultAccessClassInAnotherPkg3() extends JavaDefaultAccessClass3() {}
-
-void foo(){
-    JavaDefaultAccessClass();
-    JavaDefaultAccessClass2();
-}

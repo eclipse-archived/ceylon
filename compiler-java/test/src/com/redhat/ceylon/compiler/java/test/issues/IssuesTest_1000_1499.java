@@ -137,7 +137,7 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     @Test
     public void testBug1083() {
         assertErrors("bug10xx/Bug1083",
-                new CompilerError(24, "ambiguous reference to overloaded method or class: BigInteger"));
+                new CompilerError(24, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of BigInteger that accepts the given argument types)"));
     }
     
     @Test
@@ -297,7 +297,7 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     public void testBug1180() {
         compile("bug11xx/Bug1180_1.ceylon");
         assertErrors("bug11xx/Bug1180_2",
-                new CompilerError(25, "ambiguous reference to overloaded method or class: ArrayList")
+                new CompilerError(25, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of ArrayList that accepts the given argument types ({Bug1180Person*})")
         );
     }
     
