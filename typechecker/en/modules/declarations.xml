@@ -681,24 +681,24 @@ TypeConstraints?
         <!--section id="interfacemembervisibility">
             <title>Interface member visibility</title>
             
-        <para>An interface body is not an executable block of code, so the normal
-        visibility rules that apply to declarations inside blocks do not apply.
-        Ordinarily, a declaration that occurs in a block of code is a block local
-        declaration&mdash;it is visible only to statements and declarations that 
-        occur within the lexical scope of the declaration. This rule is relaxed for 
-        declarations that occur directly inside the body of an interface:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>any declaration annotated <literal>shared</literal> is 
-                visible wherever the interface itself is visible, and</para>
-            </listitem>
-            <listitem>
-                <para>any declaration not declared using the <literal>value</literal> 
-                or <literal>function</literal> keywords is visible to all other 
-                declarations in the the body of the interface.</para>
-            </listitem>
-        </itemizedlist>
+            <para>An interface body is not an executable block of code, so the normal
+            visibility rules that apply to declarations inside blocks do not apply.
+            Ordinarily, a declaration that occurs in a block of code is a block local
+            declaration&mdash;it is visible only to statements and declarations that 
+            occur within the lexical scope of the declaration. This rule is relaxed for 
+            declarations that occur directly inside the body of an interface:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>any declaration annotated <literal>shared</literal> is 
+                    visible wherever the interface itself is visible, and</para>
+                </listitem>
+                <listitem>
+                    <para>any declaration not declared using the <literal>value</literal> 
+                    or <literal>function</literal> keywords is visible to all other 
+                    declarations in the the body of the interface.</para>
+                </listitem>
+            </itemizedlist>
         
         </section-->
         
@@ -1136,86 +1136,86 @@ TypeConstraints?
         <section id="classinheritance">
              <title>Class inheritance</title>
         
-        <para>A class may extend another class.</para>
-        
-        <programlisting>shared class Customer(Name name, Organization? org = null) 
+            <para>A class may extend another class.</para>
+            
+            <programlisting>shared class Customer(Name name, Organization? org = null) 
         extends Person(name, org) { 
     ... 
 }</programlisting>
-
-        <para>The class is a subtype of the type specified by the <literal>extends</literal> 
-        clause. If a class does not explicitly specify a superclass using <literal>extends</literal>,
-        its superclass is the class <literal>Basic</literal> defined in 
-        <literal>ceylon.language</literal>.
-        </para>
-        
-        <para>A class may satisfy any number of interfaces.</para>
-
-        <programlisting>class Token() 
+    
+            <para>The class is a subtype of the type specified by the <literal>extends</literal> 
+            clause. If a class does not explicitly specify a superclass using <literal>extends</literal>,
+            its superclass is the class <literal>Basic</literal> defined in 
+            <literal>ceylon.language</literal>.
+            </para>
+            
+            <para>A class may satisfy any number of interfaces.</para>
+    
+            <programlisting>class Token() 
         extends Datetime()
         satisfies Comparable&lt;Token&gt; &amp; Identifier {
     ... 
 }</programlisting>
-        
-        <para>The class is a subtype of every type listed in the <literal>satisfies</literal> 
-        clause. A class may not satisfy the same interface twice (not even with distinct 
-        type arguments).</para>
-        
-        <para>A class inherits all members (methods, attributes, and member types) of every 
-        supertype. That is, every member of every supertype of the class is also a member 
-        of the class, unless the member is refined by another supertype or by the class 
-        itself.</para>
-        
-        <para>Unless the class is declared <literal>abstract</literal> or 
-        <literal>formal</literal>, the class:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>must declare or inherit a member that refines each 
-                <literal>formal</literal> member of every interface it satisfies directly 
-                or indirectly, and</para>
-            </listitem>
-             <listitem>
-                <para>must declare or inherit a member that refines each 
-                <literal>formal</literal> member of its superclass.</para>
-            </listitem>
+            
+            <para>The class is a subtype of every type listed in the <literal>satisfies</literal> 
+            clause. A class may not satisfy the same interface twice (not even with distinct 
+            type arguments).</para>
+            
+            <para>A class inherits all members (methods, attributes, and member types) of every 
+            supertype. That is, every member of every supertype of the class is also a member 
+            of the class, unless the member is refined by another supertype or by the class 
+            itself.</para>
+            
+            <para>Unless the class is declared <literal>abstract</literal> or 
+            <literal>formal</literal>, the class:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>must declare or inherit a member that refines each 
+                    <literal>formal</literal> member of every interface it satisfies directly 
+                    or indirectly, and</para>
+                </listitem>
+                 <listitem>
+                    <para>must declare or inherit a member that refines each 
+                    <literal>formal</literal> member of its superclass.</para>
+                </listitem>
+                <!--
+                <listitem>
+                    <para>must directly or indirectly extend every class satisfied by every 
+                    interface it satisfies directly or indirectly.</para>
+                </listitem>
+                -->
+            </itemizedlist>
+            
+            <para>The schema of the inherited members is formed by substituting type arguments
+            specified in the <literal>extends</literal> or <literal>satisfies</literal> clause.</para>
+            
             <!--
-            <listitem>
-                <para>must directly or indirectly extend every class satisfied by every 
-                interface it satisfies directly or indirectly.</para>
-            </listitem>
+            <para>A class may not inherit two non-<literal>formal</literal> members of 
+            different supertypes that both refine the same member of a third supertype.
+            If two supertypes both declare non-<literal>formal</literal> members that
+            refine the same member of a third supertype, the class must also refine
+            the member.</para>
             -->
-        </itemizedlist>
-        
-        <para>The schema of the inherited members is formed by substituting type arguments
-        specified in the <literal>extends</literal> or <literal>satisfies</literal> clause.</para>
-        
-        <!--
-        <para>A class may not inherit two non-<literal>formal</literal> members of 
-        different supertypes that both refine the same member of a third supertype.
-        If two supertypes both declare non-<literal>formal</literal> members that
-        refine the same member of a third supertype, the class must also refine
-        the member.</para>
-        -->
-        
-        <para>A subclass must pass values to each superclass initialization parameter in 
-        the <literal>extends</literal> clause.</para>
-
-        <programlisting>shared class SpecialKey1()
+            
+            <para>A subclass must pass values to each superclass initialization parameter in 
+            the <literal>extends</literal> clause.</para>
+    
+            <programlisting>shared class SpecialKey1()
         extends Key( SpecialLock() ) {
     ...
 }</programlisting>
-
-        <programlisting>shared class SpecialKey2(Lock lock) 
+    
+            <programlisting>shared class SpecialKey2(Lock lock) 
         extends Key(lock) {
     ...
 }</programlisting>
-         
-         <para>A subclass of a nested class must be a member of the type that declares 
-         the nested class or of a subtype of the type that declares the nested class. 
-         A class that satisfies a nested interface must be a member of the type that 
-         declares the nested interface or of a subtype of the type that declares the 
-         nested interface.</para>
+             
+             <para>A subclass of a nested class must be a member of the type that declares 
+             the nested class or of a subtype of the type that declares the nested class. 
+             A class that satisfies a nested interface must be a member of the type that 
+             declares the nested interface or of a subtype of the type that declares the 
+             nested interface.</para>
          
         </section>
         
@@ -1436,87 +1436,87 @@ TypeConstraints?
             An <literal>object</literal> declaration does not specify parameters or
             type parameters.</para>
             
-             <synopsis>ObjectHeader: "object" MemberName ObjectInheritance</synopsis>
+            <synopsis>ObjectHeader: "object" MemberName ObjectInheritance</synopsis>
+            
+            <synopsis>ObjectInheritance: ExtendedType? SatisfiedTypes?</synopsis>
+            
+            <para>An <literal>object</literal> declaration specifies the name of the
+            attribute and the schema, supertypes, and implementation of the class. It
+            does not specify a type name. Instead, the type has a name assigned 
+            internally by the compiler that is not available at compilation time.</para>
+            
+            <para>An <literal>object</literal> class:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>is implicitly <literal>final</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>may not be extended by another class,</para>
+                </listitem>
+                <listitem>
+                    <para>may not be <literal>abstract</literal> or <literal>formal</literal>, 
+                    and</para>
+                </listitem>
+                <listitem>
+                    <para>may not declare <literal>default</literal> members.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>If the <literal>object</literal> is annotated <literal>shared</literal>, 
+            the class is <literal>shared</literal>.</para>
+            
+            <para>This class never appears in types inferred by local declaration type 
+            inference or generic type argument inference. Instead, occurrences of the class 
+            are replaced with the intersection of the extended type with all satisfied
+            types.</para>
+            
+            <para>An <literal>object</literal> attribute:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>is non-<literal>variable</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>may not be refined or declared <literal>default</literal>.</para>
+                </listitem>
+            </itemizedlist>
              
-             <synopsis>ObjectInheritance: ExtendedType? SatisfiedTypes?</synopsis>
-             
-             <para>An <literal>object</literal> declaration specifies the name of the
-             attribute and the schema, supertypes, and implementation of the class. It
-             does not specify a type name. Instead, the type has a name assigned 
-             internally by the compiler that is not available at compilation time.</para>
-             
-             <para>An <literal>object</literal> class:</para>
-             
-             <itemizedlist>
-                 <listitem>
-                     <para>is implicitly <literal>final</literal>,</para>
-                 </listitem>
-                 <listitem>
-                     <para>may not be extended by another class,</para>
-                 </listitem>
-                 <listitem>
-                     <para>may not be <literal>abstract</literal> or <literal>formal</literal>, 
-                     and</para>
-                 </listitem>
-                 <listitem>
-                     <para>may not declare <literal>default</literal> members.</para>
-                 </listitem>
-             </itemizedlist>
-             
-             <para>If the <literal>object</literal> is annotated <literal>shared</literal>, 
-             the class is <literal>shared</literal>.</para>
-             
-             <para>This class never appears in types inferred by local declaration type 
-             inference or generic type argument inference. Instead, occurrences of the class 
-             are replaced with the intersection of the extended type with all satisfied
-             types.</para>
-             
-             <para>An <literal>object</literal> attribute:</para>
-             
-             <itemizedlist>
-                 <listitem>
-                     <para>is non-<literal>variable</literal>, and</para>
-                 </listitem>
-                 <listitem>
-                     <para>may not be refined or declared <literal>default</literal>.</para>
-                 </listitem>
-             </itemizedlist>
-             
-             <para>If the <literal>object</literal> is annotated <literal>shared</literal>, 
-             the attribute is <literal>shared</literal>. If the <literal>object</literal>
-             is annotated <literal>actual</literal>, it refines an attribute of a 
-             supertype.</para>
-             
-             <para>The following declaration:</para>
-             
-             <programlisting>shared object red extends Color('FF0000') {
+            <para>If the <literal>object</literal> is annotated <literal>shared</literal>, 
+            the attribute is <literal>shared</literal>. If the <literal>object</literal>
+            is annotated <literal>actual</literal>, it refines an attribute of a 
+            supertype.</para>
+            
+            <para>The following declaration:</para>
+            
+            <programlisting>shared object red extends Color('FF0000') {
      string => "Red";
 }</programlisting>
-    
-             <para>Is exactly equivalent to:</para>
-             
-             <programlisting>final class Color_red extends Color('FF0000') {
+   
+            <para>Is exactly equivalent to:</para>
+            
+            <programlisting>final class Color_red extends Color('FF0000') {
      string => "Red";
 }
 
 shared Color_red red = Color_red();</programlisting>
-             
-             <para>Where <literal>Color_red</literal> is a name generated by the compiler.
-             The algorithm for generating this name is not specified here.</para>
-             
-             <para>Note that a member of an anonymous class that is not annotated 
-             <literal>actual</literal> may only be accessed from within the body of 
-             the anonymous class or by directly invoking the <literal>object</literal> 
-             attribute.</para>
-             
-             <programlisting>shared object sql {
+            
+            <para>Where <literal>Color_red</literal> is a name generated by the compiler.
+            The algorithm for generating this name is not specified here.</para>
+            
+            <para>Note that a member of an anonymous class that is not annotated 
+            <literal>actual</literal> may only be accessed from within the body of 
+            the anonymous class or by directly invoking the <literal>object</literal> 
+            attribute.</para>
+            
+            <programlisting>shared object sql {
     shared String escape(String string) { ... }
 }
 
 ...
 
 String escapedSearchString = sql.escape(searchString);</programlisting>
-    
+            
             <!--comment><para>TODO: I'm increasingly inclined to think that this is backwards:
             a class should be an <literal>object</literal> with parameters. We could rewrite
             this stuff so that a <literal>class</literal> is equivalent to an interface with
@@ -1559,7 +1559,7 @@ String escapedSearchString = sql.escape(searchString);</programlisting>
         
 shared object true extends Boolean() {}
 shared object false extends Boolean() {}</programlisting>
-    
+            
             <programlisting><![CDATA[shared abstract class Node<Element>(String name) 
         of Branch<Element> | Leaf<Element> { ... }
         
@@ -1568,12 +1568,12 @@ shared class Leaf<Element>(String name, Element element)
         
 shared class Branch<Element>(String name, Node<Element> left, Node<Element> right) 
         extends Node<Element>(name) { ... }]]></programlisting>
-                    
+            
             <para>The cases may be classes or toplevel anonymous classes. A case may 
             be an <literal>abstract</literal> class. Each case must be a subclass of 
             the class. A class may not be a case of itself. A class declaration may 
             not list the same case twice.</para>
-                            
+                        
             <para>If a class has an <literal>of</literal> clause, then every class 
             that directly extends the class must be of one of the enumerated cases of 
             the class.</para>
@@ -1586,7 +1586,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             </comment>
             
         </section>
-            
+        
         <section id="classaliases">
             <title>Class aliases</title>
             
@@ -1754,37 +1754,37 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <section id="functionswithblocks">
             <title>Functions with blocks</title>
             
-        <para>A function implementation may be a block.</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>If the function is declared <literal>void</literal>, the block 
-                may not contain a <literal>return</literal> directive that specifies 
-                an expression.</para>
-            </listitem>
-            <listitem>
-                <para>Otherwise, every conditional execution path of the block must 
-                end in a <literal>return</literal> directive that specifies an 
-                expression assignable to the return type of the function, or in a 
-                <literal>throw</literal> directive.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <programlisting>shared Integer add(Integer x, Integer y) {
+            <para>A function implementation may be a block.</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>If the function is declared <literal>void</literal>, the block 
+                    may not contain a <literal>return</literal> directive that specifies 
+                    an expression.</para>
+                </listitem>
+                <listitem>
+                    <para>Otherwise, every conditional execution path of the block must 
+                    end in a <literal>return</literal> directive that specifies an 
+                    expression assignable to the return type of the function, or in a 
+                    <literal>throw</literal> directive.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <programlisting>shared Integer add(Integer x, Integer y) {
     return x + y;
 }</programlisting>
-    
-        <programlisting>shared void printAll(Object* objects) {
+          
+            <programlisting>shared void printAll(Object* objects) {
     for (obj in objects) {
         print(obj);
     }
 }</programlisting>
         
-        <programlisting>shared void addEntry(Key->Item entry) {
+            <programlisting>shared void addEntry(Key->Item entry) {
     map.put(entry.key,entry.item);
 }</programlisting>
 
-        <programlisting><![CDATA[shared Set<Element> singleton<Element>(Element element) 
+            <programlisting><![CDATA[shared Set<Element> singleton<Element>(Element element) 
         given Element satisfies Comparable<Element> {
     return TreeSet { element };
 }]]></programlisting>
@@ -1794,55 +1794,55 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <section id="functionswithspecifiers">
             <title>Functions with specifiers</title>
             
-        <para>Alternatively, a function implementation may be a lazy specifier, that
-        is, an expression specified using <literal>=&gt;</literal>. The type of the 
-        specified expression must be assignable to the return type of the function.
-        In the case of a function declared <literal>void</literal>, the expression
-        must be a legal statement.</para>
-        
-        <programlisting>shared Integer add(Integer x, Integer y) => x + y;</programlisting>
-        
-        <programlisting>shared void addEntry(Key->Item entry) => map.put(entry.key,entry.item);</programlisting>
-
-        <programlisting><![CDATA[shared Set<Element> singleton<Element>(Element element) 
+            <para>Alternatively, a function implementation may be a lazy specifier, that
+            is, an expression specified using <literal>=&gt;</literal>. The type of the 
+            specified expression must be assignable to the return type of the function.
+            In the case of a function declared <literal>void</literal>, the expression
+            must be a legal statement.</para>
+            
+            <programlisting>shared Integer add(Integer x, Integer y) => x + y;</programlisting>
+            
+            <programlisting>shared void addEntry(Key->Item entry) => map.put(entry.key,entry.item);</programlisting>
+    
+            <programlisting><![CDATA[shared Set<Element> singleton<Element>(Element element) 
             given Element satisfies Comparable<Element>
         => TreeSet { element };]]></programlisting>
-        
+         
         </section>
         
         <section id="returntypeinference">
             <title>Function return type inference</title>
             
-        <para>A non-<literal>void</literal> block local function with a block or lazy 
-        specifier may be declared using the keyword <literal>function</literal> in place 
-        of the explicit return type declaration. Then the function return type is 
-        inferred:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>if the function implementation is a lazy specifier, then the 
-                return type of the function is the type of the specified expression,</para>
-            </listitem>
-            <listitem>
-                <para>if the function implementation is a block, and the function contains 
-                no <literal>return</literal> directive, then the return type of the method 
-                is <literal>Bottom</literal> (this is the case where the method always 
-                terminates in a <literal>throw</literal> directive), or,</para>
-            </listitem>
-            <listitem>
-                <para>otherwise, the return type of the function is the union of all 
-                returned expression types of <literal>return</literal> directives
-                of the method body.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>This function has inferred return type <literal>Integer</literal>.</para>
-        
-        <programlisting>function add(Integer x, Integer y) => x + y;</programlisting>
-        
-        <para>This function has inferred return type <literal>Float|Integer</literal>.</para>
-        
-        <programlisting>function unit(Boolean floating) {
+            <para>A non-<literal>void</literal> block local function with a block or lazy 
+            specifier may be declared using the keyword <literal>function</literal> in place 
+            of the explicit return type declaration. Then the function return type is 
+            inferred:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if the function implementation is a lazy specifier, then the 
+                    return type of the function is the type of the specified expression,</para>
+                </listitem>
+                <listitem>
+                    <para>if the function implementation is a block, and the function contains 
+                    no <literal>return</literal> directive, then the return type of the method 
+                    is <literal>Bottom</literal> (this is the case where the method always 
+                    terminates in a <literal>throw</literal> directive), or,</para>
+                </listitem>
+                <listitem>
+                    <para>otherwise, the return type of the function is the union of all 
+                    returned expression types of <literal>return</literal> directives
+                    of the method body.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>This function has inferred return type <literal>Integer</literal>.</para>
+            
+            <programlisting>function add(Integer x, Integer y) => x + y;</programlisting>
+            
+            <para>This function has inferred return type <literal>Float|Integer</literal>.</para>
+            
+            <programlisting>function unit(Boolean floating) {
     if (floating) {
         return 1.0;
     }
@@ -1850,10 +1850,10 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         return 1;
     }
 }</programlisting>
-        
-        <para>This function has inferred return type <literal>Bottom</literal>.</para>
-        
-        <programlisting>function die() {
+            
+            <para>This function has inferred return type <literal>Bottom</literal>.</para>
+            
+            <programlisting>function die() {
     throw;
 }</programlisting>
         
