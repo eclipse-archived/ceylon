@@ -32,3 +32,7 @@ public class JavaAccessModifiers {
 class JavaDefaultAccessClass {
     
 }
+
+class JavaDefaultAccessClass2 {
+    public JavaDefaultAccessClass2(){}
+}

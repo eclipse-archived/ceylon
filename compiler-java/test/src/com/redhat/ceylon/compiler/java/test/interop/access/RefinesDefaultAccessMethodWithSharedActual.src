@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.java.test.interop.access;
+
+class RefinesDefaultAccessMethod extends .com.redhat.ceylon.compiler.java.test.interop.access.JavaAccessModifiers implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    RefinesDefaultAccessMethod() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final void defaultAccessMethod() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.interop.access.RefinesDefaultAccessMethod();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.interop.access.RefinesDefaultAccessMethod.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.access.RefinesDefaultAccessMethod.class);
+}

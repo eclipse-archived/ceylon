@@ -17,20 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import com.redhat.ceylon.compiler.java.test.interop.access{
-    JavaDefaultAccessClass,
-    JavaDefaultAccessClass2,
-    JavaDefaultAccessClass3
-}
+package com.redhat.ceylon.compiler.java.test.interop.access;
 
-@noanno
-class ExtendsDefaultAccessClassInAnotherPkg() extends JavaDefaultAccessClass() {}
-@noanno
-class ExtendsDefaultAccessClassInAnotherPkg2() extends JavaDefaultAccessClass2() {}
-@noanno
-class ExtendsDefaultAccessClassInAnotherPkg3() extends JavaDefaultAccessClass3() {}
-
-void foo(){
-    JavaDefaultAccessClass();
-    JavaDefaultAccessClass2();
+public class JavaDefaultAccessClass4 {
+    private JavaDefaultAccessClass4(){}
+    JavaDefaultAccessClass4(long a){}
+    protected JavaDefaultAccessClass4(long a, long b){}
+    public JavaDefaultAccessClass4(long a, long b, long c){}
 }

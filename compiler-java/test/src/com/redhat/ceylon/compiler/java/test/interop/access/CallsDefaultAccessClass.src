@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.interop.access;
+
+final class callsDefaultAccessClass_ {
+    
+    private callsDefaultAccessClass_() {
+    }
+    
+    static void callsDefaultAccessClass() {
+        new .com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass();
+        new .com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass2();
+        new .com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass3();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.access.callsDefaultAccessClass_.callsDefaultAccessClass();
+    }
+}

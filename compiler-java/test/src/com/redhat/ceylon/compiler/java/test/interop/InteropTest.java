@@ -27,6 +27,11 @@ import com.redhat.ceylon.compiler.java.test.CompilerTest;
 
 public class InteropTest extends CompilerTest {
 
+    @Override
+    protected ModuleWithArtifact getDestModuleWithArtifact() {
+        return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.interop", "1");
+    }
+    
     @Test
     public void testIopArrays(){
         compareWithJavaSource("Arrays");
@@ -129,6 +134,7 @@ public class InteropTest extends CompilerTest {
         compareWithJavaSource("Enums");
     }
 
+    @Ignore("WIP")
     @Test
     public void testIopNesting(){
         compile("JavaNesting.java");
@@ -215,6 +221,7 @@ public class InteropTest extends CompilerTest {
     @Test
     public void testIopCallsProtectedAccessMethod(){
         compile("access/JavaAccessModifiers.java");
+        compareWithJavaSource("access/CallsProtectedAccessMethod");
     }
     
     @Test
@@ -246,25 +253,81 @@ public class InteropTest extends CompilerTest {
     @Test
     public void testIopRefinesDefaultAccessMethodWithSharedActual(){
         compile("access/JavaAccessModifiers.java");
+        compareWithJavaSource("access/RefinesDefaultAccessMethodWithSharedActual");
     }
     
     @Test
     public void testIopCallsDefaultAccessMethod(){
         compile("access/JavaAccessModifiers.java");
+        compareWithJavaSource("access/CallsDefaultAccessMethod");
     }
     
     @Test
     public void testIopExtendsDefaultAccessClass(){
         compile("access/JavaAccessModifiers.java");
+        compile("access/JavaDefaultAccessClass3.java");
         compareWithJavaSource("access/ExtendsDefaultAccessClass");
     }
-    
+
+    @Ignore("WIP")
+    @Test
+    public void testIopExtendsDefaultAccessClassWithOverloading(){
+        compile("access/JavaDefaultAccessClass4.java");
+        assertErrors("access/ExtendsDefaultAccessClassWithOverloading",
+                new CompilerError(21, "ambiguous reference to overloaded method or class: JavaDefaultAccessClass4")
+        );
+    }
+
+    @Ignore("WIP")
     @Test
     public void testIopExtendsDefaultAccessClassInAnotherPkg(){
         compile("access/JavaAccessModifiers.java");
+        compile("access/JavaDefaultAccessClass3.java");
         assertErrors("ExtendsDefaultAccessClassInAnotherPkg",
-                new CompilerError(20, "imported declaration is not shared: JavaDefaultAccessClass"),
-                new CompilerError(23, "com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass is not public in com.redhat.ceylon.compiler.java.test.interop.access; cannot be accessed from outside package"));
+                new CompilerError(21, "imported declaration is not visible: JavaDefaultAccessClass"),
+                new CompilerError(22, "imported declaration is not visible: JavaDefaultAccessClass2"),
+                new CompilerError(23, "imported declaration is not visible: JavaDefaultAccessClass3"),
+                new CompilerError(27, "com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass is not public in com.redhat.ceylon.compiler.java.test.interop.access; cannot be accessed from outside package"),
+                new CompilerError(29, "com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass2 is not public in com.redhat.ceylon.compiler.java.test.interop.access; cannot be accessed from outside package")
+        );
+    }
+
+    @Test
+    public void testIopCallsDefaultAccessClass(){
+        compile("access/JavaAccessModifiers.java");
+        compile("access/JavaDefaultAccessClass3.java");
+        compareWithJavaSource("access/CallsDefaultAccessClass");
+    }
+
+    @Test
+    public void testIopCallsDefaultAccessClassWithOverloading(){
+        compile("access/JavaDefaultAccessClass4.java");
+        assertErrors("access/CallsDefaultAccessClassWithOverloading",
+                new CompilerError(22, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types)")
+        );
+    }
+
+    @Ignore("WIP")
+    @Test
+    public void testIopCallsDefaultAccessClassInAnotherPkg(){
+        compile("access/JavaAccessModifiers.java");
+        compile("access/JavaDefaultAccessClass3.java");
+        assertErrors("CallsDefaultAccessClassInAnotherPkg",
+                new CompilerError(21, "imported declaration is not visible: JavaDefaultAccessClass"),
+                new CompilerError(22, "imported declaration is not visible: JavaDefaultAccessClass2"),
+                new CompilerError(28, "package private type is not visible: JavaDefaultAccessClass"),
+                new CompilerError(29, "package private type is not visible: JavaDefaultAccessClass2"),
+                new CompilerError(30, "package private type is not visible: JavaDefaultAccessClass3")
+        );
+    }
+
+    @Ignore("WIP")
+    @Test
+    public void testIopCallsDefaultAccessClassInAnotherPkgWithOverloading(){
+        compile("access/JavaDefaultAccessClass4.java");
+        assertErrors("CallsDefaultAccessClassInAnotherPkgWithOverloading",
+                new CompilerError(22, "ambiguous reference to overloaded method or class: JavaDefaultAccessClass4")
+        );
     }
 
     @Test
@@ -283,6 +346,7 @@ public class InteropTest extends CompilerTest {
                 new CompilerError(27, "refined declaration is not visible: defaultAccessMethod in JavaAccessModifiers"));
     }
 
+    @Ignore("WIP")
     @Test
     public void testIopNamedInvocations(){
         assertErrors("NamedInvocations",

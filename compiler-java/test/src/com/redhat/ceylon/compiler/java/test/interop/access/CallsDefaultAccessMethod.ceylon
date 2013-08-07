@@ -20,6 +20,6 @@
 @noanno
 class CallsDefaultAccessMethod() {
     void m(JavaAccessModifiers j) {
-        j.packageAccessMethod();
+        j.defaultAccessMethod();
     }
 }

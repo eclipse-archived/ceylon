@@ -1,0 +1,22 @@
+package com.redhat.ceylon.compiler.java.test.interop.access;
+
+class CallsProtectedAccessMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    CallsProtectedAccessMethod() {
+    }
+    
+    private final void m$priv(final .com.redhat.ceylon.compiler.java.test.interop.access.JavaAccessModifiers j) {
+        j.protectedAccessMethod();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.interop.access.CallsProtectedAccessMethod();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.interop.access.CallsProtectedAccessMethod.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.access.CallsProtectedAccessMethod.class);
+}

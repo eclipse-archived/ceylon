@@ -24,13 +24,8 @@ import com.redhat.ceylon.compiler.java.test.interop.access{
 }
 
 @noanno
-class ExtendsDefaultAccessClassInAnotherPkg() extends JavaDefaultAccessClass() {}
-@noanno
-class ExtendsDefaultAccessClassInAnotherPkg2() extends JavaDefaultAccessClass2() {}
-@noanno
-class ExtendsDefaultAccessClassInAnotherPkg3() extends JavaDefaultAccessClass3() {}
-
-void foo(){
+void callsDefaultAccessClassInAnotherPkg(){
     JavaDefaultAccessClass();
     JavaDefaultAccessClass2();
+    JavaDefaultAccessClass3();
 }

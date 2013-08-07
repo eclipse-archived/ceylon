@@ -18,6 +18,8 @@
  * MA  02110-1301, USA.
  */
 @noanno
-class ExtendsDefaultAccessClass() extends JavaDefaultAccessClass() {
-
-}
+class ExtendsDefaultAccessClass() extends JavaDefaultAccessClass() {}
+@noanno
+class ExtendsDefaultAccessClass2() extends JavaDefaultAccessClass2() {}
+@noanno
+class ExtendsDefaultAccessClass3() extends JavaDefaultAccessClass3() {}
