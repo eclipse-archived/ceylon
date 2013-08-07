@@ -3889,7 +3889,7 @@ public class ExpressionVisitor extends Visitor {
             else if (type instanceof Functional &&
                     ((Functional) type).isOverloaded()) {  
                 //it is a Java constructor
-                Declaration at = type.getContainer().getDirectMember(type.getName(), null, false);
+                Declaration at = type.getContainer().getDirectMember(name, null, false);
                 if (at.isPackageVisibility() &&
                         !declaredInPackage(type, unit)) {
                     that.addError("package private type is not visible: " + name);
@@ -3971,6 +3971,21 @@ public class ExpressionVisitor extends Visitor {
                 //else report to user that we could not
                 //find a matching overloaded constructor
             }
+            Declaration type = that.getDeclaration();
+            if (type instanceof Functional &&
+                    ((Functional) type).isOverloaded()) {  
+                //it is a Java constructor
+                String name = type.getName();
+                Declaration at = type.getContainer().getDirectMember(name, null, false);
+                if (at.isPackageVisibility() &&
+                        !declaredInPackage(type, unit)) {
+                    that.addError("package private type is not visible: " + name);
+                }
+                else if (type.isPackageVisibility() && 
+                        !declaredInPackage(type, unit)) {
+                    that.addError("package private constructor is not visible: " + name);
+                }
+            }
             checkOverloadedReference(that);
         }
     }
@@ -4049,7 +4064,7 @@ public class ExpressionVisitor extends Visitor {
                 else if (type instanceof Functional &&
                         ((Functional) type).isOverloaded()) {  
                     //it is a Java constructor
-                    Declaration at = type.getContainer().getDirectMember(type.getName(), null, false);
+                    Declaration at = type.getContainer().getDirectMember(name, null, false);
                     if (at.isProtectedVisibility() && 
                             !declaredInPackage(type, unit)) {
                         that.addError("protected member type is not visible: " +
