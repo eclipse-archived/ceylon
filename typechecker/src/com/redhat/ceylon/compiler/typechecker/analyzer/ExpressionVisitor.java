@@ -3934,11 +3934,11 @@ public class ExpressionVisitor extends Visitor {
                     //patch the reference, which was already
                     //initialized to the abstraction
                     that.setDeclaration((TypeDeclaration) result);
-                    checkOverloadedReference(that);
                 }
                 //else report to user that we could not
                 //find a matching overloaded constructor
             }
+            checkOverloadedReference(that);
         }
     }
     
