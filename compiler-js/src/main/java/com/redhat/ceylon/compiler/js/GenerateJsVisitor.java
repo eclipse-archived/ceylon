@@ -6,6 +6,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,6 +17,7 @@ import org.antlr.runtime.CommonToken;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -651,7 +653,15 @@ public class GenerateJsVisitor extends Visitor
         }
         callSuperclass(that.getExtendedType(), d, that, superDecs);
         callInterfaces(that.getSatisfiedTypes(), d, that, superDecs);
-        
+
+        if (!opts.isOptimize()) {
+            //TODO fix #231 for lexical scope
+            for (Parameter p : that.getParameterList().getParameters()) {
+                if (!p.getParameterModel().isHidden()){
+                    generateAttributeForParameter(d, p.getParameterModel());
+                }
+            }
+        }
         that.getClassBody().visit(this);
         returnSelf(d);
         endBlockNewLine();
@@ -800,7 +810,8 @@ public class GenerateJsVisitor extends Visitor
             @Override
             public void addToPrototypeCallback() {
                 if (type instanceof ClassDefinition) {
-                    addToPrototype(((ClassDefinition)type).getDeclarationModel(), ((ClassDefinition)type).getClassBody().getStatements());
+                    com.redhat.ceylon.compiler.typechecker.model.Class c = ((ClassDefinition)type).getDeclarationModel();
+                    addToPrototype(c, ((ClassDefinition)type).getClassBody().getStatements());
                 } else if (type instanceof InterfaceDefinition) {
                     addToPrototype(((InterfaceDefinition)type).getDeclarationModel(), ((InterfaceDefinition)type).getInterfaceBody().getStatements());
                 }
@@ -907,14 +918,34 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void addToPrototype(ClassOrInterface d, List<Statement> statements) {
-        if (opts.isOptimize() && !statements.isEmpty()) {
+        boolean enter = opts.isOptimize();
+        ArrayList<com.redhat.ceylon.compiler.typechecker.model.Parameter> plist = null;
+        if (enter) {
+            enter = !statements.isEmpty();
+            if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+                com.redhat.ceylon.compiler.typechecker.model.ParameterList _pl =
+                        ((com.redhat.ceylon.compiler.typechecker.model.Class)d).getParameterList();
+                if (_pl != null) {
+                    plist = new ArrayList<>();
+                    plist.addAll(_pl.getParameters());
+                    enter |= !plist.isEmpty();
+                }
+            }
+        }
+        if (enter) {
             final List<? extends Statement> prevStatements = currentStatements;
             currentStatements = statements;
             
             out("(function(", names.self(d), ")");
             beginBlock();
             for (Statement s: statements) {
-                addToPrototype(d, s);
+                addToPrototype(d, s, plist);
+            }
+            //Generated attributes with corresponding parameters will remove them from the list
+            if (plist != null) {
+                for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : plist) {
+                    generateAttributeForParameter((com.redhat.ceylon.compiler.typechecker.model.Class)d, p);
+                }
             }
             endBlock();
             out(")(", names.name(d), ".$$.prototype);");
@@ -924,9 +955,36 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
+    private void generateAttributeForParameter(com.redhat.ceylon.compiler.typechecker.model.Class d,
+            com.redhat.ceylon.compiler.typechecker.model.Parameter p) {
+        final String privname = names.name(p) + "_";
+        out(clAlias, "defineAttr(", names.self(d), ",'", names.name(p.getModel()),
+                "',function(){");
+        if (p.getModel().isLate()) {
+            generateUnitializedAttributeReadCheck("this."+privname, names.name(p));
+        }
+        out("return this.", privname, ";}");
+        if (p.getModel().isVariable() || p.getModel().isLate()) {
+            final String param = names.createTempVariable(d.getName());
+            out(",function(", param, "){");
+            if (p.getModel().isLate() && !p.getModel().isVariable()) {
+                generateImmutableAttributeReassignmentCheck("this."+privname, names.name(p));
+            }
+            out("return this.", privname,
+                    "=", param, ";}");
+        } else {
+            out(",undefined");
+        }
+        out(",");
+        TypeUtils.encodeForRuntime(p.getModel(), null/*TODO: FUCK! how can we retrieve this?*/, this);
+        out(");");
+        endLine();
+    }
+
     private ClassOrInterface prototypeOwner;
 
-    private void addToPrototype(ClassOrInterface d, Statement s) {
+    private void addToPrototype(ClassOrInterface d, Statement s,
+            List<com.redhat.ceylon.compiler.typechecker.model.Parameter> params) {
         ClassOrInterface oldPrototypeOwner = prototypeOwner;
         prototypeOwner = d;
         if (s instanceof MethodDefinition) {
@@ -949,6 +1007,18 @@ public class GenerateJsVisitor extends Visitor
             addInterfaceDeclarationToPrototype(d, (InterfaceDeclaration) s);
         } else if (s instanceof SpecifierStatement) {
             addSpecifierToPrototype(d, (SpecifierStatement) s);
+        }
+        //This fixes #231 for prototype style
+        if (params != null && s instanceof Tree.Declaration) {
+            Declaration m = ((Tree.Declaration)s).getDeclarationModel();
+            for (Iterator<com.redhat.ceylon.compiler.typechecker.model.Parameter> iter = params.iterator();
+                    iter.hasNext();) {
+                com.redhat.ceylon.compiler.typechecker.model.Parameter _p = iter.next();
+                if (m.getName() != null && m.getName().equals(_p.getName())) {
+                    iter.remove();
+                    break;
+                }
+            }
         }
         prototypeOwner = oldPrototypeOwner;
     }
@@ -1340,9 +1410,9 @@ public class GenerateJsVisitor extends Visitor
                 out(";}");
                 endLine();
             }
-            if ((typeDecl != null) && pd.getModel().isCaptured()) {
+            if ((typeDecl != null) && !pd.isHidden() && pd.getModel().isCaptured()) {
                 self(typeDecl);
-                out(".", paramName, "=", paramName, ";");
+                out(".", paramName, "_=", paramName, ";");
                 endLine();
             }
         }
@@ -1526,7 +1596,6 @@ public class GenerateJsVisitor extends Visitor
                     out(".", names.privateName(d), "=", classParam);
                     endLine(true);
                 }
-                //TODO generate for => expr when no classParam is available
             }
             else if (specInitExpr instanceof LazySpecifierExpression) {
                 final boolean property = defineAsProperty(d);
@@ -2111,7 +2180,11 @@ public class GenerateJsVisitor extends Visitor
         }
         else if (node instanceof BaseMemberOrTypeExpression) {
             BaseMemberOrTypeExpression bmte = (BaseMemberOrTypeExpression) node;
-            String path = qualifiedPath(node, bmte.getDeclaration());
+            Declaration bmd = bmte.getDeclaration();
+            if (bmd.isParameter() && bmd.getContainer() instanceof ClassAlias) {
+                return names.name(bmd);
+            }
+            String path = qualifiedPath(node, bmd);
             if (path.length() > 0) {
                 sb.append(path);
                 sb.append(".");
