@@ -2410,11 +2410,12 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             
             <para>For every class or interface <literal>X</literal>, and for every declared
             or inherited member of <literal>X</literal> that is not refined by some other
-            declared or inherited member of <literal>X</literal>, and for every member that
-            this member refines, the principal instantiation for <literal>X</literal> of 
-            the type that declares the unrefined member must be a subtype of the principal
-            instantiation for <literal>X</literal> of the type that declares the refined 
-            member.</para>
+            declared or inherited member of <literal>X</literal>, and for every other member 
+            declared or inherited member by <literal>X</literal> that directly or indirectly 
+            refines a declaration that the first member itself directly or indirectly refines, 
+            the principal instantiation for <literal>X</literal> of the type that declares the 
+            first member must be a subtype of the principal instantiation for <literal>X</literal> 
+            of the type that declares the second member.</para>
             
         </section>
         
