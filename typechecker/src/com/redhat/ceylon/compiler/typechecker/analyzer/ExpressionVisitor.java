@@ -4039,22 +4039,50 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 that.setDeclaration(type);
+                boolean selfReference = p instanceof Tree.This &&
+                        p instanceof Tree.Super;
                 if (!type.isVisible(that.getScope())) {
                     that.addError("member type is not visible: " +
                             name + " of " + container, 400);
                 }
-                boolean selfReference = p instanceof Tree.This &&
-                                        p instanceof Tree.Super;
-                if (type.isProtectedVisibility() && 
-                        !selfReference &&
-                        !declaredInPackage(type, unit)) {
-                    that.addError("protected member type is not visible: " +
-                            name + " of " + container);
+                else if (type instanceof Functional &&
+                        ((Functional) type).isOverloaded()) {  
+                    //it is a Java constructor
+                    Declaration at = type.getContainer().getDirectMember(type.getName(), null, false);
+                    if (at.isProtectedVisibility() && 
+                            !declaredInPackage(type, unit)) {
+                        that.addError("protected member type is not visible: " +
+                                name + " of type " + container);
+                    }
+                    else if (at.isPackageVisibility() && 
+                            !declaredInPackage(type, unit)) {
+                        that.addError("package private member type is not visible: " +
+                                name + " of type " + container);
+                    }
+                    else if (type.isProtectedVisibility() && 
+                            !selfReference &&
+                            !declaredInPackage(type, unit)) {
+                        that.addError("protected member type constructor is not visible: " +
+                                name + " of " + container);
+                    }
+                    else if (type.isPackageVisibility() && 
+                            !declaredInPackage(type, unit)) {
+                        that.addError("package private member type constructor is not visible: " +
+                                name + " of " + container);
+                    }
                 }
-                if (type.isPackageVisibility() && 
-                        !declaredInPackage(type, unit)) {
-                    that.addError("package private member type is not visible: " +
-                            name + " of " + container);
+                else {
+                    if (type.isProtectedVisibility() && 
+                            !selfReference &&
+                            !declaredInPackage(type, unit)) {
+                        that.addError("protected member type is not visible: " +
+                                name + " of " + container);
+                    }
+                    else if (type.isPackageVisibility() && 
+                            !declaredInPackage(type, unit)) {
+                        that.addError("package private member type is not visible: " +
+                                name + " of " + container);
+                    }
                 }
                 if (!selfReference && !type.isShared()) {
                     type.setOtherInstanceAccess(true);

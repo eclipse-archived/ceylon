@@ -661,6 +661,18 @@ public class TypeVisitor extends Visitor {
                     that.addError("member type is not visible: " +
                             name + " of type " + d.getName(), 400);
                 }
+                else {
+                    if (type.isProtectedVisibility() && 
+                            !declaredInPackage(type, unit)) {
+                        that.addError("protected member type is not visible: " +
+                                name + " of type " + d.getName());
+                    }
+                    else if (type.isPackageVisibility() && 
+                            !declaredInPackage(type, unit)) {
+                        that.addError("package private member type is not visible: " +
+                                name + " of type " + d.getName());
+                    }
+                }
                 visitSimpleType(that, pt, type);
             }
         }
