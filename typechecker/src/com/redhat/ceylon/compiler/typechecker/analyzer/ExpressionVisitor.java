@@ -3602,7 +3602,9 @@ public class ExpressionVisitor extends Visitor {
                     }
                     sb.append(", ");
                 }
-                if (sb.length()>1) sb.setLength(sb.length()-2);
+                if (!sig.isEmpty()) {
+                    sb.setLength(sb.length()-2);
+                }
                 sb.append(")");
             }
             that.addError("ambiguous reference to overloaded method or class: " +
