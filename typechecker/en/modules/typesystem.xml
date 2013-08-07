@@ -2451,8 +2451,8 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             one type argument <literal>P</literal> is a type parameter introduces a known 
             hole in our type system. It is impossible to form a principal instantiation of 
             <literal>X</literal> for this intersection type without resorting to use-site 
-            covariance, which is non-denoteable in Ceylon. In such cases, we don't allow
-            references to members of the intersection type.</para></comment>
+            covariance, so we don't allow references to members of the intersection type.
+            </para></comment>
             
         </section>
         
@@ -2482,6 +2482,9 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             principal instantiation for <literal>X</literal> of the type that declares the 
             first member must be a subtype of the principal instantiation for <literal>X</literal> 
             of the type that declares the second member.</para>
+            
+            <comment><para>Note: a related restriction is defined in 
+            <xref linkend="declarationnameuniqueness"/>.</para></comment>
             
         </section>
         
