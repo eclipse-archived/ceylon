@@ -3890,7 +3890,8 @@ public class ExpressionVisitor extends Visitor {
                     ((Functional) type).isOverloaded()) {  
                 //it is a Java constructor
                 Declaration at = type.getContainer().getDirectMember(type.getName(), null, false);
-                if (at.isPackageVisibility()) {
+                if (at.isPackageVisibility() &&
+                        !declaredInPackage(type, unit)) {
                     that.addError("package private type is not visible: " + name);
                 }
                 else if (type.isPackageVisibility() && 
