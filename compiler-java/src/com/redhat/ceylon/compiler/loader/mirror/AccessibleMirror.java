@@ -19,26 +19,26 @@
  */
 package com.redhat.ceylon.compiler.loader.mirror;
 
-
 /**
- * Represents a field.
- *
+ * Represents an program element (class, method, constructor, field) with visibility access restrictions
+ * 
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public interface FieldMirror extends AnnotatedMirror, AccessibleMirror {
+public interface AccessibleMirror {
+    
+    /**
+     * Returns true if the element is public
+     */
+    boolean isPublic();
 
     /**
-     * Returns true if this field is static
+     * Returns true if the element is protected
      */
-    boolean isStatic();
+    boolean isProtected();
 
     /**
-     * Returns true if this field is final
+     * Returns true if the element is package-protected
      */
-    boolean isFinal();
+    boolean isDefaultAccess();
 
-    /**
-     * Returns the type of this field 
-     */
-    TypeMirror getType();
 }

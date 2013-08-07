@@ -26,27 +26,12 @@ import java.util.List;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public interface MethodMirror extends AnnotatedMirror {
+public interface MethodMirror extends AnnotatedMirror, AccessibleMirror {
 
     /**
      * Returns true if this method is static
      */
     boolean isStatic();
-
-    /**
-     * Returns true if this method is public
-     */
-    boolean isPublic();
-    
-    /**
-     * Returns true if this method is protected
-     */
-    boolean isProtected();
-    
-    /**
-     * Returns true if this method is default (package) access.
-     */
-    boolean isDefaultAccess();
 
     /**
      * Returns true if this method is a constructor

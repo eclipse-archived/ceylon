@@ -26,12 +26,8 @@ import java.util.List;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public interface ClassMirror extends AnnotatedMirror {
-    /**
-     * Returns true if the class is public
-     */
-    boolean isPublic();
-    
+public interface ClassMirror extends AnnotatedMirror, AccessibleMirror {
+
     /**
      * Returns true if this is an interface
      */

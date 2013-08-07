@@ -74,6 +74,16 @@ public class JavacClass implements ClassMirror {
     }
 
     @Override
+    public boolean isProtected() {
+        return (classSymbol.flags() & Flags.PROTECTED) != 0;
+    }
+
+    @Override
+    public boolean isDefaultAccess() {
+        return (classSymbol.flags() & (Flags.PROTECTED | Flags.PUBLIC | Flags.PRIVATE)) == 0;
+    }
+
+    @Override
     public String getQualifiedName() {
         // as taken from ClassSymbol.className():
         if(classSymbol.name.length() == 0)

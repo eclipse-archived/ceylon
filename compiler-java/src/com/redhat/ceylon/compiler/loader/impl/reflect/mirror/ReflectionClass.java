@@ -66,6 +66,18 @@ public class ReflectionClass implements ClassMirror {
     }
 
     @Override
+    public boolean isProtected() {
+        return Modifier.isProtected(klass.getModifiers());
+    }
+
+    @Override
+    public boolean isDefaultAccess() {
+        return !Modifier.isPrivate(klass.getModifiers())
+                && !Modifier.isPublic(klass.getModifiers())
+                && !Modifier.isProtected(klass.getModifiers());
+    }
+
+    @Override
     public String getQualifiedName() {
         return klass.getName();
     }
