@@ -1,7 +1,7 @@
 /*
- * Copyright 2011 Red Hat inc. and third party contributors as noted 
+ * Copyright 2011 Red Hat inc. and third party contributors as noted
  * by the author tags.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,26 +22,31 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import ceylon.modules.api.util.ModuleVersion;
-import ceylon.modules.jboss.repository.ResourceLoaderProvider;
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ImportType;
-import com.redhat.ceylon.cmr.api.JDKUtils;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.common.Versions;
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalLoader;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.ModuleLoader;
 import org.jboss.modules.ModuleSpec;
+import org.jboss.modules.ModuleSpec.Builder;
 import org.jboss.modules.ResourceLoader;
 import org.jboss.modules.ResourceLoaderSpec;
 import org.jboss.modules.filter.PathFilters;
+
+import ceylon.modules.api.runtime.LogChecker;
+import ceylon.modules.api.util.ModuleVersion;
+import ceylon.modules.jboss.repository.ResourceLoaderProvider;
+
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ImportType;
+import com.redhat.ceylon.cmr.api.JDKUtils;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.common.Versions;
 
 /**
  * Ceylon JBoss Module loader.
@@ -58,6 +63,7 @@ public class CeylonModuleLoader extends ModuleLoader {
     private static final ModuleIdentifier MAVEN;
     private static final ModuleIdentifier MODULES;
     private static final ModuleIdentifier JANDEX;
+    private static final ModuleIdentifier LOGMANAGER;
     private static final ModuleIdentifier RUNTIME;
 
     private static final String CEYLON_RUNTIME_PATH;
@@ -76,6 +82,7 @@ public class CeylonModuleLoader extends ModuleLoader {
         MAVEN = ModuleIdentifier.create("com.redhat.ceylon.maven-support");
         MODULES = ModuleIdentifier.create("org.jboss.modules");
         JANDEX = ModuleIdentifier.create("org.jboss.jandex");
+        LOGMANAGER = ModuleIdentifier.create("org.jboss.logmanager","main");
         RUNTIME = ModuleIdentifier.create("ceylon.runtime", defaultVersion);
 
         CEYLON_RUNTIME_PATH = ModuleVersion.class.getPackage().getName().replace(".", "/");
@@ -89,6 +96,7 @@ public class CeylonModuleLoader extends ModuleLoader {
         BOOTSTRAP.add(MAVEN);
         BOOTSTRAP.add(MODULES);
         BOOTSTRAP.add(JANDEX);
+        BOOTSTRAP.add(LOGMANAGER);
         BOOTSTRAP.add(RUNTIME);
 
         Set<String> jdkPaths = new HashSet<String>();
@@ -232,6 +240,22 @@ public class CeylonModuleLoader extends ModuleLoader {
                 for (ArtifactResult i : artifact.dependencies()) {
                     final String name = i.name();
 
+                    ServiceLoader<LogChecker> ldr = ServiceLoader.load(LogChecker.class);
+                    boolean logCheckerServicePresent = false;
+                    for (LogChecker checker : ldr) {
+                        logCheckerServicePresent = true;
+                        if (checker.match(i)) {
+                            addLoggingModule(builder, deps);
+                            break;
+                        }
+                    }
+                    if (!logCheckerServicePresent) {
+                        LogChecker checker = new DefaultLogChecker();
+                        if (checker.match(i)) {
+                            addLoggingModule(builder, deps);
+                        }
+                    }
+
                     // skip JDK modules
                     if (JDK_MODULE_NAMES.contains(name)) {
                         continue;
@@ -292,6 +316,18 @@ public class CeylonModuleLoader extends ModuleLoader {
         }
     }
 
+    private void addLoggingModule(Builder builder, List<DependencySpec> deps) {
+        final DependencySpec dependency = DependencySpec.createModuleDependencySpec(
+                PathFilters.acceptAll(),
+                PathFilters.rejectAll(),
+                this,
+                LOGMANAGER,
+                false
+        );
+        builder.addDependency(dependency);
+        deps.add(dependency);
+    }
+
     protected void createModuleDependency(Graph.Vertex<ModuleIdentifier, Boolean> vertex, List<DependencySpec> deps, ModuleSpec.Builder builder, ModuleIdentifier mi, boolean optional) {
         final DependencySpec dependency = DependencySpec.createModuleDependencySpec(
                 PathFilters.acceptAll(),
@@ -339,6 +375,7 @@ public class CeylonModuleLoader extends ModuleLoader {
         return ModuleIdentifier.create(i.name(), i.version());
     }
 
+    @Override
     public String toString() {
         return "Ceylon ModuleLoader: " + repository;
     }

@@ -17,6 +17,8 @@
 
 package eu.cloud.clazz;
 
+import java.lang.reflect.Method;
+
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
@@ -25,7 +27,18 @@ public class run_ {
         ClassLoader cl = run_.class.getClassLoader();
         try {
             cl.loadClass("org.jboss.filtered.spi.SomeSPI");
-        } catch (ClassNotFoundException e) {
+
+            Class<?> pp = cl.loadClass("ceylon.file.parsePath_");
+            Method parse = pp.getDeclaredMethod("parsePath", String.class);
+            Object path = parse.invoke(null, "buuu");
+            Class<?> pc = cl.loadClass("ceylon.file.Path");
+            Method r = pc.getDeclaredMethod("getResource");
+            Class<?> rc = cl.loadClass("ceylon.file.Resource");
+            Class<?> nof = cl.loadClass("ceylon.io.newOpenFile_");
+            Method newOpenFile = nof.getDeclaredMethod("newOpenFile", rc);
+            Object ofi = newOpenFile.invoke(null, r.invoke(path));
+            System.out.println("ofi = " + ofi);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 /*
