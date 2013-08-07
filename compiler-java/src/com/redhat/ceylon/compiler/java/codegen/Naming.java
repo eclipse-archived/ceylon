@@ -1661,5 +1661,19 @@ public class Naming implements LocalId {
     public String getTypeDescriptorAliasName() {
         return "$TypeDescriptor";
     }
+    
+    /**
+     * Computes the name of the constant field on the class for an 
+     * annotation constructor. The name comprises a number of parts because 
+     * defaulted parameters and literal arguments both require constant fields
+     * and because of nested invocations we need to generate a unique name
+     */
+    public static String getAnnotationFieldName(java.util.List<AnnotationFieldName> parts) {
+        StringBuilder sb = new StringBuilder();
+        for (AnnotationFieldName part : parts) {
+            sb.append(part.getFieldNamePart()).append("$");
+        }
+        return sb.substring(0, sb.length()-1);
+    }
   
 }

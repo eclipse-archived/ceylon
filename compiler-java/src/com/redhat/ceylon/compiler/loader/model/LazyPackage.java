@@ -28,21 +28,22 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.java.codegen.AnnotationArgument;
+import com.redhat.ceylon.compiler.java.codegen.AnnotationConstructorParameter;
+import com.redhat.ceylon.compiler.java.codegen.AnnotationInvocation;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
+import com.redhat.ceylon.compiler.java.codegen.ParameterAnnotationTerm;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.AnnotationArgument;
-import com.redhat.ceylon.compiler.typechecker.model.AnnotationInstantiation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -222,12 +223,20 @@ public class LazyPackage extends Package {
         
         ParameterList ctorpl = new ParameterList();
         ctor.addParameterList(ctorpl);
-        List<AnnotationArgument> annotationArgs = new ArrayList<>();
+        
+        AnnotationInvocation ai = new AnnotationInvocation();
+        ai.setConstructorDeclaration(ctor);
+        ai.setPrimary(klass);
+        ai.setInterop(true);
+        ctor.setAnnotationConstructor(ai);
+        List<AnnotationArgument> annotationArgs = new ArrayList<AnnotationArgument>();
         for (Declaration member : iface.getMembers()) {
             if (member instanceof JavaMethod) {
                 JavaMethod m = (JavaMethod)member;
-                ParameterAnnotationArgument a = new ParameterAnnotationArgument();
                 
+                ParameterAnnotationTerm term = new ParameterAnnotationTerm();
+                AnnotationArgument argument = new AnnotationArgument();
+                argument.setTerm(term);
                 {
                     Parameter klassParam = new Parameter();
                     Value value = new Value();
@@ -241,7 +250,7 @@ public class LazyPackage extends Package {
                     value.setUnboxed(true);
                     value.setUnit(iface.getUnit());
                     classpl.getParameters().add(klassParam);
-                    a.setTargetParameter(klassParam);
+                    argument.setParameter(klassParam);
                 }
                 {
                     Parameter ctorParam = new Parameter();
@@ -257,18 +266,17 @@ public class LazyPackage extends Package {
                     value.setUnboxed(true);
                     value.setUnit(iface.getUnit());
                     ctorpl.getParameters().add(ctorParam);
-                    a.setSourceParameter(ctorParam);
+                    term.setSourceParameter(ctorParam);
+                    
+                    AnnotationConstructorParameter acp = new AnnotationConstructorParameter();
+                    acp.setParameter(ctorParam);
+                    ai.getConstructorParameters().add(acp);
                 }
-                annotationArgs.add(a);
+                annotationArgs.add(argument);
             }
         }
-        
+        ai.getAnnotationArguments().addAll(annotationArgs);
         compiledDeclarations.add(klass);
-
-        AnnotationInstantiation annotationInstantiation = new AnnotationInstantiation();
-        annotationInstantiation.setPrimary(klass);
-        annotationInstantiation.setArguments(annotationArgs);
-        ctor.setAnnotationInstantiation(annotationInstantiation);
         compiledDeclarations.add(ctor);
     }
 

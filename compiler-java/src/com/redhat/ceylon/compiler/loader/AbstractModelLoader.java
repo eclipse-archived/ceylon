@@ -38,6 +38,9 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
+import com.redhat.ceylon.compiler.java.codegen.AnnotationArgument;
+import com.redhat.ceylon.compiler.java.codegen.AnnotationTerm;
+import com.redhat.ceylon.compiler.java.codegen.AnnotationInvocation;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.util.Timer;
@@ -69,8 +72,6 @@ import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.AnnotationArgument;
-import com.redhat.ceylon.compiler.typechecker.model.AnnotationInstantiation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -2273,29 +2274,34 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      }
 
     private void setAnnotationConstructor(LazyMethod method, MethodMirror meth) {
-        AnnotationInstantiation annotationInstantiation = new AnnotationInstantiation();
+        AnnotationInvocation annotationInstantiation = new AnnotationInvocation();
+        annotationInstantiation.setConstructorDeclaration(method);
         if (method.classMirror != null) {
+            // TODO Handle @AnnotationInstantiationTree
+            // And looking at the @AnnotationInstantiation on DPMs
             TypeMirror annotationTypeMirror = (TypeMirror)getAnnotationClassValue(method.classMirror, CEYLON_ANNOTATION_INSTANTIATION, "annotationClass");
             if (annotationTypeMirror != null) {
                 ClassMirror annotationClassMirror = annotationTypeMirror.getDeclaredClass();
-                Class convertToDeclaration = (Class)convertToDeclaration(annotationClassMirror, DeclarationType.TYPE);
-                annotationInstantiation.setPrimary(convertToDeclaration);
-                method.setAnnotationInstantiation(annotationInstantiation);
+                Class annotationClass = (Class)convertToDeclaration(annotationClassMirror, DeclarationType.TYPE);
+                annotationInstantiation.setPrimary(annotationClass);
+                method.setAnnotationConstructor(annotationInstantiation);
             }
             
             List<Short> argumentCodes = getAnnotationShortArrayValue(method.classMirror, CEYLON_ANNOTATION_INSTANTIATION, "arguments");
             if (argumentCodes != null) {
                 Class ac = (Class)annotationInstantiation.getPrimary();
-                List<AnnotationArgument> args = new ArrayList<>(argumentCodes.size());
+                List<AnnotationArgument> args = new ArrayList<AnnotationArgument>(argumentCodes.size());
                 for (int ii = 0; ii < argumentCodes.size(); ii++) {
                     Short code = argumentCodes.get(ii);                    
-                    AnnotationArgument annotationArg = Decl.decodeAnnotationConstructor(method.getParameterLists().get(0).getParameters(), annotationInstantiation, code);
+                    AnnotationTerm term = AnnotationTerm.decode(method.getParameterLists().get(0).getParameters(), annotationInstantiation, code);
                     Parameter classParameter = ac.getParameterList().getParameters().get(ii);
-                    annotationArg.setTargetParameter(classParameter);
-                    args.add(annotationArg);
+                    AnnotationArgument argument = new AnnotationArgument();
+                    argument.setParameter(classParameter);
+                    argument.setTerm(term);
+                    args.add(argument);
                 }
-                annotationInstantiation.setArguments(args);
-                method.setAnnotationInstantiation(annotationInstantiation);
+                annotationInstantiation.getAnnotationArguments().addAll(args);
+                method.setAnnotationConstructor(annotationInstantiation);
             }
         }
     }

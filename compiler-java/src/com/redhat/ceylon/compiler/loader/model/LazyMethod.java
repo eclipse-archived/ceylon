@@ -28,7 +28,6 @@ import com.redhat.ceylon.compiler.loader.ModelCompleter;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.AnnotationInstantiation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.compiler.typechecker.model.DeclarationWithProximity;
@@ -139,9 +138,9 @@ public class LazyMethod extends Method implements LazyElement {
     }
     
     @Override
-    public AnnotationInstantiation getAnnotationInstantiation() {
+    public Object getAnnotationConstructor() {
         load();
-        return super.getAnnotationInstantiation();
+        return super.getAnnotationConstructor();
     }
 
     @Override

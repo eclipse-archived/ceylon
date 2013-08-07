@@ -41,8 +41,6 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
-import com.redhat.ceylon.compiler.typechecker.model.AnnotationArgument;
-import com.redhat.ceylon.compiler.typechecker.model.AnnotationInstantiation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -72,13 +70,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
@@ -340,6 +335,7 @@ public class ClassTransformer extends AbstractTransformer {
         Class klass = (Class)def.getDeclarationModel();
         String annotationName = klass.getName()+"$annotation";
         ClassDefinitionBuilder annoBuilder = ClassDefinitionBuilder.klass(this, annotationName, null);
+
         // annotations are never explicitely final in Java
         annoBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | (transformClassDeclFlags(def) & ~FINAL));
         annoBuilder.annotations(makeAtRetention(RetentionPolicy.RUNTIME));
@@ -446,8 +442,7 @@ public class ClassTransformer extends AbstractTransformer {
             // Allow invocations of annotation constructors, so long as they're
             // themselves being invoked with permitted arguments
             Tree.InvocationExpression invocation = (Tree.InvocationExpression)term;
-            AnnotationInvocationVisitor visitor = new AnnotationInvocationVisitor(expressionGen(), invocation);
-            defaultLiteral = visitor.transform(invocation);
+            defaultLiteral = AnnotationInvocationVisitor.transform(expressionGen(), invocation);
         } else if (term instanceof Tree.MemberLiteral) {
             // FIXME: this is all temporary
             defaultLiteral = make().Literal(((Tree.MemberLiteral) term).getDeclaration().getQualifiedNameString());
@@ -1741,8 +1736,8 @@ public class ClassTransformer extends AbstractTransformer {
         ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def));
         
         if (Decl.isAnnotationConstructor(def)) {
-            AnnotationInstantiation inlineInfo = def.getDeclarationModel().getAnnotationInstantiation();
-            builder.defs(makeLiteralArguments(def));
+            AnnotationInvocation inlineInfo = ((AnnotationInvocation)def.getDeclarationModel().getAnnotationConstructor());
+            builder.defs(makeLiteralAnnotationFields(def));
             builder.annotations(List.of(makeAtAnnotationInstantiation(inlineInfo)));
         }
         
@@ -1772,113 +1767,17 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
     
-    public List<JCTree> makeLiteralArguments(final Tree.AnyMethod method) {
-        class AnnotationConstructorVisitor extends Visitor implements NaturalVisitor {
-            
-            private ListBuffer<JCStatement> staticArgs = ListBuffer.<JCStatement>lb();
-            private boolean checkingArguments;
-            private Parameter parameter;
-            
-            @Override
-            public void handleException(Exception e, Node node) {
-                if (e instanceof RuntimeException) {
-                    throw (RuntimeException)e;
-                } else {
-                    throw new RuntimeException(e);
-                }
-            }
-            
-            public void visit(Tree.Parameter p) {
-                SpecifierOrInitializerExpression defaultArgument = Decl.getDefaultArgument(p);
-                if (defaultArgument != null) {
-                    checkingArguments = true;
-                    parameter = p.getParameterModel();
-                    super.visit(p);
-                    checkingArguments = false;
-                }
-            }
-            
-            public void visit(Tree.InvocationExpression invocation) {
-                checkingArguments = true;
-                if (invocation.getPositionalArgumentList() != null) {
-                    invocation.getPositionalArgumentList().visit(this);
-                }
-                if (invocation.getNamedArgumentList() != null) { 
-                    invocation.getNamedArgumentList().visit(this);
-                }
-                checkingArguments = false;
-            }
-            
-            public void visit(Tree.Literal literal) {
-                if (checkingArguments){
-                    JCExpression lit = expressionGen().transform(literal);
-                    lit = expressionGen().applyErasureAndBoxing(lit, literal.getTypeModel(), false, BoxingStrategy.UNBOXED, parameter.getType());
-                    appendStaticArgument(literal, lit);
-                }
-            }
-            public void visit(Tree.NegativeOp op) {
-                if (op.getTerm() instanceof Tree.NaturalLiteral) {
-                    JCExpression lit = expressionGen().transform(op);
-                    lit = expressionGen().applyErasureAndBoxing(lit, op.getTypeModel(), false, BoxingStrategy.UNBOXED, parameter.getType());
-                    appendStaticArgument((Tree.NaturalLiteral)op.getTerm(), lit);
-                } else {
-                    super.visit(op);
-                }
-            }
-            
-            public void visit(Tree.BaseMemberExpression bme) {
-                if (checkingArguments){
-                    Declaration declaration = bme.getDeclaration();
-                    if (declaration instanceof Value
-                            && (isBooleanFalse(declaration)
-                            || isBooleanTrue(declaration))) {
-                        appendStaticArgument(bme, expressionGen().transform(bme));
-                    }
-                }
-            }
-            
-            public void visit(Tree.PositionalArgument arg) {
-                parameter = arg.getParameter();
-                super.visit(arg);
-            }
-            
-            public void visit(Tree.NamedArgument arg) {
-                parameter = arg.getParameter();
-                super.visit(arg);
-            }
-            
-            private void appendStaticArgument(Tree.Primary bme, JCExpression init) {
-                staticArgs.append(makeVar(STATIC | FINAL | (method.getDeclarationModel().isShared() ? PUBLIC : 0), 
-                        parameter.getName(),
-                        makeJavaType(parameter.getType()), 
-                        init));
-            }
-            
-            public List<JCStatement> getStaticArguments() {
-                return staticArgs.toList();
-            }
-
-        }
-        AnnotationConstructorVisitor v = new AnnotationConstructorVisitor();
-        v.visit(method);
-        return (List)v.staticArgs.toList();
+    public List<JCTree> makeLiteralAnnotationFields(Tree.AnyMethod node) {
+        AnnotationInvocation ctor = (AnnotationInvocation)node.getDeclarationModel().getAnnotationConstructor();
+        ListBuffer<JCStatement> staticArgs = ListBuffer.<JCStatement>lb();
+        ctor.makeLiteralAnnotationFields(expressionGen(), ctor, List.<AnnotationFieldName>nil(), staticArgs);
+        
+        return (List)staticArgs.toList();
     }
     
-    public JCAnnotation makeAtAnnotationInstantiation(AnnotationInstantiation inlineInfo) {
-        ListBuffer<JCExpression> arguments = ListBuffer.lb();
-        for (AnnotationArgument inlineArgument : inlineInfo.getArguments()) {
-            arguments.append(make().Literal(Decl.encodeAnnotationConstructor(inlineArgument)));
-        }
-        return make().Annotation(
-                make().Type(syms().ceylonAtAnnotationInstantiationType),
-                List.<JCExpression>of(
-                        make().Assign(
-                                naming.makeUnquotedIdent("arguments"),
-                                make().NewArray(null, null, arguments.toList())),
-                        make().Assign(
-                                naming.makeUnquotedIdent("annotationClass"),
-                                naming.makeQualIdent(makeJavaType(((Class)inlineInfo.getPrimary()).getType()), "class"))
-                ));
+    
+    public JCAnnotation makeAtAnnotationInstantiation(AnnotationInvocation invocation) {
+        return invocation.encode(this, ListBuffer.<JCExpression>lb());
     }
 
     private MethodDefinitionBuilder makeAnnotationMethod(Tree.Parameter parameter) {
@@ -2884,6 +2783,18 @@ public class ClassTransformer extends AbstractTransformer {
         String name = Naming.getDefaultedParamMethodName(container, parameter );
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.systemMethod(this, name);
         methodBuilder.ignoreModelAnnotations();
+        if (container != null && Decl.isAnnotationConstructor(container)) {
+            //builder.defs(makeLiteralArguments(def));
+            AnnotationInvocation ac = (AnnotationInvocation)((Method)container).getAnnotationConstructor();
+            for (AnnotationConstructorParameter acp : ac.getConstructorParameters()) {
+                if (acp.getParameter().equals(parameter)
+                        && acp.getDefaultArgument() != null
+                        && acp.getDefaultArgument() instanceof InvocationAnnotationTerm) {
+                    methodBuilder.userAnnotations(List.of(makeAtAnnotationInstantiation(((InvocationAnnotationTerm)acp.getDefaultArgument()).getInstantiation())));
+                }
+            }
+            
+        }
         int modifiers = 0;
         if (noBody) {
             modifiers |= PUBLIC | ABSTRACT;

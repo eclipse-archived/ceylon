@@ -914,24 +914,34 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transform(Tree.CharLiteral lit) {
         // codePoint is at index 1 because the text is `X` (including quotation marks, so we skip them)
-        int codePoint = lit.getText().codePointAt(1);
+        String text = lit.getText();
+        return makeCharLiteral(text);
+    }
+
+    JCExpression makeCharLiteral(String text) {
+        int codePoint = text.codePointAt(1);
         return make().Literal(TypeTags.INT, codePoint);
     }
 
     public JCExpression transform(Tree.FloatLiteral lit) {
-        double value = Double.parseDouble(lit.getText());
+        String text = lit.getText();
+        return makeDoubleLiteral(lit, text);
+    }
+
+    JCExpression makeDoubleLiteral(Node lit, String text) {
+        double value = Double.parseDouble(text);
         // Don't need to handle the negative infinity and negative zero cases 
         // because Ceylon Float literals have no sign
         if (value == Double.POSITIVE_INFINITY) {
             return makeErroneous(lit, "Literal so large it is indistinguishable from infinity");
-        } else if (value == 0.0 && !lit.getText().equals("0.0")) {
+        } else if (value == 0.0 && !text.equals("0.0")) {
             return makeErroneous(lit, "Literal so small it is indistinguishable from zero");
         }
         JCExpression expr = make().Literal(value);
         return expr;
     }
 
-    private JCExpression integerLiteral(Node node, String num) {
+    JCExpression integerLiteral(Node node, String num) {
         try {
             return make().Literal(Long.parseLong(num));
         } catch (NumberFormatException e) {
@@ -4410,9 +4420,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     void transformAnnotation(Tree.Annotation invocation, 
             Map<Class, ListBuffer<JCAnnotation>> annotationSet) {
         at(invocation);
-        AnnotationInvocationVisitor visitor = new AnnotationInvocationVisitor(this, invocation);
-        JCAnnotation annotation = visitor.transformConstructor(invocation);
-        Class annotationClass = visitor.getAnnotationClass();
+        JCAnnotation annotation = AnnotationInvocationVisitor.transformConstructor(this, invocation);
+        Class annotationClass = AnnotationInvocationVisitor.annoClass(invocation);
         
         putAnnotation(annotationSet, annotation, annotationClass);
     }

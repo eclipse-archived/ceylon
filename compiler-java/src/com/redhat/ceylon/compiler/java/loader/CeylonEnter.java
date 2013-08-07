@@ -32,6 +32,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.InvalidArchiveException;
+import com.redhat.ceylon.compiler.java.codegen.AnnotationModelVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingDeclarationVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingVisitor;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
@@ -51,7 +52,6 @@ import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
-import com.redhat.ceylon.compiler.typechecker.analyzer.AnnotationVisitor;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -329,8 +329,9 @@ public class CeylonEnter extends Enter {
             if (tree instanceof CeylonCompilationUnit) {
                 CeylonCompilationUnit ceylonTree = (CeylonCompilationUnit) tree;
                 gen.setMap(ceylonTree.lineMap);
-                gen.setFileObject(((CeylonPhasedUnit)ceylonTree.phasedUnit).getFileObject());
-                nested.startTask("Ceylon code generation for " + ((CeylonPhasedUnit)ceylonTree.phasedUnit).getUnitFile().getName());
+                CeylonPhasedUnit phasedUnit = (CeylonPhasedUnit)ceylonTree.phasedUnit;
+                gen.setFileObject(phasedUnit.getFileObject());
+                nested.startTask("Ceylon code generation for " + phasedUnit.getUnitFile().getName());
                 ceylonTree.defs = gen.transformAfterTypeChecking(ceylonTree.ceylonTree).toList();
                 nested.endTask();
                 if(isVerbose("ast")){
@@ -453,6 +454,7 @@ public class CeylonEnter extends Enter {
         BoxingDeclarationVisitor boxingDeclarationVisitor = new CompilerBoxingDeclarationVisitor(gen);
         BoxingVisitor boxingVisitor = new CompilerBoxingVisitor(gen);
         DeferredVisitor deferredVisitor = new DeferredVisitor();
+        AnnotationModelVisitor amv = new AnnotationModelVisitor();
         // Extra phases for the compiler
         for (PhasedUnit pu : phasedUnitsForExtraPhase) {
             pu.getCompilationUnit().visit(boxingDeclarationVisitor);
@@ -463,9 +465,8 @@ public class CeylonEnter extends Enter {
         for (PhasedUnit pu : phasedUnitsForExtraPhase) {
             pu.getCompilationUnit().visit(deferredVisitor);
         }
-        AnnotationVisitor aiv = new AnnotationVisitor();
         for (PhasedUnit pu : phasedUnitsForExtraPhase) {
-            pu.getCompilationUnit().visit(aiv);
+            pu.getCompilationUnit().visit(amv);
         }
         
         phasedUnitsManager.extraPhasesApplied();
