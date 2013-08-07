@@ -2263,14 +2263,24 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             
             <para>If a class or interface type <literal>X</literal> has the inherited 
             instantiations <literal>V</literal> and <literal>W</literal> of some 
-            generic type <literal>Y</literal>, then for every invariant type parameter
-            <literal>T</literal> of <literal>Y</literal>, the type argument
-            <literal>A</literal> of <literal>T</literal> given in <literal>V</literal>
-            and the type argument <literal>B</literal> of <literal>T</literal> given in 
-            <literal>W</literal> must be exactly the same type. Furthermore, 
-            <literal>X</literal> is a subtype of an instantiation <literal>P</literal> of 
-            <literal>Y</literal> such that <literal>P</literal> is a subtype of 
-            <literal>V&amp;W</literal>.</para>
+            generic type <literal>Y</literal>, then:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>for every invariant type parameter <literal>T</literal> of 
+                    <literal>Y</literal>, the type argument <literal>A</literal> of 
+                    <literal>T</literal> given in <literal>V</literal> and the type 
+                    argument <literal>B</literal> of <literal>T</literal> given in 
+                    <literal>W</literal> must be exactly the same type, and,
+                    furthermore,</para>
+                </listitem>
+                <listitem>
+                     <para><literal>X</literal> is a subtype of an instantiation 
+                     <literal>U</literal> of <literal>Y</literal> such that 
+                     <literal>U</literal> is a subtype of 
+                     <literal>V&amp;W</literal>.</para>
+                </listitem>
+            </itemizedlist>
             
             <para>Therefore, if a type <literal>X</literal> is a subtype of the 
             instantiations <literal>V</literal> and <literal>W</literal> of some generic 
@@ -2369,7 +2379,8 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             
             <para>We compute principal instantiations by making use of the identities
             observed above in <xref linkend="uniontypes"/>, <xref linkend="intersectiontypes"/>,
-            and <xref linkend="principalinstantiationinheritance"/>. For any generic type <literal>X</literal>:</para>
+            and <xref linkend="principalinstantiationinheritance"/>. 
+            For any generic type <literal>X</literal>:</para>
             
             <itemizedlist>
                 <listitem>
@@ -2440,7 +2451,7 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             one type argument <literal>P</literal> is a type parameter introduces a known 
             hole in our type system. It is impossible to form a principal instantiation of 
             <literal>X</literal> for this intersection type without resorting to use-site 
-            covariance, which is non-denoteable in Ceylon. In such cases, don't allow
+            covariance, which is non-denoteable in Ceylon. In such cases, we don't allow
             references to members of the intersection type.</para></comment>
             
         </section>
