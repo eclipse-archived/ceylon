@@ -3967,24 +3967,18 @@ public class ExpressionVisitor extends Visitor {
                     //patch the reference, which was already
                     //initialized to the abstraction
                     that.setDeclaration((TypeDeclaration) result);
+                    if (result instanceof Functional &&
+                            ((Functional) result).isOverloaded()) {  
+                        //it is a Java constructor
+                        if (result.isPackageVisibility() && 
+                                !declaredInPackage(result, unit)) {
+                            that.addError("package private constructor is not visible: " + 
+                                    result.getName());
+                        }
+                    }
                 }
                 //else report to user that we could not
                 //find a matching overloaded constructor
-            }
-            Declaration type = that.getDeclaration();
-            if (type instanceof Functional &&
-                    ((Functional) type).isOverloaded()) {  
-                //it is a Java constructor
-                String name = type.getName();
-                Declaration at = type.getContainer().getDirectMember(name, null, false);
-                if (at.isPackageVisibility() &&
-                        !declaredInPackage(type, unit)) {
-                    that.addError("package private type is not visible: " + name);
-                }
-                else if (type.isPackageVisibility() && 
-                        !declaredInPackage(type, unit)) {
-                    that.addError("package private constructor is not visible: " + name);
-                }
             }
             checkOverloadedReference(that);
         }
