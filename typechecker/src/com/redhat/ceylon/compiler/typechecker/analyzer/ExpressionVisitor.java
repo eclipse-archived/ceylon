@@ -3869,27 +3869,30 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         /*if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
+        String name = name(that.getIdentifier());
         TypeDeclaration type = getTypeDeclaration(that.getScope(), 
-                name(that.getIdentifier()), 
-                that.getSignature(), that.getEllipsis(), 
+                name, that.getSignature(), that.getEllipsis(), 
                 that.getUnit());
         if (type==null) {
             if (!dynamic) {
-                that.addError("type does not exist: " + 
-                        name(that.getIdentifier()), 100);
+                that.addError("type does not exist: " + name, 100);
                 unit.getUnresolvedReferences().add(that.getIdentifier());
             }
         }
         else {
             that.setDeclaration(type);
             if (!type.isVisible(that.getScope())) {
-                that.addError("type is not visible: " +
-                        name(that.getIdentifier()), 400);
+                that.addError("type is not visible: " + name, 400);
             }
             if (type.isPackageVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("package private type is not visible: " +
-                        name(that.getIdentifier()));
+                that.addError("package private type is not visible: " + name);
+            }
+            if (type instanceof Functional &&
+                    ((Functional) type).isOverloaded() && //identifies a Java constructor
+                    type.isProtectedVisibility() &&
+                    !declaredInPackage(type, unit)) {
+                that.addError("protected constructor is not visible: " + name);
             }
             checkConcreteClass(type, that);
             Tree.TypeArguments tal = that.getTypeArguments();
