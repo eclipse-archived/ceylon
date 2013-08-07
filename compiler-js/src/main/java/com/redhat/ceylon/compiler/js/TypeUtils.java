@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
@@ -377,8 +378,55 @@ public class TypeUtils {
         gen.out("]");
     }
 
+    static void encodeForRuntime(final Declaration d, final GenerateJsVisitor gen) {
+        if (d.getAnnotations() == null || d.getAnnotations().isEmpty()) {
+            encodeForRuntime(d, gen, null);
+        } else {
+            encodeForRuntime(d, gen, new RuntimeMetamodelAnnotationGenerator() {
+                @Override public void generateAnnotations() {
+                    gen.out(",", MetamodelGenerator.KEY_ANNOTATIONS, ":function(){return[");
+                    boolean first = true;
+                    for (Annotation a : d.getAnnotations()) {
+                        if (first) first=false; else gen.out(",");
+                        Declaration ad = d.getUnit().getPackage().getMemberOrParameter(d.getUnit(), a.getName(), null, false);
+                        if (ad instanceof Method) {
+                            gen.qualify(null, ad);
+                            gen.out(gen.getNames().name(ad), "(");
+                            if (a.getPositionalArguments() == null) {
+                                for (Parameter p : ((Method)ad).getParameterLists().get(0).getParameters()) {
+                                    String v = a.getNamedArguments().get(p.getName());
+                                    gen.out(v == null ? "undefined" : v);
+                                }
+                            } else {
+                                boolean farg = true;
+                                for (String s : a.getPositionalArguments()) {
+                                    if (farg)farg=false; else gen.out(",");
+                                    gen.out(s);
+                                }
+                            }
+                            gen.out(")");
+                        } else {
+                            gen.out("null/*MISSING DECLARATION FOR ANNOTATION ", a.getName(), "*/");
+                        }
+                    }
+                    gen.out("];}");
+                }
+            });
+        }
+    }
+
     /** Output a metamodel map for runtime use. */
     static void encodeForRuntime(final Declaration d, final Tree.AnnotationList annotations, final GenerateJsVisitor gen) {
+        final boolean include = annotations != null && !annotations.getAnnotations().isEmpty();
+        encodeForRuntime(d, gen, include ? new RuntimeMetamodelAnnotationGenerator() {
+            @Override public void generateAnnotations() {
+                gen.out(",", MetamodelGenerator.KEY_ANNOTATIONS, ":");
+                outputAnnotationsFunction(annotations, gen);
+            }
+        } : null);
+    }
+
+    static void encodeForRuntime(final Declaration d, final GenerateJsVisitor gen, final RuntimeMetamodelAnnotationGenerator annGen) {
         gen.out("function(){return{mod:$$METAMODEL$$");
         List<TypeParameter> tparms = null;
         List<ProducedType> satisfies = null;
@@ -464,11 +512,9 @@ public class TypeUtils {
             }
             gen.out("]");
         }
-        if (annotations != null && !annotations.getAnnotations().isEmpty()) {
-            gen.out(",", MetamodelGenerator.KEY_ANNOTATIONS, ":");
-            outputAnnotationsFunction(annotations, gen);
+        if (annGen != null) {
+            annGen.generateAnnotations();
         }
-
         gen.out(",pkg:'", d.getUnit().getPackage().getNameAsString(), "',d:$$METAMODEL$$['");
         gen.out(d.getUnit().getPackage().getNameAsString(), "']");
         if (d.isToplevel()) {
@@ -620,5 +666,9 @@ public class TypeUtils {
             gen.out("];}");
         }
     }
-   
+
+    static interface RuntimeMetamodelAnnotationGenerator {
+        public void generateAnnotations();
+    }
+
 }

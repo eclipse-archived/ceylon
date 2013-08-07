@@ -655,7 +655,7 @@ public class GenerateJsVisitor extends Visitor
         callInterfaces(that.getSatisfiedTypes(), d, that, superDecs);
 
         if (!opts.isOptimize()) {
-            //TODO fix #231 for lexical scope
+            //Fix #231 for lexical scope
             for (Parameter p : that.getParameterList().getParameters()) {
                 if (!p.getParameterModel().isHidden()){
                     generateAttributeForParameter(d, p.getParameterModel());
@@ -976,7 +976,7 @@ public class GenerateJsVisitor extends Visitor
             out(",undefined");
         }
         out(",");
-        TypeUtils.encodeForRuntime(p.getModel(), null/*TODO: FUCK! how can we retrieve this?*/, this);
+        TypeUtils.encodeForRuntime(p.getModel(), this);
         out(");");
         endLine();
     }
@@ -1152,6 +1152,10 @@ public class GenerateJsVisitor extends Visitor
                 outerSelf(d);
                 out(".", names.getter(d), "=", names.getter(d), ";");
                 endLine();
+                outerSelf(d);
+                out(".", names.getter(d), ".$$metamodel$$=");
+                TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+                endLine(true);
             }
         }
         else {
@@ -1739,7 +1743,12 @@ public class GenerateJsVisitor extends Visitor
                         out(",undefined");
                     }
                     out(",");
-                    TypeUtils.encodeForRuntime(decl, attributeNode == null ? null : attributeNode.getAnnotationList(), this);
+                    //TODO if attributeNode is null then annotations should come from decl
+                    if (attributeNode == null) {
+                        TypeUtils.encodeForRuntime(decl, this);
+                    } else {
+                        TypeUtils.encodeForRuntime(decl, attributeNode.getAnnotationList(), this);
+                    }
                     out(");");
                     endLine();
                 }
@@ -2448,7 +2457,7 @@ public class GenerateJsVisitor extends Visitor
         endLine();
         //Add reference to metamodel
         out(names.name(c), ".$$metamodel$$=");
-        TypeUtils.encodeForRuntime(c, null/*TODO check if an object arg can have annotations */, this);
+        TypeUtils.encodeForRuntime(c, null, this);
         endLine(true);
 
         typeInitialization(xt, sts, false, c, new PrototypeInitCallback() {
@@ -2597,7 +2606,7 @@ public class GenerateJsVisitor extends Visitor
                 endBlock();
                 if (property) {
                     out(",undefined,");
-                    TypeUtils.encodeForRuntime(bmeDecl, null/*TODO shared actual*/, this);
+                    TypeUtils.encodeForRuntime(bmeDecl, this);
                     out(")");
                 }
                 endLine(true);
