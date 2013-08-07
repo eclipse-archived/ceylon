@@ -20,6 +20,7 @@ import java.util.Set;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Import;
 import com.redhat.ceylon.compiler.typechecker.model.ImportList;
@@ -577,6 +578,20 @@ public class TypeVisitor extends Visitor {
         else {
             if (!type.isVisible(that.getScope())) {
                 that.addError("type is not visible: " + name, 400);
+            }
+            else if (type instanceof Functional &&
+                    ((Functional) type).isOverloaded()) {  
+                //it is a Java constructor
+                Declaration at = type.getContainer().getDirectMember(type.getName(), null, false);
+                if (at.isPackageVisibility()) {
+                    that.addError("package private type is not visible: " + name);
+                }
+            }
+            else {
+                if (type.isPackageVisibility() && 
+                        !declaredInPackage(type, unit)) {
+                    that.addError("package private type is not visible: " + name);
+                }
             }
             ProducedType outerType = that.getScope().getDeclaringType(type);
             visitSimpleType(that, outerType, type);
