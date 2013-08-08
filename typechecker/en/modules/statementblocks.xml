@@ -348,8 +348,7 @@
         <listitem>
         <para>A program element <emphasis>belongs</emphasis> to a declaration if it occurs
         in the <literal>extends</literal>, <literal>satisfies</literal>, <literal>of</literal>,
-        <literal>given</literal>, <literal>abstracts</literal>, <literal>adapts</literal> or
-        <literal>is</literal> clause of the declaration.</para>
+        or <literal>given</literal> clause of the declaration.</para>
         </listitem>
         </itemizedlist>
         
