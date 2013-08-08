@@ -317,7 +317,7 @@ final class AnnotationClassStringVariadic implements .com.redhat.ceylon.compiler
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.class)
 final class annotationClassString_ {
     
     private annotationClassString_() {
@@ -330,7 +330,7 @@ final class annotationClassString_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {-32768},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.class)
 final class annotationClassStringStatic_ {
     
     private annotationClassStringStatic_() {
@@ -349,7 +349,7 @@ final class annotationClassStringStatic_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.class)
 final class annotationClassStringDropped_ {
     
     private annotationClassStringDropped_() {
@@ -362,7 +362,7 @@ final class annotationClassStringDropped_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {1},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.class)
 final class annotationClassStringDropped2_ {
     
     private annotationClassStringDropped2_() {
@@ -375,7 +375,7 @@ final class annotationClassStringDropped2_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted.class)
 final class annotationClassStringDefaulted_ {
     
     private annotationClassStringDefaulted_() {

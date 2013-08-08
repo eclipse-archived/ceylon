@@ -75,7 +75,7 @@ final class CollidingLiteralDefaults implements .com.redhat.ceylon.compiler.java
         arguments = {
                 -32768,
                 0},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults.class)
 final class collidingLiteralDefaults_ {
     
     private collidingLiteralDefaults_() {

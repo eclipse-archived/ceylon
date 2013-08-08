@@ -74,7 +74,7 @@ final class AnnotationClassInteger implements .com.redhat.ceylon.compiler.java.r
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.class)
 final class annotationClassIntegerDefault_ {
     
     private annotationClassIntegerDefault_() {
@@ -89,7 +89,7 @@ final class annotationClassIntegerDefault_ {
         arguments = {
                 1,
                 0},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.class)
 final class annotationClassIntegerSwapped_ {
     
     private annotationClassIntegerSwapped_() {
@@ -104,7 +104,7 @@ final class annotationClassIntegerSwapped_ {
         arguments = {
                 1,
                 0},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.class)
 final class annotationClassIntegerNames_ {
     
     private annotationClassIntegerNames_() {
@@ -126,7 +126,7 @@ final class annotationClassIntegerNames_ {
         arguments = {
                 -32768,
                 -32768},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.class)
 final class annotationClassIntegerStatic_ {
     
     private annotationClassIntegerStatic_() {

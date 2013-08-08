@@ -112,7 +112,7 @@ final class AnnotationClassNullarySequenced implements .com.redhat.ceylon.compil
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.class)
 final class annotationClassNullary_ {
     
     private annotationClassNullary_() {
@@ -130,7 +130,7 @@ final class annotationClassNullary_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.class)
 final class annotationClassNullarySequenced_ {
     
     private annotationClassNullarySequenced_() {

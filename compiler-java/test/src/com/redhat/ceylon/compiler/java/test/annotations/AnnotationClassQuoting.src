@@ -113,7 +113,7 @@ final class AnnotationClassQuoting implements .com.redhat.ceylon.compiler.java.r
                 -32768,
                 -32768,
                 -32768},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassQuoting.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassQuoting.class)
 final class annotationClassQuoting_ {
     
     private annotationClassQuoting_() {
@@ -139,7 +139,7 @@ final class annotationClassQuoting_ {
                 1,
                 2,
                 3},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassQuoting.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassQuoting.class)
 final class annotationClassQuoting2_ {
     
     private annotationClassQuoting2_() {

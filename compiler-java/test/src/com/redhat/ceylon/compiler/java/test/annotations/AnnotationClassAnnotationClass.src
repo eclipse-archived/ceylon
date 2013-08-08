@@ -31,7 +31,7 @@ final class AnnotationClassParam implements .com.redhat.ceylon.compiler.java.run
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam.class)
 final class annotationClassParam_ {
     
     private annotationClassParam_() {
@@ -160,7 +160,7 @@ final class AnnotationClassAnnotationClassSequence implements .com.redhat.ceylon
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence.class)
 final class annotationClassAnnotationClassSequence_ {
     
     private annotationClassAnnotationClassSequence_() {
@@ -222,7 +222,7 @@ final class AnnotationClassAnnotationClassDefaulted implements .com.redhat.ceylo
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass.class)
 final class annotationClassAnnotationClass_ {
     
     private annotationClassAnnotationClass_() {

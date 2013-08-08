@@ -140,7 +140,7 @@ final class AnnotationClassCharacterDefaulted implements .com.redhat.ceylon.comp
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter.class)
 final class annotationClassCharacter_ {
     
     private annotationClassCharacter_() {

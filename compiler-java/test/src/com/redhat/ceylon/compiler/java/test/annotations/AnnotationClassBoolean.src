@@ -57,7 +57,7 @@ final class AnnotationClassBoolean implements .com.redhat.ceylon.compiler.java.r
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean.class)
 final class annotationClassBoolean_ {
     
     private annotationClassBoolean_() {
@@ -229,7 +229,7 @@ final class AnnotationClassBooleanVariadic implements .com.redhat.ceylon.compile
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {256},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic.class)
 final class annotationClassVariadicVariadic_ {
     
     private annotationClassVariadicVariadic_() {
@@ -256,7 +256,7 @@ final class annotationClassVariadicVariadic_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {256},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic.class)
 final class annotationClassVariadicSequence_ {
     
     private annotationClassVariadicSequence_() {
@@ -269,7 +269,7 @@ final class annotationClassVariadicSequence_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {256},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic.class)
 final class annotationClassVariadicIterable_ {
     
     private annotationClassVariadicIterable_() {
@@ -337,7 +337,7 @@ final class AnnotationClassBooleanSequence implements .com.redhat.ceylon.compile
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence.class)
 final class annotationClassSequenceVariadic_ {
     
     private annotationClassSequenceVariadic_() {
@@ -364,7 +364,7 @@ final class annotationClassSequenceVariadic_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence.class)
 final class annotationClassSequenceSequence_ {
     
     private annotationClassSequenceSequence_() {
@@ -432,7 +432,7 @@ final class AnnotationClassBooleanIterable implements .com.redhat.ceylon.compile
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable.class)
 final class annotationClassIterableVariadic_ {
     
     private annotationClassIterableVariadic_() {
@@ -459,7 +459,7 @@ final class annotationClassIterableVariadic_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable.class)
 final class annotationClassIterableSequence_ {
     
     private annotationClassIterableSequence_() {
@@ -472,7 +472,7 @@ final class annotationClassIterableSequence_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable.class)
 final class annotationClassIterableIterable_ {
     
     private annotationClassIterableIterable_() {

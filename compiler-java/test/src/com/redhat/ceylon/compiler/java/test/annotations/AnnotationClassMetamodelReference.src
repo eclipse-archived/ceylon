@@ -205,7 +205,7 @@ final class AnnotationClassMetamodelReferenceVariadic implements .com.redhat.cey
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference.class)
 final class annotationClassMetamodelReference_ {
     
     private annotationClassMetamodelReference_() {
@@ -218,7 +218,7 @@ final class annotationClassMetamodelReference_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted.class)
 final class annotationClassMetamodelReferenceDefaulted1_ {
     
     private annotationClassMetamodelReferenceDefaulted1_() {
@@ -231,7 +231,7 @@ final class annotationClassMetamodelReferenceDefaulted1_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted.class)
 final class annotationClassMetamodelReferenceDefaulted2_ {
     
     private annotationClassMetamodelReferenceDefaulted2_() {
@@ -249,7 +249,7 @@ final class annotationClassMetamodelReferenceDefaulted2_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {256},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic.class)
 final class annotationClassMetamodelReferenceVariadic1_ {
     
     private annotationClassMetamodelReferenceVariadic1_() {
@@ -276,7 +276,7 @@ final class annotationClassMetamodelReferenceVariadic1_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic.class)
 final class annotationClassMetamodelReferenceVariadic2_ {
     
     private annotationClassMetamodelReferenceVariadic2_() {
