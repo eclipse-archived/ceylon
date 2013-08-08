@@ -165,7 +165,8 @@ assert (semaphore&identical;s); //assertion never fails</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>recursively replacing all type aliases with their definitions and</para>
+                    <para>recursively replacing all type aliases, class aliases, and interface
+                    aliases with their definitions and</para>
                 </listitem>
                 <listitem>
                     <para>recursively replacing all type parameters with their type arguments</para>

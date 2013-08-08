@@ -804,7 +804,8 @@ TypeConstraints?
             <para>Interface aliases are not reified types. The metamodel reference for an 
             interface alias type&mdash;for example, <literal>PeopleByName</literal>&mdash;returns 
             the metamodel object for the aliased interface&mdash;in this case, 
-            <literal>Map&lt;String,Person&gt;</literal>.</para>
+            <literal>Map&lt;String,Person&gt;</literal>, as specified in 
+            <xref linkend="reification"/>.</para>
         
         </section>
             
@@ -1635,7 +1636,8 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             <para>Class aliases are not reified types. The metamodel reference for a class 
             alias type&mdash;for example, <literal>People</literal>&mdash;returns the metamodel 
             object for the aliased class&mdash;in this case, 
-            <literal>ArrayList&lt;Person&gt;</literal>.</para>
+            <literal>ArrayList&lt;Person&gt;</literal>, as specified in 
+            <xref linkend="reification"/>.</para>
         
         </section>
         
@@ -1671,7 +1673,8 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <para>Type aliases are not reified types. The metamodel reference for a type 
         alias type&mdash;for example, <literal>Number</literal>&mdash;returns the metamodel 
         object for the aliased type&mdash;in this case, 
-        <literal>Integer|Float|Decimal|Whole</literal>.</para>
+        <literal>Integer|Float|Decimal|Whole</literal>, as specified in 
+        <xref linkend="reification"/>.</para>
         
     </section>
         
@@ -1766,7 +1769,8 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
                     <para>Otherwise, every conditional execution path of the block must 
                     end in a <literal>return</literal> directive that specifies an 
                     expression assignable to the return type of the function, or in a 
-                    <literal>throw</literal> directive.</para>
+                    <literal>throw</literal> directive, as specified in 
+                    <xref linkend="definitereturn"/>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2180,12 +2184,14 @@ case (hexadecimal) {
             <programlisting>shared Integer[] evenDigits = [0,2,4,6,8];</programlisting>
             
             <para>A reference declared directly inside the body of a class represents a persistent 
-            value associated with every instance of the class. Repeated evaluation of the attribute 
+            value associated with every instance of the class, as defined by 
+            <xref linkend="sequentialexecutionandclosure"/>. Repeated evaluation of the attribute 
             of a particular instance of the class returns the same result until the attribute of 
             the instance is assigned a new value.</para>
             
-            <para>A block-local reference represents state associated with a particular execution 
-            of that block of code.</para> 
+            <para>A block-local reference represents state associated with a frame, that is, with
+            a particular execution of the containing block of code, as defined in 
+            <xref linkend="sequentialexecutionandclosure"/>.</para> 
                         
             <para>If a class declares or inherits a <literal>variable</literal> reference, it 
             must (directly or indirectly) extend the class <literal>Basic</literal> defined in 
@@ -2233,7 +2239,8 @@ case (hexadecimal) {
             
             <para>Every conditional execution path of the block must end in a
             <literal>return</literal> directive that specifies an expression assignable 
-            to the type of the value, or in a <literal>throw</literal> directive.</para>
+            to the type of the value, or in a <literal>throw</literal> directive, as
+            specified in <xref linkend="definitereturn"/>.</para>
                                 
             <para>Alternatively, a getter implementation may be a lazy specifier, that
             is, an expression specified using <literal>=&gt;</literal>. The type of the 
