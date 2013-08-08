@@ -4,6 +4,8 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
@@ -45,7 +47,8 @@ public class InvocationAnnotationTerm extends AnnotationTerm {
     public void makeLiteralAnnotationFields(ExpressionTransformer exprGen,
             AnnotationInvocation toplevel,
             List<AnnotationFieldName> fieldPath,
-            ListBuffer<JCStatement> staticArgs) {
+            ListBuffer<JCStatement> staticArgs, ProducedType expectedType) {
+        // Recurse to our instantiation, since it may have constants
         getInstantiation().makeLiteralAnnotationFields(exprGen, toplevel, fieldPath, staticArgs);
     }
 }

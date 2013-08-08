@@ -239,11 +239,11 @@ public class AnnotationInvocation {
             AnnotationTerm defaultTerm = acp.getDefaultArgument();
             if (defaultTerm != null && 
                     this.equals(toplevel)) {
-                defaultTerm.makeLiteralAnnotationFields(exprGen, toplevel, fieldPath.append(acp), staticArgs);
+                defaultTerm.makeLiteralAnnotationFields(exprGen, toplevel, fieldPath.append(acp), staticArgs, acp.getParameter().getType());
             }
         }
         for (AnnotationArgument aa : getAnnotationArguments()) {
-            aa.getTerm().makeLiteralAnnotationFields(exprGen, toplevel, fieldPath.append(aa), staticArgs);
+            aa.getTerm().makeLiteralAnnotationFields(exprGen, toplevel, fieldPath.append(aa), staticArgs, aa.getParameter().getType());
         }
     }
     

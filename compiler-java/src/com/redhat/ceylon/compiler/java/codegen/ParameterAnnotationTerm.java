@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.util.ListBuffer;
@@ -107,7 +108,7 @@ public class ParameterAnnotationTerm extends AnnotationTerm implements Annotatio
             ExpressionTransformer exprGen,
             AnnotationInvocation toplevel,
             com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath,
-            ListBuffer<JCStatement> staticArgs) {
-        // Do nothing
+            ListBuffer<JCStatement> staticArgs, ProducedType expectedType) {
+        // Do nothing since we don't need to produced any constants for a parameter term
     }
 }

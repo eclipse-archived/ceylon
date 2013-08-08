@@ -8,6 +8,9 @@ import static com.sun.tools.javac.code.Flags.STATIC;
 
 import java.util.List;
 
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
@@ -56,7 +59,7 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
             ExpressionTransformer exprGen,
             AnnotationInvocation toplevel,
             com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath,
-            ListBuffer<JCStatement> staticArgs) {
+            ListBuffer<JCStatement> staticArgs, ProducedType type) {
         Tree.Term term = getField();
         JCExpression expr;
         if (term instanceof Tree.Literal) {
@@ -72,9 +75,13 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
         } else {
             expr = exprGen.makeErroneous(term);
         }
+        // If the annotation class's parameter is 'hash' we need to cast the 
+        // literal to an int and make an int field, so we can't use the term's type
+        expr = exprGen.applyErasureAndBoxing(expr, term.getTypeModel(), 
+                false, BoxingStrategy.UNBOXED, type);
         JCVariableDecl field = exprGen.makeVar(STATIC | FINAL | (toplevel.getConstructorDeclaration().isShared() ? PUBLIC : 0), 
                 Naming.getAnnotationFieldName(fieldPath),
-                exprGen.makeJavaType(term.getTypeModel()), 
+                exprGen.makeJavaType(type), 
                 expr);
         staticArgs.append(field);
     
