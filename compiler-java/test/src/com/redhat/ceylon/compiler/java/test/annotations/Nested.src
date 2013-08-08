@@ -1,21 +1,29 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
 @interface NestedLeaf$annotation {
     
     public abstract long i1() default 1L;
 }
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.METHOD})
 @interface NestedLeaf$annotations {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation[] value();
 }
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.Final$annotation
 @.ceylon.language.Annotation$annotation
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language.model::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::NestedLeaf,ceylon.language.model.declaration::FunctionDeclaration>"})
 final class NestedLeaf implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf, .ceylon.language.model.declaration.FunctionDeclaration> {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     NestedLeaf() {
         (
             let
@@ -27,61 +35,81 @@ final class NestedLeaf implements .com.redhat.ceylon.compiler.java.runtime.model
         );
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     NestedLeaf(.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation anno) {
         this(anno.i1());
     }
     
-    NestedLeaf(final long i1) {
+    NestedLeaf(@.com.redhat.ceylon.compiler.java.metadata.Name("i1")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long i1) {
         this.i1 = i1;
         this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf, .ceylon.language.model.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf.$TypeDescriptor, .ceylon.language.model.declaration.FunctionDeclaration.$TypeDescriptor, this);
         this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf>, .ceylon.language.model.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf.$TypeDescriptor), .ceylon.language.model.declaration.FunctionDeclaration.$TypeDescriptor, this);
         this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf>(.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf.$TypeDescriptor, this);
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final long i1;
     
     @.ceylon.language.Shared$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getI1() {
         return i1;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     static long $init$i1() {
         return 1L;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf, .ceylon.language.model.declaration.FunctionDeclaration> $ceylon$language$model$SequencedAnnotation$this;
     
     @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf, .ceylon.language.model.declaration.FunctionDeclaration> $ceylon$language$model$SequencedAnnotation$impl() {
         return $ceylon$language$model$SequencedAnnotation$this;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf>, .ceylon.language.model.declaration.FunctionDeclaration> $ceylon$language$model$ConstrainedAnnotation$this;
     
     @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf>, .ceylon.language.model.declaration.FunctionDeclaration> $ceylon$language$model$ConstrainedAnnotation$impl() {
         return $ceylon$language$model$ConstrainedAnnotation$this;
     }
     
     @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.model.Annotated programElement) {
         return $ceylon$language$model$ConstrainedAnnotation$this.occurs(programElement);
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf> $ceylon$language$model$Annotation$this;
     
     @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf> $ceylon$language$model$Annotation$impl() {
         return $ceylon$language$model$Annotation$this;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf();
     }
     
     @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
         return .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf.$TypeDescriptor;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf.class);
 }
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
         annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf.class)
@@ -91,6 +119,7 @@ final class nestedLeafDefaultedParameter_ {
     }
     static final long default$i2 = 2L;
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     static .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf nestedLeafDefaultedParameter() {
         return (
             let
@@ -101,15 +130,22 @@ final class nestedLeafDefaultedParameter_ {
         );
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     static final long nestedLeafDefaultedParameter$i2() {
         return 2L;
     }
     
     @.ceylon.language.Annotation$annotation
-    static .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf nestedLeafDefaultedParameter(final long i2) {
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::NestedLeaf")
+    static .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf nestedLeafDefaultedParameter(@.com.redhat.ceylon.compiler.java.metadata.Name("i2")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long i2) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf(i2);
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.nestedLeafDefaultedParameter_.nestedLeafDefaultedParameter();
@@ -635,73 +671,5 @@ final class nestedBranchCtorLiteral_ {
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchCtorLiteral_.nestedBranchCtorLiteral();
-    }
-}
-final class ctorDefaultedParam_callsite_ {
-    
-    private ctorDefaultedParam_callsite_() {
-    }
-    
-    @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotations({
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = .com.redhat.ceylon.compiler.java.test.annotations.nestedLeafDefaultedParameter_.default$i2),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = .com.redhat.ceylon.compiler.java.test.annotations.nestedLeafLiteralArgument_.arg$i1)})
-    @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotations({
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
-                    s = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPClassWithLiteralArgument_.arg$s,
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPClassWithLiteralArgument_.default$b$arg$i1)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
-                    s = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPClassDefaultedArgument_.arg$s,
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
-                    s = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPClassWithLiteralArgument_.arg$s,
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
-                    s = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPClassWithLiteralArgument_.arg$s,
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 3L)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
-                    s = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPClassWithLiteralArgument_.arg$s,
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 4L)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
-                    s = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPClassWithLiteralArgument_.arg$s,
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = .com.redhat.ceylon.compiler.java.test.annotations.nestedLeafDefaultedParameter_.default$i2)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
-                    s = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPClassWithLiteralArgument_.arg$s,
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 5L)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
-                    s = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPClassWithLiteralArgument_.arg$s,
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 6L)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
-                    s = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPClassWithLiteralArgument_.arg$s,
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = .com.redhat.ceylon.compiler.java.test.annotations.nestedLeafLiteralArgument_.arg$i1)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
-                    s = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPCtorWithLiteralArgument_.arg$s,
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPCtorWithLiteralArgument_.default$b$arg$i2)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
-                    s = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPCtorNullary_.arg$s,
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = .com.redhat.ceylon.compiler.java.test.annotations.nestedLeafLiteralArgument_.arg$i1)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
-                    s = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPCtorWithDefaultedArgument_.arg$s,
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = .com.redhat.ceylon.compiler.java.test.annotations.nestedLeafDefaultedParameter_.default$i2)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
-                    s = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchClassNullary_.arg$s,
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
-                    s = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchClassLiteral_.arg$s,
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchClassLiteral_.arg$b$arg$i1)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
-                    s = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchCtorNullary_.arg$s,
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = .com.redhat.ceylon.compiler.java.test.annotations.nestedLeafLiteralArgument_.arg$i1)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
-                    s = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchCtorDefaultedArgument_.arg$s,
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = .com.redhat.ceylon.compiler.java.test.annotations.nestedLeafDefaultedParameter_.default$i2)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
-                    s = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchCtorLiteral_.arg$s,
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchCtorLiteral_.arg$b$arg$i2))})
-    static void ctorDefaultedParam_callsite() {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.ctorDefaultedParam_callsite_.ctorDefaultedParam_callsite();
     }
 }

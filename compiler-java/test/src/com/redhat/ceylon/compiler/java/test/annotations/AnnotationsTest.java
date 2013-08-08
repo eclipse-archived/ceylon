@@ -142,6 +142,7 @@ public class AnnotationsTest extends CompilerTest {
     @Test
     public void testNested(){
         compareWithJavaSource("Nested");
+        compareWithJavaSource("Nested_callsite");
     }
     
     @Test

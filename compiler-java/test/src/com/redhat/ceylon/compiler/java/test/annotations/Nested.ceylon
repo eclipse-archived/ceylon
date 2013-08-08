@@ -1,11 +1,10 @@
 import ceylon.language.model{SequencedAnnotation}
 import ceylon.language.model.declaration{FunctionDeclaration}
 
-@nomodel
 final annotation class NestedLeaf(shared Integer i1 = 1) 
     satisfies SequencedAnnotation<NestedLeaf, FunctionDeclaration>{
 }
-@nomodel
+
 annotation NestedLeaf nestedLeafDefaultedParameter(Integer i2=2) => NestedLeaf(i2);
 annotation NestedLeaf nestedLeafLiteralArgument() => NestedLeaf(2);
 
@@ -57,33 +56,3 @@ annotation NestedBranch nestedBranchCtorLiteral()
 // Illegal annotation NestedBranch ctorDefaultedParamA8(Integer x) 
 //    => NestedBranch("", nestedLeafDefaultedParameter(x));
 
-@nomodel
-nestedLeafDefaultedParameter
-nestedLeafLiteralArgument
-// defaulted parameter class instantiation
-nestedBranchDPClassWithLiteralArgument
-nestedBranchDPClassDefaultedArgument
-// nested invocations at callsite
-nestedBranchDPClassWithLiteralArgument(NestedLeaf())
-nestedBranchDPClassWithLiteralArgument(NestedLeaf(3))
-nestedBranchDPClassWithLiteralArgument(NestedLeaf{i1=4;})
-nestedBranchDPClassWithLiteralArgument(nestedLeafDefaultedParameter())
-nestedBranchDPClassWithLiteralArgument(nestedLeafDefaultedParameter(5))
-nestedBranchDPClassWithLiteralArgument(nestedLeafDefaultedParameter{i2=6;})
-nestedBranchDPClassWithLiteralArgument(nestedLeafLiteralArgument())
-// defaulted parameter constructor invocation
-nestedBranchDPCtorWithLiteralArgument
-nestedBranchDPCtorNullary
-nestedBranchDPCtorWithDefaultedArgument // This ONE!
-// nested invocation of a class
-nestedBranchClassNullary
-nestedBranchClassLiteral
-// nested invocation of a ctor
-nestedBranchCtorNullary
-nestedBranchCtorDefaultedArgument
-nestedBranchCtorLiteral
-// TODO nested invocation of a ctor
-void ctorDefaultedParam_callsite(){
-}
-
-// TODO Split this into three CUs to test model loading aspects
