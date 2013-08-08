@@ -223,7 +223,7 @@ public class AnnotationInvocation {
                                 gen.naming.makeUnquotedIdent("arguments"),
                                 gen.make().NewArray(null, null, arguments.toList())),
                         gen.make().Assign(
-                                gen.naming.makeUnquotedIdent("annotationClass"),
+                                gen.naming.makeUnquotedIdent("primary"),
                                 gen.naming.makeQualIdent(primary, "class"))
                 ));
         if (instantiations.isEmpty()) {

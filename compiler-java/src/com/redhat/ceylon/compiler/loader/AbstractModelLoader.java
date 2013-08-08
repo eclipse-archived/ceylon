@@ -139,7 +139,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public static final String CEYLON_TYPE_ALIAS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.TypeAlias";
     private static final String CEYLON_ANNOTATION_INSTANTIATION_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation";
     private static final String CEYLON_ANNOTATION_INSTANTIATION_ARGUMENTS_MEMBER = "arguments";
-    private static final String CEYLON_ANNOTATION_INSTANTIATION_ANNOTATION_MEMBER = "annotationClass";
+    private static final String CEYLON_ANNOTATION_INSTANTIATION_ANNOTATION_MEMBER = "primary";
     private static final String CEYLON_ANNOTATION_INSTANTIATION_TREE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiationTree";
     private static final String CEYLON_TRANSIENT_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Transient";
     private static final String JAVA_DEPRECATED_ANNOTATION = "java.lang.Deprecated";
