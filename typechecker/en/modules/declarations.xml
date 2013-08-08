@@ -152,7 +152,8 @@ TypeConstraints?
                 <para>the package is declared <literal>shared</literal> in its
                 package descriptor, and the module descriptor of the module containing 
                 the <literal>import</literal> statement explicitly imports the module 
-                containing the package.</para>
+                containing the package, as defined by 
+                <xref linkend="moduledescriptors"/>.</para>
             </listitem>
         </itemizedlist>
         
@@ -179,8 +180,8 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
         
-        <para>An import element may not refer to a non-<literal>shared</literal> 
-        declaration.</para>
+        <para>An import element may not refer to a declaration that is not visible to
+        the compilation unit, as defined by <xref linkend="visibility"/>.</para>
         
         <para>An <literal>import</literal> statement may not contain two import elements
         which refer to the same declaration.</para>
@@ -286,7 +287,7 @@ TypeConstraints?
         
         </section>
         
-        <section>
+        <section id="importedname">
             <title>Imported name</title>
             
             <para>Inside a compilation unit which imports a declaration, the declaration
