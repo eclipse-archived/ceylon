@@ -1,3 +1,5 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
 final class ctorDefaultedParam_callsite_ {
     
     private ctorDefaultedParam_callsite_() {
