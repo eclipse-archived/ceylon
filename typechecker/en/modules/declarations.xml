@@ -2114,8 +2114,10 @@ case (hexadecimal) {
 }</programlisting>
             
             <para>Alternatively, a subtype may refine a method using a specification
-            statement. The specification statement must satisfy the requirements for
-            specification of a forward-declared function.</para>
+            statement, as defined in <xref linkend="specificationstatements"/>. The 
+            specification statement must satisfy the requirements of
+            <xref linkend="functionforwarddeclaration"/> above for specification 
+            of a forward-declared function.</para>
             
             <programlisting>class ConcreteSquareRooter()
         extends AbstractSquareRooter() {
@@ -2529,8 +2531,10 @@ print(greeting);</programlisting>
 }</programlisting>
             
             <para>Alternatively, a subtype may refine an attribute using a specification 
-            statement. The specification statement must satisfy the requirements for 
-            specification of a forward-declared attribute.</para>
+            statement, as defined in <xref linkend="specificationstatements"/>. The 
+            specification statement must satisfy the requirements of 
+            <xref linkend="valueforwarddeclaration"/> above for specification of a 
+            forward-declared attribute.</para>
             
             <programlisting>class ConcretePi() 
         extends AbstractPi() {
