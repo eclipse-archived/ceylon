@@ -370,8 +370,9 @@
     <section id="hidingdeclaration">
         <title>Hiding a declaration</title>
     
-        <para>If two declarations with the same name are both in scope at a certain program 
-        element, then one declaration may <emphasis>hide</emphasis> the other declaration.</para>
+        <para>If two declarations with the same name or imported name, as defined in 
+        <xref linkend="importedname"/>, are both in scope at a certain program element, then one 
+        declaration may <emphasis>hide</emphasis> the other declaration.</para>
         
         <!--
         <itemizedlist>
@@ -647,17 +648,19 @@ class Complex(Float x, Float y=0.0)
         
         <itemizedlist>
             <listitem>
-                <para>There must be at least one declaration with the given name in scope 
-                at the program element.</para>
+                <para>there must be at least one declaration with the given name or 
+                imported name, as defined in <xref linkend="importedname"/>, in scope 
+                at the program element, and</para>
             </listitem>
             <listitem>
-                <para>If multiple declarations with the given name are in scope at the 
-                program element where the given name occurs, then there must be exactly 
-                one such declaration which is not hidden by another declaration.</para>
+                <para>if multiple declarations with the given name or imported name 
+                are in scope at the program element where the given name occurs, then 
+                there must be exactly one such declaration which is not hidden by any 
+                other declaration.</para>
             </listitem>
         </itemizedlist>
         
-        <para>Then the given name refers to this unique unhidden declaration, and:</para> 
+        <para>Then the reference is to this unique unhidden declaration, and:</para>
         
         <itemizedlist>
             <listitem>
@@ -674,9 +677,9 @@ class Complex(Float x, Float y=0.0)
         </itemizedlist>
         
         <para>As a special exception to the above, if there is no declaration with the 
-        given name in scope at the program element and the program element occurs inside 
-        a <literal>dynamic</literal> block, then the unqualified reference does not refer 
-        to any statically typed declaration.</para>
+        given name or imported name in scope at the program element and the program element 
+        occurs inside a <literal>dynamic</literal> block, then the unqualified reference 
+        does not refer to any statically typed declaration.</para>
         
         <para>If an unqualified reference refers to a member declaration of a type, then
         there is a unique <emphasis>inheriting or declaring class or interface</emphasis> 
@@ -738,23 +741,24 @@ class Complex(Float x, Float y=0.0)
         
         <itemizedlist>
             <listitem>
-                <para>The qualifying type must have at least one member with the given 
-                name which is visible at the program element.</para>
+                <para>the qualifying type must have at least one member with the given 
+                name or imported name, as defined in <xref linkend="importedname"/>, 
+                which is visible at the program element, and</para>
             </listitem>
             <listitem>
-                <para>If there are multiple visible members with the given name, then 
-                it is guaranteed by the type system that there is exactly one such 
-                member which is not refined by another member.</para>
+                <para>if there are multiple visible members with the given name or 
+                imported name, then it is guaranteed by the type system that there is 
+                exactly one such member which is not refined by another member.</para>
             </listitem>
         </itemizedlist>
         
         <comment><para>TODO: that's simply not true for intersection types! We need more 
         detail here about member resolution for intersection and union types.</para></comment>
         
-        <para>Then the given name refers to this unique member. If the program element 
-        is contained in the body of a class or interface, and the member declaration 
-        directly occurs in the body of the class or interface, and the qualified reference
-        is a value reference or callable reference, and the receiver expression is a self 
+        <para>Then the reference is to this unique member. If the program element is 
+        contained in the body of a class or interface, and the member declaration directly 
+        occurs in the body of the class or interface, and the qualified reference is a 
+        value reference or callable reference, and the receiver expression is a self 
         reference to the instance being initialized, then:</para>
         
         <itemizedlist>

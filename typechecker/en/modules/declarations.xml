@@ -291,10 +291,20 @@ TypeConstraints?
             <title>Imported name</title>
             
             <para>Inside a compilation unit which imports a declaration, the declaration
-            may be referred to by its <emphasis>imported name</emphasis>. For an import
-            element with an alias, the imported name is the alias. For an import element
-            with no alias, or for a wildcard import, the imported name is the original
-            name of the declaration.</para>
+            may be referred to, as specified in <xref linkend="unqualifiedreferenceresolution"/> 
+            and <xref linkend="qualifiedreferenceresolution"/>, by its <emphasis>imported 
+            name</emphasis>:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>For an import element with an alias, the imported name is the 
+                    alias.</para>
+                </listitem>
+                <listitem>
+                    <para>For an import element with no alias, or for a wildcard import, 
+                    the imported name is the original name of the declaration.</para>
+                </listitem>
+            </itemizedlist>
             
             <para>An import element may not result in an imported name that is the same
             as the name of a toplevel declaration contained in the compilation unit in
