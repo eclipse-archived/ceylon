@@ -517,7 +517,7 @@ public class Naming implements LocalId {
         }
     }
 
-    static String getDefaultedParamMethodName(Declaration decl, Parameter param) {
+    public static String getDefaultedParamMethodName(Declaration decl, Parameter param) {
         if (decl instanceof Method) {
             return ((Method) decl).getName() + "$" + CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getName();
         } else if (decl instanceof ClassOrInterface) {

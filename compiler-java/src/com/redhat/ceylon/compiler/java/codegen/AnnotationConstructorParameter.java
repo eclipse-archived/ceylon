@@ -36,7 +36,7 @@ public class AnnotationConstructorParameter implements AnnotationFieldName {
     }
     
     public String toString() {
-        return defaultArgument != null ? "=" + defaultArgument : "";
+        return parameter.getName() + (defaultArgument != null ? "=" + defaultArgument : "");
     }
 
     @Override

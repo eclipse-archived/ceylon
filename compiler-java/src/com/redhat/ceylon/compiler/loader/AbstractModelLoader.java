@@ -39,9 +39,11 @@ import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationArgument;
+import com.redhat.ceylon.compiler.java.codegen.AnnotationConstructorParameter;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationTerm;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationInvocation;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
+import com.redhat.ceylon.compiler.java.codegen.LiteralAnnotationTerm;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
@@ -2274,8 +2276,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      }
 
     private void setAnnotationConstructor(LazyMethod method, MethodMirror meth) {
-        AnnotationInvocation annotationInstantiation = new AnnotationInvocation();
-        annotationInstantiation.setConstructorDeclaration(method);
+        AnnotationInvocation ai = new AnnotationInvocation();
+        ai.setConstructorDeclaration(method);
         if (method.classMirror != null) {
             // TODO Handle @AnnotationInstantiationTree
             // And looking at the @AnnotationInstantiation on DPMs
@@ -2283,25 +2285,52 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if (annotationTypeMirror != null) {
                 ClassMirror annotationClassMirror = annotationTypeMirror.getDeclaredClass();
                 Class annotationClass = (Class)convertToDeclaration(annotationClassMirror, DeclarationType.TYPE);
-                annotationInstantiation.setPrimary(annotationClass);
-                method.setAnnotationConstructor(annotationInstantiation);
+                ai.setPrimary(annotationClass);
+                
+                ai.setConstructorDeclaration(method);
+                method.setAnnotationConstructor(ai);
             }
             
             List<Short> argumentCodes = getAnnotationShortArrayValue(method.classMirror, CEYLON_ANNOTATION_INSTANTIATION, "arguments");
             if (argumentCodes != null) {
-                Class ac = (Class)annotationInstantiation.getPrimary();
-                List<AnnotationArgument> args = new ArrayList<AnnotationArgument>(argumentCodes.size());
+                Class ac = (Class)ai.getPrimary();
                 for (int ii = 0; ii < argumentCodes.size(); ii++) {
-                    Short code = argumentCodes.get(ii);                    
-                    AnnotationTerm term = AnnotationTerm.decode(method.getParameterLists().get(0).getParameters(), annotationInstantiation, code);
+                    Short code = argumentCodes.get(ii);
+                    AnnotationTerm term = AnnotationTerm.decode(method.getParameterLists().get(0).getParameters(), ai, code);
                     Parameter classParameter = ac.getParameterList().getParameters().get(ii);
                     AnnotationArgument argument = new AnnotationArgument();
                     argument.setParameter(classParameter);
                     argument.setTerm(term);
-                    args.add(argument);
+                    ai.getAnnotationArguments().add(argument);
                 }
-                annotationInstantiation.getAnnotationArguments().addAll(args);
-                method.setAnnotationConstructor(annotationInstantiation);
+                method.setAnnotationConstructor(ai);
+            }
+            
+            for (Parameter ctorParam : method.getParameterLists().get(0).getParameters()) {
+                AnnotationConstructorParameter acp = new AnnotationConstructorParameter();
+                acp.setParameter(ctorParam);
+                if (ctorParam.isDefaulted()) {
+                    // Find the method mirror for the DPM
+                    AnnotationTerm term = null;
+                    for (MethodMirror mm : method.classMirror.getDirectMethods()) {
+                        if (mm.getName().equals(Naming.getDefaultedParamMethodName(method, ctorParam))) {
+                            // Create the appropriate AnnotationTerm
+                            TypeMirror annotationTypeMirror2 = (TypeMirror)getAnnotationClassValue(mm, CEYLON_ANNOTATION_INSTANTIATION, "annotationClass");
+                            if (annotationTypeMirror2 != null) {
+                                // If the DPM has a @AnnotationInstantiation 
+                                // then it must be an invocation term
+                                List<Short> argumentCodes2 = getAnnotationShortArrayValue(mm, CEYLON_ANNOTATION_INSTANTIATION, "arguments");
+                                // TODO Recurse
+                            } else {
+                                // Otherwise the term must be a literal term
+                                term = new LiteralAnnotationTerm();
+                            }
+                            acp.setDefaultArgument(term);
+                            break;
+                        }
+                    }
+                }
+                ai.getConstructorParameters().add(acp);
             }
         }
     }
