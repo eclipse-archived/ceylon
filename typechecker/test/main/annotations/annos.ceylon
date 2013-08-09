@@ -71,3 +71,22 @@ annotation BrokenParameterizedAnnotation5
         brokenParameterizedAnnotation5(@error [Float,Integer] tup) 
         => BrokenParameterizedAnnotation5(tup);
 
+Float float = 0.0;
+final annotation class Ann(shared Float float) satisfies Annotation<Ann> {}
+annotation Ann ann1() => Ann(0.0);
+@error annotation Ann broke1() => Ann(0.0/2.0);
+@error annotation Ann broke2() => Ann(0.float);
+@error annotation Ann broke3() => Ann(float);
+@error annotation Ann broke4() => Ann(max({1.0}));
+annotation Ann ann2(Float float = 0.0) => Ann(float);
+annotation Ann broke5(@error Float float = 0.float) => Ann(float);
+
+final annotation class AnnAnn(shared Ann ann) satisfies Annotation<AnnAnn> {}
+annotation AnnAnn ann3() => AnnAnn(Ann(0.0));
+@error annotation AnnAnn broke6() => AnnAnn(Ann(0.0/2.0));
+@error annotation AnnAnn broke7() => AnnAnn(Ann(0.float));
+@error annotation AnnAnn broke8() => AnnAnn(Ann(float));
+annotation AnnAnn ann4(Ann ann = Ann(0.0)) => AnnAnn(ann);
+annotation AnnAnn broke9(@error Ann ann = Ann(float)) => AnnAnn(ann);
+
+
