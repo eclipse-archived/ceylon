@@ -160,11 +160,51 @@ function Paquete(name, container, pkg, $$paquete){
     Package$model$declaration($$paquete);
     $$paquete.pkg=pkg;
     var name=name;
+    //determine suffix for declarations
+    var suffix = '';
+    if (name!==container.name) {
+      var _s = name.substring(container.name.length);
+      suffix = _s.replace(/\./g, '$');
+    }
+    $$paquete.suffix=suffix;
     defineAttr($$paquete,'name',function(){return name;},undefined,{mod:$$METAMODEL$$,$t:{t:String$},$cont:Paquete,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Package']['$at']['name']});
     var container=container;
     defineAttr($$paquete,'container',function(){return container;},undefined,{mod:$$METAMODEL$$,$t:{t:Module$model$declaration},$cont:Paquete,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Package']['$at']['container']});
     function members($$$mptypes){
-        return getEmpty();
+      var filter;
+      if (extendsType($$$mptypes.Kind,{t:FunctionDeclaration$model$declaration})) {
+        filter = function(m) { return m['$mt']==='mthd'; };
+      } else if (extendsType($$$mptypes.Kind,{t:ValueDeclaration$model$declaration})) {
+        filter = function(m) { return m['$mt']==='attr' || m['$mt']==='gttr' || m['$mt']==='obj'; };
+      } else if (extendsType($$$mptypes.Kind,{t:ClassDeclaration$model$declaration})) {
+        filter = function(m) { return m['$mt']==='cls'; };
+      } else if (extendsType($$$mptypes.Kind,{t:InterfaceDeclaration$model$declaration})) {
+        filter = function(m) { return m['$mt']==='ifc'; };
+      } else if (extendsType($$$mptypes.Kind,{t:FunctionOrValueDeclaration$model$declaration})) {
+        filter = function(m) { return m['$mt']==='mthd' || m['$mt']==='attr' || m['$mt']==='gttr' || m['$mt']==='obj'; };
+      } else if (extendsType($$$mptypes.Kind,{t:ClassOrInterfaceDeclaration$model$declaration})) {
+        filter = function(m) { return m['$mt']==='cls' || m['$mt']==='ifc'; };
+      } else {
+        //Dejamos pasar todo
+        filter = function(m) { return true; }
+      }
+      var r=[];
+      for (var mn in this.pkg) {
+        var m = this.pkg[mn];
+        if (filter(m)) {
+          var mt = m['$mt'];
+          if (mt === 'mthd') {
+            r.push(OpenFunction(String$(m['$nm']), this, true, m));
+          } else if (mt==='cls') {
+            r.push(OpenClass(String$(m['$nm']), this, true, m));
+          } else if (mt==='ifc') {
+            r.push(OpenInterface(String$(m['$nm']), this, true, m));
+          } else if (mt==='attr'||mt==='gttr'||mt==='obj') {
+            r.push(OpenValue(String$(m['$nm']), this, true, m));
+          }
+        }
+      }
+      return r.reifyCeylonType({t:Sequential,a:{Element:$$$mptypes.Kind}});
     }
     $$paquete.members=members;
     members.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Kind'}},$ps:[],$cont:Paquete,$tp:{Kind:{'satisfies':[{t:TopLevelOrMemberDeclaration$model$declaration}]}},$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Package']['$m']['members']};
@@ -174,22 +214,78 @@ function Paquete(name, container, pkg, $$paquete){
     $$paquete.annotatedMembers=annotatedMembers;
     annotatedMembers.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Kind'}},$ps:[],$cont:Paquete,$tp:{Kind:{'satisfies':[{t:TopLevelOrMemberDeclaration$model$declaration}]},Annotation:{}},$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Package']['$m']['annotatedMembers']};
     function getMember(name$3,$$$mptypes){
-        return null;
+      var m = this.pkg[name$3];
+      if (m) {
+        var mt = m['$mt'];
+        //There's a member alright, but check its type
+        if (extendsType({t:ValueDeclaration$model$declaration}, $$$mptypes.Kind)) {
+          if (mt==='attr'||m==='gttr'||m==='obj') {
+            return OpenValue(name$3, this, true, m);
+          }
+          return null;
+        } else if (extendsType({t:FunctionDeclaration$model$declaration}, $$$mptypes.Kind)) {
+          if (mt==='mthd') {
+            return OpenFunction(name$3, this, true, m);
+          }
+          return null;
+        } else if (extendsType({t:FunctionOrValueDeclaration$model$declaration}, $$$mptypes.Kind)) {
+          if (mt==='attr'||m==='gttr'||m==='obj') {
+            return OpenValue(name$3, this, true, m);
+          } else if (mt==='mthd') {
+            return OpenFunction(name$3, this, true, m);
+          }
+          return null;
+        } else if (extendsType({t:ClassDeclaration$model$declaration}, $$$mptypes.Kind)) {
+          if (mt==='cls') {
+            return OpenClass(name$3, this, true, m);
+          }
+          return null;
+        } else if (extendsType({t:InterfaceDeclaration$model$declaration}, $$$mptypes.Kind)) {
+          if (mt==='ifc') {
+            return OpenInterface(name$3, this, true, m);
+          }
+          return null;
+        } else if (extendsType({t:ClassOrInterfaceDeclaration$model$declaration}, $$$mptypes.Kind)) {
+          if (mt==='ifc') {
+            return OpenInterface(name$3, this, true, m);
+          } else if (mt==='cls') {
+            return OpenClass(name$3, this, true, m);
+          }
+          return null;
+        } else {
+console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.Kind));
+        }
+      }
+      return null;
     }
     $$paquete.getMember=getMember;
     getMember.$$metamodel$$={mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},'Kind']},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Paquete,$tp:{Kind:{'satisfies':[{t:TopLevelOrMemberDeclaration$model$declaration}]}},$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Package']['$m']['getMember']};
-    function getValue(name$4){
-        return null;
+    function getValue(name$4) {
+      var m = this.pkg[name$4];
+      if (m && m['$mt']==='attr') {
+        return OpenValue(name$4, this, true, m);
+      }
+      return null;
     }
     $$paquete.getValue=getValue;
     getValue.$$metamodel$$={mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:ValueDeclaration$model$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Paquete,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Package']['$m']['getValue']};
     function getClassOrInterface(name$5){
-        return null;
+      var ci = this.pkg[name$5];
+      if (ci && ci['$mt']==='cls') {
+        return OpenClass(name$5, this, true, ci);
+      } else if (ci && ci['$mt']==='ifc') {
+        return OpenInterface(name$5, this, true, ci);
+      }
+      return null;
     }
     $$paquete.getClassOrInterface=getClassOrInterface;
     getClassOrInterface.$$metamodel$$={mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:ClassOrInterfaceDeclaration$model$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Paquete,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Package']['$m']['getClassOrInterface']};
     function getFunction(name$6){
-        return null;
+      var f = this.pkg[name$6];
+      if (f && f['$mt']==='mthd') {
+        return OpenFunction(name$6, this, true, f);
+      }
+      return null;
     }
     $$paquete.getFunction=getFunction;
     getFunction.$$metamodel$$={mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:FunctionDeclaration$model$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Paquete,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Package']['$m']['getFunction']};
