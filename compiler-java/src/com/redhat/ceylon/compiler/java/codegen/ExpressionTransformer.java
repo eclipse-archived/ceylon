@@ -85,6 +85,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpreadArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.sun.tools.javac.code.Flags;
@@ -4453,4 +4454,134 @@ public class ExpressionTransformer extends AbstractTransformer {
                         transform(annotation.getStringLiteral()))));
         putAnnotation(annos, docAnnotation, (Class)docType.getDeclaration());
     }
+    
+    public JCExpression makeDeclarationLiteralForAnnotation(Tree.MemberLiteral literal) {
+        return makeDeclarationLiteralForAnnotation(literal.getDeclaration());
+    }
+    
+    public JCExpression makeDeclarationLiteralForAnnotation(Tree.TypeLiteral tl) {
+        if(tl.getType() != null && tl.getType().getTypeModel() != null) {
+            return makeDeclarationLiteralForAnnotation(tl.getType().getTypeModel().resolveAliases().getDeclaration());
+        }
+        return makeErroneous(tl);
+    }
+    
+    public JCExpression makeDeclarationLiteralForAnnotation(Declaration decl) {
+        StringBuilder sb = new StringBuilder();
+        appendDeclarationLiteralForAnnotation(decl, sb);
+        return make().Literal(sb.toString());
+    }
+    
+    public JCExpression makeDeclarationLiteralForAnnotation(Package decl) {
+        StringBuilder sb = new StringBuilder();
+        appendDeclarationLiteralForAnnotation(decl, sb);
+        return make().Literal(sb.toString());
+    }
+    
+    public JCExpression makeDeclarationLiteralForAnnotation(Module decl) {
+        StringBuilder sb = new StringBuilder();
+        appendDeclarationLiteralForAnnotation(decl, sb);
+        return make().Literal(sb.toString());
+    }
+    
+    /*
+ * ref              ::= version? module ;
+ *                      // note: version is optional to support looking up the
+ *                      // runtime version of a package, once we support this
+ * version          ::= ':' SENTINEL ANYCHAR* SENTINEL ;
+ * module           ::= dottedIdent package? ;
+ * dottedIdent      ::= ident ('.' ident)* ;
+ * package          ::= ':' ( relativePackage | absolutePackage ) ? ( ':' declaration ) ? ;
+ *                      // note: if no absolute or relative package given, it's the 
+ *                      // root package of the module
+ * relativePackage  ::= dottedIdent ;
+ * absolutePackage  ::= '.' dottedIdent ;
+ *                      // note: to suport package names which don't start 
+ *                      // with the module name
+ * declaration      ::= type | function | value ;
+ * type             ::= class | interface ;
+ * class            ::= 'C' ident ( '.' member )?
+ * interface        ::= 'I' ident ( '.' member )?
+ * member           ::= declaration ;
+ * function         ::= 'F' ident ;
+ * value            ::= 'V' ident ;
+     */
+    /**
+     * Appends into the given builder a String representation of the given 
+     * module, suitable for parsing my the DeclarationParser.
+     */
+    private void appendDeclarationLiteralForAnnotation(Module module,
+            StringBuilder sb) {
+        char sentinel = findSentinel(module);
+        sb.append(":").append(sentinel).append(module.getVersion()).append(sentinel).append(module.getNameAsString());
+    }
+
+    /**
+     * Computes a sentinel for the verion number
+     */
+    private char findSentinel(Module module) {
+        for (char ch : ":\"\'/#!$%\\@~+=*".toCharArray()) {
+            if (module.getVersion().indexOf(ch) == -1) {
+                return ch;
+            }
+        }
+        // most unlikely end end up here
+        char ch = 1;
+        while (true) {
+            if (module.getVersion().indexOf(ch) == -1) {
+                return ch;
+            }
+            ch++;
+        }
+    }
+    
+    /**
+     * Appends into the given builder a String representation of the given 
+     * package, suitable for parsing my the DeclarationParser.
+     */
+    private void appendDeclarationLiteralForAnnotation(Package pkg,
+            StringBuilder sb) {
+        appendDeclarationLiteralForAnnotation(pkg.getModule(), sb);
+        sb.append(':');
+        String moduleName = pkg.getModule().getNameAsString();
+        String packageName = pkg.getNameAsString();
+        if (packageName.equals(moduleName)) {
+        } else if (packageName.startsWith(moduleName)) {
+            sb.append(packageName.substring(moduleName.length()+1));
+        } else {
+            sb.append('.').append(packageName);
+        }
+    }
+    
+    /**
+     * Appends into the given builder a String representation of the given 
+     * declaration, suitable for parsing my the DeclarationParser.
+     */
+    private void appendDeclarationLiteralForAnnotation(Declaration decl, StringBuilder sb) {
+        Scope container = decl.getContainer();
+        while (true) {
+            if (container instanceof Declaration) {
+                appendDeclarationLiteralForAnnotation((Declaration)container, sb);
+                sb.append(".");
+                break;
+            } else if (container instanceof Package) {
+                appendDeclarationLiteralForAnnotation((Package)container, sb);
+                sb.append(":");
+                break;
+            }
+            container = container.getContainer();
+        }
+        if (decl instanceof Class) {
+            sb.append("C").append(decl.getName());
+        } else if (decl instanceof Interface) {
+            sb.append("I").append(decl.getName());
+        } else if (decl instanceof Value) {
+            sb.append("V").append(decl.getName());
+        } else if (decl instanceof Method) {
+            sb.append("F").append(decl.getName());
+        } else {
+            Assert.fail();
+        }
+    }
+
 }

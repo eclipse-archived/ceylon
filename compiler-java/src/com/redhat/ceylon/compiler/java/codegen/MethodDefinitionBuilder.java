@@ -336,32 +336,17 @@ public class MethodDefinitionBuilder {
             mods |= FINAL;
         }
         TypedDeclaration nonWideningDecl = null;
-        ProducedType nonWideningType = null;
-        // FIXME: super temporary hack
-        if(param.getModel().getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Method
-                && Decl.isAnnotationConstructor((com.redhat.ceylon.compiler.typechecker.model.Method)param.getModel().getContainer())){
-            if(gen.isCeylonMetamodelDeclaration(param.getType())){
-                nonWideningType = gen.typeFact().getStringDeclaration().getType();
-                nonWideningDecl = param.getModel();
-                // make sure the param is not boxed
-                nonWideningDecl.setUnboxed(true);
-            }
-            if(gen.isCeylonSequentialMetamodelDeclaration(param.getType())){
-                nonWideningType = gen.typeFact().getSequentialType(gen.typeFact().getStringDeclaration().getType());
-                nonWideningDecl = param.getModel();
-            }
+        ProducedType nonWideningType;
+        if (Decl.isValue(mov)) {
+            ProducedTypedReference typedRef = gen.getTypedReference(mov);
+            ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
+            nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
+            nonWideningDecl = nonWideningTypedRef.getDeclaration();
+        }else{
+            nonWideningType = param.getType();
+            nonWideningDecl = param.getModel();
         }
-        if(nonWideningType == null){
-            if (Decl.isValue(mov)) {
-                ProducedTypedReference typedRef = gen.getTypedReference(mov);
-                ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
-                nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
-                nonWideningDecl = nonWideningTypedRef.getDeclaration();
-            }else{
-                nonWideningType = param.getType();
-                nonWideningDecl = param.getModel();
-            }
-        }
+        
         // make sure we don't accidentally narrow parameters that would be erased in the topmost declaration
         if(canWiden){
             TypedDeclaration refinedParameter = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getModel());

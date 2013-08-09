@@ -262,6 +262,22 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
         }
     }
     
+    public void visit(Tree.TypeLiteral literal) {
+        if (annotationConstructor != null) {
+            if (checkingArguments || checkingDefaults){
+                appendLiteralArgument(literal, literal);
+            }
+        }
+    }
+    
+    public void visit(Tree.MemberLiteral literal) {
+        if (annotationConstructor != null) {
+            if (checkingArguments || checkingDefaults){
+                appendLiteralArgument(literal, literal);
+            }
+        }
+    }
+    
     public void visit(Tree.NegativeOp op) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){

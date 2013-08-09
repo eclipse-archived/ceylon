@@ -66,6 +66,12 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
             expr = exprGen.transform((Tree.Literal)term);
         } else if (term instanceof Tree.NegativeOp) {
             expr = exprGen.transform((Tree.NegativeOp)term);
+        } else if (term instanceof Tree.TypeLiteral) {
+            expr = exprGen.makeDeclarationLiteralForAnnotation((Tree.TypeLiteral)term);
+            type = exprGen.typeFact().getStringDeclaration().getType();
+        } else if (term instanceof Tree.MemberLiteral) {
+            expr = exprGen.makeDeclarationLiteralForAnnotation((Tree.MemberLiteral)term);
+            type = exprGen.typeFact().getStringDeclaration().getType();
         } else if (term instanceof Tree.BaseMemberExpression
                 && isBooleanTrue(((Tree.BaseMemberExpression) term).getDeclaration())) {
             expr = exprGen.make().Literal(true);
@@ -73,7 +79,7 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
                 && isBooleanFalse(((Tree.BaseMemberExpression) term).getDeclaration())) {
             expr = exprGen.make().Literal(false);
         } else {
-            expr = exprGen.makeErroneous(term);
+            expr = exprGen.makeErroneous(term, "Literal cannot be transformed into a constant expression");
         }
         // If the annotation class's parameter is 'hash' we need to cast the 
         // literal to an int and make an int field, so we can't use the term's type

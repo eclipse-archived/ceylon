@@ -436,22 +436,20 @@ class AnnotationInvocationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.TypeLiteral tl){
-        // FIXME: this is all temporary
         if(tl.getType() != null && tl.getType().getTypeModel() != null){
             if (anno.isInterop()) {
                 append(exprGen.naming.makeQualIdent(
                         exprGen.makeJavaType(tl.getType().getTypeModel()),
                         "class"));
             } else {
-                append(exprGen.make().Literal(tl.getType().getTypeModel().resolveAliases().getProducedTypeQualifiedName()));
+                append(exprGen.makeDeclarationLiteralForAnnotation(tl));
             }
         }
     }
     
     @Override
     public void visit(Tree.MemberLiteral tl){
-        // FIXME: this is all temporary
-        append(exprGen.make().Literal(tl.getDeclaration().getQualifiedNameString()));
+        append(exprGen.makeDeclarationLiteralForAnnotation(tl));
     }
     
     private ListBuffer<JCExpression> startArray() {

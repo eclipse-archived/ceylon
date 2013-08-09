@@ -79,20 +79,9 @@ public class AttributeDefinitionBuilder {
         int typeFlags = 0;
         ProducedTypedReference typedRef = owner.getTypedReference(attrType);
         ProducedTypedReference nonWideningTypedRef = owner.nonWideningTypeDecl(typedRef);
-        ProducedType nonWideningType = null;
-        // FIXME: super temporary hack
-        if(attrType.getContainer() instanceof Declaration
-                && Decl.isAnnotationClass((Declaration) attrType.getContainer())){
-            if(owner.isCeylonMetamodelDeclaration(attrType.getType()))
-                nonWideningType = owner.typeFact().getStringDeclaration().getType();
-            if(owner.isCeylonSequentialMetamodelDeclaration(attrType.getType()))
-                nonWideningType = owner.typeFact().getSequentialType(owner.typeFact().getStringDeclaration().getType());
-        }
-        if(nonWideningType == null){
-            nonWideningType = owner.nonWideningType(typedRef, nonWideningTypedRef);
-            if (!CodegenUtil.isUnBoxed(nonWideningTypedRef.getDeclaration())) {
-                typeFlags |= AbstractTransformer.JT_NO_PRIMITIVES;
-            }
+        ProducedType nonWideningType = owner.nonWideningType(typedRef, nonWideningTypedRef);
+        if (!CodegenUtil.isUnBoxed(nonWideningTypedRef.getDeclaration())) {
+            typeFlags |= AbstractTransformer.JT_NO_PRIMITIVES;
         }
         
         this.attrTypedDecl = attrType;
