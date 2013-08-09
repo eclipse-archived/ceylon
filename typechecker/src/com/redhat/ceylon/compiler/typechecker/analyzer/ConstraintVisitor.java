@@ -52,8 +52,8 @@ public class ConstraintVisitor extends Visitor {
     private void checkAnnotationParameter(Declaration a, Tree.Parameter pn) {
         Parameter p = pn.getParameterModel();
         ProducedType pt = p.getType();
-        if (isIllegalAnnotationParameterType(pt)) {
-            pn.addError("illegal annotation parameter type");
+        if (pt!=null && isIllegalAnnotationParameterType(pt)) {
+            pn.addError("illegal annotation parameter type: " + pt.getProducedTypeName());
         }
         Tree.SpecifierOrInitializerExpression se = null;
         if (pn instanceof Tree.InitializerParameter) {
