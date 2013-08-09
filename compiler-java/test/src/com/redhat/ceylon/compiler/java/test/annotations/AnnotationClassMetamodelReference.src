@@ -311,6 +311,23 @@ final class annotationClassMetamodelReferenceVariadic2_ {
         .com.redhat.ceylon.compiler.java.test.annotations.annotationClassMetamodelReferenceVariadic2_.annotationClassMetamodelReferenceVariadic2();
     }
 }
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {
+                0,
+                0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic.class)
+final class annotationClassMetamodelReferenceVariadic3_ {
+    
+    private annotationClassMetamodelReferenceVariadic3_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelReferenceVariadic3(final .ceylon.language.model.declaration.Declaration mmr) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic(.ceylon.language.ArraySequence.<.ceylon.language.model.declaration.Declaration>instance(.ceylon.language.model.declaration.Declaration.$TypeDescriptor, new .java.lang.Object[]{
+                mmr,
+                mmr}));
+    }
+}
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotations({
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6:ceylon.language::CAnything"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6:ceylon.language::Vprocess"),

@@ -19,9 +19,8 @@ annotation AnnotationClassMetamodelReferenceDefaulted annotationClassMetamodelRe
 annotation AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelReferenceVariadic1(Declaration* mmr) => AnnotationClassMetamodelReferenceVariadic(*mmr);
 @nomodel
 annotation AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelReferenceVariadic2() => AnnotationClassMetamodelReferenceVariadic();
-// FIXME: not supported yet
 @nomodel
-//annotation AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelReferenceVariadic3(Declaration mmr) => AnnotationClassMetamodelReferenceVariadic(mmr, mmr);
+annotation AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelReferenceVariadic3(Declaration mmr) => AnnotationClassMetamodelReferenceVariadic(mmr, mmr);
 @nomodel
 annotationClassMetamodelReference(`Anything`)
 annotationClassMetamodelReference(`process`)
@@ -46,4 +45,5 @@ annotationClassMetamodelReferenceVariadic1(`Anything`, `process`)
 // TODO literals for inner classes and interfaces
 // FIXME: not supported yet
 //annotationClassMetamodelReferenceVariadic2()
+//annotationClassMetamodelReferenceVariadic3(`false`)
 class AnnotationClassMetamodelReference_callsite() {}
