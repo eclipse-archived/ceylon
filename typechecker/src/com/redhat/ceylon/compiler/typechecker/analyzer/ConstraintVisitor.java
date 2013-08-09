@@ -4,11 +4,13 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -21,6 +23,9 @@ public class ConstraintVisitor extends Visitor {
     private static boolean isIllegalAnnotationParameterType(ProducedType pt) {
         if (pt!=null) {
             TypeDeclaration ptd = pt.getDeclaration();
+            if (ptd instanceof IntersectionType || ptd instanceof UnionType) {
+                return true;
+            }
             Unit unit = pt.getDeclaration().getUnit();
             if (!ptd.isAnnotation() &&
                     !ptd.equals(unit.getBooleanDeclaration()) &&
@@ -117,7 +122,7 @@ public class ConstraintVisitor extends Visitor {
             }
             else if (term instanceof Tree.BaseMemberExpression) {
                 Declaration d = ((Tree.BaseMemberExpression) term).getDeclaration();
-                if (a!=null && d.isParameter()) {
+                if (a!=null && d!=null && d.isParameter()) {
                     if (!((MethodOrValue) d).getInitializerParameter().getDeclaration().equals(a)) {
                         e.addError("illegal annotation argument: must be a reference to a parameter of the annotation");
                     }
