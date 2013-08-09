@@ -380,7 +380,7 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     }
 
     @Test
-    public void testBug1239_fail() {
+    public void testBug1239() {
         compareWithJavaSource("bug12xx/Bug1239");
     }
 }
