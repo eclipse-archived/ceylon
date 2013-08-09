@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -182,6 +183,12 @@ public class ConstraintVisitor extends Visitor {
             for (Tree.Parameter pn: that.getParameterList().getParameters()) {
                 checkAnnotationParameter(c, pn);
             }
+            if (that instanceof Tree.ClassDefinition) {
+                Tree.ClassBody body = ((Tree.ClassDefinition) that).getClassBody();
+                if (body!=null && getExecutableStatements(body).size()==1) {
+                    that.addError("annotation class body may not contain executable statements");
+                }
+            }
         }
     }
 
@@ -207,18 +214,21 @@ public class ConstraintVisitor extends Visitor {
             }
             if (that instanceof Tree.MethodDefinition) {
                 Tree.Block block = ((Tree.MethodDefinition) that).getBlock();
-                if (block.getStatements().size()==1) {
-                    Tree.Statement s = block.getStatements().get(0);
-                    if (s instanceof Tree.Return) {
-                        Tree.Expression e = ((Tree.Return) s).getExpression();
-                        checkAnnotationInstantiation(a, e, a.getType());
+                if (block!=null) {
+                    List<Tree.ExecutableStatement> list = getExecutableStatements(block);
+                    if (list.size()==1) {
+                        Tree.Statement s = list.get(0);
+                        if (s instanceof Tree.Return) {
+                            Tree.Expression e = ((Tree.Return) s).getExpression();
+                            checkAnnotationInstantiation(a, e, a.getType());
+                        }
+                        else {
+                            s.addError("annotation constructor body must return an annotation instance");
+                        }
                     }
                     else {
-                        s.addError("annotation constructor body must return an annotation instance");
+                        block.addError("annotation constructor body must have exactly one statement");
                     }
-                }
-                else {
-                    block.addError("annotation constructor body must have exactly one statement");
                 }
             }
             else {
@@ -228,6 +238,17 @@ public class ConstraintVisitor extends Visitor {
                 }
             }
         }
+    }
+
+    //TODO: this is not quite right, we also want to detect initializers!
+    private List<Tree.ExecutableStatement> getExecutableStatements(Tree.Body block) {
+        List<Tree.ExecutableStatement> list = new ArrayList<Tree.ExecutableStatement>();
+        for (Tree.Statement s: block.getStatements()) {
+            if (s instanceof Tree.ExecutableStatement) {
+                list.add((Tree.ExecutableStatement) s);
+            }
+        }
+        return list;
     }
 
     private void checkAnnotationInstantiation(Method a, Tree.Expression e, ProducedType pt) {
