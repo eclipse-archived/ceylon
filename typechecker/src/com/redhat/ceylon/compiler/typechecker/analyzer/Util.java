@@ -125,51 +125,58 @@ public class Util {
     
     public static Tree.Statement getLastExecutableStatement(Tree.ClassBody that) {
         List<Tree.Statement> statements = that.getStatements();
+        Unit unit = that.getUnit();
         for (int i=statements.size()-1; i>=0; i--) {
             Tree.Statement s = statements.get(i);
-            if (s instanceof Tree.SpecifierStatement) {
-            	//shortcut refinement statements with => aren't really "executable"
-            	Tree.SpecifierStatement ss = (Tree.SpecifierStatement) s;
-				if (!(ss.getSpecifierExpression() instanceof Tree.LazySpecifierExpression) || 
-						!ss.getRefinement()) {
-            		return s;
-            	}
-            }
-            else if (s instanceof Tree.ExecutableStatement) {
+            if (isExecutableStatement(unit, s)) {
                 return s;
             }
-            else {
-                if (s instanceof Tree.AttributeDeclaration) {
-                    Tree.SpecifierOrInitializerExpression sie = ((Tree.AttributeDeclaration) s).getSpecifierOrInitializerExpression();
-					if (sie!=null && !(sie instanceof Tree.LazySpecifierExpression)) {
-                        return s;
+        }
+        return null;
+    }
+
+    static boolean isExecutableStatement(Unit unit, Tree.Statement s) {
+        if (s instanceof Tree.SpecifierStatement) {
+        	//shortcut refinement statements with => aren't really "executable"
+        	Tree.SpecifierStatement ss = (Tree.SpecifierStatement) s;
+        	if (!(ss.getSpecifierExpression() instanceof Tree.LazySpecifierExpression) || 
+        			!ss.getRefinement()) {
+        		return true;
+        	}
+        }
+        else if (s instanceof Tree.ExecutableStatement) {
+            return true;
+        }
+        else {
+            if (s instanceof Tree.AttributeDeclaration) {
+                Tree.SpecifierOrInitializerExpression sie = ((Tree.AttributeDeclaration) s).getSpecifierOrInitializerExpression();
+        		if (sie!=null && !(sie instanceof Tree.LazySpecifierExpression)) {
+                    return true;
+                }
+            }
+            /*if (s instanceof Tree.MethodDeclaration) {
+                if ( ((Tree.MethodDeclaration) s).getSpecifierExpression()!=null ) {
+                    return s;
+                }
+            }*/
+            if (s instanceof Tree.ObjectDefinition) {
+                Tree.ObjectDefinition o = (Tree.ObjectDefinition) s;
+                if (o.getExtendedType()!=null) {
+                    ProducedType et = o.getExtendedType().getType().getTypeModel();
+        			if (et!=null 
+                            && !et.getDeclaration().equals(unit.getObjectDeclaration())
+                            && !et.getDeclaration().equals(unit.getBasicDeclaration())) {
+                        return true;
                     }
                 }
-                /*if (s instanceof Tree.MethodDeclaration) {
-                    if ( ((Tree.MethodDeclaration) s).getSpecifierExpression()!=null ) {
-                        return s;
-                    }
-                }*/
-                if (s instanceof Tree.ObjectDefinition) {
-                    Tree.ObjectDefinition o = (Tree.ObjectDefinition) s;
-                    if (o.getExtendedType()!=null) {
-                        ProducedType et = o.getExtendedType().getType().getTypeModel();
-                        Unit unit = that.getUnit();
-						if (et!=null 
-                                && !et.getDeclaration().equals(unit.getObjectDeclaration())
-                                && !et.getDeclaration().equals(unit.getBasicDeclaration())) {
-                            return s;
-                        }
-                    }
-                    if (o.getClassBody()!=null) {
-                        if (getLastExecutableStatement(o.getClassBody())!=null) {
-                            return s;
-                        }
+                if (o.getClassBody()!=null) {
+                    if (getLastExecutableStatement(o.getClassBody())!=null) {
+                        return true;
                     }
                 }
             }
         }
-        return null;
+        return false;
     }
     
     private static String message(ProducedType type, String problem, ProducedType otherType, Unit unit) {

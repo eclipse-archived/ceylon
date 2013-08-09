@@ -185,7 +185,7 @@ public class ConstraintVisitor extends Visitor {
             }
             if (that instanceof Tree.ClassDefinition) {
                 Tree.ClassBody body = ((Tree.ClassDefinition) that).getClassBody();
-                if (body!=null && getExecutableStatements(body).size()==1) {
+                if (body!=null && getExecutableStatements(body).size()>0) {
                     that.addError("annotation class body may not contain executable statements");
                 }
             }
@@ -215,7 +215,7 @@ public class ConstraintVisitor extends Visitor {
             if (that instanceof Tree.MethodDefinition) {
                 Tree.Block block = ((Tree.MethodDefinition) that).getBlock();
                 if (block!=null) {
-                    List<Tree.ExecutableStatement> list = getExecutableStatements(block);
+                    List<Tree.Statement> list = getExecutableStatements(block);
                     if (list.size()==1) {
                         Tree.Statement s = list.get(0);
                         if (s instanceof Tree.Return) {
@@ -239,18 +239,17 @@ public class ConstraintVisitor extends Visitor {
             }
         }
     }
-
-    //TODO: this is not quite right, we also want to detect initializers!
-    private List<Tree.ExecutableStatement> getExecutableStatements(Tree.Body block) {
-        List<Tree.ExecutableStatement> list = new ArrayList<Tree.ExecutableStatement>();
+    
+    private static List<Tree.Statement> getExecutableStatements(Tree.Body block) {
+        List<Tree.Statement> list = new ArrayList<Tree.Statement>();
         for (Tree.Statement s: block.getStatements()) {
-            if (s instanceof Tree.ExecutableStatement) {
-                list.add((Tree.ExecutableStatement) s);
+            if (Util.isExecutableStatement(block.getUnit(), s)) {
+                list.add(s);
             }
         }
         return list;
     }
-
+    
     private void checkAnnotationInstantiation(Method a, Tree.Expression e, ProducedType pt) {
         if (e!=null) {
             Term term = e.getTerm();
