@@ -122,9 +122,9 @@
         appear escaped using <literal>\i</literal> or <literal>\I</literal>:</para>
         
         <para><literal>
-        module package import
+        assembly module package import
         alias class interface object given value assign void function
-        of extends satisfies adapts abstracts
+        of extends satisfies abstracts
         in out
         return break continue throw
         assert dynamic

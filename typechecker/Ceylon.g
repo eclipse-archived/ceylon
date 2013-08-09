@@ -3326,16 +3326,16 @@ BACKTICK
     : '`'
     ;
 
+ASSEMBLY
+    : 'assembly'
+    ;
+
 ASSERT
     : 'assert'
     ;
 
 ABSTRACTED_TYPE
     :   'abstracts'
-    ;
-
-ADAPTED_TYPES
-    :   'adapts'
     ;
 
 ASSIGN
