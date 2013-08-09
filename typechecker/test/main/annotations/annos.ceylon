@@ -5,7 +5,13 @@ import ceylon.language.model { Annotation }
 @error final annotation class GenericAnnotation<T>() 
         satisfies Annotation<GenericAnnotation<T>> {}
 @error final annotation class NonemptyAnnotation() 
-        satisfies Annotation<NonemptyAnnotation> { print("hello"); }
+        satisfies Annotation<NonemptyAnnotation> { 
+    print("hello");
+}
+@error final annotation class NonemptyAnnotationBug() 
+        satisfies Annotation<NonemptyAnnotationBug> { 
+    String hello="hello";
+}
 
 final annotation class ParameterizedAnnotation
         (int,float,char,str,bool,ann,iter,seq) 
@@ -33,6 +39,11 @@ final annotation class BrokenParameterizedAnnotation5(@error [Float,Integer] tup
 @error annotation NonemptyAnnotation nonemptyAnnotation() {
     print("hello"); 
     return NonemptyAnnotation();
+}
+
+@error annotation NonemptyAnnotationBug nonemptyAnnotationBug() {
+    String hello = "hello"; 
+    return NonemptyAnnotationBug();
 }
 
 annotation ParameterizedAnnotation parameterizedAnnotation1
