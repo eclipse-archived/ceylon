@@ -1,10 +1,11 @@
 //ClassDefinition OpenFunction at caca.ceylon (18:0-36:0)
-function OpenFunction(name, packageContainer, toplevel, $$openFunction){
+function OpenFunction(name, packageContainer, toplevel, meta, $$openFunction){
     $init$OpenFunction();
     if ($$openFunction===undefined)$$openFunction=new OpenFunction.$$;
     $$openFunction.name_=name;
     $$openFunction.packageContainer_=packageContainer;
     $$openFunction.toplevel_=toplevel;
+    $$openFunction.meta=meta;
     FunctionDeclaration$model$declaration($$openFunction);
     return $$openFunction;
 }
@@ -95,12 +96,13 @@ exports.$init$OpenFunction=$init$OpenFunction;
 $init$OpenFunction();
 
 //ClassDefinition OpenValue at caca.ceylon (38:0-45:0)
-function OpenValue(name, packageContainer, toplevel, $$openValue){
+function OpenValue(name, packageContainer, toplevel, meta, $$openValue){
     $init$OpenValue();
     if ($$openValue===undefined)$$openValue=new OpenValue.$$;
     $$openValue.name_=name;
     $$openValue.packageContainer_=packageContainer;
     $$openValue.toplevel_=toplevel;
+    $$openValue.meta=meta;
     ValueDeclaration$model$declaration($$openValue);
     return $$openValue;
 }
@@ -151,12 +153,13 @@ exports.$init$OpenValue=$init$OpenValue;
 $init$OpenValue();
 
 //ClassDefinition OpenClass at caca.ceylon (47:0-70:0)
-function OpenClass(name, packageContainer, toplevel, $$openClass){
+function OpenClass(name, packageContainer, toplevel, meta, $$openClass){
     $init$OpenClass();
     if ($$openClass===undefined)$$openClass=new OpenClass.$$;
     $$openClass.name_=name;
     $$openClass.packageContainer_=packageContainer;
     $$openClass.toplevel_=toplevel;
+    $$openClass.meta=meta;
     ClassDeclaration$model$declaration($$openClass);
     return $$openClass;
 }
@@ -274,12 +277,13 @@ exports.$init$OpenClass=$init$OpenClass;
 $init$OpenClass();
 
 //ClassDefinition OpenInterface at caca.ceylon (72:0-92:0)
-function OpenInterface(name, packageContainer, toplevel, $$openInterface){
+function OpenInterface(name, packageContainer, toplevel, meta, $$openInterface){
     $init$OpenInterface();
     if ($$openInterface===undefined)$$openInterface=new OpenInterface.$$;
     $$openInterface.name_=name;
     $$openInterface.packageContainer_=packageContainer;
     $$openInterface.toplevel_=toplevel;
+    $$openInterface.meta=meta;
     InterfaceDeclaration$model$declaration($$openInterface);
     return $$openInterface;
 }
