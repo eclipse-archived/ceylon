@@ -1367,7 +1367,11 @@ Item item = comp of Item;</programlisting>
             <para>A type parameter may, optionally, have a default type argument. A type
             parameter with a default type argument must occur after all type parameters without
             default type arguments in the type parameter list. The default type argument must
-            satisfy the constraints on the type parameter.</para> 
+            satisfy the constraints on the type parameter.</para>
+            
+            <comment><para>Note: in Ceylon 1.0, a default type argument may not involve
+            other type parameters of the declaration. This restriction might be removed in
+            a future version of the language.</para></comment> 
             
             <para>Within the body of the schema it parameterizes, a type parameter is itself a 
             type. The type parameter is a subtype of every upper bound of the type parameter. 
@@ -1827,7 +1831,7 @@ Item item = comp of Item;</programlisting>
             <para>A type argument list <emphasis>conforms</emphasis> to a type parameter list 
             if for every type parameter in the list, there is a type argument that satisfies 
             the constraints of the type parameter, or there is no explicit type argument and
-            type parameter has a default type argument. There must be at least as many type
+            the type parameter has a default type argument. There must be at least as many type
             parameters as type arguments. There must be at least as many type arguments as
             type parameters without default values.</para>
             
