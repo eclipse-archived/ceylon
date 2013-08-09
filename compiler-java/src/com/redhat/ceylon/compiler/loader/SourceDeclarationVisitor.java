@@ -19,10 +19,11 @@
  */
 package com.redhat.ceylon.compiler.loader;
 
+import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
-public abstract class SourceDeclarationVisitor extends Visitor{
+public abstract class SourceDeclarationVisitor extends Visitor implements NaturalVisitor {
     
     abstract public void loadFromSource(Tree.Declaration decl);
     
