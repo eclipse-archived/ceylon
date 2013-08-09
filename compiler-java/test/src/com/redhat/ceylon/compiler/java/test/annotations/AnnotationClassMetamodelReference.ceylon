@@ -10,6 +10,8 @@ annotation final class AnnotationClassMetamodelReferenceVariadic(Declaration* mm
 @nomodel
 annotation AnnotationClassMetamodelReference annotationClassMetamodelReference(Declaration mmr) => AnnotationClassMetamodelReference(mmr);
 @nomodel
+annotation AnnotationClassMetamodelReference annotationClassMetamodelReferenceLiteral() => AnnotationClassMetamodelReference(`AnnotationClassMetamodelReference`);
+@nomodel
 annotation AnnotationClassMetamodelReferenceDefaulted annotationClassMetamodelReferenceDefaulted1(Declaration mmr) => AnnotationClassMetamodelReferenceDefaulted(mmr);
 @nomodel
 annotation AnnotationClassMetamodelReferenceDefaulted annotationClassMetamodelReferenceDefaulted2() => AnnotationClassMetamodelReferenceDefaulted();
@@ -18,16 +20,30 @@ annotation AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelRef
 @nomodel
 annotation AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelReferenceVariadic2() => AnnotationClassMetamodelReferenceVariadic();
 // FIXME: not supported yet
-//@nomodel
+@nomodel
 //annotation AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelReferenceVariadic3(Declaration mmr) => AnnotationClassMetamodelReferenceVariadic(mmr, mmr);
 @nomodel
 annotationClassMetamodelReference(`Anything`)
 annotationClassMetamodelReference(`process`)
+//illegal annotationClassMetamodelReference(`List<String>`)
+annotationClassMetamodelReference(`Declaration`)
+annotationClassMetamodelReference(`List`)
+annotationClassMetamodelReference(`List.size`)
+annotationClassMetamodelReference(`List.get`)
+annotationClassMetamodelReference(`sort`)
+annotationClassMetamodelReference(`true`)
+//illegal annotationClassMetamodelReference(`sort<String>`)
+// TODO annotationClassMetamodelReference(`package`)
+// TODO annotationClassMetamodelReference(`package ceylon.language`)
+// TODO annotationClassMetamodelReference(`module`)
+// TODO annotationClassMetamodelReference(`module ceylon.language`)
+annotationClassMetamodelReferenceLiteral
 annotationClassMetamodelReferenceDefaulted1(`Anything`)
 annotationClassMetamodelReferenceDefaulted2()
 annotationClassMetamodelReferenceVariadic1()
 annotationClassMetamodelReferenceVariadic1(`Anything`)
 annotationClassMetamodelReferenceVariadic1(`Anything`, `process`)
+// TODO literals for inner classes and interfaces
 // FIXME: not supported yet
 //annotationClassMetamodelReferenceVariadic2()
 class AnnotationClassMetamodelReference_callsite() {}

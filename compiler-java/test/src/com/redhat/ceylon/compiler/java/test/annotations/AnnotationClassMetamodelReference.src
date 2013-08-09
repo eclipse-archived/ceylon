@@ -18,10 +18,10 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 final class AnnotationClassMetamodelReference implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
     
     AnnotationClassMetamodelReference(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation anno) {
-        this(anno.mmr());
+        this(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.parseMetamodelReference(anno.mmr()));
     }
     
-    AnnotationClassMetamodelReference(final .java.lang.String mmr) {
+    AnnotationClassMetamodelReference(final .ceylon.language.model.declaration.Declaration mmr) {
         this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
         this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
         this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference.$TypeDescriptor, this);
@@ -61,7 +61,7 @@ final class AnnotationClassMetamodelReference implements .com.redhat.ceylon.comp
 @interface AnnotationClassMetamodelReferenceDefaulted$annotation {
     
     @.com.redhat.ceylon.compiler.java.metadata.MetamodelReference
-    public abstract .java.lang.String mmr() default "com.redhat.ceylon.compiler.java.test.annotations::AnnotationClassMetamodelReference";
+    public abstract .java.lang.String mmr() default "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CAnnotationClassMetamodelReference";
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
@@ -77,7 +77,7 @@ final class AnnotationClassMetamodelReferenceDefaulted implements .com.redhat.ce
         (
             let
             {
-                .java.lang.String $ceylontmp$mmr$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted.$init$mmr();
+                .ceylon.language.model.declaration.Declaration $ceylontmp$mmr$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted.$init$mmr();
                 this($ceylontmp$mmr$0);
             }
             returning null;
@@ -85,17 +85,17 @@ final class AnnotationClassMetamodelReferenceDefaulted implements .com.redhat.ce
     }
     
     AnnotationClassMetamodelReferenceDefaulted(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted$annotation anno) {
-        this(anno.mmr());
+        this(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.parseMetamodelReference(anno.mmr()));
     }
     
-    AnnotationClassMetamodelReferenceDefaulted(final .java.lang.String mmr) {
+    AnnotationClassMetamodelReferenceDefaulted(final .ceylon.language.model.declaration.Declaration mmr) {
         this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
         this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
         this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted.$TypeDescriptor, this);
     }
     
-    static .java.lang.String $init$mmr() {
-        return "com.redhat.ceylon.compiler.java.test.annotations::AnnotationClassMetamodelReference";
+    static .ceylon.language.model.declaration.Declaration $init$mmr() {
+        return (.ceylon.language.model.declaration.Declaration)(.java.lang.Object).ceylon.language.model.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference.$TypeDescriptor);
     }
     protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$this;
     
@@ -153,7 +153,7 @@ final class AnnotationClassMetamodelReferenceVariadic implements .com.redhat.cey
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$mmrs$1 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic.$init$mmrs();
+                .ceylon.language.Sequential<? extends .ceylon.language.model.declaration.Declaration> $ceylontmp$mmrs$1 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic.$init$mmrs();
                 this($ceylontmp$mmrs$1);
             }
             returning null;
@@ -161,16 +161,16 @@ final class AnnotationClassMetamodelReferenceVariadic implements .com.redhat.cey
     }
     
     AnnotationClassMetamodelReferenceVariadic(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation anno) {
-        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.mmrs()));
+        this(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.parseMetamodelReferences(.ceylon.language.model.declaration.Declaration.$TypeDescriptor, anno.mmrs()));
     }
     
-    AnnotationClassMetamodelReferenceVariadic(final .ceylon.language.Sequential<? extends .ceylon.language.String> mmrs) {
+    AnnotationClassMetamodelReferenceVariadic(final .ceylon.language.Sequential<? extends .ceylon.language.model.declaration.Declaration> mmrs) {
         this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
         this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
         this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic.$TypeDescriptor, this);
     }
     
-    static .ceylon.language.Sequential<? extends .ceylon.language.String> $init$mmrs() {
+    static .ceylon.language.Sequential<? extends .ceylon.language.model.declaration.Declaration> $init$mmrs() {
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$this;
@@ -212,8 +212,27 @@ final class annotationClassMetamodelReference_ {
     }
     
     @.ceylon.language.Annotation$annotation
-    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference annotationClassMetamodelReference(final .java.lang.String mmr) {
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference annotationClassMetamodelReference(final .ceylon.language.model.declaration.Declaration mmr) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference(mmr);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference.class)
+final class annotationClassMetamodelReferenceLiteral_ {
+    
+    private annotationClassMetamodelReferenceLiteral_() {
+    }
+    static final .java.lang.String arg$mmr = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CAnnotationClassMetamodelReference";
+    
+    @.ceylon.language.Annotation$annotation
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference annotationClassMetamodelReferenceLiteral() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference((.ceylon.language.model.declaration.Declaration)(.java.lang.Object).ceylon.language.model.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference.$TypeDescriptor));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.annotationClassMetamodelReferenceLiteral_.annotationClassMetamodelReferenceLiteral();
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
@@ -225,7 +244,7 @@ final class annotationClassMetamodelReferenceDefaulted1_ {
     }
     
     @.ceylon.language.Annotation$annotation
-    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted annotationClassMetamodelReferenceDefaulted1(final .java.lang.String mmr) {
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted annotationClassMetamodelReferenceDefaulted1(final .ceylon.language.model.declaration.Declaration mmr) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted(mmr);
     }
 }
@@ -259,18 +278,18 @@ final class annotationClassMetamodelReferenceVariadic1_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$mmr$2 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassMetamodelReferenceVariadic1_.annotationClassMetamodelReferenceVariadic1$mmr();
+                .ceylon.language.Sequential<? extends .ceylon.language.model.declaration.Declaration> $ceylontmp$mmr$2 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassMetamodelReferenceVariadic1_.annotationClassMetamodelReferenceVariadic1$mmr();
             }
             returning annotationClassMetamodelReferenceVariadic1($ceylontmp$mmr$2);
         );
     }
     
-    static final .ceylon.language.Sequential<? extends .ceylon.language.String> annotationClassMetamodelReferenceVariadic1$mmr() {
+    static final .ceylon.language.Sequential<? extends .ceylon.language.model.declaration.Declaration> annotationClassMetamodelReferenceVariadic1$mmr() {
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     @.ceylon.language.Annotation$annotation
-    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelReferenceVariadic1(final .ceylon.language.Sequential<? extends .ceylon.language.String> mmr) {
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelReferenceVariadic1(final .ceylon.language.Sequential<? extends .ceylon.language.model.declaration.Declaration> mmr) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic(mmr);
     }
 }
@@ -293,17 +312,24 @@ final class annotationClassMetamodelReferenceVariadic2_ {
     }
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotations({
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "ceylon.language::Anything"),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "ceylon.language::process")})
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6:ceylon.language::CAnything"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6:ceylon.language::Vprocess"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6:ceylon.language:model.declaration:IDeclaration"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6:ceylon.language::IList"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6:ceylon.language::IList.Vsize"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6:ceylon.language::IList.Fget"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6:ceylon.language::Fsort"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6:ceylon.language::Vtrue"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassMetamodelReferenceLiteral_.arg$mmr)})
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted$annotations({
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted$annotation(mmr = "ceylon.language::Anything"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted$annotation(mmr = "::0.6:ceylon.language::CAnything"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted$annotation})
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotations({
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation(mmrs = {}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation(mmrs = "ceylon.language::Anything"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation(mmrs = "::0.6:ceylon.language::CAnything"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation(mmrs = {
-                "ceylon.language::Anything",
-                "ceylon.language::process"})})
+                "::0.6:ceylon.language::CAnything",
+                "::0.6:ceylon.language::Vprocess"})})
 class AnnotationClassMetamodelReference_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnotationClassMetamodelReference_callsite() {
