@@ -109,6 +109,29 @@
         
         </section>
         
+        <section id="assemblies">
+            <title>Assemblies</title>
+            
+            <comment><para>A future version of the language will add support for
+            assemblies, which will provide the ability to:</para>
+            <itemizedlist>
+                <listitem>
+                    <para>package together several versioned modules into a single 
+                    archive for deployment as a single well-defined application or 
+                    service, and</para>
+                </listitem>
+                <listitem>
+                    <para>override the version number of imported modules declared
+                    in <literal>modules.ceylon</literal> with an assembly-specific
+                    version number.</para>
+                </listitem>
+            </itemizedlist>
+            <para>This facility might be something as simple as an acrhived module
+            repository with an assembly descriptor.</para>
+            </comment>
+            
+        </section>
+        
     </section>
 
     <section id="sourcelayout">
@@ -174,11 +197,10 @@
         the Ceylon distribution.</para>
         
         <para>Red Hat maintains a central module repository at 
-        <literal>http://modules.ceylon-lang.org</literal>. Read access to this
-        site is free of registration and free of charge. Ceylon projects which
-        distribute their modules under a royalty-free license may apply for a 
-        user account which provides write access to the central module
-        repository.</para>
+        <literal>http://modules.ceylon-lang.org</literal>. Read access to 
+        this site is free of registration and free of charge. Ceylon projects 
+        may apply for a user account which provides write access to the central 
+        module repository.</para>
         
         <para>A module belonging to the central module repository must
         satisfy the following regulations:</para>
@@ -188,24 +210,19 @@
                 <para>the first element of the module name must be a top-level
                 internet domain name, and the second element of the module 
                 name must be a second-level domain of the given top-level domain 
-                owned by the organization distributing the module, and</para>
+                owned by the organization distributing the module, and.</para>
             </listitem>
             <listitem>
-                 <para>the module must be packaged as a module archive signed 
-                 using the Java <literal>jarsigner</literal> tool.</para>
+                <para>the module must be made available under a royalty-free 
+                license.</para>
             </listitem>
         </itemizedlist>
         
         <para>For example, a module developed by Red Hat might be named
         <literal>org.jboss.server</literal>.</para>
         
-        <comment><para>TODO: but where do they obtain the public keys from?</para></comment>
-        
-        <comment><para>TODO: we will probably need to add the notion of an
-        <emphasis>assembly</emphasis> at some stage, to package together
-        multiple modules into an application. It might just be an archived
-        module repository with a descriptor that overrides dependency 
-        versions.</para></comment>
+        <comment><para>TODO: should we require that module archives be signed 
+        using the Java <literal>jarsigner</literal> tool?</para></comment>
         
         <section id="modulenamesandversionidentifiers">
             <title>Module names and version identifiers</title>
