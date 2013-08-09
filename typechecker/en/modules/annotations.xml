@@ -141,12 +141,16 @@ shared deprecated</programlisting>
                     <literal>ceylon.language.model.declaration</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>an annotation type, or</para>
+                    <para>an annotation type,</para>
                 </listitem>
                 <listitem>
                     <para><literal>{T*}</literal> or <literal>[T*]</literal> where 
                     <literal>T</literal> is a legal annotation constructor parameter 
-                    type.</para>
+                    type, or</para>
+                </listitem>
+                <listitem>
+                    <para>any tuple type whose element types are legal annotation 
+                    constructor parameter types.</para>
                 </listitem>
             </itemizedlist>
             
@@ -172,6 +176,9 @@ shared deprecated</programlisting>
             
             <para>The return type of an annotation constructor must be a constrained annotation 
             type.</para>
+            
+            <comment><para>Note: in future releases of the language we will let an annotation 
+            constructor return a sequence or tuple of annotation type instances.</para></comment>
             
         </section>
         
@@ -201,11 +208,15 @@ shared deprecated</programlisting>
                     <literal>ceylon.language.model.declaration</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>an annotation type, or</para>
+                    <para>an annotation type,</para>
                 </listitem>
                 <listitem>
                     <para><literal>{T*}</literal> or <literal>[T*]</literal> where 
-                    <literal>T</literal> is a legal annotation parameter type.</para>
+                    <literal>T</literal> is a legal annotation parameter type, or</para>
+                </listitem>
+                <listitem>
+                    <para>any tuple type whose element types are legal annotation 
+                    parameter types.</para>
                 </listitem>
             </itemizedlist>
             
@@ -256,10 +267,6 @@ shared deprecated</programlisting>
             
             <comment><para>Note: it is perfectly acceptable for multiple annotation constructors 
             to return the same annotation type.</para></comment>
-            
-            <comment><para>TODO: should we let an annotation return multiple instances of an
-            annotation type (<literal>A[]</literal> where <literal>A</literal> is an annotation
-            type).</para></comment>
             
         </section>
         
