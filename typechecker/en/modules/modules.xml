@@ -113,20 +113,25 @@
             <title>Assemblies</title>
             
             <comment><para>A future version of the language will add support for
-            assemblies, which will provide the ability to:</para>
+            assemblies, that is, the ability to:</para>
             <itemizedlist>
                 <listitem>
-                    <para>package together several versioned modules into a single 
-                    archive for deployment as a single well-defined application or 
+                    <para>package together several interdependent versioned modules 
+                    into a single archive for deployment as a single well-defined 
+                    application or service,</para>
+                </listitem>
+                <listitem>
+                    <para>specify the name and version of the application or 
                     service, and</para>
                 </listitem>
                 <listitem>
-                    <para>override the version number of imported modules declared
-                    in <literal>modules.ceylon</literal> with an assembly-specific
-                    version number.</para>
+                    <para>override the versions of imported modules declared in 
+                    <literal>modules.ceylon</literal>, as defined in 
+                    <xref linkend="moduledescriptors"/>, with assembly-specific
+                    module versions.</para>
                 </listitem>
             </itemizedlist>
-            <para>This facility might be something as simple as an acrhived module
+            <para>An assembly archive will probably just be an archived module
             repository with an assembly descriptor.</para>
             </comment>
             
