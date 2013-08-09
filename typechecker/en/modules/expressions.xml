@@ -272,7 +272,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
         </section>
         
-        <section>
+        <section id="thispackage">
             <title><literal>package</literal></title>
             
             <para>The keyword <literal>package</literal> is not an expression, and

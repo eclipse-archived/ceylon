@@ -48,7 +48,12 @@ TypeConstraints?
         <title>Compilation unit structure</title>
         
         <para>A <emphasis>compilation unit</emphasis> is a text file, with the filename 
-        extension <literal>.ceylon</literal>. There are three kinds of compilation unit:</para>
+        extension <literal>.ceylon</literal>.</para> 
+        
+        <comment><para>Note: it is recommended that source file names contain only 
+        characters from the ASCII character set.</para></comment>
+        
+        <para>There are three kinds of compilation unit:</para>
         
         <itemizedlist>
             <listitem>
@@ -69,19 +74,10 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
         
-        <comment><para>Note: it is recommended that source file names contain only 
-        characters from the ASCII character set.</para></comment>
-        
         <para>Any compilation unit may begin with a list of imported types, values, 
         and functions.</para>
         
         <programlisting>Import* (ModuleDescriptor | PackageDescriptor | Declaration*)</programlisting>
-        
-        <synopsis>Declaration: FunctionValueDeclaration | TypeDeclaration | ParameterDeclaration</synopsis>
-        
-        <synopsis>FunctionValueDeclaration: FunctionDeclaration | ValueDeclaration | SetterDeclaration</synopsis>
-        
-        <synopsis>TypeDeclaration: ClassDeclaration | ObjectDeclaration | InterfaceDeclaration | TypeAliasDeclaration</synopsis>
         
         <section id="topleveldeclarations">
             <title>Toplevel and nested declarations</title>
@@ -89,6 +85,12 @@ TypeConstraints?
             <para>A <emphasis>toplevel declaration</emphasis> defines a type&mdash;a class 
             or interface&mdash;or a type alias, or a function or value.</para>
             
+            <synopsis>Declaration: FunctionValueDeclaration | TypeDeclaration | ParameterDeclaration</synopsis>
+            
+            <synopsis>FunctionValueDeclaration: FunctionDeclaration | ValueDeclaration | SetterDeclaration</synopsis>
+            
+            <synopsis>TypeDeclaration: ClassDeclaration | ObjectDeclaration | InterfaceDeclaration | TypeAliasDeclaration</synopsis>
+        
             <para>A toplevel declaration is not polymorphic and so may not be annotated 
             <literal>formal</literal>, <literal>default</literal>, or 
             <literal>actual</literal>.</para>
@@ -109,10 +111,10 @@ TypeConstraints?
             <title>Packages</title>
             
             <para>Each compilation unit belongs to exactly one <emphasis>package</emphasis>.
-            The package is identified by the location of the text file on the file system,
-            relative to a root <emphasis>source directory</emphasis>, as defined in 
-            <xref linkend="sourcelayout"/>. Every package belongs to exactly one module, as 
-            specified in <xref linkend="modules"/>.</para>
+            Every toplevel declaration of the compilation unit also belongs directly to this 
+            package. The package is identified by the location of the text file on the file 
+            system, relative to a root <emphasis>source directory</emphasis>, as defined in 
+            <xref linkend="sourcelayout"/>.</para>
             
             <para>A package is a namespace. A full package name is a period-separated list of 
             all-lowercase identifiers.</para>
@@ -121,7 +123,10 @@ TypeConstraints?
             
             <comment><para>Note: it is recommended that package names contain only characters
             from the ASCII character set.</para></comment>
-                        
+            
+            <para>Every package belongs to exactly one module, as specified in 
+            <xref linkend="modules"/>.</para>
+            
         </section>
         
     </section>

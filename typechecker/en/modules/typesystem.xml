@@ -789,8 +789,8 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
     
             <para>Type inference is only allowed for block local declarations which are are 
             referred to only by statements and declarations that occur within the lexical scope 
-            of the declaration. A <literal>value</literal> or <literal>function</literal> 
-            declaration may not:</para>
+            of the declaration, as specified by <xref linkend="typeinferenceandblockstructure"/>. 
+            A <literal>value</literal> or <literal>function</literal> declaration may not:</para>
             
             <itemizedlist>
                 <listitem>

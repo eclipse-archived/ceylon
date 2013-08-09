@@ -205,620 +205,274 @@
             </listitem>
         </itemizedlist>
         
-    <section id="declarationnameuniqueness">
-        <title>Declaration name uniqueness</title>
-        
-        <para>A package may not contain two toplevel declarations with the same name.</para>
-        
-        <para>A program element is contained within the <emphasis>namespace</emphasis> 
-        of a declaration if either:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>it directly occurs in the body in which the declaration 
-                directly occurs,</para>
-            </listitem>
-            <listitem>
-                <para>the declaration is a parameter or type parameter, and it 
-                directly occurs in the body of the parameterized declaration,</para>
-            </listitem>
-            <!--
-            <listitem>
-                <para>it is a type parameter of the declaration,</para>
-            </listitem>
-            <listitem>
-                <para>it indirectly occurs in the body of the declaration, and the 
-                declaration is a class or interface,</para>
-            </listitem>
-            <listitem>
-                <para>it is a type parameter of a declaration that indirectly occurs 
-                in the body of the declaration, and the declaration is a class or 
-                interface,</para>
-            </listitem>
-            -->
-            <listitem>
-                <para>it is a control structure variable or iteration variable of a 
-                control structure contained in the namespace of the declaration, or</para>
-            </listitem>
-            <listitem>
-                <para>it directly occurs in the body of a control structure contained
-                in the namespace of the declaration.</para>
-            </listitem>
-        </itemizedlist>
-
-        <para>The namespace of a declaration may not contain a second declaration with 
-        the same name. (A parameter or type parameter is considered to be a declaration 
-        that is directly contained by the body of the declaration it parameterizes.)</para>
-        
-        <para>A class or interface may not inherit a declaration with the same name as 
-        a declaration it contains unless either:</para>
+        <section id="declarationnameuniqueness">
+            <title>Declaration name uniqueness</title>
             
-        <itemizedlist>
-            <listitem>
-                <para>the contained declaration directly or indirectly refines the 
-                inherited declaration,</para>
-            </listitem>
-            <listitem>
-                <para>the contained declaration is a block local declaration, or</para>
-            </listitem>
-            <listitem>
-                <para>the inherited declaration is a block local declaration.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>A class or interface may not inherit two declarations with the same name 
-        unless either:</para>
-
-        <itemizedlist>
-            <listitem>
-                <para>both of the inherited declarations are <literal>formal</literal>
-                and directly or indirectly refine some member of a common 
-                supertype,</para>
-            </listitem>
-            <listitem>
-                <para>the class or interface contains a declaration that directly or 
-                indirectly refines both the inherited declarations (in which case both 
-                the inherited declarations directly or indirectly refine some member 
-                of a common supertype),</para>
-            </listitem>
-            <listitem>
-                <para>one of the inherited declarations directly or indirectly refines 
-                the other inherited declaration, or</para>
-            </listitem>
-            <listitem>
-                <para>at least one of the inherited declarations is a block local 
-                declaration.</para>
-            </listitem>
-        </itemizedlist>
-        
-    </section>
+            <para>A package, defined in <xref linkend="packages"/>, may not contain two 
+            toplevel declarations with the same name.</para>
+            
+            <para>A program element is contained within the <emphasis>namespace</emphasis> 
+            of a declaration if either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>it directly occurs in the body in which the declaration 
+                    directly occurs,</para>
+                </listitem>
+                <listitem>
+                    <para>the declaration is a parameter or type parameter, and it 
+                    directly occurs in the body of the parameterized declaration,</para>
+                </listitem>
+                <!--
+                <listitem>
+                    <para>it is a type parameter of the declaration,</para>
+                </listitem>
+                <listitem>
+                    <para>it indirectly occurs in the body of the declaration, and the 
+                    declaration is a class or interface,</para>
+                </listitem>
+                <listitem>
+                    <para>it is a type parameter of a declaration that indirectly occurs 
+                    in the body of the declaration, and the declaration is a class or 
+                    interface,</para>
+                </listitem>
+                -->
+                <listitem>
+                    <para>it is a control structure variable or iteration variable of a 
+                    control structure contained in the namespace of the declaration, or</para>
+                </listitem>
+                <listitem>
+                    <para>it directly occurs in the body of a control structure contained
+                    in the namespace of the declaration.</para>
+                </listitem>
+            </itemizedlist>
     
-    <section id="scopeofdeclaration">
-        <title>Scope of a declaration</title>
-        
-        <para>The scope of a declaration is governed by the body or package in which it 
-        occurs. A declaration is <emphasis>in scope</emphasis> at a program element if
-        and only if either:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the declaration is a parameter or type parameter of a declaration 
-                whose body contains the program element,</para>
-            </listitem>
-            <listitem>
-                <para>the declaration is a control structure variable or iteration 
-                variable belonging to a block of a control structure that contains the 
-                program element,</para>
-            </listitem>
-            <listitem>
-                <para>the program element belongs to or is contained in the body of the 
-                declaration itself,</para>
-            </listitem>
-            <listitem>
-                <para>the program element belongs to or is contained in the body of a 
-                class or interface which inherits the declaration,</para>
-            </listitem>
-            <listitem>
-                <para>the declaration directly occurs in a body containing the program
-                element,</para>
-            </listitem>
-            <!--listitem>
-                <para>the program element is the <literal>while</literal> condition of a 
-                <literal>do/while</literal> loop and the <literal>do</literal> block of 
-                the loop contains the declaration,</para>
-            </listitem-->
-            <listitem>
-                <para>the declaration is imported by the compilation unit containing the 
-                program element and is visible to the program element, or</para>
-            </listitem>
-            <listitem>
-                <para>the declaration is a toplevel declaration in the package containing 
-                the program element.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Where:</para>
-        
-        <itemizedlist>
-        <listitem>
-        <para>A control structure variable or iteration variable <emphasis>belongs</emphasis> 
-        to a block of a control structure if the block immediately follows the declaration 
-        of the variable.</para>
-        </listitem>
-        <listitem>
-        <para>A program element <emphasis>belongs</emphasis> to a declaration if it occurs
-        in the <literal>extends</literal>, <literal>satisfies</literal>, <literal>of</literal>,
-        or <literal>given</literal> clause of the declaration.</para>
-        </listitem>
-        </itemizedlist>
-        
-        <para>Furthermore:</para>
-        <itemizedlist>
-            <listitem>
-                <para>a condition variable of a condition belonging to a condition list is 
-                in scope in any condition of the condition list that occurs lexically later, 
-                and</para>
-            </listitem>
-            <listitem>
-                <para>an iteration variable or condition variable of a comprehension is in 
-                scope in any clause of the comprehension that occurs lexically later.</para>
-            </listitem>
-        </itemizedlist>
-        
-    </section>
+            <para>The namespace of a declaration may not contain a second declaration with 
+            the same name. (A parameter or type parameter is considered to be a declaration 
+            that is directly contained by the body of the declaration it parameterizes.)</para>
+            
+            <para>A class or interface may not inherit a declaration with the same name as 
+            a declaration it contains unless either:</para>
+                
+            <itemizedlist>
+                <listitem>
+                    <para>the contained declaration directly or indirectly refines the 
+                    inherited declaration,</para>
+                </listitem>
+                <listitem>
+                    <para>the contained declaration is a block local declaration, or</para>
+                </listitem>
+                <listitem>
+                    <para>the inherited declaration is a block local declaration.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>A class or interface may not inherit two declarations with the same name 
+            unless either:</para>
     
-    <section id="hidingdeclaration">
-        <title>Hiding a declaration</title>
+            <itemizedlist>
+                <listitem>
+                    <para>both of the inherited declarations are <literal>formal</literal>
+                    and directly or indirectly refine some member of a common 
+                    supertype,</para>
+                </listitem>
+                <listitem>
+                    <para>the class or interface contains a declaration that directly or 
+                    indirectly refines both the inherited declarations (in which case both 
+                    the inherited declarations directly or indirectly refine some member 
+                    of a common supertype),</para>
+                </listitem>
+                <listitem>
+                    <para>one of the inherited declarations directly or indirectly refines 
+                    the other inherited declaration, or</para>
+                </listitem>
+                <listitem>
+                    <para>at least one of the inherited declarations is a block local 
+                    declaration.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
+        
+        <section id="scopeofdeclaration">
+            <title>Scope of a declaration</title>
+            
+            <para>The scope of a declaration is governed by the body or package in which it 
+            occurs. A declaration is <emphasis>in scope</emphasis> at a program element if
+            and only if either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the declaration is a parameter or type parameter of a declaration 
+                    whose body contains the program element,</para>
+                </listitem>
+                <listitem>
+                    <para>the declaration is a control structure variable or iteration 
+                    variable belonging to a block of a control structure that contains the 
+                    program element,</para>
+                </listitem>
+                <listitem>
+                    <para>the program element belongs to or is contained in the body of the 
+                    declaration itself,</para>
+                </listitem>
+                <listitem>
+                    <para>the program element belongs to or is contained in the body of a 
+                    class or interface which inherits the declaration,</para>
+                </listitem>
+                <listitem>
+                    <para>the declaration directly occurs in a body containing the program
+                    element,</para>
+                </listitem>
+                <!--listitem>
+                    <para>the program element is the <literal>while</literal> condition of a 
+                    <literal>do/while</literal> loop and the <literal>do</literal> block of 
+                    the loop contains the declaration,</para>
+                </listitem-->
+                <listitem>
+                    <para>the declaration is imported by the compilation unit containing the 
+                    program element and is visible to the program element, or</para>
+                </listitem>
+                <listitem>
+                    <para>the declaration is a toplevel declaration in the package containing 
+                    the program element.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Where:</para>
+            
+            <itemizedlist>
+            <listitem>
+            <para>A control structure variable or iteration variable <emphasis>belongs</emphasis> 
+            to a block of a control structure if the block immediately follows the declaration 
+            of the variable.</para>
+            </listitem>
+            <listitem>
+            <para>A program element <emphasis>belongs</emphasis> to a declaration if it occurs
+            in the <literal>extends</literal>, <literal>satisfies</literal>, <literal>of</literal>,
+            or <literal>given</literal> clause of the declaration.</para>
+            </listitem>
+            </itemizedlist>
+            
+            <para>Furthermore:</para>
+            <itemizedlist>
+                <listitem>
+                    <para>a condition variable of a condition belonging to a condition list is 
+                    in scope in any condition of the condition list that occurs lexically later, 
+                    and</para>
+                </listitem>
+                <listitem>
+                    <para>an iteration variable or condition variable of a comprehension is in 
+                    scope in any clause of the comprehension that occurs lexically later.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
     
-        <para>If two declarations with the same name or imported name, as defined in 
-        <xref linkend="importedname"/>, are both in scope at a certain program element, then one 
-        declaration may <emphasis>hide</emphasis> the other declaration.</para>
+        <section id="hidingdeclaration">
+            <title>Hiding a declaration</title>
         
-        <!--
-        <itemizedlist>
-            <listitem>
-                <para>A declaration that directly occurs in the inner body hides a declaration, 
-                parameter, type parameter or control structure variable of the outer body.</para>
-            </listitem>
-            <listitem>
-                <para>If the inner body is a class or interface, a declaration inherited by the 
-                inner body hides a declaration, parameter, type parameter or control structure 
-                variable of the outer body.</para>
-            </listitem>
-            <listitem>
-                <para>If the inner body is a control structure, a control structure or iteration 
-                variable of the inner body hides any declaration in scope the outer body.</para>
-            </listitem>
-        </itemizedlist>
-        
-         -->
-         
-        <itemizedlist>
-            <listitem>
-                <para>If an inner body is contained (directly or indirectly) in an outer 
-                body, a declaration that is in scope in the inner body but is not in 
-                scope in the outer body hides a declaration that is in scope in the outer 
-                body. (In particular, a declaration inherited by a nested class or 
-                interface hides a declaration of the containing body.)</para>
-            </listitem>
-            <listitem>
-                <para>An block-local declaration of a class containing the program element 
-                hides a declaration inherited by the class.</para>
-            </listitem>
-            <listitem>
-                <para>An <literal>actual</literal> declaration hides the declaration it
-                refines.</para>
-            </listitem>
-            <listitem>
-                <para>A declaration occurring in a body containing the program element 
-                hides a declaration imported by the compilation unit containing the body
-                or implicitly imported from the module <literal>ceylon.language</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>A toplevel declaration of the package containing the program element 
-                hides a declaration implicitly imported from the module 
-                <literal>ceylon.language</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>A declaration explicitly imported by the compilation unit containing
-                the program element hides a declaration implicitly imported from the module 
-                <literal>ceylon.language</literal>.</para>
-            </listitem>
-            <!--listitem>
-                <para>A toplevel declaration of the compilation unit containing the program 
-                element hides a declaration explicitly imported by the compilation unit.</para>
-            </listitem-->
-            <listitem>
-                <para>A declaration explicitly imported by the compilation unit containing 
-                the program element hides a toplevel declaration of <!--another compilation unit
-                in--> the package containing the compilation unit.</para>
-            </listitem>
-            <listitem>
-                <para>A declaration explicity imported by name in the compilation unit 
-                containing the program element hides a declaration explicitly imported 
-                by wildcard in the compilation unit.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>For example, the following code is legal:</para>
-        
-        <programlisting>class Person(name) {
+            <para>If two declarations with the same name or imported name, as defined in 
+            <xref linkend="importedname"/>, are both in scope at a certain program element, then one 
+            declaration may <emphasis>hide</emphasis> the other declaration.</para>
+            
+            <!--
+            <itemizedlist>
+                <listitem>
+                    <para>A declaration that directly occurs in the inner body hides a declaration, 
+                    parameter, type parameter or control structure variable of the outer body.</para>
+                </listitem>
+                <listitem>
+                    <para>If the inner body is a class or interface, a declaration inherited by the 
+                    inner body hides a declaration, parameter, type parameter or control structure 
+                    variable of the outer body.</para>
+                </listitem>
+                <listitem>
+                    <para>If the inner body is a control structure, a control structure or iteration 
+                    variable of the inner body hides any declaration in scope the outer body.</para>
+                </listitem>
+            </itemizedlist>
+            -->
+             
+            <itemizedlist>
+                <listitem>
+                    <para>If an inner body is contained (directly or indirectly) in an outer 
+                    body, a declaration that is in scope in the inner body but is not in 
+                    scope in the outer body hides a declaration that is in scope in the outer 
+                    body. (In particular, a declaration inherited by a nested class or 
+                    interface hides a declaration of the containing body.)</para>
+                </listitem>
+                <listitem>
+                    <para>An block-local declaration of a class containing the program element 
+                    hides a declaration inherited by the class.</para>
+                </listitem>
+                <listitem>
+                    <para>An <literal>actual</literal> declaration hides the declaration it
+                    refines.</para>
+                </listitem>
+                <listitem>
+                    <para>A declaration occurring in a body containing the program element 
+                    hides a declaration imported by the compilation unit containing the body
+                    or implicitly imported from the module <literal>ceylon.language</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>A toplevel declaration of the package containing the program element 
+                    hides a declaration implicitly imported from the module 
+                    <literal>ceylon.language</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>A declaration explicitly imported by the compilation unit containing
+                    the program element hides a declaration implicitly imported from the module 
+                    <literal>ceylon.language</literal>.</para>
+                </listitem>
+                <!--listitem>
+                    <para>A toplevel declaration of the compilation unit containing the program 
+                    element hides a declaration explicitly imported by the compilation unit.</para>
+                </listitem-->
+                <listitem>
+                    <para>A declaration explicitly imported by the compilation unit containing 
+                    the program element hides a toplevel declaration of <!--another compilation unit
+                    in--> the package containing the compilation unit.</para>
+                </listitem>
+                <listitem>
+                    <para>A declaration explicity imported by name in the compilation unit 
+                    containing the program element hides a declaration explicitly imported 
+                    by wildcard in the compilation unit.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>For example, the following code is legal:</para>
+            
+            <programlisting>class Person(name) {
     String name;
     shared String lowerCaseName {
         String name = this.name.lowercased;
         return name;
     }
 }</programlisting>
-        
-        <para>As is this code:</para>
-        
-        <programlisting>class Point(x, y) {
+            
+            <para>As is this code:</para>
+            
+            <programlisting>class Point(x, y) {
     shared Float x; 
     shared Float y;
 }
 
 class Complex(Float x, Float y=0.0) 
         extends Point(x, y) {}</programlisting>
-        
-    </section>
-    
-    <section id="referenceabilityofdeclaration">
-        <title>References and block structure</title>
-        
-        <para>A declaration may be in scope at a program element, but not 
-        <emphasis>referenceable</emphasis> at the program element. A declaration 
-        is referenceable at a program element if the declaration is in scope at 
-        the program element and either:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the program element occurs within the lexical scope of the 
-                declaration, or</para>
-            </listitem>
-            <listitem>
-                <para>the declaration does not directly occur in a block or in the
-                initializer section of a class body.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <!--itemizedlist>
-            <listitem>
-                <para>the declaration is a parameter or type parameter,</para>
-            </listitem>
-            <listitem>
-                <para>the declaration is a control structure variable or iteration 
-                variable,</para>
-            </listitem>
-            <listitem>
-                <para>the program element belongs to or is contained in the body of the 
-                declaration itself,</para>
-            </listitem>
-            <listitem>
-                <para>the program element belongs to or is contained in the body of a 
-                class or interface which inherits the declaration,</para>
-            </listitem>
-            <listitem>
-                <para>the program element occurs within the lexical scope of the 
-                declaration,</para>
-            </listitem>
-            <listitem>
-                <para>the declaration directly occurs in an interface body,</para>
-            </listitem>
-            <listitem>
-                <para>the declaration directly occurs in the declaration section of a class 
-                body, or</para>
-            </listitem>
-            <listitem>
-                <para>the declaration is a toplevel declaration.</para>
-            </listitem>
-        </itemizedlist-->
-        
-        <para>Note that these rules have very different consequences for:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>declarations that occur in blocks and class initializer sections, and
-                </para>
-            </listitem>
-            <listitem>
-                <para>toplevel declarations, and declarations that occur in class declaration 
-                sections and interface bodies.</para>
-            </listitem>
-        </itemizedlist> 
-        
-        <para>Declarations that occurs in a block or class initializer section are interspersed
-        with procedural code that initializes references. Therefore, a program element in a 
-        block or initializer may not refer to a declaration that occurs later in the block or 
-        class body. This restriction does not apply to declarations that occur in an interface 
-        body or class declaration section.</para>
-        
-        <para>The following toplevel function declarations, belonging to the same package, 
-        are legal:</para>
-    
-        <programlisting>Float x => y;</programlisting>
-
-        <programlisting>Float y => x;</programlisting>
-        
-        <para>This code is not legal, since the body of a function is an ordinary block:</para>
-    
-        <programlisting>Float->Float xy() {
-    Float x => y;  //compiler error: y is not referenceable
-    Float y => x;
-    return x->y;
-}</programlisting>
-
-        <para>This code is not legal, since all three statements occur in the initializer 
-        section of the class body:</para>
-    
-        <programlisting>class Point() {
-    Float x => y;  //compiler error: y is not referenceable
-    Float y => x;
-    Float->Float xy = x->y;
-}</programlisting>
-
-        <para>However, this code <emphasis>is</emphasis> legal, since the statements occur 
-        in the declaration section of the class body:</para>
-    
-        <programlisting>class Point() {
-    Float x => y;
-    Float y => x;
-}</programlisting>
-
-        <para>Likewise, this code is legal, since the statements occur in an interface 
-        body:</para>
-    
-        <programlisting>interface Point {
-    Float x => y;
-    Float y => x;
-}</programlisting>
-
-    </section>
-    
-    <section id="typedetermination">
-        <title>Type inference and block structure</title>
-        
-        <para>A value declared using the keyword <literal>value</literal> or a
-        function declared using the keyword <literal>function</literal> may be 
-        in scope at a program element, but its type may not be 
-        <emphasis>inferrable</emphasis> from the point of view of that program 
-        element.</para>
-        
-        <para>The type of a value or function declared using the keyword 
-        <literal>value</literal> or <literal>function</literal> is inferrable 
-        to a program element if the declaration is in scope at the program 
-        element and the program element occurs within the lexical scope of the 
-        declaration.</para>
-        
-        <comment><para>Note: the type of a value or function declared using
-        the keyword <literal>value</literal> or <literal>function</literal> is
-        not inferrable within the body of the value or function 
-        itself.</para></comment>
-        
-        <para>For any other declaration, that is, for declarations which 
-        explicitly specify a type, the type is considered inferrable to a 
-        program element if the declaration is in scope at the program 
-        element.</para>
-        
-        <para>The following code is not legal:</para>
-        
-        <programlisting>interface Point {
-    value x => y;  //compiler error: type of y is not inferrable
-    value y => x;
-}</programlisting>
-        
-        <para>However, this code is legal:</para>
-        
-        <programlisting>interface Point {
-    value x => y;
-    Float y => x;
-}</programlisting>
-        
-    </section>
-        
-    <section id="unqualifiedreferenceresolution">
-        <title>Unqualified reference resolution</title>
-        
-        <para>An <emphasis>unqualified reference</emphasis> is:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the type name in an unqualified type declaration, for 
-                example <literal>String</literal> or <literal>Sequence</literal> 
-                in <literal>Sequence&lt;String&gt;</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>the value name in a base value reference, for example 
-                <literal>counter</literal> in <literal>counter.count</literal>, 
-                </para>
-            </listitem>
-            <listitem>
-                <para>the function or type name in a base callable reference, 
-                for example <literal>entries</literal> in 
-                <literal>entries(people*.name)</literal> or <literal>Entry</literal>
-                in <literal>Entry(name,item)</literal>, or</para>
-            </listitem>
-            <listitem>
-                <para>the type name in an unqualified type in a static reference, 
-                for example <literal>Sequence</literal> in 
-                <literal>Sequence.iterator</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>If a program element contains an unqualified reference:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>there must be at least one declaration with the given name or 
-                imported name, as defined in <xref linkend="importedname"/>, in scope 
-                at the program element, and</para>
-            </listitem>
-            <listitem>
-                <para>if multiple declarations with the given name or imported name 
-                are in scope at the program element where the given name occurs, then 
-                there must be exactly one such declaration which is not hidden by any 
-                other declaration.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Then the reference is to this unique unhidden declaration, and:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the declaration must be referenceable at the program element,</para>
-            </listitem>
-            <listitem>
-                <para>the type of the declaration must be inferrable to the program 
-                element, and</para>
-            </listitem>
-            <listitem>
-                <para>if the declaration is forward-declared, it must be definitely
-                initialized at the program element.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>As a special exception to the above, if there is no declaration with the 
-        given name or imported name in scope at the program element and the program element 
-        occurs inside a <literal>dynamic</literal> block, then the unqualified reference 
-        does not refer to any statically typed declaration.</para>
-        
-        <para>If an unqualified reference refers to a member declaration of a type, then
-        there is a unique <emphasis>inheriting or declaring class or interface</emphasis> 
-        for the unqualified reference, that is, the unique class or interface in whose 
-        body the unqualified reference occurs, and which declares or inherits the member
-        declaration, and for which the member is not hidden at the program element where
-        the unqualified reference occurs.</para>
-        
-    </section>
-    
-    <section id="qualifiedreferenceresolution">
-        <title>Qualified reference resolution</title>
-        
-        <para>A <emphasis>qualified reference</emphasis> is:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the type name in a qualified type declaration, for example 
-                <literal>Buffer</literal> in <literal>BufferedReader.Buffer</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>the value name in a member value reference, for example
-                <literal>count</literal> in <literal>counter.count</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>the function or type name in a member callable reference, 
-                for example <literal>split</literal> in <literal>text.split()</literal>,
-                or <literal>Buffer</literal> in <literal>br.Buffer()</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>the type name in a qualified type in a static reference, 
-                for example <literal>BufferedReader.Buffer</literal> in 
-                <literal>BufferedReader.Buffer.size</literal>, or</para>
-            </listitem>
-            <listitem>
-                <para>the member name in a static reference, for example 
-                <literal>iterator</literal> in <literal>Sequence.iterator</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Every qualified reference has a qualifying type:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>For a type declaration, the qualifying type is the full
-                qualified type the qualifies the type name.</para>
-            </listitem>
-            <listitem>
-                <para>For a value reference or callable reference, the 
-                qualifying type is the type of the receiver expression.</para>
-            </listitem>
-            <listitem>
-                <para>For a static reference, the qualifying type is the full 
-                qualified type the qualifies the type or member name.</para>
-            </listitem>
-        </itemizedlist>
-                
-        <para>If a program element contains a qualified reference:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the qualifying type must have at least one member with the given 
-                name or imported name, as defined in <xref linkend="importedname"/>, 
-                which is visible at the program element, and</para>
-            </listitem>
-            <listitem>
-                <para>if there are multiple visible members with the given name or 
-                imported name, then it is guaranteed by the type system that there is 
-                exactly one such member which is not refined by another member.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <comment><para>TODO: that's simply not true for intersection types! We need more 
-        detail here about member resolution for intersection and union types.</para></comment>
-        
-        <para>Then the reference is to this unique member. If the program element is 
-        contained in the body of a class or interface, and the member declaration directly 
-        occurs in the body of the class or interface, and the qualified reference is a 
-        value reference or callable reference, and the receiver expression is a self 
-        reference to the instance being initialized, then:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the member declaration must be referenceable at the program
-                element,</para>
-            </listitem>
-            <listitem>
-                <para>the type of the member must be inferrable to the program 
-                element, and</para>
-            </listitem>
-            <listitem>
-                <para>if the member declaration is forward-declared, it must be 
-                definitely initialized at the program element.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <comment><para>TODO: what about "inherited" interfaces and <literal>abstract</literal>
-        classes? Currently the compiler allows this!</para></comment>
-        
-        <para>As a special exception to the above, if the program element occurs inside 
-        a <literal>dynamic</literal> block, and the the receiver expression has no type, 
-        then the qualified reference does not refer to any statically typed declaration.</para>
-        
-    </section>
-    
-    <section id="containingbodies">
-        <title>Local references and closure</title>
-        
-        <para>The initializer of a class, or the body of a member of a class may instantiate,
-        invoke, evaluate or assign members of the current instance of the class which defines 
-        the initializer or member&mdash;the instance being instantiated or invoked&mdash;without 
-        explicitly specifying the receiver, or by specifying a self reference 
-        <literal>this</literal> as the receiver.</para>
-        
-        <para>The initializer of a nested class, or the body of a member of a nested class
-        or nested interface may invoke, evaluate or assign members of the current instance 
-        of the containing class or interface&mdash;the parent instance of the instance being 
-        instantiated or invoked&mdash;without explicitly specifying the receiver, or by 
-        specifying an outer instance reference <literal>outer</literal> as the receiver.</para>
-        
-        <para>A toplevel function or value body may not refer to a self reference, since 
-        there is no current instance.</para>
-        
-        <para>The body of a value, function, or class nested inside the body of another 
-        function or value may invoke or evaluate any block local value or block local method 
-        whose declaration indirectly occurs earlier within the containing scope.</para>
-        
-        <para>When a member of a class is hidden by a block local declaration, the member 
-        may be accessed via the self reference <literal>this</literal> or via the outer 
-        instance reference <literal>outer</literal>:</para>
-        
-        <programlisting>shared class Item(name) {
+            
+            <para>When a member of a class is hidden by a block local declaration, the member 
+            may be accessed via the self reference <literal>this</literal>, defined in
+            <xref linkend="this"/>, or via the outer instance reference <literal>outer</literal>,
+            defined in <xref linkend="outer"/>.</para>
+            
+            <programlisting>shared class Item(name) {
     variable String name;
     shared void changeName(String name) {
         this.name = name;
     }
 }</programlisting>
-        
-        <programlisting>class Catalog(name) {
+            
+            <programlisting>class Catalog(name) {
     shared String name;
     class Schema(name) {
         shared String name;
@@ -832,15 +486,369 @@ class Complex(Float x, Float y=0.0)
         }
     }
 }</programlisting>
-        
-        <para>When a toplevel declaration of a package is hidden by another declaration, 
-        the toplevel declaration may be accessed via the containing package reference 
-        <literal>package</literal>:</para>
-        
-        <programlisting>Integer n => 0;
+            
+            <para>When a toplevel declaration of a package is hidden by another declaration, 
+            the toplevel declaration may be accessed via the containing package reference 
+            <literal>package</literal>, defined in <xref linkend="thispackage"/>.</para>
+            
+            <programlisting>Integer n => 0;
 Integer f(Integer n) => n+package.n;</programlisting>
-        
+            
         </section>
+        
+        <section id="referenceabilityofdeclaration">
+            <title>References and block structure</title>
+            
+            <para>A declaration may be in scope at a program element, but not 
+            <emphasis>referenceable</emphasis> at the program element. A declaration 
+            is referenceable at a program element if the declaration is in scope at 
+            the program element and either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the program element occurs within the lexical scope of the 
+                    declaration, or</para>
+                </listitem>
+                <listitem>
+                    <para>the declaration does not directly occur in a block or in the
+                    initializer section of a class body.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <!--itemizedlist>
+                <listitem>
+                    <para>the declaration is a parameter or type parameter,</para>
+                </listitem>
+                <listitem>
+                    <para>the declaration is a control structure variable or iteration 
+                    variable,</para>
+                </listitem>
+                <listitem>
+                    <para>the program element belongs to or is contained in the body of the 
+                    declaration itself,</para>
+                </listitem>
+                <listitem>
+                    <para>the program element belongs to or is contained in the body of a 
+                    class or interface which inherits the declaration,</para>
+                </listitem>
+                <listitem>
+                    <para>the program element occurs within the lexical scope of the 
+                    declaration,</para>
+                </listitem>
+                <listitem>
+                    <para>the declaration directly occurs in an interface body,</para>
+                </listitem>
+                <listitem>
+                    <para>the declaration directly occurs in the declaration section of a class 
+                    body, or</para>
+                </listitem>
+                <listitem>
+                    <para>the declaration is a toplevel declaration.</para>
+                </listitem>
+            </itemizedlist-->
+            
+            <para>Note that these rules have very different consequences for:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a declaration that occurs in a block, as specified in 
+                    <xref linkend="blocksandstatements"/>, or in an class initializer section, as
+                    specified in <xref linkend="initializersection"/>, and
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>a toplevel declaration, as specified in 
+                    <xref linkend="topleveldeclarations"/>, or a declaration that occurs in a 
+                    class declaration sectiony, as specified in <xref linkend="declarationsection"/>, 
+                    or interface body, as specified in <xref linkend="interfacebodies"/>.</para>
+                </listitem>
+            </itemizedlist> 
+            
+            <para>Declarations that occurs in a block or class initializer section are interspersed
+            with procedural code that initializes references. Therefore, a program element in a 
+            block or initializer may not refer to a declaration that occurs later in the block or 
+            class body. This restriction does not apply to declarations that occur in an interface 
+            body or class declaration section. Nor does it apply to toplevel declarations, which
+            are not considered to have a well-defined order.</para>
+            
+            <para>The following toplevel function declarations, belonging to the same package, 
+            are legal:</para>
+        
+            <programlisting>Float x => y;</programlisting>
+    
+            <programlisting>Float y => x;</programlisting>
+            
+            <para>This code is not legal, since the body of a function is an ordinary block:</para>
+        
+            <programlisting>Float->Float xy() {
+    Float x => y;  //compiler error: y is not referenceable
+    Float y => x;
+    return x->y;
+}</programlisting>
+    
+            <para>This code is not legal, since all three statements occur in the initializer 
+            section of the class body:</para>
+        
+            <programlisting>class Point() {
+    Float x => y;  //compiler error: y is not referenceable
+    Float y => x;
+    Float->Float xy = x->y;
+}</programlisting>
+    
+            <para>However, this code <emphasis>is</emphasis> legal, since the statements occur 
+            in the declaration section of the class body:</para>
+        
+            <programlisting>class Point() {
+    Float x => y;
+    Float y => x;
+}</programlisting>
+    
+            <para>Likewise, this code is legal, since the statements occur in an interface 
+            body:</para>
+        
+            <programlisting>interface Point {
+    Float x => y;
+    Float y => x;
+}</programlisting>
+    
+        </section>
+        
+        <section id="typeinferenceandblockstructure">
+            <title>Type inference and block structure</title>
+            
+            <para>A value declared using the keyword <literal>value</literal> or a
+            function declared using the keyword <literal>function</literal> may be 
+            in scope at a program element, but its type may not be 
+            <emphasis>inferrable</emphasis>, as defined by 
+            <xref linkend="typeinference"/>, from the point of view of that program 
+            element.</para>
+            
+            <para>The type of a value or function declared using the keyword 
+            <literal>value</literal> or <literal>function</literal> is inferrable 
+            to a program element if the declaration is in scope at the program 
+            element and the program element occurs within the lexical scope of the 
+            declaration.</para>
+            
+            <comment><para>Note: the type of a value or function declared using
+            the keyword <literal>value</literal> or <literal>function</literal> is
+            not inferrable within the body of the value or function 
+            itself.</para></comment>
+            
+            <para>For any other declaration, that is, for declarations which 
+            explicitly specify a type, the type is considered inferrable to a 
+            program element if the declaration is in scope at the program 
+            element.</para>
+            
+            <para>The following code is not legal:</para>
+            
+            <programlisting>interface Point {
+    value x => y;  //compiler error: type of y is not inferrable
+    value y => x;
+}</programlisting>
+            
+            <para>However, this code is legal:</para>
+            
+            <programlisting>interface Point {
+    value x => y;
+    Float y => x;
+}</programlisting>
+            
+        </section>
+            
+        <section id="unqualifiedreferenceresolution">
+            <title>Unqualified reference resolution</title>
+            
+            <para>An <emphasis>unqualified reference</emphasis> is:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the type name in an unqualified type declaration or type 
+                    argument, as defined by <xref linkend="typeexpressions"/>, for 
+                    example <literal>String</literal> and <literal>Sequence</literal> 
+                    in <literal>Sequence&lt;String&gt;</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>the value, function, or type name in a base expression, 
+                    as defined by <xref linkend="baseexpressions"/>, for example 
+                    <literal>counter</literal> in <literal>counter.count</literal>, 
+                    <literal>entries</literal> and <literal>people</literal> in 
+                    <literal>entries(people*.name)</literal>, or 
+                    <literal>Entry</literal>, <literal>name</literal>, and
+                    <literal>item</literal> in <literal>Entry(name,item)</literal>, 
+                    or</para>
+                </listitem>
+                <listitem>
+                    <para>the type name in an unqualified type in a static expression, 
+                    as defined by <xref linkend="staticexpressions"/>, for example 
+                    <literal>Sequence</literal> in 
+                    <literal>Sequence.iterator</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>If a program element contains an unqualified reference:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>there must be at least one declaration with the given name or 
+                    imported name, as defined in <xref linkend="importedname"/>, in scope 
+                    at the program element, and</para>
+                </listitem>
+                <listitem>
+                    <para>if multiple declarations with the given name or imported name 
+                    are in scope at the program element where the given name occurs, then 
+                    there must be exactly one such declaration which is not hidden by any 
+                    other declaration.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Then the reference is to this unique unhidden declaration, and:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the declaration must be referenceable at the program element,</para>
+                </listitem>
+                <listitem>
+                    <para>the type of the declaration must be inferrable to the program 
+                    element, and</para>
+                </listitem>
+                <listitem>
+                    <para>if the declaration is forward-declared, it must be definitely
+                    initialized at the program element.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>As a special exception to the above, if there is no declaration with the 
+            given name or imported name in scope at the program element and the program element 
+            occurs inside a <literal>dynamic</literal> block, then the unqualified reference 
+            does not refer to any statically typed declaration.</para>
+            
+            <para>If an unqualified reference refers to a member declaration of a type, then
+            there is a unique <emphasis>inheriting or declaring class or interface</emphasis> 
+            for the unqualified reference, that is, the unique class or interface in whose 
+            body the unqualified reference occurs, and which declares or inherits the member
+            declaration, and for which the member is not hidden at the program element where
+            the unqualified reference occurs.</para>
+            
+        </section>
+        
+        <section id="qualifiedreferenceresolution">
+            <title>Qualified reference resolution</title>
+            
+            <para>A <emphasis>qualified reference</emphasis> is:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the type name in a qualified type declaration or type argument, 
+                    as defined by <xref linkend="typeexpressions"/>, for example 
+                    <literal>Buffer</literal> 
+                    in <literal>BufferedReader.Buffer</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>the value, function, or type name in a member expression, as 
+                    defined by <xref linkend="memberexpressions"/>, for example 
+                    <literal>count</literal> in <literal>counter.count</literal>,
+                    <literal>split</literal> in <literal>text.split()</literal>, or 
+                    <literal>Buffer</literal> in <literal>br.Buffer()</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>the type name in a qualified type in a static expression, as 
+                    defined by <xref linkend="staticexpressions"/>, for example 
+                    <literal>Buffer</literal> in 
+                    <literal>BufferedReader.Buffer.size</literal>, or the member name 
+                    in a static expression, for example <literal>iterator</literal> in 
+                    <literal>Sequence.iterator</literal>, or <literal>size</literal> in 
+                    <literal>BufferedReader.Buffer.size</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Every qualified reference has a qualifying type:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>For a type declaration, the qualifying type is the full
+                    qualified type the qualifies the type name.</para>
+                </listitem>
+                <listitem>
+                    <para>For a value reference or callable reference, the 
+                    qualifying type is the type of the receiver expression.</para>
+                </listitem>
+                <listitem>
+                    <para>For a static reference, the qualifying type is the full 
+                    qualified type the qualifies the type or member name.</para>
+                </listitem>
+            </itemizedlist>
+                    
+            <para>If a program element contains a qualified reference:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the qualifying type must have at least one member with the given 
+                    name or imported name, as defined in <xref linkend="importedname"/>, 
+                    which is visible at the program element, and</para>
+                </listitem>
+                <listitem>
+                    <para>if there are multiple visible members with the given name or 
+                    imported name, then it is guaranteed by the type system that there is 
+                    exactly one such member which is not refined by another member.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <comment><para>TODO: that's simply not true for intersection types! We need more 
+            detail here about member resolution for intersection and union types.</para></comment>
+            
+            <para>Then the reference is to this unique member. If the program element is 
+            contained in the body of a class or interface, and the member declaration directly 
+            occurs in the body of the class or interface, and the qualified reference is a 
+            value reference or callable reference, and the receiver expression is a self 
+            reference to the instance being initialized, then:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the member declaration must be referenceable at the program
+                    element,</para>
+                </listitem>
+                <listitem>
+                    <para>the type of the member must be inferrable to the program 
+                    element, and</para>
+                </listitem>
+                <listitem>
+                    <para>if the member declaration is forward-declared, it must be 
+                    definitely initialized at the program element.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <comment><para>TODO: what about "inherited" interfaces and <literal>abstract</literal>
+            classes? Currently the compiler allows this!</para></comment>
+            
+            <para>As a special exception to the above, if the program element occurs inside 
+            a <literal>dynamic</literal> block, and the the receiver expression has no type, 
+            then the qualified reference does not refer to any statically typed declaration.</para>
+            
+        </section>
+        
+        <!--section id="localreferences">
+            <title>Local references</title>
+            
+            <para>The initializer of a class, or the body of a member of a class may instantiate,
+            invoke, evaluate or assign members of the current instance of the class which defines 
+            the initializer or member&mdash;the instance being instantiated or invoked&mdash;without 
+            explicitly specifying the receiver, or by specifying a self reference 
+            <literal>this</literal> as the receiver.</para>
+            
+            <para>The initializer of a nested class, or the body of a member of a nested class
+            or nested interface may invoke, evaluate or assign members of the current instance 
+            of the containing class or interface&mdash;the parent instance of the instance being 
+            instantiated or invoked&mdash;without explicitly specifying the receiver, or by 
+            specifying an outer instance reference <literal>outer</literal> as the receiver.</para>
+            
+            <para>A toplevel function or value body may not refer to a self reference, since 
+            there is no current instance.</para>
+            
+            <para>The body of a value, function, or class nested inside the body of another 
+            function or value may invoke or evaluate any block local value or block local method 
+            whose declaration indirectly occurs earlier within the containing scope.</para>
+            
+        </section-->
     
     </section>
     
