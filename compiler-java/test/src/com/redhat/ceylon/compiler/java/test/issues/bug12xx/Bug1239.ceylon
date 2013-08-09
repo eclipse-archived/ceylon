@@ -18,15 +18,7 @@
  * MA  02110-1301, USA.
  */
 @noanno
-shared class Bug1239A() {}  
-
-@noanno
-class Bug1239AA(Map<String, String(Bug1239A)> map) {}
-
-@noanno
-void bug1239(){
-    Bug1239AA aa = Bug1239AA(LazyMap({
-        "d" -> ((Bug1239A l)  => ""),
-        "i" -> ((Bug1239A l)  => "")  // 'l' clash with previous line; works if l is renamed
-    }));
-}
+Anything bug1239 = LazyMap({
+    "d" -> ((Integer lxx)  => ""),
+    "i" -> ((Integer lxx)  => "")  // 'l' clash with previous line; works if l is renamed
+});
