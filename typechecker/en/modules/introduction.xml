@@ -210,8 +210,12 @@
         
     <para>
     Union and intersection types play a central role in generic type argument 
-    inference and therefore underly the whole system of principal typing.
+    inference and therefore underly the whole system of principal typing. For
+    example, the following expression has type 
+    <literal>HashMap&lt;String,Integer|Float&gt;</literal>:
     </para>
+    
+    <programlisting>HashMap { "float"->0.0, "integer"->0 }</programlisting>
     
     </section>
     
@@ -596,6 +600,17 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
     
     <programlisting>{String*} words = {"hello", "world", "goodbye"};</programlisting>
     
+    <para>A <emphasis>nonempty iterable</emphasis> is an iterable object
+    which always produces at least one value. A nonempty iterabe type is
+    written <literal>{String+}</literal>. Distingushing nonempty streams
+    of values lets us correctly express the type of functions like
+    <literal>max()</literal>:</para>
+    
+    <programlisting>{Float+} oneOrMore = .... ;
+{Float*} zeroOrMore = .... ;
+Float maxOfOneOrMore = max(oneOrMore); //never null
+Float? maxOfZeroOrMore = max(zeroOrMore); //might be null</programlisting>
+    
     <para><emphasis>Comprehensions</emphasis> are an expressive syntax for
     filtering and transforming streams of values. For example, they may be 
     used when instantiating an iterable object or collection:</para>
@@ -628,13 +643,14 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
     type of each element is encoded into the static type of the tuple.
     <literal>Tuple</literal> is just an ordinary class in Ceylon, but 
     syntactic abbreviations let us write down tuple types in using a 
-    streamlined syntax, for example, <literal>[Float,Float]</literal>.
-    There is also a convenient syntax for instantiating tuples and
-    accessing their elements.</para>
+    streamlined syntax. For example, <literal>[Float,Float]</literal>
+    is a pair of <literal>Float</literal>s. There is also a convenient 
+    syntax for instantiating tuples and accessing their elements.</para>
     
     <programlisting>[Float,Float] origin = [0.0, 0.0];
 Float x = origin[0];
-Float y = origin[1];</programlisting>
+Float y = origin[1];
+Null z = origin[2]; //only two elements!</programlisting>
     
     <!--programlisting>String[] languages = [ "Java", "Python", "Ceylon", "Smalltalk", "ML" ];</programlisting-->
         
@@ -668,103 +684,5 @@ Float y = origin[1];</programlisting>
     </para>
     -->
     </section>
-    
-    <!-- 
-    <section id="sdkmodules">
-        <title>Modules included in the SDK</title>
-    
-    <para>The Ceylon SDK includes the following important modules:</para>
-    
-    <itemizedlist>
-        <listitem>
-            <para><literal>ceylon.language</literal> - basic types provided to support
-            built-in language features</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.module</literal> - the module runtime (based on
-            JBoss Modules)</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.collection</literal> - the collections framework
-            (with the underlying implementation provided by the Java collections
-            framework)</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.datetime</literal> - support for representing
-            dates and times (based on JSR-310)</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.security</literal> - the security API</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.io</literal> - the I/O facility (based on 
-            <literal>java.io</literal>)</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.concurrent</literal> - the concurrency API (based
-            on JSR-166)</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.http</literal> - the HTTP client and server (based 
-            on JBoss Netty)</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.transaction</literal> - the transaction server (based 
-            on JBoss Transactions)</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.rdbc</literal> - relational database connectivity 
-            (based on JDBC)</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.message</literal> - the message server (based 
-            on JBoss HornetQ)</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.xml</literal> - the XML parser</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.html</literal> - the HTML construction kit</para>
-        </listitem>
-        <listitem>
-            <para><literal>ceylon.compiler</literal> - a compiler for Ceylon source
-            code</para>
-        </listitem>
-    </itemizedlist>
-    </section>
-    -->
-    
-    <!--
-    <section id="parsingceylon">
-        <title>Parsing and compiling the Ceylon language</title>
-        
-        <para>The Ceylon language has been shown to be lexable and parseable using 
-        a context-free ANTRL grammar with no hand-coded special cases.</para>
-        
-        <para>Ceylon is a language for the Java Virtual Machine, therefore Ceylon
-        programs compile to a set of platform-independent <literal>.class</literal> 
-        files that comply with the published specification for the Java class file 
-        format.</para>
-        
-        <para>The Ceylon compiler consists of:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>a generated parser and syntax tree,</para>
-            </listitem>
-            <listitem>
-                <para>a handwritten type analyzer and type checker, and</para>
-            </listitem>
-            <listitem>
-                <para>a backend that integrates the type analyzer with <literal>javac</literal>
-                by transforming the Ceylon syntax tree to a Java syntax tree.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>The type analyzer and backend are developed completely independently,
-        and the parser, syntax tree, and type analyzer may be reused separately.</para>
-        
-    </section>
-    -->
     
 </chapter>
