@@ -1688,7 +1688,7 @@ Item item = comp of Item;</programlisting>
             <programlisting>given T(Object arg)</programlisting>
             <para>The problem with this is that then inferring <literal>T</literal> is fragile.
             And if we don't let it be inferred, we may as well pass <literal>T</literal> as an
-            ordinary parameter. So, unlike C#, don't support this.</para></comment>
+            ordinary parameter. So Ceylon, unlike C#, doesn't support this.</para></comment>
         
         </section>
     
