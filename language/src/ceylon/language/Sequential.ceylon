@@ -26,6 +26,24 @@ shared interface Sequential<out Element>
      element."
     shared actual formal Element[] rest;
     
+    "Returns a sequence formed by repeating the elements of 
+     this sequence the given number of times, or an empty 
+     sequence if `times<=0`."
+    shared actual default Element[] repeat(Integer times)
+            => cycle(times).sequence;
+    
+    shared actual default Element[] initial(Integer length)
+            => this[0:length];
+    
+    shared actual default Element[] terminal(Integer length) {
+        if (exists l = lastIndex, length>0) {
+            return this[l-length+1..l];
+        }
+        else {
+            return [];
+        }
+    }
+    
     shared actual default Element[] clone => this;
     
     "A string of form `\"[ x, y, z ]\"` where `x`, `y`, 

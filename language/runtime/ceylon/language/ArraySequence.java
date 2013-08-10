@@ -744,13 +744,13 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     }
     
     @Override @Ignore
-    public List<? extends Element> initial(long length) {
-        return $ceylon$language$List$this.initial(length);
+    public Sequential<? extends Element> initial(long length) {
+        return $ceylon$language$Sequential$this.initial(length);
     }
     
     @Override @Ignore
-    public List<? extends Element> terminal(long length) {
-        return $ceylon$language$List$this.terminal(length);
+    public Sequential<? extends Element> terminal(long length) {
+        return $ceylon$language$Sequential$this.terminal(length);
     }
     
     @Override @Ignore
@@ -777,8 +777,8 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     
     @Override
     @Ignore
-    public List<? extends Element> repeat(long times) {
-        return $ceylon$language$Iterable$this.repeat(times);
+    public Sequential<? extends Element> repeat(long times) {
+        return $ceylon$language$Sequential$this.repeat(times);
     }
     
     @Override

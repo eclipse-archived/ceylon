@@ -89,4 +89,7 @@ shared interface Sequence<out Element>
             Boolean selecting(Element elem))
             => (super of List<Element>).findLast(selecting);
     
+    shared actual default Element[] repeat(Integer times)
+            => (super of Element[]).repeat(times);
+    
 }

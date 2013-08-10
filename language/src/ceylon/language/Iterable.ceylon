@@ -618,9 +618,9 @@ shared interface Iterable<out Element, out Absent=Null>
         return iterable;
     }
     
-    "Returns a list formed by repeating this list the given 
-     number of times, or an empty list if `times<=0`. An 
-     eager counterpart to `cycle()`."
+    "Returns a list formed by repeating the elements of this
+     iterable object the given number of times, or an empty 
+     list if `times<=0`. An eager counterpart to `cycle()`."
     see (`Iterable.cycle`)
     shared default List<Element> repeat(Integer times) {
         value sb = SequenceBuilder<Element>();
