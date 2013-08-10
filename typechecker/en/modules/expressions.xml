@@ -589,60 +589,61 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <section id="directinvocations">
             <title>Direct invocations</title>
             
-            <para>Any invocation expression where the invoked expression is a callable reference 
-            expression is called a <emphasis>direct invocation expression</emphasis> of the 
-            function or class.</para> 
+            <para>Any invocation expression where the invoked expression is a callable 
+            reference expression is called a <emphasis>direct invocation expression</emphasis> 
+            of the function or class to which the callable reference refers.</para> 
             
             <para>In a direct invocation expression:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>the compiler has one item of additional information about the schema of 
-                    the method or class that is not reified by the <literal>Callable</literal> 
+                    <para>the compiler has one item of additional information about the schema 
+                    of the method or class that is not reified by the <literal>Callable</literal> 
                     interface: the names of the parameters of the function or class, and
                     therefore named arguments may be used, and</para>
                 </listitem>
                 <listitem>
                     <para>type argument inference is possible, as defined in 
-                    <xref linkend="typeargumentinference"/>, since the compiler has access to the 
-                    type parameters and constraints of the function or class.</para>
+                    <xref linkend="typeargumentinference"/>, since the compiler has access to 
+                    the type parameters and constraints of the function or class.</para>
                 </listitem>
             </itemizedlist>
             
             <para>If an invocation expression has a named argument list, it must be a direct
             invocation.</para>
             
-            <para>In a direct invocation expression of a function or class, the arguments must 
-            conform to the parameter list of the realization, as defined in
-            <xref linkend="realizations"/>, of the function or class:</para>
+            <para>In a direct invocation expression of a function or class, the restriction
+            above on the argument list type is equivalent to the following requirements. Given
+            the parameter list of the realization, as defined in <xref linkend="realizations"/>, 
+            of the function or class, and the arguments of the direct invocation:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>For each required parameter, an argument must be given.</para>
+                    <para>for each required parameter, an argument must be given,</para>
                 </listitem>
                 <listitem>
-                    <para>For each defaulted parameter, an argument may optionally be 
-                    given.</para>
+                    <para>for each defaulted parameter, an argument may optionally be 
+                    given,</para>
                 </listitem>
                 <listitem>
-                    <para>If the parameter list has a variadic parameter of type 
-                    <literal>T+</literal>, one or more arguments must be given.</para>
+                    <para>if the parameter list has a variadic parameter of type 
+                    <literal>T+</literal>, one or more arguments must be given,</para>
                 </listitem>
                 <listitem>
-                    <para>If the parameter list has a variadic parameter of type 
+                    <para>if the parameter list has a variadic parameter of type 
                     <literal>T*</literal>, one or more arguments may optionally be 
-                    given.</para>
+                    given,</para>
                 </listitem>
                 <listitem>
-                    <para>No additional arguments may be given.</para>
+                    <para>no additional arguments may be given,</para>
                 </listitem>
                 <listitem>
-                    <para>For a required or defaulted parameter of type <literal>T</literal>, 
+                    <para>for a required or defaulted parameter of type <literal>T</literal>, 
                     the type of the corresponding argument expression must be assignable to 
-                    <literal>T</literal>.</para>
+                    <literal>T</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para>For a variadic parameter of type <literal>T*</literal> or 
+                    <para>for a variadic parameter of type <literal>T*</literal> or 
                     <literal>T+</literal>, the type of every corresponding argument 
                     expression must be assignable to <literal>T</literal>.</para>
                 </listitem>
