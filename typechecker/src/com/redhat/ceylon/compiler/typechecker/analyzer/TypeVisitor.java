@@ -672,7 +672,7 @@ public class TypeVisitor extends Visitor {
     private void visitSimpleType(Tree.SimpleType that, ProducedType ot, TypeDeclaration dec) {
         Tree.TypeArgumentList tal = that.getTypeArgumentList();
         List<ProducedType> ta = getTypeArguments(tal, 
-        		dec.getTypeParameters());
+        		dec.getTypeParameters(), ot);
         if (tal!=null) tal.setTypeModels(ta);
         //if (acceptsTypeArguments(dec, ta, tal, that)) {
             ProducedType pt = dec.getProducedType(ot, ta);
