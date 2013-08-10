@@ -2570,7 +2570,7 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
                     instantiation into the declaration schema, and, finally,</para>
                 </listitem>
                 <listitem>
-                    <para>substitute the type arguments into the declaration schema,</para>
+                    <para>substitute the type arguments into the declaration schema.</para>
                 </listitem>
             </itemizedlist>
             
