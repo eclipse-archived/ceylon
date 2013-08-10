@@ -1375,10 +1375,10 @@ Item item = comp of Item;</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <para>A type parameter may, optionally, have a default type argument. A type
-            parameter with a default type argument must occur after all type parameters without
-            default type arguments in the type parameter list. The default type argument must
-            satisfy the constraints on the type parameter.</para>
+            <para>A type parameter may, optionally, have a <emphasis>default type argument</emphasis>. 
+            A type parameter with a default type argument must occur after all type parameters 
+            without default type arguments in the type parameter list. The default type argument 
+            must satisfy the constraints on the type parameter.</para>
             
             <para>A default type argument may not involve the parameter for which it is the 
             default argument, nor any type parameter of the declaration that occurs later in 
