@@ -1647,6 +1647,31 @@ public class ProducedType extends ProducedReference {
 		return false;
     }
     
+    public boolean containsTypeParameters(List<TypeParameter> params) {
+        TypeDeclaration d = getDeclaration();
+        if (d instanceof TypeParameter) {
+            if (params.contains(d)) return true;
+        }
+        else if (d instanceof UnionType) {
+            for (ProducedType ct: getCaseTypes()) {
+                if (ct.containsTypeParameters(params)) return true;
+            }
+        }
+        else if (d instanceof IntersectionType) {
+            for (ProducedType st: getSatisfiedTypes()) {
+                if (st.containsTypeParameters(params)) return true;
+            }
+        }
+        else {
+            for (ProducedType at: getTypeArgumentList()) {
+                if (at!=null && at.containsTypeParameters(params)) return true;
+            }
+            ProducedType qt = getQualifyingType();
+            if (qt!=null && qt.containsTypeParameters(params)) return true;
+        }
+        return false;
+    }
+    
     /*public boolean containsTypeAliases() {
     	TypeDeclaration d = getDeclaration();
 		if (d instanceof TypeAlias||

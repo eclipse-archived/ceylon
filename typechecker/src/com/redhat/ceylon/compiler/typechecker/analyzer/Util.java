@@ -3,7 +3,10 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -81,26 +84,31 @@ public class Util {
     		List<TypeParameter> typeParameters) {
         List<ProducedType> typeArguments = new ArrayList<ProducedType>();
         if (tal instanceof Tree.TypeArgumentList) {
-            for (Tree.Type ta: ((Tree.TypeArgumentList) tal).getTypes()) {
-                ProducedType t = ta.getTypeModel();
+            Map<TypeParameter, ProducedType> typeArgMap = new HashMap<TypeParameter, ProducedType>();
+            List<Tree.Type> types = ((Tree.TypeArgumentList) tal).getTypes();
+            for (int i=0; i<types.size(); i++) {
+                ProducedType t = types.get(i).getTypeModel();
                 if (t==null) {
-//                    ta.addError("could not resolve type argument");
                     typeArguments.add(null);
                 }
                 else {
                     typeArguments.add(t);
+                    if (i<typeParameters.size()) {
+                        typeArgMap.put(typeParameters.get(i), t);
+                    }
                 }
             }
             for (int i=typeArguments.size(); 
             		i<typeParameters.size(); i++) {
-            	ProducedType dta = typeParameters.get(i).getDefaultTypeArgument();
+                TypeParameter tp = typeParameters.get(i);
+            	ProducedType dta = tp.getDefaultTypeArgument();
             	if (dta==null) {
             		break;
             	}
             	else {
-            		//TODO: substitute previous args 
-            		//      into the default arg
-            		typeArguments.add(dta);
+            	    ProducedType da = dta.substitute(typeArgMap);
+            		typeArguments.add(da);
+            		typeArgMap.put(tp, da);
             	}
             }
         }

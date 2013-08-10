@@ -8,9 +8,9 @@ class DefaultTypeArgs() {
     WithDefaultTypeArgs<Float,Float> wdta4=wdta2;
     WithDefaultTypeArgs<Float,Float> wdta5=wdta1;
     
-    class WithIllegalDefaultTypeArg<X,@error Y=X>(X x, Y y) {}
+    class WithRecDefaultTypeArg<X,Y=X>(X x, Y y) {}
     
-    class WithNestedIllegalDefaultTypeArg<X,@error Y=List<X>>(X x, Y y) {}
+    class WithNestedRecDefaultTypeArg<X,Y=List<X>>(X x, Y y) {}
     
     interface I<T=String,@error S> {}
     interface J<T,@error T> {}

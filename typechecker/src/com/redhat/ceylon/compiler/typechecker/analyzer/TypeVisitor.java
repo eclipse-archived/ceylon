@@ -806,14 +806,33 @@ public class TypeVisitor extends Visitor {
         	Tree.StaticType type = that.getTypeSpecifier().getType();
         	if (type!=null) {
 				ProducedType t = type.getTypeModel();
-        		if (t.containsTypeParameters()) {
+        		/*if (t.containsTypeParameters()) {
         			type.addError("default type argument involves type parameters: " + 
         					t.getProducedTypeName());
         		}
-        		else {
+        		else {*/
 					that.getDeclarationModel().setDefaultTypeArgument(t);
-				}
+				//}
         	}
+        }
+    }
+    
+    @Override
+    public void visit(Tree.TypeParameterList that) {
+        super.visit(that);
+        List<Tree.TypeParameterDeclaration> tpds = that.getTypeParameterDeclarations();
+        List<TypeParameter> params = new ArrayList<TypeParameter>();
+        for (int i=tpds.size()-1; i>=0; i--) {
+            Tree.TypeParameterDeclaration tpd = tpds.get(i);
+            if (tpd!=null) {
+                TypeParameter tp = tpd.getDeclarationModel();
+                if (tp.getDefaultTypeArgument()!=null) {
+                    if (tp.getDefaultTypeArgument().containsTypeParameters(params)) {
+                        tpd.getTypeSpecifier().addError("default type argument involves later type parameter");
+                    }
+                    params.add(tp);
+                }
+            }
         }
     }
     

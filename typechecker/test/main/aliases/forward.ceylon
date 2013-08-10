@@ -39,3 +39,17 @@ void check() {
 class RefinesDefault() satisfies AlsoDefaulted {
     shared actual void accept(Float f) {}
 }
+
+class CrazyDefaulted<out T,out L=List<T>>(T t, L ts) {
+    shared L list=>nothing;
+}
+
+void testCrazyDefaulted() {
+    CrazyDefaulted<String> cddef = CrazyDefaulted("hello", ["goodbye"]);
+    @type:"List<String>" value cddefl = cddef.list;
+    CrazyDefaulted<String,List<String>> cdexpl = cddef;
+    CrazyDefaulted<String> cddef1 = cdexpl;
+    CrazyDefaulted<String,[String]> cddef2 = CrazyDefaulted("hello", ["goodbye"]);
+}
+
+class CrazyBrokenDefaulted<@error out L=List<T>, out T=String>(T t, L ts) {}

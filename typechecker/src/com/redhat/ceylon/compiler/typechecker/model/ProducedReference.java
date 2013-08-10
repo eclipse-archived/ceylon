@@ -39,7 +39,7 @@ public abstract class ProducedReference {
     			if (!typeArguments.containsKey(pt)) {
     				ProducedType dta = pt.getDefaultTypeArgument();
     				if (dta!=null) {
-    					typeArguments.put(pt, dta);
+    					typeArguments.put(pt, dta.substitute(typeArguments));
     				}
     			}
     		}
