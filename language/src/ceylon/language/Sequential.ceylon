@@ -44,6 +44,15 @@ shared interface Sequential<out Element>
         }
     }
     
+    shared actual default Element[] trim(Boolean trimming(Element elem))
+            => super.trim(trimming).sequence; //TODO: inefficient?
+    
+    shared actual default Element[] trimLeading(Boolean trimming(Element elem))
+            => super.trimLeading(trimming).sequence; //TODO: inefficient?
+    
+    shared actual default Element[] trimTrailing(Boolean trimming(Element elem))
+            => super.trimTrailing(trimming).sequence; //TODO: inefficient?
+    
     shared actual default Element[] clone => this;
     
     "A string of form `\"[ x, y, z ]\"` where `x`, `y`, 

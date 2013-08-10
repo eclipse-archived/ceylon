@@ -729,18 +729,18 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     }
     
     @Override @Ignore
-    public List<? extends Element> trim(Callable<? extends Boolean> characters) {
-        return $ceylon$language$List$this.trim(characters);
+    public Sequential<? extends Element> trim(Callable<? extends Boolean> characters) {
+        return $ceylon$language$Sequential$this.trim(characters);
     }
 
     @Override @Ignore
-    public List<? extends Element> trimLeading(Callable<? extends Boolean> characters) {
-        return $ceylon$language$List$this.trimLeading(characters);
+    public Sequential<? extends Element> trimLeading(Callable<? extends Boolean> characters) {
+        return $ceylon$language$Sequential$this.trimLeading(characters);
     }
 
     @Override @Ignore
-    public List<? extends Element> trimTrailing(Callable<? extends Boolean> characters) {
-        return $ceylon$language$List$this.trimTrailing(characters);
+    public Sequential<? extends Element> trimTrailing(Callable<? extends Boolean> characters) {
+        return $ceylon$language$Sequential$this.trimTrailing(characters);
     }
     
     @Override @Ignore
