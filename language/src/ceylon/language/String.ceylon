@@ -205,8 +205,9 @@ shared native final class String(shared {Character*} characters)
     shared actual native String plus(String other);
     
     "Returns a string formed by repeating this string
-     the given number of times."
-    shared native String repeat(Integer times);
+     the given number of times, or the empty string if
+     `times<=0`."
+    shared actual native String repeat(Integer times);
     
     "Returns a string formed by replacing every 
      occurrence in this string of the given substring

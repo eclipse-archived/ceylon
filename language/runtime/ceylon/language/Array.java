@@ -1003,6 +1003,11 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         return $ceylon$language$List$this.endsWith(element);
     }
         
+    @Override
+    public List<? extends Element> repeat(long times) {
+        return $ceylon$language$List$this.repeat(times);
+    }
+    
     @Override @Ignore
     public List<? extends Element> trim(Callable<? extends Boolean> characters) {
         return $ceylon$language$List$this.trim(characters);

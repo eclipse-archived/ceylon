@@ -306,6 +306,9 @@ shared void strings() {
     check("x".reversed=="x", "string reversed 2");
     check(hello.reversed=="olleh", "string reversed 3");
     
+    print("hello".repeat(0));
+    print("hello".repeat(1));
+    print("hello".repeat(3));
     check("hello".repeat(0)=="", "string repeat 1");
     check("hello".repeat(1)=="hello", "string repeat 2");
     check("hello".repeat(3)=="hellohellohello", "string repeat 3");

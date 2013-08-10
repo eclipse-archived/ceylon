@@ -613,6 +613,11 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     }
         
     @Override
+    public List<? extends Element> repeat(long times) {
+        return $ceylon$language$List$this.repeat(times);
+    }
+    
+    @Override
     @Ignore
     public Sequence<? extends Element> getSequence() {
         return $ceylon$language$Sequence$this.getSequence();

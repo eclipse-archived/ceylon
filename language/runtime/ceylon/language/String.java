@@ -1185,10 +1185,11 @@ public final class String
     }
 
     @TypeInfo("ceylon.language::String")
-    public java.lang.String repeat(
+    @Override
+    public String repeat(
             @TypeInfo("ceylon.language::Integer")
             @Name("times") long times) {
-        return repeat(value, times);
+        return instance(repeat(value, times));
     }
 
     @Ignore
