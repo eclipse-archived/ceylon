@@ -1829,11 +1829,24 @@ Item item = comp of Item;</programlisting>
             </itemizedlist>
         
             <para>A type argument list <emphasis>conforms</emphasis> to a type parameter list 
-            if for every type parameter in the list, there is a type argument that satisfies 
-            the constraints of the type parameter, or there is no explicit type argument and
-            the type parameter has a default type argument. There must be at least as many type
-            parameters as type arguments. There must be at least as many type arguments as
-            type parameters without default values.</para>
+            if, for every type parameter in the list, either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>there is a type argument that satisfies the constraints of the type 
+                    parameter, or</para>
+                </listitem>
+                <listitem>
+                    <para>there is no explicit type argument but the type parameter has a 
+                    default type argument, in which case the type argument is defaulted by
+                    substituting the arguments of all type parameters that occur earlier in
+                    the list of type parameters of the declaration into this default type
+                    argument.</para>
+                </listitem>
+            </itemizedlist>
+                     
+            <para>There must be at least as many type parameters as type arguments. There must 
+            be at least as many type arguments as type parameters without default values.</para>
             
             <comment><para>Note: this is too heavy-handed. There is no reason to enforce the 
             type constraint in any place other than generic class instantiations, generic 
