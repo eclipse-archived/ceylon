@@ -1109,7 +1109,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>An <emphasis>inline class</emphasis> is an anonymous class defined 
         within an expression.</para>
         
-        <section>
+        <section id="inlineconditionalexpressions">
             <title>Inline conditional expressions</title>
          
             <comment>
@@ -1134,7 +1134,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         </section>
         
-        <section>
+        <section id="inlineanonymousclassexpressions">
             <title>Inline anonymous class expressions</title>
             
             <comment>
@@ -2599,7 +2599,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     
     </section>
     
-    <section>
+    <section id="metamodelexpressions">
         <title>Metamodel expressions</title>
         
         <para>A <emphasis>metamodel expression</emphasis> is a reference to
@@ -2636,7 +2636,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <comment><para>TODO: define the syntax for package and module references.</para></comment>
         
-        <section>
+        <section id="typedanduntypedmetamodelexpressions">
             <title>Typed and untyped metamodel expressions</title>
             
             <para>Metamodel expressions may or may not include type arguments to 
@@ -2668,7 +2668,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         </section>
         
-        <section>
+        <section id="typedmetamodelexpressions">
             <title>Typed metamodel expressions</title>
             
             <para>The type of a metamodel expression depends upon the kind of 
@@ -2747,7 +2747,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
         </section>
         
-        <section>
+        <section id="untypedmetamodelexpressions">
             <title>Untyped metamodel expressions</title>
             
             <para>The type of a metamodel expression depends upon the kind of 

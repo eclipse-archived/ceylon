@@ -366,7 +366,7 @@ TypeConstraints?
         in the parameter list of the class or function in whose body it directly occurs, and
         its default argument, if any, must be specified in the parameter list.</para>
         
-        <section>
+        <section id="parameterlists">
             <title>Parameter lists</title>
         
             <para>A parameter list is a list of parameter declarations and of names of parameters

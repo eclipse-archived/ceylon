@@ -36,7 +36,7 @@ scope (session)
 action { description="Log In"; url="/login"; }
 shared deprecated</programlisting>
         
-        <section>
+        <section id="annotationlists">
             <title>Annotation lists</title>
             
             <para>An annotation is an initial lowercase identifier, optionally 
@@ -56,7 +56,7 @@ shared deprecated</programlisting>
             
         </section>
         
-        <section>
+        <section id="annotationargments">
             <title>Annotation arguments</title>
             
             <para>For an annotation with no arguments, the argument list may be 
@@ -119,7 +119,7 @@ shared deprecated</programlisting>
             </listitem>
         </itemizedlist>
         
-        <section>
+        <section id="annotationconstructors">
             <title>Annotation constructors</title>
             
             <para>An <emphasis>annotation constructor</emphasis> is a toplevel function
@@ -429,7 +429,7 @@ shared deprecated</programlisting>
     
     </section>
     
-    <section>
+    <section id="serialization">
         <title>Serialization</title>
         
         <comment><para>TODO: Define how serialization works.</para></comment>

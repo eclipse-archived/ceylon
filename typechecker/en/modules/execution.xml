@@ -360,7 +360,7 @@ String result = middleObject.string;</programlisting>
             
         </section>
         
-        <section>
+        <section id="initialization">
             <title>Initialization</title>
             
             <para>When an instance is instantiated, its initializer is executed, and the
@@ -402,7 +402,7 @@ String result = middleObject.string;</programlisting>
             
         </section>
         
-        <section>
+        <section id="classinstanceoptimization">
             <title>Class instance optimization</title>
             
             <para>As an exception to the above, the compiler is permitted to destroy a 
@@ -417,8 +417,8 @@ String result = middleObject.string;</programlisting>
             
         </section>
         
-        <section>
-            <title>Control directives</title>
+        <section id="executionofcontroldirectives">
+            <title>Execution of control directives</title>
             
             <para>Execution of a control directive, as specified in 
             <xref linkend="controldirectives"/>, terminates execution of the body in which it 
@@ -1160,8 +1160,8 @@ String result = middleObject.string;</programlisting>
         the parent clause. The lifecycle of comprehension frames reflects this model.
         </para></comment>
         
-        <section>
-        <title><literal>for</literal> clause</title>
+        <section id="forclause">
+            <title><literal>for</literal> clause</title>
         
             <para>The expression which produces the source stream for a child 
             <literal>for</literal> clause may refer to an iteration variable of a
@@ -1192,8 +1192,8 @@ String result = middleObject.string;</programlisting>
         
         </section>
         
-        <section>
-        <title><literal>if</literal> clause</title>
+        <section id="ifclause">
+            <title><literal>if</literal> clause</title>
         
             <para>A child <literal>if</literal> clause filters its parent clause frames. 
             For every frame produced by the parent clause which satisfies the condition 
@@ -1209,7 +1209,7 @@ String result = middleObject.string;</programlisting>
         
         </section>
         
-        <section>
+        <section id="expressionclause">
             <title>Expression clause</title>
             
             <para>An expression clause produces a single value for each frame 
