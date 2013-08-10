@@ -219,7 +219,7 @@
     
     </section>
     
-    <section id="typealiases">   
+    <section id="typealiasesandtypeinference">   
     <title>Type aliases and type inference</title>
     
     <para>    

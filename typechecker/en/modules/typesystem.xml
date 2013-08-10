@@ -82,10 +82,11 @@
     
     <itemizedlist>
         <listitem>
-            <para>A <emphasis>type alias</emphasis>, defined in <xref linkend="typealiases"/>,
-            in <xref linkend="classaliases"/>, and in <xref linkend="interfacealiases"/> is 
-            a synonym for an expression involving other types or generic types. A type alias 
-            may itself be parameterized.</para>
+            <para>A <emphasis>type alias</emphasis>, defined in 
+            <xref linkend="typealiasedeclarations"/>, <xref linkend="classaliases"/>, 
+            and <xref linkend="interfacealiases"/>, is a synonym for an expression 
+            involving other types or generic types. A type alias may itself be 
+            generic.</para>
         </listitem>
     </itemizedlist>
     
