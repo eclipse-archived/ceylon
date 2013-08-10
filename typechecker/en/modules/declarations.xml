@@ -1649,9 +1649,9 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             <para>A class or interface may extend a class alias, in which case, the 
             class inherits the aliased class type.</para>
                 
-            <para>Class aliases are not reified types. The metamodel reference for a class 
-            alias type&mdash;for example, <literal>People</literal>&mdash;returns the metamodel 
-            object for the aliased class&mdash;in this case, 
+            <para>Class aliases are not reified types. The metamodel reference for a 
+            class alias type&mdash;for example, <literal>People</literal>&mdash;returns 
+            the metamodel object for the aliased class&mdash;in this case, 
             <literal>ArrayList&lt;Person&gt;</literal>, as specified in 
             <xref linkend="reification"/>.</para>
         
@@ -1687,8 +1687,8 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <para>A class or interface may not extend or satisfy a type alias.</para>
         
         <para>Type aliases are not reified types. The metamodel reference for a type 
-        alias type&mdash;for example, <literal>Number</literal>&mdash;returns the metamodel 
-        object for the aliased type&mdash;in this case, 
+        alias type&mdash;for example, <literal>Number</literal>&mdash;returns the 
+        metamodel object for the aliased type&mdash;in this case, 
         <literal>Integer|Float|Decimal|Whole</literal>, as specified in 
         <xref linkend="reification"/>.</para>
         

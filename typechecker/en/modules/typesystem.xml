@@ -856,6 +856,27 @@ Float|Integer num = one;</programlisting></comment>
         
         </section>
         
+        <section id="typealiaselimination">
+            <title>Type alias elimination</title>
+            
+            <para>A <emphasis>type alias</emphasis> is a synonym for another type. A
+            generic type alias is a type constructor that produces a type alias, given 
+            a list of type arguments.</para>
+            
+            <para>Every type alias must be reducible to an equivalent type that does
+            not involve any type aliases by recursive replacement of type aliases with
+            the types they alias. Thus, circular type alias definitions, as in the 
+            following example, are illegal:</para>
+            
+            <programlisting><![CDATA[alias X => List<Y>;
+alias Y => List<X>;]]></programlisting>
+            
+            <para>Replacement of type aliases with the types they alias occurs at 
+            compile time, so type aliases are not reified types, as specified in 
+            <xref linkend="reification"/>.</para>
+            
+        </section>
+        
     </section>
         
     <section id="inheritance">
@@ -892,7 +913,8 @@ Float|Integer num = one;</programlisting></comment>
         <emphasis>inherits</emphasis> the type.</para>
         
         <para>Inheritance relationships may not produce cycles, since that would violate
-        the noncircularity rule for subtyping.</para>
+        the noncircularity rule for subtyping. Thus, a class, interface, or type parameter
+        may not, directly or indirectly, inherit itself.</para>
         
         <comment>
         <para>Note: when a type declaration specifies a relationship to other types, 
