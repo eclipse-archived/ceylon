@@ -732,8 +732,6 @@ shared package org.hibernate.query;</programlisting>
             <literal>y</literal>, then the module import of <literal>y</literal> in the
             module descriptor for <literal>x</literal> must be <literal>shared</literal>.</para>
             
-            <comment><para>TODO: define the semantics of these annotations here.</para></comment>
-            
             <programlisting>"The best-ever ORM solution!"
 license "http://www.gnu.org/licenses/lgpl.html"
 module org.hibernate "3.0.0.beta" {
