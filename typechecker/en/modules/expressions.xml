@@ -593,6 +593,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             reference expression is called a <emphasis>direct invocation expression</emphasis> 
             of the function or class to which the callable reference refers.</para> 
             
+            <comment><para>TODO: Should we consider <literal>x{y=1;}{z=2;}</literal> a legal
+            direct invocation if <literal>x</literal> has multiple parameter lists?</para></comment>
+            
             <para>In a direct invocation expression:</para>
             
             <itemizedlist>
