@@ -827,10 +827,10 @@ public class TypeVisitor extends Visitor {
             if (tpd!=null) {
                 TypeParameter tp = tpd.getDeclarationModel();
                 if (tp.getDefaultTypeArgument()!=null) {
-                    if (tp.getDefaultTypeArgument().containsTypeParameters(params)) {
-                        tpd.getTypeSpecifier().addError("default type argument involves later type parameter");
-                    }
                     params.add(tp);
+                    if (tp.getDefaultTypeArgument().containsTypeParameters(params)) {
+                        tpd.getTypeSpecifier().addError("default type argument involves a type parameter not yet declared");
+                    }
                 }
             }
         }

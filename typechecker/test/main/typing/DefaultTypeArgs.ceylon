@@ -14,4 +14,6 @@ class DefaultTypeArgs() {
     
     interface I<T=String,@error S> {}
     interface J<T,@error T> {}
+    interface K<@error T=T> {}
+    interface L<@error T=[S],S=String> {}
 }
