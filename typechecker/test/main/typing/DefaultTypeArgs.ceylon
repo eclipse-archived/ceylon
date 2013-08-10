@@ -16,4 +16,16 @@ class DefaultTypeArgs() {
     interface J<T,@error T> {}
     interface K<@error T=T> {}
     interface L<@error T=[S],S=String> {}
+    
+    class X<T>(T t) {
+        shared class Y<S=[T]>(S s) {}
+        shared Y<Z> new<W,Z=T|W>() => nothing;
+        shared class New<W,Z=T|W>() {}
+    }
+    
+    X<String>.Y xy1 = X("hello").Y(["goodbye"]);
+    X<String>.Y<[Integer]> xy2 = X("hello").Y([1]);
+    @type:"Y<Integer|Float>" X(1).new<Float>();
+    @type:"New<Float,Integer|Float>" X(1).New<Float>();
+
 }
