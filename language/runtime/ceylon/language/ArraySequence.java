@@ -611,11 +611,6 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     public boolean endsWith(List<?> element) {
         return $ceylon$language$List$this.endsWith(element);
     }
-        
-    @Override
-    public List<? extends Element> repeat(long times) {
-        return $ceylon$language$List$this.repeat(times);
-    }
     
     @Override
     @Ignore
@@ -778,6 +773,12 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Ignore
     public Iterable<? extends Element,?> cycle(long times) {
         return $ceylon$language$Iterable$this.cycle(times);
+    }
+    
+    @Override
+    @Ignore
+    public List<? extends Element> repeat(long times) {
+        return $ceylon$language$Iterable$this.repeat(times);
     }
     
     @Override

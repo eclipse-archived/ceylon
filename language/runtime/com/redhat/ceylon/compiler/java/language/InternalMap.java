@@ -14,6 +14,7 @@ import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Iterable$impl;
 import ceylon.language.Iterator;
+import ceylon.language.List;
 import ceylon.language.Map;
 import ceylon.language.Map$impl;
 import ceylon.language.Null;
@@ -501,6 +502,12 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     @Ignore
     public Iterable<? extends Entry<? extends Key, ? extends Item>,?> cycle(long times) {
         return $ceylon$language$Iterable$this.cycle(times);
+    }
+    
+    @Override
+    @Ignore
+    public List<? extends Entry<? extends Key, ? extends Item>> repeat(long times) {
+        return $ceylon$language$Iterable$this.repeat(times);
     }
     
     @Override

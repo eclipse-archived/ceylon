@@ -1934,6 +1934,12 @@ public final class String
         
         @Override
         @Ignore
+        public List<? extends String> repeat(long times) {
+            return $ceylon$language$Iterable$this.repeat(times);
+        }
+        
+        @Override
+        @Ignore
         public Sequential<? extends String> getSequence() {
             return $ceylon$language$Iterable$this.getSequence();
         }
@@ -2160,6 +2166,12 @@ public final class String
         @Ignore
         public Iterable<? extends Integer,?> cycle(long times) {
             return $ceylon$language$Iterable$this.cycle(times);
+        }
+        
+        @Override
+        @Ignore
+        public List<? extends Integer> repeat(long times) {
+            return $ceylon$language$Iterable$this.repeat(times);
         }
         
         @Override

@@ -587,7 +587,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "A finite iterable object that produces the elements of 
      this iterable object, repeatedly, the given number of
      times."
-    see (`Iterable.cycled`, `List.repeat`)
+    see (`Iterable.cycled`, `Iterable.repeat`)
     shared default Iterable<Element,Absent> cycle(Integer times) {
         object iterable satisfies Iterable<Element,Absent> {
             value orig => outer;
@@ -616,6 +616,19 @@ shared interface Iterable<out Element, out Absent=Null>
             }
         }
         return iterable;
+    }
+    
+    "Returns a list formed by repeating this list the given 
+     number of times, or an empty list if `times<=0`. An 
+     eager counterpart to `cycle()`."
+    see (`Iterable.cycle`)
+    shared default List<Element> repeat(Integer times) {
+        value sb = SequenceBuilder<Element>();
+        variable value count=0;
+        while (count++<times) {
+            sb.appendAll(this);
+        }
+        return sb.sequence;
     }
     
 }

@@ -11,6 +11,7 @@ import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Iterable$impl;
 import ceylon.language.Iterator;
+import ceylon.language.List;
 import ceylon.language.Null;
 import ceylon.language.Sequential;
 
@@ -244,6 +245,11 @@ public class MapIterable<Element, Absent, Result> implements Iterable<Result,Abs
     @Ignore
     public Iterable<? extends Result,? extends Absent> cycle(long times) {
         return $ceylon$language$Iterable$this.cycle(times);
+    }
+    @Override
+    @Ignore
+    public List<? extends Result> repeat(long times) {
+        return $ceylon$language$Iterable$this.repeat(times);
     }
 //    @Override @Ignore
 //    public boolean containsEvery() {

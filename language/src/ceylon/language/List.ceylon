@@ -76,18 +76,6 @@ shared interface List<out Element>
     "Reverse this list, returning a new list."
     shared formal List<Element> reversed;
     
-    "Returns a list formed by repeating this list the given 
-     number of times, or an empty list if `times<=0`."
-    see (`Iterable.cycle`)
-    shared default List<Element> repeat(Integer times) {
-        value sb = SequenceBuilder<Element>();
-        variable value count=0;
-        while (count++<times) {
-            sb.appendAll(this);
-        }
-        return sb.sequence;
-    }
-    
     "Two `List`s are considered equal iff they have the 
      same `size` and _entry sets_. The entry set of a 
      list `l` is the set of elements of `l.indexed`. 
