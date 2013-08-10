@@ -1045,8 +1045,13 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     
     @Override
     @Ignore
-    public Iterable<? extends Element,?> getRepeated() {
-        return $ceylon$language$Iterable$this.getRepeated();
+    public Iterable<? extends Element,?> getCycled() {
+        return $ceylon$language$Iterable$this.getCycled();
+    }
+    @Override
+    @Ignore
+    public Iterable<? extends Element,?> cycle(long times) {
+        return $ceylon$language$Iterable$this.cycle(times);
     }
     @Override
     @Ignore

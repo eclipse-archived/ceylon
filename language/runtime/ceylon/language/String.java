@@ -1922,10 +1922,16 @@ public final class String
         
         @Override
         @Ignore
-        public Iterable<? extends String,?> getRepeated() {
-            return $ceylon$language$Iterable$this.getRepeated();
+        public Iterable<? extends String,?> getCycled() {
+            return $ceylon$language$Iterable$this.getCycled();
         }
 
+        @Override
+        @Ignore
+        public Iterable<? extends String,?> cycle(long times) {
+            return $ceylon$language$Iterable$this.cycle(times);
+        }
+        
         @Override
         @Ignore
         public Sequential<? extends String> getSequence() {
@@ -2146,10 +2152,16 @@ public final class String
         
         @Override
         @Ignore
-        public Iterable<? extends Integer,?> getRepeated() {
-            return $ceylon$language$Iterable$this.getRepeated();
+        public Iterable<? extends Integer,?> getCycled() {
+            return $ceylon$language$Iterable$this.getCycled();
         }
 
+        @Override
+        @Ignore
+        public Iterable<? extends Integer,?> cycle(long times) {
+            return $ceylon$language$Iterable$this.cycle(times);
+        }
+        
         @Override
         @Ignore
         public Integer getFirst() {
@@ -2316,13 +2328,24 @@ public final class String
 
     @Override
     @Ignore
-    public Iterable<? extends Character,?> getRepeated() {
-        return $ceylon$language$Iterable$this.getRepeated();
+    public Iterable<? extends Character,?> getCycled() {
+        return $ceylon$language$Iterable$this.getCycled();
     }
     
     @Ignore
-    public static Iterable<? extends Character,?> getRepeated(java.lang.String value) {
-        return instance(value).getRepeated();
+    public static Iterable<? extends Character,?> getCycled(java.lang.String value) {
+        return instance(value).getCycled();
+    }
+    
+    @Override
+    @Ignore
+    public Iterable<? extends Character,?> cycle(long times) {
+        return $ceylon$language$Iterable$this.cycle(times);
+    }
+    
+    @Ignore
+    public static Iterable<? extends Character,?> cycle(java.lang.String value, long times) {
+        return instance(value).cycle(times);
     }
     
     @Override

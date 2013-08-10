@@ -558,7 +558,7 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    shared default Iterable<Element,Absent> repeated {
+    shared default Iterable<Element,Absent> cycled {
         object iterable satisfies Iterable<Element,Absent> {
             value orig => outer;
             shared actual Iterator<Element> iterator() {
@@ -570,6 +570,36 @@ shared interface Iterable<out Element, out Absent=Null>
                         }
                         else {
                             iter = orig.iterator();
+                            return iter.next();
+                        }
+                        
+                    }
+                }
+                return iterator;
+            }
+        }
+        return iterable;
+    }
+    
+    shared default Iterable<Element,Absent> cycle(Integer times) {
+        object iterable satisfies Iterable<Element,Absent> {
+            value orig => outer;
+            shared actual Iterator<Element> iterator() {
+                object iterator satisfies Iterator<Element> {
+                    variable Iterator<Element> iter = emptyIterator;
+                    variable Integer count=0;
+                    shared actual Element|Finished next() {
+                        if (!is Finished next = iter.next()) {
+                            return next;
+                        }
+                        else {
+                            if (count<times) {
+                                count++;
+                                iter = orig.iterator();
+                            }
+                            else {
+                                iter = emptyIterator;
+                            }
                             return iter.next();
                         }
                         

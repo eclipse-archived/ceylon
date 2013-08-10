@@ -237,8 +237,13 @@ public class MapIterable<Element, Absent, Result> implements Iterable<Result,Abs
     }
     @Override
     @Ignore
-    public Iterable<? extends Result,? extends Absent> getRepeated() {
-        return $ceylon$language$Iterable$this.getRepeated();
+    public Iterable<? extends Result,? extends Absent> getCycled() {
+        return $ceylon$language$Iterable$this.getCycled();
+    }
+    @Override
+    @Ignore
+    public Iterable<? extends Result,? extends Absent> cycle(long times) {
+        return $ceylon$language$Iterable$this.cycle(times);
     }
 //    @Override @Ignore
 //    public boolean containsEvery() {

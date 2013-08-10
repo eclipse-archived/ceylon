@@ -251,4 +251,6 @@ void testIterables() {
     
     check({null, "foo", "bar", null}.defaultNullElements(0).sequence=={0, "foo", "bar", 0}, "defaultNullElements [1]");
     check({"foo", null, "bar"}.defaultNullElements("-").sequence=={"foo", "-", "bar"}, "defaultNullElements [2]");
+    
+    check((0..2).cycle(3).fold(0,plus<Integer>)==9, "cycle");
 }

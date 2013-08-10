@@ -221,8 +221,13 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     }
     @Override
     @Ignore
-    public Iterable<? extends Element,? extends Absent> getRepeated() {
-        return $ceylon$language$Iterable$this.getRepeated();
+    public Iterable<? extends Element,? extends Absent> getCycled() {
+        return $ceylon$language$Iterable$this.getCycled();
+    }
+    @Override
+    @Ignore
+    public Iterable<? extends Element,? extends Absent> cycle(long times) {
+        return $ceylon$language$Iterable$this.cycle(times);
     }
     /*@Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {

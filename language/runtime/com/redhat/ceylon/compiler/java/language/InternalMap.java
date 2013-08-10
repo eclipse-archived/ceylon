@@ -493,8 +493,14 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
 
     @Override
     @Ignore
-    public Iterable<? extends Entry<? extends Key, ? extends Item>,?> getRepeated() {
-        return $ceylon$language$Iterable$this.getRepeated();
+    public Iterable<? extends Entry<? extends Key, ? extends Item>,?> getCycled() {
+        return $ceylon$language$Iterable$this.getCycled();
+    }
+    
+    @Override
+    @Ignore
+    public Iterable<? extends Entry<? extends Key, ? extends Item>,?> cycle(long times) {
+        return $ceylon$language$Iterable$this.cycle(times);
     }
     
     @Override
