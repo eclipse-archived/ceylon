@@ -25,7 +25,9 @@ class DefaultTypeArgs() {
     
     X<String>.Y xy1 = X("hello").Y(["goodbye"]);
     X<String>.Y<[Integer]> xy2 = X("hello").Y([1]);
-    @type:"Y<Integer|Float>" X(1).new<Float>();
-    @type:"New<Float,Integer|Float>" X(1).New<Float>();
+    @type:"X<Integer>.Y<Integer|Float>" X(1).new<Float>();
+    @type:"X<Integer>.New<Float,Integer|Float>" X(1).New<Float>();
+    X<Integer>.New<Float> xn1 = nothing;
+    X<Integer>.New<Float,Integer|Float> xn2 = xn1;
 
 }
