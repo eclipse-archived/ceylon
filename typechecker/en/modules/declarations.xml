@@ -1613,7 +1613,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             <synopsis>ClassSpecifier: "=>" ("super" ".")? TypeNameWithArguments PositionalArguments</synopsis>
             
             <para>The specified type must be a <emphasis>class type</emphasis>, that is,
-            a reference to a class with no type parameters, or an instaniation of a generic 
+            a reference to a class with no type parameters, or an instantiation of a generic 
             class. A class alias simply assigns an alternative name to the original class 
             type. A reference to the alias may occur anywhere a reference to a class may 
             occur.</para>

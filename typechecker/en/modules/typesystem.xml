@@ -878,18 +878,21 @@ Float|Integer num = one;</programlisting></comment>
                 interfaces, as defined by <xref linkend="interfaceinheritance"/>, or</para>
             </listitem>
             <listitem>
-                <para>a type parameter may <emphasis>satisfy</emphasis> a class and/or one 
-                or more interfaces or type parameters, as defined by 
+                <para>a type parameter may <emphasis>satisfy</emphasis> a class and/or 
+                one or more interfaces or type parameters, as defined by 
                 <xref linkend="generictypeconstraints"/>.</para>
             </listitem>
             <!--listitem>
-                <para>a type parameter may <emphasis>abstract</emphasis> a class, interface 
-                or type parameter.</para>
+                <para>a type parameter may <emphasis>abstract</emphasis> a class, 
+                interface, or type parameter.</para>
             </listitem-->
         </itemizedlist>
         
         <para>If a type declaration extends or satisfies a type, we say it 
         <emphasis>inherits</emphasis> the type.</para>
+        
+        <para>Inheritance relationships may not produce cycles, since that would violate
+        the noncircularity rule for subtyping.</para>
         
         <comment>
         <para>Note: when a type declaration specifies a relationship to other types, 
