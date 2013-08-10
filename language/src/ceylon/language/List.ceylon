@@ -78,6 +78,7 @@ shared interface List<out Element>
     
     "Returns a list formed by repeating this list the given 
      number of times, or an empty list if `times<=0`."
+    see (`Iterable.cycle`)
     shared default List<Element> repeat(Integer times) {
         value sb = SequenceBuilder<Element>();
         variable value count=0;
@@ -395,6 +396,7 @@ shared interface List<out Element>
      list no longer than the given length. If this list is 
      shorter than the given length, return this list. 
      Otherwise return a list of the given length."
+    see (`List.terminal`)
     shared default List<Element> initial(Integer length)
             => this[0:length];
     
@@ -402,6 +404,7 @@ shared interface List<out Element>
      no longer than the given length. If this list is 
      shorter than the given length, return this list. 
      Otherwise return a list of the given length."
+    see (`List.initial`)
     shared default List<Element> terminal(Integer length) {
         if (exists l = lastIndex, length>0) {
             return this[l-length+1..l];

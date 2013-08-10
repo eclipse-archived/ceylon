@@ -558,6 +558,9 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
+    "A non-finite iterable object that produces the elements 
+     of this iterable object, repeatedly."
+    see (`Iterable.cycle`)
     shared default Iterable<Element,Absent> cycled {
         object iterable satisfies Iterable<Element,Absent> {
             value orig => outer;
@@ -581,6 +584,10 @@ shared interface Iterable<out Element, out Absent=Null>
         return iterable;
     }
     
+    "A finite iterable object that produces the elements of 
+     this iterable object, repeatedly, the given number of
+     times."
+    see (`Iterable.cycled`, `List.repeat`)
     shared default Iterable<Element,Absent> cycle(Integer times) {
         object iterable satisfies Iterable<Element,Absent> {
             value orig => outer;
