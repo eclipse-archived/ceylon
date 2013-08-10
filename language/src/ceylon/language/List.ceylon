@@ -183,20 +183,25 @@ shared interface List<out Element>
         return seq;
     }
     
-    "Determine if this list occurs at the start of the 
-     given list."
-    shared default Boolean occursAtStart(List<Anything> list)
-            => occursAt(0, list);
+    "Determine if the given list occurs at the start of this 
+     list."
+    shared default Boolean startsWith(List<Anything> sublist)
+            => includesAt(0, sublist);
     
-    "Determine if this list occurs at the given index 
-     in the given list."
-    shared default Boolean occursAt(
+    "Determine if the given list occurs at the end of this
+     list."
+    shared default Boolean endsWith(List<Anything> sublist)
+            => includesAt(size-sublist.size, sublist);
+    
+    "Determine if the given list occurs at the given index 
+     of this list."
+    shared default Boolean includesAt(
             "The index at which this list might occur"
             Integer index, 
-            List<Anything> list) {
-        for (i in index:size) {
-            value x = this[i];
-            value y = list[i];
+            List<Anything> sublist) {
+        for (i in 0:sublist.size) {
+            value x = this[index+i];
+            value y = sublist[i];
             if (exists x) {
                 if (exists y) {
                     if (x!=y) {
@@ -216,23 +221,105 @@ shared interface List<out Element>
         }
     }
     
-    "Determine if this list occurs as a sublist of the 
-     given list."
-    shared default Boolean occursIn(List<Anything> list) {
-        for (i in 0:list.size) {
-            if (occursAtStart(list[i...])) {
+    "Determine if the given list occurs at some index in 
+     this list."
+    shared default Boolean includes(List<Anything> sublist) {
+        for (index in 0:size) {
+            if (includesAt(index,sublist)) {
                 return true;
             }
         }
         return false;
     }
     
-    "The indexes in the given list at which this list 
+    "The indexes in this list at which the given list 
      occurs."
-    shared default {Integer*} occurrencesIn(List<Anything> list) 
-            => { for (index in 0:list.size) 
-                    if (occursAt(index,list)) index };
+    shared default {Integer*} inclusions(List<Anything> sublist) 
+            => { for (index in 0:size) 
+                    if (includesAt(index,sublist)) index };
     
+    "The first index in this list at which the given list 
+     occurs."
+    shared default Integer? firstInclusion(List<Anything> sublist) {
+        for (index in 0:size) {
+            if (includesAt(index,sublist)) {
+                return index;
+            }
+        }
+        else {
+            return null;
+        }
+    }
+    
+    "The last index in this list at which the given list 
+     occurs."
+    shared default Integer? lastInclusion(List<Anything> sublist) {
+        for (index in (0:size).reversed) {
+            if (includesAt(index,sublist)) {
+                return index;
+            }
+        }
+        else {
+            return null;
+        }
+    }
+    
+    shared default Boolean occursAt(Integer index, Anything element) {
+         value elem = this[index];
+         if (exists element) {
+             if (exists elem) {
+                 return elem==element;
+             }
+             else {
+                 return false;
+             }
+         }
+         else {
+             return elem exists;
+         }
+    }
+        
+    shared default Boolean occurs(Anything element) {
+         for (index in 0:size) {
+             if (occursAt(index,element)) {
+                 return true;
+             }
+         }
+         return false;
+    }
+        
+    "The indexes in this list at which the given element 
+     occurs."
+    shared default {Integer*} occurrences(Anything element)
+            => { for (index in 0:size) 
+                    if (occursAt(index,element)) index };
+    
+    "The first index in this list at which the given element 
+     occurs."
+    shared default Integer? firstOccurrence(Anything element) {
+        for (index in 0:size) {
+            if (occursAt(index,element)) {
+                return index;
+            }
+        }
+        else {
+            return null;
+        }
+    }
+    
+    "The last index in this list at which the given element 
+     occurs."
+    shared default Integer? lastOccurrence(Anything element) {
+        for (index in (0:size).reversed) {
+            if (occursAt(index,element)) {
+                return index;
+            }
+        }
+        else {
+            return null;
+        }
+    }
+        
     "The indexes in this list for which the element 
      satisfies the given predicate."
     shared default {Integer*} indexes(

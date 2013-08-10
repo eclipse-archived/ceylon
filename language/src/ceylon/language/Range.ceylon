@@ -126,7 +126,7 @@ shared class Range<Element>(first, last)
     "Determines if the range includes the given object."
     shared actual Boolean contains(Object element) {
         if (is Element element) {
-            return includes(element);
+            return containsElement(element);
         }
         else {
             return false;
@@ -136,7 +136,7 @@ shared class Range<Element>(first, last)
     shared actual Integer count(Boolean selecting(Element element)) {
         variable value e = first;
         variable value c = 0;
-        while (includes(e)) {
+        while (containsElement(e)) {
             if (selecting(e)) {
                 c++;
             }
@@ -146,9 +146,28 @@ shared class Range<Element>(first, last)
     }
     
     "Determines if the range includes the given value."
-    shared Boolean includes(Element x) =>
+    shared Boolean containsElement(Element x) =>
             decreasing then x<=first && x>=last
                     else x>=first && x<=last;
+    
+    shared actual Boolean occurs(Anything element) {
+        if (is Element element) {
+            return containsElement(element);
+        }
+        else {
+            return false;
+        }
+    }
+    
+    shared actual Boolean includes(List<Anything> sublist) {
+        if (is Range<Element> sublist) {
+            return first<=sublist.first<=last &&
+                    first<=sublist.last<=last;
+        }
+        else {
+            return super.includes(sublist);
+        }
+    }
     
     "Determines if two ranges are the same by comparing
      their endpoints."
@@ -230,7 +249,7 @@ shared class Range<Element>(first, last)
         while (x++<skip) {
             e=next(e);
         }
-        return includes(e) then Range(e, last) else {};
+        return containsElement(e) then Range(e, last) else {};
     }
     
     shared actual Range<Element>|Empty taking(Integer take) {
@@ -242,7 +261,7 @@ shared class Range<Element>(first, last)
         while (++x<take) {
             e=next(e);
         }
-        return includes(e) then Range(first, e) else this;
+        return containsElement(e) then Range(first, e) else this;
     }
 
     "Returns the range itself, since a Range cannot

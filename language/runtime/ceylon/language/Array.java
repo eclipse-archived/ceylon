@@ -933,28 +933,76 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     
     @Override
     @Ignore
-    public Iterable<? extends Integer,?> occurrencesIn(List<?> element) {
-        return $ceylon$language$List$this.occurrencesIn(element);
+    public Iterable<? extends Integer,?> inclusions(List<?> element) {
+        return $ceylon$language$List$this.inclusions(element);
     }
 
     @Override
     @Ignore
-    public boolean occursAt(long index, List<?> element) {
+    public Integer firstInclusion(List<?> element) {
+        return $ceylon$language$List$this.firstInclusion(element);
+    }
+
+    @Override
+    @Ignore
+    public Integer lastInclusion(List<?> element) {
+        return $ceylon$language$List$this.lastInclusion(element);
+    }
+
+    @Override
+    @Ignore
+    public Iterable<? extends Integer,?> occurrences(java.lang.Object element) {
+        return $ceylon$language$List$this.occurrences(element);
+    }
+
+    @Override
+    @Ignore
+    public Integer firstOccurrence(java.lang.Object element) {
+        return $ceylon$language$List$this.firstOccurrence(element);
+    }
+
+    @Override
+    @Ignore
+    public Integer lastOccurrence(java.lang.Object element) {
+        return $ceylon$language$List$this.lastOccurrence(element);
+    }
+
+    @Override
+    @Ignore
+    public boolean occurs(java.lang.Object element) {
+        return $ceylon$language$List$this.occurs(element);
+    }
+    
+    @Override
+    @Ignore
+    public boolean occursAt(long index, java.lang.Object element) {
         return $ceylon$language$List$this.occursAt(index, element);
     }
 
     @Override
     @Ignore
-    public boolean occursAtStart(List<?> element) {
-        return $ceylon$language$List$this.occursAtStart(element);
+    public boolean includesAt(long index, List<?> element) {
+        return $ceylon$language$List$this.includesAt(index, element);
     }
-
+        
     @Override
     @Ignore
-    public boolean occursIn(List<?> element) {
-        return $ceylon$language$List$this.occursIn(element);
+    public boolean includes(List<?> element) {
+        return $ceylon$language$List$this.includes(element);
     }
-    
+        
+    @Override
+    @Ignore
+    public boolean startsWith(List<?> element) {
+        return $ceylon$language$List$this.startsWith(element);
+    }
+        
+    @Override
+    @Ignore
+    public boolean endsWith(List<?> element) {
+        return $ceylon$language$List$this.endsWith(element);
+    }
+        
     @Override @Ignore
     public List<? extends Element> trim(Callable<? extends Boolean> characters) {
         return $ceylon$language$List$this.trim(characters);

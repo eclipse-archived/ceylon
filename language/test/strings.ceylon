@@ -134,32 +134,32 @@ shared void strings() {
     check("ell" in hello, "substring in string");
     check(!"goodbye" in hello, "substring not in string");
                 
-    if (exists occ = hello.firstOccurrence("ll")) {
+    if (exists occ = hello.firstInclusion("ll")) {
         check(occ==2, "string first occurrence 1");
     }
     else {
         fail("string first occurrence 2");
     }
-    if (exists nocc = hello.firstOccurrence("x")) {
+    if (exists nocc = hello.firstInclusion("x")) {
         fail("string no first occurrence");
     }
-    if (exists locc = "hello hello".lastOccurrence("hell")) {
+    if (exists locc = "hello hello".lastInclusion("hell")) {
         check(locc==6, "string last occurrence 1");
     }
     else {
         fail("string last occurrence 2");
     }
         
-    if (exists occ = hello.firstCharacterOccurrence('l')) {
+    if (exists occ = hello.firstOccurrence('l')) {
         check(occ==2, "string first occurrence 1");
     }
     else {
         fail("string first occurrence 2");
     }
-    if (exists nocc = hello.firstCharacterOccurrence('x')) {
+    if (exists nocc = hello.firstOccurrence('x')) {
         fail("string no first occurrence");
     }
-    if (exists locc = "hello hello".lastCharacterOccurrence('h')) {
+    if (exists locc = "hello hello".lastOccurrence('h')) {
         check(locc==6, "string last occurrence 1");
     }
     else {
@@ -340,18 +340,18 @@ shared void strings() {
     check(mls.normalized=="a b", "multiline.normalized");
 
     //Occurrences
-    value occurs = hello.occurrences("l").iterator();
+    value occurs = hello.inclusions("l").iterator();
     if (is Integer p=occurs.next()) {
-        check(p==2, "occurrences[0]");
-    } else { fail("occurrences 1"); }
+        check(p==2, "inclusions[0]");
+    } else { fail("inclusions 1"); }
     if (is Integer p=occurs.next()) {
-        check(p==3, "occurrences[1]");
-    } else { fail("occurrences 2"); }
+        check(p==3, "inclusions[1]");
+    } else { fail("inclusions 2"); }
     if (!occurs.next() is Finished) {
-        fail("occurrences 3");
+        fail("inclusions 3");
     }
-    if (!hello.occurrences("X").iterator().next() is Finished) {
-        fail("occurrences 4");
+    if (!hello.inclusions("X").iterator().next() is Finished) {
+        fail("inclusions 4");
     }
     //Unicode escapes
     value ucs = "\{#00E5}";

@@ -192,31 +192,6 @@ shared native final class String(shared {Character*} characters)
      at index `string.size-1`."
     shared actual native Character? get(Integer index);
     
-    "The character indexes at which the given substring
-     occurs within this string. Occurrences do not 
-     overlap."
-    shared native {Integer*} occurrences(String substring);
-    
-    "The first index at which the given substring occurs
-     within this string, or `null` if the substring does
-     not occur in this string."
-    shared native Integer? firstOccurrence(String substring);
-    
-    "The last index at which the given substring occurs
-     within this string, or `null` if the substring does
-     not occur in this string."
-    shared native Integer? lastOccurrence(String substring);
-    
-    "The first index at which the given character occurs
-     within this string, or `null` if the character does
-     not occur in this string."
-    shared native Integer? firstCharacterOccurrence(Character substring);
-    
-    "The last index at which the given character occurs
-     within this string, or `null` if the character does
-     not occur in this string."
-    shared native Integer? lastCharacterOccurrence(Character substring);
-    
     "Determines if the given object is a `String` and, 
      if so, if it occurs as a substring of this string,
      or if the object is a `Character` that occurs in
@@ -225,14 +200,6 @@ shared native final class String(shared {Character*} characters)
      characters."
     shared actual native Boolean contains(Object element);
     
-    "Determines if this string starts with the given 
-     substring."
-    shared native Boolean startsWith(String substring);
-    
-    "Determines if this string ends with the given 
-     substring."
-    shared native Boolean endsWith(String substring);
-        
     "Returns the concatenation of this string with the
      given string."
     shared actual native String plus(String other);

@@ -100,12 +100,12 @@ void lists() {
     check(b.trimLeading((Integer i) => i<0) == b, "List.trimLeading [2] differs from original: ``b.trimLeading((Integer i) => i<0)``");
     check(b.trimTrailing((Integer i) => i>9) == b, "List.trimTrailing [2] differs from original: ``b.trimTrailing((Integer i) => i>9)``");
 
-    check(!b.occursAtStart([ for (i in b) i.string ]), "List.occursAtStart [1]");
-    check(!b.occursAtStart([1,2,3,4,5,6,7]), "List.occursAtStart [2]");
-    check(b.occursAtStart([1,2,3,4,5,6,7,8,100,200,300]), "List.occursAtStart [3]");
-    check(b.occursAtStart([1,2,3,4,5,6,7,8]), "List.occursAtStart [4]");
-    check(b.occursIn(["bla", "ble", 1,2,3,4,5,6,7,8, "bli", "blo"]), "List.occursIn [1]");
-    check(b.occursIn([0,0,0,0,0,0,0,1,2,3,4,5,6,7,8]), "List.occursIn [2]");
-    check(!b.occursIn([0,0,0,0,1,2,3,4,5,6,7,0,8]), "List.occursIn [3]");
-    check(!b.occursIn([1,2,3,4,5,6,7]), "List.occursIn [4]");
+    check(![ for (i in b) i.string ].startsWith(b), "List.occursAtStart [1]");
+    check(![1,2,3,4,5,6,7].startsWith(b), "List.occursAtStart [2]");
+    check([1,2,3,4,5,6,7,8,100,200,300].startsWith(b), "List.occursAtStart [3]");
+    check([1,2,3,4,5,6,7,8].startsWith(b), "List.occursAtStart [4]");
+    check(["bla", "ble", 1,2,3,4,5,6,7,8, "bli", "blo"].includes(b), "List.occursIn [1]");
+    check([0,0,0,0,0,0,0,1,2,3,4,5,6,7,8].includes(b), "List.occursIn [2]");
+    check(![0,0,0,0,1,2,3,4,5,6,7,0,8].includes(b), "List.occursIn [3]");
+    check(![1,2,3,4,5,6,7].includes(b), "List.occursIn [4]");
 }

@@ -128,10 +128,10 @@ Range<Integer> range {
     check(r3.size==6, "range.size 3");
     value r4 = 123..123;
     check(r4.size==1, "range.size 4");
-    check(r1.includes(3), "range.includes 1");
-    check(!r1.includes(6), "range.includes 2");
-    check(r2.includes(5), "range.includes 3");
-    check(!r2.includes(3), "range.includes 4");
+    check(r1.containsElement(3), "range.includes 1");
+    check(!r1.containsElement(6), "range.includes 2");
+    check(r2.containsElement(5), "range.includes 3");
+    check(!r2.containsElement(3), "range.includes 4");
     check(r4.first==r4.last, "range first == last");
     check(r1 != r2, "range.equals 1");
     check(r1 == 1..5, "range.equals 2");
