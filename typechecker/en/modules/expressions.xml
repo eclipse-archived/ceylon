@@ -650,7 +650,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>Furthermore, if type argument are inferred, then the inferred type 
             arguments must conform, as defined by <xref linkend="typeargumentsandconstraints"/>, 
-            to the type parameter list of the realization.</para>
+            to the type parameter list of the realization of the function or class.</para>
             
         </section>
         
