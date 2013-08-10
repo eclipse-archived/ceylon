@@ -357,184 +357,196 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         operator expression occurs within a <literal>dynamic</literal> block, 
         then the whole operator expression has no type.</para>
         
-    <section id="baseexpressions">
-        <title>Base expressions</title>
+        <section id="baseexpressions">
+            <title>Base expressions</title>
+            
+            <para>A <emphasis>base expression</emphasis> is an unqualified 
+            identifier, with an optional list of type arguments:</para>
+            
+            <synopsis>BaseExpression: (MemberName | TypeName) TypeArguments?</synopsis>
+            
+            <para>A base expression is either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a reference to a toplevel function, toplevel value, or 
+                    toplevel class,</para>
+                </listitem>
+                <listitem>
+                    <para>a reference within the lexical scope of the referenced 
+                    function, value, or class, or</para>
+                </listitem>
+                <listitem>
+                    <para>a reference within the body of the referenced function,
+                    value, or class.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>The referenced declaration is determined by resolving the unqualified 
+            reference as defined by <xref linkend="unqualifiedreferenceresolution"/>.
+            The unqualified realization for the unqualified reference is determined
+            according to <xref linkend="realizations"/>.</para>
+            
+            <para>The type argument list, if any, must conform, as defined by
+            <xref linkend="typeargumentsandconstraints"/>, to the type parameter list
+            of the unqualified realization.</para>
+            
+            <para>If a base expression is a reference to an attribute, method, or 
+            member class of a class, the receiving instance is the current instance of 
+            that class, as defined by <xref linkend="closureofaclassorinterface"/>.
+            Otherwise, there is no receiving instance.</para>
         
-        <para>A <emphasis>base expression</emphasis> is an unqualified 
-        identifier, with an optional list of type arguments:</para>
+        </section>
         
-        <synopsis>BaseExpression: (MemberName | TypeName) TypeArguments?</synopsis>
+        <section id="memberexpressions">
+            <title>Member expressions</title>
+            
+            <para>A <emphasis>member expression</emphasis> is a <emphasis>receiver
+            expression</emphasis>, followed by an identifier, with an optional list 
+            of type arguments.</para>
+            
+            <synopsis>MemberExpression: (Primary ".") (MemberName | TypeName) TypeArguments?</synopsis>
+            
+            <para>A member expression is a reference to a member of a type: an
+            attribute, method, or member class.</para>
+            
+            <para>The referenced member is determined by resolving the qualified 
+            reference as defined by <xref linkend="qualifiedreferenceresolution"/>.
+            The qualified realization for the qualified reference is determined
+            according to <xref linkend="realizations"/>.</para>
+            
+            <para>The type argument list, if any, must conform, as defined by
+            <xref linkend="typeargumentsandconstraints"/>, to the type parameter list
+            of the qualified realization.</para>
+            
+            <para>The receiver expression produces the instance upon which the member 
+            is invoked or evaluated. When a member expression is executed, the receiver 
+            expresson is evaluated to produce the receiving instance which is held 
+            until the member is invoked or evaluated, as defined in 
+            <xref linkend="evaluationinvocationandassignment"/>.</para>
+            
+        </section>
+                    
+        <section id="valuereferences">
+            <title>Value references</title>
+            
+            <para>A <emphasis>value reference</emphasis> is a base expression or 
+            member expression that references a value declaration.</para>
+            
+            <para>The type of a value reference expression is the type of the 
+            realization of the referenced value.</para>
+            
+            <para>A value declaration is never generic, so a value reference never
+            has a type argument list.</para>
+            
+            <para>A value reference which occurs within a <literal>dynamic</literal> 
+            block and which does not reference any statically typed declaration
+            has no type.</para>
+            
+            <para>If a base expression or member expression does not reference any 
+            statically typed declaration, and occurs within a <literal>dynamic</literal> 
+            block, then it is considered a value reference.</para>
+            
+        </section>
         
-        <para>A base expression is either:</para>
+        <section id="callablereferences">
+            <title>Callable references</title>
+            
+            <para>A <emphasis>callable reference</emphasis> is a base expression or
+            member expression that references something&mdash;a function or 
+            class&mdash;that can be <emphasis>invoked</emphasis> or 
+            <emphasis>instantiated</emphasis> by specifying a list of arguments.</para>
+            
+            <para>A callable reference may be invoked immediately, or it may be passed 
+            to other code which may invoke the reference. A callable reference captures 
+            the return type and parameter list types of the function or class it refers 
+            to, allowing compile-time validation of argument types when the callable 
+            reference is invoked.</para>
+            
+            <para>The type of a callable reference expression is the callable type of
+            the realization of the referenced function or class.</para>
+            
+            <para>If a callable reference expression refers to a generic declaration, 
+            either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>it must be immediately followed by an argument list, 
+                    allowing the compiler to infer the type arguments, or</para>
+                </listitem>
+                <listitem>
+                    <para>it must have an explicit type argument list.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>A callable reference may not appear as the receiver expression of
+            a member expression.</para>
+            
+            <comment><para>Note: this restriction exists to eliminate an ambiguity in
+            the interpretation of static expressions such as <literal>Person.string</literal>
+            and <literal>Person.equals</literal>.</para></comment>
+                    
+        </section>
         
-        <itemizedlist>
-            <listitem>
-                <para>a reference to a toplevel function, toplevel value, or 
-                toplevel class,</para>
-            </listitem>
-            <listitem>
-                <para>a reference within the lexical scope of the referenced 
-                function, value, or class, or</para>
-            </listitem>
-            <listitem>
-                <para>a reference within the body of the referenced function,
-                value, or class.</para>
-            </listitem>
-        </itemizedlist>
+        <section id="staticexpressions">
+            <title>Static expressions</title>
+            
+            <para>A <emphasis>static expression</emphasis> is a type, followed by an identifier, 
+            with an optional list of type arguments.</para>
+            
+            <synopsis>StaticExpression: (TypeName TypeArguments? ".")+ (MemberName | TypeName) TypeArguments?</synopsis>
+            
+            <para>A static expression is a reference to a member of a type: an attribute, method, 
+            or member class.</para>
+            
+            <para>The referenced member is determined by resolving the qualified reference as defined 
+            by <xref linkend="qualifiedreferenceresolution"/>. The qualified realization for the 
+            qualified reference is determined according to <xref linkend="realizations"/>.</para>
+            
+            <para>The type argument list, if any, must conform, as defined by
+            <xref linkend="typeargumentsandconstraints"/>, to the type parameter list of the 
+            qualified realization.</para>
+            
+            <para>Unlike member expressions, a static expression does not have a receiver expression. 
+            All static expressions are callable expressions which accept an argument of the specified 
+            type.</para>
+            
+            <!--comment><para>TODO: should we support static expressions involving union/intersection types 
+            and abbreviations, for example <literal>&lt;String[]|Set&lt;Character&gt;&gt;.iterator</literal>?</para></comment-->
+            
+        </section>
         
-        <para>The referenced declaration is determined by resolving the unqualified 
-        reference as defined by <xref linkend="unqualifiedreferenceresolution"/>.
-        The unqualified realization for the unqualified reference is determined
-        according to <xref linkend="realizations"/>.</para>
+        <section id="staticvaluereferences">
+            <title>Static value references</title>
+            
+            <para>A <emphasis>static value reference</emphasis> is a static 
+            expression that references an attribute declaration.</para>
+            
+            <para>The type of a static value reference expression for an attribute 
+            whose realization is of type <literal>X</literal>, and with qualifying 
+            type <literal>T</literal>, is <literal>X(T)</literal>.</para>
+            
+            <para>A value declaration is never generic, so a static value reference 
+            never ends in a type argument list.</para>
+            
+        </section>
         
-        <para>If a base expression is a reference to an attribute, method, or 
-        member class of a class, the receiving instance is the current instance of 
-        that class, as defined by <xref linkend="closureofaclassorinterface"/>.
-        Otherwise, there is no receiving instance.</para>
-    
-    </section>
-    
-    <section id="memberexpressions">
-        <title>Member expressions</title>
-        
-        <para>A <emphasis>member expression</emphasis> is a <emphasis>receiver
-        expression</emphasis>, followed by an identifier, with an optional list 
-        of type arguments.</para>
-        
-        <synopsis>MemberExpression: (Primary ".") (MemberName | TypeName) TypeArguments?</synopsis>
-        
-        <para>A member expression is a reference to a member of a type: an
-        attribute, method, or member class.</para>
-        
-        <para>The referenced member is determined by resolving the qualified 
-        reference as defined by <xref linkend="qualifiedreferenceresolution"/>.
-        The qualified realization for the qualified reference is determined
-        according to <xref linkend="realizations"/>.</para>
-        
-        <para>The receiver expression produces the instance upon which the member 
-        is invoked or evaluated. When a member expression is executed, the receiver 
-        expresson is evaluated to produce the receiving instance which is held 
-        until the member is invoked or evaluated, as defined in 
-        <xref linkend="evaluationinvocationandassignment"/>.</para>
-        
-    </section>
-                
-    <section id="valuereferences">
-        <title>Value references</title>
-        
-        <para>A <emphasis>value reference</emphasis> is a base expression or 
-        member expression that references a value declaration.</para>
-        
-        <para>The type of a value reference expression is the type of the 
-        realization of the referenced value.</para>
-        
-        <para>A value declaration is never generic, so a value reference never
-        has a type argument list.</para>
-        
-        <para>A value reference which occurs within a <literal>dynamic</literal> 
-        block and which does not reference any statically typed declaration
-        has no type.</para>
-        
-        <para>If a base expression or member expression does not reference any 
-        statically typed declaration, and occurs within a <literal>dynamic</literal> 
-        block, then it is considered a value reference.</para>
-        
-    </section>
-    
-    <section id="callablereferences">
-        <title>Callable references</title>
-        
-        <para>A <emphasis>callable reference</emphasis> is a base expression or
-        member expression that references something&mdash;a function or 
-        class&mdash;that can be <emphasis>invoked</emphasis> or 
-        <emphasis>instantiated</emphasis> by specifying a list of arguments.</para>
-        
-        <para>A callable reference may be invoked immediately, or it may be passed 
-        to other code which may invoke the reference. A callable reference captures 
-        the return type and parameter list types of the function or class it refers 
-        to, allowing compile-time validation of argument types when the callable 
-        reference is invoked.</para>
-        
-        <para>The type of a callable reference expression is the callable type of
-        the realization of the referenced function or class.</para>
-        
-        <para>If a callable reference expression refers to a generic declaration, 
-        either:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>it must be immediately followed by an argument list, 
-                allowing the compiler to infer the type arguments, or</para>
-            </listitem>
-            <listitem>
-                <para>it must have an explicit type argument list.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>A callable reference may not appear as the receiver expression of
-        a member expression.</para>
-        
-        <comment><para>Note: this restriction exists to eliminate an ambiguity in
-        the interpretation of static expressions such as <literal>Person.string</literal>
-        and <literal>Person.equals</literal>.</para></comment>
-                
-    </section>
-    
-    <section id="staticexpressions">
-        <title>Static expressions</title>
-        
-        <para>A <emphasis>static expression</emphasis> is a type, followed by an identifier, 
-        with an optional list of type arguments.</para>
-        
-        <synopsis>StaticExpression: (TypeName TypeArguments? ".")+ (MemberName | TypeName) TypeArguments?</synopsis>
-        
-        <para>A static expression is a reference to a member of a type: an attribute, method, 
-        or member class.</para>
-        
-        <para>The referenced member is determined by resolving the qualified reference as defined 
-        by <xref linkend="qualifiedreferenceresolution"/>. The qualified realization for the 
-        qualified reference is determined according to <xref linkend="realizations"/>.</para>
-        
-        <para>Unlike member expressions, a static expression does not have a receiver expression. 
-        All static expressions are callable expressions which accept an argument of the specified 
-        type.</para>
-        
-        <!--comment><para>TODO: should we support static expressions involving union/intersection types 
-        and abbreviations, for example <literal>&lt;String[]|Set&lt;Character&gt;&gt;.iterator</literal>?</para></comment-->
-        
-    </section>
-    
-    <section id="staticvaluereferences">
-        <title>Static value references</title>
-        
-        <para>A <emphasis>static value reference</emphasis> is a static 
-        expression that references an attribute declaration.</para>
-        
-        <para>The type of a static value reference expression for an attribute 
-        whose realization is of type <literal>X</literal>, and with qualifying 
-        type <literal>T</literal>, is <literal>X(T)</literal>.</para>
-        
-        <para>A value declaration is never generic, so a static value reference 
-        never ends in a type argument list.</para>
-        
-    </section>
-    
-    <section id="staticcallablereferences">
-        <title>Static callable references</title>
-        
-        <para>A <emphasis>static callable reference</emphasis> is a static 
-        expression that references something&mdash;a method or member 
-        class&mdash;that can be <emphasis>invoked</emphasis> or 
-        <emphasis>instantiated</emphasis>.</para>
-        
-        <para>The type of a static callable reference expression for a method
-        or member class whose realization has callable type <literal>C</literal>, 
-        and with qualifying type <literal>T</literal>, is <literal>C(T)</literal>.</para>
-        
-        <para>If a callable reference expression refers to a generic declaration, 
-        it must end in an explicit type argument list.</para>
-        
-    </section>
+        <section id="staticcallablereferences">
+            <title>Static callable references</title>
+            
+            <para>A <emphasis>static callable reference</emphasis> is a static 
+            expression that references something&mdash;a method or member 
+            class&mdash;that can be <emphasis>invoked</emphasis> or 
+            <emphasis>instantiated</emphasis>.</para>
+            
+            <para>The type of a static callable reference expression for a method
+            or member class whose realization has callable type <literal>C</literal>, 
+            and with qualifying type <literal>T</literal>, is <literal>C(T)</literal>.</para>
+            
+            <para>If a callable reference expression refers to a generic declaration, 
+            it must end in an explicit type argument list.</para>
+            
+        </section>
     
     </section>
     
@@ -548,80 +560,99 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <synopsis>Invocation: Primary Arguments</synopsis>
         
-        <para>The invoked expression must be of type <literal>Callable&lt;R,P&gt;</literal>.</para>
+        <para>The invoked expression must be of type <literal>Callable&lt;R,P&gt;</literal>
+        for some types <literal>R</literal> and <literal>P</literal>. Then the type of the 
+        invocation expression is simply <literal>R</literal>.</para>
         
         <para>If the invoked expression has no type, and occurs within a <literal>dynamic</literal> 
         block, then the whole callable expression has no type, and the argument list is not 
         type-checked at compile time.</para>
         
-        <para>Any invocation expression where the invoked expression is a callable reference 
-        expression is called a <emphasis>direct invocation expression</emphasis> of the 
-        function or class.</para> 
-        
-        <para>In a direct invocation expression:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the compiler has one item of additional information about the schema of 
-                the method or class that is not reified by the <literal>Callable</literal> 
-                interface: the names of the parameters of the function or class, and</para>
-            </listitem>
-            <listitem>
-                <para>type argument inference is possible, as defined in 
-                <xref linkend="typeargumentinference"/>, since the compiler has access to the 
-                type parameters and constraints of the function or class.</para>
-            </listitem>
-        </itemizedlist>
-        
         <para>An invocation expression must specify arguments for parameters of the callable 
-        object, either as a positional argument list, or a named argument list.</para>
+        object, either as a positional argument list, or as a named argument list.</para>
         
         <synopsis>Arguments: PositionalArguments | NamedArguments</synopsis>
         
-        <para>The arguments must conform to the type of the parameter list:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>For each required parameter, an argument must be given.</para>
-            </listitem>
-            <listitem>
-                <para>For each defaulted parameter, an argument may optionally be 
-                given.</para>
-            </listitem>
-            <listitem>
-                <para>If the parameter list has a variadic parameter, one or more 
-                arguments may optionally be given.</para>
-            </listitem>
-            <listitem>
-                <para>No additional arguments may be given.</para>
-            </listitem>
-            <listitem>
-                <para>For a required or defaulted parameter of type <literal>T</literal>, 
-                the type of the corresponding argument expression must be assignable to 
-                <literal>T</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>For a variadic parameter of type <literal>T*</literal>, the type 
-                of every corresponding argument expression must be assignable to 
-                <literal>T</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>For a variadic parameter of type <literal>T+</literal>, the type 
-                of every corresponding argument expression must be assignable to 
-                <literal>T</literal>, and there must be at least one argument.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>The type of an invocation expression is simply <literal>R</literal>
-        where the invoked expression has type exactly 
-        <literal>Callable&lt;R,P&gt;</literal>.</para>
-        
-        <comment><para>TODO: should we support an infix-operator-style syntax for 
-        method invocation like <literal>string split ",;".contains</literal>? This
-        is especially nice for conceptually symmetric operations like 
-        <literal>a xor b</literal>, or when the argument is an anonymous function
-        like <literal>people map (Person p)=>p.firstName+p.lastName</literal>.
-        </para></comment>
+        <para>Every argument list has a type, as specified below in 
+        <xref linkend="positionalarguments"/> and <xref linkend="namedarguments"/>. If an 
+        invocation is formed from a callable expression of type exactly 
+        <literal>Callable&lt;R,P&gt;</literal> and an argument list of type 
+        <literal>A</literal>, then <literal>A</literal> must be a subtype of 
+        <literal>P</literal>.</para>
+            
+        <comment><para>TODO: should we support an infix-operator-style syntax for method 
+        invocation like <literal>string split ",;".contains</literal>? This is especially 
+        nice for conceptually symmetric operations like <literal>a xor b</literal>, or when 
+        the argument is an anonymous function like 
+        <literal>people map (Person p)=>p.firstName+p.lastName</literal>.</para></comment>
+            
+        <section id="directinvocations">
+            <title>Direct invocations</title>
+            
+            <para>Any invocation expression where the invoked expression is a callable reference 
+            expression is called a <emphasis>direct invocation expression</emphasis> of the 
+            function or class.</para> 
+            
+            <para>In a direct invocation expression:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the compiler has one item of additional information about the schema of 
+                    the method or class that is not reified by the <literal>Callable</literal> 
+                    interface: the names of the parameters of the function or class, and
+                    therefore named arguments may be used, and</para>
+                </listitem>
+                <listitem>
+                    <para>type argument inference is possible, as defined in 
+                    <xref linkend="typeargumentinference"/>, since the compiler has access to the 
+                    type parameters and constraints of the function or class.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>If an invocation expression has a named argument list, it must be a direct
+            invocation.</para>
+            
+            <para>In a direct invocation expression of a function or class, the arguments must 
+            conform to the parameter list of the realization, as defined in
+            <xref linkend="realizations"/>, of the function or class:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>For each required parameter, an argument must be given.</para>
+                </listitem>
+                <listitem>
+                    <para>For each defaulted parameter, an argument may optionally be 
+                    given.</para>
+                </listitem>
+                <listitem>
+                    <para>If the parameter list has a variadic parameter of type 
+                    <literal>T+</literal>, one or more arguments must be given.</para>
+                </listitem>
+                <listitem>
+                    <para>If the parameter list has a variadic parameter of type 
+                    <literal>T*</literal>, one or more arguments may optionally be 
+                    given.</para>
+                </listitem>
+                <listitem>
+                    <para>No additional arguments may be given.</para>
+                </listitem>
+                <listitem>
+                    <para>For a required or defaulted parameter of type <literal>T</literal>, 
+                    the type of the corresponding argument expression must be assignable to 
+                    <literal>T</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>For a variadic parameter of type <literal>T*</literal> or 
+                    <literal>T+</literal>, the type of every corresponding argument 
+                    expression must be assignable to <literal>T</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Furthermore, if type argument are inferred, then the inferred type 
+            arguments must conform, as defined by <xref linkend="typeargumentsandconstraints"/>, 
+            to the type parameter list of the realization.</para>
+            
+        </section>
         
         <section id="tupletypeofarglist">
             <title>The type of a list of arguments</title>
@@ -643,10 +674,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <synopsis>ArgumentList: ((ListedArgument ",")* (ListedArgument | SpreadArgument | Comprehension))?</synopsis>
             
-            <para>Every such list of arguments has a type, which captures the types
-            of the individual arguments in the list. This type is always a subtype 
-            of <literal>Anything[]</literal>. The type of an empty argument list with 
-            no arguments is <literal>[]</literal>.</para>
+            <para>Every such list of arguments has a type, which captures the types of 
+            the individual arguments in the list. This type is always a subtype of 
+            <literal>Anything[]</literal>. The type of an empty list of arguments is 
+            <literal>[]</literal>.</para>
             
         </section>
         
@@ -654,9 +685,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <title>Default arguments</title>
         
             <para>When no argument is assigned to a defaulted parameter by the caller, 
-            the default argument defined by the parameter declaration is used. The default 
-            argument expression is evaluated every time the method is invoked with no 
-            argument specified for the defaulted parameter.</para>
+            the default argument defined by the parameter declaration of the realization,
+            as defined by <xref linkend="typeargumentsandconstraints"/>, of the function 
+            or class is used. The default argument expression is evaluated every time the 
+            method is invoked with no argument specified for the defaulted parameter.</para>
             
             <para>This class:</para>
             
@@ -678,8 +710,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <synopsis>ListedArgument: Expression</synopsis>
             
-            <para>If a listed argument is an expression of type <literal>T</literal>, 
-            and an argument list has type <literal>P</literal> with principal instantiation 
+            <para>If a listed argument is an expression of type <literal>T</literal>, and 
+            a list of arguments has type <literal>P</literal> with principal instantiation 
             <literal>Sequential&lt;Y&gt;</literal>, then the type of a new argument list 
             formed by prepending the expression to the first parameter list is 
             <literal>Tuple&lt;T|Y,T,P&gt;</literal>.</para>
@@ -731,7 +763,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             view the spread operator as simply part of the syntax of an argument list.
             </para></comment>
             
-            <para>The type of an argument list containing only a spread argument of 
+            <para>The type of a list of arguments containing only a spread argument of 
             sequential type <literal>S</literal> is simply <literal>S</literal>.</para>
             
         </section>
@@ -779,7 +811,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             the parent clause. The scoping rules for variables declared by comprehension
             clauses reflects this model.</para></comment>
             
-            <para>The type of an argument list containing only a comprehension is 
+            <para>The type of a list of arguments containing only a comprehension is 
             <literal>[T*]</literal> where <literal>T</literal> is the type of the
             expression which terminates the comprehension, or <literal>[T+]</literal>
             if there are no <literal>if</literal> clauses, and if every 
@@ -804,7 +836,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>An <emphasis>enumeration expression</emphasis> is an abbreviation for
             tuple and iterable object instantiation. Iterable enumerations are delimited
-            using braces. Tuple enumerations are delimeted by brackets.</para>
+            using braces. Tuple enumerations are delimited by brackets.</para>
             
             <synopsis>Iterable: "{" ArgumentList "}"</synopsis>
             <synopsis>Tuple: "[" ArgumentList "]"</synopsis>
@@ -821,8 +853,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 </listitem>
             </itemizedlist>
             
-            <para>The type of a tuple enumeration expression is the type of the argument 
-            list.</para>
+            <para>The type of a tuple enumeration expression is the type of the list of
+            arguments it contains.</para>
             
             <programlisting>{String+} = { "hello", "world" };</programlisting>
             <programlisting>[] none = [];</programlisting>
@@ -840,108 +872,103 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <section id="positionalarguments">
             <title>Positional argument lists</title>
-        
-        <para>When invocation arguments are listed positionally, the argument list is 
-        enclosed in parentheses.</para>
             
-        <synopsis>PositionalArguments: "(" ArgumentList ")"</synopsis>
-        
-        <para>The type of the positional argument list is the type of the argument 
-        list.</para>
-        
-        <para>If an invocation is formed from a callable expression of type exactly
-        <literal>Callable&lt;R,P&gt;</literal> and a positional argument list of type
-        <literal>A</literal>, then <literal>A</literal> must be a subtype of 
-        <literal>P</literal>.</para>
-        
-        <!--para>Positional arguments must be listed in the same order as the corresponding
-        parameters.</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>First, an argument of each required parameters must be specified, in the 
-                order in which the required parameters were declared. There must be at least as 
-                many arguments as required parameters.</para>
-            </listitem>
-            <listitem>
-                <para>Next, arguments of the first arbitrary number of defaulted parameters may 
-                be specified, in the order in which the defaulted parameters were declared. If 
-                there are fewer arguments than defaulted parameters, the remaining defaulted 
-                parameters are assigned their default values.</para>
-            </listitem>
-            <listitem>
-                <para>Finally, if arguments to all defaulted parameters have been specified,
-                and if the method declares a variadic parameter, an arbitrary number of arguments 
-                to the variadic parameter may be specified. 
-                </para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>For example:</para>
-        
-        <programlisting>(getProduct(id), 1)</programlisting>
-        <programlisting>((Float x, Float y) => x+y)</programlisting-->
+            <para>When invocation arguments are listed positionally, the argument list is 
+            enclosed in parentheses.</para>
+            
+            <synopsis>PositionalArguments: "(" ArgumentList ")"</synopsis>
+            
+            <para>The type of the positional argument list is the type of the list of arguments 
+            it contains.</para>
+            
+            <!--para>Positional arguments must be listed in the same order as the corresponding
+            parameters.</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>First, an argument of each required parameters must be specified, in the 
+                    order in which the required parameters were declared. There must be at least as 
+                    many arguments as required parameters.</para>
+                </listitem>
+                <listitem>
+                    <para>Next, arguments of the first arbitrary number of defaulted parameters may 
+                    be specified, in the order in which the defaulted parameters were declared. If 
+                    there are fewer arguments than defaulted parameters, the remaining defaulted 
+                    parameters are assigned their default values.</para>
+                </listitem>
+                <listitem>
+                    <para>Finally, if arguments to all defaulted parameters have been specified,
+                    and if the method declares a variadic parameter, an arbitrary number of arguments 
+                    to the variadic parameter may be specified. 
+                    </para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>For example:</para>
+            
+            <programlisting>(getProduct(id), 1)</programlisting>
+            <programlisting>((Float x, Float y) => x+y)</programlisting-->
         
         </section>
         
         <section id="namedarguments">
             <title>Named argument lists</title>
             
-        <para>When invocation arguments are listed by name, the argument list is enclosed 
-        in braces.</para>
-        
-        <synopsis>NamedArguments: "{" NamedArgument* ArgumentList "}"</synopsis>
-        
-        <para>Named arguments may be listed in a different order to the corresponding
-        parameters.</para>
-        
-        <para>Each named argument in a named argument list is either:</para> 
-        
-        <itemizedlist>
-            <listitem>
-                <para>an <emphasis>anonymous argument</emphasis>&mdash;an expression, with
-                no parameter name explicitly specified,</para>
-            </listitem>
-            <listitem>
-                <para>a <emphasis>specified argument</emphasis>&mdash;a specification 
-                statememt where name of the value of function being specified is interpreted
-                as the name of a parameter,</para>
-            </listitem>
-            <listitem>
-                <para>an inline value declaration, whose name is the name of a parameter,</para>
-            </listitem>
-            <listitem>
-                <para>an inline function declaration, whose name is the name of a parameter, 
-                or</para>
-            </listitem>
-            <listitem>
-                <para>an inline anonymous class declaration whose name is the name of a 
-                parameter.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <synopsis>NamedArgument: AnonymousArgument | SpecifiedArgument | ValueArgument | FunctionArgument | ObjectArgument</synopsis>
-        
-        <synopsis>AnonymousArgument: Expression</synopsis>
-        
-        <synopsis>SpecifiedArgument: Specification</synopsis>
-        
-        <synopsis>ValueArgument: AttributeHeader (Block | (Specifier | LazySpecifier) ";")</synopsis>
-        
-        <synopsis>FunctionArgument: MethodHeader (Block | LazySpecifier ";")</synopsis>
-        
-        <synopsis>ObjectArgument: ObjectHeader ClassBody</synopsis>
-        
-        <comment><para>Note: there is an ambiguity here between assignment expressions 
-        and specified arguments. This ambiguity is resolved in favor of interpreting the
-        argument as a specified argument. Therefore an anonymous argument in a named 
-        argument list may not be an assignment expression.</para></comment>
-        
-        <para>A named argument may not declare type parameters.</para>
-        
-        <para>For example:</para>
-        
-        <programlisting>{ 
+            <para>When invocation arguments are listed by name, the argument list is enclosed 
+            in braces.</para>
+            
+            <synopsis>NamedArguments: "{" NamedArgument* ArgumentList "}"</synopsis>
+            
+            <para>Named arguments may be listed in a different order to the corresponding
+            parameters.</para>
+            
+            <para>Each named argument in a named argument list is either:</para> 
+            
+            <itemizedlist>
+                <listitem>
+                    <para>an <emphasis>anonymous argument</emphasis>&mdash;an expression, with
+                    no parameter name explicitly specified,</para>
+                </listitem>
+                <listitem>
+                    <para>a <emphasis>specified argument</emphasis>&mdash;a specification 
+                    statememt where name of the value of function being specified is interpreted
+                    as the name of a parameter,</para>
+                </listitem>
+                <listitem>
+                    <para>an inline value declaration, whose name is the name of a parameter,</para>
+                </listitem>
+                <listitem>
+                    <para>an inline function declaration, whose name is the name of a parameter, 
+                    or</para>
+                </listitem>
+                <listitem>
+                    <para>an inline anonymous class declaration whose name is the name of a 
+                    parameter.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <synopsis>NamedArgument: AnonymousArgument | SpecifiedArgument | ValueArgument | FunctionArgument | ObjectArgument</synopsis>
+            
+            <synopsis>AnonymousArgument: Expression</synopsis>
+            
+            <synopsis>SpecifiedArgument: Specification</synopsis>
+            
+            <synopsis>ValueArgument: AttributeHeader (Block | (Specifier | LazySpecifier) ";")</synopsis>
+            
+            <synopsis>FunctionArgument: MethodHeader (Block | LazySpecifier ";")</synopsis>
+            
+            <synopsis>ObjectArgument: ObjectHeader ClassBody</synopsis>
+            
+            <comment><para>Note: there is an ambiguity here between assignment expressions 
+            and specified arguments. This ambiguity is resolved in favor of interpreting the
+            argument as a specified argument. Therefore an anonymous argument in a named 
+            argument list may not be an assignment expression.</para></comment>
+            
+            <para>A named argument may not declare type parameters.</para>
+            
+            <para>For example:</para>
+            
+            <programlisting>{ 
     product = getProduct(id); 
     quantity = 1; 
 }</programlisting>
@@ -963,8 +990,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         Div { "Hello " name "!" };
     };
 }</programlisting>
-
-        <programlisting>{
+            
+            <programlisting>{
     object iterator 
             satisfies Iterator&lt;Order&gt; {
         variable value done = false;
@@ -979,79 +1006,77 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         }
     }   
 }</programlisting>
-
-        <programlisting>{ 
+            
+            <programlisting>{ 
     label = "Say Hello"; 
     void onClick() { 
         say("Hello!"); 
     } 
 }</programlisting>
-        
-        <programlisting>{ 
+            
+            <programlisting>{ 
     function by(Value x, Value y) => x&lt;=&gt;y;
 }</programlisting>
-        
-        <para>Additionally, a named argument list has an ordinary list of arguments, 
-        which may be empty. These are interpeted as a single argument to a parameter
-        of type <literal>Iterable</literal>.</para>
-        
-        <programlisting>{ initialCapacity=2; "hello", "world" }</programlisting>
-        <programlisting>{ initialCapacity=people.size; loadFactor=0.8; for (p in people) p.name->p }</programlisting>
-
-        <para>Given a parameter list, and a named argument list, we may attempt to 
-        construct an <emphasis>equivalent positional argument list</emphasis> as 
-        follows.</para>
-        
-        <para>Taking each argument in the named argument list in term, on the order 
-        they occur lexically:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>if the argument is anonymous, assign it to the first unassigned
-                parameter of the parameter list,</para>
-            </listitem>
-            <listitem>
-                <para>if the argument is named, assign it to the parameter with that
-                name in the parameter list, or</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>If for any argument, there is no unassigned parameter, no parameter with
-        the given name, or the parameter with the given name has already been assigned
-        an argument, construction of the positional argument list fails, and the 
-        invocation is not well-typed.</para>
-        
-        <para>Next, if the parameter list has an unassigned parameter of type exactly
-        <literal>Iterable&lt;T,N&gt;</literal> for some types <literal>T</literal> and
-        <literal>N</literal>, then an iterable enumeration expression is formed from 
-        the ordinary list of arguments, and assigned to that parameter.</para>
-        
-        <para>If there is no such parameter, and the the ordinary list of arguments is
-        nonempty, then construction of the positional argument list fails, and the 
-        invocation is not well-typed.</para>
-        
-        <para>Finally, we assign each unassigned defaulted parameter its default 
-        argument.</para>
-        
-        <para>The resulting equivalent positional argument list is formed by ordering
-        the arguments according to the position of their corresponding parameters in
-        the parameter list, and then replacing any inline value, function, or object
-        declarations with a reference to the declaration.</para>
-
-        <para>If an invocation is formed from a callable expression of type exactly
-        <literal>Callable&lt;R,P&gt;</literal> and a named argument list with an
-        equivalent positional argument list of type <literal>A</literal>, then 
-        <literal>A</literal> must be a subtype of <literal>P</literal>.</para>
-        
-        <!--comment><para>TODO: Should the named argument list be allowed to contain arbitrary 
-        statements? This is more regular, since you can do it in the body of a class, and 
-        attribute/method refinement is the model that we are following here. And it could be 
-        very useful when defining structured data.</para></comment-->
-        
-        <!--comment><para>TODO: Especially, should we support <literal>if/else</literal> and
-        <literal>for</literal> in a named argument list. This might be super-useful for
-        templating, for example:</para>
-        <programlisting>ul { 
+            
+            <para>Additionally, a named argument list has an ordinary list of arguments, 
+            which may be empty. These are interpreted as a single argument to a parameter
+            of type <literal>Iterable</literal>.</para>
+            
+            <programlisting>{ initialCapacity=2; "hello", "world" }</programlisting>
+            <programlisting>{ initialCapacity=people.size; loadFactor=0.8; for (p in people) p.name->p }</programlisting>
+    
+            <para>Given a parameter list, and a named argument list, we may attempt to 
+            construct an <emphasis>equivalent positional argument list</emphasis> as 
+            follows.</para>
+            
+            <para>Taking each argument in the named argument list in term, on the order 
+            they occur lexically:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if the argument is anonymous, assign it to the first unassigned
+                    parameter of the parameter list,</para>
+                </listitem>
+                <listitem>
+                    <para>if the argument is named, assign it to the parameter with that
+                    name in the parameter list, or</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>If for any argument, there is no unassigned parameter, no parameter with
+            the given name, or the parameter with the given name has already been assigned
+            an argument, construction of the positional argument list fails, and the 
+            invocation is not well-typed.</para>
+            
+            <para>Next, if the parameter list has an unassigned parameter of type exactly
+            <literal>Iterable&lt;T,N&gt;</literal> for some types <literal>T</literal> and
+            <literal>N</literal>, then an iterable enumeration expression is formed from 
+            the ordinary list of arguments, and assigned to that parameter.</para>
+            
+            <para>If there is no such parameter, and the the ordinary list of arguments is
+            nonempty, then construction of the positional argument list fails, and the 
+            invocation is not well-typed.</para>
+            
+            <para>Finally, we assign each unassigned defaulted parameter its default 
+            argument.</para>
+            
+            <para>The resulting equivalent positional argument list is formed by ordering
+            the arguments according to the position of their corresponding parameters in
+            the parameter list, and then replacing any inline value, function, or object
+            declarations with a reference to the declaration.</para>
+            
+            <para>The type of a named argument list is the type of the equivalent positional 
+            argument list.</para>
+            
+            <!--comment><para>TODO: Should the named argument list be allowed to contain arbitrary 
+            statements? This is more regular, since you can do it in the body of a class, and 
+            attribute/method refinement is the model that we are following here. And it could be 
+            very useful when defining structured data.</para></comment-->
+            
+            <!--comment><para>TODO: Especially, should we support <literal>if/else</literal> and
+            <literal>for</literal> in a named argument list. This might be super-useful for
+            templating, for example:</para>
+            <programlisting>ul { 
     if (error) { 
         color = red;
         li { "oops, something bad happened!" }
@@ -1063,9 +1088,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         }
     } 
 }</programlisting>
-        <para>But the truth is that this would actually be a generally useful part of the 
-        expression syntax.</para>
-        </comment-->
+            <para>But the truth is that this would actually be a generally useful part of the 
+            expression syntax.</para>
+            </comment-->
         
         </section>
                     

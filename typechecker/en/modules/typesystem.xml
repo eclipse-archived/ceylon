@@ -635,6 +635,17 @@
             <xref linkend="unqualifiedreferenceresolution"/> and 
             <xref linkend="qualifiedreferenceresolution"/>.</para>
             
+            <para>The type argument list, if any, must conform, as defined by
+            <xref linkend="typeargumentsandconstraints"/>, to the type parameter list of the 
+            realization of the type declaration, as defined by 
+            <xref linkend="realizations"/>.</para>
+            
+            <comment><para>Note: this is too heavy-handed. There is no reason to enforce 
+            types constraint in any place other than generic class instantiations, generic 
+            function invocations, <literal>extends</literal>, and <literal>satisfies</literal>. 
+            However, this restriction makes interoperation with Java generics more 
+            straightforward.</para></comment>
+            
             <para>If the type is a class, interface, or type alias nested inside a containing 
             class or interface, the type must be fully qualified by its containing types, 
             except when used inside the body of a containing type.</para>
@@ -1791,7 +1802,7 @@ Item item = comp of Item;</programlisting>
         the dimensional type parameter.</para>
         -->
         
-        <section>
+        <section id="typeargumentsandconstraints">
             <title>Type arguments and type constraints</title>
         
             <para>A generic type constraint affects the type arguments that can be assigned 
@@ -1847,12 +1858,6 @@ Item item = comp of Item;</programlisting>
                      
             <para>There must be at least as many type parameters as type arguments. There must 
             be at least as many type arguments as type parameters without default values.</para>
-            
-            <comment><para>Note: this is too heavy-handed. There is no reason to enforce the 
-            type constraint in any place other than generic class instantiations, generic 
-            function invocations, <literal>extends</literal>, and <literal>satisfies</literal>. 
-            However, this restriction makes interoperation with Java generics more 
-            straightforward.</para></comment>
             
         </section>
         
