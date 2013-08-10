@@ -46,8 +46,8 @@ shared interface List<out Element>
     "Determines if the given index refers to an element
          of this sequence, that is, if
          `index<=sequence.lastIndex`."
-    shared actual default Boolean defines(Integer index) => 
-            index <= (lastIndex else -1);
+    shared actual default Boolean defines(Integer index) 
+            => index <= (lastIndex else -1);
 	
     "Returns the element of this sequence with the given
          index, or `null` if the given index is past the end
@@ -148,7 +148,9 @@ shared interface List<out Element>
         if (exists i = lastIndex) {
             return this[i];
         }
-        return null;
+        else {
+            return null;
+        }
     }
     
     "Returns a new `List` that starts with the specified
@@ -227,16 +229,16 @@ shared interface List<out Element>
     
     "The indexes in the given list at which this list 
      occurs."
-    shared default {Integer*} occurrencesIn(List<Anything> list) =>
-            { for (index in 0:list.size) 
+    shared default {Integer*} occurrencesIn(List<Anything> list) 
+            => { for (index in 0:list.size) 
                     if (occursAt(index,list)) index };
     
     "The indexes in this list for which the element 
      satisfies the given predicate."
     shared default {Integer*} indexes(
             "The predicate the indexed elements must satisfy"
-            Boolean selecting(Element element)) =>
-            { for (index in 0:size) 
+            Boolean selecting(Element element)) 
+            => { for (index in 0:size) 
                     //TODO: fix this awful hack
                     if (selecting(this[index] else nothing)) index };
     
