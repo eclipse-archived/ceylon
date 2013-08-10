@@ -654,6 +654,28 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
         </section>
         
+        <section id="defaultarguments">
+            <title>Default arguments</title>
+        
+            <para>When no argument is assigned to a defaulted parameter by the caller, 
+            the default argument defined by the parameter declaration of the realization,
+            as defined by <xref linkend="typeargumentsandconstraints"/>, of the function 
+            or class is used. The default argument expression is evaluated every time the 
+            method is invoked with no argument specified for the defaulted parameter.</para>
+            
+            <para>This class:</para>
+            
+            <programlisting>shared class Counter(Integer initialCount=0) { ... }</programlisting>
+            
+            <para>May be instantiated using any of the following invocations:</para>
+            
+            <programlisting>Counter()</programlisting>
+            <programlisting>Counter(1)</programlisting>
+            <programlisting>Counter {}</programlisting>
+            <programlisting>Counter { initialCount=10; }</programlisting>
+        
+        </section>
+        
         <section id="tupletypeofarglist">
             <title>The type of a list of arguments</title>
             
@@ -679,28 +701,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <literal>Anything[]</literal>. The type of an empty list of arguments is 
             <literal>[]</literal>.</para>
             
-        </section>
-        
-         <section id="defaultarguments">
-            <title>Default arguments</title>
-        
-            <para>When no argument is assigned to a defaulted parameter by the caller, 
-            the default argument defined by the parameter declaration of the realization,
-            as defined by <xref linkend="typeargumentsandconstraints"/>, of the function 
-            or class is used. The default argument expression is evaluated every time the 
-            method is invoked with no argument specified for the defaulted parameter.</para>
-            
-            <para>This class:</para>
-            
-            <programlisting>shared class Counter(Integer initialCount=0) { ... }</programlisting>
-            
-            <para>May be instantiated using any of the following invocations:</para>
-            
-            <programlisting>Counter()</programlisting>
-            <programlisting>Counter(1)</programlisting>
-            <programlisting>Counter {}</programlisting>
-            <programlisting>Counter { initialCount=10; }</programlisting>
-        
         </section>
         
         <section id="listedarguments">
@@ -831,46 +831,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
         </section>
         
-        <section id="enumeration">
-            <title>Iterable and tuple enumeration</title>
-            
-            <para>An <emphasis>enumeration expression</emphasis> is an abbreviation for
-            tuple and iterable object instantiation. Iterable enumerations are delimited
-            using braces. Tuple enumerations are delimited by brackets.</para>
-            
-            <synopsis>Iterable: "{" ArgumentList "}"</synopsis>
-            <synopsis>Tuple: "[" ArgumentList "]"</synopsis>
-            
-            <para>The type of an iterable enumeration expression is:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <literal>Empty</literal> if there are no argument expressions, or
-                </listitem>
-                <listitem>
-                    <literal>Iterable&lt;U,Nothing&gt;</literal> where <literal>U</literal>,
-                    the argument expression list is an invariant suptype of <literal>U[]</literal>.
-                </listitem>
-            </itemizedlist>
-            
-            <para>The type of a tuple enumeration expression is the type of the list of
-            arguments it contains.</para>
-            
-            <programlisting>{String+} = { "hello", "world" };</programlisting>
-            <programlisting>[] none = [];</programlisting>
-            <programlisting>[Float,Float] xy = [x, y];</programlisting>
-            <programlisting>[Float,Float, String*] xy = [x, y, *labels];</programlisting>
-            
-            <comment><para>TODO: properly define how expressions with no type occurring in a
-            <literal>dynamic</literal> block affect type inference for enumeration expressions.</para></comment>
-            
-            <comment><para>TODO: the compiler currently supports instantiation of a "dynamic"
-            object, that is, an object with no runtime type, using the syntax 
-            <literal>value { x=1.0; y=2.0; }</literal>. Bless this here.</para></comment>
-            
-        </section>
-        
-        <section id="positionalarguments">
+       <section id="positionalarguments">
             <title>Positional argument lists</title>
             
             <para>When invocation arguments are listed positionally, the argument list is 
@@ -1094,6 +1055,45 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         </section>
                     
+        <section id="enumeration">
+            <title>Iterable and tuple enumeration</title>
+            
+            <para>An <emphasis>enumeration expression</emphasis> is an abbreviation for
+            tuple and iterable object instantiation. Iterable enumerations are delimited
+            using braces. Tuple enumerations are delimited by brackets.</para>
+            
+            <synopsis>Iterable: "{" ArgumentList "}"</synopsis>
+            <synopsis>Tuple: "[" ArgumentList "]"</synopsis>
+            
+            <para>The type of an iterable enumeration expression is:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <literal>Empty</literal> if there are no argument expressions, or
+                </listitem>
+                <listitem>
+                    <literal>Iterable&lt;U,Nothing&gt;</literal> where <literal>U</literal>,
+                    the argument expression list is an invariant suptype of <literal>U[]</literal>.
+                </listitem>
+            </itemizedlist>
+            
+            <para>The type of a tuple enumeration expression is the type of the list of
+            arguments it contains.</para>
+            
+            <programlisting>{String+} = { "hello", "world" };</programlisting>
+            <programlisting>[] none = [];</programlisting>
+            <programlisting>[Float,Float] xy = [x, y];</programlisting>
+            <programlisting>[Float,Float, String*] xy = [x, y, *labels];</programlisting>
+            
+            <comment><para>TODO: properly define how expressions with no type occurring in a
+            <literal>dynamic</literal> block affect type inference for enumeration expressions.</para></comment>
+            
+            <comment><para>TODO: the compiler currently supports instantiation of a "dynamic"
+            object, that is, an object with no runtime type, using the syntax 
+            <literal>value { x=1.0; y=2.0; }</literal>. Bless this here.</para></comment>
+            
+        </section>
+        
     </section>
     
     <section id="miscexpressions">
