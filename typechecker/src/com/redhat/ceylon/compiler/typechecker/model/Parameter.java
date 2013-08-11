@@ -108,11 +108,6 @@ public class Parameter {
         return model==null ? null : model.getType();
     }
     
-    /*@Override
-    public DeclarationKind getDeclarationKind() {
-        return DeclarationKind.PARAMETER;
-    }*/
-
     @Override
     public String toString() {
         return model.toString();
