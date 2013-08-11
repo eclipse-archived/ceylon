@@ -557,7 +557,8 @@ TypeConstraints?
             <synopsis>Variadic: VariadicParameter | MemberName</synopsis>
             
             <para>The variadic parameter must be the last parameter in a parameter list. A
-            variadic parameter may not have a default argument.</para>
+            variadic parameter may not have a default argument. A variadic parameter declared
+            <literal>T+</literal> may not occur in a parameter list with defaulted parameters.</para>
             
             <programlisting>(Name name, Organization? org=null, Address* addresses)</programlisting>
             
@@ -770,7 +771,10 @@ TypeConstraints?
             <para>An interface that satisfies a nested interface must be a member of 
             the type that declares the nested interface or of a subtype of the type 
             that declares the nested interface.</para>
-             
+            
+            <para>A user-defined interface may not satisfy the interface 
+            <literal>Callable</literal> defined in <literal>ceylon.language</literal>.</para>
+         
         </section>
         
         <section id="interfaceswithcases">
@@ -1233,54 +1237,10 @@ TypeConstraints?
              A class that satisfies a nested interface must be a member of the type that 
              declares the nested interface or of a subtype of the type that declares the 
              nested interface.</para>
+             
+             <para>A user-defined class may not satisfy the interface 
+             <literal>Callable</literal> defined in <literal>ceylon.language</literal>.</para>
          
-        </section>
-        
-        <section id="restrictedclasses">
-            <title>Restrictions on user-defined classes</title>
-            
-            <para>The following classes may not be directly extended by any class defined
-            outside the module <literal>ceylon.language</literal> or appear as an upper
-            bound of any type parameter:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para><literal>Callable</literal>,
-                    <emphasis>(TODO: remove this restriction)</emphasis></para>
-                </listitem>
-                <listitem>
-                    <para><literal>Boolean</literal>,</para>
-                </listitem>
-                <listitem>
-                    <para><literal>Integer</literal> and <literal>Float</literal>,</para>
-                </listitem>
-                <listitem>
-                    <para><literal>Character</literal>,</para>
-                </listitem>
-                <listitem>
-                    <para><literal>String</literal>,</para>
-                </listitem>
-                <listitem>
-                    <para><literal>Range</literal>,</para>
-                </listitem>
-                <listitem>
-                    <para><literal>Array</literal>,</para>
-                </listitem>
-                <listitem>
-                    <para><literal>Entry</literal>, and</para>
-                </listitem>
-                <listitem>
-                    <para><literal>Tuple</literal>.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <para>This allows the compiler to perform certain optimizations for these 
-            types.</para>
-            
-            <comment><para>TODO: it would be better to have a <literal>final</literal>
-            modifier for this classes, or perhaps declare them 
-            <literal>native(final=true)</literal>.</para></comment>
-            
         </section>
         
         <section id="abstractandformalclasses">
