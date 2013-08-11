@@ -1906,9 +1906,9 @@ case (hexadecimal) {
             
             <para>A function may declare multiple lists of parameters. A function with 
             more than one parameter list returns instances of <literal>Callable</literal>
-            in <literal>ceylon.language</literal> when invoked. The compiler infers an 
-            anonymous function whose callable type is formed by taking the function with 
-            multiple parameter lists and eliminating the first parameter list.</para>
+            in <literal>ceylon.language</literal> when invoked. Every function with 
+            multiple parameter lists is exactly equivalent to a function with a single
+            parameter list that returns an anonymous function.</para>
             
             <para>This function declaration:</para>
             
@@ -1923,17 +1923,17 @@ case (hexadecimal) {
                 (Element element) => element>val;]]></programlisting>
             
             <para>For a function with <literal>n</literal> parameter lists, there are 
-            <literal>n-1</literal> inferred anonymous function.s The <literal>i</literal>th 
+            <literal>n-1</literal> inferred anonymous functions. The <literal>i</literal>th 
             inferred function:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>has the same return type as the original declared method,</para>
+                    <para>has a callable type formed by eliminating the first <literal>i</literal>
+                    parameter lists of the original declared function,</para>
                 </listitem>
                 <listitem>
-                    <para>has the same parameter lists as the declared method, after 
-                    eliminating the first <literal>i-1</literal> parameter lists, 
-                    and</para>
+                    <para>has the <literal>i+1</literal>th parameter list of the original
+                    declared function, and</para>
                 </listitem>
                 <listitem>
                     <para>if <literal>i&lt;n</literal>, returns the <literal>i+1</literal>th 
