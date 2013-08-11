@@ -329,7 +329,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         string template, an iterable or tuple enumeration, or a parenthesized 
         expression.</para>
         
-        <synopsis>Atom: Literal | StringTemplate | SelfReference | GroupedExpression | Iterable | Tuple</synopsis>
+        <synopsis>Atom: Literal | StringTemplate | SelfReference | GroupedExpression | Iterable | Tuple | DynamicValue</synopsis>
         
         <para>A <emphasis>primary</emphasis> is formed by recursively forming 
         member expressions and invocation expressions from an atom, base 
@@ -1103,6 +1103,27 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <comment><para>TODO: the compiler currently supports instantiation of a "dynamic"
             object, that is, an object with no runtime type, using the syntax 
             <literal>value { x=1.0; y=2.0; }</literal>. Bless this here.</para></comment>
+            
+        </section>
+        
+        <section id="dynamicenumerations">
+            <title>Dynamic enumerations</title>
+            
+            <para>A <emphasis>dynamic enumeration expression</emphasis> creates a new 
+            object with no class by enumerating its members, allowing interoperation 
+            with dynamically typed native code.</para>
+            
+            <synopsis>DynamicValue: "value" NamedArguments</synopsis>
+            
+            <para>A dynamic enumeration expression has no type.</para>
+            
+            <para>Any argument names may be specified in the named argument list.</para>
+            
+            <para>A dynamic enumeration expression must occur inside a
+            <literal>dynamic</literal> block.</para>
+            
+            <comment><para>The semantics of this construct are platform-dependent and
+            beyond the scope of this specification.</para></comment>
             
         </section>
         
