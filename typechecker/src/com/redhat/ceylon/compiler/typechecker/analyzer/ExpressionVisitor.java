@@ -2622,6 +2622,9 @@ public class ExpressionVisitor extends Visitor {
                                     (pr.getQualifyingType()==null ? "" : 
                                         " in " + pr.getQualifyingType().getProducedTypeName(unit)), 
                                     2101);
+                    //if we already have an arg to a nonempty variadic parameter,
+                    //we can treat it like a possibly-empty variadic now
+                    paramType = paramType.getSupertype(unit.getSequentialDeclaration());
                 }
             }
         }
@@ -4346,7 +4349,8 @@ public class ExpressionVisitor extends Visitor {
     private ProducedType spreadType(ProducedType et, Unit unit,
             boolean requireSequential) {
         if (et==null) return null;
-        if (unit.isSequentialType(et) && !(et.getDeclaration() instanceof TypeParameter)) {
+        if (unit.isSequentialType(et) && 
+                !(et.getDeclaration() instanceof TypeParameter)) {
             // if it's already a subtype of Sequential, erase 
             // out extraneous information, like that it is a
             // String, just keeping information about what

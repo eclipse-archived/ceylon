@@ -58,4 +58,6 @@ class NonEmptySequencedArguments() {
     printAll("", *strings1);    
     @error printAll(for (s in strings1) s);
     printAll(for (s in strings2) s);
+    @type:"Tuple<String,String,Sequential<String>>" 
+    value seq = ["", *strings1];
 }
