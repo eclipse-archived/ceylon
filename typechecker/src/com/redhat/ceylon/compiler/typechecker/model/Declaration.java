@@ -75,10 +75,21 @@ public abstract class Declaration
         return annotations;
     }
 
+    String toStringName() {
+        Scope c = getContainer();
+        if (c instanceof Declaration) {
+            return ((Declaration)c).toStringName() + 
+                    "." + getName();
+        }
+        else {
+            return getName();
+        }
+    }
+    
     @Override
     public String toString() {
-        return getClass().getSimpleName() +
-                "[" + getName() + "]";
+        return getClass().getSimpleName() + 
+                "[" + toStringName() + "]";
     }
 
     @Override @Deprecated

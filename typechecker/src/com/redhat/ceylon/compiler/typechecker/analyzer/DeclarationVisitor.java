@@ -373,10 +373,13 @@ public class DeclarationVisitor extends Visitor {
         checkMethodArgumentParameters(that);
         m.setDeclaredAnything(that.getType() instanceof Tree.VoidModifier);
     }
+    
+    private int fid=0;
 
     @Override
     public void visit(Tree.FunctionArgument that) {
         Method m = new Method();
+        m.setName(Integer.toString(fid++));
         that.setDeclarationModel(m);
         visitArgument(that, m);
         Scope o = enterScope(m);

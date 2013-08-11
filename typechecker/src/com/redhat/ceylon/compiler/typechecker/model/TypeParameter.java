@@ -82,12 +82,6 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     public void addParameterList(ParameterList pl) {
         parameterList = pl;
     }
-
-    @Override
-    public String toString() {
-        return super.toString().replace("[", 
-        		"[" + declaration.getName() + "#");
-    }
     
     @Override
     public DeclarationKind getDeclarationKind() {

@@ -43,8 +43,9 @@ public abstract class TypedDeclaration extends Declaration {
             return super.toString();
         }
         else {
-            return super.toString().replace(']', ':') +
-                    type.getProducedTypeName() + "]";
+            return getClass().getSimpleName() + 
+                    "[" + toStringName() + ":" + 
+                          type.getProducedTypeName() + "]";
         }
     }
 

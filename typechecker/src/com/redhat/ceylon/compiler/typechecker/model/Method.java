@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class Method extends MethodOrValue implements Generic, Scope, Functional {
 
+    public Method() {}
+    
     //private boolean formal;
 
     private List<TypeParameter> typeParameters = Collections.emptyList();
