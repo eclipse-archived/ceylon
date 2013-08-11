@@ -86,11 +86,8 @@ shared deprecated</programlisting>
             <para>Operator expressions, member expressions, self references, anonymous
             functions, comprehensions, and string templates are not permitted in an 
             annotation argument. Every base expression in an annotation argument must be 
-            a value reference to <literal>true</literal> or <literal>false</literal>, or 
+            a value reference to an anonyous class instance of an enumerated type, or 
             must occur in a direct instantiation expression for an annotation type.</para>
-            
-            <comment><para>TODO: support values of enumerated classes as annotation
-            arguments.</para></comment>
             
             <para>A named argument to an annotation may not be an inline function, value,
             or anonymous class.</para>
@@ -133,8 +130,11 @@ shared deprecated</programlisting>
             <itemizedlist>
                 <listitem>
                     <para><literal>Integer</literal>, <literal>Float</literal>,
-                    <literal>Character</literal>, <literal>String</literal>, or
-                    <literal>Boolean</literal>,</para>
+                    <literal>Character</literal>, or <literal>String</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>an enumerated type whose cases are all anonymous classes,
+                    such as <literal>Boolean</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>a subtype of <literal>Declaration</literal> in
@@ -162,7 +162,7 @@ shared deprecated</programlisting>
             anonymous functions, comprehensions, and string templates are not permitted in 
             the definition of an annotation constructor. Every base expression in the body 
             of an annotation constructor must be a reference to a parameter of the annotation 
-            constructor, to <literal>true</literal> or <literal>false</literal>, or must occur 
+            constructor or to an anonyous class instance of an enumerated type, or must occur 
             in a direct instantiation expression for an annotation type.</para>
             
             <para>A named argument appearing in the definition of an annotation constructor
@@ -200,8 +200,11 @@ shared deprecated</programlisting>
             <itemizedlist>
                 <listitem>
                     <para><literal>Integer</literal>, <literal>Float</literal>,
-                    <literal>Character</literal>, <literal>String</literal>, or
-                    <literal>Boolean</literal>,</para>
+                    <literal>Character</literal>, or <literal>String</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>an enumerated type whose cases are all anonymous classes,
+                    such as <literal>Boolean</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>a subtype of <literal>Declaration</literal> in
