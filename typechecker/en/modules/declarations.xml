@@ -2293,20 +2293,20 @@ assign name => n = [first(name), last(name)];</programlisting>
             and refinement modifiers of an attribute with a setter are specified by 
             annotating the matching getter.</para>
             
-            <comment><para>TODO: should we allow un-<literal>shared</literal> setters 
+            <!--comment><para>TODO: should we allow un-<literal>shared</literal> setters 
             for <literal>shared</literal> getters? Then you would have to explicitly
-            annotate the setter if you want it to be <literal>shared</literal>.</para></comment>
+            annotate the setter if you want it to be <literal>shared</literal>.</para></comment-->
             
-            <comment><para>TODO: should we allow a setter for a reference? For example:</para>
+            <!--comment><para>TODO: should we allow a setter for a reference? For example:</para>
             <programlisting>shared variable String name = "";
 assign name {
     assert (0&lt;name.size&lt;=30);
     this.name = name;
 }</programlisting>
-            </comment>
+            </comment-->
             
-            <comment><para>TODO: should we require that the corresponding getter be 
-            annotated <literal>variable</literal>?</para></comment>
+            <!--comment><para>TODO: should we require that the corresponding getter be 
+            annotated <literal>variable</literal>?</para></comment-->
             
         </section>
         
