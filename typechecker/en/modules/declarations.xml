@@ -2202,9 +2202,9 @@ case (hexadecimal) {
             or, in the case of a variable reference, its initial persistent value. The type of the 
             specified expression must be assignable to the type of the reference.</para>
             
-            <para>If the specified expression has no type, and occurs within a 
-            <literal>dynamic</literal> block, then the specification is not type-checked 
-            at compile time.</para>
+            <para>If the specified expression has no type, or if the reference has no type, and 
+            the declaration occurs within a <literal>dynamic</literal> block, then the specification 
+            is not type-checked at compile time.</para>
             
             <para>If a reference is a parameter, it must not specify a persistent value.</para>
             

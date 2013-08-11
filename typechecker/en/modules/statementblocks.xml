@@ -971,9 +971,9 @@ Integer f(Integer n) => n+package.n;</programlisting>
             
             <synopsis>Return: "return" Expression?</synopsis>
             
-            <para>If the specified expression has no type, and occurs within a 
-            <literal>dynamic</literal> block, then directive is not type-checked at compile 
-            time.</para>
+            <para>If the specified expression has no type, or if the function or getter has
+            no type, and the directive occurs within a <literal>dynamic</literal> block, then 
+            the directive is not type-checked at compile time.</para>
             
             <para>The <literal>break</literal> directive must sequentially occur in the body 
             of a loop.</para>
@@ -993,8 +993,8 @@ Integer f(Integer n) => n+package.n;</programlisting>
             
             <synopsis>Throw: "throw" Expression?</synopsis>
             
-            <para>If the specified expression has no type, and occurs within a 
-            <literal>dynamic</literal> block, then directive is not type-checked at compile 
+            <para>If the specified expression has no type, and the directive occurs within a 
+            <literal>dynamic</literal> block, then the directive is not type-checked at compile 
             time.</para>
             
         </section>
@@ -1020,9 +1020,9 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <para>The type of the specified expression must be assignable to the type of 
             the reference, or to the callable type of the function.</para>
             
-            <para>If the specified expression has no type, and occurs within a 
-            <literal>dynamic</literal> block, then the specification is not type-checked 
-            at compile time.</para>
+            <para>If the specified expression has no type, or if the reference or function
+            has no type, and the specification occurs within a <literal>dynamic</literal> 
+            block, then the specification is not type-checked at compile time.</para>
             
             <programlisting>String greeting;
 if (exists name) {
