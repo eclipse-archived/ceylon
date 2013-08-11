@@ -1100,10 +1100,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <comment><para>TODO: properly define how expressions with no type occurring in a
             <literal>dynamic</literal> block affect type inference for enumeration expressions.</para></comment>
             
-            <comment><para>TODO: the compiler currently supports instantiation of a "dynamic"
-            object, that is, an object with no runtime type, using the syntax 
-            <literal>value { x=1.0; y=2.0; }</literal>. Bless this here.</para></comment>
-            
         </section>
         
         <section id="dynamicenumerations">
