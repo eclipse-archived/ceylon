@@ -1,5 +1,5 @@
 "An implementation of `Set` that wraps an `Iterable` of
- elements. All operations on this Set are performed
+ elements. All operations on this `Set` are performed
  on the `Iterable`."
 by ("Enrique Zamudio")
 shared class LazySet<out Element>({Element*} elems)
@@ -24,7 +24,22 @@ shared class LazySet<out Element>({Element*} elems)
         return c;
     }
     
-    shared actual Iterator<Element> iterator() => elems.iterator();
+    shared actual Iterator<Element> iterator() {
+        object iterator satisfies Iterator<Element> {
+            value sorted = elems.sort(byIncreasing((Element e) => e.hash)).iterator();
+            variable Element|Finished ready = sorted.next();
+            shared actual Element|Finished next() {
+                Element|Finished next = ready;
+                if (!is Finished next) {
+                    while (next==ready) {
+                        ready = sorted.next();
+                    }
+                }
+                return next; 
+            }
+        }
+        return iterator;
+    }
     
     shared actual Set<Element|Other> union<Other>(Set<Other> set)
             given Other satisfies Object =>
