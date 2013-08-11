@@ -4964,11 +4964,6 @@ public class ExpressionVisitor extends Visitor {
                             et.addError("extends a final class: " + 
                                     etd.getName(unit));
                         }
-                        else if (!etd.isExtendable() && 
-                                !inLanguageModule(that.getUnit())) {
-                            et.addError("directly extends a special language type: " +
-                                    etd.getName(unit));
-                        }
                     }
                 }
             }

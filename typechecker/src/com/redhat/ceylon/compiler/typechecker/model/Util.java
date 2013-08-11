@@ -548,7 +548,7 @@ public class Util {
             	return true;
             }
         }
-        if (pd.isFinal()|!pd.isExtendable()) {
+        if (pd.isFinal()) {
             if (pd.getTypeParameters().isEmpty() &&
                     !q.containsTypeParameters() &&
                     !p.isSubtypeOf(q) &&
@@ -560,7 +560,7 @@ public class Util {
             	return true;
             }
         }
-        if (qd.isFinal()|!qd.isExtendable()) { 
+        if (qd.isFinal()) { 
             if (qd.getTypeParameters().isEmpty() &&
                     !p.containsTypeParameters() &&
                     !q.isSubtypeOf(p) &&

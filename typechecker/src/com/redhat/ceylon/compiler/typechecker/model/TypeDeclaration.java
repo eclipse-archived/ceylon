@@ -571,21 +571,6 @@ public abstract class TypeDeclaration extends Declaration
             return new SupertypeDeclaration(member, false);
         }
     }
-
-    public boolean isExtendable() {
-        return !(this instanceof Class || this instanceof NothingType) ||
-                !equals(unit.getBooleanDeclaration()) &&
-                !equals(unit.getCharacterDeclaration()) &&
-                !equals(unit.getIntegerDeclaration()) &&
-                !equals(unit.getFloatDeclaration()) &&
-                !equals(unit.getEntryDeclaration()) &&
-                !equals(unit.getArrayDeclaration()) &&
-                !equals(unit.getRangeDeclaration()) &&
-                !equals(unit.getStringDeclaration()) &&
-                !equals(unit.getTupleDeclaration()) &&
-                /*!equals(unit.getNullDeclaration()) &&*/
-                !equals(unit.getNothingDeclaration());
-    }
     
     /**
      * Is this a class or interface alias? 
