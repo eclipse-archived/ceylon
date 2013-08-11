@@ -160,7 +160,11 @@
         descriptor. The name of the module is formed by replacing every path
         directory separator character with a period in the relative path 
         from the source directory to the subdirectory containing the module 
-        descriptor.</para>
+        descriptor. If no module descriptor is found, the code belongs to
+        the <emphasis>default module</emphasis>.</para>
+        
+        <comment><para>Note: the default module is intended only as a 
+        convenience for experimental code.</para></comment>
         
         <para>Thus, the structure of the source directory containing the 
         module <literal>org.hello</literal> might be the following:</para>
@@ -179,11 +183,6 @@
         <para>The source code for multiple modules may be contained in a
         single source directory.</para>
                 
-        <comment><para>Note: the tools and IDE support compilation and 
-        execution of source not contained in a well-defined module. This 
-        "default" module is intended only as a convenience for experimental 
-        code.</para></comment>
-        
     </section>
     
     <section id="modules">
@@ -274,11 +273,9 @@
             or <literal>org.hibernate.core</literal> vs 
             <literal>org.hibernate.example</literal>.</para></comment>
     
-            <para>In a compilation source directory, all packages that do not belong 
-            to an identified module belong to the <emphasis>default module</emphasis>. 
-            The name of the default module is <literal>default</literal>. The default 
-            module has no version and cannot be published to a remote repository nor 
-            to the local repository cache (under <filename>~/.ceylon/repo</filename>)</para>
+            <para>The name of the default module is <literal>default</literal>. The 
+            default module has no version and cannot be published to a remote repository 
+            nor to the local repository cache under <filename>~/.ceylon/repo</filename>.</para>
             
             <para>A module <emphasis>version identifier</emphasis> is a character 
             string containing digits, periods, and lowercase letters, for example:</para>

@@ -124,8 +124,12 @@ TypeConstraints?
             <comment><para>Note: it is recommended that package names contain only characters
             from the ASCII character set.</para></comment>
             
+            <para>There is also a <emphasis>default package</emphasis> whose name is empty.
+            It is impossible to import declarations from this package.</para>
+            
             <para>Every package belongs to exactly one module, as specified in 
-            <xref linkend="modules"/>.</para>
+            <xref linkend="modules"/>. The default package belongs to the default
+            module.</para>
             
         </section>
         
