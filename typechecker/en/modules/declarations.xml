@@ -2123,7 +2123,8 @@ case (hexadecimal) {
             <listitem>
                 <para>A <emphasis>getter</emphasis> defines how a value is evaluated. It 
                 is defined using a block or lazy specifier, which is executed every time 
-                the value is evaluated.</para>
+                the value is evaluated. A getter may have a matching 
+                <emphasis>setter</emphasis>.</para>
             </listitem>
         </itemizedlist>
         
@@ -2153,6 +2154,29 @@ case (hexadecimal) {
         <section id="references">
             <title>References</title>
             
+            <para>The lifecycle and scope of the persistent value of a reference depends upon 
+            where the reference declaration occurs:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>A toplevel reference represents global state associated with the 
+                    lifecyle of a module, as defined by 
+                    <xref linkend="toplevelinitialization"/>.</para> 
+                </listitem>
+                <listitem>
+                    <para>A reference declared directly inside the body of a class represents 
+                    a persistent value associated with every instance of the class, as defined 
+                    by <xref linkend="sequentialexecutionandclosure"/>. Repeated evaluation of 
+                    the attribute of a particular instance of the class returns the same result 
+                    until the attribute of the instance is assigned a new value.</para>
+                </listitem>
+                <listitem>
+                    <para>A block-local reference represents state associated with a frame, that 
+                    is, with a particular execution of the containing block of code, as defined 
+                    in <xref linkend="sequentialexecutionandclosure"/>.</para> 
+                </listitem>
+            </itemizedlist>
+            
             <para>The persistent value of a reference may be specified or initialized as part 
             of the declaration of the reference, or via a later specification statement, as
             defined in <xref linkend="specificationstatements"/>, or assignment expression, as
@@ -2170,25 +2194,15 @@ case (hexadecimal) {
             
             <programlisting>shared Integer[] evenDigits = [0,2,4,6,8];</programlisting>
             
-            <para>A reference may have a specifier which specifies its persistent value or, in the 
-            case of a variable reference, its initial persistent value. The type of the specified 
-            expression must be assignable to the type of the reference.</para>
+            <para>A reference declaration may have a specifier which specifies its persistent value 
+            or, in the case of a variable reference, its initial persistent value. The type of the 
+            specified expression must be assignable to the type of the reference.</para>
             
             <para>If the specified expression has no type, and occurs within a 
             <literal>dynamic</literal> block, then the specification is not type-checked 
             at compile time.</para>
             
             <para>If a reference is a parameter, it must not specify a persistent value.</para>
-            
-            <para>A reference declared directly inside the body of a class represents a persistent 
-            value associated with every instance of the class, as defined by 
-            <xref linkend="sequentialexecutionandclosure"/>. Repeated evaluation of the attribute 
-            of a particular instance of the class returns the same result until the attribute of 
-            the instance is assigned a new value.</para>
-            
-            <para>A block-local reference represents state associated with a frame, that is, with
-            a particular execution of the containing block of code, as defined in 
-            <xref linkend="sequentialexecutionandclosure"/>.</para> 
             
             <!--itemizedlist>
                 <listitem>
