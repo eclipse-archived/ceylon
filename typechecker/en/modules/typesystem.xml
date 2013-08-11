@@ -266,6 +266,10 @@
         directly in a compilation unit, we often call it a <emphasis>toplevel function</emphasis> 
         or <emphasis>toplevel value</emphasis>.</para>
         
+        <para>Within a <literal>dynamic</literal> block, defined in <xref linkend="dynamicblocks"/>,
+        a value schema, function schema, or parameter list with a missing type or types may be
+        defined.</para>
+        
         <section id="memberdistinctness">
             <title>Member distinctness</title>
         

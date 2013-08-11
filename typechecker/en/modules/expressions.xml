@@ -440,7 +440,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             has a type argument list.</para>
             
             <para>A value reference which occurs within a <literal>dynamic</literal> 
-            block and which does not reference any statically typed declaration
+            block and which does not reference any statically typed declaration, or
+            which references a value declaration or value parameter with no type, 
             has no type.</para>
             
             <para>If a base expression or member expression does not reference any 
@@ -486,6 +487,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             the interpretation of static expressions such as <literal>Person.string</literal>
             and <literal>Person.equals</literal>.</para></comment>
                     
+            <para>A callable reference which occurs within a <literal>dynamic</literal> 
+            block and which references a function declaration with no type, has no 
+            type.</para>
+            
         </section>
         
         <section id="staticexpressions">
@@ -513,6 +518,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <!--comment><para>TODO: should we support static expressions involving union/intersection types 
             and abbreviations, for example <literal>&lt;String[]|Set&lt;Character&gt;&gt;.iterator</literal>?</para></comment-->
+            
+            <para>A static expression must reference a statically typed declaration with no missing 
+            types, even within a <literal>dynamic</literal> block.</para>
             
         </section>
         
@@ -1486,70 +1494,77 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     <section id="operatordefinition">
         <title>Operator definition</title>
         
-    <para>The following tables define the semantics of the Ceylon operators. 
-    There are six basic operators which do not have a definition in terms of 
-    other operators or invocations:</para>
-    
-    <itemizedlist>
-        <listitem>
-            <para>the <emphasis>member selection</emphasis> operator
-            <literal>.</literal> separates the receiver expression and member 
-            name in a callable reference expression or attribute reference 
-            expression,</para>
-        </listitem>
-        <listitem>
-            <para>the <emphasis>argument specification</emphasis> operators
-            <literal>()</literal> and <literal>{}</literal> specify the 
-            argument list of an invocation,</para>
-        </listitem>
-        <listitem>
-            <para>the <emphasis>assignment</emphasis> operator
-            <literal>=</literal> assigns a new value to a variable and 
-            returns the new value after assignment,</para>
-        </listitem>
-        <listitem>
-            <para>the <emphasis>identity</emphasis> operator
-            <literal>&identical;</literal> evaluates to <literal>true</literal> 
-            if its argument expressions evaluate to references to the same 
-            object, and <literal>false</literal> otherwise,</para>
-        </listitem>
-        <listitem>
-            <para>the <emphasis>assignability</emphasis> operator
-            <literal>is</literal> evaluates to <literal>true</literal> if 
-            its argument expression evaluates to an instance of a class
-            assignable to the specified type, and <literal>false</literal> 
-            otherwise, and</para>
-        </listitem>
-        <listitem>
-            <para>the <emphasis>coverage</emphasis> operator
-            <literal>of</literal> narrows the type of an expression to
-            a specified type that covers its type.</para>
-        </listitem>
-    </itemizedlist>
+        <para>The following tables define the semantics of the Ceylon operators. 
+        There are six basic operators which do not have a definition in terms of 
+        other operators or invocations:</para>
         
-    <para>All other operators are defined in terms of other operators and/or
-    invocations.</para>
-    
-    <para>In the tables, the following pseudo-code is used, which is not legal
-    Ceylon syntax:</para>
-    
-    <para>First,</para>
-    
-    <programlisting>if (b) then x else y   //pseudocode</programlisting>
-    
-    <para>means the value of <literal>result</literal> after execution of the
-    following:</para>
-    
-    <programlisting>X result; if (b) { result=x; } else { result=y; }</programlisting>
-    
-    <para>Second,</para>
-    
-    <programlisting>let t=x in y   //pseudocode</programlisting>
-    
-    <para>means the value of <literal>result</literal> after execution of the
-    following:</para>
-    
-    <programlisting>X t = x; Y result=y;</programlisting>
+        <itemizedlist>
+            <listitem>
+                <para>the <emphasis>member selection</emphasis> operator
+                <literal>.</literal> separates the receiver expression and member 
+                name in a member expression, as defined above in
+                <xref linkend="memberexpressions"/>,</para>
+            </listitem>
+            <listitem>
+                <para>the <emphasis>argument specification</emphasis> operators
+                <literal>()</literal> and <literal>{}</literal> specify the 
+                argument list of an invocation, as defined in
+                <xref linkend="invocationexpressions"/> and 
+                <xref linkend="invocation"/>,</para>
+            </listitem>
+            <listitem>
+                <para>the <emphasis>assignment</emphasis> operator
+                <literal>=</literal> assigns a new value to a variable and 
+                returns the new value after assignment, as defined in
+                <xref linkend="assignment"/>,</para>
+            </listitem>
+            <listitem>
+                <para>the <emphasis>identity</emphasis> operator
+                <literal>&identical;</literal> evaluates to <literal>true</literal> 
+                if its argument expressions evaluate to references to the same 
+                object, as defined in <xref linkend="objectinstancesidentity"/>,
+                or to <literal>false</literal> otherwise,</para>
+            </listitem>
+            <listitem>
+                <para>the <emphasis>assignability</emphasis> operator
+                <literal>is</literal> evaluates to <literal>true</literal> if 
+                its argument expression evaluates to an instance of a class, as 
+                defined in <xref linkend="objectinstancesidentity"/>, that is a 
+                subtype of the specified type, or to <literal>false</literal> 
+                otherwise, and</para>
+            </listitem>
+            <listitem>
+                <para>the <emphasis>coverage</emphasis> operator
+                <literal>of</literal> narrows or widens the type of an expression 
+                to any specified type that covers the expression type, as defined
+                by <xref linkend="coverage"/>, without affecting the value of the
+                expression.</para>
+            </listitem>
+        </itemizedlist>
+            
+        <para>All other operators are defined below in terms of other operators 
+        and/or invocations.</para>
+        
+        <para>In the tables, the following pseudo-code is used, which is not legal
+        Ceylon syntax:</para>
+        
+        <para>First,</para>
+        
+        <programlisting>if (b) then x else y   //pseudocode</programlisting>
+        
+        <para>means the value of <literal>result</literal> after execution of the
+        following:</para>
+        
+        <programlisting>X result; if (b) { result=x; } else { result=y; }</programlisting>
+        
+        <para>Second,</para>
+        
+        <programlisting>let t=x in y   //pseudocode</programlisting>
+        
+        <para>means the value of <literal>result</literal> after execution of the
+        following:</para>
+        
+        <programlisting>X t = x; Y result=y;</programlisting>
     
     </section>
     

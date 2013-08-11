@@ -399,10 +399,6 @@ TypeConstraints?
             <para>A parameter may not be annotated <literal>formal</literal>, but it may be
             annotated <literal>default</literal>.</para>
             
-            <comment><para>TODO: inside a <literal>dynamic</literal> block, a parameter may
-            declared using the syntax <literal>value name</literal>, to indicate that it has
-            no static type.</para></comment>
-            
         </section>
         
         <section id="requiredparameters">
@@ -480,7 +476,7 @@ TypeConstraints?
             Like any other value declaration, it has a name, type, and, optionally, 
             annotations.</para>
             
-            <synopsis>ValueParameter: Annotations Type MemberName</synopsis>
+            <synopsis>ValueParameter: Annotations (Type|"value") MemberName</synopsis>
             
             <para>An argument to a value parameter must be an expression whose type is
             assignable to the type of the value parameter.</para>
@@ -498,6 +494,11 @@ TypeConstraints?
             
             <!--para>A parameter may not be be declared <literal>variable</literal>, and 
             may not be assigned to within the body of the method or class.</para-->
+            
+            <para>Inside a <literal>dynamic</literal> block, a value parameter may be 
+            declared using the keyword <literal>value</literal> in place of the parameter 
+            type. Such a parameter has no type. In other locations, a parameter declaration 
+            must have an explicit type.</para>
             
         </section>
         
@@ -1697,36 +1698,41 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         this behavior can not be depended upon and is not implied by the semantics 
         of <literal>void</literal>.</para></comment>
         
+        <para>Inside a <literal>dynamic</literal> block, a function may be declared using 
+        the keyword <literal>function</literal> in place of its type, even if no type may 
+        be inferred. Such a function has no type. In other locations, a value declaration 
+        must either have an explicit type, or a type must be inferrable.</para>
+            
         <section id="callabletype">
             <title>Callable type of a function</title>
             
-        <para>The <emphasis>callable type</emphasis> of a function captures the return
-        type and parameter types of the function.</para>
-        
-        <itemizedlist>
-        <listitem>
-            <para>The callable type of a function with a single parameter list is 
-            <literal>Callable&lt;R,P&gt;</literal> where <literal>R</literal> is the 
-            return type of the method, or <literal>Anything</literal> if the function is 
-            <literal>void</literal>, and <literal>P</literal> is the type of the
-            parameter list.</para>
-        </listitem>
-        <listitem>
-            <para>The callable type of a function with multiple parameter lists is 
-            <literal>Callable&lt;O,P&gt;</literal>, where <literal>O</literal> is the
-            callable type of a method produced by eliminating the first parameter list, 
-            and <literal>P</literal> is the type of the first parameter list of the
-            function.</para>
-        </listitem>
-        </itemizedlist>
-        
-        <comment><para>Note: the identification of <literal>void</literal> with
-        <literal>Anything</literal> instead of <literal>Null</literal> or some other
-        unit type will probably be contraversial. This approach allows a 
-        non-<literal>void</literal> method to refine a <literal>void</literal>
-        method or a non-<literal>void</literal> function to be assigned to a 
-        <literal>void</literal> functional parameter. Thus, we avoid rejecting 
-        perfectly well-typed code.</para></comment>
+            <para>The <emphasis>callable type</emphasis> of a function captures the return
+            type and parameter types of the function.</para>
+            
+            <itemizedlist>
+            <listitem>
+                <para>The callable type of a function with a single parameter list is 
+                <literal>Callable&lt;R,P&gt;</literal> where <literal>R</literal> is the 
+                return type of the method, or <literal>Anything</literal> if the function is 
+                <literal>void</literal>, and <literal>P</literal> is the type of the
+                parameter list.</para>
+            </listitem>
+            <listitem>
+                <para>The callable type of a function with multiple parameter lists is 
+                <literal>Callable&lt;O,P&gt;</literal>, where <literal>O</literal> is the
+                callable type of a method produced by eliminating the first parameter list, 
+                and <literal>P</literal> is the type of the first parameter list of the
+                function.</para>
+            </listitem>
+            </itemizedlist>
+            
+            <comment><para>Note: the identification of <literal>void</literal> with
+            <literal>Anything</literal> instead of <literal>Null</literal> or some other
+            unit type will probably be contraversial. This approach allows a 
+            non-<literal>void</literal> method to refine a <literal>void</literal>
+            method or a non-<literal>void</literal> function to be assigned to a 
+            <literal>void</literal> functional parameter. Thus, we avoid rejecting 
+            perfectly well-typed code.</para></comment>
         
         </section>
         
@@ -2141,6 +2147,11 @@ case (hexadecimal) {
         with zero parameter lists, or, alternatively, that a function is a value of type 
         <literal>Callable</literal>.</para></comment>
         
+        <para>Inside a <literal>dynamic</literal> block, a value may be declared using the 
+        keyword <literal>value</literal> in place of its type, even if no type may be
+        inferred. Such a value has no type. In other locations, a value declaration must 
+        either have an explicit type, or a type must be inferrable.</para>
+            
         <section id="references">
             <title>References</title>
             

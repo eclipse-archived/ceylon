@@ -25,7 +25,12 @@
     can't reasonably be hidden from the Ceylon program, and the programmer must take 
     these differences into consideration.</para>
     
-    <para>In Ceylon, every value is a reference to an instance of a class.</para>
+    <para>In Ceylon, every value is a reference to an instance of a class, except
+    within a <literal>dynamic</literal> block, where a value with no type may be
+    a reference to an object which is not an instance of a class.</para> 
+    
+    <comment><para>Note: the semantics of objects without classes is platform-dependent
+    and outside the scope of this specification.</para></comment>
     
     <section id="objectinstancesidentity">
         <title>Object instances, identity, and reference passing</title>
