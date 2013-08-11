@@ -13,7 +13,7 @@
      if (char in `A`..`Z`) { ... }
  "
 by ("Gavin")
-shared class Range<Element>(first, last) 
+shared final class Range<Element>(first, last) 
         extends Object() 
         satisfies [Element+] & 
                   Cloneable<Range<Element>>

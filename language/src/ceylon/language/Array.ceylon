@@ -5,7 +5,7 @@
  This class is provided primarily to support interoperation 
  with Java, and for some performance-critical low-level 
  programming tasks."
-shared abstract native class Array<Element>() 
+shared final native class Array<Element>() 
         extends Object()
         satisfies List<Element> &
                   Cloneable<Array<Element>> &
@@ -15,22 +15,22 @@ shared abstract native class Array<Element>()
      with the given element. Does nothing if the specified 
      index is negative or larger than the index of the 
      last element in the array."
-    shared formal void set(
+    shared native void set(
             "The index of the element to replace."
             Integer index, 
             "The new element."
             Element element);
     
     "Reverse this array, returning a new array."
-    shared actual formal Array<Element> reversed;
+    shared actual native Array<Element> reversed;
 
     "The rest of the array, without the first element."
-    shared actual formal Array<Element> rest;
+    shared actual native Array<Element> rest;
 
     "Efficiently copy the elements in the segment 
      `sourcePosition:length` of this array to the segment 
      `destinationPosition:length` of the given array."
-    shared formal void copyTo(
+    shared native void copyTo(
         "The array into which to copy the elements." 
         Array<Element> other,
         "The index of the first element in this array to copy."  

@@ -43,7 +43,7 @@
        String? firstLabel = point[2];
        String[] allLabels = point[2...];"""
 by ("Gavin")
-shared class Tuple<out Element, out First, out Rest=[]>
+shared final class Tuple<out Element, out First, out Rest=[]>
             (first, rest)
         extends Object()
         satisfies [Element+] & 
@@ -114,7 +114,7 @@ shared class Tuple<out Element, out First, out Rest=[]>
     
     shared actual Tuple<Element,First,Rest> clone => this;
     
-    shared actual default Iterator<Element> iterator() {
+    shared actual Iterator<Element> iterator() {
         object iterator satisfies Iterator<Element> {
             variable Element[] current = outer;
             shared actual Element|Finished next() {
@@ -130,7 +130,7 @@ shared class Tuple<out Element, out First, out Rest=[]>
         return iterator;
     }
     
-    shared actual default Boolean contains(Object element) {
+    shared actual Boolean contains(Object element) {
         if (exists first, first==element) {
             return true;
         }

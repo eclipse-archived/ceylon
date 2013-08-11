@@ -7,7 +7,7 @@
      String->Person entry = person.name->person;
  "
 by ("Gavin")
-shared class Entry<out Key, out Item>(key, item)
+shared final class Entry<out Key, out Item>(key, item)
         extends Object()
         //TODO: disabled for now for performance 
         /*extends Tuple<Key|Item,Key,Tuple<Item,Item>>
