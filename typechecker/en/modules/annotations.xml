@@ -372,8 +372,12 @@ shared deprecated</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <para>By default, <literal>Integer</literal> and <literal>Float</literal> 
-            are assumed to represent 64-bit values.</para>
+            <comment><para>By default, <literal>Integer</literal> and 
+            <literal>Float</literal> are assumed to represent 64-bit values, as 
+            specified in <xref linkend="numericoperations"/>.</para></comment>
+            
+            <comment><para>Note that <literal>small</literal> is not yet supported 
+            in Ceylon 1.0.</para></comment>
             
             <!--
             <comment><para>TODO: should we make <literal>actual</literal> a keyword, 
