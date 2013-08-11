@@ -1550,8 +1550,8 @@ else {
             considered to be <emphasis>never satisfied</emphasis> if it is a value reference 
             to <literal>false</literal>.</para>
             
-            <comment><para>TODO: Should we do some more sophisticated static analysis to determine
-            if a condition is always/never satisfied?</para></comment>
+            <comment><para>TODO: Should we do some more sophisticated static analysis to 
+            determine if a condition is always/never satisfied?</para></comment>
                 
         </section>
         
@@ -2123,9 +2123,6 @@ Element first = elements.first;</programlisting>
             <programlisting>assert (total&lt;bound) 
 else "total must be less than ``bound``";</programlisting>
             </comment>
-            
-            <comment><para>TODO: should we have a <literal>fail</literal> statement,
-            meaning, approximately, <literal>assert (false)</literal>?</para></comment>
             
         </section>
         

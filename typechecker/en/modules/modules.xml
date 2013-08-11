@@ -181,8 +181,8 @@
                 
         <comment><para>Note: the tools and IDE support compilation and 
         execution of source not contained in a well-defined module. This 
-        "default" module is not specified here, and is intended only as
-        a convenience for experimental code.</para></comment>
+        "default" module is intended only as a convenience for experimental 
+        code.</para></comment>
         
     </section>
     
@@ -821,9 +821,6 @@ module org.hibernate.test "3.0.0.beta" {
                 
         <para>The source code for multiple modules may be contained in a
         single source directory.</para>
-                
-        <comment><para>TODO: define some kind of "default module" for the
-        case where no module descriptor is found, just for test code.</para></comment>
         
     </section>
     

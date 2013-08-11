@@ -712,10 +712,8 @@ String result = middleObject.string;</programlisting>
                  </listitem>
              </itemizedlist>
              
-             <comment><para>TODO: Precisely what happens if <literal>close()</literal> 
-             throws an exception? Wrap and rethrow the exception as a 
-             <literal>CloseException</literal>, bypassing any handler for the exception 
-             from the <literal>try</literal> block?</para></comment>
+             <comment><para>TODO: Specify what happens if <literal>close()</literal> 
+             throws an exception? Same semantics as Java with "suppressed" exceptions.</para></comment>
              
         </section>
                 

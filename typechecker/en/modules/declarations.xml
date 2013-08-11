@@ -259,11 +259,11 @@ TypeConstraints?
     Char=Character { upper=toUpperCase, lower=toLowerCase, char=charValue } 
 }</programlisting>
         
-            <comment><para>TODO: Currently, inheritance of two members with the same name
+            <!--comment><para>TODO: Currently, inheritance of two members with the same name
             from different unrelated types always results in a compile error. We could let 
             you resolve this class of problem by aliasing a member of a type you're importing. 
             This is a bit similar to what Eiffel does, but it would be a lexical thing, 
-            scoped to the compilation unit.</para></comment>
+            scoped to the compilation unit.</para></comment-->
         
         </section>
         
