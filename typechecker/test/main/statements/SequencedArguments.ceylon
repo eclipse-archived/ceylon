@@ -44,3 +44,18 @@ class SequencedArgumentsAgain() {
     printAll(1, "hello", "goodbye", *strings);
     @error printAll(1, 0, "goodbye", *strings);
 }
+
+class NonEmptySequencedArguments() {
+    void printAll(String+ strings) {}
+    void broken(String s="", @error String+ ss) {}
+    printAll("hello");
+    printAll("hello", "world");
+    @error printAll();
+    String[] strings1 = [];
+    [String+] strings2 = ["hello"];
+    @error printAll(*strings1);
+    printAll(*strings2);
+    printAll("", *strings1);    
+    @error printAll(for (s in strings1) s);
+    printAll(for (s in strings2) s);
+}
