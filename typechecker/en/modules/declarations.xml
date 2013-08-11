@@ -1473,7 +1473,7 @@ TypeConstraints?
    
             <para>Is exactly equivalent to:</para>
             
-            <programlisting>shared final class \Ired extends Color('FF0000') {
+            <programlisting>shared final class \Ired() extends Color('FF0000') {
      string => "Red";
 }
 
