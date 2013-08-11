@@ -1557,7 +1557,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             the class.</para>
             
             <para>A non-<literal>abstract</literal> class may not have an 
-            <literal>of</literal> clause.></para>
+            <literal>of</literal> clause.</para>
             
             <comment><para>TODO: Should we introduce an abbreviated syntax like:</para>
             <programlisting>shared abstract class Boolean() of object true | object false {}</programlisting>
