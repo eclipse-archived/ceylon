@@ -412,7 +412,7 @@
       <l:template name="answer" text="A:&#160;%n"/>
       <l:template name="appendix" text="Appendix&#160;%n"/>
       <l:template name="bridgehead" text="Section&#160;%n"/>
-      <l:template name="chapter" text="Chapter&#160;%n"/>
+      <l:template name="chapter" text="&#167;&#160;%n"/>
       <l:template name="equation" text="Equation&#160;%n"/>
       <l:template name="example" text="Example&#160;%n"/>
       <l:template name="figure" text="Figure&#160;%n"/>

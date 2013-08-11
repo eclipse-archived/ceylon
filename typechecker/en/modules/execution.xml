@@ -719,6 +719,34 @@ String result = middleObject.string;</programlisting>
              
         </section>
                 
+        <section id="dynamictypechecking">
+            <title>Dynamic type checking</title>
+            
+            <para>Inside a <literal>dynamic</literal> block, a situation might occur that 
+            requires dynamic type checking, as specified in <xref linkend="dynamicblocks"/>. 
+            It is possible that:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the value to which an expression with no type evaluates at 
+                    execution time is not an instance of the type required were the
+                    expression occurs, or</para>
+                </listitem>
+                <listitem>
+                    <para>a qualified or unqualified reference which does not refer to 
+                    a statically typed declaration does not resolve to any declaration
+                    at all.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Whenever such a condition is encountered at runtime, an 
+            <literal>AssertionException</literal> is immediately thrown.</para>
+            
+            <comment><para>Note: in Ceylon 1.0, dynamic type checking is only supported
+            on JavaScript virtual machines.</para></comment>
+             
+        </section>
+        
     </section>
     
     <section id="evaluationinvocationandassignment">

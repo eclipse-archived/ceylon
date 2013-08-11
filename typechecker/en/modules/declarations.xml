@@ -1789,11 +1789,11 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             <programlisting>shared Integer add(Integer x, Integer y) => x + y;</programlisting>
             
             <programlisting>shared void addEntry(Key->Item entry) => map.put(entry.key,entry.item);</programlisting>
-    
+            
             <programlisting><![CDATA[shared Set<Element> singleton<Element>(Element element) 
             given Element satisfies Comparable<Element>
         => TreeSet { element };]]></programlisting>
-         
+        
         </section>
         
         <section id="returntypeinference">
@@ -2139,8 +2139,6 @@ case (hexadecimal) {
             
         <synopsis>ValueHeader: (Type | "value") MemberName</synopsis>
         
-        <para>If a reference is a parameter, it must not specify a persistent value.</para>
-        
         <comment><para>Note: syntactically a value declaration looks like a function 
         declaration with zero parameter lists. It is often helpful, in thinking about the 
         syntax and semantics of Ceylon, to take the perspective that a value is a function 
@@ -2172,6 +2170,16 @@ case (hexadecimal) {
             
             <programlisting>shared Integer[] evenDigits = [0,2,4,6,8];</programlisting>
             
+            <para>A reference may have a specifier which specifies its persistent value or, in the 
+            case of a variable reference, its initial persistent value. The type of the specified 
+            expression must be assignable to the type of the reference.</para>
+            
+            <para>If the specified expression has no type, and occurs within a 
+            <literal>dynamic</literal> block, then the specification is not type-checked 
+            at compile time.</para>
+            
+            <para>If a reference is a parameter, it must not specify a persistent value.</para>
+            
             <para>A reference declared directly inside the body of a class represents a persistent 
             value associated with every instance of the class, as defined by 
             <xref linkend="sequentialexecutionandclosure"/>. Repeated evaluation of the attribute 
@@ -2181,10 +2189,6 @@ case (hexadecimal) {
             <para>A block-local reference represents state associated with a frame, that is, with
             a particular execution of the containing block of code, as defined in 
             <xref linkend="sequentialexecutionandclosure"/>.</para> 
-                        
-            <para>If a class declares or inherits a <literal>variable</literal> reference, it 
-            must (directly or indirectly) extend the class <literal>Basic</literal> defined in 
-            <literal>ceylon.language</literal>.</para>
             
             <!--itemizedlist>
                 <listitem>
@@ -2210,7 +2214,11 @@ case (hexadecimal) {
             value. Furthermore, a self-reference to an instance being initialized may be
             assigned to the reference. If the reference is evaluated before it is initialized,
             or before its value has been completely initialized, an exception is thrown.</para>
-        
+            
+            <para>If a class declares or inherits a <literal>variable</literal> reference, it 
+            must (directly or indirectly) extend the class <literal>Basic</literal> defined in 
+            <literal>ceylon.language</literal>.</para>
+            
         </section>
         
         <section id="getterswithblocks">

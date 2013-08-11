@@ -254,12 +254,13 @@
 <xsl:template match="dedication|preface|chapter|appendix" mode="xref-to">
   <xsl:param name="referrer"/>
   <xsl:param name="xrefstyle"/>
-
+  <fo:inline text-decoration="underline" color="blue">
   <xsl:apply-templates select="." mode="object.xref.markup">
     <xsl:with-param name="purpose" select="'xref'"/>
     <xsl:with-param name="xrefstyle" select="$xrefstyle"/>
     <xsl:with-param name="referrer" select="$referrer"/>
   </xsl:apply-templates>
+  </fo:inline>
 </xsl:template>
 
 <xsl:template match="bibliography" mode="xref-to">

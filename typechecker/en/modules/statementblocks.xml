@@ -971,6 +971,10 @@ Integer f(Integer n) => n+package.n;</programlisting>
             
             <synopsis>Return: "return" Expression?</synopsis>
             
+            <para>If the specified expression has no type, and occurs within a 
+            <literal>dynamic</literal> block, then directive is not type-checked at compile 
+            time.</para>
+            
             <para>The <literal>break</literal> directive must sequentially occur in the body 
             of a loop.</para>
             
@@ -988,6 +992,10 @@ Integer f(Integer n) => n+package.n;</programlisting>
             specified, the directive is equivalent to <literal>throw Exception()</literal>.</para>
             
             <synopsis>Throw: "throw" Expression?</synopsis>
+            
+            <para>If the specified expression has no type, and occurs within a 
+            <literal>dynamic</literal> block, then directive is not type-checked at compile 
+            time.</para>
             
         </section>
         
@@ -1011,6 +1019,10 @@ Integer f(Integer n) => n+package.n;</programlisting>
             
             <para>The type of the specified expression must be assignable to the type of 
             the reference, or to the callable type of the function.</para>
+            
+            <para>If the specified expression has no type, and occurs within a 
+            <literal>dynamic</literal> block, then the specification is not type-checked 
+            at compile time.</para>
             
             <programlisting>String greeting;
 if (exists name) {
@@ -2125,12 +2137,46 @@ else "total must be less than ``bound``";</programlisting>
             
             <synopsis>Dynamic: "dynamic" Block</synopsis>
             
-            <para>Inside a <literal>dynamic</literal> block, a value reference 
-            or qualified or unqualified reference occurring in an expression that 
-            does not resolve to any statically typed program element is assumed 
-            to be a reference to something defined in dynamically typed native
-            code. Then the qualified or unqualified reference is not assigned a
-            type, but does not result in a compile-time error.</para>
+            <para>Inside a <literal>dynamic</literal> block an expression may have 
+            no type, as specified in <xref linkend="expressions"/>.</para>
+            
+            <para>An expression with no type:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>may be specified or assigned to a typed value,</para>
+                </listitem>
+                <listitem>
+                    <para>may be passed as the argument of a typed parameter in an
+                    invocation expression,</para>
+                </listitem>
+                <listitem>
+                    <para>may be the invoked expression of an invocation,</para>
+                </listitem>
+                <listitem>
+                    <para>may be returned by a typed function or getter, or
+                    thrown as an exception,</para>
+                </listitem>
+                <listitem>
+                    <para>may be the operand of an operator expression, or</para>
+                </listitem>
+                <listitem>
+                    <para>may be the subject of a control structure condition,
+                    <literal>switch</literal>, or <literal>for</literal> iterator.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Furthermore:</para>  
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a qualified or unqualified reference may not refer to a
+                    statically typed declaration.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>These situations result in <emphasis>dynamic type checking</emphasis>,
+            as defined in <xref linkend="dynamictypechecking"/>.</para>
             
         </section>
          
