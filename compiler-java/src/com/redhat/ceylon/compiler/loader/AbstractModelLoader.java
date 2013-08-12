@@ -40,9 +40,10 @@ import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationArgument;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationConstructorParameter;
-import com.redhat.ceylon.compiler.java.codegen.AnnotationTerm;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationInvocation;
+import com.redhat.ceylon.compiler.java.codegen.AnnotationTerm;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
+import com.redhat.ceylon.compiler.java.codegen.InvocationAnnotationTerm;
 import com.redhat.ceylon.compiler.java.codegen.LiteralAnnotationTerm;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.util.Timer;
@@ -136,7 +137,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public static final String CEYLON_VALUETYPE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.ValueType";
     public static final String CEYLON_ALIAS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Alias";
     public static final String CEYLON_TYPE_ALIAS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.TypeAlias";
-    private static final String CEYLON_ANNOTATION_INSTANTIATION = "com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation";
+    private static final String CEYLON_ANNOTATION_INSTANTIATION_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation";
+    private static final String CEYLON_ANNOTATION_INSTANTIATION_ARGUMENTS_MEMBER = "arguments";
+    private static final String CEYLON_ANNOTATION_INSTANTIATION_ANNOTATION_MEMBER = "annotationClass";
+    private static final String CEYLON_ANNOTATION_INSTANTIATION_TREE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiationTree";
     private static final String CEYLON_TRANSIENT_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Transient";
     private static final String JAVA_DEPRECATED_ANNOTATION = "java.lang.Deprecated";
     
@@ -2276,63 +2280,111 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      }
 
     private void setAnnotationConstructor(LazyMethod method, MethodMirror meth) {
-        AnnotationInvocation ai = new AnnotationInvocation();
-        ai.setConstructorDeclaration(method);
-        if (method.classMirror != null) {
-            // TODO Handle @AnnotationInstantiationTree
-            // And looking at the @AnnotationInstantiation on DPMs
-            TypeMirror annotationTypeMirror = (TypeMirror)getAnnotationClassValue(method.classMirror, CEYLON_ANNOTATION_INSTANTIATION, "annotationClass");
-            if (annotationTypeMirror != null) {
-                ClassMirror annotationClassMirror = annotationTypeMirror.getDeclaredClass();
-                Class annotationClass = (Class)convertToDeclaration(annotationClassMirror, DeclarationType.TYPE);
-                ai.setPrimary(annotationClass);
-                
-                ai.setConstructorDeclaration(method);
-                method.setAnnotationConstructor(ai);
+        AnnotationInvocation ai = loadAnnotationInvocation(method, method.classMirror, meth);
+        if (ai != null) {
+            loadAnnotationConstructorDefaultedParameters(method, meth, ai);
+            ai.setConstructorDeclaration(method);
+            method.setAnnotationConstructor(ai);
+        }
+    }
+    
+    private AnnotationInvocation loadAnnotationInvocation(
+            LazyMethod method, 
+            AnnotatedMirror annoInstMirror, MethodMirror meth) {
+        AnnotationInvocation ai = null;
+        AnnotationMirror annotationInvocationAnnotation = null;
+        
+        List<AnnotationMirror> annotationTree = getAnnotationArrayValue(annoInstMirror, CEYLON_ANNOTATION_INSTANTIATION_TREE_ANNOTATION, "value");
+        if (annotationTree != null
+                && !annotationTree.isEmpty()) {
+            annotationInvocationAnnotation = annotationTree.get(0);
+        } else {
+            annotationInvocationAnnotation = annoInstMirror.getAnnotation(CEYLON_ANNOTATION_INSTANTIATION_ANNOTATION);
+        }
+        if (annotationInvocationAnnotation != null) {
+            ai = new AnnotationInvocation();
+            setPrimaryFromAnnotationInvocationAnnotation(annotationInvocationAnnotation, ai);
+            loadAnnotationInvocationArguments(method, ai, annotationInvocationAnnotation, annotationTree);
+        }
+        return ai;
+    }
+    
+    private void loadAnnotationInvocationArguments(LazyMethod method,
+            AnnotationInvocation ai, AnnotationMirror annotationInvocationAnnotation,
+            List<AnnotationMirror> annotationTree) {
+        List<Short> argumentCodes = (List<Short>)annotationInvocationAnnotation.getValue(CEYLON_ANNOTATION_INSTANTIATION_ARGUMENTS_MEMBER);
+        for (int ii = 0; ii < argumentCodes.size(); ii++) {
+            short code = argumentCodes.get(ii);
+            AnnotationArgument argument = new AnnotationArgument();
+            Parameter classParameter = ai.getParameters().get(ii);
+            argument.setParameter(classParameter);
+            argument.setTerm(loadAnnotationArgumentTerm(method, ai, annotationTree, code));
+            ai.getAnnotationArguments().add(argument);
+        }
+    }
+    
+    private AnnotationTerm loadAnnotationArgumentTerm(
+            LazyMethod method,
+            AnnotationInvocation ai,
+            List<AnnotationMirror> annotationTree,
+            short code) {
+        if (code < 0 && code != Short.MIN_VALUE) {
+            AnnotationMirror i = annotationTree.get(-code);
+            AnnotationInvocation nested = new AnnotationInvocation();
+            setPrimaryFromAnnotationInvocationAnnotation(i, nested);
+            loadAnnotationInvocationArguments(method, nested, i, annotationTree);
+            InvocationAnnotationTerm term = new InvocationAnnotationTerm();
+            term.setInstantiation(nested);
+            return term;
+        } else {
+            AnnotationTerm term = AnnotationTerm.decode(method.getParameterLists().get(0).getParameters(), ai, code);
+            return term;
+        }
+    }
+    private void setPrimaryFromAnnotationInvocationAnnotation(AnnotationMirror annotationInvocationAnnotation,
+            AnnotationInvocation ai) {
+        TypeMirror annotationType = (TypeMirror)annotationInvocationAnnotation.getValue(CEYLON_ANNOTATION_INSTANTIATION_ANNOTATION_MEMBER);
+        ClassMirror annotationClassMirror = annotationType.getDeclaredClass();            
+        if (annotationClassMirror.getAnnotation(CEYLON_METHOD_ANNOTATION) != null) {
+            ai.setPrimary((Method)convertToDeclaration(annotationClassMirror, DeclarationType.VALUE));
+        } else {
+            ai.setPrimary((Class)convertToDeclaration(annotationClassMirror, DeclarationType.TYPE));
+        }
+    }
+    
+    private void loadAnnotationConstructorDefaultedParameters(
+            LazyMethod method, MethodMirror meth, AnnotationInvocation ai) {
+        for (Parameter ctorParam : method.getParameterLists().get(0).getParameters()) {
+            AnnotationConstructorParameter acp = new AnnotationConstructorParameter();
+            acp.setParameter(ctorParam);
+            if (ctorParam.isDefaulted()) {
+                acp.setDefaultArgument(
+                        loadAnnotationConstructorDefaultedParameter(method, meth, ctorParam, acp));
             }
-            
-            List<Short> argumentCodes = getAnnotationShortArrayValue(method.classMirror, CEYLON_ANNOTATION_INSTANTIATION, "arguments");
-            if (argumentCodes != null) {
-                Class ac = (Class)ai.getPrimary();
-                for (int ii = 0; ii < argumentCodes.size(); ii++) {
-                    Short code = argumentCodes.get(ii);
-                    AnnotationTerm term = AnnotationTerm.decode(method.getParameterLists().get(0).getParameters(), ai, code);
-                    Parameter classParameter = ac.getParameterList().getParameters().get(ii);
-                    AnnotationArgument argument = new AnnotationArgument();
-                    argument.setParameter(classParameter);
-                    argument.setTerm(term);
-                    ai.getAnnotationArguments().add(argument);
+            ai.getConstructorParameters().add(acp);
+        }
+    }
+    private AnnotationTerm loadAnnotationConstructorDefaultedParameter(
+            LazyMethod method, 
+            MethodMirror meth,
+            Parameter ctorParam, AnnotationConstructorParameter acp) {
+        // Find the method mirror for the DPM
+        for (MethodMirror mm : method.classMirror.getDirectMethods()) {
+            if (mm.getName().equals(Naming.getDefaultedParamMethodName(method, ctorParam))) {
+                // Create the appropriate AnnotationTerm
+                if (mm.getAnnotation(CEYLON_ANNOTATION_INSTANTIATION_ANNOTATION) != null) {
+                    // If the DPM has a @AnnotationInstantiation 
+                    // then it must be an invocation term so recurse
+                    InvocationAnnotationTerm invocationTerm = new InvocationAnnotationTerm();
+                    invocationTerm.setInstantiation(loadAnnotationInvocation(method, mm, meth));
+                    return invocationTerm;
+                } else {
+                    // Otherwise the term must be a literal term
+                    return  new LiteralAnnotationTerm();
                 }
-                method.setAnnotationConstructor(ai);
-            }
-            
-            for (Parameter ctorParam : method.getParameterLists().get(0).getParameters()) {
-                AnnotationConstructorParameter acp = new AnnotationConstructorParameter();
-                acp.setParameter(ctorParam);
-                if (ctorParam.isDefaulted()) {
-                    // Find the method mirror for the DPM
-                    AnnotationTerm term = null;
-                    for (MethodMirror mm : method.classMirror.getDirectMethods()) {
-                        if (mm.getName().equals(Naming.getDefaultedParamMethodName(method, ctorParam))) {
-                            // Create the appropriate AnnotationTerm
-                            TypeMirror annotationTypeMirror2 = (TypeMirror)getAnnotationClassValue(mm, CEYLON_ANNOTATION_INSTANTIATION, "annotationClass");
-                            if (annotationTypeMirror2 != null) {
-                                // If the DPM has a @AnnotationInstantiation 
-                                // then it must be an invocation term
-                                List<Short> argumentCodes2 = getAnnotationShortArrayValue(mm, CEYLON_ANNOTATION_INSTANTIATION, "arguments");
-                                // TODO Recurse
-                            } else {
-                                // Otherwise the term must be a literal term
-                                term = new LiteralAnnotationTerm();
-                            }
-                            acp.setDefaultArgument(term);
-                            break;
-                        }
-                    }
-                }
-                ai.getConstructorParameters().add(acp);
             }
         }
+        return null;
     }
     
     //

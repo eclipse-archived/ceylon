@@ -27,7 +27,6 @@ public abstract class AnnotationTerm {
             com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath);
     
     public static AnnotationTerm decode(List<Parameter> sourceParameters, AnnotationInvocation info, int code) {
-        Class annotationClass = (Class)info.getPrimary();
         AnnotationTerm result;
         if (code == Short.MIN_VALUE) {
             result = new LiteralAnnotationTerm();

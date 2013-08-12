@@ -210,6 +210,12 @@ public class AnnotationInvocation {
             arguments.append(gen.make().Literal(
                     argument.getTerm().encode(gen, instantiations)));
         }
+        JCExpression primary;
+        if (getPrimary() instanceof Class) {
+            primary = gen.makeJavaType(getAnnotationClassType());
+        } else {
+            primary = gen.naming.makeName((Method)getPrimary(), Naming.NA_FQ | Naming.NA_WRAPPER);
+        }
         JCAnnotation atInstantiation = gen.make().Annotation(
                 gen.make().Type(gen.syms().ceylonAtAnnotationInstantiationType),
                 com.sun.tools.javac.util.List.<JCExpression>of(
@@ -218,7 +224,7 @@ public class AnnotationInvocation {
                                 gen.make().NewArray(null, null, arguments.toList())),
                         gen.make().Assign(
                                 gen.naming.makeUnquotedIdent("annotationClass"),
-                                gen.naming.makeQualIdent(gen.makeJavaType(getAnnotationClassType()), "class"))
+                                gen.naming.makeQualIdent(primary, "class"))
                 ));
         if (instantiations.isEmpty()) {
             return atInstantiation;
