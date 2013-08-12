@@ -147,7 +147,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>An integer literal, as defined in 
             <xref linkend="numericliterals"/>, is an expression 
-            of type <literal>Integer</literal>.</para>
+            of type <literal>Integer</literal>, representing a
+            numeric integer.</para>
             
             <programlisting>Integer five = 5;</programlisting>
             <programlisting>Integer mask = $1111_0000;</programlisting>
@@ -160,7 +161,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>A floating point literal, as defined in 
             <xref linkend="numericliterals"/>, is an expression 
-            of type <literal>Float</literal>.</para>
+            of type <literal>Float</literal>, a floating-point 
+            representation of a numeric value.</para>
             
             <programlisting>shared Float pi = 3.14159;</programlisting>
             
@@ -171,7 +173,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>A single character literal, as defined in 
             <xref linkend="characterliterals"/>, is an expression of 
-            type <literal>Character</literal>.</para>
+            type <literal>Character</literal>, representing a single
+            Unicode character.</para>
                     
             <programlisting>if (exists ch=string[i], ch &equals; '+') { ... }</programlisting>
             
@@ -182,7 +185,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>A character string literal, as defined in 
             <xref linkend="stringliterals"/>, is an expression of type
-            <literal>String</literal>.</para>
+            <literal>String</literal>, representing a sequence of Unicode
+            characters.</para>
             
             <programlisting>person.name = "Gavin King";</programlisting>
             

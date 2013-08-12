@@ -218,8 +218,8 @@
     <section id="characterliterals">
         <title>Character literals</title>
         
-        <para>A single character literal consists of a character, surrounded by single
-        quotes.</para> 
+        <para>A single character literal consists of a Unicode character, inside 
+        single quotes.</para> 
         
         <synopsis>CharacterLiteral: "'" Character "'"</synopsis>
         
@@ -248,8 +248,8 @@
     <section id="stringliterals">
         <title>String literals</title>
         
-        <para>A character string literal is a character sequence surrounded by double 
-        quotes.</para>
+        <para>A character string literal is a sequence of Unicode characters, inside 
+        double quotes.</para>
         
         <synopsis>StringLiteral: "&quot;" StringCharacter* "&quot;"</synopsis>
         
@@ -278,8 +278,13 @@
         <programlisting>" \t\n\f\r,;:"</programlisting>
         <programlisting>"""This program prints "hello world" to the console."""</programlisting>
         
-        <comment><para>TODO: specify how initial whitespace is stripped from multiline
-        string literals.</para></comment>
+        <para>The column in which the first character of a string literal occurs, excluding the 
+        opening quote characters, is called the <emphasis>initial column</emphasis> of the string 
+        literal. Every following line of a multiline string literal must contain whitespace up to 
+        the initial column. That is, if the string contents begin at the <literal>n</literal>th 
+        character in a line of text, the following lines must start with <literal>n</literal> 
+        whitespace characters. This required whitespace is removed from the string literal during 
+        lexical analysis.</para>
         
     </section>
     

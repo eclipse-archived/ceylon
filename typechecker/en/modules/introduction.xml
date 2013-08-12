@@ -538,7 +538,7 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
         </section>
         
         <section id="numerictypes">
-            <title>Numeric types</title>
+            <title>Numeric and character types</title>
             
             <para>Ceylon's numeric type system is much simpler than C, C# or Java, with
             exactly two built-in numeric types (compared to six in Java and eleven in 
@@ -550,6 +550,11 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
             <para>The module <literal>ceylon.math</literal> provides two additonal
             numeric types representing arbitrary precision integers and arbitrary 
             precision decimals.</para>
+            
+            <para>Ceylon has <literal>Character</literal> and <literal>String</literal>
+            classes, and, unlike Java or C#, every character is a full 32-bit Unicode
+            codepoint. Conveniently, a <literal>String</literal> is a 
+            <literal>List&lt;Character&gt;</literal>.</para>
         
         </section>
         
