@@ -3682,7 +3682,9 @@ public class GenerateJsVisitor extends Visitor
             conds.specialConditionRHS(termString, tmpvar);
         }
         out(",");
-        TypeUtils.typeNameOrList(term, type.getTypeModel(), this, true);
+        if (type!=null) {
+            TypeUtils.typeNameOrList(term, type.getTypeModel(), this, true);
+        }
         out(")");
     }
 
