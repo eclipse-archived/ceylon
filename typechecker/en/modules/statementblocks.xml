@@ -1625,6 +1625,9 @@ else {
                 </listitem>
             </itemizedlist>
             
+            <comment><para>TODO: Define what happens for expressions with no type in 
+            <literal>dynamic</literal> blocks!</para></comment>
+            
             <para>For an <literal>is</literal> condition:</para>
             
             <itemizedlist>
@@ -1644,10 +1647,26 @@ else {
             <comment><para>TODO: define the <literal>~</literal> operation, which is in general not very
             robust due to decidability constraints.</para></comment>
             
+            <para>As a special exception to the above, if the condition occurs in a <literal>dynamic</literal> 
+            block, and conditional expression has no type, then:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if the condition contains a value reference, the value will be treated by the 
+                    compiler as having type <literal>X</literal> where <literal>X</literal> is the specified 
+                    type, inside the block that immediately follows the condition, unless</para>
+                </listitem>
+                <listitem>
+                    <para>it is a <emphasis>negated assignability condition</emphasis> with 
+                    <literal>!is</literal>, in which case the value will be treated by the compiler as 
+                    having no type.</para>
+                </listitem>
+            </itemizedlist>
+            
             <para>If you prefer, you can think of the following:</para>
             
             <programlisting>Transaction tx = ...
-    if (is Usable tx) { ... }</programlisting>
+if (is Usable tx) { ... }</programlisting>
             
             <para>As an abbreviation of:</para>
             
@@ -1868,6 +1887,9 @@ else {
             intersection type of its declared type with the specified type inside the <literal>case</literal> 
             block. This intersection type must not be exactly <literal>Nothing</literal>.</para>
             
+            <comment><para>TODO: Define what happens for switch expressions with no type in 
+            <literal>dynamic</literal> blocks!</para></comment>
+            
             <para>For example:</para>
             
             <programlisting>Boolean? maybe = ... ;
@@ -1952,6 +1974,9 @@ case (is Float) {
                 of the iteration variables.</para>
             </listitem>
             </itemizedlist>
+            
+            <comment><para>TODO: Define what happens for iterated expressions with no type 
+            in <literal>dynamic</literal> blocks!</para></comment>
             
             <para>For example:</para>
 
