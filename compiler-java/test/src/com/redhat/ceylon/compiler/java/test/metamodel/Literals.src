@@ -104,8 +104,6 @@ class LitClassWithParameters implements .com.redhat.ceylon.compiler.java.runtime
     
     LitClassWithParameters(@.com.redhat.ceylon.compiler.java.metadata.Name("parameterAndSharedAttribute")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    @.ceylon.language.Shared$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     final long parameterAndSharedAttribute, @.com.redhat.ceylon.compiler.java.metadata.Name("parameterAttribute")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long parameterAttribute, @.com.redhat.ceylon.compiler.java.metadata.Name("sharedAttributeAndParameter")
@@ -116,34 +114,30 @@ class LitClassWithParameters implements .com.redhat.ceylon.compiler.java.runtime
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
     final .ceylon.language.Callable<? extends .ceylon.language.Integer> parameterMethod, @.com.redhat.ceylon.compiler.java.metadata.Name("sharedMethodAndParameter")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
-    final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter$, @.com.redhat.ceylon.compiler.java.metadata.Name("methodAndParameter")
+    final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter, @.com.redhat.ceylon.compiler.java.metadata.Name("methodAndParameter")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
-    final .ceylon.language.Callable<? extends .ceylon.language.Integer> methodAndParameter$) {
+    final .ceylon.language.Callable<? extends .ceylon.language.Integer> methodAndParameter) {
         this.parameterAndSharedAttribute = parameterAndSharedAttribute;
         this.sharedAttributeAndParameter = sharedAttributeAndParameter;
-        this.sharedMethodAndParameter = sharedMethodAndParameter$;
-        
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-        @.com.redhat.ceylon.compiler.java.metadata.Method
-        final class methodAndParameter_ {
-            
-            private methodAndParameter_() {
-                this.methodAndParameter$priv = methodAndParameter$;
-            }
-            private final .ceylon.language.Callable<? extends .ceylon.language.Integer> methodAndParameter$priv;
-            
-            private final long methodAndParameter$priv() {
-                return methodAndParameter$priv.$call().longValue();
-            }
-        }
-        final methodAndParameter_ methodAndParameter = new methodAndParameter_();
+        this.sharedMethodAndParameter = sharedMethodAndParameter;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final long parameterAndSharedAttribute;
     
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getParameterAndSharedAttribute() {
         return parameterAndSharedAttribute;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter;
+    
+    @.ceylon.language.Shared$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
+    public final long sharedMethodAndParameter() {
+        return sharedMethodAndParameter.$call().longValue();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final long sharedAttributeAndParameter;
@@ -153,14 +147,6 @@ class LitClassWithParameters implements .com.redhat.ceylon.compiler.java.runtime
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getSharedAttributeAndParameter() {
         return sharedAttributeAndParameter;
-    }
-    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter;
-    
-    @.ceylon.language.Shared$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    public final long sharedMethodAndParameter() {
-        return sharedMethodAndParameter.$call().longValue();
     }
     
     @.java.lang.Override
@@ -182,8 +168,6 @@ class LitParameterisedClassWithParameters<T> implements .com.redhat.ceylon.compi
     LitParameterisedClassWithParameters(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Name("parameterAndSharedAttribute")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    @.ceylon.language.Shared$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     final long parameterAndSharedAttribute, @.com.redhat.ceylon.compiler.java.metadata.Name("parameterAttribute")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long parameterAttribute, @.com.redhat.ceylon.compiler.java.metadata.Name("sharedAttributeAndParameter")
@@ -194,37 +178,33 @@ class LitParameterisedClassWithParameters<T> implements .com.redhat.ceylon.compi
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
     final .ceylon.language.Callable<? extends .ceylon.language.Integer> parameterMethod, @.com.redhat.ceylon.compiler.java.metadata.Name("sharedMethodAndParameter")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
-    final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter$, @.com.redhat.ceylon.compiler.java.metadata.Name("methodAndParameter")
+    final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter, @.com.redhat.ceylon.compiler.java.metadata.Name("methodAndParameter")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
-    final .ceylon.language.Callable<? extends .ceylon.language.Integer> methodAndParameter$) {
+    final .ceylon.language.Callable<? extends .ceylon.language.Integer> methodAndParameter) {
         this.$reifiedT = $reifiedT;
         this.parameterAndSharedAttribute = parameterAndSharedAttribute;
         this.sharedAttributeAndParameter = sharedAttributeAndParameter;
-        this.sharedMethodAndParameter = sharedMethodAndParameter$;
-        
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-        @.com.redhat.ceylon.compiler.java.metadata.Method
-        final class methodAndParameter_ {
-            
-            private methodAndParameter_() {
-                this.methodAndParameter$priv = methodAndParameter$;
-            }
-            private final .ceylon.language.Callable<? extends .ceylon.language.Integer> methodAndParameter$priv;
-            
-            private final long methodAndParameter$priv() {
-                return methodAndParameter$priv.$call().longValue();
-            }
-        }
-        final methodAndParameter_ methodAndParameter = new methodAndParameter_();
+        this.sharedMethodAndParameter = sharedMethodAndParameter;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final long parameterAndSharedAttribute;
     
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getParameterAndSharedAttribute() {
         return parameterAndSharedAttribute;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter;
+    
+    @.ceylon.language.Shared$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
+    public final long sharedMethodAndParameter() {
+        return sharedMethodAndParameter.$call().longValue();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final long sharedAttributeAndParameter;
@@ -234,14 +214,6 @@ class LitParameterisedClassWithParameters<T> implements .com.redhat.ceylon.compi
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getSharedAttributeAndParameter() {
         return sharedAttributeAndParameter;
-    }
-    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter;
-    
-    @.ceylon.language.Shared$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    public final long sharedMethodAndParameter() {
-        return sharedMethodAndParameter.$call().longValue();
     }
     
     @.java.lang.Override
@@ -602,14 +574,14 @@ class RelativeLiterals implements .com.redhat.ceylon.compiler.java.runtime.model
     RelativeLiterals(@.com.redhat.ceylon.compiler.java.metadata.Name("str")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-    @.ceylon.language.Shared$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     final .java.lang.String str) {
         this.str = str;
         this.integer = 0L;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.String str;
     
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getStr() {
@@ -694,7 +666,7 @@ final class litValue_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+            throw new .ceylon.language.InitializationException("Cyclic initialization");
         }
     }
 }
@@ -716,7 +688,7 @@ final class litVariable_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+            throw new .ceylon.language.InitializationException("Cyclic initialization");
         }
     }
     
