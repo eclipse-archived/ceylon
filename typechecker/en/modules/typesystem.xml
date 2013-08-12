@@ -2192,6 +2192,14 @@ Item item = comp of Item;</programlisting>
                 </listitem>
             </itemizedlist>
             
+            <para>An argument expression with no type occurring in a <literal>dynamic</literal>
+            block, as defined in <xref linkend="dynamicblocks"/>, may cause type argument inference 
+            to fail. When combining bounds using union, any constituent bound with no type results 
+            in a bound with no type. When combining bounds using intersection, any constituent 
+            bound with no type is eliminated. If the resulting inferred upper or lower bound has no 
+            type, type argument inference is impossible for the type argument, and type arguments 
+            must be specified explicitly.</para>
+            
             <para>If the inferred type argument does not satisfy the generic type 
             constraints on <literal>T</literal>, a compilation error results.</para>
             

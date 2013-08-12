@@ -1108,8 +1108,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <programlisting>[Float,Float] xy = [x, y];</programlisting>
             <programlisting>[Float,Float, String*] xy = [x, y, *labels];</programlisting>
             
-            <comment><para>TODO: properly define how expressions with no type occurring in a
-            <literal>dynamic</literal> block affect type inference for enumeration expressions.</para></comment>
+            <para>Every argument expression must have a type, even if the enumeration expression
+            occurs in a <literal>dynamic</literal> block.</para>
             
         </section>
         
