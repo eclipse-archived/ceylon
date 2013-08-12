@@ -135,6 +135,11 @@ public class AnnotationsTest extends CompilerTest {
     }
     
     @Test
+    public void testCollidingLiteralDefaults(){
+        compareWithJavaSource("CollidingLiteralDefaults");
+    }
+    
+    @Test
     public void testNested(){
         compareWithJavaSource("Nested");
     }

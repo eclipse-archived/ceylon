@@ -1,0 +1,125 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+@interface CollidingLiteralDefaults$annotation {
+    
+    public abstract long i1();
+    
+    public abstract long i2();
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.METHOD})
+@interface CollidingLiteralDefaults$annotations {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults$annotation[] value();
+}
+@.ceylon.language.Final$annotation
+@.ceylon.language.Annotation$annotation
+final class CollidingLiteralDefaults implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, .ceylon.language.model.declaration.FunctionDeclaration> {
+    
+    CollidingLiteralDefaults(.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults$annotation anno) {
+        this(anno.i1(), anno.i2());
+    }
+    
+    CollidingLiteralDefaults(final long i1, final long i2) {
+        this.i1 = i1;
+        this.i2 = i2;
+        this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, .ceylon.language.model.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults.$TypeDescriptor, .ceylon.language.model.declaration.FunctionDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults>, .ceylon.language.model.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults.$TypeDescriptor), .ceylon.language.model.declaration.FunctionDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults>(.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults.$TypeDescriptor, this);
+    }
+    private final long i1;
+    
+    @.ceylon.language.Shared$annotation
+    public final long getI1() {
+        return i1;
+    }
+    private final long i2;
+    
+    @.ceylon.language.Shared$annotation
+    public final long getI2() {
+        return i2;
+    }
+    protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, .ceylon.language.model.declaration.FunctionDeclaration> $ceylon$language$model$SequencedAnnotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, .ceylon.language.model.declaration.FunctionDeclaration> $ceylon$language$model$SequencedAnnotation$impl() {
+        return $ceylon$language$model$SequencedAnnotation$this;
+    }
+    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults>, .ceylon.language.model.declaration.FunctionDeclaration> $ceylon$language$model$ConstrainedAnnotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults>, .ceylon.language.model.declaration.FunctionDeclaration> $ceylon$language$model$ConstrainedAnnotation$impl() {
+        return $ceylon$language$model$ConstrainedAnnotation$this;
+    }
+    
+    @.java.lang.Override
+    public final boolean occurs(final .ceylon.language.model.Annotated programElement) {
+        return $ceylon$language$model$ConstrainedAnnotation$this.occurs(programElement);
+    }
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults> $ceylon$language$model$Annotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {
+                -32768,
+                0},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults.class)
+final class collidingLiteralDefaults_ {
+    
+    private collidingLiteralDefaults_() {
+    }
+    static final long default$i1 = 2L;
+    static final long arg$i1 = 1L;
+    
+    static .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults collidingLiteralDefaults() {
+        return (
+            let
+            {
+                long $ceylontmp$i1$0 = .com.redhat.ceylon.compiler.java.test.annotations.collidingLiteralDefaults_.collidingLiteralDefaults$i1();
+            }
+            returning collidingLiteralDefaults($ceylontmp$i1$0);
+        );
+    }
+    
+    static final long collidingLiteralDefaults$i1() {
+        return 2L;
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    static .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults collidingLiteralDefaults(final long i1) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults(1L, i1);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.collidingLiteralDefaults_.collidingLiteralDefaults();
+    }
+}
+final class collidingLiteralDefaults_callsite_ {
+    
+    private collidingLiteralDefaults_callsite_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults$annotation(
+            i1 = .com.redhat.ceylon.compiler.java.test.annotations.collidingLiteralDefaults_.arg$i1,
+            i2 = .com.redhat.ceylon.compiler.java.test.annotations.collidingLiteralDefaults_.default$i1)})
+    static void collidingLiteralDefaults_callsite() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.collidingLiteralDefaults_callsite_.collidingLiteralDefaults_callsite();
+    }
+}
