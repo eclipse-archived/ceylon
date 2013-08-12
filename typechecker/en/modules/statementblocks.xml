@@ -1891,6 +1891,12 @@ else {
             intersection type of its declared type with the specified type inside the <literal>case</literal> 
             block. This intersection type must not be exactly <literal>Nothing</literal>.</para>
             
+            <para>As a special exception to the above, if a <literal>switch</literal> occurs in 
+            a <literal>dynamic</literal> block, and the <literal>switch</literal> expression
+            has no type, the value referred by the <literal>switch</literal> expression will be 
+            treated by the compiler as having the the specified type inside the <literal>case</literal> 
+            block.</para>
+            
             <para>For example:</para>
             
             <programlisting>Boolean? maybe = ... ;
