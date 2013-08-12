@@ -135,35 +135,35 @@ shared void strings() {
     check(!"goodbye" in hello, "substring not in string");
                 
     if (exists occ = hello.firstInclusion("ll")) {
-        check(occ==2, "string first occurrence 1");
+        check(occ==2, "string first inclusion ``occ`` expected 2");
     }
     else {
-        fail("string first occurrence 2");
+        fail("string first inclusion not found");
     }
     if (exists nocc = hello.firstInclusion("x")) {
         fail("string no first occurrence");
     }
     if (exists locc = "hello hello".lastInclusion("hell")) {
-        check(locc==6, "string last occurrence 1");
+        check(locc==6, "string last inclusion ``locc`` expected 6");
     }
     else {
-        fail("string last occurrence 2");
+        fail("string last inclusion not found");
     }
         
     if (exists occ = hello.firstOccurrence('l')) {
-        check(occ==2, "string first occurrence 1");
+        check(occ==2, "string first occurrence ``occ`` expected 2");
     }
     else {
-        fail("string first occurrence 2");
+        fail("string first occurrence not found");
     }
     if (exists nocc = hello.firstOccurrence('x')) {
         fail("string no first occurrence");
     }
     if (exists locc = "hello hello".lastOccurrence('h')) {
-        check(locc==6, "string last occurrence 1");
+        check(locc==6, "string last occurrence ``locc`` expected 6");
     }
     else {
-        fail("string last occurrence 2");
+        fail("string last occurrence not found");
     }
         
     value chars = hello.sequence;
