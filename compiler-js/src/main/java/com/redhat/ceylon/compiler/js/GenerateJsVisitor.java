@@ -1772,7 +1772,7 @@ public class GenerateJsVisitor extends Visitor
         } else {
             out(clAlias, "String('");
         }
-        out("Attempt to read unitialized attribute «", pubname, "»'));");
+        out("Attempt to read unitialized attribute ��", pubname, "��'));");
     }
     void generateImmutableAttributeReassignmentCheck(String privname, String pubname) {
         out("if(", privname, "!==undefined)throw ", clAlias, "InitializationException(");
@@ -1781,7 +1781,7 @@ public class GenerateJsVisitor extends Visitor
         } else {
             out(clAlias, "String('");
         }
-        out("Attempt to reassign immutable attribute «", pubname, "»'));");
+        out("Attempt to reassign immutable attribute ��", pubname, "��'));");
     }
 
     private void addGetterAndSetterToPrototype(TypeDeclaration outer,
@@ -2581,6 +2581,16 @@ public class GenerateJsVisitor extends Visitor
     
     private void specifierStatement(final TypeDeclaration outer,
             final SpecifierStatement specStmt) {
+        if (dynblock > 0 && TypeUtils.isUnknown(specStmt.getBaseMemberExpression().getTypeModel())) {
+            specStmt.getBaseMemberExpression().visit(this);
+            out("=");
+            int box = boxUnboxStart(specStmt.getSpecifierExpression().getExpression(), specStmt.getBaseMemberExpression());
+            specStmt.getSpecifierExpression().getExpression().visit(this);
+            if (box == 4) out("/*TODO: callable targs 6*/");
+            boxUnboxEnd(box);
+            out(";");
+            return;
+        }
         if (specStmt.getBaseMemberExpression() instanceof BaseMemberExpression) {
             BaseMemberExpression bme = (BaseMemberExpression) specStmt.getBaseMemberExpression();
             Declaration bmeDecl = bme.getDeclaration();

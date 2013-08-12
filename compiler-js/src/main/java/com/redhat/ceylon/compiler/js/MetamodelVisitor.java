@@ -144,7 +144,7 @@ public class MetamodelVisitor extends Visitor {
                         d.getClass().getName() + " into model");
             }
         } else {
-            st.addUnexpectedError("Specifier statement encountered without a corresponding declaration");
+//            st.addUnexpectedError("Specifier statement encountered without a corresponding declaration");
         }
     }
 
