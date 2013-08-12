@@ -199,8 +199,33 @@ public class ConstraintVisitor extends Visitor {
         if (a.isAnnotation()) {
             Tree.Type type = that.getType();
             if (type!=null) {
-                if (!type.getTypeModel().getDeclaration().isAnnotation()) {
-                    type.addError("annotation constructor must return an annotation type");
+                ProducedType t = type.getTypeModel();
+                if (t!=null && t.getDeclaration()!=null) {
+                    if (t.getDeclaration().isAnnotation()) {
+                        if (!that.getUnit().getPackage().getQualifiedNameString()
+                                .equals("ceylon.language")) {
+                            String packageName = t.getDeclaration()
+                                    .getUnit().getPackage().getQualifiedNameString();
+                            String typeName = t.getDeclaration().getName();
+                            if (packageName.equals("ceylon.language") && 
+                                    (typeName.equals("Shared") ||
+                                    typeName.equals("Abstract") || 
+                                    typeName.equals("Default") ||
+                                    typeName.equals("Formal") ||
+                                    typeName.equals("Actual") ||
+                                    typeName.equals("Final") ||
+                                    typeName.equals("Variable") ||
+                                    typeName.equals("Late") ||
+                                    typeName.equals("Native") ||
+                                    typeName.equals("Deprecated") ||
+                                    typeName.equals("Annotation"))) {
+                                type.addError("annotation constructor may not return modifier annotation type");
+                            }
+                        }
+                    } 
+                    else {
+                        type.addError("annotation constructor must return an annotation type");
+                    }
                 }
             }
             List<Tree.ParameterList> pls = that.getParameterLists();
