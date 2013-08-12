@@ -199,6 +199,11 @@ TypeConstraints?
         never need to be explicitly imported. They are implicitly imported by every 
         compilation unit.</para>
         
+        <para>An imported function or value may not hide, as defined in 
+        <xref linkend="hidingdeclaration"/>, any of the modifiers declared in 
+        <literal>ceylon.language</literal> listed in <xref linkend="declarationmodifiers"/>,
+        unless the modifier itself has an alias import in the compilation unit.</para>
+        
         <comment><para>Note: an unused import results in a compiler warning.</para></comment>
         
         <section id="typeimports">
