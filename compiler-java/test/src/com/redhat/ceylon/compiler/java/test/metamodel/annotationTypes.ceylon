@@ -1,17 +1,23 @@
 import ceylon.language.model{Annotated, SequencedAnnotation}
+import ceylon.language.model.declaration{Declaration}
 
 shared final annotation class Seq(shared String seq) 
     satisfies SequencedAnnotation<Seq, Annotated> {}
 shared annotation Seq seq(String s) => Seq(s); 
 
+shared final annotation class Decl(shared Declaration decl)
+    satisfies SequencedAnnotation<Decl, Annotated> {}
+shared annotation Decl decl(Declaration d) => Decl(d);
 
 "aToplevelAttribute"
 seq("aToplevelAttribute 1")
 seq("aToplevelAttribute 2")
+see(`aToplevelGetterSetter`)
 shared String aToplevelAttribute = "";
 
 "aToplevelGetter"
 seq("aToplevelGetter 1")
+see(`aToplevelAttribute`)
 shared String aToplevelGetterSetter {
     return "";
 }
@@ -182,4 +188,39 @@ shared class AClass(
         String parameter) 
     extends AAbstractClass(parameter) {
  
+}
+
+decl(`aToplevelAttribute`)
+decl(`aToplevelGetterSetter`)
+decl(`aToplevelFunction`)
+decl(`aToplevelObject`)
+decl(`AInterface`)
+decl(`AInterface.FormalInnerClass.method`)
+decl(`AInterface.DefaultInnerClass`)
+decl(`AInterface.DefaultInnerClass.method`)
+decl(`AInterface.SharedInnerInterface`)
+decl(`AInterface.SharedInnerInterface.method`)
+decl(`AInterface.formalAttribute`)
+decl(`AInterface.defaultGetterSetter`)
+decl(`AInterface.getterSetter`)
+//decl(`AInterface.nonsharedGetterSetter`)
+decl(`AInterface.formalMethod`)
+decl(`AInterface.defaultMethod`)
+decl(`AInterface.method`)
+//decl(`AInterface.nonsharedMethod`)
+decl(`AAbstractClass`)
+decl(`AAbstractClass.FormalInnerClass`)
+decl(`AAbstractClass.DefaultInnerClass`)
+decl(`AAbstractClass.formalAttribute`)
+decl(`AAbstractClass.formalMethod`)
+decl(`AAbstractClass.objectMember`)
+decl(`AAbstractClass.InnerClass`)
+decl(`AAbstractClass.InnerClass.method`)
+decl(`AAbstractClass.InnerInterface`)
+decl(`AAbstractClass.InnerInterface.method`)
+decl(`AClass`)
+decl(`MetamodelRefs`)
+decl(`MetamodelRefs.parameter`)
+class MetamodelRefs(
+    shared String parameter) {
 }
