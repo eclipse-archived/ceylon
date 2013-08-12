@@ -948,7 +948,7 @@ public class ExpressionVisitor extends Visitor {
                 type.addError("parameter may not have inferred type: " + 
                         p.getName());
             }
-            else if (p.getDeclaration().isShared()) {
+            else if (p.getDeclaration().isShared() && !dynamic) {
                 type.addError("shared parameter may not have inferred type: " + 
                         p.getName());
             }

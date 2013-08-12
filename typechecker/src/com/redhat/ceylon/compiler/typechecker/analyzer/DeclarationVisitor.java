@@ -59,6 +59,7 @@ public class DeclarationVisitor extends Visitor {
     private Declaration declaration;
     private String fullPath; 
     private String relativePath;
+    private boolean dynamic;
     protected UnitFactory unitFactory;
     
     public DeclarationVisitor(Package pkg, String filename,
@@ -226,6 +227,14 @@ public class DeclarationVisitor extends Visitor {
         that.setScope(scope);
         that.setUnit(unit);
         super.visitAny(that);
+    }
+    
+    @Override
+    public void visit(Tree.DynamicStatement that) {
+        boolean od = dynamic;
+        dynamic = true;
+        super.visit(that);
+        dynamic = od;
     }
     
     @Override
@@ -500,7 +509,7 @@ public class DeclarationVisitor extends Visitor {
                     type.addError("toplevel value must explicitly specify a type", 200);
                 }
             }
-            else if (v.isShared()) {
+            else if (v.isShared() && !dynamic) {
                 type.addError("shared value must explicitly specify a type", 200);
             }
         }
@@ -524,7 +533,7 @@ public class DeclarationVisitor extends Visitor {
                     type.addError("toplevel function must explicitly specify a return type", 200);
                 }
             }
-            else if (m.isShared()) {
+            else if (m.isShared() && !dynamic) {
                 type.addError("shared function must explicitly specify a return type", 200);
             }
         }
@@ -538,7 +547,7 @@ public class DeclarationVisitor extends Visitor {
             if (m.isToplevel()) {
                 that.getType().addError("toplevel function must explicitly specify a return type", 200);
             }
-            else if (m.isShared()) {
+            else if (m.isShared() && !dynamic) {
                 that.getType().addError("shared function must explicitly specify a return type", 200);
             }
         }
@@ -554,10 +563,10 @@ public class DeclarationVisitor extends Visitor {
         exitScope(o);
         if (that.getType() instanceof Tree.ValueModifier) {
             if (g.isToplevel()) {
-                that.getType().addError("toplevel value must explicitly specify a type", 200);
+                that.getType().addError("toplevel getter must explicitly specify a type", 200);
             }
-            else if (g.isShared()) {
-                that.getType().addError("shared attribute must explicitly specify a type", 200);
+            else if (g.isShared() && !dynamic) {
+                that.getType().addError("shared getter must explicitly specify a type", 200);
             }
         }
     }
