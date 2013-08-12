@@ -1625,10 +1625,7 @@ else {
                 </listitem>
             </itemizedlist>
             
-            <comment><para>TODO: Define what happens for expressions with no type in 
-            <literal>dynamic</literal> blocks!</para></comment>
-            
-            <para>For an <literal>is</literal> condition:</para>
+            <para>For an <literal>is</literal> assignability condition:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1647,22 +1644,6 @@ else {
             <comment><para>TODO: define the <literal>~</literal> operation, which is in general not very
             robust due to decidability constraints.</para></comment>
             
-            <para>As a special exception to the above, if the condition occurs in a <literal>dynamic</literal> 
-            block, and conditional expression has no type, then:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>if the condition contains a value reference, the value will be treated by the 
-                    compiler as having type <literal>X</literal> where <literal>X</literal> is the specified 
-                    type, inside the block that immediately follows the condition, unless</para>
-                </listitem>
-                <listitem>
-                    <para>it is a <emphasis>negated assignability condition</emphasis> with 
-                    <literal>!is</literal>, in which case the value will be treated by the compiler as 
-                    having no type.</para>
-                </listitem>
-            </itemizedlist>
-            
             <para>If you prefer, you can think of the following:</para>
             
             <programlisting>Transaction tx = ...
@@ -1675,7 +1656,7 @@ if (is Usable tx) { ... }</programlisting>
             <para>Where the <literal>tx</literal> declared by the condition hides the outer declaration
             of <literal>tx</literal> inside the block that follows.</para>
             
-            <para>For an <literal>exists</literal> condition:</para>
+            <para>For an <literal>exists</literal> existence condition:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1691,7 +1672,7 @@ if (is Usable tx) { ... }</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <para>For a <literal>nonempty</literal> condition:</para>
+            <para>For a <literal>nonempty</literal> nonemptiness condition:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1720,6 +1701,24 @@ if (is Usable tx) { ... }</programlisting>
             <para>Where the <literal>name</literal> declared by the condition hides the outer 
             declaration of <literal>name</literal> inside the block that follows.</para>
         
+            <para>As a special exception to the above, if a condition occurs in a <literal>dynamic</literal> 
+            block, and conditional expression has no type, and the condition contains a value reference, 
+            then:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the value will be treated by the compiler as having type <literal>X</literal> 
+                    where <literal>X</literal> is the specified type (or <literal>Object</literal> for
+                    an existence condition), inside the block that immediately follows the condition, 
+                    unless</para>
+                </listitem>
+                <listitem>
+                    <para>it is a negated assignability condition with <literal>!is</literal>, or a 
+                    nonempty condition with <literal>nonempty</literal> in which case the value will 
+                    be treated by the compiler as having no type.</para>
+                </listitem>
+            </itemizedlist>
+            
         </section>
                 
         <!--section id="subtypeconditions">
