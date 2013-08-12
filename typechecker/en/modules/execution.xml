@@ -727,12 +727,18 @@ String result = middleObject.string;</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>the value to which an expression with no type evaluates at 
-                    execution time is not an instance of the type required were the
-                    expression occurs, or</para>
+                    execution time might not be an instance of the type required where 
+                    the expression occurs,</para>
+                </listitem>
+                <listitem>
+                    <para>in particular, the value to which a <literal>switch</literal> 
+                    expression with no type evaluates at execution time might be an 
+                    instance of a type not covered by the <literal>case</literal>s of
+                    a <literal>switch</literal> with no <literal>else</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>a qualified or unqualified reference which does not refer to 
-                    a statically typed declaration does not resolve to any declaration
+                    a statically typed declaration might not resolve to any declaration
                     at all.</para>
                 </listitem>
             </itemizedlist>
