@@ -475,12 +475,12 @@ TypeConstraints?
         <section id="valueparameters">
             <title>Value parameters</title>
             
-            <para>A <emphasis>value parameter</emphasis> is a value, as specified in
-            <xref linkend="values"/>, that is named or defined in a parameter list. 
+            <para>A <emphasis>value parameter</emphasis> is a reference, as specified in
+            <xref linkend="references"/>, that is named or defined in a parameter list. 
             Like any other value declaration, it has a name, type, and, optionally, 
             annotations.</para>
             
-            <synopsis>ValueParameter: Annotations (Type|"value") MemberName</synopsis>
+            <synopsis>ValueParameter: Annotations (Type | "value") MemberName</synopsis>
             
             <para>An argument to a value parameter must be an expression whose type is
             assignable to the type of the value parameter.</para>
