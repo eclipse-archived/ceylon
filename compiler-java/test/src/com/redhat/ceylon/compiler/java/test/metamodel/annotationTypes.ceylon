@@ -1,6 +1,6 @@
 import ceylon.language.model{Annotated, SequencedAnnotation}
 
-shared annotation class Seq(shared String seq) 
+shared final annotation class Seq(shared String seq) 
     satisfies SequencedAnnotation<Seq, Annotated> {}
 shared annotation Seq seq(String s) => Seq(s); 
 
