@@ -346,7 +346,11 @@ final class annotationClassMetamodelReferenceVariadic3_ {
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation(mmrs = "::0.6:ceylon.language::CAnything"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation(mmrs = {
                 "::0.6:ceylon.language::CAnything",
-                "::0.6:ceylon.language::Vprocess"})})
+                "::0.6:ceylon.language::Vprocess"}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation(mmrs = {}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation(mmrs = {
+                "::0.6:ceylon.language::Vfalse",
+                "::0.6:ceylon.language::Vfalse"})})
 class AnnotationClassMetamodelReference_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnotationClassMetamodelReference_callsite() {

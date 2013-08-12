@@ -43,7 +43,6 @@ annotationClassMetamodelReferenceVariadic1()
 annotationClassMetamodelReferenceVariadic1(`Anything`)
 annotationClassMetamodelReferenceVariadic1(`Anything`, `process`)
 // TODO literals for inner classes and interfaces
-// FIXME: not supported yet
-//annotationClassMetamodelReferenceVariadic2()
-//annotationClassMetamodelReferenceVariadic3(`false`)
+annotationClassMetamodelReferenceVariadic2()
+annotationClassMetamodelReferenceVariadic3(`false`)
 class AnnotationClassMetamodelReference_callsite() {}
