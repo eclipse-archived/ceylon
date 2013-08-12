@@ -5,6 +5,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
 
 public class Util {
@@ -20,12 +21,15 @@ public class Util {
         }
     }
 
-    public static boolean hasAnnotation(Tree.AnnotationList al, String name) {
+    public static boolean hasAnnotation(Tree.AnnotationList al, String name, Unit unit) {
         if (al!=null) {
             for (Tree.Annotation a: al.getAnnotations()) {
                 Tree.BaseMemberExpression p = (Tree.BaseMemberExpression) a.getPrimary();
                 if (p!=null) {
-                    if ( name(p.getIdentifier()).equals(name) ) {
+                    String an = name(p.getIdentifier());
+                    String alias = unit==null ? name : //WTF?!
+                        unit.getModifiers().get(name); 
+                    if (an.equals(alias)) {
                         return true;
                     }
                 }

@@ -15,6 +15,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -399,19 +400,29 @@ public class TypeVisitor extends Visitor {
             Import i) {
         String alias = i.getAlias();
         if (alias!=null) {
-            Import o = unit.getImport(alias);
-            if (o==null) {
-                unit.getImports().add(i);
-                il.getImports().add(i);
-            }
-            else if (o.isWildcardImport()) {
-                unit.getImports().remove(o);
-                il.getImports().remove(o);
-                unit.getImports().add(i);
-                il.getImports().add(i);
+            Declaration d = i.getDeclaration();
+            Map<String, String> mods = unit.getModifiers();
+            if (mods.containsValue(alias) &&
+                    (!d.getUnit().getPackage().getNameAsString()
+                            .equals("ceylon.language") ||
+                    !mods.containsKey(d.getName()))) {
+                member.addError("import hides a language modifier: " + alias);
             }
             else {
-                member.addError("duplicate import alias: " + alias);
+                Import o = unit.getImport(alias);
+                if (o==null) {
+                    unit.getImports().add(i);
+                    il.getImports().add(i);
+                }
+                else if (o.isWildcardImport()) {
+                    unit.getImports().remove(o);
+                    il.getImports().remove(o);
+                    unit.getImports().add(i);
+                    il.getImports().add(i);
+                }
+                else {
+                    member.addError("duplicate import alias: " + alias);
+                }
             }
         }
     }

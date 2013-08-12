@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.buildAnnotations;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
@@ -868,10 +869,10 @@ public class DeclarationVisitor extends Visitor {
         }
     }
 
-    private static void handleDeclarationAnnotations(Tree.Declaration that,
+    private void handleDeclarationAnnotations(Tree.Declaration that,
             Declaration model) {
         Tree.AnnotationList al = that.getAnnotationList();
-        if (hasAnnotation(al, "shared")) {
+        if (hasAnnotation(al, "shared", unit)) {
             if (that instanceof Tree.AttributeSetterDefinition) {
                 that.addError("setter may not be annotated shared", 1201);
             }
@@ -888,7 +889,7 @@ public class DeclarationVisitor extends Visitor {
                 model.setShared(true);
             }
         }
-        if (hasAnnotation(al, "default")) {
+        if (hasAnnotation(al, "default", unit)) {
             if (that instanceof Tree.ObjectDefinition) {
                 that.addError("object declaration may not be annotated default", 1313);
             }
@@ -899,7 +900,7 @@ public class DeclarationVisitor extends Visitor {
                 model.setDefault(true);
             }
         }
-        if (hasAnnotation(al, "formal")) {
+        if (hasAnnotation(al, "formal", unit)) {
             if (that instanceof Tree.ObjectDefinition) {
                 that.addError("object declaration may not be annotated formal", 1312);
             }
@@ -907,16 +908,16 @@ public class DeclarationVisitor extends Visitor {
                 model.setFormal(true);
             }
         }
-        if (hasAnnotation(al, "native")) {
+        if (hasAnnotation(al, "native", unit)) {
         	model.setNative(true);
         }
         if (model.isFormal() && model.isDefault()) {
             that.addError("declaration may not be annotated both formal and default");
         }
-        if (hasAnnotation(al, "actual")) {
+        if (hasAnnotation(al, "actual", unit)) {
             model.setActual(true);
         }
-        if (hasAnnotation(al, "abstract")) {
+        if (hasAnnotation(al, "abstract", unit)) {
             if (model instanceof Class) {
                 ((Class) model).setAbstract(true);
             }
@@ -924,7 +925,7 @@ public class DeclarationVisitor extends Visitor {
                 that.addError("declaration is not a class, and may not be annotated abstract", 1600);
             }
         }
-        if (hasAnnotation(al, "final")) {
+        if (hasAnnotation(al, "final", unit)) {
             if (model instanceof Class) {
                 ((Class) model).setFinal(true);
             }
@@ -932,7 +933,7 @@ public class DeclarationVisitor extends Visitor {
                 that.addError("declaration is not a class, and may not be annotated final", 1700);
             }
         }
-        if (hasAnnotation(al, "variable")) {
+        if (hasAnnotation(al, "variable", unit)) {
             if (model instanceof Value) {
                 ((Value) model).setVariable(true);
             }
@@ -940,7 +941,7 @@ public class DeclarationVisitor extends Visitor {
                 that.addError("declaration is not a value, and may not be annotated variable", 1500);
             }
         }
-        if (hasAnnotation(al, "late")) {
+        if (hasAnnotation(al, "late", unit)) {
             if (model instanceof Value) {
                 if (that instanceof Tree.AttributeDeclaration && 
                         ((Tree.AttributeDeclaration) that).getSpecifierOrInitializerExpression()==null) {
@@ -960,10 +961,10 @@ public class DeclarationVisitor extends Visitor {
         		that.addError("value may not be annotated both variable and transient: " + model.getName());
         	}
         }
-        if (hasAnnotation(al, "deprecated")) {
+        if (hasAnnotation(al, "deprecated", unit)) {
         	model.setDeprecated(true);
         }
-        if (hasAnnotation(al, "annotation")) {
+        if (hasAnnotation(al, "annotation", unit)) {
             if (!(model instanceof Method) && !(model instanceof Class)) {
                 that.addError("declaration is not a function or class, and may not be annotated annotation");
             }
@@ -1211,4 +1212,24 @@ public class DeclarationVisitor extends Visitor {
     	}
     }
     
+    @Override
+    public void visit(Tree.Import that) {
+        super.visit(that);
+        Tree.ImportPath path = that.getImportPath();
+        if (path!=null && 
+                formatPath(path.getIdentifiers()).equals("ceylon.language")) {
+            Tree.ImportMemberOrTypeList imtl = that.getImportMemberOrTypeList();
+            if (imtl!=null) {
+                for (Tree.ImportMemberOrType imt: imtl.getImportMemberOrTypes()) {
+                    if (imt.getAlias()!=null && imt.getIdentifier()!=null) {
+                        String name = name(imt.getIdentifier());
+                        String alias = name(imt.getAlias().getIdentifier());
+                        if (unit.getModifiers().containsKey(name)) {
+                            unit.getModifiers().put(name, alias);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

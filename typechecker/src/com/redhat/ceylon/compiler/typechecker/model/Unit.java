@@ -7,6 +7,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -860,4 +861,27 @@ public class Unit {
     public TypeDeclaration getLanguageModuleModelDeclarationTypeDeclaration(String name) {
         return (TypeDeclaration) getLanguageModuleModelDeclarationDeclaration(name);
     }
+    
+    private final Map<String,String> modifiers = new HashMap<String,String>();
+    private void put(String modifier) {
+        modifiers.put(modifier, modifier);
+    }
+    {
+        put("shared");
+        put("default");
+        put("formal");
+        put("native");
+        put("actual");
+        put("abstract");
+        put("final");
+        put("variable");
+        put("late");
+        put("deprecated");
+        put("annotation");
+        put("optional");
+    }
+    public Map<String, String> getModifiers() {
+        return modifiers;
+    }
+
 }

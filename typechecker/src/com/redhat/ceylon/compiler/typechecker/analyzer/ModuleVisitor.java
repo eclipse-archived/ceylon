@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.buildAnnotations;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
@@ -112,7 +113,7 @@ public class ModuleVisitor extends Visitor {
                         .addError("package name does not match descriptor location: " + 
                         		nameString + " should be " + pkg.getNameAsString());
                 }
-                if (hasAnnotation(that.getAnnotationList(), "shared")) {
+                if (hasAnnotation(that.getAnnotationList(), "shared", unit.getUnit())) {
                     pkg.setShared(true);
                 }
                 else {
@@ -162,10 +163,11 @@ public class ModuleVisitor extends Visitor {
                     }
                     ModuleImport moduleImport = moduleManager.findImport(mainModule, importedModule);
                     if (moduleImport == null) {
-                        boolean optional = hasAnnotation(that.getAnnotationList(), "optional");
-                        boolean export = hasAnnotation(that.getAnnotationList(), "shared");
+                        Tree.AnnotationList al = that.getAnnotationList();
+                        boolean optional = hasAnnotation(al, "optional", unit.getUnit());
+                        boolean export = hasAnnotation(al, "shared", unit.getUnit());
                         moduleImport = new ModuleImport(importedModule, optional, export);
-                        buildAnnotations(that.getAnnotationList(), moduleImport.getAnnotations());
+                        buildAnnotations(al, moduleImport.getAnnotations());
                         mainModule.getImports().add(moduleImport);
                     }
                     moduleManager.addModuleDependencyDefinition(moduleImport, that);
@@ -189,6 +191,27 @@ public class ModuleVisitor extends Visitor {
     
     public Module getMainModule() {
         return mainModule;
+    }
+    
+    @Override
+    public void visit(Tree.Import that) {
+        super.visit(that);
+        Tree.ImportPath path = that.getImportPath();
+        if (path!=null && 
+                formatPath(path.getIdentifiers()).equals("ceylon.language")) {
+            Tree.ImportMemberOrTypeList imtl = that.getImportMemberOrTypeList();
+            if (imtl!=null) {
+                for (Tree.ImportMemberOrType imt: imtl.getImportMemberOrTypes()) {
+                    if (imt.getAlias()!=null && imt.getIdentifier()!=null) {
+                        String name = name(imt.getIdentifier());
+                        String alias = name(imt.getAlias().getIdentifier());
+                        if (that.getUnit().getModifiers().containsKey(name)) {
+                            that.getUnit().getModifiers().put(name, alias);
+                        }
+                    }
+                }
+            }
+        }
     }
     
 }
