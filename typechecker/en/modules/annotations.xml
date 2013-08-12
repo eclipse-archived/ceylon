@@ -177,6 +177,9 @@ shared deprecated</programlisting>
             <para>The return type of an annotation constructor must be a constrained annotation 
             type.</para>
             
+            <para>A user-defined annotation constructor may not return the same annotation 
+            type as one of the modifiers listed below in <xref linkend="declarationmodifiers"/>.</para>
+            
             <comment><para>Note: in future releases of the language we will let an annotation 
             constructor return a sequence or tuple of annotation type instances.</para></comment>
             
@@ -268,8 +271,8 @@ shared deprecated</programlisting>
     string => text;
 }]]></programlisting>
             
-            <comment><para>Note: it is perfectly acceptable for multiple annotation constructors 
-            to return the same annotation type.</para></comment>
+            <comment><para>Note: it is perfectly acceptable for multiple annotation 
+            constructors to return the same annotation type.</para></comment>
             
         </section>
         
