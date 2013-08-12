@@ -1772,7 +1772,7 @@ public class GenerateJsVisitor extends Visitor
         } else {
             out(clAlias, "String('");
         }
-        out("Attempt to read unitialized attribute ��", pubname, "��'));");
+        out("Attempt to read unitialized attribute «", pubname, "»'));");
     }
     void generateImmutableAttributeReassignmentCheck(String privname, String pubname) {
         out("if(", privname, "!==undefined)throw ", clAlias, "InitializationException(");
@@ -1781,7 +1781,7 @@ public class GenerateJsVisitor extends Visitor
         } else {
             out(clAlias, "String('");
         }
-        out("Attempt to reassign immutable attribute ��", pubname, "��'));");
+        out("Attempt to reassign immutable attribute «", pubname, "»'));");
     }
 
     private void addGetterAndSetterToPrototype(TypeDeclaration outer,
