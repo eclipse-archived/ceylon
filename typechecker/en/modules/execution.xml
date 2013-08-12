@@ -1168,7 +1168,7 @@ String result = middleObject.string;</programlisting>
                     <para>Where possible, values of type <literal>Integer</literal> are 
                     represented in two's complement form using a fixed bit length. Where 
                     possible, a 64-bit representation is used. Overflow and underflow wrap 
-                    silently.  This is the case the JavaScript Virtual Machine.</para>
+                    silently. This is the case for the Java Virtual Machine.</para>
                 </listitem>
                 <listitem>
                     <para>Otherwise, values of type <literal>Integer</literal> are 
