@@ -69,7 +69,9 @@ public class UnknownTypeCollector extends Visitor {
     }
 
     private void collectUnknownTypes(ProducedType type, Map<Declaration, Declaration> visited) {
-        collectUnknownTypesResolved(type.resolveAliases(), visited);
+        if (type!=null) {
+            collectUnknownTypesResolved(type.resolveAliases(), visited);
+        }
     }
 
     private void collectUnknownTypesResolved(ProducedType type, Map<Declaration, Declaration> visited) {
