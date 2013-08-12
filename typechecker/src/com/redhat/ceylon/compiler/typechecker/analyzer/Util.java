@@ -561,12 +561,12 @@ public class Util {
         return true;
     }
 
-    static boolean isBooleanTrue(Declaration d) {
+    public static boolean isBooleanTrue(Declaration d) {
         return d!=null && d.getQualifiedNameString()
                 .equals("ceylon.language::true");
     }
 
-    static boolean isBooleanFalse(Declaration d) {
+    public static boolean isBooleanFalse(Declaration d) {
         return d!=null && d.getQualifiedNameString()
                 .equals("ceylon.language::false");
     }
