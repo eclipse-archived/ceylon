@@ -4590,7 +4590,7 @@ public class ExpressionVisitor extends Visitor {
         }
         if (switchExpression!=null) {
             ProducedType st = switchExpression.getTypeModel();
-            if (t!=null && !isTypeUnknown(st)) {
+            if (t!=null) {
                 ProducedType pt = t.getTypeModel();
                 ProducedType it = intersectionType(pt, st, unit);
                 if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(pt)) {
