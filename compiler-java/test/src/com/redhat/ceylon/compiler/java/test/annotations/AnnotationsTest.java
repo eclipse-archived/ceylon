@@ -126,6 +126,11 @@ public class AnnotationsTest extends CompilerTest {
     }
 
     @Test
+    public void testVariadicTricks(){
+        compareWithJavaSource("VariadicTricks");
+    }
+    
+    @Test
     public void testAnnotationClassMetamodelReference(){
         compareWithJavaSource("AnnotationClassMetamodelReference");
     }

@@ -1,0 +1,223 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+@interface VariadicTricks$annotation {
+    
+    public abstract .java.lang.String[] args();
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface VariadicTricks$annotations {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks$annotation[] value();
+}
+@.ceylon.language.Final$annotation
+@.ceylon.language.Annotation$annotation
+final class VariadicTricks implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
+    
+    VariadicTricks() {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$0 = .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks.$init$args();
+                this($ceylontmp$args$0);
+            }
+            returning null;
+        );
+    }
+    
+    VariadicTricks(.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks$annotation anno) {
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.args()));
+    }
+    
+    VariadicTricks(final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
+        this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks>(.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks.$TypeDescriptor, this);
+    }
+    
+    static .ceylon.language.Sequential<? extends .ceylon.language.String> $init$args() {
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+    }
+    protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$impl() {
+        return $ceylon$language$model$SequencedAnnotation$this;
+    }
+    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$impl() {
+        return $ceylon$language$model$ConstrainedAnnotation$this;
+    }
+    
+    @.java.lang.Override
+    public final boolean occurs(final .ceylon.language.model.Annotated programElement) {
+        return $ceylon$language$model$ConstrainedAnnotation$this.occurs(programElement);
+    }
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks> $ceylon$language$model$Annotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks.class)
+final class variadicTricksEmpty_ {
+    
+    private variadicTricksEmpty_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    static .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks variadicTricksEmpty() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.variadicTricksEmpty_.variadicTricksEmpty();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {
+                0,
+                0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks.class)
+final class variadicTricksRepeated_ {
+    
+    private variadicTricksRepeated_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    static .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks variadicTricksRepeated(final .java.lang.String s) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks(.ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.String.instance(s),
+                .ceylon.language.String.instance(s)}));
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {256},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks.class)
+final class variadicTricks_ {
+    
+    private variadicTricks_() {
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks variadicTricks() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$1 = .com.redhat.ceylon.compiler.java.test.annotations.variadicTricks_.variadicTricks$args();
+            }
+            returning variadicTricks($ceylontmp$args$1);
+        );
+    }
+    
+    static final .ceylon.language.Sequential<? extends .ceylon.language.String> variadicTricks$args() {
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    static .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks variadicTricks(final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks(args);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {256},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.variadicTricks_.class)
+final class variadicTricksIndirect_ {
+    
+    private variadicTricksIndirect_() {
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks variadicTricksIndirect() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$2 = .com.redhat.ceylon.compiler.java.test.annotations.variadicTricksIndirect_.variadicTricksIndirect$args();
+            }
+            returning variadicTricksIndirect($ceylontmp$args$2);
+        );
+    }
+    
+    static final .ceylon.language.Sequential<? extends .ceylon.language.String> variadicTricksIndirect$args() {
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    static .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks variadicTricksIndirect(final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
+        return .com.redhat.ceylon.compiler.java.test.annotations.variadicTricks_.variadicTricks(args);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.variadicTricksIndirect_.class)
+final class variadicTricksIndirectEmpty_ {
+    
+    private variadicTricksIndirectEmpty_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    static .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks variadicTricksIndirectEmpty() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.variadicTricksIndirect_.variadicTricksIndirect();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.variadicTricksIndirectEmpty_.variadicTricksIndirectEmpty();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {
+                0,
+                0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.variadicTricksIndirect_.class)
+final class variadicTricksIndirectRepeated_ {
+    
+    private variadicTricksIndirectRepeated_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    static .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks variadicTricksIndirectRepeated(final .java.lang.String s) {
+        return .com.redhat.ceylon.compiler.java.test.annotations.variadicTricksIndirect_.variadicTricksIndirect(.ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.String.instance(s),
+                .ceylon.language.String.instance(s)}));
+    }
+}
+@.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks$annotations({
+        @.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks$annotation(args = {}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks$annotation(args = {
+                "repeated",
+                "repeated"}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks$annotation(args = {}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks$annotation(args = "indirect"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks$annotation(args = {}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks$annotation(args = {
+                "indirect-repeated",
+                "indirect-repeated"})})
+class VariadicTricksCallsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    VariadicTricksCallsite() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricksCallsite();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricksCallsite.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricksCallsite.class);
+}
