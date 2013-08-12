@@ -350,7 +350,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <para>A compound expression occurring in a <literal>dynamic</literal> 
         block, and involving a qualified or unqualified reference with no type,
-        may also have no type.</para>
+        or a reference to a declaration with no type, may also have no type.</para>
         
         <para>In particular, if an operand expression has no type, and the type 
         of the operator expression depends upon the type of the operand, and the 
@@ -488,8 +488,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             and <literal>Person.equals</literal>.</para></comment>
                     
             <para>A callable reference which occurs within a <literal>dynamic</literal> 
-            block and which references a function declaration with no type, has no 
-            type.</para>
+            block and which references a function declaration with no return type, has 
+            no type.</para>
             
         </section>
         
@@ -573,8 +573,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         invocation expression is simply <literal>R</literal>.</para>
         
         <para>If the invoked expression has no type, and occurs within a <literal>dynamic</literal> 
-        block, then the whole callable expression has no type, and the argument list is not 
-        type-checked at compile time.</para>
+        block, then the whole invocation expression has no type, and the argument list is 
+        not type-checked at compile time, unless it is a direct invocation expression.</para>
         
         <para>An invocation expression must specify arguments for parameters of the callable 
         object, either as a positional argument list, or as a named argument list.</para>
@@ -623,10 +623,17 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>If an invocation expression has a named argument list, it must be a direct
             invocation.</para>
             
+            <para>The type of a direct invocation expression is the return type of the 
+            realization of the function, or the type of the realization of the class, as 
+            defined in <xref linkend="realizations"/>.</para>
+            
+            <para>If the function has no return type, and occurs within a <literal>dynamic</literal> 
+            block, then the whole direct invocation expression has no type.</para>
+            
             <para>In a direct invocation expression of a function or class, the restriction
             above on the argument list type is equivalent to the following requirements. Given
-            the parameter list of the realization, as defined in <xref linkend="realizations"/>, 
-            of the function or class, and the arguments of the direct invocation:</para>
+            the parameter list of the realization of the function or class, and the arguments 
+            of the direct invocation:</para>
             
             <itemizedlist>
                 <listitem>
@@ -663,6 +670,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>Furthermore, if type argument are inferred, then the inferred type 
             arguments must conform, as defined by <xref linkend="typeargumentsandconstraints"/>, 
             to the type parameter list of the realization of the function or class.</para>
+            
+            <para>If an argument expression has no type, or if its parameter has no type, 
+            and the invocation occurs within a <literal>dynamic</literal> block, then the 
+            argument is not type-checked at compile time.</para>
             
         </section>
         

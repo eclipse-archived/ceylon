@@ -1703,9 +1703,10 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         of <literal>void</literal>.</para></comment>
         
         <para>Inside a <literal>dynamic</literal> block, a function may be declared using 
-        the keyword <literal>function</literal> in place of its type, even if no type may 
-        be inferred. Such a function has no type. In other locations, a value declaration 
-        must either have an explicit type, or a type must be inferrable.</para>
+        the keyword <literal>function</literal> in place of its return type, even if no 
+        return type may be inferred. Such a function has no return type. In other locations, 
+        a function declaration must either have an explicit return type, or a return type 
+        must be inferrable.</para>
             
         <section id="callabletype">
             <title>Callable type of a function</title>
