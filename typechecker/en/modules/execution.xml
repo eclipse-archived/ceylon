@@ -56,9 +56,12 @@
         determining the identity of a value which is not of type 
         <literal>Identifiable</literal>.</para>
         
-        <para>Given a value, the program may determine if the referenced object is an
-        instance of a certain type using the <literal>is</literal> operator. The class
-        and type arguments of the object are taken into account.</para>
+        <para>Given a value, the program may determine if the referenced object is
+        <emphasis>assignable to a certain type</emphasis> using the <literal>is</literal> 
+        operator. The object is assignable to the given type if the applied type formed 
+        by its class and type arguments is a subtype of the given type according to the 
+        type system defined in <xref linkend="typesystem"/>. (Therefore, the Ceylon 
+        runtime must be capable of reasoning about subtyping.)</para>
         
         <para>Invocation of a function or instantiation of a class results in execution 
         of the function body or class initializer with parameter values that are copies 
