@@ -24,7 +24,7 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     private boolean abstraction;
     private List<Declaration> overloads;
     private boolean declaredAnything;
-    private AnnotationInstantiation annotationInstantiation;
+    private Object annotationConstructor;
     private boolean deferred;
     
 
@@ -37,12 +37,12 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
      }*/
     
 
-    public AnnotationInstantiation getAnnotationInstantiation() {
-        return annotationInstantiation;
+    public Object getAnnotationConstructor() {
+        return annotationConstructor;
     }
 
-    public void setAnnotationInstantiation(AnnotationInstantiation annotationInstantiation) {
-        this.annotationInstantiation = annotationInstantiation;
+    public void setAnnotationConstructor(Object annotationInstantiation) {
+        this.annotationConstructor = annotationInstantiation;
     }
 
     @Override
