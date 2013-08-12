@@ -68,6 +68,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -282,10 +283,13 @@ public class ExpressionVisitor extends Visitor {
         //assignable to the declared variable type
         //(nor is it possible to infer the variable type)
         isCondition=true;
-        that.getType().visit(this);
+        Tree.Type t = that.getType();
+        if (t!=null) {
+            t.visit(this);
+        }
         isCondition=false;
         Tree.Variable v = that.getVariable();
-        ProducedType type = that.getType().getTypeModel();
+        ProducedType type = t==null ? null : t.getTypeModel();
         if (v!=null) {
 //            if (type!=null && !that.getNot()) {
 //                v.getType().setTypeModel(type);
