@@ -1984,7 +1984,8 @@ case (is Float) {
             
             <para>As a special exception to the above, if a <literal>for</literal> occurs in 
             a <literal>dynamic</literal> block, and the iterated expression has no type, the 
-            iterator is not statically type-checked, and the iteration variable has no type.</para>
+            iterator is not statically type-checked. If the iteration variable does not declare
+            an explicit type, the iteration variable has no type.</para>
                         
             <para>For example:</para>
 
