@@ -62,3 +62,36 @@ String leak() {
     return x;
   }
 }
+
+void control() {
+    dynamic {
+        if (xyz) {}
+        if (is String xyz) {
+            @type:"String" value v = xyz;
+        }
+        if (!is String xyz) {
+            @type:"unknown" value v = xyz;
+        }
+        if (exists xyz) {
+            @type:"Object" value v = xyz;
+        }
+        if (nonempty xyz) {
+            @type:"unknown" value v = xyz;
+        }
+        for (i in xyz) {
+            @type:"unknown" value v = i;
+        }
+        for (i->Object j in xyz) {
+            @type:"unknown" value v = i;
+            @type:"Object" value w = j;
+        }
+        for (String i in xyz) {
+            @type:"String" value v = i;
+        }
+        switch (xyz)
+        case (true) {}
+        case (is String) {
+             @type:"String" value v = xyz;
+        }
+    }
+}
