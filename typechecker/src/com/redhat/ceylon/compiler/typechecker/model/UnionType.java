@@ -37,11 +37,17 @@ public class UnionType extends TypeDeclaration {
     
     @Override
     public ProducedType getType() {
-        if (getCaseTypes().size()==0) {
+        List<ProducedType> cts = getCaseTypes();
+        for (ProducedType pt: cts) {
+            if (pt.isUnknown()) {
+                return pt;
+            }
+        }
+        if (cts.size()==0) {
             return unit.getNothingDeclaration().getType();
         }
-        else if (getCaseTypes().size()==1) {
-            return getCaseTypes().get(0).getType();
+        else if (cts.size()==1) {
+            return cts.get(0).getType();
         }
         else {
             return super.getType();

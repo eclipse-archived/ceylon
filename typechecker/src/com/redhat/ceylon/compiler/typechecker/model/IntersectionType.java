@@ -39,11 +39,25 @@ public class IntersectionType extends TypeDeclaration {
     
     @Override
     public ProducedType getType() {
-        if (getSatisfiedTypes().isEmpty()) {
+        List<ProducedType> sts = getSatisfiedTypes();
+        for (ProducedType pt: sts) {
+            if (pt.isUnknown()) {
+                List<ProducedType> list = new ArrayList<ProducedType>(sts.size()-1);
+                for (ProducedType st: sts) {
+                    if (!st.isUnknown()) {
+                        list.add(st);
+                    }
+                }
+                IntersectionType it = new IntersectionType(unit);
+                it.setSatisfiedTypes(list);
+                return it.getType();
+            }
+        }
+        if (sts.isEmpty()) {
             return unit.getAnythingDeclaration().getType();
         }
-        else if (getSatisfiedTypes().size()==1) {
-            return getSatisfiedTypes().get(0).getType();
+        else if (sts.size()==1) {
+            return sts.get(0).getType();
         }
         else {
             return super.getType();
