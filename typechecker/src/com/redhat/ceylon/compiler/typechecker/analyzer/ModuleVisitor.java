@@ -9,6 +9,7 @@ import static java.util.Arrays.asList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
@@ -205,8 +206,9 @@ public class ModuleVisitor extends Visitor {
                     if (imt.getAlias()!=null && imt.getIdentifier()!=null) {
                         String name = name(imt.getIdentifier());
                         String alias = name(imt.getAlias().getIdentifier());
-                        if (that.getUnit().getModifiers().containsKey(name)) {
-                            that.getUnit().getModifiers().put(name, alias);
+                        Map<String, String> mods = unit.getUnit().getModifiers();
+                        if (mods.containsKey(name)) {
+                            mods.put(name, alias);
                         }
                     }
                 }

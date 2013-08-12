@@ -7,6 +7,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
@@ -1224,8 +1225,9 @@ public class DeclarationVisitor extends Visitor {
                     if (imt.getAlias()!=null && imt.getIdentifier()!=null) {
                         String name = name(imt.getIdentifier());
                         String alias = name(imt.getAlias().getIdentifier());
-                        if (unit.getModifiers().containsKey(name)) {
-                            unit.getModifiers().put(name, alias);
+                        Map<String, String> mods = unit.getModifiers();
+                        if (mods.containsKey(name)) {
+                            mods.put(name, alias);
                         }
                     }
                 }
