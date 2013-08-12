@@ -618,7 +618,9 @@ public class ExpressionVisitor extends Visitor {
                 type instanceof Tree.LocalModifier) {
             type.addError("value must specify an explicit type or definition", 200);
         }
-        inferType(that, sie);
+        if (!dec.isParameter()) {
+            inferType(that, sie);
+        }
         if (type!=null) {
             ProducedType t = type.getTypeModel();
             if (!isTypeUnknown(t)) {
