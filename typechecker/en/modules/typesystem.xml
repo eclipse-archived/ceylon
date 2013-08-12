@@ -2282,6 +2282,11 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
         <emphasis>principal instantation</emphasis> help us reason about these 
         relationships.</para>
         
+        <comment><para>Warning: this section is not for the faint of heart. Feel 
+        free to skip to <xref linkend="declarations"/>, unless you're really, really 
+        interested in precisely how the compiler reasons about inheritance of generic 
+        types.</para></comment>
+        
         <section id="inheritedinstantiations">
             <title>Inherited instantiations</title>
             
