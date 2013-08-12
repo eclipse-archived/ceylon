@@ -1686,9 +1686,6 @@ Item item = comp of Item;</programlisting>
             
             <programlisting><![CDATA[given Argument of String | Integer | Float]]></programlisting>
             
-            <comment><para>TODO: Should we inherit generic type constraints from supertypes, 
-            like in C#, or require them to be redeclared, like in Java?</para></comment>
-            
             <para>A type parameter is a subtype of its upper bounds.</para>
             
             <programlisting><![CDATA[class Holder<Value>(shared Value value) 
