@@ -250,12 +250,6 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
     }
 
     @Override
-    public boolean isExtendable() {
-        load();
-        return super.isExtendable();
-    }
-
-    @Override
     public ProducedType getSelfType() {
         load();
         return super.getSelfType();
