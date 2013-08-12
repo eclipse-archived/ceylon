@@ -18,7 +18,8 @@ public class ProducedTypedReference extends ProducedReference {
     }
     
     public ProducedType getType() {
-        ProducedType t = getDeclaration().getType();
+        TypedDeclaration d = getDeclaration();
+        ProducedType t = d==null ? null : d.getType();
         if (t==null) {
             return null;
         }
