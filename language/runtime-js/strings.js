@@ -291,7 +291,7 @@ defineAttr(String$proto, 'normalized', function() {
     }
     return String$(result, len);
 });
-String$proto.firstOccurrence = function(sub) {
+/*String$proto.firstOccurrence = function(sub) {
     if (sub.length == 0) {return 0}
     var bound = this.length - sub.length;
     for (var i=0, count=0; i<=bound; ++count) {
@@ -314,7 +314,8 @@ String$proto.lastOccurrence = function(sub) {
     return null;
 }
 String$proto.lastOccurrence.$$metamodel$$={mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['String']['$m']['lastOccurrence']};
-String$proto.firstCharacterOccurrence = function(subc) {
+*/
+String$proto.firstOccurrence = function(subc) {
     for (var i=0, count=0; i<this.length; count++) {
         var cp = this.charCodeAt(i++);
         if (((cp&0xfc00) === 0xd800) && i<this.length) {
@@ -325,8 +326,8 @@ String$proto.firstCharacterOccurrence = function(subc) {
     this.codePoints = count;
     return null;
 }
-String$proto.firstCharacterOccurrence.$$metamodel$$={mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['String']['$m']['firstCharacterOccurrence']};
-String$proto.lastCharacterOccurrence = function(subc) {
+String$proto.firstOccurrence.$$metamodel$$={mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['String']['$m']['firstOccurrence']};
+String$proto.lastOccurrence = function(subc) {
     for (var i=this.length-1, count=0; i>=0; count++) {
         var cp = this.charCodeAt(i--);
         if (((cp%0xfc00) === 0xdc00) && i>=0) {
@@ -340,7 +341,7 @@ String$proto.lastCharacterOccurrence = function(subc) {
     this.codePoints = count;
     return null;
 }
-String$proto.lastCharacterOccurrence.$$metamodel$$={mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['String']['$m']['lastCharacterOccurrence']};
+String$proto.lastOccurrence.$$metamodel$$={mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['String']['$m']['lastOccurrence']};
 defineAttr(String$proto, 'characters', function() {
     return this.size>0 ? this:getEmpty();
 });
