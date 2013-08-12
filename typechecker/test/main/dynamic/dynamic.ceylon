@@ -73,7 +73,7 @@ void control() {
             @type:"unknown" value v = xyz;
         }
         if (exists xyz) {
-            @type:"Object" value v = xyz;
+            @type:"unknown" value v = xyz;
         }
         if (nonempty xyz) {
             @type:"unknown" value v = xyz;
