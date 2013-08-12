@@ -277,7 +277,7 @@ public class ConstraintVisitor extends Visitor {
         if (pal!=null) {
             checkPositionalArguments(a, pal.getPositionalArguments());
         }
-        else {
+        if (nal!=null) {
             checkNamedArguments(a, nal);
             if (nal.getSequencedArgument()!=null) {
                 nal.getSequencedArgument().addError("illegal annotation argument");
