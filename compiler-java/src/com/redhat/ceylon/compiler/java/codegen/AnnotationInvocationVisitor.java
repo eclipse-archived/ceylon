@@ -21,7 +21,9 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -47,9 +49,11 @@ class AnnotationInvocationVisitor extends Visitor {
 
     public static Class annoClass(Tree.InvocationExpression invocation) {
         Declaration declaration = ((Tree.BaseMemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
-        if (declaration instanceof Method) {
-            return (Class)((AnnotationInvocation)((Method)declaration).getAnnotationConstructor()).getPrimary();
-        } else if (declaration instanceof Class) {
+        while (declaration instanceof Method) {
+            declaration = ((AnnotationInvocation)((Method)declaration).getAnnotationConstructor()).getPrimary();
+        } 
+        
+        if (declaration instanceof Class) {
             return (Class)declaration;
         } else {
             throw Assert.fail();
@@ -100,10 +104,11 @@ class AnnotationInvocationVisitor extends Visitor {
     private final ExpressionTransformer exprGen;
     private final AnnotationInvocation anno;
     
-    private ListBuffer<JCExpression> arrayExprs = null;
+    
     private Parameter parameter;
     private ProducedType expectedType;
-    private ListBuffer<JCExpression> annotationArguments = ListBuffer.lb();
+    private ListBuffer<JCExpression> arrayExprs = null;
+    private JCExpression argumentExpr;
 
     private AnnotationInvocationVisitor(
             ExpressionTransformer expressionTransformer, Node errorNode, AnnotationInvocation anno) {
@@ -112,10 +117,25 @@ class AnnotationInvocationVisitor extends Visitor {
         this.anno = anno;
     }
     
+    private JCExpression getExpression() {
+        if (argumentExpr != null) {
+            return argumentExpr;
+        } else if (arrayExprs != null) {
+            return exprGen.make().NewArray(null, null, arrayExprs.toList());
+        } else if (anno.isInterop()) {
+            // This can happen if we're invoking an interop constructor
+            // and defaulting an argument
+            return null;
+        } else {
+            return exprGen.makeErroneous(errorNode, "No result when transforming annotation");
+        }
+        
+    }
+    
     public static JCAnnotation transform(ExpressionTransformer expressionTransformer, Tree.InvocationExpression invocation) {
         AnnotationInvocationVisitor visitor = new AnnotationInvocationVisitor(expressionTransformer, invocation, annoCtorModel(invocation));
         visitor.visit(invocation);
-        return (JCAnnotation) ((JCAssign) visitor.annotationArguments.first()).rhs;
+        return (JCAnnotation) visitor.getExpression();
     }
     
     public void visit(Tree.InvocationExpression invocation) {
@@ -141,21 +161,24 @@ class AnnotationInvocationVisitor extends Visitor {
     private static JCAnnotation transformInstantiation(ExpressionTransformer exprGen, Tree.InvocationExpression invocation) {
         AnnotationInvocation ai = annoCtorModel(invocation);
         AnnotationInvocationVisitor visitor = new AnnotationInvocationVisitor(exprGen, invocation, annoCtorModel(invocation));
+        ListBuffer<JCExpression> annotationArguments = ListBuffer.<JCExpression>lb();
         if (invocation.getPositionalArgumentList() != null) {
             for (Tree.PositionalArgument arg : invocation.getPositionalArgumentList().getPositionalArguments()) {
                 visitor.parameter = arg.getParameter();
                 arg.visit(visitor);
+                annotationArguments.append(makeArgument(exprGen, invocation, visitor.parameter, visitor.getExpression()));
             }
         } 
         if (invocation.getNamedArgumentList() != null) {
             for (Tree.NamedArgument arg : invocation.getNamedArgumentList().getNamedArguments()) {
                 visitor.parameter = arg.getParameter();
                 arg.visit(visitor);
+                annotationArguments.append(makeArgument(exprGen, invocation, visitor.parameter, visitor.getExpression()));
             }
         }
         return exprGen.at(invocation).Annotation(
                 ai.makeAnnotationType(exprGen),
-                visitor.annotationArguments.toList());
+                annotationArguments.toList());
     }
     
     public static JCAnnotation transformConstructor(ExpressionTransformer exprGen, Tree.InvocationExpression invocation) {
@@ -167,54 +190,85 @@ class AnnotationInvocationVisitor extends Visitor {
             ExpressionTransformer exprGen,
             Tree.InvocationExpression invocation, AnnotationInvocation ai, 
             com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath) {
-        ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
+        Map<Parameter, ListBuffer<JCExpression>> args = new LinkedHashMap<Parameter, ListBuffer<JCExpression>>();
         
-        List<Parameter> unbound = new ArrayList<Parameter>(ai.getClassParameters());
-        outer: for (AnnotationArgument argument : ai.getAnnotationArguments()) {
-            for (Parameter classParameter : ai.getClassParameters()) {
-                if (classParameter.equals(argument.getParameter())) {
-                    unbound.remove(classParameter);
-                    args.appendList(transformConstructorArgument(exprGen, invocation, classParameter, argument, fieldPath));
-                    continue outer;
-                }
+        List<Parameter> classParameters = ai.getClassParameters();
+        // The class parameter's we've not yet figured out the value for
+        ArrayList<Parameter> unbound = new ArrayList<Parameter>(classParameters);
+        for (Parameter classParameter : classParameters) {
+            for (AnnotationArgument argument : ai.findAnnotationArgumentForClassParameter(classParameter)) {
+                JCExpression expr = transformConstructorArgument(exprGen, invocation, classParameter, argument, fieldPath);
+                appendArgument(args, classParameter, expr);
+                unbound.remove(classParameter);
             }
         }
-        outer2: for (Parameter classParameter : unbound) {
-            // We didn't find an argument for that class parameter
-            // If the callee is a ctor it might have a static or defaulted argument
-            for (AnnotationArgument argument : ai.getAnnotationArguments()) {
-                if (argument.getTerm() instanceof LiteralAnnotationTerm) {
-                    // literal argument case
-                    args.appendList(transformConstructorArgument(exprGen, invocation, classParameter, argument, fieldPath));
-                    continue outer2;
-                }
-                // TODO What about term interanceof InvocationAnnotationTerm
-                // TODO What about term interanceof ParameterAnnotationTerm (I think this is illegal)
-            }
-            
+        outer: for (Parameter classParameter : ((ArrayList<Parameter>)unbound.clone())) {
             // Defaulted argument
-            if (ai.getPrimary() instanceof Method) {
+            if (ai.isInstantiation()) {
+                if (classParameter.isDefaulted()) {
+                    // That's OK, we'll pick up the default argument from 
+                    // the Java Annotation type
+                    unbound.remove(classParameter);
+                    continue outer;
+                }
+            } else {
                 Method ac2 = (Method)ai.getPrimary();
                 AnnotationInvocation i = (AnnotationInvocation)ac2.getAnnotationConstructor();
                 for (AnnotationArgument aa : i.getAnnotationArguments()) {
                     if (aa.getParameter().equals(classParameter)) {
-                        //visitor.parameter = classParameter;
-                        //visitor.append(aa.getTerm().makeAnnotationArgumentValue(exprGen, i, com.sun.tools.javac.util.List.<AnnotationFieldName>of(aa)));
-                        args.append(
-                                i.makeAnnotationArgument(exprGen, i, classParameter, 
-                                com.sun.tools.javac.util.List.<AnnotationFieldName>of(aa), aa.getTerm()));
+                        appendArgument(args, classParameter, 
+                                aa.getTerm().makeAnnotationArgumentValue(exprGen, i,com.sun.tools.javac.util.List.<AnnotationFieldName>of(aa)));
+                        unbound.remove(classParameter);
+                        continue outer;
                     }
                 }
             }
-            // TODO What about primary instanceof Class?
+            
+            if (classParameter.isSequenced()) {
+                appendArgument(args, classParameter, 
+                        exprGen.make().NewArray(null,  null, com.sun.tools.javac.util.List.<JCExpression>nil()));
+                unbound.remove(classParameter);
+                continue outer;
+            }
+            
         }
+        
+        for (Parameter classParameter : unbound) {
+            appendArgument(args, classParameter, 
+                exprGen.makeErroneous(invocation, "Unbound annotation class parameter " + classParameter.getName()));
+        }
+        ListBuffer<JCExpression> assignments = ListBuffer.<JCExpression>lb();
+        for (Map.Entry<Parameter, ListBuffer<JCExpression>> entry : args.entrySet()) {
+            ListBuffer<JCExpression> exprs = entry.getValue();
+            if (exprs.size() == 1) {
+                assignments.append(makeArgument(exprGen, invocation, entry.getKey(), exprs.first()));
+            } else {
+                assignments.append(makeArgument(exprGen, invocation, entry.getKey(), 
+                        exprGen.make().NewArray(null, null, exprs.toList())));
+            }
+            
+        }
+        
         JCAnnotation annotation = exprGen.at(invocation).Annotation(
                 ai.makeAnnotationType(exprGen),
-                args.toList());
+                assignments.toList());
         return annotation;
     }
     
-    public static ListBuffer<JCExpression> transformConstructorArgument(
+    private static void appendArgument(
+            Map<Parameter, ListBuffer<JCExpression>> args,
+            Parameter classParameter, JCExpression expr) {
+        if (expr != null) {
+            ListBuffer<JCExpression> exprList = args.get(classParameter);
+            if (exprList == null) {
+                exprList = ListBuffer.<JCExpression>lb();
+                args.put(classParameter, exprList);
+            }
+            exprList.append(expr);
+        }
+    }
+
+    public static JCExpression transformConstructorArgument(
             ExpressionTransformer exprGen,
             Tree.InvocationExpression invocation,
             Parameter classParameter, AnnotationArgument argument, 
@@ -281,7 +335,7 @@ class AnnotationInvocationVisitor extends Visitor {
         } else {
             visitor.append(visitor.exprGen.makeErroneous(invocation, "Unable to find argument"));
         }
-        return visitor.annotationArguments;
+        return visitor.getExpression();
     }
     
     
@@ -324,6 +378,18 @@ class AnnotationInvocationVisitor extends Visitor {
         }
     }
 
+    private static JCAssign makeArgument(ExpressionTransformer exprGen, Node errorNode, 
+            Parameter parameter, JCExpression expr) {
+        JCExpression memberName;
+        if (parameter != null) {
+            memberName = exprGen.naming.makeUnquotedIdent(
+            Naming.selector(parameter.getModel(), Naming.NA_ANNOTATION_MEMBER));
+        } else {
+            memberName = exprGen.makeErroneous(errorNode);
+        }
+        return exprGen.make().Assign(memberName, expr);
+    }
+    
     /**
      * If we're currently constructing an array then or append the given expression
      * Otherwise make an annotation argument for given expression and 
@@ -333,15 +399,10 @@ class AnnotationInvocationVisitor extends Visitor {
         if (arrayExprs != null) {
             arrayExprs.append(expr);
         } else {
-            JCExpression memberName;
-            if (this.parameter != null) {
-                memberName = exprGen.naming.makeUnquotedIdent(
-                Naming.selector(this.parameter.getModel(), Naming.NA_ANNOTATION_MEMBER));
-            } else {
-                memberName = exprGen.makeErroneous(errorNode);
+            if (this.argumentExpr != null) {
+                Assert.fail();
             }
-            annotationArguments.append(exprGen.make().Assign(
-                    memberName, expr));
+            this.argumentExpr = expr;
         }
     }
 

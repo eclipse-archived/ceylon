@@ -81,10 +81,17 @@ public class AnnotationInvocation {
     }
     
     /**
+     * Is this an annotation class instantiation (i.e. is the primay a Class)?
+     */
+    public boolean isInstantiation() {
+        return getPrimary() instanceof Class;
+    }
+    
+    /**
      * The type of the annotation class ultimately being instantiated
      */
     public ProducedType getAnnotationClassType() {
-        if (getPrimary() instanceof Class) {
+        if (isInstantiation()) {
             return ((Class)getPrimary()).getType();
         } else {
             // TODO Method may not be declared to return this!
@@ -165,7 +172,7 @@ public class AnnotationInvocation {
         ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
         for (AnnotationArgument aa : getAnnotationArguments()) {
             Parameter name = aa.getParameter();
-            if (getPrimary() instanceof Method) {
+            if (!isInstantiation()) {
                 AnnotationInvocation annotationInvocation = (AnnotationInvocation)getConstructorDeclaration().getAnnotationConstructor();
                 for (AnnotationArgument a2 : annotationInvocation.getAnnotationArguments()) {
                     if (a2.getTerm() instanceof ParameterAnnotationTerm) {
@@ -211,7 +218,7 @@ public class AnnotationInvocation {
                     argument.getTerm().encode(gen, instantiations)));
         }
         JCExpression primary;
-        if (getPrimary() instanceof Class) {
+        if (isInstantiation()) {
             primary = gen.makeJavaType(getAnnotationClassType());
         } else {
             primary = gen.naming.makeName((Method)getPrimary(), Naming.NA_FQ | Naming.NA_WRAPPER);
@@ -251,6 +258,32 @@ public class AnnotationInvocation {
         for (AnnotationArgument aa : getAnnotationArguments()) {
             aa.getTerm().makeLiteralAnnotationFields(exprGen, toplevel, fieldPath.append(aa), staticArgs, aa.getParameter().getType());
         }
+    }
+
+    public Iterable<AnnotationArgument> findAnnotationArgumentForClassParameter(Parameter classParameter) {
+        List<AnnotationArgument> result = new ArrayList<AnnotationArgument>(1);
+        if (isInstantiation()) {
+            for (AnnotationArgument aa : getAnnotationArguments()) {
+                if (aa.getParameter().equals(classParameter)) {
+                    result.add(aa);
+                }
+            }
+        } else {
+            // we're invoking another constructor
+            AnnotationInvocation ctor = (AnnotationInvocation)((Method)getPrimary()).getAnnotationConstructor();
+            // find it's arguments
+            for (AnnotationArgument otherArgument : ctor.findAnnotationArgumentForClassParameter(classParameter)) {
+                if (otherArgument.getTerm() instanceof ParameterAnnotationTerm) {
+                    Parameter sourceParameter = ((ParameterAnnotationTerm)otherArgument.getTerm()).getSourceParameter();
+                    for (AnnotationArgument aa : getAnnotationArguments()) {
+                        if (aa.getParameter().equals(sourceParameter)) {
+                            result.add(aa);
+                        }
+                    }
+                }
+            }
+        }
+        return result;
     }
     
 }

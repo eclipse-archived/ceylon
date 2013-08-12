@@ -96,7 +96,11 @@ public class ParameterAnnotationTerm extends AnnotationTerm implements Annotatio
             for (AnnotationConstructorParameter p : ai.getConstructorParameters()) {
                 if (p.getParameter().equals(getSourceParameter())) {
                     defaultArgument = p.getDefaultArgument();
-                    return defaultArgument.makeAnnotationArgumentValue(exprGen, ai, com.sun.tools.javac.util.List.<AnnotationFieldName>of(this));
+                    if (defaultArgument != null) {
+                        return defaultArgument.makeAnnotationArgumentValue(exprGen, ai, com.sun.tools.javac.util.List.<AnnotationFieldName>of(this));
+                    } else if (p.getParameter().isSequenced()) {
+                        return exprGen.make().NewArray(null, null, com.sun.tools.javac.util.List.<JCExpression>nil());
+                    }
                 }
             }
         }
