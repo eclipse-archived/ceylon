@@ -68,7 +68,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -1691,12 +1690,15 @@ public class ExpressionVisitor extends Visitor {
         if (!dec.getParameterLists().isEmpty()) {
             ParameterList parameters = dec.getParameterLists().get(0);
             for (TypeParameter tp: dec.getTypeParameters()) {
-                ProducedType it = constrainInferredType(dec, tp, 
-                        inferTypeArgument(that, that.getPrimary().getTypeModel(), 
-                                tp, parameters));
+                ProducedType it = inferTypeArgument(that, 
+                        that.getPrimary().getTypeModel(),
+                        tp, parameters);
                 if (it.containsUnknowns()) {
                     that.addError("could not infer type argument from given arguments: " + 
                             tp.getName());
+                }
+                else {
+                    it = constrainInferredType(dec, tp, it);
                 }
                 typeArgs.add(it);
             }
@@ -1732,10 +1734,12 @@ public class ExpressionVisitor extends Visitor {
             ProducedReference pr, TypeParameter tp, ParameterList parameters) {
         List<ProducedType> inferredTypes = new ArrayList<ProducedType>();
         if (that.getPositionalArgumentList()!=null) {
-            inferTypeArgumentFromPositionalArgs(tp, parameters, pr, that.getPositionalArgumentList(), inferredTypes);
+            inferTypeArgumentFromPositionalArgs(tp, parameters, pr, 
+                    that.getPositionalArgumentList(), inferredTypes);
         }
         else if (that.getNamedArgumentList()!=null) {
-            inferTypeArgumentFromNamedArgs(tp, parameters, pr, that.getNamedArgumentList(), inferredTypes);
+            inferTypeArgumentFromNamedArgs(tp, parameters, pr, 
+                    that.getNamedArgumentList(), inferredTypes);
         }
         return formUnionOrIntersection(tp, inferredTypes);
     }
@@ -1745,11 +1749,13 @@ public class ExpressionVisitor extends Visitor {
             List<ProducedType> inferredTypes) {
         Set<Parameter> foundParameters = new HashSet<Parameter>();
         for (Tree.NamedArgument arg: args.getNamedArguments()) {
-            inferTypeArgFromNamedArg(arg, tp, pr, parameters, inferredTypes, foundParameters);
+            inferTypeArgFromNamedArg(arg, tp, pr, parameters, inferredTypes, 
+                    foundParameters);
         }
         Tree.SequencedArgument sa = args.getSequencedArgument();
         if (sa!=null) {
-            Parameter sp = getUnspecifiedParameter(null, parameters, foundParameters);
+            Parameter sp = getUnspecifiedParameter(null, parameters, 
+                    foundParameters);
             if (sp!=null) {
                 inferTypeArgFromSequencedArg(sa, tp, sp, inferredTypes);
             }
@@ -1808,18 +1814,21 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType at = a.getTypeModel();
                 if (a instanceof Tree.SpreadArgument) {
                     at = spreadType(at, unit, true);
-                    ProducedType ptt = getParameterTypesAsTupleType(unit, params.subList(i, params.size()), pr);
+                    ProducedType ptt = getParameterTypesAsTupleType(unit, 
+                            params.subList(i, params.size()), pr);
                     addToUnionOrIntersection(tp, inferredTypes, inferTypeArg(tp, ptt, at, 
                             new ArrayList<TypeParameter>()));
                 }
                 else if (a instanceof Tree.Comprehension) {
                     if (parameter.isSequenced()) {
-                        inferTypeArgFromComprehension(tp, parameter, ((Tree.Comprehension) a), inferredTypes);
+                        inferTypeArgFromComprehension(tp, parameter, ((Tree.Comprehension) a), 
+                                inferredTypes);
                     }
                 }
                 else {
                     if (parameter.isSequenced()) {
-                        inferTypeArgFromPositionalArgs(tp, parameter, args.subList(i, args.size()), inferredTypes);
+                        inferTypeArgFromPositionalArgs(tp, parameter, args.subList(i, args.size()), 
+                                inferredTypes);
                         break;
                     }
                     else {
@@ -1885,7 +1894,8 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void addToUnionOrIntersection(TypeParameter tp, List<ProducedType> list, ProducedType pt) {
+    private void addToUnionOrIntersection(TypeParameter tp, List<ProducedType> list, 
+            ProducedType pt) {
         if (tp.isContravariant()) {
             addToIntersection(list, pt, unit);
         }
