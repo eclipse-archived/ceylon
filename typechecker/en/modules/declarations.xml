@@ -51,7 +51,8 @@ TypeConstraints?
         extension <literal>.ceylon</literal>.</para> 
         
         <comment><para>Note: it is recommended that source file names contain only 
-        characters from the ASCII character set.</para></comment>
+        characters from the ASCII character set. This minimizes problems when 
+        transferring Ceylon source between operating systems.</para></comment>
         
         <para>There are three kinds of compilation unit:</para>
         
