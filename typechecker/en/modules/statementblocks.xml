@@ -1873,6 +1873,10 @@ else {
             specified, in order to allow a <literal>switch</literal> that accommodates additional 
             cases without resulting in a compilation error.</para></comment>
             
+            <para>As a special exception to the above, if a <literal>switch</literal> occurs in 
+            a <literal>dynamic</literal> block, and the <literal>switch</literal> expression
+            has no type, the cases are not statically type-checked for exhaustion.</para>
+            
             <comment><para>Note: an assignability condition <literal>case</literal> may narrow to 
             an intersection or union type.</para>
             <programlisting>case (is Persistent &amp; Serializable) { ... }</programlisting>
@@ -1886,9 +1890,6 @@ else {
             <literal>switch</literal> expression will be treated by the compiler as having the 
             intersection type of its declared type with the specified type inside the <literal>case</literal> 
             block. This intersection type must not be exactly <literal>Nothing</literal>.</para>
-            
-            <comment><para>TODO: Define what happens for switch expressions with no type in 
-            <literal>dynamic</literal> blocks!</para></comment>
             
             <para>For example:</para>
             
@@ -1975,9 +1976,10 @@ case (is Float) {
             </listitem>
             </itemizedlist>
             
-            <comment><para>TODO: Define what happens for iterated expressions with no type 
-            in <literal>dynamic</literal> blocks!</para></comment>
-            
+            <para>As a special exception to the above, if a <literal>for</literal> occurs in 
+            a <literal>dynamic</literal> block, and the iterated expression has no type, the 
+            iterator is not statically type-checked, and the iteration variable has no type.</para>
+                        
             <para>For example:</para>
 
             <programlisting>for (p in people) { 
