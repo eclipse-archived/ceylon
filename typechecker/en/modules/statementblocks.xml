@@ -1708,14 +1708,13 @@ if (is Usable tx) { ... }</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>the value will be treated by the compiler as having type <literal>X</literal> 
-                    where <literal>X</literal> is the specified type (or <literal>Object</literal> for
-                    an existence condition), inside the block that immediately follows the condition, 
-                    unless</para>
+                    where <literal>X</literal> is the specified type, inside the block that immediately 
+                    follows the condition, unless</para>
                 </listitem>
                 <listitem>
-                    <para>it is a negated assignability condition with <literal>!is</literal>, or a 
-                    nonempty condition with <literal>nonempty</literal> in which case the value will 
-                    be treated by the compiler as having no type.</para>
+                    <para>it is a negated assignability condition <literal>!is</literal>, an existence 
+                    condition <literal>exists</literal>, or a nonempty condition <literal>nonempty</literal>, 
+                    in which case the value will be treated by the compiler as having no type.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2174,25 +2173,33 @@ else "total must be less than ``bound``";</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>may be specified or assigned to a typed value,</para>
+                    <para>may be specified or assigned to a typed value, as defined
+                    in <xref linkend="specificationstatements"/>,</para>
                 </listitem>
                 <listitem>
                     <para>may be passed as the argument of a typed parameter in an
-                    invocation expression,</para>
+                    invocation expression, as defined in 
+                    <xref linkend="directinvocations"/>,</para>
                 </listitem>
                 <listitem>
-                    <para>may be the invoked expression of an invocation,</para>
+                    <para>may be the invoked expression of an invocation, as defined
+                    in <xref linkend="invocationexpressions"/>,</para>
                 </listitem>
                 <listitem>
                     <para>may be returned by a typed function or getter, or
-                    thrown as an exception,</para>
+                    thrown as an exception, as defined in 
+                    <xref linkend="controldirectives"/>,</para>
                 </listitem>
                 <listitem>
-                    <para>may be the operand of an operator expression, or</para>
+                    <para>may be the operand of an operator expression, as defined in
+                    <xref linkend="compoundexpressions"/>, or</para>
                 </listitem>
                 <listitem>
-                    <para>may be the subject of a control structure condition,
-                    <literal>switch</literal>, or <literal>for</literal> iterator.</para>
+                    <para>may be the subject of a control structure condition, as 
+                    defined in <xref linkend="assignabilityexistencenonemptinessconditions"/>,
+                    a <literal>switch</literal>, as defined in <xref linkend="switchcaseelse"/>, 
+                    or a <literal>for</literal> iterator, as defined in <xref linkend="forelse"/>.
+                    </para>
                 </listitem>
             </itemizedlist>
             
@@ -2201,12 +2208,19 @@ else "total must be less than ``bound``";</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>a qualified or unqualified reference may not refer to a
-                    statically typed declaration.</para>
+                    statically typed declaration, as defined by 
+                    <xref linkend="unqualifiedreferenceresolution"/> and
+                    <xref linkend="qualifiedreferenceresolution"/>.</para>
                 </listitem>
             </itemizedlist>
             
             <para>These situations result in <emphasis>dynamic type checking</emphasis>,
-            as defined in <xref linkend="dynamictypechecking"/>.</para>
+            as defined in <xref linkend="dynamictypechecking"/>, since the usual static
+            type checks are impossible.</para>
+            
+            <comment><para>Note: within a <literal>dynamic</literal> block, Ceylon behaves like
+            a language with optional static typing, performing static type checks where possible,
+            and dynamic type checking where necessary.</para></comment>
             
         </section>
          

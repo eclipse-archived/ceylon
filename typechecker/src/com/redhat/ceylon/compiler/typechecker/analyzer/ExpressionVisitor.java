@@ -1331,7 +1331,7 @@ public class ExpressionVisitor extends Visitor {
         Tree.Expression e = se.getExpression();
         if (e!=null) {
             ProducedType expressionType = e.getTypeModel();
-//            if (!isTypeUnknown(expressionType)) {
+            if (!isTypeUnknown(expressionType)) {
                 ProducedType t;
                 if (unit.isOptionalType(expressionType)) {
                     t = unit.getDefiniteType(expressionType);
@@ -1341,7 +1341,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 local.setTypeModel(t);
                 that.getDeclarationModel().setType(t);
-//            }
+            }
         }
     }
     
