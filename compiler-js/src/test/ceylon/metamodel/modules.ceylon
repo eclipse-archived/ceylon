@@ -1,5 +1,8 @@
 import ceylon.language.model { modules }
-import ceylon.language.model.declaration { Import, FunctionDeclaration }
+import ceylon.language.model.declaration {
+  Import, FunctionDeclaration, ClassOrInterfaceDeclaration
+}
+import ceylon.language.model { annotations }
 import check { check,fail }
 
 void modulesTests() {
@@ -18,11 +21,16 @@ void modulesTests() {
         if (exists pk = funmod.findPackage("functions")) {
             check(pk.name=="functions", "Package name should be functions");
             check(pk.annotations<Shared>() nonempty, "Package should have annotations");
-            //TODO check it's shared
-            check(pk.getFunction("hello") exists, "Package has function hello");
+            value helloFun = pk.getFunction("hello");
+            if (exists helloFun) {
+                check(annotations(`Shared`, helloFun) exists, "functions.hello should be shared");
+            } else {
+                fail("Package should have function hello");
+            }
             //TODO should this be visible?
             check(pk.getValue("lx") exists, "Package has value lx");
             check(pk.getMember<FunctionDeclaration>("repeat") exists, "Package has member repeat");
+            check(pk.members<ClassOrInterfaceDeclaration>().size > 3, "Package should have at least 3 functions");
         } else {
             fail("Module functions/0.1 should have package 'functions'");
         }
