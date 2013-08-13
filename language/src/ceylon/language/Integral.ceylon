@@ -21,4 +21,9 @@ shared interface Integral<Other> of Other
     "Determine if the number is one."
     shared formal Boolean unit;
     
+    "Determine if this number is a factor of the given 
+     number."
+    shared Boolean divides(Other other) =>
+            (other%(this of Other)).zero;
+    
 }

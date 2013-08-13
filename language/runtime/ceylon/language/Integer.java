@@ -335,6 +335,16 @@ public final class Integer
     }
 
     @Override
+    public boolean divides(@Name("other") Integer other) {
+        return other.value % value == 0;
+    }
+
+    @Ignore
+    public static boolean divides(long value, long otherValue) {
+        return otherValue % value == 0;
+    }
+
+    @Override
     public Integer getPositiveValue() {
         return this;
     }
