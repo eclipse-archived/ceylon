@@ -935,39 +935,51 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>Given a parameter list, and a named argument list, we may attempt to 
             construct an <emphasis>equivalent positional argument list</emphasis> as 
-            follows.</para>
-            
-            <para>Taking each argument in the named argument list in term, on the order 
-            they occur lexically:</para>
+            follows:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>if the argument is anonymous, assign it to the first unassigned
-                    parameter of the parameter list,</para>
+                
+                    <para>Taking each argument in the named argument list in turn, on the order 
+                    they occur lexically:</para>
+                    
+                    <itemizedlist>
+                        <listitem>
+                            <para>if the argument is anonymous, assign it to the first unassigned
+                            parameter of the parameter list, or</para>
+                        </listitem>
+                        <listitem>
+                            <para>if the argument is named, assign it to the parameter with that
+                            name in the parameter list.</para>
+                        </listitem>
+                    </itemizedlist>
+                    
+                    <para>If for any argument, there is no unassigned parameter, no parameter with
+                    the given name, or the parameter with the given name has already been assigned
+                    an argument, construction of the positional argument list fails, and the 
+                    invocation is not well-typed.</para>
+                
                 </listitem>
                 <listitem>
-                    <para>if the argument is named, assign it to the parameter with that
-                    name in the parameter list, or</para>
+                
+                    <para>Next, if the parameter list has an unassigned parameter of type exactly
+                    <literal>Iterable&lt;T,N&gt;</literal> for some types <literal>T</literal> and
+                    <literal>N</literal>, then an iterable enumeration expression, as defined in
+                    <xref linkend="enumeration"/>, is formed from the ordinary list of arguments, 
+                    and assigned to that parameter.</para>
+                    
+                    <para>If there is no such parameter, and the the ordinary list of arguments is
+                    nonempty, then construction of the positional argument list fails, and the 
+                    invocation is not well-typed.</para>
+                    
+                </listitem>
+                <listitem>
+                
+                    <para>Finally, we assign each unassigned defaulted parameter its default 
+                    argument.</para>
+                
                 </listitem>
             </itemizedlist>
-            
-            <para>If for any argument, there is no unassigned parameter, no parameter with
-            the given name, or the parameter with the given name has already been assigned
-            an argument, construction of the positional argument list fails, and the 
-            invocation is not well-typed.</para>
-            
-            <para>Next, if the parameter list has an unassigned parameter of type exactly
-            <literal>Iterable&lt;T,N&gt;</literal> for some types <literal>T</literal> and
-            <literal>N</literal>, then an iterable enumeration expression, as defined in
-            <xref linkend="enumeration"/>, is formed from the ordinary list of arguments, 
-            and assigned to that parameter.</para>
-            
-            <para>If there is no such parameter, and the the ordinary list of arguments is
-            nonempty, then construction of the positional argument list fails, and the 
-            invocation is not well-typed.</para>
-            
-            <para>Finally, we assign each unassigned defaulted parameter its default 
-            argument.</para>
             
             <para>The resulting equivalent positional argument list is formed by ordering
             the arguments according to the position of their corresponding parameters in
