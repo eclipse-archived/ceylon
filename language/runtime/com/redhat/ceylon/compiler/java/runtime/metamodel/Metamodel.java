@@ -26,6 +26,7 @@ import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
@@ -746,6 +747,25 @@ public class Metamodel {
         ceylon.language.model.declaration.Declaration[] array = new ceylon.language.model.declaration.Declaration[refs.length];
         for (int ii = 0; ii < refs.length; ii++) {
             array[ii] = (T)parser.ref(refs[ii]);
+        }
+        return ArraySequence.instance($reifiedElement, array);
+    }
+    
+    public static <T> T parseEnumerationReference(java.lang.Class<T> klass) {
+        FreeClassOrInterface decl = (FreeClassOrInterface)getOrCreateMetamodel(klass);
+        String getterName = Naming.getGetterName(decl.declaration);
+        try {
+            java.lang.reflect.Method method = klass.getMethod(getterName);
+            return (T)method.invoke(null);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    public static <T> Sequential<T> parseEnumerationReferences(TypeDescriptor $reifiedElement, java.lang.Class[] refs) {
+        Object[] array = new Object[refs.length];
+        for (int ii = 0; ii < refs.length; ii++) {
+            array[ii] = parseEnumerationReference(refs[ii]);
         }
         return ArraySequence.instance($reifiedElement, array);
     }
