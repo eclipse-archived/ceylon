@@ -3146,9 +3146,9 @@ var returns [Variable variable]
       | VOID_MODIFIER
         { $variable.setType(new VoidModifier($VOID_MODIFIER)); }
       | FUNCTION_MODIFIER
-        { $variable.setType(new VoidModifier($FUNCTION_MODIFIER)); }
+        { $variable.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
       | VALUE_MODIFIER
-        { $variable.setType(new VoidModifier($VALUE_MODIFIER)); }
+        { $variable.setType(new ValueModifier($VALUE_MODIFIER)); }
       )
       mn1=memberName 
       { $variable.setIdentifier($mn1.identifier); }
