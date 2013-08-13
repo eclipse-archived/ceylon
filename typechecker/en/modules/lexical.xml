@@ -227,10 +227,12 @@
         
         <synopsis>EscapeSequence: "\" ("b" | "t" | "n" | "f" | "r" | "\" | "&quot;" | "'" | "`" | "{" CharacterCode "}")</synopsis>
         
-        <para>A Unicode codepoint escape is a four-digit or eight-digit hexadecimal literal 
-        surrounded by braces.</para>
+        <para>A Unicode codepoint escape is a four-digit or eight-digit hexadecimal literal,
+        or a Unicode character name, surrounded by braces.</para>
         
-        <synopsis>CharacterCode: "#" ( HexDigit{4} | HexDigit{8} )</synopsis>
+        <synopsis>CharacterCode: "#" ( HexDigit{4} | HexDigit{8} ) | UnicodeCharName</synopsis>
+        
+        <para>Legal Unicode character names are defined by the Unicode specification.</para>
                 
         <para>The following are legal character literals:</para>
         
@@ -239,9 +241,7 @@
         <programlisting>' '</programlisting>
         <programlisting>'\n'</programlisting>
         <programlisting>'\{#212B}'</programlisting>
-        
-        <comment><para>TODO: should we support an escape sequence for Unicode character names
-        <literal>\{LATIN SMALL LETTER A}</literal> like Python does?</para></comment>
+        <programlisting>'\{ALCHEMICAL SYMBOL FOR GOLD}'</programlisting>
         
     </section>
     
@@ -277,6 +277,7 @@
         <programlisting>"\{00E5}ngstr\{00F6}ms"</programlisting>
         <programlisting>" \t\n\f\r,;:"</programlisting>
         <programlisting>"""This program prints "hello world" to the console."""</programlisting>
+        <programlisting>"\{POLICE CAR} \{TROLLEYBUS} \{WOMAN WITH BUNNY EARS}"</programlisting>
         
         <para>The column in which the first character of a string literal occurs, excluding the 
         opening quote characters, is called the <emphasis>initial column</emphasis> of the string 
