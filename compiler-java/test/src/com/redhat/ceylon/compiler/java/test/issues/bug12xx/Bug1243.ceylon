@@ -22,16 +22,46 @@ class Bug1243<T>(T t) {
     shared class Y<S>(S s) {}
     shared Y<Z> new<Z=Integer|Float>() => nothing;
     shared void old<Z=Integer|Float>(Y<Z> arg) {}
+    void test() {
+        Y<Z> new<Z=Integer|Float>() => nothing;
+        void old<Z=Integer|Float>(Y<Z> arg) {}
+    }
 }
 @noanno
 class Bug1243b<T>(T t) {
     shared class Y<S=Integer|Float>(S s) {}
     shared Y<Z> new<Z>() => nothing;
     shared void old<Z>(Y<Z> arg) {}
+    void test() {
+        Y<Z> new<Z>() => nothing;
+        void old<Z>(Y<Z> arg) {}
+    }
 }
 @noanno
 class Bug1243c<T>(T t) {
     shared class Y<S=Integer|Float>(S s) {}
     shared Y<Z> new<Z=Integer|Float>() => nothing;
     shared void old<Z=Integer|Float>(Y<Z> arg) {}
+    void test() {
+        Y<Z> new<Z=Integer|Float>() => nothing;
+        void old<Z=Integer|Float>(Y<Z> arg) {}
+    }
+}
+@noanno
+void bug1243d<T>(T t) {
+    class Y<S>(S s) {}
+    Y<Z> new<Z=Integer|Float>() => nothing;
+    void old<Z=Integer|Float>(Y<Z> arg) {}
+}
+@noanno
+void bug1243e<T>(T t) {
+    class Y<S=Integer|Float>(S s) {}
+    Y<Z> new<Z>() => nothing;
+    void old<Z>(Y<Z> arg) {}
+}
+@noanno
+void bug1243f<T>(T t) {
+    class Y<S=Integer|Float>(S s) {}
+    Y<Z> new<Z=Integer|Float>() => nothing;
+    void old<Z=Integer|Float>(Y<Z> arg) {}
 }
