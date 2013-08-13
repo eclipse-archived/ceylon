@@ -18,6 +18,11 @@
         
         <synopsis>Whitespace: " " | Tab | Formfeed | Newline | Return</synopsis>
         
+        <synopsis>Tab: "\{CHARACTER TABULATION}"</synopsis>
+        <synopsis>Formfeed: "\{FORM FEED (FF)}"</synopsis>
+        <synopsis>Newline: "\{LINE FEED (LF)}"</synopsis>
+        <synopsis>Return: "\{CARRIAGE RETURN (CR)}"</synopsis>
+        
         <para>Outside of a comment, string literal, or single quoted literal,
         whitespace acts as a token separator and is immediately discarded by
         the lexer. Whitespace is not used as a statement separator.</para>
@@ -331,8 +336,8 @@
         <programlisting>"Hello!"</programlisting>
         <programlisting>"\{00E5}ngstr\{00F6}ms"</programlisting>
         <programlisting>" \t\n\f\r,;:"</programlisting>
-        <programlisting>"""This program prints "hello world" to the console."""</programlisting>
         <programlisting>"\{POLICE CAR} \{TROLLEYBUS} \{WOMAN WITH BUNNY EARS}"</programlisting>
+        <programlisting>"""This program prints "hello world" to the console."""</programlisting>
         
         <para>The column in which the first character of a string literal occurs, excluding the 
         opening quote characters, is called the <emphasis>initial column</emphasis> of the string 
