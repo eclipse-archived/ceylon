@@ -40,5 +40,6 @@ shared void test() {
     testAliasing();
     testLate();
     testReifiedRuntime();
+    testStackTrace();
     results();
 }
