@@ -4,15 +4,6 @@
 //the Ceylon language module
 //#METAMODEL
 
-//Hand-written implementations
-function exists(x){}//IGNORE
-function String$(x,y){}//IGNORE
-function ArraySequence(x){}//IGNORE
-function nonempty(x){}//IGNORE
-function className(x){}//IGNORE
-function isOfType(a,b){}//IGNORE
-var larger,smaller,Sequence,Category,empty,equal; //IGNORE
-
 function getT$name() {return this.constructor.T$name;}
 function getT$all() {return this.constructor.T$all;}
 function initType(type, typeName) {
