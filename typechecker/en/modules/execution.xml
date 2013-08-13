@@ -1159,8 +1159,8 @@ String result = middleObject.string;</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>Values of type <literal>Float</literal> are represented 
-                    according to the IEEE 754 specification, <emphasis>IEEE Standard for 
-                    Binary Floating-Point Arithmetic</emphasis>, and floating point
+                    according to the IEEE 754 specification, <emphasis>IEEE Standard 
+                    for Binary Floating-Point Arithmetic</emphasis>, and floating point
                     numeric operations conform to this specification. Where possible,
                     a double-precision 64-bit representation is used. Note that even 
                     though <literal>Float</literal> has a 64-bit representation on 
@@ -1170,8 +1170,8 @@ String result = middleObject.string;</programlisting>
                 <listitem>
                     <para>Where possible, values of type <literal>Integer</literal> are 
                     represented in two's complement form using a fixed bit length. Where 
-                    possible, a 64-bit representation is used. Overflow and underflow wrap 
-                    silently. This is the case for the Java Virtual Machine.</para>
+                    possible, a 64-bit representation is used. Overflow and underflow 
+                    wrap silently. This is the case for the Java Virtual Machine.</para>
                 </listitem>
                 <listitem>
                     <para>Otherwise, values of type <literal>Integer</literal> are 
@@ -1182,6 +1182,15 @@ String result = middleObject.string;</programlisting>
             
             <para>Platform-dependent behavior of numeric operations is defined in the
             Java Language Specification, and the ECMAScript Language Specification.</para>
+            
+            <comment><para>It might be argued that having platform-dependent behavior 
+            for numeric operations opens up the same portability concerns that affected
+            languages like C in the past. However, the cross-platform virtual machines
+            supported by Ceylon already provide a layer of indirection that substantially
+            eases portability concerns. Of course, numeric code is not guaranteed to be
+            completely portable between the Java and JavaScript virtual machines, but
+            it's difficult to imagine how such a level of portability could reasonably 
+            be achieved.</para></comment>
             
         </section>
     
