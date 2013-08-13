@@ -610,7 +610,7 @@ public class GenerateJsVisitor extends Visitor
             p.visit(this);
             out(", ");
         }
-        boolean withTargs = that.getTypeParameterList() != null &&
+        final boolean withTargs = that.getTypeParameterList() != null &&
                 !that.getTypeParameterList().getTypeParameterDeclarations().isEmpty();
         if (withTargs) {
             out("$$targs$$,");
@@ -662,7 +662,32 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
         }
+        if (d.isNative()) {
+            out("if (typeof($init$native$", names.name(d), "$before)==='function')$init$native$",
+                    names.name(d), "$before(");
+            self(d);
+            if (withTargs)out(",$$targs$$");
+            out(");");
+            endLine();
+        }
         that.getClassBody().visit(this);
+        if (d.isNative()) {
+            out("if (typeof($init$native$", names.name(d), "$after)==='function')$init$native$",
+                    names.name(d), "$after(");
+            self(d);
+            if (withTargs)out(",$$targs$$");
+            out(");");
+            endLine();
+            System.out.printf("%s is annotated native.", d.getQualifiedNameString());
+            System.out.printf("You can implement two functions named $init$native$%s$before and $init$native$%<s$after",
+                    names.name(d));
+            System.out.print("that will be called (if they exist) before and after the class body. ");
+            System.out.print("These functions will receive the instance being initialized");
+            if (withTargs) {
+                System.out.print(" and the type arguments with which it is being initialized");
+            }
+            System.out.println(".");
+        }
         returnSelf(d);
         endBlockNewLine();
         //Add reference to metamodel
