@@ -176,8 +176,19 @@ public class LiteralVisitor extends Visitor {
                     }
                 }
                 if (!found) {
-                    node.addError("illegal unicode escape sequence: " + 
-                            name + " is not a Unicode character");
+                    if (name.equals(":-)")) {
+                        result.replace(m.start(), m.end(), "\u263A");
+                    }
+                    else if (name.equals(":-(")) {
+                        result.replace(m.start(), m.end(), "\u2639");
+                    }
+                    else if (name.equals("<3")) {
+                        result.replace(m.start(), m.end(), "\u2665");
+                    }
+                    else {
+                        node.addError("illegal unicode escape sequence: " + 
+                                name + " is not a Unicode character");
+                    }
                 }
             }
             else if (hex!=null) {
