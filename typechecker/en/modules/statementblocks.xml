@@ -1452,7 +1452,7 @@ else {
             <para>A <literal>for</literal> loop requires an <emphasis>iteration variable</emphasis> 
             declaration. An iteration variable is a reference scoped to the body of the loop.</para>
             
-            <synopsis>IteratorVariable: Variable | CallableVariable | EntryVariablePair</synopsis>
+            <synopsis>IteratorVariable: Variable | EntryVariablePair</synopsis>
             
             <para>An iteration variable of type <literal>Entry</literal> may be specified in 
             destructured form.</para>
@@ -1476,18 +1476,17 @@ else {
                 </listitem>
             </itemizedlist>
             
-            <para>An iteration variable may be callable.</para>
+            <!--para>An iteration variable may be callable.</para>
             
             <synopsis>CallableVariable: (Type | "void")? MemberName Parameters+</synopsis>
             
             <para>If the return type is missing from the declaration, the return type of the 
-            callable variable is inferred.</para>
+            callable variable is inferred.</para-->
             
-            <comment><para>TODO: is there any value to allowing this syntax? It seems more regular,
-            but I really can't see why I would ever want to write 
-            <literal>for (f(Float x) in functions)</literal>. Perhaps it could help readability in 
-            some cases?</para></comment>
-
+            <comment><para>TODO: Should we, purely for consistency, let you write 
+            <literal>for (f(Float x) in functions)</literal>, even though it's not
+            very useful?</para></comment>
+        
         </section>
         
         <section id="controlstructureconditions">

@@ -472,9 +472,9 @@ TypeConstraints?
             reference to <literal>null</literal>.</para>
             -->
             
-            <comment><para>TODO: for consistency, we should support <literal>f(Float x) => x</literal> 
-            in a parameter list, when the callable parameter is declared in the body of 
-            the function or class.</para></comment>
+            <comment><para>TODO: Should we, purely for consistency, let you write 
+            <literal>f(Float x) => x</literal> in a parameter list, when the callable 
+            parameter is declared in the body of the function or class?</para></comment>
         
         </section>
         
