@@ -251,9 +251,6 @@
             </listitem>
             </itemizedlist>
             
-            <para>Floating point literals are interpreted according to the IEEE 754 
-            specification, IEEE Standard for Binary Floating-Point Arithmetic.</para>
-            
             <para>The following examples are legal numeric literals:</para>
             
             <programlisting>69</programlisting>
