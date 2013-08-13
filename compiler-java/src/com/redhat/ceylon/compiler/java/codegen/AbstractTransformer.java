@@ -518,25 +518,24 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     ProducedTypedReference getTypedReference(TypedDeclaration decl){
-        if(decl.getContainer() instanceof TypeDeclaration){
-            TypeDeclaration containerDecl = (TypeDeclaration) decl.getContainer();
-            
-            java.util.List<ProducedType> typeArgs = Collections.<ProducedType>emptyList();
-            if (decl instanceof Method) {
-                // For methods create type arguments for any type parameters it might have
-                Method m = (Method)decl;
-                if (!m.getTypeParameters().isEmpty()) {
-                    typeArgs = new ArrayList<ProducedType>(m.getTypeParameters().size());
-                    for (TypeParameter p: m.getTypeParameters()) {
-                        ProducedType pt = p.getType();
-                        typeArgs.add(pt);
-                    }
+        java.util.List<ProducedType> typeArgs = Collections.<ProducedType>emptyList();
+        if (decl instanceof Method) {
+            // For methods create type arguments for any type parameters it might have
+            Method m = (Method)decl;
+            if (!m.getTypeParameters().isEmpty()) {
+                typeArgs = new ArrayList<ProducedType>(m.getTypeParameters().size());
+                for (TypeParameter p: m.getTypeParameters()) {
+                    ProducedType pt = p.getType();
+                    typeArgs.add(pt);
                 }
             }
-            
+        }
+        
+        if(decl.getContainer() instanceof TypeDeclaration){
+            TypeDeclaration containerDecl = (TypeDeclaration) decl.getContainer();
             return containerDecl.getType().getTypedMember(decl, typeArgs);
         }
-        return decl.getProducedTypedReference(null, Collections.<ProducedType>emptyList());
+        return decl.getProducedTypedReference(null, typeArgs);
     }
     
     ProducedTypedReference nonWideningTypeDecl(ProducedTypedReference typedReference) {
