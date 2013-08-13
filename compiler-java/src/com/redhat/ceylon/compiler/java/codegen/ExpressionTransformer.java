@@ -2542,6 +2542,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             callBuilder.instantiate(new ExpressionAndType(qualifier, qualifierType), type);
         } else {
             callBuilder.typeArguments(List.<JCExpression>nil());
+            for (ProducedType tm : qte.getTypeArguments().getTypeModels()) {
+                callBuilder.typeArgument(makeJavaType(tm, AbstractTransformer.JT_TYPE_ARGUMENT));
+            }
             callBuilder.invoke(naming.makeInstantiatorMethodName(transformedPrimary.expr, (Class)declaration));
         }
         return callBuilder.build();
