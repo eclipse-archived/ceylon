@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import java.nio.file { FileSystems { default } }
+import java.nio.file { FileSystems { fsdefault=default } }
 import java.nio.file.attribute { UserPrincipalNotFoundException }
 
 void bug592() {
     try {
-        default.userPrincipalLookupService.lookupPrincipalByName("gavin");
+        fsdefault.userPrincipalLookupService.lookupPrincipalByName("gavin");
     }
     catch (UserPrincipalNotFoundException e) {
         e.printStackTrace();
