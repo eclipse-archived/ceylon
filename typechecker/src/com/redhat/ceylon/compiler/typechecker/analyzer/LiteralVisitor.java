@@ -156,14 +156,31 @@ public class LiteralVisitor extends Visitor {
         return correctlyIndented;
     }
     
-    private static Pattern re = Pattern.compile("\\\\(\\{#([^}]*)\\}|(.))");
+    private static Pattern re = Pattern.compile("\\\\(\\{#([^}]*)\\}|\\{([^}^#]*)\\}|(.))");
     
     private static void interpolateEscapes(final StringBuilder result, Node node) {
         Matcher m;
         int start=0;
         while ((m = re.matcher(result)).find(start)) {
             String hex = m.group(2);
-            if (hex!=null) {
+            String name = m.group(3);
+            if (name!=null) {
+                boolean found=false;
+                for (int codePoint=0; codePoint<=0xE01EF; codePoint++) {
+                    String cn = Character.getName(codePoint);
+                    if (cn!=null && cn.equals(name)) {
+                        char[] chars = toChars(codePoint);
+                        result.replace(m.start(), m.end(), new String(chars));
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    node.addError("illegal unicode escape sequence: " + 
+                            name + " is not a Unicode character");
+                }
+            }
+            else if (hex!=null) {
                 if (hex.length()!=2 && hex.length()!=4 && hex.length()!=8) {
                     node.addError("illegal unicode escape sequence: must consist of 2, 4 or 8 digits");
                 }
@@ -189,7 +206,7 @@ public class LiteralVisitor extends Visitor {
                 }
             }
             else {
-                char escape = m.group(3).charAt(0);
+                char escape = m.group(4).charAt(0);
                 char ch;
                 switch (escape) {
                     case 'b': ch = '\b'; break;
