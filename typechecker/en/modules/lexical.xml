@@ -8,17 +8,6 @@
     Ceylon lexer is able to completely tokenize a character stream in a single 
     pass.</para> 
     
-    <para>The lexer distinguishes Unicode uppercase letter, lowercase letter, 
-    and numeric characters as defined by the Unicode standard. A 
-    <literal>LowercaseLetter</literal> is any character whose 
-    <literal>General_Category</literal> is <literal>Lowercase_Letter</literal>. 
-    An <literal>UppercaseLetter</literal> is any character whose 
-    <literal>General_Category</literal> is <literal>Uppercase_Letter</literal>, 
-    <literal>Titlecase_Letter</literal>, or <literal>Other_Letter</literal>. A 
-    <literal>Number</literal> is any character whose 
-    <literal>General_Category</literal> is <literal>Decimal_Number</literal>, 
-    <literal>Letter_Number</literal>, or <literal>Other_Number</literal>.</para>
-            
     <section id="whitespace">
         <title>Whitespace</title>
         
@@ -73,7 +62,7 @@
         
         <para>Both kinds of comments can be nested.</para>
         
-        <synopsis>LineComment: ("//"|"#!") ~(Newline|Return)* (Return Newline | Return | Newline)?</synopsis>
+        <synopsis>LineComment: ("//"|"#!") ~(Newline | Return)* (Return Newline | Return | Newline)?</synopsis>
         
         <synopsis>MultilineComment: "/*" (MultilineCommmentCharacter | MultilineComment)* "*/"</synopsis>
         
@@ -106,10 +95,19 @@
         <synopsis>UppercaseChar: UppercaseLetter</synopsis>
         <synopsis>IdentifierChar: LowercaseChar | UppercaseChar | Number</synopsis>
         
+        <para>The lexer classifies Unicode uppercase letters, lowercase letters, 
+        and numeric characters depending on the general category of the character
+        as defined by the Unicode standard. A <literal>LowercaseLetter</literal> is 
+        any character whose general category is <literal>Ll</literal>. An 
+        <literal>UppercaseLetter</literal> is any character whose general category 
+        is <literal>Lu</literal>, <literal>Lt</literal>, or <literal>Lo</literal>. 
+        A <literal>Number</literal> is any character whose general category is 
+        <literal>Nd</literal>, <literal>Nl</literal>, or <literal>No</literal>.</para>
+            
         <para>All identifiers are case sensitive: <literal>Person</literal> and
         <literal>person</literal> are two different legal identifiers.</para>
         
-        <para>The Ceylon lexer distinguishes identifiers which begin with an initial 
+        <para>The lexer distinguishes identifiers which begin with an initial 
         uppercase character from identifiers which begin with an initial lowercase
         character or underscore. Additionally, an identifier may be qualified using 
         the prefix <literal>\i</literal> or <literal>\I</literal> to disambiguate it 
