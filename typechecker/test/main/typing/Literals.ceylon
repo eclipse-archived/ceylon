@@ -56,6 +56,11 @@ class Literals() {
     @type:"Integer" value bin1 = $0101001101;
     @type:"Integer" value bin2 = $0101_0011;
     
+    @type:"Character" value ch1 = '\{ALCHEMICAL SYMBOL FOR LEAD ORE}';
+    @type:"String" value str1 = "\{POLICE CAR} \{TROLLEYBUS} \{WOMAN WITH BUNNY EARS}";
+    @error value ch2 = '\{FOO BAR BAZ}';
+    @error value str2 = "\{TETRAGRAM FOR UNITY} \{666}";
+    
     String name = "Gavin";
     String multlineTemplate = "Hello, ``name``,
                                Welcome back!";
