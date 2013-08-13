@@ -171,7 +171,8 @@
             
             <synopsis>IntegerLiteral: DecimalLiteral | HexLiteral | BinLiteral</synopsis>
             
-            <para>A <emphasis>decimal literal</emphasis> has this form:</para>
+            <para>A <emphasis>decimal literal</emphasis> has a list of digits and an
+            optional magnitude:</para>
             
             <synopsis>DecimalLiteral: Digits Magnitude?</synopsis>
             
@@ -183,7 +184,9 @@
             
             <synopsis>BinLiteral: "$" BinDigits</synopsis>
             
-            <para>A <emphasis>floating point literal</emphasis> has this form:</para>
+            <para>A <emphasis>floating point literal</emphasis> has a list of digits,
+            possibly with fractional digits appearing after a decimal point, and an
+            optional exponent or magnitude:</para>
             
             <synopsis>FloatLiteral: Digits ("." FractionalDigits (Exponent | Magnitude | FractionalMagnitude)? | FractionalMagnitude)</synopsis>
             
@@ -212,6 +215,44 @@
             
             <synopsis>Magnitude: "k" | "M" | "G" | "T" | "P"</synopsis>
             <synopsis>FractionalMagnitude: "m" | "u" | "n" | "p" | "f"</synopsis>
+            
+            <para>The magnitude of a numeric literal is interpreted as follows:</para>
+            
+            <itemizedlist>
+            <listitem>
+                <para><literal>k</literal> means <literal>e+3</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>M</literal> means <literal>e+6</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>G</literal> means <literal>e+9</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>T</literal> means <literal>e+12</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>P</literal> means <literal>e+15</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>m</literal> means <literal>e-3</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>u</literal> means <literal>e-6</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>n</literal> means <literal>e-9</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>p</literal> means <literal>e-12</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para><literal>f</literal> means <literal>e-15</literal>.</para>
+            </listitem>
+            </itemizedlist>
+            
+            <para>Floating point literals are interpreted according to the IEEE 754 
+            specification, IEEE Standard for Binary Floating-Point Arithmetic.</para>
             
             <para>The following examples are legal numeric literals:</para>
             
