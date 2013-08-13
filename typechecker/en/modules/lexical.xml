@@ -22,15 +22,34 @@
     <section id="whitespace">
         <title>Whitespace</title>
         
-        <para>Whitespace characters are the ASCII <literal>SP</literal>, 
-        <literal>HT</literal>, <literal>FF</literal>, <literal>LF</literal> and 
-        <literal>CR</literal> characters.</para>
+        <para><emphasis>Whitespace</emphasis> is composed of strings of Unicode 
+        <literal>SPACE</literal>, <literal>CHARACTER TABULATION</literal>, 
+        <literal>FORM FEED (FF)</literal>, <literal>LINE FEED (LF)</literal> and 
+        <literal>CARRIAGE RETURN (CR)</literal> characters.</para>
         
         <synopsis>Whitespace: " " | Tab | Formfeed | Newline | Return</synopsis>
         
         <para>Outside of a comment, string literal, or single quoted literal,
         whitespace acts as a token separator and is immediately discarded by
         the lexer. Whitespace is not used as a statement separator.</para>
+        
+        <para>Source text is divided into lines by <emphasis>line-terminating 
+        character sequences</emphasis>. The following Unicode character sequences 
+        terminate a line:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>LINE FEED (LF)</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>CARRIAGE RETURN (CR)</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para><literal>CARRIAGE RETURN (CR)</literal> followed by
+                <literal>LINE FEED (LF)</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
         
     </section>
     
@@ -41,14 +60,14 @@
         
         <itemizedlist>
             <listitem>
-                <para>a multiline comment that begins with <literal>/*</literal> 
-                and extends until <literal>*/</literal>, and</para>
+                <para>a <emphasis>multiline comment</emphasis> begins with 
+                <literal>/*</literal> and extends until <literal>*/</literal>, 
+                and</para>
             </listitem>
             <listitem>
-                <para>an end-of-line comment begins with <literal>//</literal> 
-                or <literal>#!</literal> and extends until a line terminator: 
-                an ASCII <literal>LF</literal>, <literal>CR</literal> or 
-                <literal>CR LF</literal>.</para>
+                <para>an <emphasis>end-of-line comment</emphasis> begins with 
+                <literal>//</literal> or <literal>#!</literal> and extends until 
+                the next line terminating character sequence.</para>
             </listitem>
         </itemizedlist>
         
@@ -80,8 +99,8 @@
     <section id="identifiersandkeywords">
         <title>Identifiers and keywords</title>
         
-        <para>Identifiers may contain upper and lowercase letters, digits and 
-        underscores.</para>
+        <para><emphasis>Identifiers</emphasis> may contain upper and lowercase letters, 
+        digits and underscores.</para>
         
         <synopsis>LowercaseChar: LowercaseLetter | "_"</synopsis>
         <synopsis>UppercaseChar: UppercaseLetter</synopsis>
@@ -141,24 +160,24 @@
     <section id="numericliterals">
         <title>Numeric literals</title>
         
-        <para>An integer literal may be expressed in decimal, hexadecimal, or binary 
-        notation:</para>
+        <para>An <emphasis>integer literal</emphasis> may be expressed in decimal, 
+        hexadecimal, or binary notation:</para>
         
         <synopsis>IntegerLiteral: DecimalLiteral | HexLiteral | BinLiteral</synopsis>
         
-        <para>A decimal literal has this form:</para>
+        <para>A <emphasis>decimal literal</emphasis> has this form:</para>
         
         <synopsis>DecimalLiteral: Digits Magnitude?</synopsis>
         
-        <para>Hexadecimal literals are prefixed by <literal>#</literal>:</para>
+        <para><emphasis>Hexadecimal literals</emphasis> are prefixed by <literal>#</literal>:</para>
         
         <synopsis>HexLiteral: "#" HexDigits</synopsis>
         
-        <para>Binary literals are prefixed by <literal>$</literal>:</para>
+        <para><emphasis>Binary literals</emphasis> are prefixed by <literal>$</literal>:</para>
         
         <synopsis>BinLiteral: "$" BinDigits</synopsis>
         
-        <para>A floating point literal has this form:</para>
+        <para>A <emphasis>floating point literal</emphasis> has this form:</para>
         
         <synopsis>FloatLiteral: Digits ("." FractionalDigits (Exponent | Magnitude | FractionalMagnitude)? | FractionalMagnitude)</synopsis>
         
@@ -218,17 +237,52 @@
     <section id="characterliterals">
         <title>Character literals</title>
         
-        <para>A single character literal consists of a Unicode character, inside 
-        single quotes.</para> 
+        <para>A single <emphasis>character literal</emphasis> consists of a Unicode 
+        character, inside single quotes.</para> 
         
         <synopsis>CharacterLiteral: "'" Character "'"</synopsis>
         
         <synopsis>Character: ~("'" | "\") | EscapeSequence</synopsis>
         
-        <synopsis>EscapeSequence: "\" ("b" | "t" | "n" | "f" | "r" | "\" | "&quot;" | "'" | "`" | "{" CharacterCode "}")</synopsis>
+        <para>A character may be identified by an <emphasis>escape sequence</emphasis>.
+        Every escape sequence begins with a backslash. An escape sequence is replaced
+        by its corresponding Unicode character during lexical analysis.</para>
+        
+        <synopsis>EscapeSequence: "\" (SingleCharacterEscape | "{" CharacterCode "}")</synopsis>
+        
+        <synopsis>SingleCharacterEscape: "b" | "t" | "n" | "f" | "r" | "\" | "&quot;" | "'" | "`"</synopsis>
+        
+        <para>The single-character escape sequences have their traditional interpretations as
+        Unicode characters:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>\b</literal> means <literal>BACKSPACE</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>\t</literal> means <literal>CHARACTER TABULATION</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>\n</literal> means <literal>LINE FEED (LF)</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>\f</literal> means <literal>FORM FEED (FF)</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>\r</literal> means <literal>CARRIAGE RETURN (CR)</literal>, 
+                and</para>
+            </listitem>
+            <listitem>
+                <para><literal>\\</literal>, <literal>\`</literal>, <literal>\'</literal>, 
+                and <literal>\&quot;</literal> mean <literal>REVERSE SOLIDUS</literal>, 
+                <literal>GRAVE ACCENT</literal>, <literal>APOSTROPHE</literal>, and 
+                <literal>QUOTATION MARK</literal>, respectively.</para>
+            </listitem>
+        </itemizedlist>
         
         <para>A Unicode codepoint escape is a four-digit or eight-digit hexadecimal literal,
-        or a Unicode character name, surrounded by braces.</para>
+        or a Unicode character name, surrounded by braces, and means the Unicode character
+        with the specified codepoint or character name.</para>
         
         <synopsis>CharacterCode: "#" ( HexDigit{4} | HexDigit{8} ) | UnicodeCharacterName</synopsis>
         
@@ -248,12 +302,15 @@
     <section id="stringliterals">
         <title>String literals</title>
         
-        <para>A character string literal is a sequence of Unicode characters, inside 
-        double quotes.</para>
+        <para>A character <emphasis>string literal</emphasis> is a sequence of Unicode 
+        characters, inside double quotes.</para>
         
         <synopsis>StringLiteral: "&quot;" StringCharacter* "&quot;"</synopsis>
         
         <synopsis>StringCharacter: ~( "\" | "&quot;" | "`" ) | "`" ~"`" | EscapeSequence</synopsis>
+        
+        <para>A string literal may contain escape sequences. An escape sequence is 
+        replaced by its corresponding Unicode character during lexical analysis.</para>
         
         <para>A sequence of two backticks is used to delimit an interpolated expression
         embedded in a string template.</para>

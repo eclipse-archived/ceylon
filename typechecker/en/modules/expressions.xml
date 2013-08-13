@@ -146,23 +146,22 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <title>Integer number literals</title>
             
             <para>An integer literal, as defined in 
-            <xref linkend="numericliterals"/>, is an expression 
-            of type <literal>Integer</literal>, representing a
-            numeric integer.</para>
+            <xref linkend="numericliterals"/>, is an expression of type 
+            <literal>Integer</literal>, representing a numeric integer.</para>
             
             <programlisting>Integer five = 5;</programlisting>
             <programlisting>Integer mask = $1111_0000;</programlisting>
             <programlisting>Integer white = #FFFF;</programlisting>
-                    
+            
         </section>
         
         <section id="floatnumber">
             <title>Floating point number literals</title>
             
             <para>A floating point literal, as defined in 
-            <xref linkend="numericliterals"/>, is an expression 
-            of type <literal>Float</literal>, a floating-point 
-            representation of a numeric value.</para>
+            <xref linkend="numericliterals"/>, is an expression of type 
+            <literal>Float</literal>, a floating-point representation of 
+            a numeric value.</para>
             
             <programlisting>shared Float pi = 3.14159;</programlisting>
             
@@ -172,10 +171,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <title>Character literals</title>
             
             <para>A single character literal, as defined in 
-            <xref linkend="characterliterals"/>, is an expression of 
-            type <literal>Character</literal>, representing a single
+            <xref linkend="characterliterals"/>, is an expression of type 
+            <literal>Character</literal>, representing a single 32-bit
             Unicode character.</para>
-                    
+            
             <programlisting>if (exists ch=string[i], ch &equals; '+') { ... }</programlisting>
             
         </section>
@@ -183,8 +182,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <section id="string">
             <title>Character string literals</title>
             
-            <para>A character string literal, as defined in 
-            <xref linkend="stringliterals"/>, is an expression of type
+            <para>A character string literal or verbatim string, as defined 
+            in <xref linkend="stringliterals"/>, is an expression of type
             <literal>String</literal>, representing a sequence of Unicode
             characters.</para>
             
@@ -192,10 +191,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <programlisting>print("Melbourne\tVic\tAustralia\nAtlanta\tGA\tUSA\nGuanajuato\tGto\tMexico\n");</programlisting>
             
-            <para>A verbatim string is also an expression of type
-            <literal>String</literal>.</para>
-            
-            <programlisting>String multiline = """A verbatim string can have \ or a " in it."""";</programlisting>
+            <programlisting>String verbatim = """A verbatim string can have \ or a " in it."""";</programlisting>
             
         </section>
     
