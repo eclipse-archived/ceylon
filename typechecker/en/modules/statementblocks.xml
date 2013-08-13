@@ -1008,21 +1008,21 @@ Integer f(Integer n) => n+package.n;</programlisting>
             
             <synopsis>Specification: ValueSpecification | LazySpecification</synopsis>
             
-            <para>The persistent value of a forward-declared reference or the 
-            implementation of a forward-declared function may be specified using 
-            <literal>=</literal>. The specification statement consists of an unqualified 
-            value reference and a specifier. The value reference must refer to a 
-            declaration which sequentially occurs earlier in the body in which the 
-            specification statement occurs.</para>
+            <para>The persistent value of a forward-declared reference or the implementation 
+            of a forward-declared function may be specified by a <emphasis>value specification 
+            statement</emphasis>. The value specification statement consists of an unqualified 
+            value reference and an ordinary <literal>=</literal> specifier. The value reference 
+            must refer to a declaration which sequentially occurs earlier in the body in which 
+            the specification statement occurs.</para>
             
             <synopsis>ValueSpecification: MemberName Specifier ";"</synopsis>
             
-            <para>The type of the specified expression must be assignable to the type of 
-            the reference, or to the callable type of the function.</para>
+            <para>The type of the specified expression must be assignable to the type of the 
+            reference, or to the callable type of the function.</para>
             
-            <para>If the specified expression has no type, or if the reference or function
-            has no type, and the specification occurs within a <literal>dynamic</literal> 
-            block, then the specification is not type-checked at compile time.</para>
+            <para>If the specified expression has no type, or if the reference or function has 
+            no type, and the specification occurs within a <literal>dynamic</literal> block, 
+            then the specification is not type-checked at compile time.</para>
             
             <programlisting>String greeting;
 if (exists name) {
@@ -1049,19 +1049,19 @@ else {
             semantics are identical between the two interpretations.</para></comment>
             
             <para>The implementation of forward-declared getter or function may be
-            specified using <literal>=&gt;</literal>. The specification statement 
-            consists of either:</para>
+            specified using a <emphasis>lazy specification statement</emphasis>. The 
+            specification statement consists of either:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>an unqualified value reference and a lazy specifier, or</para>
+                    <para>an unqualified value reference and a lazy 
+                    <literal>=&gt;</literal> specifier, or</para>
                 </listitem>
                 <listitem>
                     <para>a unqualified callable reference, one or more parameter lists, 
                     and a lazy specifier.</para>
                 </listitem>
             </itemizedlist>
-            
             
             <para>The value reference or callable reference must refer to a declaration 
             which sequentially occurs earlier in the body in which the specification 

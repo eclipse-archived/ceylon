@@ -2237,7 +2237,7 @@ case (hexadecimal) {
             
         </section>
         
-        <section id="getterswithblocks">
+        <section id="getters">
             <title>Getters</title>
             
             <para>A getter implementation may be a block.</para>
@@ -2263,7 +2263,7 @@ case (hexadecimal) {
         
         </section>
         
-        <section id="attributesetters">
+        <section id="setters">
             <title>Setters</title>
             
             <para>A setter defines how the value of a getter is assigned.</para>

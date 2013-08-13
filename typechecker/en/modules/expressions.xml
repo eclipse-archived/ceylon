@@ -915,100 +915,24 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 </listitem>
                 <listitem>
                     <para>a <emphasis>specified argument</emphasis>&mdash;a specification 
-                    statememt where name of the value of function being specified is interpreted
-                    as the name of a parameter,</para>
+                    statement where name of the value of function being specified is interpreted
+                    as the name of a parameter, or</para>
                 </listitem>
                 <listitem>
-                    <para>an inline value declaration, whose name is the name of a parameter,</para>
-                </listitem>
-                <listitem>
-                    <para>an inline function declaration, whose name is the name of a parameter, 
-                    or</para>
-                </listitem>
-                <listitem>
-                    <para>an inline anonymous class declaration whose name is the name of a 
-                    parameter.</para>
+                    <para>an inline getter, function, or anonymous class declaration, whose name 
+                    is interpreted as the name of a parameter.</para>
                 </listitem>
             </itemizedlist>
             
-            <synopsis>NamedArgument: AnonymousArgument | SpecifiedArgument | ValueArgument | FunctionArgument | ObjectArgument</synopsis>
-            
-            <synopsis>AnonymousArgument: Expression</synopsis>
-            
-            <synopsis>SpecifiedArgument: Specification</synopsis>
-            
-            <synopsis>ValueArgument: AttributeHeader (Block | (Specifier | LazySpecifier) ";")</synopsis>
-            
-            <synopsis>FunctionArgument: MethodHeader (Block | LazySpecifier ";")</synopsis>
-            
-            <synopsis>ObjectArgument: ObjectHeader ClassBody</synopsis>
-            
-            <comment><para>Note: there is an ambiguity here between assignment expressions 
-            and specified arguments. This ambiguity is resolved in favor of interpreting the
-            argument as a specified argument. Therefore an anonymous argument in a named 
-            argument list may not be an assignment expression.</para></comment>
-            
-            <para>A named argument may not declare type parameters.</para>
-            
-            <para>For example:</para>
-            
-            <programlisting>{ 
-    product = getProduct(id); 
-    quantity = 1; 
-}</programlisting>
-        
-        <programlisting>{
-    description = "Total";
-    Float amount { 
-        variable Float total = 0.0;
-        for (Item item in items) {
-            sum += item.amount;
-        }
-        return total;
-    }
-}</programlisting>
-        
-        <programlisting>{
-    Head { title="Hello"; };
-    Body {
-        Div { "Hello " name "!" };
-    };
-}</programlisting>
-            
-            <programlisting>{
-    object iterator 
-            satisfies Iterator&lt;Order&gt; {
-        variable value done = false;
-        shared actual Order next() {
-            if (done) {
-                return finished;
-            }
-            else {
-                done=true;
-                return order; 
-            }
-        }
-    }   
-}</programlisting>
-            
-            <programlisting>{ 
-    label = "Say Hello"; 
-    void onClick() { 
-        say("Hello!"); 
-    } 
-}</programlisting>
-            
-            <programlisting>{ 
-    function by(Value x, Value y) => x&lt;=&gt;y;
-}</programlisting>
+            <synopsis>NamedArgument: AnonymousArgument | SpecifiedArgument | InlineDeclarationArgument</synopsis>
             
             <para>Additionally, a named argument list has an ordinary list of arguments, 
-            which may be empty. These are interpreted as a single argument to a parameter
-            of type <literal>Iterable</literal>.</para>
+            which may be empty. This argument list is interpreted as a single argument to 
+            a parameter of type <literal>Iterable</literal>.</para>
             
             <programlisting>{ initialCapacity=2; "hello", "world" }</programlisting>
             <programlisting>{ initialCapacity=people.size; loadFactor=0.8; for (p in people) p.name->p }</programlisting>
-    
+            
             <para>Given a parameter list, and a named argument list, we may attempt to 
             construct an <emphasis>equivalent positional argument list</emphasis> as 
             follows.</para>
@@ -1034,8 +958,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>Next, if the parameter list has an unassigned parameter of type exactly
             <literal>Iterable&lt;T,N&gt;</literal> for some types <literal>T</literal> and
-            <literal>N</literal>, then an iterable enumeration expression is formed from 
-            the ordinary list of arguments, and assigned to that parameter.</para>
+            <literal>N</literal>, then an iterable enumeration expression, as defined in
+            <xref linkend="enumeration"/>, is formed from the ordinary list of arguments, 
+            and assigned to that parameter.</para>
             
             <para>If there is no such parameter, and the the ordinary list of arguments is
             nonempty, then construction of the positional argument list fails, and the 
@@ -1075,9 +1000,139 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>But the truth is that this would actually be a generally useful part of the 
             expression syntax.</para>
             </comment-->
-        
+            
         </section>
-                    
+        
+        <section id="anonymousarguments">
+            <title>Anonymous arguments</title>
+            
+            <para>An anonymous argument is just an expression followed by a semicolon.</para>
+            
+            <synopsis>AnonymousArgument: Expression ";"</synopsis>
+            
+            <para>The type of the argument is the type of the expression.</para>
+            
+        <programlisting>{
+    Head { title="Hello"; };
+    Body {
+        Div { "Hello " name "!" };
+    };
+}</programlisting>
+            
+            
+        </section>
+        
+        <section id="specifiedarguments">
+            <title>Specified arguments</title>
+            
+            <para>A specified argument is a value specification statement or lazy specification 
+            statement, as defined in <xref linkend="specificationstatements"/>, where the value
+            reference or callable reference is treated as the name of a parameter of the invoked 
+            function or class instead of using the usual rules for resolving unqualified names.</para>
+            
+            <synopsis>SpecifiedArgument: Specification</synopsis>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>If a specified argument is a value specification statement, its type 
+                    is the type of the specified expression.</para>
+                </listitem>
+                <listitem>
+                    <para>If a specified argument is a lazy specification statement with no 
+                    parameter lists, its type is the type of the specified expression.</para>
+                </listitem>
+                <listitem>
+                    <para>Otherwise, if it is a lazy specification statement with a parameter 
+                    list, its type is the callable type formed from the type of the expression,
+                    interpreted as a function return type, and the types of its parameter lists, 
+                    according to <xref linkend="callabletype"/>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <comment><para>Note: there is an ambiguity here between assignment expressions 
+            and specified arguments. This ambiguity is resolved in favor of interpreting the
+            argument as a specified argument. Therefore an anonymous argument in a named 
+            argument list may not be an assignment expression.</para></comment>
+            
+            <programlisting>{ 
+    product = getProduct(id); 
+    quantity = 1; 
+}</programlisting>
+            
+            <programlisting>{ 
+    by(Value x, Value y) => x&lt;=&gt;y;
+}</programlisting>
+            
+        </section>
+        
+        <section id="inlinedeclarationarguments">
+            <title>Inline declaration arguments</title>
+            
+            <para>An <emphasis>inline declaration argument</emphasis> defines a getter,
+            function, or anonymous class, and assigns it to a parameter.</para>
+            
+            <synopsis>ValueArgument | FunctionArgument | ObjectArgument</synopsis>
+            
+            <para>An inline getter argument is a streamlined getter declaration, as defined
+            in <xref linkend="getters"/>. The type of the argument is the declared or inferred 
+            type of the getter.</para>
+            
+            <synopsis>ValueArgument: ValueHeader (Block | (Specifier | LazySpecifier) ";")</synopsis>
+            
+            <para>An inline function argument is a streamlined function declaration, as
+            defined in <xref linkend="functions"/>. The type of the argument is the callable 
+            type of the function, as defined by <xref linkend="callabletype"/>.</para>
+            
+            <synopsis>FunctionArgument: FunctionHeader (Block | LazySpecifier ";")</synopsis>
+            
+            <para>An inline anonymous class argument is a streamlined anonymous class 
+            declaration, as defined in <xref linkend="anonymousclasses"/>. The type of the 
+            argument is the anonymous class type.</para>
+            
+            <synopsis>ObjectArgument: ObjectHeader ClassBody</synopsis>
+            
+            <para>A named argument may not have type parameters or annotations.</para>
+            
+            <programlisting>{
+    description = "Total";
+    value amount { 
+        variable Float total = 0.0;
+        for (Item item in items) {
+            sum += item.amount;
+        }
+        return total;
+    }
+}</programlisting>
+            
+            <programlisting>{ 
+    label = "Say Hello"; 
+    void onClick() { 
+        say("Hello!"); 
+    } 
+}</programlisting>
+            
+            <programlisting>{ 
+    function by(Value x, Value y) => x&lt;=&gt;y;
+}</programlisting>
+            
+            <programlisting>{
+    object iterator 
+            satisfies Iterator&lt;Order&gt; {
+        variable value done = false;
+        shared actual Order|Finished next() {
+            if (done) {
+                return finished;
+            }
+            else {
+                done=true;
+                return order; 
+            }
+        }
+    }   
+}</programlisting>
+            
+        </section>
+        
         <section id="enumeration">
             <title>Iterable and tuple enumeration</title>
             
