@@ -38,7 +38,6 @@ import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
@@ -47,8 +46,8 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
  * Utility functions telling you about Ceylon declarations
@@ -674,5 +673,51 @@ public class Decl {
     public static boolean isValueParameter(Declaration decl) {
         return decl instanceof Value
                 && ((Value)decl).isParameter();
+    }
+    
+
+    
+    
+    public static boolean isEnumeratedTypeWithAnonCases(ProducedType parameterType) {
+        TypeDeclaration decl = parameterType.getDeclaration();
+        if (decl.equals(decl.getUnit().getBooleanDeclaration())) {
+            return false;
+        }
+        if (decl.getCaseTypeDeclarations() == null) {
+            return false;
+        }
+        for (TypeDeclaration td : decl.getCaseTypeDeclarations()) {
+            if (!td.isAnonymous()) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public static boolean isAnonCaseOfEnumeratedType(Tree.BaseMemberExpression term) {
+        Declaration decl = term.getDeclaration();
+        return isAnonCaseOfEnumeratedType(decl);
+    }
+    public static boolean isAnonCaseOfEnumeratedType(Declaration decl) {
+    
+        if (com.redhat.ceylon.compiler.typechecker.analyzer.Util.isBooleanTrue(decl)
+                || com.redhat.ceylon.compiler.typechecker.analyzer.Util.isBooleanFalse(decl)) {
+            return false;
+        }
+        if (decl instanceof Value) {
+            TypeDeclaration type = ((Value) decl).getType().getDeclaration();
+            if (type.isAnonymous()) {
+                if (isEnumeratedTypeWithAnonCases(type.getExtendedType())) {
+                    return true;
+                }
+                for (ProducedType s : type.getSatisfiedTypes()) {
+                    if (isEnumeratedTypeWithAnonCases(s)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+        
     }
 }

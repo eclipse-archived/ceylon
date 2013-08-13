@@ -348,7 +348,8 @@ class AnnotationInvocationVisitor extends Visitor {
             if (expr != null) {
                 append(expr);
             }
-        } else if (Decl.isAnnotationClass(sp.getType().getDeclaration())) {
+        } else if (Decl.isAnnotationClass(sp.getType().getDeclaration())
+                || Decl.isEnumeratedTypeWithAnonCases(sp.getType())) {
             AnnotationConstructorParameter defaultedCtorParam = null;
             for (AnnotationConstructorParameter ctorParam : anno.getConstructorParameters()) {
                 if (ctorParam.getParameter().equals(parameterArgument.getSourceParameter())) {
@@ -357,9 +358,14 @@ class AnnotationInvocationVisitor extends Visitor {
                 }
             }
             if (defaultedCtorParam != null) {
-                InvocationAnnotationTerm defaultedInvocation = (InvocationAnnotationTerm)defaultedCtorParam.getDefaultArgument();
-                append(transformConstructor(exprGen, invocation, defaultedInvocation.getInstantiation(), 
-                        com.sun.tools.javac.util.List.<AnnotationFieldName>of(defaultedCtorParam)));
+                if (Decl.isAnnotationClass(sp.getType().getDeclaration())) {
+                    InvocationAnnotationTerm defaultedInvocation = (InvocationAnnotationTerm)defaultedCtorParam.getDefaultArgument();
+                    append(transformConstructor(exprGen, invocation, defaultedInvocation.getInstantiation(), 
+                            com.sun.tools.javac.util.List.<AnnotationFieldName>of(defaultedCtorParam)));
+                } else {
+                    LiteralAnnotationTerm defaultedEnum = (LiteralAnnotationTerm)defaultedCtorParam.getDefaultArgument();
+                    append(exprGen.makeClassLiteral(defaultedEnum.getLiteralObject()));
+                }
             } else {
                 append(exprGen.makeErroneous(invocation, "Couldn't find defaulted parameter for " + anno.getConstructorDeclaration().getName()));
             }
@@ -470,6 +476,8 @@ class AnnotationInvocationVisitor extends Visitor {
         if (exprGen.isBooleanTrue(term.getDeclaration())
                 || exprGen.isBooleanFalse(term.getDeclaration())) {
             append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, term.getTypeModel()));
+        } else if (Decl.isAnonCaseOfEnumeratedType(term)) {
+            append(exprGen.makeClassLiteral(term.getTypeModel()));
         } else if (anno.isInterop()) {
             ProducedType type = term.getTypeModel();
             Module jdkBaseModule = exprGen.loader().getJDKBaseModule();

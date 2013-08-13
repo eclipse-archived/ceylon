@@ -140,6 +140,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_ANNOTATION_INSTANTIATION_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation";
     private static final String CEYLON_ANNOTATION_INSTANTIATION_ARGUMENTS_MEMBER = "arguments";
     private static final String CEYLON_ANNOTATION_INSTANTIATION_ANNOTATION_MEMBER = "primary";
+    private static final String CEYLON_DEFAULTED_OBJECT_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.DefaultedObject";
     private static final String CEYLON_ANNOTATION_INSTANTIATION_TREE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiationTree";
     private static final String CEYLON_TRANSIENT_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Transient";
     private static final String JAVA_DEPRECATED_ANNOTATION = "java.lang.Deprecated";
@@ -2378,6 +2379,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     InvocationAnnotationTerm invocationTerm = new InvocationAnnotationTerm();
                     invocationTerm.setInstantiation(loadAnnotationInvocation(method, mm, meth));
                     return invocationTerm;
+                } else if (mm.getAnnotation(CEYLON_DEFAULTED_OBJECT_ANNOTATION) != null) {
+                    // If the DPM has a @DefaultedObject 
+                    LiteralAnnotationTerm term = new LiteralAnnotationTerm();
+                    TypeMirror klass = getAnnotationClassValue(mm, CEYLON_DEFAULTED_OBJECT_ANNOTATION, "value");
+                    term.setLiteralObject(obtainType(klass, null, null, null));
+                    return term;
                 } else {
                     // Otherwise the term must be a literal term
                     return  new LiteralAnnotationTerm();

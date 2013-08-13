@@ -26,6 +26,9 @@ import com.sun.tools.javac.util.ListBuffer;
 public class LiteralAnnotationTerm extends AnnotationTerm {
 
     private Tree.Term field;
+    private ProducedType literalObject;
+    
+    public LiteralAnnotationTerm() {}
     
     public String toString() {
         return "/* literal */";
@@ -59,27 +62,39 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
             ExpressionTransformer exprGen,
             AnnotationInvocation toplevel,
             com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath,
-            ListBuffer<JCStatement> staticArgs, ProducedType type) {
+            ListBuffer<JCStatement> staticArgs, final ProducedType type) {
         Tree.Term term = getField();
-        JCExpression expr;
+        JCExpression expr = null;
+        JCExpression typeExpr = null;
         if (term instanceof Tree.Literal) {
             expr = exprGen.transform((Tree.Literal)term);
         } else if (term instanceof Tree.NegativeOp) {
             expr = exprGen.transform((Tree.NegativeOp)term);
         } else if (term instanceof Tree.TypeLiteral) {
             expr = exprGen.makeDeclarationLiteralForAnnotation((Tree.TypeLiteral)term);
-            type = exprGen.typeFact().getStringDeclaration().getType();
+            typeExpr = exprGen.makeJavaType(exprGen.typeFact().getStringDeclaration().getType());
         } else if (term instanceof Tree.MemberLiteral) {
             expr = exprGen.makeDeclarationLiteralForAnnotation((Tree.MemberLiteral)term);
-            type = exprGen.typeFact().getStringDeclaration().getType();
-        } else if (term instanceof Tree.BaseMemberExpression
-                && isBooleanTrue(((Tree.BaseMemberExpression) term).getDeclaration())) {
-            expr = exprGen.make().Literal(true);
-        } else if (term instanceof Tree.BaseMemberExpression
-                && isBooleanFalse(((Tree.BaseMemberExpression) term).getDeclaration())) {
-            expr = exprGen.make().Literal(false);
-        } else {
+            typeExpr = exprGen.makeJavaType(exprGen.typeFact().getStringDeclaration().getType());
+        } else if (term instanceof Tree.BaseMemberExpression) {
+            Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression)term;
+            if (isBooleanTrue(bme.getDeclaration())) {
+                expr = exprGen.make().Literal(true);
+            } else if (isBooleanFalse(bme.getDeclaration())) {
+                expr = exprGen.make().Literal(false);
+            } else if (Decl.isAnonCaseOfEnumeratedType(bme)) {
+                // Javac can't inline java.lang.Class constant fields
+                // so we use the @DefaultedObject annotation on the DPM
+                return;
+            }
+        }
+        
+        if (expr == null) {
             expr = exprGen.makeErroneous(term, "Literal cannot be transformed into a constant expression");
+        }
+        
+        if (typeExpr == null) {
+            typeExpr = exprGen.makeJavaType(type);
         }
         // If the annotation class's parameter is 'hash' we need to cast the 
         // literal to an int and make an int field, so we can't use the term's type
@@ -87,9 +102,17 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
                 false, BoxingStrategy.UNBOXED, type);
         JCVariableDecl field = exprGen.makeVar(STATIC | FINAL | (toplevel.getConstructorDeclaration().isShared() ? PUBLIC : 0), 
                 Naming.getAnnotationFieldName(fieldPath),
-                exprGen.makeJavaType(type), 
+                typeExpr, 
                 expr);
         staticArgs.append(field);
     
+    }
+
+    public ProducedType getLiteralObject() {
+        return literalObject;
+    }
+    
+    public void setLiteralObject(ProducedType literalObject) {
+        this.literalObject = literalObject;
     }
 }

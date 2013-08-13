@@ -79,6 +79,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -91,6 +92,7 @@ import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
+import com.sun.tools.javac.tree.JCTree.TypeBoundKind;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -289,6 +291,10 @@ public class ClassTransformer extends AbstractTransformer {
                     argExpr = makeMetamodelInvocation("parseMetamodelReferences", 
                             List.<JCExpression>of(makeReifiedTypeArgument(iteratedType), annoAttr), 
                             null);
+                } else if (Decl.isEnumeratedTypeWithAnonCases(iteratedType)) {
+                    argExpr = makeMetamodelInvocation("parseEnumerationReferences", 
+                            List.<JCExpression>of(makeReifiedTypeArgument(iteratedType), annoAttr), 
+                            List.<JCExpression>of(makeJavaType(iteratedType, JT_TYPE_ARGUMENT)));
                 } else {
                     argExpr = makeUtilInvocation("sequentialInstance", 
                             List.<JCExpression>of(makeReifiedTypeArgument(iteratedType), annoAttr), 
@@ -298,6 +304,10 @@ public class ClassTransformer extends AbstractTransformer {
                 argExpr = instantiateAnnotationClass(parameterType, annoAttr);
             } else if (isCeylonMetamodelDeclaration(parameterType)) {
                 argExpr = makeMetamodelInvocation("parseMetamodelReference", 
+                        List.<JCExpression>of(annoAttr), 
+                        null);
+            } else if (Decl.isEnumeratedTypeWithAnonCases(parameterType)) {
+                argExpr = makeMetamodelInvocation("parseEnumerationReference", 
                         List.<JCExpression>of(annoAttr), 
                         null);
             } else {
@@ -431,6 +441,8 @@ public class ClassTransformer extends AbstractTransformer {
                 defaultLiteral = makeBoolean(true);
             } else if (isBooleanFalse(decl)) {
                 defaultLiteral = makeBoolean(false);
+            } else if (Decl.isAnonCaseOfEnumeratedType(bme)) {
+                defaultLiteral = makeClassLiteral(bme.getTypeModel());
             } else {
                 defaultLiteral = make().Literal(bme.getDeclaration().getQualifiedNameString());
             }
@@ -468,6 +480,8 @@ public class ClassTransformer extends AbstractTransformer {
             type = makeJavaType(parameterType, JT_ANNOTATION);
         } else if (isMetamodelReference(parameterType)) {
             type = make().Type(syms().stringType);
+        } else if (Decl.isEnumeratedTypeWithAnonCases(parameterType)) {
+            type = makeJavaClassTypeBounded(parameterType);
         } else if (typeFact().isIterableType(parameterType)) {
             ProducedType iteratedType = typeFact().getIteratedType(parameterType);
             if (isScalarAnnotationParameter(iteratedType)) {
@@ -476,8 +490,12 @@ public class ClassTransformer extends AbstractTransformer {
             } else if (isMetamodelReference(iteratedType)) {
                 JCExpression scalarType = make().Type(syms().stringType);
                 type = make().TypeArray(scalarType);
+            } else if (Decl.isEnumeratedTypeWithAnonCases(iteratedType)) {
+                JCExpression scalarType = makeJavaClassTypeBounded(iteratedType);
+                type = make().TypeArray(scalarType);
             }
-        } else {
+        }
+        if (type == null) {
             type = makeErroneous(parameter, "Unsupported annotation parameter type");
         }
         return type;
@@ -486,8 +504,6 @@ public class ClassTransformer extends AbstractTransformer {
     private boolean isMetamodelReference(ProducedType parameterType) {
         return isCeylonMetamodelDeclaration(parameterType);
     }
-
-
     /**
      * Makes a new Array expression suitable for use in initializing a Java array
      * using as elements the positional arguments 
@@ -1787,6 +1803,12 @@ public class ClassTransformer extends AbstractTransformer {
                 && isMetamodelReference(typeFact().getIteratedType(parameterModel.getType())))) {
             mdb.modelAnnotations(List.of(make().Annotation(make().Type(syms().ceylonAtMetamodelReferenceType), 
                     List.<JCExpression>nil())));
+        } else if (Decl.isEnumeratedTypeWithAnonCases(parameterModel.getType())
+                || 
+                (typeFact().isIterableType(parameterModel.getType())
+                        && Decl.isEnumeratedTypeWithAnonCases(typeFact().getIteratedType(parameterModel.getType())))) {
+            mdb.modelAnnotations(List.of(make().Annotation(make().Type(syms().ceylonAtEnumerationReferenceType), 
+                    List.<JCExpression>nil())));
         }
         mdb.modifiers(PUBLIC | ABSTRACT);
         mdb.resultType(null, type);
@@ -2772,12 +2794,19 @@ public class ClassTransformer extends AbstractTransformer {
             AnnotationInvocation ac = (AnnotationInvocation)((Method)container).getAnnotationConstructor();
             for (AnnotationConstructorParameter acp : ac.getConstructorParameters()) {
                 if (acp.getParameter().equals(parameter)
-                        && acp.getDefaultArgument() != null
-                        && acp.getDefaultArgument() instanceof InvocationAnnotationTerm) {
-                    methodBuilder.userAnnotations(List.of(makeAtAnnotationInstantiation(((InvocationAnnotationTerm)acp.getDefaultArgument()).getInstantiation())));
+                        && acp.getDefaultArgument() != null) {
+                    if (acp.getDefaultArgument() instanceof InvocationAnnotationTerm) {
+                        // Add @AnnotationInstantiation
+                        methodBuilder.userAnnotations(List.of(makeAtAnnotationInstantiation(((InvocationAnnotationTerm)acp.getDefaultArgument()).getInstantiation())));
+                    } else if (acp.getDefaultArgument() instanceof LiteralAnnotationTerm
+                            && ((LiteralAnnotationTerm)acp.getDefaultArgument()).getField() instanceof Tree.BaseMemberExpression
+                            && Decl.isAnonCaseOfEnumeratedType(((Tree.BaseMemberExpression)((LiteralAnnotationTerm)acp.getDefaultArgument()).getField()))) {
+                        // Add @DefaultedObject
+                        Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression)((LiteralAnnotationTerm)acp.getDefaultArgument()).getField();
+                        methodBuilder.userAnnotations(makeAtDefaultedObject(bme.getTypeModel()));
+                    }
                 }
             }
-            
         }
         int modifiers = 0;
         if (noBody) {

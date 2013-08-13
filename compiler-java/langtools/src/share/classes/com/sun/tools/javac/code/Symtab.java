@@ -227,6 +227,8 @@ public class Symtab {
     public final Type ceylonAtAnnotationInstantiationType;
     public final Type ceylonAtAnnotationInstantiationTreeType;
     public final Type ceylonAtMetamodelReferenceType;
+    public final Type ceylonAtEnumerationReferenceType;
+    public final Type ceylonAtDefaultedObjectType;
     public final Type ceylonAtContainerType;
     public final Type ceylonAtMemberType;
     public final Type ceylonAtMembersType;
@@ -604,6 +606,8 @@ public class Symtab {
         ceylonAtAnnotationInstantiationType = enterClass("com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation");
         ceylonAtAnnotationInstantiationTreeType = enterClass("com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiationTree");
         ceylonAtMetamodelReferenceType  = enterClass("com.redhat.ceylon.compiler.java.metadata.MetamodelReference");
+        ceylonAtEnumerationReferenceType  = enterClass("com.redhat.ceylon.compiler.java.metadata.EnumerationReference");
+        ceylonAtDefaultedObjectType  = enterClass("com.redhat.ceylon.compiler.java.metadata.DefaultedObject");
         ceylonAtContainerType = enterClass("com.redhat.ceylon.compiler.java.metadata.Container");
         ceylonAtMemberType = enterClass("com.redhat.ceylon.compiler.java.metadata.Member");
         ceylonAtMembersType = enterClass("com.redhat.ceylon.compiler.java.metadata.Members");

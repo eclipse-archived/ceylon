@@ -185,7 +185,8 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
             } else if (term instanceof Tree.Literal
                     || (term instanceof Tree.BaseMemberExpression
                     && (((Tree.BaseMemberExpression)term).getDeclaration().equals(t)
-                        || ((Tree.BaseMemberExpression)term).getDeclaration().equals(f)))) {
+                        || ((Tree.BaseMemberExpression)term).getDeclaration().equals(f)
+                        || Decl.isAnonCaseOfEnumeratedType((Tree.BaseMemberExpression)term)))) {
                 checkingDefaults = true;
                 
                 super.visit(d);
@@ -323,6 +324,8 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
                     appendLiteralArgument(bme, bme);
                 } else if (isBooleanFalse(declaration)) {
                     appendLiteralArgument(bme, bme);
+                } else if (Decl.isAnonCaseOfEnumeratedType(bme)) {
+                    appendLiteralArgument(bme, bme).setLiteralObject(bme.getTypeModel());
                 } else {
                     bme.addError("Unsupported base member expression in annotation constructor");
                 }
@@ -346,13 +349,14 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
      * </pre>
      * Literal is in the Javac sense.
      */
-    private void appendLiteralArgument(Node bme, Tree.Term literal) {
+    private LiteralAnnotationTerm appendLiteralArgument(Node bme, Tree.Term literal) {
         if (spread) {
             bme.addError("Spread static arguments not supported");
         }
         LiteralAnnotationTerm argument = new LiteralAnnotationTerm();
         argument.setTerm(literal);
         this.term = argument;
+        return argument;
     }
     
     @Override

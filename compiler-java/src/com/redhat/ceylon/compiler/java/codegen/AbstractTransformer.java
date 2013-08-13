@@ -60,7 +60,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.Specification;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -2097,6 +2096,10 @@ public abstract class AbstractTransformer implements Transformation {
 
         return makeModelAnnotation(syms().ceylonAtMembersType, List.of(attr));
     }
+    
+    List<JCAnnotation> makeAtDefaultedObject(ProducedType type) {
+        return makeModelAnnotation(syms().ceylonAtDefaultedObjectType, List.<JCExpression>of(makeClassLiteral(type)));
+    }
 
     /** Determine whether the given declaration requires a 
      * {@code @TypeInfo} annotation 
@@ -3128,5 +3131,14 @@ public abstract class AbstractTransformer implements Transformation {
             type = producedType(type.getDeclaration(), typeArg);
         }
         return type;
+    }
+    
+    /**
+     * Makes a {@code java.lang.Class<? extends UPPERBOUND>}
+     */
+    JCExpression makeJavaClassTypeBounded(ProducedType upperBound) {
+        return make().TypeApply(make().QualIdent(syms().classType.tsym),
+                List.<JCExpression>of(make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), 
+                            makeJavaType(upperBound))));
     }
 }
