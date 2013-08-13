@@ -2174,7 +2174,7 @@ public class ExpressionVisitor extends Visitor {
             ParameterList pl = pls.get(0);            
             Tree.PositionalArgumentList args = that.getPositionalArgumentList();
             if (args!=null) {
-                checkPositionalArguments(pl, prf, args);
+                checkPositionalArguments(pl, prf, args, that);
             }
             Tree.NamedArgumentList namedArgs = that.getNamedArgumentList();
             if (namedArgs!=null) {
@@ -2388,14 +2388,15 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkPositionalArguments(ParameterList pl, ProducedReference pr, 
-            Tree.PositionalArgumentList pal) {
+            Tree.PositionalArgumentList pal, Tree.InvocationExpression that) {
         List<Tree.PositionalArgument> args = pal.getPositionalArguments();
         List<Parameter> params = pl.getParameters();
         for (int i=0; i<params.size(); i++) {
             Parameter p = params.get(i);
             if (i>=args.size()) {
                 if (!p.isDefaulted() && (!p.isSequenced() || p.isAtLeastOne())) {
-                    pal.addError("missing argument to required parameter " + 
+                    Node n = that instanceof Tree.Annotation && args.isEmpty() ? that : pal;
+                    n.addError("missing argument to required parameter " + 
                             p.getName() + " of " + pr.getDeclaration().getName(unit));
                 }
             } 
