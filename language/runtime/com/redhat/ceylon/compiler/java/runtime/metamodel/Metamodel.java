@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ceylon.language.ArraySequence;
 import ceylon.language.Iterator;
 import ceylon.language.Null;
 import ceylon.language.SequenceBuilder;
@@ -40,7 +41,6 @@ import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -724,6 +724,30 @@ public class Metamodel {
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.MethodOrValue)
             return ((com.redhat.ceylon.compiler.typechecker.model.MethodOrValue) declaration).getInitializerParameter();
         return null;
+    }
+    
+    /**
+     * Called when an annotation class is instantiated via an annotation 
+     * constructor or annotation callsite to convert the String representation
+     * of a Declaration literal back into the corresponding Declaration.
+     */
+    public static <T extends ceylon.language.model.declaration.Declaration> T parseMetamodelReference(String ref/*, java.lang.Class<?> klass*/) {
+        DeclarationParser parser = new DeclarationParser();
+        return (T)parser.ref(ref);
+    }
+    
+    /**
+     * Called when an annotation class is instantiated via an annotation 
+     * constructor or annotation callsite to convert an array of String representations
+     * of Declaration literals back into a Sequential of Declarations.
+     */
+    public static <T extends ceylon.language.model.declaration.Declaration> Sequential<T> parseMetamodelReferences(TypeDescriptor $reifiedElement, String[] refs) {
+        DeclarationParser parser = new DeclarationParser();
+        ceylon.language.model.declaration.Declaration[] array = new ceylon.language.model.declaration.Declaration[refs.length];
+        for (int ii = 0; ii < refs.length; ii++) {
+            array[ii] = (T)parser.ref(refs[ii]);
+        }
+        return ArraySequence.instance($reifiedElement, array);
     }
     
 }
