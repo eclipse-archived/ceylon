@@ -926,16 +926,20 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <synopsis>NamedArgument: AnonymousArgument | SpecifiedArgument | InlineDeclarationArgument</synopsis>
             
-            <para>Additionally, a named argument list has an ordinary list of arguments, 
-            which may be empty. This argument list is interpreted as a single argument to 
-            a parameter of type <literal>Iterable</literal>.</para>
+            <para>Additionally, a named argument list has an ordinary list of arguments, which 
+            may be empty. This argument list is interpreted as a single argument to a parameter 
+            of type <literal>Iterable</literal>.</para>
             
             <programlisting>{ initialCapacity=2; "hello", "world" }</programlisting>
             <programlisting>{ initialCapacity=people.size; loadFactor=0.8; for (p in people) p.name->p }</programlisting>
             
-            <para>Given a parameter list, and a named argument list, we may attempt to 
-            construct an <emphasis>equivalent positional argument list</emphasis> as 
-            follows:</para>
+            <comment><para>Note: in a future version of the language, we would like to be able 
+            to assign a local name to an anonymous argument or listed argument, allowing it to 
+            be referenced later in the argument list. We might consider this a kind of "let"
+            expression, perhaps.</para></comment>
+            
+            <para>Given a parameter list, and a named argument list, we may attempt to construct 
+            an <emphasis>equivalent positional argument list</emphasis> as follows:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1030,7 +1034,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         Div { "Hello " name "!" };
     };
 }</programlisting>
-            
             
         </section>
         
