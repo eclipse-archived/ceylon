@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference$annotation(comparison = .ceylon.language.larger_.class)})
+@.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic$annotation(comparison = {
+        .ceylon.language.smaller_.class,
+        .ceylon.language.equal_.class})})
+@.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted$annotation(comparison = .ceylon.language.smaller_.class)})
+class EnumeratedReference_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    EnumeratedReference_callsite() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_callsite();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_callsite.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_callsite.class);
+}

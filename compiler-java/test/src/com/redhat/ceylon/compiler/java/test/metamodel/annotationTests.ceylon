@@ -83,6 +83,8 @@ ClassOrInterface<Variable> variableAnnotation = `Variable`;
 ClassOrInterface<Doc> docAnnotation = `Doc`;
 ClassOrInterface<See> seeAnnotation = `See`;
 ClassOrInterface<Seq> seqAnnotation = `Seq`;
+ClassOrInterface<Enumerated> enumeratedAnnotation = `Enumerated`;
+ClassOrInterface<EnumeratedVariadic> enumeratedVariadicAnnotation = `EnumeratedVariadic`;
 ClassOrInterface<Deprecation> deprecatedAnnotation = `Deprecation`;
 ClassOrInterface<Optional> optAnnotation = `Optional`;
 
@@ -127,8 +129,20 @@ void checkAToplevelAttributeAnnotations() {
         seq7_1.seq == "aToplevelAttribute 1");
     
     assert(nonempty see = annotations(seeAnnotation, aToplevelAttributeDecl));
-     assert(see.size == 1);
+    assert(see.size == 1);
     assert(see.first.programElements.contains(`aToplevelGetterSetter`));
+    
+    assert(exists enumed = annotations(enumeratedAnnotation, aToplevelAttributeDecl));
+    assert(enumed.c == larger);
+    
+    assert(exists enumedVariadic = annotations(enumeratedVariadicAnnotation, aToplevelAttributeDecl));
+    assert(enumedVariadic.c.size == 3);
+    assert(exists ev0 = enumedVariadic.c[0],
+        ev0 == larger);
+    assert(exists ev1 = enumedVariadic.c[1],
+        ev1 == equal);
+    assert(exists ev2 = enumedVariadic.c[2],
+        ev2 == smaller);
 }
 
 void checkAToplevelGetterSetterAnnotations() {

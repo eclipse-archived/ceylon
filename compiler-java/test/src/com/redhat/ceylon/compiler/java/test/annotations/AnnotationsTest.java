@@ -135,6 +135,11 @@ public class AnnotationsTest extends CompilerTest {
         compareWithJavaSource("AnnotationClassMetamodelReference");
     }
     @Test
+    public void testEnumeratedReference(){
+        compareWithJavaSource("EnumeratedReference1");
+        compareWithJavaSource("EnumeratedReference2");
+    }
+    @Test
     public void testAnnotationClassQuoting(){
         compareWithJavaSource("AnnotationClassQuoting");
     }

@@ -1,4 +1,4 @@
-import ceylon.language.model{Annotated, SequencedAnnotation}
+import ceylon.language.model{Annotated, SequencedAnnotation, OptionalAnnotation}
 import ceylon.language.model.declaration{Declaration}
 
 shared final annotation class Seq(shared String seq) 
@@ -9,10 +9,20 @@ shared final annotation class Decl(shared Declaration decl)
     satisfies SequencedAnnotation<Decl, Annotated> {}
 shared annotation Decl decl(Declaration d) => Decl(d);
 
+shared final annotation class Enumerated(shared Comparison c)
+    satisfies OptionalAnnotation<Enumerated, Annotated> {}
+shared annotation Enumerated enumerated(Comparison c) => Enumerated(c);
+
+shared final annotation class EnumeratedVariadic(shared Comparison* c)
+    satisfies OptionalAnnotation<EnumeratedVariadic, Annotated> {}
+shared annotation EnumeratedVariadic enumeratedVariadic(Comparison* c) => EnumeratedVariadic(*c);
+
 "aToplevelAttribute"
 seq("aToplevelAttribute 1")
 seq("aToplevelAttribute 2")
 see(`aToplevelGetterSetter`)
+enumerated(larger)
+enumeratedVariadic(larger, equal, smaller)
 shared String aToplevelAttribute = "";
 
 "aToplevelGetter"
