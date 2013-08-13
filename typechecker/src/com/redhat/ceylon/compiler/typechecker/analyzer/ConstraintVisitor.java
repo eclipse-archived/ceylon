@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -28,7 +29,7 @@ public class ConstraintVisitor extends Visitor {
                 return true;
             }
             Unit unit = pt.getDeclaration().getUnit();
-            if (!ptd.isAnnotation() &&
+            if (!ptd.isAnnotation() && !isEnum(ptd) &&
                     !ptd.equals(unit.getBooleanDeclaration()) &&
                     !ptd.equals(unit.getStringDeclaration()) &&
                     !ptd.equals(unit.getIntegerDeclaration()) &&
@@ -49,7 +50,20 @@ public class ConstraintVisitor extends Visitor {
         return false;
     }
     
-    private void checkAnnotationParameter(Declaration a, Tree.Parameter pn) {
+    private static boolean isEnum(TypeDeclaration ptd) {
+        List<TypeDeclaration> ctds = ptd.getCaseTypeDeclarations();
+        if (ctds==null) {
+            return false;
+        }
+        else {
+            for (TypeDeclaration td: ctds) {
+                if (!td.isAnonymous()) return false;
+            }
+            return true;
+        }
+    }
+    
+    private void checkAnnotationParameter(Functional a, Tree.Parameter pn) {
         Parameter p = pn.getParameterModel();
         ProducedType pt = p.getType();
         if (pt!=null && isIllegalAnnotationParameterType(pt)) {
@@ -73,7 +87,7 @@ public class ConstraintVisitor extends Visitor {
         }
     }
 
-    private void checkAnnotationArgument(Declaration a, Tree.Expression e, ProducedType pt) {
+    private void checkAnnotationArgument(Functional a, Tree.Expression e, ProducedType pt) {
         if (e!=null) {
             Tree.Term term = e.getTerm();
             if (term instanceof Tree.Literal) {
@@ -119,7 +133,7 @@ public class ConstraintVisitor extends Visitor {
                 }
             }
             else if (term instanceof Tree.InvocationExpression) {
-                checkAnnotationInstantiation(null, e, pt);
+                checkAnnotationInstantiation(a, e, pt);
             }
             else if (term instanceof Tree.BaseMemberExpression) {
                 Declaration d = ((Tree.BaseMemberExpression) term).getDeclaration();
@@ -129,9 +143,7 @@ public class ConstraintVisitor extends Visitor {
                     }
                 }
                 else if (d instanceof Value &&
-                        (((Value) d).isEnumValue()
-                      || d.equals(d.getUnit().getTrueValueDeclaration())
-                      || d.equals(d.getUnit().getFalseValueDeclaration()))) {
+                        (((Value) d).isEnumValue() || ((Value) d).getTypeDeclaration().isAnonymous())) {
                     //ok
                 }
                 else {
@@ -275,7 +287,7 @@ public class ConstraintVisitor extends Visitor {
         return list;
     }
     
-    private void checkAnnotationInstantiation(Method a, Tree.Expression e, ProducedType pt) {
+    private void checkAnnotationInstantiation(Functional a, Tree.Expression e, ProducedType pt) {
         if (e!=null) {
             Term term = e.getTerm();
             if (term instanceof Tree.InvocationExpression) {
@@ -296,7 +308,7 @@ public class ConstraintVisitor extends Visitor {
         }
     }
 
-    private void checkAnnotationArguments(Method a, Tree.InvocationExpression ie) {
+    private void checkAnnotationArguments(Functional a, Tree.InvocationExpression ie) {
         Tree.PositionalArgumentList pal = ie.getPositionalArgumentList();
         Tree.NamedArgumentList nal = ie.getNamedArgumentList();
         if (pal!=null) {
@@ -311,7 +323,7 @@ public class ConstraintVisitor extends Visitor {
         }
     }
 
-    private void checkNamedArguments(Method a, Tree.NamedArgumentList nal) {
+    private void checkNamedArguments(Functional a, Tree.NamedArgumentList nal) {
         for (Tree.NamedArgument na: nal.getNamedArguments()) {
             if (na!=null) {
                 if (na instanceof Tree.SpecifiedArgument) {
@@ -328,7 +340,7 @@ public class ConstraintVisitor extends Visitor {
         }
     }
 
-    private void checkPositionalArguments(Method a, List<Tree.PositionalArgument> pal) {
+    private void checkPositionalArguments(Functional a, List<Tree.PositionalArgument> pal) {
         for (Tree.PositionalArgument pa: pal) {
             if (pa!=null && pa.getParameter()!=null) {
                 if (pa instanceof Tree.ListedArgument) {
