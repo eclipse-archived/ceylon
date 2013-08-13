@@ -7,6 +7,11 @@ function $init$native$Exception$before(exc) {
   }
 }
 Exception.$$.prototype.printStackTrace = function() {
+  var _c = className(this);
+  if (this.message.size > 0) {
+    _c += ' "' + this.message + '"';
+  }
+  print(_c);
   for (var i=0; i<this.stack_trace.length; i++) {
     var f = this.stack_trace[i];
     var mm = f.$$metamodel$$;
@@ -15,7 +20,7 @@ Exception.$$.prototype.printStackTrace = function() {
       f.$$metamodel$$=mm;
     }
     if (mm) {
-        print("  at " + mm.pkg + "::" + mm.d.$nm);
+        print("    at " + mm.pkg + "::" + mm.d.$nm);
     }
   }
 }
