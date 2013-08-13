@@ -176,8 +176,18 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getRepeated() {
-        return $ceylon$language$Iterable$this.getRepeated();
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getCycled() {
+        return $ceylon$language$Iterable$this.getCycled();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> cycle(final long times) {
+        return $ceylon$language$Iterable$this.cycle(times);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends .ceylon.language.String> repeat(final long times) {
+        return $ceylon$language$Iterable$this.repeat(times);
     }
     protected final .ceylon.language.Container$impl<.ceylon.language.String, .java.lang.Object> $ceylon$language$Container$this;
     
@@ -425,8 +435,18 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getRepeated() {
-        return $ceylon$language$Iterable$this.getRepeated();
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getCycled() {
+        return $ceylon$language$Iterable$this.getCycled();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> cycle(final long times) {
+        return $ceylon$language$Iterable$this.cycle(times);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends .ceylon.language.String> repeat(final long times) {
+        return $ceylon$language$Iterable$this.repeat(times);
     }
     protected final .ceylon.language.Container$impl<.ceylon.language.String, .java.lang.Object> $ceylon$language$Container$this;
     

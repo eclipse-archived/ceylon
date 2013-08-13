@@ -178,23 +178,63 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public boolean occursAtStart(final .ceylon.language.List<? extends .java.lang.Object> list) {
-        return $ceylon$language$List$this.occursAtStart(list);
+    public boolean startsWith(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
+        return $ceylon$language$List$this.startsWith(sublist);
     }
     
     @.java.lang.Override
-    public boolean occursAt(final long index, final .ceylon.language.List<? extends .java.lang.Object> list) {
-        return $ceylon$language$List$this.occursAt(index, list);
+    public boolean endsWith(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
+        return $ceylon$language$List$this.endsWith(sublist);
     }
     
     @.java.lang.Override
-    public boolean occursIn(final .ceylon.language.List<? extends .java.lang.Object> list) {
-        return $ceylon$language$List$this.occursIn(list);
+    public boolean includesAt(final long index, final .ceylon.language.List<? extends .java.lang.Object> sublist) {
+        return $ceylon$language$List$this.includesAt(index, sublist);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrencesIn(final .ceylon.language.List<? extends .java.lang.Object> list) {
-        return $ceylon$language$List$this.occurrencesIn(list);
+    public boolean includes(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
+        return $ceylon$language$List$this.includes(sublist);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> inclusions(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
+        return $ceylon$language$List$this.inclusions(sublist);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer firstInclusion(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
+        return $ceylon$language$List$this.firstInclusion(sublist);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer lastInclusion(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
+        return $ceylon$language$List$this.lastInclusion(sublist);
+    }
+    
+    @.java.lang.Override
+    public boolean occursAt(final long index, final .java.lang.Object element) {
+        return $ceylon$language$List$this.occursAt(index, element);
+    }
+    
+    @.java.lang.Override
+    public boolean occurs(final .java.lang.Object element) {
+        return $ceylon$language$List$this.occurs(element);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrences(final .java.lang.Object element) {
+        return $ceylon$language$List$this.occurrences(element);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer firstOccurrence(final .java.lang.Object element) {
+        return $ceylon$language$List$this.firstOccurrence(element);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer lastOccurrence(final .java.lang.Object element) {
+        return $ceylon$language$List$this.lastOccurrence(element);
     }
     
     @.java.lang.Override
@@ -355,8 +395,18 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getRepeated() {
-        return $ceylon$language$Iterable$this.getRepeated();
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getCycled() {
+        return $ceylon$language$Iterable$this.getCycled();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> cycle(final long times) {
+        return $ceylon$language$Iterable$this.cycle(times);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> repeat(final long times) {
+        return $ceylon$language$Iterable$this.repeat(times);
     }
     protected final .ceylon.language.Container$impl<T, .java.lang.Object> $ceylon$language$Container$this;
     

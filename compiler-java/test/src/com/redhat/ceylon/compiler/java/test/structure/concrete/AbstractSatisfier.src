@@ -191,8 +191,18 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> getRepeated() {
-        return $ceylon$language$Iterable$this.getRepeated();
+    public .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> getCycled() {
+        return $ceylon$language$Iterable$this.getCycled();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> cycle(final long times) {
+        return $ceylon$language$Iterable$this.cycle(times);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends .java.lang.Object> repeat(final long times) {
+        return $ceylon$language$Iterable$this.repeat(times);
     }
     protected final .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Container$this;
     
