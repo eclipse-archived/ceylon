@@ -230,7 +230,7 @@
         <para>A Unicode codepoint escape is a four-digit or eight-digit hexadecimal literal,
         or a Unicode character name, surrounded by braces.</para>
         
-        <synopsis>CharacterCode: "#" ( HexDigit{4} | HexDigit{8} ) | UnicodeCharName</synopsis>
+        <synopsis>CharacterCode: "#" ( HexDigit{4} | HexDigit{8} ) | UnicodeCharacterName</synopsis>
         
         <para>Legal Unicode character names are defined by the Unicode specification.</para>
                 
