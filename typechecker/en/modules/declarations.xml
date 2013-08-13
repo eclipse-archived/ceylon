@@ -1524,16 +1524,7 @@ String escapedSearchString = sql.escape(searchString);</programlisting>
             be a useful shortcut for specifying a callable parameter value in a named argument 
             list or refining a method declaration when the callable parameter or method has an 
             abstract return type.</para></comment-->
-            
-            <comment><para>TODO: Should we support <literal>object</literal>s as part of the
-            expression syntax, like anonymous classes in Java. The syntax would be:</para>
-            <programlisting>return object extends AbstractReader(stream) { ... };</programlisting>
-            <programlisting>return object satisfies Closeable { 
-        actual void begin() { ... } 
-        actual void close(Exception? e) { ... } 
-    };</programlisting>
-            </comment>
-            
+                        
         </section>
         
         <section id="classeswithcases">
