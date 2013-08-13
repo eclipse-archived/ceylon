@@ -209,7 +209,7 @@
             
             <para>A floating point literal may include either an <emphasis>exponent</emphasis> 
             (for scientific notation) or a <emphasis>magnitude</emphasis> (an SI unit
-            prefix). An integer literal may include a magnitude.</para>
+            prefix). A decimal integer literal may include a magnitude.</para>
             
             <synopsis>Exponent: ("E"|"e") ("+"|"-")? Digit+</synopsis>
             
