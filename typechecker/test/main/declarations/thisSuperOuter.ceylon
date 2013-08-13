@@ -35,10 +35,10 @@ satisfies Summable<LeaksThis>&Iterable<String> {
     
     @error value r2 = this;
     @error print(this);
-    print { @error line=this; };
+    print { @error val=this; };
     @error value r1 = (this of Object);
     @error print(this of Object);
-    print { @error line=(this of Object); };
+    print { @error val=(this of Object); };
     
     value iterable1 = {@error this, this};
     value iterable2 = [@error this, this];
@@ -62,10 +62,10 @@ abstract class LeaksSuper() extends Exception()
 satisfies Summable<LeaksSuper>&Iterable<String> {
     @error value r2 = super;
     @error print(super);
-    print { @error line=super; };
+    print { @error val=super; };
     @error value r1 = (super of Object);
     @error print(super of Object);
-    print { @error line=(super of Object); };
+    print { @error val=(super of Object); };
     
     value iterable1 = {@error super, super};
     value iterable2 = [@error super, super];

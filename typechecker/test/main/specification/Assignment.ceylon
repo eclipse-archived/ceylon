@@ -33,7 +33,7 @@ void testAssignmentInArg() {
 }
 void testAssignmentInNamedArg() {
     variable Boolean b;
-    print { line=(b=true); };
+    print { val=(b=true); };
     print(b);
 }
 
