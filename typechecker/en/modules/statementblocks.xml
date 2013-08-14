@@ -341,28 +341,35 @@
             <para>Where:</para>
             
             <itemizedlist>
-            <listitem>
-            <para>A control structure variable or iteration variable <emphasis>belongs</emphasis> 
-            to a block of a control structure if the block immediately follows the declaration 
-            of the variable.</para>
-            </listitem>
-            <listitem>
-            <para>A program element <emphasis>belongs</emphasis> to a declaration if it occurs
-            in the <literal>extends</literal>, <literal>satisfies</literal>, <literal>of</literal>,
-            or <literal>given</literal> clause of the declaration.</para>
-            </listitem>
+                <listitem>
+                    <para>A control structure variable or iteration variable <emphasis>belongs</emphasis> 
+                    to a block of a control structure if the block immediately follows the declaration 
+                    of the variable.</para>
+                    </listitem>
+                <listitem>
+                    <para>A program element <emphasis>belongs</emphasis> to a declaration if it occurs
+                    in the <literal>extends</literal>, <literal>satisfies</literal>, <literal>of</literal>,
+                    or <literal>given</literal> clause of the declaration.</para>
+                </listitem>
             </itemizedlist>
             
             <para>Furthermore:</para>
+            
             <itemizedlist>
                 <listitem>
                     <para>a condition variable of a condition belonging to a condition list is 
-                    in scope in any condition of the condition list that occurs lexically later, 
+                    in scope in any condition of the same condition list that occurs lexically later, 
                     and</para>
                 </listitem>
                 <listitem>
+                    <para>a resource expression variable of a <literal>try</literal> statement 
+                    is in scope in any resource expression of the same resource expression list 
+                    that occurs lexically later, and</para>
+                </listitem>
+                <listitem>
                     <para>an iteration variable or condition variable of a comprehension is in 
-                    scope in any clause of the comprehension that occurs lexically later.</para>
+                    scope in any clause of the comprehension that occurs lexically later, since
+                    comprehension clauses are viewed as nested bodies.</para>
                 </listitem>
             </itemizedlist>
             
@@ -372,8 +379,8 @@
             <title>Hiding a declaration</title>
         
             <para>If two declarations with the same name or imported name, as defined in 
-            <xref linkend="importedname"/>, are both in scope at a certain program element, then one 
-            declaration may <emphasis>hide</emphasis> the other declaration.</para>
+            <xref linkend="importedname"/>, are both in scope at a certain program element, then 
+            one declaration may <emphasis>hide</emphasis> the other declaration.</para>
             
             <!--
             <itemizedlist>
@@ -782,24 +789,26 @@ Integer f(Integer n) => n+package.n;</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>the qualifying type must have at least one member with the given 
-                    name or imported name, as defined in <xref linkend="importedname"/>, 
-                    which is visible at the program element, and</para>
+                    <para>the qualifying type must have or inherit at least one member 
+                    or nested type with the given name or imported name, as defined in 
+                    <xref linkend="importedname"/>, which is visible at the program 
+                    element, and</para>
                 </listitem>
                 <listitem>
-                    <para>if there are multiple visible members with the given name or 
-                    imported name, then it is guaranteed by the type system that there is 
-                    exactly one such member which is not refined by another member.</para>
+                    <para>if there are multiple visible members with the given name 
+                    or imported name, then it is guaranteed by the type system and
+                    <xref linkend="declarationnameuniqueness"/> that there is exactly 
+                    one such member which is not refined by another member.</para>
                 </listitem>
             </itemizedlist>
             
             <comment><para>TODO: that's simply not true for intersection types! We need more 
             detail here about member resolution for intersection and union types.</para></comment>
             
-            <para>Then the reference is to this unique member. If the program element is 
-            contained in the body of a class or interface, and the member declaration directly 
-            occurs in the body of the class or interface, and the qualified reference is a 
-            value reference or callable reference, and the receiver expression is a self 
+            <para>Then the reference is to this unique member or nested type. If the program 
+            element is contained in the body of a class or interface, and the member declaration 
+            directly occurs in the body of the class or interface, and the qualified reference 
+            is a value reference or callable reference, and the receiver expression is a self 
             reference to the instance being initialized, then:</para>
             
             <itemizedlist>
@@ -816,9 +825,6 @@ Integer f(Integer n) => n+package.n;</programlisting>
                     definitely initialized at the program element.</para>
                 </listitem>
             </itemizedlist>
-            
-            <comment><para>TODO: what about "inherited" interfaces and <literal>abstract</literal>
-            classes? Currently the compiler allows this!</para></comment>
             
             <para>As a special exception to the above, if the program element occurs inside 
             a <literal>dynamic</literal> block, and the the receiver expression has no type, 
