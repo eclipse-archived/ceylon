@@ -1852,9 +1852,9 @@ else {
             
             <itemizedlist>
                 <listitem>
-                    <para>a list of value references of form <literal>case (x, y, z)</literal> 
-                    where each value reference <literal>x</literal>, <literal>y</literal>, and 
-                    <literal>z</literal> refers to an anonymous class that is a subtype of 
+                    <para>a list of string literals, character literals, and integer 
+                    literals assignable to <literal>U</literal>, and/or value references 
+                    to anonymous classes that are subtypes of 
                     <literal>U&amp;&lt;Identifiable|Null&gt;</literal>, or</para>
                 </listitem>
                 <listitem>
@@ -1867,17 +1867,19 @@ else {
             <synopsis>Case: Expression ("," Expression)* | "is" Type</synopsis>
             
             <para>Two <literal>case</literal>s are said to be <emphasis>disjoint</emphasis> 
-            if the intersection of their types is exactly <literal>Nothing</literal>. In every
-            <literal>switch</literal> statement, all <literal>case</literal>s must be mutually 
-            disjoint.</para>
+            if the intersection of their types is exactly <literal>Nothing</literal>, as
+            defined by <xref linkend="disjointtypes"/>, or if they are distinct literal values. 
+            In every <literal>switch</literal> statement, all <literal>case</literal>s must be 
+            mutually disjoint.</para>
             
-            <para>A <literal>switch</literal> is <emphasis>exhaustive</emphasis> if the union 
-            type formed from by the types of the <literal>case</literal>s of the 
-            <literal>switch</literal> covers the <literal>switch</literal> expression type.</para>
+            <para>A <literal>switch</literal> is <emphasis>exhaustive</emphasis> if there 
+            are no literal values in its <literal>case</literal>s, and the union type formed 
+            by the types of the <literal>case</literal>s of the <literal>switch</literal> 
+            covers the <literal>switch</literal> expression type, as defined by
+            <xref linkend="coverage"/>.</para>
             
             <para>If no <literal>else</literal> block is specified, the <literal>switch</literal> 
-            must be exhaustive. <!--Conversely, if the <literal>switch</literal> is exhaustive, 
-            no <literal>else</literal> block may be specified.--></para>
+            must be exhaustive.</para>
             
             <comment><para>Note: On the other hand, even if the <literal>switch</literal> 
             <emphasis>is</emphasis> exhaustive, an <literal>else</literal> block may be 

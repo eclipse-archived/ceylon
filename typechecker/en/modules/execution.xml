@@ -612,9 +612,9 @@ String result = middleObject.string;</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>the case is a list of value references of form 
-                    <literal>case (x, y, z)</literal> and the value is identical to
-                    one of the values in the list, or if</para>
+                    <para>the case is a list of literal values and value references the 
+                    value is identical to one of the value references in the list or 
+                    equal to one of the literal values in the list, or if</para>
                 </listitem>
                 <listitem>
                     <para>the case is an assignability condition of form 
