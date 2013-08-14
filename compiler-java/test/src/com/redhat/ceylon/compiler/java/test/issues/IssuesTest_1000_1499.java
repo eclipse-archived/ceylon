@@ -362,6 +362,12 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     public void testBug1225() {
         compareWithJavaSource("bug12xx/Bug1225");
     }
+    
+    @Test
+    @Ignore("M6")
+    public void testBug1227() {
+        compareWithJavaSource("bug12xx/Bug1227");
+    }
 
     @Test
     public void testBug1235() {
