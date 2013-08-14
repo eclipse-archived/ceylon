@@ -50,13 +50,13 @@ function typeLiteral$model($$targs$$) {
       var mdl = t.$$metamodel$$;
       if (typeof(mdl)==='function')mdl=mdl();
       if (mdl.d['$mt'] === 'cls') {
-        return AppliedClass$model(t,mdl['$tp']);
+        return AppliedClass(t,mdl['$tp']);
       } else if (mdl.d['$mt'] === 'ifc') {
-        return AppliedInterface$model(t,mdl['$tp']);
+        return AppliedInterface(t,mdl['$tp']);
       } else if (mdl.d['$mt'] === 'mthd') {
-        return AppliedFunction$model(t,{Type:mdl.$t,Arguments:mdl.$ps});
+        return AppliedFunction(t,{Type:mdl.$t,Arguments:mdl.$ps});
       } else if (mdl.d['$mt'] === 'attr' || mdl.d['$mt'] === 'gttr') {
-        return AppliedValue$model(t,{Container:{t:mdl.$cont},Type:mdl.$t});
+        return AppliedValue(t,{Container:{t:mdl.$cont},Type:mdl.$t});
       } else {
         console.log("WTF is a metatype " + mdl.d['$mt'] + " on a closed type???????");
       }
@@ -105,12 +105,12 @@ function pushTypes(list, types) {
 function applyUnionType(ut) { //return AppliedUnionType
   var cases = [];
   pushTypes(cases, ut.l);
-  return AppliedUnionType$model(ut, cases.reifyCeylonType({Absent:{t:Null},Element:{t:Type$model}}));
+  return AppliedUnionType(ut, cases.reifyCeylonType({Absent:{t:Null},Element:{t:Type$model}}));
 }
 function applyIntersectionType(it) { //return AppliedIntersectionType
   var sats = [];
   pushTypes(sats, it.l);
-  return AppliedIntersectionType$model(it, sats.reifyCeylonType({Absent:{t:Null},Element:{t:Type$model}}));
+  return AppliedIntersectionType(it, sats.reifyCeylonType({Absent:{t:Null},Element:{t:Type$model}}));
 }
 function applyType(t) { //return AppliedType
   return typeLiteral$model({Type:t});
