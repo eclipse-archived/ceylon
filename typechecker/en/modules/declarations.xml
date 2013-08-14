@@ -769,9 +769,8 @@ TypeConstraints?
             types) of every supertype. That is, every member of every supertype of the 
             interface is also a member of the interface. <!--, unless the member is 
             refined by another supertype or by the interface itself.--> Furthermore, 
-            the interface inherits all nested types (<literal>shared</literal> 
-            interfaces and <literal>shared abstract</literal> classes) of every 
-            supertype.</para>
+            the interface inherits all nested types (interfaces and 
+            <literal>abstract</literal> classes) of every supertype.</para>
             
             <!--
             <para>An interface inherits every class satisfied by every other interface 
@@ -1199,8 +1198,8 @@ TypeConstraints?
             <para>A class inherits all members (methods, attributes, and member types) of every 
             supertype. That is, every member of every supertype of the class is also a member 
             of the class. <!--, unless the member is refined by another supertype or by the class 
-            itself.--> Furthermore, the class inherits all nested types (<literal>shared</literal> 
-            interfaces and <literal>shared abstract</literal> classes) of every supertype.</para>
+            itself.--> Furthermore, the class inherits all nested types (interfaces and 
+            <literal>abstract</literal> classes) of every supertype.</para>
             
             <para>Unless the class is declared <literal>abstract</literal> or 
             <literal>formal</literal>, the class:</para>
