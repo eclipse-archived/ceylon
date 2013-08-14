@@ -260,10 +260,10 @@
                     inherited declaration,</para>
                 </listitem>
                 <listitem>
-                    <para>the contained declaration is a block local declaration, or</para>
+                    <para>the contained declaration is not <literal>shared</literal>, or</para>
                 </listitem>
                 <listitem>
-                    <para>the inherited declaration is a block local declaration.</para>
+                    <para>the inherited declaration is not <literal>shared</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -467,7 +467,7 @@
 class Complex(Float x, Float y=0.0) 
         extends Point(x, y) {}</programlisting>
             
-            <para>When a member of a class is hidden by a block local declaration, the member 
+            <para>When a member of a class is hidden by a nested declaration, the member 
             may be accessed via the self reference <literal>this</literal>, defined in
             <xref linkend="this"/>, or via the outer instance reference <literal>outer</literal>,
             defined in <xref linkend="outer"/>.</para>
@@ -903,8 +903,8 @@ Integer f(Integer n) => n+package.n;</programlisting>
         <literal>return</literal> or <literal>throw</literal> directive.</para>
         -->
         
-        <comment><para>Note: an unused block local declaration results in a compiler 
-        warning.</para></comment>
+        <comment><para>Note: an unused un-<literal>shared</literal> declaration results in a 
+        compiler warning.</para></comment>
         
         <section id="expressionstatements">
             <title>Expression statements</title>
