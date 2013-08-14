@@ -1,9 +1,10 @@
+interface I<out X, out Y> {}
+interface S<out X> of E|T<X> satisfies I<X,Null>{}
+interface T<out X> satisfies S<X>&I<X,Nothing> {}
+abstract class E() of e satisfies S<Nothing> {}
+object e extends E() {}
+
 void coverage() {
-    interface I<out X, out Y> {}
-    interface S<out X> of E|T<X> satisfies I<X,Null>{}
-    interface T<out X> satisfies S<X>&I<X,Nothing> {}
-    abstract class E() of e satisfies S<Nothing> {}
-    object e extends E() {}
     
     I<Nothing,Null>&I<String,Nothing> x1 = nothing;
     I<Nothing,Nothing> y1 = x1 of I<Nothing,Nothing>;

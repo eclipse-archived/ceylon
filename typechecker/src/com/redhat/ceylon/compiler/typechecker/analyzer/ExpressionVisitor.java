@@ -5097,6 +5097,16 @@ public class ExpressionVisitor extends Visitor {
             }
             for (Tree.BaseMemberExpression bme: that.getBaseMemberExpressions()) {
                 ProducedType type = bme.getTypeModel();
+                Declaration d = bme.getDeclaration();
+                if (d!=null && type!=null && 
+                        !type.getDeclaration().isAnonymous()) {
+                    bme.addError("case must be a toplevel anonymous class: " + 
+                            d.getName(unit) + " is not an anonymous class");
+                }
+                else if (d!=null && !d.isToplevel()) {
+                    bme.addError("case must be a toplevel anonymous class: " + 
+                            d.getName(unit) + " is not toplevel");
+                }
                 if (type!=null) {
                     checkAssignable(type, td.getType(), bme, 
                             "case type must be a subtype of enumerated type");

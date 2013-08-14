@@ -1151,13 +1151,7 @@ public class TypeVisitor extends Visitor {
         		if (od!=null) {
         			ProducedType type = od.getType();
         			if (type!=null) {
-        				TypeDeclaration dec = type.getDeclaration();
-        				if (dec!=null && !dec.isToplevel() && !dec.isAnonymous()) {
-        					bme.addError("case must refer to a toplevel object declaration");
-        				}
-        				else {
-        					list.add(type);
-        				}
+        			    list.add(type);
         			}
         		}
         	}

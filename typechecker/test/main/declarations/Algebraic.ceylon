@@ -469,3 +469,11 @@ interface Experimental<out Output> @error given Output of String?|Integer? {
     shared formal Output fileContents(String filePath);
 }
 
+class OuterEnum() {
+    @error shared abstract class Enum() of x|y {}
+    object x extends Enum() {}
+    object y extends Enum() {}
+    @error shared abstract class EnumToo() of z|w {}
+    EnumToo z = nothing;
+    EnumToo w = nothing;
+}
