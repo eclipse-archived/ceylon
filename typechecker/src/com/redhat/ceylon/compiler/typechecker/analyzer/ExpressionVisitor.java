@@ -67,7 +67,6 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -4551,13 +4550,6 @@ public class ExpressionVisitor extends Visitor {
             if (e!=null) {
                 ProducedType t = e.getTypeModel();
                 if (!isTypeUnknown(t)) {
-                    ProducedType ut = unionType(unit.getNullDeclaration().getType(), 
-                            unit.getIdentifiableDeclaration().getType(), unit);
-                    checkAssignable(t, ut, e, "case must be identifiable or null");
-                    TypeDeclaration dec = t.getDeclaration();
-                    if (!dec.isToplevel() || !dec.isAnonymous()) {
-                        e.addError("case must refer to a toplevel object declaration");
-                    }
                     if (switchExpression!=null) {
                         ProducedType st = switchExpression.getTypeModel();
                         if (!isTypeUnknown(st)) {
@@ -4566,6 +4558,26 @@ public class ExpressionVisitor extends Visitor {
                                         "case must be assignable to switch expression type");
                             }
                         }
+                    }
+                    Tree.Term term = e.getTerm();
+                    if (term instanceof Tree.Literal) {
+                        if (term instanceof Tree.FloatLiteral) {
+                            e.addError("literal case may not be a Float literal");
+                        }
+                    }
+                    else if (term instanceof Tree.MemberOrTypeExpression) {
+                        ProducedType ut = unionType(unit.getNullDeclaration().getType(), 
+                                unit.getIdentifiableDeclaration().getType(), unit);
+                        TypeDeclaration dec = t.getDeclaration();
+                        if (!dec.isToplevel() || !dec.isAnonymous()) {
+                            e.addError("case must refer to a toplevel object declaration");
+                        }
+                        else {
+                            checkAssignable(t, ut, e, "case must be identifiable or null");
+                        }
+                    }
+                    else {
+                        e.addError("case must be a literal value or refer to a toplevel object declaration");
                     }
                 }
             }
@@ -4615,89 +4627,146 @@ public class ExpressionVisitor extends Visitor {
     public void visit(Tree.SwitchStatement that) {
         Tree.Expression ose = switchExpression;
         switchExpression = that.getSwitchClause().getExpression();
-        super.visit(that);        
+        super.visit(that);
+        Tree.SwitchCaseList switchCaseList = that.getSwitchCaseList();
+        if (switchCaseList!=null && switchExpression!=null) {
+            checkCases(switchCaseList);
+            if (switchCaseList.getElseClause()==null) {
+                checkCasesExhaustive(switchCaseList, that.getSwitchClause());
+            }
+        }
         switchExpression = ose;
-        
     }
     
-    @Override
-    public void visit(Tree.SwitchCaseList that) {
-        super.visit(that);
-        if (switchExpression!=null) {
-            boolean hasIsCase = false;
-            for (Tree.CaseClause cc: that.getCaseClauses()) {
-                if (cc.getCaseItem() instanceof Tree.IsCase) {
-                    hasIsCase = true;
-                }
-                for (Tree.CaseClause occ: that.getCaseClauses()) {
-                    if (occ==cc) break;
-                    checkCasesDisjoint(getType(cc), getType(occ), occ);
-                }
+    private void checkCases(Tree.SwitchCaseList switchCaseList) {
+        List<Tree.CaseClause> cases = switchCaseList.getCaseClauses();
+        boolean hasIsCase = false;
+        for (Tree.CaseClause cc: cases) {
+            if (cc.getCaseItem() instanceof Tree.IsCase) {
+                hasIsCase = true;
             }
-            if (hasIsCase) {
-                Tree.Term st = switchExpression.getTerm();
-                if (st instanceof Tree.BaseMemberExpression) {
-                    checkReferenceIsNonVariable((Tree.BaseMemberExpression) st);
+            for (Tree.CaseClause occ: cases) {
+                if (occ==cc) break;
+                checkCasesDisjoint(cc, occ);
+            }
+        }
+        if (hasIsCase) {
+            Tree.Term st = switchExpression.getTerm();
+            if (st instanceof Tree.BaseMemberExpression) {
+                checkReferenceIsNonVariable((Tree.BaseMemberExpression) st);
+            }
+            else {
+                switchExpression.addError("switch expression must be a value reference in switch with type cases");
+            }
+        }   
+    }
+    
+    private void checkCasesExhaustive(Tree.SwitchCaseList switchCaseList,
+            Tree.SwitchClause switchClause) {
+        ProducedType st = switchExpression.getTypeModel();
+        if (!isTypeUnknown(st)) {
+            //form the union of all the case types
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            for (Tree.CaseClause cc: switchCaseList.getCaseClauses()) {
+                ProducedType ct = getTypeIgnoringLiterals(cc);
+                if (isTypeUnknown(ct)) {
+                    return; //Note: early exit!
                 }
                 else {
-                    switchExpression.addError("switch expression must be a value reference in switch with type cases");
-                }
-            }   
-        }
-        
-
-        if (that.getElseClause()==null && switchExpression!=null) {
-            ProducedType st = switchExpression.getTypeModel();
-            if (!isTypeUnknown(st)) {
-                //form the union of all the case types
-                List<ProducedType> list = new ArrayList<ProducedType>();
-                for (Tree.CaseClause cc: that.getCaseClauses()) {
-                    ProducedType ct = getType(cc);
-                    if (isTypeUnknown(ct)) {
-                        return; //Note: early exit!
-                    }
-                    else {
-                        addToUnion(list, ct);
-                    }
-                }
-                UnionType ut = new UnionType(unit);
-                ut.setCaseTypes(list);
-                //if the union of the case types covers 
-                //the switch expression type then the 
-                //switch is exhaustive
-                if (!ut.getType().covers(st)) {
-                    that.addError("case types must cover all cases of the switch type or an else clause must appear: " +
-                            ut.getType().getProducedTypeName(unit) + " does not cover " + st.getProducedTypeName(unit));
+                    addToUnion(list, ct);
                 }
             }
-            /*else if (dynamic) {
-                that.addError("else clause must appear: static type not known");
-            }*/
+            UnionType ut = new UnionType(unit);
+            ut.setCaseTypes(list);
+            //if the union of the case types covers 
+            //the switch expression type then the 
+            //switch is exhaustive
+            if (!ut.getType().covers(st)) {
+                switchClause.addError("case types must cover all cases of the switch type or an else clause must appear: " +
+                                ut.getType().getProducedTypeName(unit) + " does not cover " + 
+                                st.getProducedTypeName(unit));
+            }
         }
-        
+        /*else if (dynamic) {
+            that.addError("else clause must appear: static type not known");
+        }*/
     }
     
+    private void checkCasesDisjoint(Tree.CaseClause cc, Tree.CaseClause occ) {
+        Tree.CaseItem cci = cc.getCaseItem();
+        Tree.CaseItem occi = occ.getCaseItem();
+        if (cci instanceof Tree.IsCase || occi instanceof Tree.IsCase) {
+            checkCasesDisjoint(getType(cc), getType(occ), cci);
+        }
+        else {
+            checkCasesDisjoint(getTypeIgnoringLiterals(cc),
+                    getTypeIgnoringLiterals(occ), cci);
+        }
+        if (cci instanceof Tree.MatchCase && occi instanceof Tree.MatchCase) {
+            checkLiteralsDisjoint((Tree.MatchCase) cci, (Tree.MatchCase) occi);
+        }
+    }
+    
+    private void checkLiteralsDisjoint(Tree.MatchCase cci, Tree.MatchCase occi) {
+        for (Tree.Expression e: cci.getExpressionList().getExpressions()) {
+            for (Tree.Expression f: occi.getExpressionList().getExpressions()) {
+                Tree.Term et = e.getTerm();
+                Tree.Term ft = f.getTerm();
+                if (et instanceof Tree.Literal && ft instanceof Tree.Literal) {
+                    if (et.getText().equals(ft.getText())) {
+                        cci.addError("literal cases must be disjoint: " +
+                                et.getText() + " occurs in multiple cases");
+                    }
+                }
+            }
+        }
+    }
+
     private boolean isNullCase(ProducedType ct) {
         TypeDeclaration d = ct.getDeclaration();
         return d!=null && d instanceof Class &&
                 d.equals(unit.getNullDeclaration());
     }
 
+    private ProducedType getType(Tree.CaseItem ci) {
+        Tree.Type t = ((Tree.IsCase) ci).getType();
+        if (t!=null) {
+            return t.getTypeModel().getUnionOfCases();
+        }
+        else {
+            return null;
+        }
+    }
+    
     private ProducedType getType(Tree.CaseClause cc) {
         Tree.CaseItem ci = cc.getCaseItem();
         if (ci instanceof Tree.IsCase) {
-            Tree.Type t = ((Tree.IsCase) ci).getType();
-            if (t!=null) {
-                return t.getTypeModel().getUnionOfCases();
-            }
-            else {
-                return null;
-            }
+            return getType(ci);
         }
         else if (ci instanceof Tree.MatchCase) {
             List<ProducedType> list = new ArrayList<ProducedType>();
             for (Tree.Expression e: ((Tree.MatchCase) ci).getExpressionList().getExpressions()) {
                 if (e.getTypeModel()!=null) {
+                    addToUnion(list, e.getTypeModel());
+                }
+            }
+            return formUnion(list);
+        }
+        else {
+            return null;
+        }
+    }
+
+    private ProducedType getTypeIgnoringLiterals(Tree.CaseClause cc) {
+        Tree.CaseItem ci = cc.getCaseItem();
+        if (ci instanceof Tree.IsCase) {
+            return getType(ci);
+        }
+        else if (ci instanceof Tree.MatchCase) {
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            for (Tree.Expression e: ((Tree.MatchCase) ci).getExpressionList().getExpressions()) {
+                if (e.getTypeModel()!=null && 
+                        !(e.getTerm() instanceof Tree.Literal)) {
                     addToUnion(list, e.getTypeModel());
                 }
             }
@@ -5405,7 +5474,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void setMetamodelType(MemberLiteral that, Declaration result, ProducedType outerType) {
+    private void setMetamodelType(Tree.MemberLiteral that, Declaration result, ProducedType outerType) {
         if (result instanceof Method) {
             TypedDeclaration method = (TypedDeclaration) result;
             ParameterList parameterList = ((Functional) method).getParameterLists().get(0);
@@ -5570,7 +5639,7 @@ public class ExpressionVisitor extends Visitor {
         return false;
     }
 
-    private ProducedType getValueMetaType(MemberLiteral that,
+    private ProducedType getValueMetaType(Tree.MemberLiteral that,
             Declaration result, ProducedType outerType, TypedDeclaration value,
             ProducedTypedReference pr) {
         if (!isParameterised(result)) {
@@ -5587,7 +5656,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private ProducedType getFunctionMetaType(MemberLiteral that,
+    private ProducedType getFunctionMetaType(Tree.MemberLiteral that,
             Declaration result, ProducedType outerType,
             ParameterList parameterList, ProducedTypedReference pr) {
         if (!isParameterised(result)) {
