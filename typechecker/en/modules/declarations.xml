@@ -1603,7 +1603,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             aliases an <literal>abstract</literal> class, the alias must be annotated 
             <literal>abstract</literal>, and it may not be directly instantiated.</para>
             
-            <para>If a <literal>shared</literal>class alias nested inside the body 
+            <para>If a <literal>shared</literal> class alias nested inside the body 
             of a class or interface aliases an <literal>abstract</literal> class, the 
             alias must be annotation <literal>abstract</literal> or <literal>formal</literal>.
             If it is annotated <literal>formal</literal>, it is considered a member 
