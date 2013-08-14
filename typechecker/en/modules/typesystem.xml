@@ -2582,13 +2582,13 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
         <section id="realizations">
             <title>Realizations</title>
             
-            <para>Given member declared by <literal>Y</literal>, and a declaration 
-            that refines it, we can construct a <emphasis>refined realization</emphasis> 
-            of the member:</para>
+            <para>Given member declared by <literal>Y</literal>, and a declaration that 
+            refines it, we can construct a <emphasis>refined realization</emphasis> of 
+            the member or nested type:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>first determine the principal instantiation of <literal>Y</literal> 
+                    <para>first determine the principal instantiation of <literal>Y</literal>
                     for the class or interface which refines the member, and then</para>
                 </listitem>
                 <listitem>
@@ -2622,10 +2622,10 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             
             <para>Given a qualified reference, as defined in 
             <xref linkend="qualifiedreferenceresolution"/>, with a qualifying type 
-            <literal>X</literal>, to a member declared by <literal>Y</literal>, 
-            and, in the case of a generic member, a list of type arguments for the type 
-            parameters of the member, we can construct a <emphasis>qualified 
-            realization</emphasis> of the member:</para>
+            <literal>X</literal>, to a member or nested type declared by <literal>Y</literal>, 
+            and, in the case of a generic member or generic nested type, a list of 
+            type arguments for the type parameters of the member, we can construct a 
+            <emphasis>qualified realization</emphasis> of the member or nested type:</para>
             
             <itemizedlist>
                 <listitem>
@@ -2634,13 +2634,19 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
                 </listitem>
                 <listitem>
                     <para>substituting the type arguments in this principal 
-                    instantiation into the member schema, and, finally,</para>
+                    instantiation into the declaration schema, and, finally,</para>
                 </listitem>
                 <listitem>
-                    <para>in the case of a generic member, substituting the type 
-                    arguments into the member schema.</para>
+                    <para>in the case of a generic member or generic nested type, 
+                    substituting the type arguments into the declaration schema.</para>
                 </listitem>
             </itemizedlist>
+            
+            <para>If, for any given qualified or unqualified reference, it is impossible 
+            to form the principal instantiation of the type that declares the referenced 
+            declaration, due to the hole described above in 
+            <xref linkend="principalinstantiationofasupertype"/>, it is impossible to 
+            form a realization, and the reference to the declaration is illegal.</para>
             
         </section>
         

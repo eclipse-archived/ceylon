@@ -704,8 +704,9 @@ Integer f(Integer n) => n+package.n;</programlisting>
                 <listitem>
                     <para>if multiple declarations with the given name or imported name 
                     are in scope at the program element where the given name occurs, then 
-                    there must be exactly one such declaration which is not hidden by any 
-                    other declaration.</para>
+                    it is guaranteed by the type system and 
+                    <xref linkend="declarationnameuniqueness"/> that there is exactly one 
+                    such declaration which is not hidden by any other declaration.</para>
                 </listitem>
             </itemizedlist>
             
@@ -799,18 +800,24 @@ Integer f(Integer n) => n+package.n;</programlisting>
                     <para>if there are multiple visible members with the given name 
                     or imported name, then it is guaranteed by the type system and
                     <xref linkend="declarationnameuniqueness"/> that there is exactly 
-                    one such member which is not refined by another member.</para>
+                    one such member which is not refined by another member, except</para>
+                </listitem>
+                <listitem>
+                    <para>in the case of certain intersection types, where two of the
+                    intersected types declare distinct members with the same name,
+                    that do not refine any member of a common supertype (in which case 
+                    what we actually have are disjoint types that are nevertheless not 
+                    considered provably disjoint within the rules of the typesystem), 
+                    and in this case the qualified reference is considered illegal.</para>
                 </listitem>
             </itemizedlist>
             
-            <comment><para>TODO: that's simply not true for intersection types! We need more 
-            detail here about member resolution for intersection and union types.</para></comment>
-            
-            <para>Then the reference is to this unique member or nested type. If the program 
-            element is contained in the body of a class or interface, and the member declaration 
-            directly occurs in the body of the class or interface, and the qualified reference 
-            is a value reference or callable reference, and the receiver expression is a self 
-            reference to the instance being initialized, then:</para>
+            <para>Then the reference is to the unique unrefined member or nested class. 
+            If the program element is contained in the body of a class or interface, 
+            and the member declaration directly occurs in the body of the class or 
+            interface, and the qualified reference is a value reference or callable 
+            reference, and the receiver expression is a self reference to the instance 
+            being initialized, then:</para>
             
             <itemizedlist>
                 <listitem>
