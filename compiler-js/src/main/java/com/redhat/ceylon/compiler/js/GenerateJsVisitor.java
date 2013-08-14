@@ -4346,10 +4346,25 @@ public class GenerateJsVisitor extends Visitor
         return dynblock > 0;
     }
 
+    /** Tells whether the typeModel of a TypeLiteral or MemberLiteral node is open or closed. */
+    private boolean isTypeLiteralModelOpen(ProducedType t) {
+        final String qn = t.getProducedTypeQualifiedName();
+        if (qn.contains("ceylon.language.model::")) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public void visit(TypeLiteral that) {
         out(clAlias, "typeLiteral$model({Type:");
-        TypeUtils.typeNameOrList(that, that.getType().getTypeModel(), this, true);
+        if (isTypeLiteralModelOpen(that.getTypeModel())) {
+            TypeDeclaration d = that.getType().getTypeModel().getDeclaration();
+            qualify(that,d);
+            out(names.name(d));
+        } else {
+            TypeUtils.typeNameOrList(that, that.getType().getTypeModel(), this, true);
+        }
         out("})");
     }
 
@@ -4359,9 +4374,10 @@ public class GenerateJsVisitor extends Visitor
         if (ref == null) {
             that.addUnexpectedError("Member literal with no valid target");
         } else {
-            //TODO We can skip the typeLiteral call and directly return a Function or Method
             Declaration d = ref.getDeclaration();
-            out(clAlias, "typeLiteral$model({Type:{t:");
+            final boolean closed = !isTypeLiteralModelOpen(that.getTypeModel());
+            out(clAlias, "typeLiteral$model({Type:");
+            if (closed)out("{t:");
             if (that.getType() == null) {
                 qualify(that, d);
             } else {
@@ -4369,16 +4385,18 @@ public class GenerateJsVisitor extends Visitor
                 out(names.name(that.getType().getTypeModel().getDeclaration()));
                 out(".$$.prototype.");
             }
-            //Como le hago con setters?
             if (d instanceof Value) {
                 out("$prop$");
             }
             out(names.name(d));
-            if (ref.getTypeArguments() != null && !ref.getTypeArguments().isEmpty()) {
-                out(",a:");
-                TypeUtils.printTypeArguments(that, ref.getTypeArguments(), this);
+            if (closed) {
+                if (ref.getTypeArguments() != null && !ref.getTypeArguments().isEmpty()) {
+                    out(",a:");
+                    TypeUtils.printTypeArguments(that, ref.getTypeArguments(), this);
+                }
+                out("}");
             }
-            out("}})");
+            out("})");
         }
     }
 

@@ -667,6 +667,7 @@ public class TypeUtils {
         }
     }
 
+    /** Abstraction for a callback that generates the runtime annotations list as part of the metamodel. */
     static interface RuntimeMetamodelAnnotationGenerator {
         public void generateAnnotations();
     }
