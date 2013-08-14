@@ -34,30 +34,56 @@ type$model.$$metamodel$$={$ps:[{t:Anything}],$an:function(){return[shared()];},m
 exports.type$model=type$model;
 
 function typeLiteral$model($$targs$$) {
-    if ($$targs$$ === undefined || $$targs$$.Type === undefined || $$targs$$.Type.t === undefined) {
-        throw Exception("JS Interop not supported " + require('util').inspect($$targs$$));
-    } else if ($$targs$$.Type.t === 'u' || $$targs$$.Type.t === 'i') {
-        return $$targs$$.Type.t === 'u' ? applyUnionType($$targs$$.Type) :
-            applyIntersectionType($$targs$$.Type);
-    } else if ($$targs$$.Type.t.$$metamodel$$ === undefined) {
-        throw Exception("JS Interop not supported / incomplete metamodel for " + require('util').inspect($$targs$$.Type.t));
+  if ($$targs$$ === undefined || $$targs$$.Type === undefined) {
+    throw Exception("Missing type argument 'Type' " + require('util').inspect($$targs$$));
+  } else if ($$targs$$.Type.$$metamodel$$ == undefined) {
+    //closed type
+    var t = $$targs$$.Type.t
+    if (t === undefined) {
+      throw Exception("'Type' argument should be an open or closed type");
+    } else if (t === 'u' || t === 'i') {
+      return t === 'u' ? applyUnionType($$targs$$.Type) :
+      applyIntersectionType($$targs$$.Type);
+    } else if (t.$$metamodel$$ === undefined) {
+      throw Exception("JS Interop not supported / incomplete metamodel for " + require('util').inspect(t));
     } else {
-        var mdl = $$targs$$.Type.t.$$metamodel$$;
-        if (typeof(mdl)==='function')mdl=mdl();
-        if (mdl.d['$mt'] === 'cls') {
-            return AppliedClass$model($$targs$$.Type.t,mdl['$tp']);
-        } else if (mdl.d['$mt'] === 'ifc') {
-            return AppliedInterface$model($$targs$$.Type.t,mdl['$tp']);
-        } else if (mdl.d['$mt'] === 'mthd') {
-            return AppliedFunction$model($$targs$$.Type.t,{Type:mdl.$t,Arguments:mdl.$ps});
-        } else if (mdl.d['$mt'] === 'attr' || mdl.d['$mt'] === 'gttr') {
-            return AppliedValue$model($$targs$$.Type.t,{Container:{t:mdl.$cont},Type:mdl.$t});
-        } else {
-console.log("WTF is a metatype " + mdl.d['$mt'] + "???????");
-        }
-        console.log("typeLiteral<" + $$targs$$.Type.t.getT$name() + ">");
+      var mdl = t.$$metamodel$$;
+      if (typeof(mdl)==='function')mdl=mdl();
+      if (mdl.d['$mt'] === 'cls') {
+        return AppliedClass$model(t,mdl['$tp']);
+      } else if (mdl.d['$mt'] === 'ifc') {
+        return AppliedInterface$model(t,mdl['$tp']);
+      } else if (mdl.d['$mt'] === 'mthd') {
+        return AppliedFunction$model(t,{Type:mdl.$t,Arguments:mdl.$ps});
+      } else if (mdl.d['$mt'] === 'attr' || mdl.d['$mt'] === 'gttr') {
+        return AppliedValue$model(t,{Container:{t:mdl.$cont},Type:mdl.$t});
+      } else {
+        console.log("WTF is a metatype " + mdl.d['$mt'] + " on a closed type???????");
+      }
+      console.log("typeLiteral<" + t.getT$name() + "> (closed type)");
     }
-    throw Exception("typeLiteral UNIMPLEMENTED for " + require('util').inspect($$targs$$));
+  } else {
+    //open type
+    var t = $$targs$$.Type;
+    var mdl = t.$$metamodel$$;
+    if (typeof(mdl)==='function')mdl=mdl();
+    //We need the module
+    var _mod = modules$model.find(mdl.mod['$mod-name'],mdl.mod['$mod-version']);
+    var _pkg = _mod.findPackage(mdl.pkg);
+    if (mdl.d['$mt'] === 'cls') {
+      return OpenClass(t,mdl['$tp']);
+    } else if (mdl.d['$mt'] === 'ifc') {
+      return OpenInterface(mdl.d['$nm'], _pkg, mdl.$cont===undefined, t);
+    } else if (mdl.d['$mt'] === 'mthd') {
+      return OpenFunction(mdl.d['$nm'], _pkg, mdl.$cont===undefined, t);
+    } else if (mdl.d['$mt'] === 'attr' || mdl.d['$mt'] === 'gttr') {
+      return OpenValue(mdl.d['$nm'], _pkg, mdl.$cont===undefined, t);
+    } else {
+      console.log("WTF is a metatype " + mdl.d['$mt'] + " on an open type???????");
+    }
+    console.log("typeLiteral<" + t.getT$name() + "> (open type)");
+  }
+  throw Exception("typeLiteral UNIMPLEMENTED for " + require('util').inspect($$targs$$));
 }
 typeLiteral$model.$$metamodel$$={$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language.model']['typeLiteral']};
 exports.typeLiteral$model=typeLiteral$model;
