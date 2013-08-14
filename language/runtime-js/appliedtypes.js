@@ -1,15 +1,15 @@
-function AppliedClass$model(tipo,$$targs$$,that){
-    $init$AppliedClass$model();
-    if (that===undefined)that=new AppliedClass$model.$$;
+function AppliedClass(tipo,$$targs$$,that){
+    $init$AppliedClass();
+    if (that===undefined)that=new AppliedClass.$$;
     set_type_args(that,$$targs$$);
     Class$model($$targs$$,that);
     that.tipo=tipo;
     return that;
 }
-AppliedClass$model.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Type:{'var':'out',},A:{'var':'in','satisfies':[{t:Sequential,a:{Element:{t:Anything}}}]}},satisfies:[{t:Class$model,a:{Arguments:'A',Type:'Type'}}],pkg:'ceylon.language.model',d:$$METAMODEL$$['ceylon.language.model']['Class']};
-function $init$AppliedClass$model(){
-    if (AppliedClass$model.$$===undefined){
-        initTypeProto(AppliedClass$model,'ceylon.language.model:: AppliedClass',Basic,Class$model);
+AppliedClass.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Type:{'var':'out',},A:{'var':'in','satisfies':[{t:Sequential,a:{Element:{t:Anything}}}]}},satisfies:[{t:Class$model,a:{Arguments:'A',Type:'Type'}}],pkg:'ceylon.language.model',d:$$METAMODEL$$['ceylon.language.model']['Class']};
+function $init$AppliedClass(){
+    if (AppliedClass.$$===undefined){
+        initTypeProto(AppliedClass,'ceylon.language.model:: AppliedClass',Basic,Class$model);
         (function($$clase){
             
             //declaration
@@ -49,18 +49,18 @@ function $init$AppliedClass$model(){
                 var $$clase=this;
                 throw Exception(String$("type args",9));
             });
-        })(AppliedClass$model.$$.prototype);
+        })(AppliedClass.$$.prototype);
     }
-    return AppliedClass$model;
+    return AppliedClass;
 }
-exports.AppliedClass$model=$init$AppliedClass$model;
-$init$AppliedClass$model();
+exports.AppliedClass$model=$init$AppliedClass;
+$init$AppliedClass();
 
-function AppliedInterface$model(tipo,$$targs$$,$$interfaz){
-    $init$AppliedInterface$model();
-    if ($$interfaz===undefined)$$interfaz=new AppliedInterface$model.$$;
+function AppliedInterface(tipo,$$targs$$,$$interfaz){
+    $init$AppliedInterface();
+    if ($$interfaz===undefined)$$interfaz=new AppliedInterface.$$;
     set_type_args($$interfaz,$$targs$$);
-    Interface$model($$targs$$,$$interfaz);
+    Interface($$targs$$,$$interfaz);
     
     //AttributeGetterDefinition declaration at test.ceylon (5:4-5:78)
     defineAttr($$interfaz,'declaration',function() {
@@ -107,84 +107,84 @@ function AppliedInterface$model(tipo,$$targs$$,$$interfaz){
     $$interfaz.tipo=tipo;
     return $$interfaz;
 }
-AppliedInterface$model.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Type:{'var':'out',}},satisfies:[{t:Interface$model,a:{Type:'Type'}}],pkg:'ceylon.language.model',d:$$METAMODEL$$['ceylon.language.model']['Interface']};
-function $init$AppliedInterface$model(){
-    if (AppliedInterface$model.$$===undefined){
-        initTypeProto(AppliedInterface$model,'ceylon.language.model::AppliedInterface',Basic,Interface$model);
+AppliedInterface.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Type:{'var':'out',}},satisfies:[{t:Interface$model,a:{Type:'Type'}}],pkg:'ceylon.language.model',d:$$METAMODEL$$['ceylon.language.model']['Interface']};
+function $init$AppliedInterface(){
+    if (AppliedInterface.$$===undefined){
+        initTypeProto(AppliedInterface,'ceylon.language.model::AppliedInterface',Basic,Interface$model);
     }
-    return AppliedInterface$model;
+    return AppliedInterface;
 }
-exports.$init$AppliedInterface$model=$init$AppliedInterface$model;
-$init$AppliedInterface$model();
+exports.$init$AppliedInterface$model=$init$AppliedInterface;
+$init$AppliedInterface();
 
-function AppliedUnionType$model(tipo,types$2, $$appliedUnionType){
-    $init$AppliedUnionType$model();
-    if ($$appliedUnionType===undefined)$$appliedUnionType=new AppliedUnionType$model.$$;
+function AppliedUnionType(tipo,types$2, $$appliedUnionType){
+    $init$AppliedUnionType();
+    if ($$appliedUnionType===undefined)$$appliedUnionType=new AppliedUnionType.$$;
     $$appliedUnionType.types$2=types$2;
     UnionType$model($$appliedUnionType);
     $$appliedUnionType.tipo=tipo;
     return $$appliedUnionType;
 }
-AppliedUnionType$model.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:UnionType$model}],pkg:'',d:$$METAMODEL$$['ceylon.language.model']['AppliedUnionType']};
-function $init$AppliedUnionType$model(){
-    if (AppliedUnionType$model.$$===undefined){
-        initTypeProto(AppliedUnionType$model,'AppliedUnionType',Basic,UnionType$model);
+AppliedUnionType.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:UnionType$model}],pkg:'',d:$$METAMODEL$$['ceylon.language.model']['AppliedUnionType']};
+function $init$AppliedUnionType(){
+    if (AppliedUnionType.$$===undefined){
+        initTypeProto(AppliedUnionType,'AppliedUnionType',Basic,UnionType$model);
         (function($$appliedUnionType){
             
             defineAttr($$appliedUnionType,'caseTypes',function(){
                 var $$appliedUnionType=this;
                 return $$appliedUnionType.types$2;
             });
-        })(AppliedUnionType$model.$$.prototype);
+        })(AppliedUnionType.$$.prototype);
     }
-    return AppliedUnionType$model;
+    return AppliedUnionType;
 }
-exports.$init$AppliedUnionType$model=$init$AppliedUnionType$model;
-$init$AppliedUnionType$model();
+exports.$init$AppliedUnionType$model=$init$AppliedUnionType;
+$init$AppliedUnionType();
 
-function AppliedIntersectionType$model(tipo,types$3, $$appliedIntersectionType){
-    $init$AppliedIntersectionType$model();
-    if ($$appliedIntersectionType===undefined)$$appliedIntersectionType=new AppliedIntersectionType$model.$$;
+function AppliedIntersectionType(tipo,types$3, $$appliedIntersectionType){
+    $init$AppliedIntersectionType();
+    if ($$appliedIntersectionType===undefined)$$appliedIntersectionType=new AppliedIntersectionType.$$;
     $$appliedIntersectionType.types$3=types$3;
     IntersectionType$model($$appliedIntersectionType);
     $$appliedIntersectionType.tipo=tipo;
     return $$appliedIntersectionType;
 }
-AppliedIntersectionType$model.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:IntersectionType$model}],pkg:'',d:$$METAMODEL$$['ceylon.language.model']['AppliedIntersectionType']};
-function $init$AppliedIntersectionType$model(){
-    if (AppliedIntersectionType$model.$$===undefined){
-        initTypeProto(AppliedIntersectionType$model,'AppliedIntersectionType',Basic,IntersectionType$model);
+AppliedIntersectionType.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:IntersectionType$model}],pkg:'',d:$$METAMODEL$$['ceylon.language.model']['AppliedIntersectionType']};
+function $init$AppliedIntersectionType(){
+    if (AppliedIntersectionType.$$===undefined){
+        initTypeProto(AppliedIntersectionType,'AppliedIntersectionType',Basic,IntersectionType$model);
         (function($$appliedIntersectionType){
             
             defineAttr($$appliedIntersectionType,'satisfiedTypes',function(){
                 var $$appliedIntersectionType=this;
                 return $$appliedIntersectionType.types$3;
             });
-        })(AppliedIntersectionType$model.$$.prototype);
+        })(AppliedIntersectionType.$$.prototype);
     }
-    return AppliedIntersectionType$model;
+    return AppliedIntersectionType;
 }
-exports.$init$AppliedIntersectionType$model=$init$AppliedIntersectionType$model;
-$init$AppliedIntersectionType$model();
+exports.$init$AppliedIntersectionType$model=$init$AppliedIntersectionType;
+$init$AppliedIntersectionType();
 
-function AppliedFunction$model(f) {
-  return f;
+function AppliedFunction(that) {
+  return that;
 }
 
 
-function AppliedValue$model(attr,$$targs$$,$$appliedAttribute){
-    $init$AppliedValue$model();
-    if ($$appliedAttribute===undefined)$$appliedAttribute=new AppliedValue$model.$$;
+function AppliedValue(attr,$$targs$$,$$appliedAttribute){
+    $init$AppliedValue();
+    if ($$appliedAttribute===undefined)$$appliedAttribute=new AppliedValue.$$;
     set_type_args($$appliedAttribute,$$targs$$);
     Attribute$model($$appliedAttribute.$$targs$$===undefined?$$targs$$:{Type:$$appliedAttribute.$$targs$$.Type,Container:$$appliedAttribute.$$targs$$.Container},$$appliedAttribute);
     $$appliedAttribute.attr=attr;
     return $$appliedAttribute;
 }
-AppliedValue$model.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Container:{'var':'in',},Type:{'var':'out',}},satisfies:[{t:Attribute$model,a:{Type:'Type',Container:'Container'}}],$an:function(){return[shared()];},pkg:'',d:$$METAMODEL$$['ceylon.language.model']['Attribute']};
-exports.AppliedValue$model=AppliedValue$model;
-function $init$AppliedValue$model(){
-    if (AppliedValue$model.$$===undefined){
-        initTypeProto(AppliedValue$model,'AppliedValue',Basic,Attribute$model);
+AppliedValue.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Container:{'var':'in',},Type:{'var':'out',}},satisfies:[{t:Attribute$model,a:{Type:'Type',Container:'Container'}}],$an:function(){return[shared()];},pkg:'',d:$$METAMODEL$$['ceylon.language.model']['Attribute']};
+exports.AppliedValue$model=AppliedValue;
+function $init$AppliedValue(){
+    if (AppliedValue.$$===undefined){
+        initTypeProto(AppliedValue,'AppliedValue',Basic,Attribute$model);
         (function($$appliedAttribute){
             
             //AttributeGetterDefinition declaration at caca.ceylon (5:2-5:58)
@@ -202,9 +202,9 @@ function $init$AppliedValue$model(){
                 var $$appliedAttribute=this;
                 throw Exception();
             },undefined,{mod:$$METAMODEL$$,$an:function(){return[shared(),actual()];},pkg:'',d:$$METAMODEL$$['ceylon.language.model']['AttributeModel']['$at']['type']});
-        })(AppliedValue$model.$$.prototype);
+        })(AppliedValue.$$.prototype);
     }
-    return AppliedValue$model;
+    return AppliedValue;
 }
-exports.$init$AppliedValue$model=$init$AppliedValue$model;
-$init$AppliedValue$model();
+exports.$init$AppliedValue$model=$init$AppliedValue;
+$init$AppliedValue();
