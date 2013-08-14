@@ -1385,7 +1385,7 @@ else {
        
         <comment><para>Control structures are not considered to be expressions, and therefore 
         do not evaluate to a value. However, comprehensions&mdash;and conditional expressions, 
-        planned for a future version of the language&mdash;are part of the expression syntax 
+        planned for a future release of the language&mdash;are part of the expression syntax 
         and share much of the syntax and semantics of the control structures they resemble.
         </para></comment>
         

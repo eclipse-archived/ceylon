@@ -501,6 +501,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             block and which references a function declaration with no return type, has 
             no type.</para>
             
+            <comment><para>Note: in a future release of the language, we would like to 
+            add a syntax for obtaining a callable reference to an attribute, something
+            like <literal>person.@name</literal>, to allow attributes to be passed by 
+            reference. This would also allow static references like
+            <literal>Person.@name</literal>.</para></comment>
+            
         </section>
         
         <section id="staticexpressions">
@@ -943,7 +949,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <programlisting>{ initialCapacity=2; "hello", "world" }</programlisting>
             <programlisting>{ initialCapacity=people.size; loadFactor=0.8; for (p in people) p.name->p }</programlisting>
             
-            <comment><para>Note: in a future version of the language, we would like to be able 
+            <comment><para>Note: in a future release of the language, we would like to be able 
             to assign a local name to an anonymous argument or listed argument, allowing it to 
             be referenced later in the argument list. We might consider this a kind of "let"
             expression, perhaps.</para></comment>

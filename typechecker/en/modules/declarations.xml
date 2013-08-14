@@ -95,7 +95,7 @@ TypeConstraints?
             <literal>formal</literal>, <literal>default</literal>, or 
             <literal>actual</literal>.</para>
             
-            <comment><para>Note: in a future version of the language, we might relax this 
+            <comment><para>Note: in a future release of the language, we might relax this 
             restriction and support package extension with toplevel member refinement. This
             can be viewed as a regularization of the language. The practical application is
             that it would make toplevel invocations and instantiations polymorphic, obviating
@@ -1562,7 +1562,8 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             <para>A non-<literal>abstract</literal> class may not have an 
             <literal>of</literal> clause.</para>
             
-            <comment><para>TODO: Should we introduce an abbreviated syntax like:</para>
+            <comment><para>Note: in a future release of the language, we will introduce 
+            an abbreviated syntax like:</para>
             <programlisting>shared abstract class Boolean() of object true | object false {}</programlisting>
             </comment>
             
@@ -2065,8 +2066,8 @@ case (hexadecimal) {
                 </listitem>
             </itemizedlist>
             
-            <comment><para>TODO: we would like to eventually support contravariant
-            refinement of method parameter types.</para></comment>
+            <comment><para>Note: in a future release of the language, we would like 
+            to support contravariant refinement of method parameter types.</para></comment>
             
             <para>Furthermore:</para>
             

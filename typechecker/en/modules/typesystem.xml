@@ -1666,7 +1666,7 @@ Item item = comp of Item;</programlisting>
                     <para>a <emphasis>metatype bound</emphasis>, <literal>given X is T</literal>, 
                     specifies that the concrete metatype of the type parameter is a subtype 
                     of a given type <literal>T</literal>. <emphasis>(Note that metatypes are 
-                    a proposed feature for a future version of the language.)</emphasis></para>
+                    a proposed feature for a future release of the language.)</emphasis></para>
                 </listitem>
                 -->
             </itemizedlist>
@@ -1750,7 +1750,7 @@ Item item = comp of Item;</programlisting>
         <!--section>
             <title>PROPOSAL: Metatype bounds</title>
             
-            <comment><para>NOTE: Metatypes are a proposed feature for a future version 
+            <comment><para>NOTE: Metatypes are a proposed feature for a future release 
             of the language.</para></comment>
             
             <para>Note that an upper bound type constraint of form:</para>
@@ -1861,7 +1861,7 @@ Item item = comp of Item;</programlisting>
                 <listitem>
                     <para>A type argument to a type parameter with a metatype bound must have 
                     a metatype assignable to all metatype bounds. <emphasis>(Note that metatype 
-                    bounds are a proposed feature for a future version of the language.)</emphasis></para>
+                    bounds are a proposed feature for a future release of the language.)</emphasis></para>
                 </listitem>
                 -->
             </itemizedlist>

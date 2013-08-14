@@ -112,7 +112,7 @@
         <section id="assemblies">
             <title>Assemblies</title>
             
-            <comment><para>A future version of the language will add support for
+            <comment><para>A future release of the language will add support for
             assemblies, that is, the ability to:</para>
             <itemizedlist>
                 <listitem>
