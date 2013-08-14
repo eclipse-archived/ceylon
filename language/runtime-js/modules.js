@@ -13,7 +13,7 @@ function modules$2(){
           var slashPos = m.lastIndexOf('/');
           mods.push(this.find(m.substring(0,slashPos), m.substring(slashPos+1)));
         }
-        return mods.reifyCeylonType({t:Sequential,a:{Element:{t:Module$model$declaration}}});
+        return mods.reifyCeylonType({Element:{t:Module$model$declaration}});
     },undefined,{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:Module$model$declaration}}},$cont:modules$2,$an:function(){return[shared()];},pkg:'ceylon.language.model',d:$$METAMODEL$$['ceylon.language.model']['modules']['$at']['list']});
     function find(name,version){
         var modname = name + "/" + (version?version:"unversioned");
@@ -82,7 +82,7 @@ function Modulo(meta, $$modulo){
           m.push(this.meta.$$METAMODEL$$['$pks$'][mem]);
         }
       }
-      return m.reifyCeylonType({t:Sequential,a:{Element:{t:Package$model$declaration}}});
+      return m.reifyCeylonType({Element:{t:Package$model$declaration}});
     },undefined,{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:Package$model$declaration}}},$cont:Modulo,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Module']['$at']['members']});
     defineAttr($$modulo,'dependencies',function(){
       var deps = this.meta.$$METAMODEL$$['$mod-deps'];
@@ -93,7 +93,7 @@ function Modulo(meta, $$modulo){
           var spos = deps[i].lastIndexOf('/');
           _d.push(Importa(String$(deps[i].substring(0,spos)), String$(deps[i].substring(spos+1))));
         }
-        deps = _d.reifyCeylonType({t:Sequential,a:{Element:{t:Import$model$declaration}}});
+        deps = _d.reifyCeylonType({Element:{t:Import$model$declaration}});
         this.meta.$$METAMODEL$$['$mod-deps'] = deps;
       }
       return deps;
@@ -118,7 +118,7 @@ function Modulo(meta, $$modulo){
         var an = anns[i];
         if (isOfType(an, $$$mptypes.Annotation)) r.push(an);
       }
-      return r.reifyCeylonType({t:Sequential,a:{Element:$$$mptypes.Annotation}});
+      return r.reifyCeylonType({Element:$$$mptypes.Annotation});
     }
     $$modulo.annotations=annotations;
     annotations.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Annotation'}},$ps:[],$cont:Modulo,$tp:{Annotation:{'var':'out','satisfies':[{t:Annotation$model,a:{Value:'Annotation'}}]}},$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Module']['$m']['annotations']};
@@ -204,7 +204,7 @@ function Paquete(name, container, pkg, $$paquete){
           }
         }
       }
-      return r.reifyCeylonType({t:Sequential,a:{Element:$$$mptypes.Kind}});
+      return r.reifyCeylonType({Element:$$$mptypes.Kind});
     }
     $$paquete.members=members;
     members.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Kind'}},$ps:[],$cont:Paquete,$tp:{Kind:{'satisfies':[{t:TopLevelOrMemberDeclaration$model$declaration}]}},$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Package']['$m']['members']};
@@ -303,7 +303,7 @@ console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.
         var an = anns[i];
         if (isOfType(an, $$$mptypes.Annotation)) r.push(an);
       }
-      return r.reifyCeylonType({t:Sequential,a:{Element:$$$mptypes.Annotation}});
+      return r.reifyCeylonType({Element:$$$mptypes.Annotation});
         return getEmpty();
     }
     $$paquete.annotations=annotations;
