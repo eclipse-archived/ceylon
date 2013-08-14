@@ -228,7 +228,17 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>A self reference expression may not occur outside of a class or 
         interface body.</para>
         
-        <comment><para>TODO: define "immediately containing class or interface".</para></comment>
+        <para>The <emphasis>immediately containing class or interface</emphasis> for
+        a program element is the class or interface in which the program element 
+        occurs, and which contains no other class or interface in which the program 
+        element occurs. If there is no such class or interface, the program element
+        has no immediately containing class or interface.</para>
+        
+        <para>A <literal>this</literal>, <literal>outer</literal>, or 
+        <literal>super</literal> self reference must have an immediately containing 
+        class or interface. An <literal>outer</literal> self reference must have
+        an immediately containing class or interface for its immediately containing 
+        class or interface.</para>
         
         <section id="this">
             <title><literal>this</literal></title>
