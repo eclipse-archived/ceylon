@@ -35,11 +35,11 @@
     
     <para>Ceylon expressions are validated for typesafety at compile time. To 
     determine whether an expression is assignable to a program element such as 
-    an attribute, local, or parameter, Ceylon considers the 
-    <emphasis>type</emphasis> of the expression (the type of the objects that 
-    are produced when the expression is evaluated). An expression is assignable 
-    to a program element if the type of the expression is assignable to the 
-    declared type of the program element.</para>
+    a value or parameter, Ceylon considers the <emphasis>type</emphasis> of the 
+    expression (the type of the objects that are produced when the expression 
+    is evaluated). An expression is assignable to a program element if the type 
+    of the expression is assignable to the declared type of the program 
+    element.</para>
     
     <para>Within a <literal>dynamic</literal> block, an expression may have no 
     type, in the sense that its type can not be determined using static analysis

@@ -17,10 +17,9 @@
         lists,</para></listitem>
         <listitem><para>incompatible assignment of an expression of one type to a
         program element of a different type,</para></listitem>
-        <listitem><para>evaluation of an attribute or local before its value has been
-        explicitly specified or assigned,</para></listitem>
-        <listitem><para>assignment to a non-<literal>variable</literal> attribute or
-        local,</para></listitem>
+        <listitem><para>evaluation of a value before it has been explicitly specified 
+        or assigned,</para></listitem>
+        <listitem><para>assignment to a non-<literal>variable</literal> value,</para></listitem>
         <listitem><para>failure to refine a <literal>formal</literal> member of a 
         supertype,</para></listitem>
         <listitem><para>refinement of a non-<literal>formal</literal>, 
