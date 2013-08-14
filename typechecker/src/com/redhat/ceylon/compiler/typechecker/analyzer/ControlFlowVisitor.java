@@ -324,11 +324,11 @@ public class ControlFlowVisitor extends Visitor {
         boolean d = beginIndefiniteReturnScope();
         Boolean b = beginLoop();
         that.getWhileClause().visit(this);
-        //boolean definitelyDoesNotExitFromWhile = !exitedFromLoop;
-        boolean definitelyReturnsFromWhile = definitelyReturns;
+        boolean definitelyDoesNotExitFromWhile = !exitedFromLoop;
+        //boolean definitelyReturnsFromWhile = definitelyReturns;
         endDefiniteReturnScope(d);
         endLoop(b);
-        if (definitelyReturnsFromWhile && //definitelyDoesNotExitFromWhile && 
+        if ((/*definitelyReturnsFromWhile||*/definitelyDoesNotExitFromWhile) && 
                 isAlwaysSatisfied(that.getWhileClause().getConditionList())) {
             definitelyReturns = true;
         }
@@ -347,12 +347,15 @@ public class ControlFlowVisitor extends Visitor {
     public void visit(Tree.IfStatement that) {
         checkExecutableStatementAllowed(that);
         boolean d = beginIndefiniteReturnScope();
+        Boolean e = exitedFromLoop;
         
         Tree.IfClause ifClause = that.getIfClause();
         if (ifClause!=null) {
             ifClause.visit(this);
         }
         boolean definitelyReturnsFromIf = definitelyReturns;
+        Boolean exitedFromIf = exitedFromLoop;
+        exitedFromLoop = e;
         endDefiniteReturnScope(d);
         
         boolean definitelyReturnsFromElse;
@@ -363,16 +366,21 @@ public class ControlFlowVisitor extends Visitor {
         else {
             definitelyReturnsFromElse = false;
         }
+        Boolean exitedFromElse = exitedFromLoop;
+        exitedFromLoop = e;
         
         Tree.ConditionList cl = ifClause==null ? null : ifClause.getConditionList();
         if (isAlwaysSatisfied(cl)) {
             definitelyReturns = d || definitelyReturnsFromIf;
+            exitedFromLoop = exitedFromIf;
         } 
         else if (isNeverSatisfied(cl)) {
             definitelyReturns = d || definitelyReturnsFromElse;
+            exitedFromLoop = exitedFromElse;
         }
         else {
             definitelyReturns = d || (definitelyReturnsFromIf && definitelyReturnsFromElse);
+            exitedFromLoop = e==null ? null : exitedFromIf || exitedFromElse;
         }
     }
 
