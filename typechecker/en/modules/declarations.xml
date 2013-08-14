@@ -1599,11 +1599,11 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             callable type of the aliased class must be assignable to the callable type 
             of the class alias. This restriction will be removed in future.</para></comment>
             
-            <para>If a toplevel or block local class alias aliases an <literal>abstract</literal>
-            class, the alias must be annotation <literal>abstract</literal>, and it
-            may not be directly instantiated.</para>
+            <para>If a toplevel class alias or un-<literal>shared</literal> class alias
+            aliases an <literal>abstract</literal> class, the alias must be annotated 
+            <literal>abstract</literal>, and it may not be directly instantiated.</para>
             
-            <para>If a <literal>shared </literal>class alias nested inside the body 
+            <para>If a <literal>shared</literal>class alias nested inside the body 
             of a class or interface aliases an <literal>abstract</literal> class, the 
             alias must be annotation <literal>abstract</literal> or <literal>formal</literal>.
             If it is annotated <literal>formal</literal>, it is considered a member 
@@ -2176,9 +2176,9 @@ case (hexadecimal) {
                     until the attribute of the instance is assigned a new value.</para>
                 </listitem>
                 <listitem>
-                    <para>A block-local reference represents state associated with a frame, that 
-                    is, with a particular execution of the containing block of code, as defined 
-                    in <xref linkend="sequentialexecutionandclosure"/>.</para> 
+                    <para>A reference declared inside a block represents state associated with 
+                    a frame, that is, with a particular execution of the containing block of 
+                    code, as defined in <xref linkend="sequentialexecutionandclosure"/>.</para> 
                 </listitem>
             </itemizedlist>
             
@@ -2318,9 +2318,9 @@ assign name {
         <section id="valuetypeinference">
             <title>Value type inference</title>
         
-            <para>A block-local value with a block, specifier, or lazy specifier may be declared 
-            using the keyword <literal>value</literal> in place of the explicit type declaration. 
-            Then the value's type is inferred:</para>
+            <para>An un-<literal>shared</literal>  value with a block, specifier, or lazy 
+            specifier may be declared using the keyword <literal>value</literal> in place of 
+            the explicit type declaration. Then the value's type is inferred:</para>
             
             <itemizedlist>
                 <listitem>

@@ -237,7 +237,7 @@
             
             <para>
             Local <emphasis>type inference</emphasis> allows a type annotation to be
-            eliminated altogether. The type of a block-local attribute or method is 
+            eliminated altogether. The type of a block-local value or function is 
             inferred from its definition if the keyword <literal>value</literal> or 
             <literal>function</literal> occurs in place of the type declaration.
             </para>

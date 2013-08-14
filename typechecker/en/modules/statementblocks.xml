@@ -62,8 +62,8 @@
             </listitem>
         </itemizedlist>
         
-        <para>A nested declaration not annotated <literal>shared</literal> is called 
-        a <emphasis>block local</emphasis> declaration.</para>
+        <!--para>A nested declaration not annotated <literal>shared</literal> is called 
+        a <emphasis>block-local</emphasis> declaration.</para-->
         
         <comment><para>TODO: Should we allow you to limit the effect of the 
         <literal>shared</literal> annotation by specifying a containing program 
@@ -409,8 +409,9 @@
                     interface hides a declaration of the containing body.)</para>
                 </listitem>
                 <listitem>
-                    <para>An block-local declaration of a class containing the program element 
-                    hides a declaration inherited by the class.</para>
+                    <para>An un-<literal>shared</literal> declaration occurring directly in 
+                    the body of a class containing the program element hides a declaration 
+                    inherited by the class.</para>
                 </listitem>
                 <listitem>
                     <para>An <literal>actual</literal> declaration hides the declaration it
