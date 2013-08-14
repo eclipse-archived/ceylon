@@ -2555,9 +2555,10 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
         <section id="qualifiedtypes">
             <title>Qualified types</title>
             
-            <para>A type declaration that directly occurs in the body of another type, 
-            and is annotated <literal>shared</literal>, may be used in a type expression
-            outside the body in which it is declared, if and only if it occurs as a 
+            <para>A type declaration that directly occurs in the body of another type
+            is called a <emphasis>nested type</emphasis>. If a nested type is annotated 
+            <literal>shared</literal>, it may be used in a type expression outside the 
+            body in which it is declared, if and only if it occurs as a 
             <emphasis>qualified type</emphasis>, as specified in 
             <xref linkend="typeexpressions"/>.</para>
             
