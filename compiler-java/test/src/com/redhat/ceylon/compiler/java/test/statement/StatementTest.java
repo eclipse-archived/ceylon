@@ -291,8 +291,7 @@ public class StatementTest extends CompilerTest {
     public void testLopMethodWhile(){
         compareWithJavaSource("loop/MethodWhile");
     }
-
-    @Ignore("https://github.com/ceylon/ceylon-compiler/issues/1195")
+    
     @Test
     public void testLopMethodWhileTrue(){
         compareWithJavaSource("loop/MethodWhileTrue");
