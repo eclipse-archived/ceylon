@@ -1296,8 +1296,8 @@ TypeConstraints?
             <para>A toplevel class may not be annotated <literal>formal</literal> or 
             <literal>default</literal>.</para>
             
-            <para>A block local class may not be annotated <literal>formal</literal> or 
-            <literal>default</literal>.</para>
+            <para>An un-<literal>shared</literal> class may not be annotated 
+            <literal>formal</literal> or <literal>default</literal>.</para>
     
             <comment><para>Note: a <literal>formal</literal> member class would be a
             reasonably syntax for declaring virtual types. We think we don't need 
@@ -1804,9 +1804,9 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <section id="returntypeinference">
             <title>Function return type inference</title>
             
-            <para>A non-<literal>void</literal> block local function with a block or lazy 
-            specifier may be declared using the keyword <literal>function</literal> in place 
-            of the explicit return type declaration. Then the function return type is 
+            <para>A non-<literal>void</literal>, un-<literal>shared</literal>  function with 
+            a block or lazy specifier may be declared using the keyword <literal>function</literal> 
+            in place of the explicit return type declaration. Then the function return type is 
             inferred:</para>
             
             <itemizedlist>
@@ -2012,8 +2012,8 @@ case (hexadecimal) {
             <para>A toplevel method may not be annotated <literal>formal</literal> or
             <literal>default</literal>.</para>
             
-            <para>A block local method may not be annotated <literal>formal</literal> or
-            <literal>default</literal>.</para>
+            <para>An un-<literal>shared</literal>  method may not be annotated 
+            <literal>formal</literal> or <literal>default</literal>.</para>
             
         </section>
                 
@@ -2450,8 +2450,8 @@ print(greeting);</programlisting>
             <para>A toplevel attribute may not be annotated <literal>formal</literal> or
             <literal>default</literal>.</para>
 
-            <para>A block local attribute may not be annotated <literal>formal</literal> or
-            <literal>default</literal>.</para>
+            <para>An un-<literal>shared</literal> attribute may not be annotated 
+            <literal>formal</literal> or <literal>default</literal>.</para>
 
         </section>
                 

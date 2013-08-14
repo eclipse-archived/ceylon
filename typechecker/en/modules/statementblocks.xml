@@ -287,8 +287,8 @@
                     the other inherited declaration, or</para>
                 </listitem>
                 <listitem>
-                    <para>at least one of the inherited declarations is a block local 
-                    declaration.</para>
+                    <para>at least one of the inherited declarations is not 
+                    <literal>shared</literal>.</para>
                 </listitem>
             </itemizedlist>
             
