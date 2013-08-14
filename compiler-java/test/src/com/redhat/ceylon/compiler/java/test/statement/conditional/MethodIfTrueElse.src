@@ -10,7 +10,7 @@ final class methodIfTrueElse_ {
             return "true branch";
         } else {
         }
-        while (true) ;
+        throw new .java.lang.Error("Ceylon flow error");
     }
     
     public static void main(.java.lang.String[] args) {

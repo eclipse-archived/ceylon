@@ -11,7 +11,7 @@ final class methodWhileTrue_ {
                 return "";
             } else break;
         }
-        while (true) ;
+        throw new .java.lang.Error("Ceylon flow error");
     }
 }
 final class methodWhileTrue2_ {
@@ -27,7 +27,7 @@ final class methodWhileTrue2_ {
                 }
             } else break;
         }
-        while (true) ;
+        throw new .java.lang.Error("Ceylon flow error");
     }
 }
 final class methodWhileTrue3_ {

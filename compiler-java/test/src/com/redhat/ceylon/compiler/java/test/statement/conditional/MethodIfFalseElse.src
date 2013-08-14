@@ -7,7 +7,7 @@ final class methodIfFalseElse_ {
     
     static .java.lang.String methodIfFalseElse() {
         if (false) {
-            while (true) ;
+            throw new .java.lang.Error("Ceylon flow error");
         } else {
             return "else branch";
         }

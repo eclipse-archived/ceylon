@@ -9,7 +9,7 @@ final class methodIfTrue_ {
         if (true) {
             return "";
         }
-        while (true) ;
+        throw new .java.lang.Error("Ceylon flow error");
     }
     
     public static void main(.java.lang.String[] args) {
