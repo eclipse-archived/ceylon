@@ -362,7 +362,7 @@ public class StatementTransformer extends AbstractTransformer {
             if (definitelyNotSatisfied(conditions)
                     && !thenPart.getDefinitelyReturns()
                     && (elsePart != null && elsePart.getDefinitelyReturns())) {
-                stmts = List.<JCStatement>of(makeInfiniteLoop(conditions.get(0)));
+                stmts = List.<JCStatement>of(makeFlowAppeaser(conditions.get(0)));
             } else if (isDeferred()) {
                 stmts = List.<JCStatement>of(make().Exec(make().Assign(ifVar.makeIdent(), makeBoolean(true))));
                 thenBlock = makeThenBlock(transformedCond, thenPart, null);
@@ -434,7 +434,7 @@ public class StatementTransformer extends AbstractTransformer {
             if (definitelySatisfied(conditions)
                     && thenPart.getDefinitelyReturns() 
                     && (elsePart == null || !elsePart.getDefinitelyReturns())) {
-                stmts = stmts.append(makeInfiniteLoop(conditions.get(0)));
+                stmts = stmts.append(makeFlowAppeaser(conditions.get(0)));
             }
             ListBuffer<JCStatement> result = ListBuffer.lb();
             if (isDeferred()) {
@@ -477,17 +477,14 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     /**
-     * Makes an infinite loop ({@code while(true);}. 
-     * Used to appease javac's flow analysis in cases where we know a branch 
-     * cannot be reached, but javac's flow analysis cannot prove it.
-     * This results in smaller bytecode (a single {@code goto} in fact)), 
-     * than for example, throwing an exception.
-     * @param node
-     * @return
+     * Sometimes we need something to appease javacs flow analysis.
      */
-    JCStatement makeInfiniteLoop(Node node) {
+    JCStatement makeFlowAppeaser(Node node) {
         at(node);
-        return make().WhileLoop(make().Literal(true), make().Skip());
+        return make().Throw(make().NewClass(null, List.<JCExpression>nil(), 
+                make().Type(syms().errorType), 
+                List.<JCExpression>of(make().Literal("Ceylon flow error")), 
+                        null));
     }
     
     List<JCStatement> transform(Tree.IfStatement stmt) {
@@ -579,7 +576,7 @@ public class StatementTransformer extends AbstractTransformer {
                 BreakVisitor v = new BreakVisitor();
                 thenPart.visit(v);
                 if (!v.breaks) {
-                    result = result.prepend(makeInfiniteLoop(conditions.get(0)));
+                    result = result.prepend(makeFlowAppeaser(conditions.get(0)));
                 }
             }
             result = result.prepend(make().WhileLoop(makeBoolean(true), 
