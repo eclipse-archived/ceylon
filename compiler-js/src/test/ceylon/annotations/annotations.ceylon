@@ -46,6 +46,24 @@ interface Example3 {}
 annotest3("one") annotest3("two") annotest3("three")
 Singleton<String> testSingleton = Singleton("!");
 
+shared final annotation class Issue235_1(shared String s, shared Issue235_2 b)
+        satisfies OptionalAnnotation<Issue235_1,FunctionDeclaration> {
+    string=>s+":"+b.string;
+}
+
+shared final annotation class Issue235_2(Integer i)
+        satisfies OptionalAnnotation<Issue235_2,FunctionDeclaration> {
+    string=>i.string;
+} 
+
+annotation Issue235_1 issue235_1() => Issue235_1("", Issue235_2(1));
+annotation Issue235_1 issue235_2(Issue235_2 b=Issue235_2(2)) => Issue235_1("", b);
+
+issue235_1 void testIssue235_1() {
+}
+issue235_2 void testIssue235_2() {
+}
+
 annotest2{count=5;}
 shared void test() {
   value a1 = annotations(`AnnoTest1`, `Example1`);
@@ -74,11 +92,25 @@ shared void test() {
   } else {
     fail("Annotations 5 (on attribute)");
   }
+  print("FIXME: metamodel of member methods unavailable in lexical scope style");
+  /*
   value a6 = annotations(`AnnoTest1`, `Example1.printTime`);
   if (exists a6) {
     check(a6.count == 9, "Annotations 6 count");
   } else {
     fail("Annotations 6 (on member method)");
+  }*/
+  value tiss235_1 = `testIssue235_1`.annotations<Issue235_1>();
+  value tiss235_2 = `testIssue235_2`.annotations<Issue235_1>();
+  if (nonempty tiss235_1) {
+    check(tiss235_1.first.string == ":1", "Issue235_1 description - expected :1 got ``tiss235_1.first``");
+  } else {
+    fail("testIssue235_1 should have annotation Issue235_1");
+  }
+  if (nonempty tiss235_2) {
+    check(tiss235_2.first.string == ":2", "Issue235_1 description - expected :2 got ``tiss235_2.first``");
+  } else {
+    fail("testIssue235_2 should have annotation Issue235_1");
   }
   results();
 }
