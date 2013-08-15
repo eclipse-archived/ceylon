@@ -4724,8 +4724,11 @@ public class ExpressionVisitor extends Visitor {
                         cci.addWarning("literal cases with mixed bases not yet supported");
                     }
                     else if (etv.equals(ftv)) {
+                        String quote = "";
+                        if (et instanceof Tree.CharLiteral) quote = "'"; 
+                        if (et instanceof Tree.StringLiteral) quote = "\""; 
                         cci.addError("literal cases must be disjoint: " +
-                                etv.replaceAll("\\p{Cntrl}","?") + 
+                                quote + etv.replaceAll("\\p{Cntrl}","?") + quote + 
                                 " occurs in multiple cases");
                     }
                 }
