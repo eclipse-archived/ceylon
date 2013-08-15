@@ -1,0 +1,62 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug1250_ {
+    
+    private bug1250_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug1250() {
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+        @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
+                name = "Bar",
+                javaClass = "oo.Bar",
+                packageName = "com.redhat.ceylon.compiler.java.test.issues.bug12xx")})
+        class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            Foo() {
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            .java.lang.Object Bar$new() {
+                return new Bar();
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+            @.ceylon.language.Shared$annotation
+            @.com.redhat.ceylon.compiler.java.metadata.Container(
+                    name = "Foo",
+                    javaClass = "oo",
+                    packageName = "com.redhat.ceylon.compiler.java.test.issues.bug12xx")
+            @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+            class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                
+                protected Bar() {
+                }
+                
+                @.java.lang.Override
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.Bar.class));
+                }
+            }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.class);
+            }
+        }
+        final Foo foo = new Foo();
+        final Foo.Bar bar2 = (Foo.Bar)foo.Bar$new();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1250_.bug1250();
+    }
+}
