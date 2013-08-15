@@ -3934,7 +3934,8 @@ public class GenerateJsVisitor extends Visitor
         } else {
             that.getExpression().visit(this);
         }
-        out(",'", that.getLocation(), "','", that.getUnit().getFilename(), "');");
+        that.getUnit().getFullPath();
+        out(",'", that.getLocation(), "','", that.getUnit().getRelativePath(), "');");
     }
 
     private void visitIndex(IndexExpression that) {
@@ -3999,14 +4000,26 @@ public class GenerateJsVisitor extends Visitor
         } else if (item instanceof SatisfiesCase) {
             item.addError("case(satisfies) not yet supported");
             out("true");
-        } else if (item instanceof MatchCase){
+        } else if (item instanceof MatchCase) {
             boolean first = true;
             for (Expression exp : ((MatchCase)item).getExpressionList().getExpressions()) {
                 if (!first) out(" || ");
-                out(expvar, "==="); //TODO equality?
-                /*out(".equals(");*/
-                exp.visit(this);
-                //out(")==="); clAlias(); out("getTrue()");
+                if (exp.getTerm() instanceof Tree.Literal) {
+                    if (switchTerm.getTypeModel().isUnknown()) {
+                        out(expvar, "==");
+                        exp.visit(this);
+                    } else {
+                        if (switchTerm.getUnit().isOptionalType(switchTerm.getTypeModel())) {
+                            out(expvar,"!==null&&");
+                        }
+                        out(expvar, ".equals(");
+                        exp.visit(this);
+                        out(")");
+                    }
+                } else {
+                    out(expvar, "===");
+                    exp.visit(this);
+                }
                 first = false;
             }
         } else {
@@ -4404,12 +4417,14 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
+    /** Call internal function "throwexc" with the specified message and source location. */
     void generateThrow(String msg, Node node) {
         out(clAlias, "throwexc(", clAlias, "Exception(", clAlias, "String");
         if (JsCompiler.isCompilingLanguageModule()) {
             out("$");
         }
-        out("(\"", escapeStringLiteral(msg), "\")),'", node.getLocation(), "','", node.getUnit().getFilename(), "')");
+        out("(\"", escapeStringLiteral(msg), "\")),'", node.getLocation(), "','",
+                node.getUnit().getFilename(), "')");
     }
 
 }
