@@ -951,7 +951,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <para>A <emphasis>control directive</emphasis> statement ends execution of the 
             current block and forces the flow of execution to resume in some outer scope. 
             They may only occur as the lexically last statement of a block.</para>
-    
+            
             <synopsis>DirectiveStatement: Directive ";"</synopsis>
             
             <para>There are four control directives:</para>
@@ -965,9 +965,9 @@ Integer f(Integer n) => n+package.n;</programlisting>
                 iteration of a loop, and</listitem>
                 <listitem>the <literal>throw</literal> directive&mdash;to raise an exception.</listitem>
             </itemizedlist>
-                    
+            
             <synopsis>Directive: Return | Throw | Break | Continue</synopsis>
-    
+            
             <para>For example:</para>
             
             <programlisting>throw Exception();</programlisting>
