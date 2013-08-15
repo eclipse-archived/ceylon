@@ -21,9 +21,10 @@ void modulesTests() {
         if (exists pk = funmod.findPackage("functions")) {
             check(pk.name=="functions", "Package name should be functions");
             check(pk.annotations<Shared>() nonempty, "Package should have annotations");
+            //This is a FunctionDeclaration
             value helloFun = pk.getFunction("hello");
             if (exists helloFun) {
-                check(annotations(`Shared`, helloFun) exists, "functions.hello should be shared");
+                check(helloFun.annotations<Shared>() nonempty, "functions.hello should be shared");
             } else {
                 fail("Package should have function hello");
             }
