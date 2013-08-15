@@ -465,8 +465,8 @@ public class TypeUtils {
         if (tparms != null && !tparms.isEmpty()) {
             gen.out(",", MetamodelGenerator.KEY_TYPE_PARAMS, ":{");
             boolean first = true;
-            boolean comma = false;
             for(TypeParameter tp : tparms) {
+                boolean comma = false;
                 if (!first)gen.out(",");
                 first=false;
                 gen.out(tp.getName(), ":{");
