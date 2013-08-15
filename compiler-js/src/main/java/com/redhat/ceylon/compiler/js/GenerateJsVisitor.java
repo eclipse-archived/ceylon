@@ -2023,9 +2023,9 @@ public class GenerateJsVisitor extends Visitor
         }
         String exp = memberAccess(that, null);
         if (decl == null && isInDynamicBlock()) {
-            out("(typeof ", exp, "==='undefined'||", exp, "===null?",
-                    clAlias, "throwexc('Undefined or null reference: ", exp,
-                    "'):", exp, ")");
+            out("(typeof ", exp, "==='undefined'||", exp, "===null?");
+            generateThrow("Undefined or null reference: " + exp, that);
+            out(":", exp, ")");
         } else {
             out(exp);
         }
@@ -2333,8 +2333,9 @@ public class GenerateJsVisitor extends Visitor
         if (d == null && isInDynamicBlock()) {
             //It's a native js type but will be wrapped in dyntype() call
             String id = that.getIdentifier().getText();
-            out("(typeof ", id, "==='undefined'?", clAlias,
-                    "throwexc('Undefined type ", id, "'):", id, ")");
+            out("(typeof ", id, "==='undefined'?");
+            generateThrow("Undefined type " + id, that);
+            out(":", id, ")");
         } else {
             qualify(that, d);
             out(names.name(d));
@@ -3927,13 +3928,13 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(Throw that) {
-        out("throw ");
-        if (that.getExpression() != null) {
-            that.getExpression().visit(this);
-        } else {
+        out("throw ", clAlias, "wrapexc(");
+        if (that.getExpression() == null) {
             out(clAlias, "Exception()");
+        } else {
+            that.getExpression().visit(this);
         }
-        out(";");
+        out(",'", that.getLocation(), "','", that.getUnit().getFilename(), "');");
     }
 
     private void visitIndex(IndexExpression that) {
@@ -4313,8 +4314,9 @@ public class GenerateJsVisitor extends Visitor
                 that.getConditionList().getLocation()).append(")");
         conds.specialConditionsAndBlock(that.getConditionList(), null, "if (!");
         //escape
-        custom = escapeStringLiteral(sb.toString());
-        out(") { throw ", clAlias, "AssertionException('", custom, "'); }");
+        out(") {throw ", clAlias, "wrapexc(", clAlias, "AssertionException(\"",
+                escapeStringLiteral(sb.toString()), "\"),'",that.getLocation(), "','",
+                that.getUnit().getFilename(), "'); }");
         endLine();
     }
 
@@ -4400,6 +4402,14 @@ public class GenerateJsVisitor extends Visitor
             }
             out("})");
         }
+    }
+
+    void generateThrow(String msg, Node node) {
+        out(clAlias, "throwexc(", clAlias, "Exception(", clAlias, "String");
+        if (JsCompiler.isCompilingLanguageModule()) {
+            out("$");
+        }
+        out("(\"", escapeStringLiteral(msg), "\")),'", node.getLocation(), "','", node.getUnit().getFilename(), "')");
     }
 
 }

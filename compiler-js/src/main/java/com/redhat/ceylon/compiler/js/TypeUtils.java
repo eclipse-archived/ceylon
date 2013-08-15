@@ -318,7 +318,9 @@ public class TypeUtils {
         term.visit(gen);
         gen.out(",", GenerateJsVisitor.getClAlias(), "isOfType(", tmp, ",");
         TypeUtils.typeNameOrList(term, t, gen, true);
-        gen.out(")?", tmp, ":", GenerateJsVisitor.getClAlias(), "throwexc('dynamic objects cannot be used here'))");
+        gen.out(")?", tmp, ":");
+        gen.generateThrow("dynamic objects cannot be used here", term);
+        gen.out(")");
     }
 
     static void encodeParameterListForRuntime(ParameterList plist, GenerateJsVisitor gen) {
