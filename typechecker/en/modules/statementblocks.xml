@@ -1803,9 +1803,7 @@ if (is Usable tx) { ... }</programlisting>
             
             <para>The construct may include a chain of an arbitrary number of child 
             <literal>else if</literal> clauses.</para>
-            
-            <para>For example:</para>
-            
+                        
             <programlisting>if (payment.amount &lt;= account.balance) {
     account.balance -= payment.amount;
     payment.paid = true;
@@ -1846,31 +1844,49 @@ else {
             
             <synopsis>DefaultCaseItem: "else" Block</synopsis>
 
-            <para>For a <literal>switch</literal> statement whose <literal>switch</literal> 
-            expression is of type <literal>U</literal>, each <literal>case</literal> must 
-            be either:</para> 
+            <para>Each <literal>case</literal> is either:</para> 
             
             <itemizedlist>
                 <listitem>
-                    <para>a list of string literals, character literals, and integer 
-                    literals assignable to <literal>U</literal>, and/or value references 
-                    to anonymous classes that are subtypes of 
-                    <literal>U&amp;&lt;Identifiable|Null&gt;</literal>, or</para>
+                    <para>a <emphasis>value case</emphasis>&mdash;a list of string literals, 
+                    character literals, integer literals and/or value references to 
+                    anonymous classes, or</para>
                 </listitem>
                 <listitem>
-                    <para>an assignability condition of form <literal>case (is V)</literal> 
-                    where the intersection type <literal>V&amp;U</literal> is not exactly
-                    <literal>Nothing</literal>.</para>
+                    <para>a <emphasis>type case</emphasis>&mdash;an assignability condition 
+                    of form <literal>is V</literal> for some type <literal>V</literal>.</para>
                 </listitem>
             </itemizedlist>
             
-            <synopsis>Case: Expression ("," Expression)* | "is" Type</synopsis>
+            <synopsis>Case: CaseValue ("," CaseValue)* | "is" Type</synopsis>
+            <synopsis>CaseValue: IntegerLiteral | CharacterLiteral | StringLiteral | VerbatimStringLiteral | BaseExpression</synopsis>
+            
+            <para>Every <literal>case</literal> has a type:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>for a value case, the type is the union of the types of the values, 
+                    and</para>
+                </listitem>
+                <listitem>
+                    <para>for a type case, the type is the specified type.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>The type of a case must be a subtype of the <literal>switch</literal>
+            expression type.</para>
+            
+            <para>For a value case, each value reference must be to an anonymous class that
+            is a subtype of <literal>Identifiable|Null</literal>.</para>
+            
+            <para>For a type case of type <literal>V</literal>, the intersection type 
+            <literal>V&amp;U</literal> must not be exactly <literal>Nothing</literal>.</para>
             
             <para>Two <literal>case</literal>s are said to be <emphasis>disjoint</emphasis> 
             if the intersection of their types is exactly <literal>Nothing</literal>, as
-            defined by <xref linkend="disjointtypes"/>, or if they are distinct literal values. 
-            In every <literal>switch</literal> statement, all <literal>case</literal>s must be 
-            mutually disjoint.</para>
+            defined by <xref linkend="disjointtypes"/>, or if they are both value cases with 
+            distinct literal values. In every <literal>switch</literal> statement, all 
+            <literal>case</literal>s must be mutually disjoint.</para>
             
             <para>A <literal>switch</literal> is <emphasis>exhaustive</emphasis> if there 
             are no literal values in its <literal>case</literal>s, and the union type formed 
@@ -1909,8 +1925,6 @@ else {
             has no type, the value referred by the <literal>switch</literal> expression will be 
             treated by the compiler as having the the specified type inside the <literal>case</literal> 
             block.</para>
-            
-            <para>For example:</para>
             
             <programlisting>Boolean? maybe = ... ;
 switch (maybe) 
@@ -2000,8 +2014,6 @@ case (is Float) {
             iterator is not statically type-checked. If the iteration variable does not declare
             an explicit type, the iteration variable has no type.</para>
                         
-            <para>For example:</para>
-
             <programlisting>for (p in people) { 
     print(p.name);
 }</programlisting>
@@ -2041,8 +2053,6 @@ else {
             
             <comment><para>TODO: does <literal>while</literal> need an <literal>else</literal> 
             block? Python has it, but what is the real usecase?</para></comment>
-            
-            <para>For example:</para>
             
             <programlisting>variable Integer n=0;
 variable [Integer*] seq = [];
@@ -2115,8 +2125,6 @@ while (n&lt;=max) {
             <para>If no type is explicitly specified for a resource variable, the type of 
             the variable is inferred to be the type of the instantiation expression.</para>
                         
-            <para>For example:</para>
-            
             <programlisting>try (file = File(path)) {
     file.open(readOnly);
     ...
