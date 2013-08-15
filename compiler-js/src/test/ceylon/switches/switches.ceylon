@@ -88,7 +88,8 @@ shared void test() {
     Object lits1=1;
     switch(lits1)
     case(5) { fail("WTF? it's 1"); }
-    case("2") { fail("it's not even a String!"); }
+    case("1") { fail("it's not even a String!"); }
+    case('1') { fail("not a char wither"); }
     case(1) { check(true, "case with literals"); }
     else { fail("it WAS one"); }
     Object? lits2 = null;
