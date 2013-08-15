@@ -46,6 +46,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseItem;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CatchClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ControlClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FinallyClause;
@@ -1647,7 +1648,10 @@ public class StatementTransformer extends AbstractTransformer {
             
             SyntheticName varname = naming.alias(getVariable().getIdentifier().getText());
             JCVariableDecl init = make().VarDef(make().Modifiers(0), varname.asName(), makeType(), start.makeIdent());
+            ControlClause prevForclause = currentForClause;
+            currentForClause = stmt.getForClause();
             List<JCStatement> blockStatements = transformStmts(getBlock().getStatements());
+            currentForClause = prevForclause;
             blockStatements = blockStatements.prepend(make().VarDef(make().Modifiers(FINAL), 
                     names().fromString(getVariable().getIdentifier().getText()), 
                     makeType(),
