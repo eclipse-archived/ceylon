@@ -167,6 +167,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/Klass");
     }
     @Test
+    public void testKlsVariadic(){
+        compareWithJavaSource("klass/Variadic");
+    }
+    @Test
     public void testKlsKlassMethodTypeParams(){
         compareWithJavaSource("klass/KlassMethodTypeParams");
     }
@@ -392,6 +396,10 @@ public class StructureTest extends CompilerTest {
     @Test
     public void testMthMethod(){
         compareWithJavaSource("method/Method");
+    }
+    @Test
+    public void testMthVariadic(){
+        compareWithJavaSource("method/Variadic");
     }
     @Test
     public void testMthMethodErasure(){
