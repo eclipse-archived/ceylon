@@ -1,0 +1,55 @@
+package com.redhat.ceylon.compiler.java.test.expression.ref;
+
+final class memberClassRefInFunction_ {
+    
+    private memberClassRefInFunction_() {
+    }
+    
+    static void memberClassRefInFunction() {
+        
+        class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            Foo() {
+            }
+            
+            .java.lang.Object Bar$new() {
+                return new Bar();
+            }
+            
+            class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                
+                protected Bar() {
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.Bar.class));
+                }
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.class);
+            }
+        }
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends Foo.Bar>> bar = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends Foo.Bar>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.Bar.class)), .ceylon.language.Empty.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.class), .ceylon.language.Empty.$TypeDescriptor), "Foo.Bar()(Foo)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends Foo.Bar> $call(final .java.lang.Object $param$0) {
+                final Foo $instance = (Foo)$param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<Foo.Bar>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.Bar.class)), .ceylon.language.Empty.$TypeDescriptor, "Foo.Bar()", (short)-1){
+                    
+                    @.java.lang.Override
+                    public Foo.Bar $call() {
+                        return (Foo.Bar)$instance.Bar$new();
+                    }
+                };
+            }
+        };
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.ref.memberClassRefInFunction_.memberClassRefInFunction();
+    }
+}
