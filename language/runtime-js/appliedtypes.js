@@ -60,7 +60,7 @@ function AppliedInterface(tipo,$$targs$$,$$interfaz){
     $init$AppliedInterface();
     if ($$interfaz===undefined)$$interfaz=new AppliedInterface.$$;
     set_type_args($$interfaz,$$targs$$);
-    Interface($$targs$$,$$interfaz);
+    Interface$model($$targs$$,$$interfaz);
     
     //AttributeGetterDefinition declaration at test.ceylon (5:4-5:78)
     defineAttr($$interfaz,'declaration',function() {
