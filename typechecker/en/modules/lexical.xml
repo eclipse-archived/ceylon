@@ -184,11 +184,19 @@
             
             <synopsis>BinLiteral: "$" BinDigits</synopsis>
             
-            <para>A <emphasis>floating point literal</emphasis> has a list of digits,
-            possibly with fractional digits appearing after a decimal point, and an
-            optional exponent or magnitude:</para>
+            <para>A <emphasis>floating point literal</emphasis> is distinguished by the
+            prescence of a decimal point or fractional magnitude:</para>
             
-            <synopsis>FloatLiteral: Digits ("." FractionalDigits (Exponent | Magnitude | FractionalMagnitude)? | FractionalMagnitude)</synopsis>
+            <synopsis>FloatLiteral: NormalFloatLiteral | ShortcutFloatLiteral</synopsis>
+            
+            <para>Most floating point literals have a list of digits including a decimal 
+            point, and an optional exponent or magnitude.</para>
+            
+            <synopsis>NormalFloatLiteral: Digits "." FractionalDigits (Exponent | Magnitude | FractionalMagnitude)?</synopsis>
+            
+            <para>The decimal point is optional if a fractional magitude is specified.</para>
+            
+            <synopsis>ShortcutFloatLiteral: Digits FractionalMagnitude</synopsis>
             
             <para>Decimal digits may be separated into groups of three using an underscore.</para>
             
