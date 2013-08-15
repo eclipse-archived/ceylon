@@ -153,7 +153,48 @@ public abstract class AbstractTransformer implements Transformation {
         }
         return make();
     }
+    
+    /**
+     * An AutoCloseable for restoring a captured source position
+     */
+    class SavedPosition implements AutoCloseable {
+        
+        private final int pos;
 
+        SavedPosition(int pos) {
+            this.pos = pos;
+        }
+
+        /**
+         * Restores the captured source position
+         */
+        @Override
+        public void close() {
+            make.at(pos);
+        }
+    }
+    
+    /**
+     * Returns an AutoCloseable whose {@link SavedPosition#close()} will 
+     * restore the current position, and sets the position to the given value
+     */
+    public SavedPosition savePosition(int at) {
+        SavedPosition saved = new SavedPosition(make.pos);
+        make.at(at);
+        return saved;
+    }
+    
+    /**
+     * Returns an AutoCloseable whose {@link SavedPosition#close()} will 
+     * restore the current position, and sets the position to Position.NOPOS
+     * (i.e. useful for compiler book-keeping code).
+     */
+    public SavedPosition noPosition() {
+        SavedPosition saved = new SavedPosition(make.pos);
+        make.at(Position.NOPOS);
+        return saved;
+    }
+    
     @Override
     public Symtab syms() {
         return syms;
