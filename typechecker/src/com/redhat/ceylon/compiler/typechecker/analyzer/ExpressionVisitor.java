@@ -4725,7 +4725,8 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else if (etv.equals(ftv)) {
                         cci.addError("literal cases must be disjoint: " +
-                                et.getText() + " occurs in multiple cases");
+                                etv.replaceAll("\\p{Cntrl}","?") + 
+                                " occurs in multiple cases");
                     }
                 }
             }
