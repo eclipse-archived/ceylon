@@ -24,12 +24,14 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SubstitutedName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
+import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -1305,6 +1307,8 @@ public class StatementTransformer extends AbstractTransformer {
                 increment, type);
     }
     
+    private Tree.ControlClause currentForClause = null;
+    
     class ForStatementTransformation {
         
         protected Tree.ForStatement stmt; 
@@ -1321,26 +1325,37 @@ public class StatementTransformer extends AbstractTransformer {
                 if (needsFailVar()) {
                     // boolean $doforelse$X = true;
                     JCVariableDecl failtest_decl = make().VarDef(make().Modifiers(0), naming.aliasName("doforelse"), make().TypeIdent(TypeTags.BOOLEAN), make().Literal(TypeTags.BOOLEAN, 1));
-                    outer = outer.append(failtest_decl);
+                    outer.append(failtest_decl);
                     currentForFailVariable = failtest_decl.getName();
                 } else {
                     currentForFailVariable = null;
                 }
-        
-                outer = outer.appendList(transformForClause());
-        
+                
+                outer.appendList(transformForClause());
+                
                 if (stmt.getElseClause() != null) {
                     // The user-supplied contents of fail block
                     List<JCStatement> failblock = transformStmts(stmt.getElseClause().getBlock().getStatements());
-                    
+                    // Close the inner substitutions of the else block
+                    closeInnerSubstituionsForSpecifiedValues(stmt.getElseClause());
                     if (needsFailVar()) {
                         // if ($doforelse$X) ...
                         JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
-                        outer = outer.append(at(stmt).If(failtest_id, at(stmt).Block(0, failblock), null));
+                        outer.append(at(stmt).If(failtest_id, at(stmt).Block(0, failblock), null));
                     } else {
-                        outer = outer.appendList(failblock);
+                        outer.appendList(failblock);
                     }
                 }
+                
+                // Close the outer substitutions
+                Iterable<Value> deferredSpecifiedInFor = stmt.getForClause().getControlBlock().getSpecifiedValues();
+                if (deferredSpecifiedInFor != null) { 
+                    for (Value value : deferredSpecifiedInFor) {
+                        DeferredSpecification ds  = StatementTransformer.this.deferredSpecifications.get(value);
+                        outer.append(ds.closeOuterSubstitution());
+                    }
+                }
+            
             } finally {
                 currentForFailVariable = tempForFailVariable;
             }
@@ -1416,13 +1431,18 @@ public class StatementTransformer extends AbstractTransformer {
                 itemDecls = itemDecls.append(valueDecl);
             }
 
+            Tree.ControlClause prevControlClause = currentForClause;
+            currentForClause = stmt.getForClause();
+            List<JCStatement> stmts = transformStmts(stmt.getForClause().getBlock().getStatements());
+            currentForClause = prevControlClause;
+            
             return ListBuffer.<JCStatement>lb().appendList(transformIterableIteration(stmt,
                     elem_name, 
                     iteratorVarName,
                     sequenceElementType,
                     containment,
                     itemDecls,
-                    transformStmts(stmt.getForClause().getBlock().getStatements())));
+                    stmts));
         }
     }
     
@@ -1683,12 +1703,170 @@ public class StatementTransformer extends AbstractTransformer {
         }
     }
 
+    /**
+     * <p>In some cases (#1227) we can have a deferred specification of a
+     * non-variable value <i>x</i> which is assigned in a control structure
+     * (for/else) in such a way that javac cannot prove the transformed 
+     * variable is assigned exactly once.</p>
+     * 
+     * <p>In these cases the transformation proceeds thusly:</p>
+     * <ul>
+     * <li>The AttributeDeclaration is transformed to a final var <tt>x</tt>
+     * and a non-final var <tt>x$</tt> and the "outer substitution"
+     * {@code x->x$} is installed.</li>
+     * <li>SpecificationStatements to <i>x</i> within the control structure 
+     * are transformed assignments to <tt>x$</tt>. At these points we
+     * also generate a final <tt>x$$</tt> and install an "inner substitution"
+     * {@code x->x$$} so that captured references within the control
+     * structure still work.</li>
+     * <li>At end end of the else Blocks of for/else and at 
+     * Break, Continue, Throw and Return statements within the
+     * control structure we remove the "inner substitution" {@code x->x$$}
+     * <li>At the end of the control structure we assign <tt>x = x$</tt>
+     * and remove the "outer substitution" {@code x->x$}</li>
+     * </ul>
+     */
+    class DeferredSpecification {
+        
+        private final ProducedType type;
+        private final long modifiers;
+        private final Value value;
+        private final List<JCAnnotation> annots;
+        private SyntheticName outerAlias;
+        private Naming.Substitution outerSubst = null;
+        private SyntheticName innerAlias;
+        private Naming.Substitution innerSubst = null;
+        
+        public DeferredSpecification(Value value, int modifiers, List<JCAnnotation> annots, ProducedType type) {
+            this.value = value;
+            this.modifiers = modifiers;
+            this.annots = annots;
+            this.type = type;
+        }
+        
+        /**
+         * Installs the "outer substitution" and 
+         * makes a non-{@code final} variable declaration for use where 
+         * the ceylon value is declared:
+         * <pre>
+         *     TYPE NAME$1 = DEFAULT_FOR_TYPE; 
+         * </pre>
+         * The caller is expected to generate the corresponding 
+         * {@code final} declaration:
+         * <pre>
+         *     final TYPE NAME;
+         * </pre>
+         */
+        public JCStatement openOuterSubstitution() {
+            if (outerSubst != null || outerAlias != null) {
+                throw new IllegalStateException("An Outer substitution (" + outerSubst + ") is already open");
+            }
+            this.outerAlias = naming.alias(value.getName());
+            this.outerSubst = naming.addVariableSubst(value, outerAlias.getName());
+            // TODO Annots
+            try (SavedPosition pos = noPosition()) {
+                return make().VarDef(
+                        make().Modifiers(modifiers & ~FINAL, annots), 
+                        outerAlias.asName(), 
+                        makeJavaType(type), 
+                        makeDefaultExprForType(type));
+            }
+        }
+        
+        /**
+         * Installs the "inner substitution" and makes a final 
+         * variable declaration:
+         * <pre> 
+         *   final TYPE NAME$2 = NAME$1;
+         * </pre>
+         * The caller is expected to generare the preceeding assignment:
+         * <pre>
+         *   NAME$1 = WHATEVER;
+         * </pre>
+         */
+        public JCStatement openInnerSubstitution() {
+            if (innerSubst != null || innerAlias != null) {
+                throw new IllegalStateException("An inner substitution (" + innerSubst + ") is already open");
+            }
+            try (SavedPosition pos = noPosition()) {
+                innerAlias = naming.alias(value.getName());
+                JCStatement result = makeVar(
+                        modifiers, 
+                        innerAlias.getName(), 
+                        makeJavaType(type), 
+                        naming.makeName(value, Naming.NA_IDENT));
+                innerSubst = naming.addVariableSubst(value, innerAlias.getName());
+                return result;
+            }
+        }
+        
+        /**
+         * Removes the "inner substitution" installed by {@link #openInnerSubstitution()}
+         */
+        public void closeInnerSubstitution() {
+            if (innerSubst == null || innerAlias == null) {
+                throw new IllegalStateException("No inner substitution to close");
+            }
+            innerSubst.close();
+            innerSubst = null;
+            innerAlias = null;
+        }
+        
+        /**
+         * Removes the "outer substitution" and returns an assignment 
+         * to the {@code final} variable after the control structure
+         * <pre>
+         *     NAME = NAME$1;
+         * </pre>
+         */
+        public JCStatement closeOuterSubstitution() {
+            if (outerSubst == null) {
+                throw new IllegalStateException("No outer substitution to close");
+            }
+            try (SavedPosition pos = noPosition()) {
+                JCExpression alias = naming.makeName(value, Naming.NA_IDENT);
+                outerSubst.close();
+                outerSubst = null;
+                JCExpression var = naming.makeName(value, Naming.NA_IDENT);
+                return make().Exec(make().Assign(var, alias));
+            }
+        }
+    }
+    
+    private HashMap<Value, DeferredSpecification> deferredSpecifications = new HashMap<Value, DeferredSpecification>();
+    
+    public DeferredSpecification getDeferredSpecification(Declaration value) {
+        return deferredSpecifications.get(value);
+    }
+    
+    /**
+     * Removes the "inner substitutions" for any deferred values specified 
+     * in the given control block
+     */
+    private void closeInnerSubstituionsForSpecifiedValues(Tree.ControlClause contolClause) {
+        if (contolClause != null) {
+            ControlBlock controlBlock = contolClause.getControlBlock();
+            java.util.Set<Value> assigned = controlBlock.getSpecifiedValues();
+            if (assigned != null) {
+                for (Value value : assigned) {
+                    DeferredSpecification ds = statementGen().getDeferredSpecification(value);
+                    if (ds != null) {
+                        ds.closeInnerSubstitution();
+                    }
+                }
+            }
+        }
+    }
+    
     // FIXME There is a similar implementation in ClassGen!
     public List<JCStatement> transform(AttributeDeclaration decl) {
+        ListBuffer<JCStatement> result = ListBuffer.<JCStatement> lb();
         // If the attribute is really from a parameter then don't generate a local variable
         Parameter parameter = CodegenUtil.findParamForDecl(decl);
         if (parameter == null) {
-            Name atrrName = names().fromString(decl.getIdentifier().getText());
+            
+            final Name attrName = names().fromString(decl.getIdentifier().getText());
+            
             ProducedType t = actualType(decl);
             
             JCExpression initialValue = null;
@@ -1702,21 +1880,42 @@ public class StatementTransformer extends AbstractTransformer {
                 // initializers a default value. See #1153.
                 initialValue = makeDefaultExprForType(t);
             }
-    
-            JCExpression type = makeJavaType(t);
+            
             List<JCAnnotation> annots = makeJavaTypeAnnotations(decl.getDeclarationModel());
-    
+            
             int modifiers = transformLocalFieldDeclFlags(decl);
-            return List.<JCStatement> of(at(decl).VarDef(at(decl).Modifiers(modifiers, annots), atrrName, type, initialValue));
-        } else {
-            return List.<JCStatement> nil();
+            result.append(at(decl).VarDef(at(decl).Modifiers(modifiers, annots), attrName, makeJavaType(t), initialValue));
+            
+            JCStatement outerSubs = openOuterSubstitutionIfNeeded(
+                    decl.getDeclarationModel(), t, annots, modifiers);
+            if (outerSubs != null) {
+                result.append(outerSubs);
+            }
         }
+        return result.toList();
+    }
+
+    private JCStatement openOuterSubstitutionIfNeeded(
+            Value value, ProducedType t,
+            List<JCAnnotation> annots, int modifiers) {
+        JCStatement result = null;
+        if (value.isSpecifiedInForElse()) {
+            DeferredSpecification d = new DeferredSpecification(value, modifiers, annots, t);
+            deferredSpecifications.put(value, d);
+            result = d.openOuterSubstitution();
+        }
+        return result;
     }
     
     List<JCStatement> transform(Tree.Break stmt) {
         // break;
-        JCStatement brk = at(stmt).Break(null);
         
+        // Remove the inner substitutions for any deferred values specified 
+        // in the control block
+        closeInnerSubstituionsForSpecifiedValues(currentForClause);
+        
+        JCStatement brk = at(stmt).Break(null);
+    
         if (currentForFailVariable != null) {
             JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
             List<JCStatement> list = List.<JCStatement> of(at(stmt).Exec(at(stmt).Assign(failtest_id, make().Literal(TypeTags.BOOLEAN, 0))));
@@ -1733,6 +1932,9 @@ public class StatementTransformer extends AbstractTransformer {
     }
 
     JCStatement transform(Tree.Return ret) {
+        // Remove the inner substitutions for any deferred values specified 
+        // in the control block
+        closeInnerSubstituionsForSpecifiedValues(currentForClause);
         Tree.Expression expr = ret.getExpression();
         JCExpression returnExpr = null;
         at(ret);
@@ -1753,6 +1955,9 @@ public class StatementTransformer extends AbstractTransformer {
     }
 
     public JCStatement transform(Throw t) {
+        // Remove the inner substitutions for any deferred values specified 
+        // in the control block
+        closeInnerSubstituionsForSpecifiedValues(currentForClause);
         at(t);
         Expression expr = t.getExpression();
         final JCExpression exception;

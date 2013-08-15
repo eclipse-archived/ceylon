@@ -836,7 +836,7 @@ public class Naming implements LocalId {
     private JCExpression addMemberName(JCExpression expr, TypedDeclaration decl, int namingOptions) {
         if ((namingOptions & NA_IDENT) != 0) {
             Assert.not((namingOptions & NA_GETTER | NA_SETTER) == 0);
-            expr = makeQualIdent(expr, decl.getName());
+            expr = makeQualIdent(expr, this.getVarMapper().get(decl));
         } else if ((namingOptions & NA_SETTER) != 0) {
             Assert.not(decl instanceof Method, "A method has no setter");
             expr = makeQualIdent(expr, getSetterName(decl));
