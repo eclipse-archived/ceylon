@@ -71,7 +71,7 @@ function typeLiteral$model($$targs$$) {
     var _mod = modules$model.find(mdl.mod['$mod-name'],mdl.mod['$mod-version']);
     var _pkg = _mod.findPackage(mdl.pkg);
     if (mdl.d['$mt'] === 'cls') {
-      return OpenClass(t,mdl['$tp']);
+      return OpenClass(mdl.d['$nm'], _pkg, mdl.$cont===undefined, t);
     } else if (mdl.d['$mt'] === 'ifc') {
       return OpenInterface(mdl.d['$nm'], _pkg, mdl.$cont===undefined, t);
     } else if (mdl.d['$mt'] === 'mthd') {
