@@ -38,8 +38,7 @@ public class TypeCheckerBuilder {
     private RepositoryManager repositoryManager;
     private List<String> moduleFilters = new ArrayList<String>();
 
-    public TypeCheckerBuilder() {
-    }
+    public TypeCheckerBuilder() {}
 
 	/**
 	 * Let's you add a directory or a file.
