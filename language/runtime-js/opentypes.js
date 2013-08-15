@@ -20,7 +20,12 @@ function OpenFunction(name, packageContainer, toplevel, meta, that){
     } else {
       //it's a type
       that.tipo = meta;
-      that.meta = meta.$$metamodel$$.d;
+      var _mm=meta.$$metamodel$$;
+      if (typeof(_mm)==='function') {
+        _mm=_mm();
+        meta.$$metamodel$$=_mm;
+      }
+      that.meta = _mm.d;
     }
     FunctionDeclaration$model$declaration(that);
     return that;
@@ -42,7 +47,9 @@ function $init$OpenFunction(){
             $$openFunction.bindAndApply=function bindAndApply(instance$3,types$4){
               var $$openFunction=this;
               if(types$4===undefined){types$4=getEmpty();}
-console.log("IMPLEMENT ME!!! OpenFunction.bindAndApply");
+              //TODO check for naming rules
+              //TODO what else can be asked of an applied function?
+              return instance$3[this.name];
             };$$openFunction.bindAndApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Function$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Object$}},{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$model}}}}],$cont:OpenFunction,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['FunctionDeclaration']['$m']['bindAndApply']};};
             
             //MethodDefinition memberApply at caca.ceylon (22:4-23:54)
@@ -118,7 +125,12 @@ function OpenValue(name, packageContainer, toplevel, meta, that){
     } else {
       //it's a type
       that.tipo = meta;
-      that.meta = meta.$$metamodel$$.d;
+      var _mm=meta.$$metamodel$$;
+      if (typeof(_mm)==='function') {
+        _mm=_mm();
+        meta.$$metamodel$$=_mm;
+      }
+      that.meta = _mm.d;
     }
     ValueDeclaration$model$declaration(that);
     return that;
@@ -131,9 +143,8 @@ function $init$OpenValue(){
             
             //MethodDefinition apply at caca.ceylon (39:4-39:68)
             $$openValue.apply=function apply(instance$8){
-                var $$openValue=this;
-                if(instance$8===undefined){instance$8=$$openValue.apply$defs$instance(instance$8);}
-                throw Exception();
+              if (instance$8===null || instance$8===undefined)return null;
+              return instance$8[this.name];
             };$$openValue.apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Value$model,a:{Type:{t:Anything}}},$ps:[{$nm:'instance',$mt:'prm',$def:1,$t:{t:Anything}}],$cont:OpenValue,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['ValueDeclaration']['$m']['apply']};};
             
             //AttributeDeclaration defaulted at caca.ceylon (40:4-40:44)
@@ -176,7 +187,12 @@ function OpenClass(name, packageContainer, toplevel, meta, that){
     } else {
       //it's a type
       that.tipo = meta;
-      that.meta = meta.$$metamodel$$.d;
+      var _mm=meta.$$metamodel$$;
+      if (typeof(_mm)==='function') {
+        _mm=_mm();
+        meta.$$metamodel$$=_mm;
+      }
+      that.meta = _mm.d;
     }
     ClassDeclaration$model$declaration(that);
     return that;
@@ -227,13 +243,6 @@ function $init$OpenClass(){
                 return getEmpty();
             };
             $$openClass.annotatedMemberDeclarations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Kind'}},$ps:[],$cont:OpenClass,$tp:{Kind:{'satisfies':[{t:TopLevelOrMemberDeclaration$model$declaration}]},Annotation:{}},$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['ClassDeclaration']['$m']['annotatedMemberDeclarations']};};
-            
-            //MethodDeclaration getMemberDeclaration at caca.ceylon (59:2-60:68)
-            $$openClass.getMemberDeclaration=function (name$13,$$$mptypes){
-                var $$openClass=this;
-                return null;
-            };
-            $$openClass.getMemberDeclaration.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},'Kind']},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:OpenClass,$tp:{Kind:{'satisfies':[{t:TopLevelOrMemberDeclaration$model$declaration}]}},$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['ClassDeclaration']['$m']['getMemberDeclaration']};};
             
             //AttributeGetterDefinition openType at caca.ceylon (61:2-61:43)
             defineAttr($$openClass,'openType',function(){
@@ -301,7 +310,12 @@ function OpenInterface(name, packageContainer, toplevel, meta, that) {
     } else {
       //it's a type
       that.tipo = meta;
-      that.meta = meta.$$metamodel$$.d;
+      var _mm=meta.$$metamodel$$;
+      if (typeof(_mm)==='function') {
+        _mm=_mm();
+        meta.$$metamodel$$=_mm;
+      }
+      that.meta = _mm.d;
     }
     InterfaceDeclaration$model$declaration(that);
     return that;
@@ -348,13 +362,6 @@ function $init$OpenInterface(){
             $$openInterface.annotatedMemberDeclarations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Kind'}},$ps:[],$cont:OpenInterface,$tp:{Kind:{'satisfies':[{t:TopLevelOrMemberDeclaration$model$declaration}]},Annotation:{}},$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['InterfaceDeclaration']['$m']['annotatedMemberDeclarations']};};
             
            
-            //MethodDeclaration getMemberDeclaration at caca.ceylon (84:2-85:68)
-            $$openInterface.getMemberDeclaration=function (name$20,$$$mptypes){
-                var $$openInterface=this;
-                return null;
-            };
-            $$openInterface.getMemberDeclaration.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},'Kind']},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:OpenInterface,$tp:{Kind:{'satisfies':[{t:TopLevelOrMemberDeclaration$model$declaration}]}},$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['InterfaceDeclaration']['$m']['getMemberDeclaration']};};
-            
             //AttributeGetterDefinition openType at caca.ceylon (86:2-86:43)
             defineAttr($$openInterface,'openType',function(){
                 var $$openInterface=this;
