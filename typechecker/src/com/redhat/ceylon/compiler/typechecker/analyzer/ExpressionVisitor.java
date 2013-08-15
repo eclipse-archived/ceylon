@@ -4891,11 +4891,11 @@ public class ExpressionVisitor extends Visitor {
                                     }
                                     else {
                                         ((Tree.TypeArgumentList) tal).getTypes()
-                                        .get(i).addError("type parameter " + param.getName() 
-                                                + " of declaration " + dec.getName(unit)
-                                                + " has argument " + argType.getProducedTypeName(unit) 
-                                                + " not assignable to upper bound " + sts.getProducedTypeName(unit)
-                                                + " of " + param.getName(), 2102);
+                                                .get(i).addError("type parameter " + param.getName() 
+                                                        + " of declaration " + dec.getName(unit)
+                                                        + " has argument " + argType.getProducedTypeName(unit) 
+                                                        + " not assignable to upper bound " + sts.getProducedTypeName(unit)
+                                                        + " of " + param.getName(), 2102);
                                     }
                                 }
                                 return false;
