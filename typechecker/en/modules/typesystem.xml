@@ -206,7 +206,7 @@
         uppercase letter may be forced into the namespace of methods and attributes
         by prefixing the identifier <literal>\i</literal>. A keyword may be used as 
         an identifier by prefixing the keyword with either <literal>\i</literal> or 
-        <literal>\I</literal>. This allow interoperation with languages like Java 
+        <literal>\I</literal>. This allows interoperation with languages like Java 
         which do not enforce these naming conventions.</para>
         
     </section>
