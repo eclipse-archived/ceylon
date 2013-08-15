@@ -21,11 +21,11 @@ final class bug997_ {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .java.lang.Object $$line = $param$0;
+                final .java.lang.Object $$val = $param$0;
                 return (
                     let
                     {
-                        .ceylon.language.print_.print($$line);
+                        .ceylon.language.print_.print($$val);
                     }
                     returning null;
                 );
