@@ -4713,8 +4713,8 @@ public class ExpressionVisitor extends Visitor {
                 Tree.Term et = e.getTerm();
                 Tree.Term ft = f.getTerm();
                 if (et instanceof Tree.Literal && ft instanceof Tree.Literal) {
-                    String etv = et.getText();
-                    String ftv = ft.getText();
+                    String ftv = getLiteralText(ft);
+                    String etv = getLiteralText(et);
                     if (et instanceof Tree.NaturalLiteral && 
                         ft instanceof Tree.NaturalLiteral &&
                         ((ftv.startsWith("#") && !etv.startsWith("#")) ||
@@ -4724,15 +4724,25 @@ public class ExpressionVisitor extends Visitor {
                         cci.addWarning("literal cases with mixed bases not yet supported");
                     }
                     else if (etv.equals(ftv)) {
-                        String quote = "";
-                        if (et instanceof Tree.CharLiteral) quote = "'"; 
-                        if (et instanceof Tree.StringLiteral) quote = "\""; 
                         cci.addError("literal cases must be disjoint: " +
-                                quote + etv.replaceAll("\\p{Cntrl}","?") + quote + 
+                                etv.replaceAll("\\p{Cntrl}","?") + 
                                 " occurs in multiple cases");
                     }
                 }
             }
+        }
+    }
+
+    private static String getLiteralText(Tree.Term et) {
+        String etv = et.getText();
+        if (et instanceof Tree.CharLiteral) {
+            return "'" + etv + "'"; 
+        }
+        else if (et instanceof Tree.StringLiteral) {
+            return "\"" + etv + "\"";
+        }
+        else {
+            return etv;
         }
     }
 
