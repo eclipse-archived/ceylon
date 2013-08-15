@@ -12,6 +12,7 @@ public class Value extends MethodOrValue {
     private boolean trans;
     private boolean late;
     private boolean enumValue;
+    private boolean specifiedInForElse;
 
     private Setter setter;
 
@@ -57,6 +58,14 @@ public class Value extends MethodOrValue {
 
     public void setEnumValue(boolean enumValue) {
         this.enumValue = enumValue;
+    }
+
+    public boolean isSpecifiedInForElse() {
+        return specifiedInForElse;
+    }
+
+    public void setSpecifiedInForElse(boolean assignedInFor) {
+        this.specifiedInForElse = assignedInFor;
     }
 
 }
