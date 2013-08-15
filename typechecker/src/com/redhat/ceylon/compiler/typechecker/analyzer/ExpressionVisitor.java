@@ -4713,7 +4713,17 @@ public class ExpressionVisitor extends Visitor {
                 Tree.Term et = e.getTerm();
                 Tree.Term ft = f.getTerm();
                 if (et instanceof Tree.Literal && ft instanceof Tree.Literal) {
-                    if (et.getText().equals(ft.getText())) {
+                    String etv = et.getText();
+                    String ftv = ft.getText();
+                    if (et instanceof Tree.NaturalLiteral && 
+                        ft instanceof Tree.NaturalLiteral &&
+                        ((ftv.startsWith("#") && !etv.startsWith("#")) ||
+                        (!ftv.startsWith("#") && etv.startsWith("#")) ||
+                        (ftv.startsWith("$") && !etv.startsWith("$")) ||
+                        (!ftv.startsWith("$") && etv.startsWith("$")))) {
+                        cci.addWarning("literal cases with mixed bases not yet supported");
+                    }
+                    else if (etv.equals(ftv)) {
                         cci.addError("literal cases must be disjoint: " +
                                 et.getText() + " occurs in multiple cases");
                     }
