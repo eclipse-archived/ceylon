@@ -2547,7 +2547,11 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             callBuilder.invoke(naming.makeInstantiatorMethodName(transformedPrimary.expr, (Class)declaration));
         }
-        return callBuilder.build();
+        JCExpression result = callBuilder.build();
+        if (Strategy.isInstantiatorUntyped(declaration)) {
+            result = make().TypeCast(makeJavaType(invocation.getReturnType()), result);
+        }
+        return result;
     }
 
     private JCExpression transformBaseInstantiation(Invocation invocation, CallBuilder callBuilder,
