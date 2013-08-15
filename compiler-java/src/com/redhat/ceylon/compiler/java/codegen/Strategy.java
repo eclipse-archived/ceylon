@@ -254,6 +254,14 @@ class Strategy {
                     && Decl.isCeylon((Class)model));
     }
     
+    /**
+     * Does the given declaration have an instantiator that is declared to
+     * return Object (so needs a typecast when invoked).
+     */
+    static boolean isInstantiatorUntyped(Declaration model) {
+        return generateInstantiator(model) && Decl.isAncestorLocal(model);
+    }
+    
     /** 
      * Determines whether a {@code void} Ceylon method should be declared to 
      * return {@code void} or {@code java.lang.Object} (the erasure of 
