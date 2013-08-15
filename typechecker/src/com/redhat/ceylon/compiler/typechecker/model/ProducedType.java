@@ -316,7 +316,7 @@ public class ProducedType extends ProducedReference {
                     }
                 }
                 if (isTypeConstructor() && type.isTypeConstructor()) {
-                    return true;
+                    return getDeclaration().equals(type.getDeclaration());
                 }
                 else if (isTypeConstructor() || type.isTypeConstructor()) {
                     return false;
