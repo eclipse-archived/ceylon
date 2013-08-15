@@ -85,6 +85,19 @@ shared void test() {
 
     //TODO satisfies
 
+    Object lits1=1;
+    switch(lits1)
+    case(5) { fail("WTF? it's 1"); }
+    case("2") { fail("it's not even a String!"); }
+    case(1) { check(true, "case with literals"); }
+    else { fail("it WAS one"); }
+    Object? lits2 = null;
+    switch(lits2)
+    case(1) { fail("it's null"); }
+    case("2") { fail("it's null!"); }
+    case(null) { check(true, "case with literals against optional"); }
+    else { fail("how did you get here?"); }
+
     results();
 }
 
