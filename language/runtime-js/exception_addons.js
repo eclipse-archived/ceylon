@@ -20,7 +20,11 @@ Exception.$$.prototype.printStackTrace = function() {
       f.$$metamodel$$=mm;
     }
     if (mm) {
-        print("    at " + mm.pkg + "::" + mm.d.$nm);
+      var _src = '';
+      if (i==0) {
+        if (this.$loc && this.$file) _src = ' (' + this.$file + " " + this.$loc + ')';
+      }
+      print("    at " + mm.pkg + "::" + mm.d.$nm + _src);
     }
   }
 }

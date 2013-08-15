@@ -263,8 +263,15 @@ function add_type_arg(obj, name, type) {
     }
     obj.$$targs$$[name]=type;
 }
-function throwexc(msg) {
-    throw Exception(msg.getT$all?msg:String$(msg));
+function wrapexc(e,loc,file) {
+  if (loc !== undefined) e.$loc=loc;
+  if (file !== undefined) e.$file=file;
+  return e;
+}
+function throwexc(e,loc,file) {
+  if (loc !== undefined) e.$loc=loc;
+  if (file !== undefined) e.$file=file;
+  throw e;
 }
 exports.set_type_args=set_type_args;
 exports.add_type_arg=add_type_arg;
@@ -274,3 +281,4 @@ exports.isOfType=isOfType;
 exports.className=className;
 exports.identityHash=identityHash;
 exports.throwexc=throwexc;
+exports.wrapexc=wrapexc;
