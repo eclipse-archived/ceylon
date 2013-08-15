@@ -18,6 +18,11 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     public .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Integral$impl() {
         return $ceylon$language$Integral$this;
     }
+    
+    @.java.lang.Override
+    public final boolean divides(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
+        return $ceylon$language$Integral$this.divides(other);
+    }
     protected final .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Numeric$this;
     
     @.java.lang.Override
