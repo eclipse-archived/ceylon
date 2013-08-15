@@ -2560,7 +2560,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     .typeArguments(List.<JCExpression>nil())
                     .invoke(naming.makeInstantiatorMethodName(transformedPrimary.expr, (Class)declaration))
                     .build();
-            if (Decl.isAncestorLocal(invocation.getPrimaryDeclaration())) {
+            if (Strategy.isInstantiatorUntyped(declaration)) {
                 // $new method declared to return Object, so needs typecast
                 resultExpr = make().TypeCast(makeJavaType(
                         ((TypeDeclaration)declaration).getType()), resultExpr);

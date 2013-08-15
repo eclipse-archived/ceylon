@@ -2716,7 +2716,7 @@ public class ClassTransformer extends AbstractTransformer {
             
             JCExpression resultType;
             ProducedType type = klass.isAlias() ? klass.getExtendedType() : klass.getType();
-            if (Decl.isAncestorLocal(klass)) {
+            if (Strategy.isInstantiatorUntyped(klass)) {
                 // We can't expose a local type name to a place it's not visible
                 resultType = make().Type(syms().objectType);
             } else {
