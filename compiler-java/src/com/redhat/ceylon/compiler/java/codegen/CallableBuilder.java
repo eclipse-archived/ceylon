@@ -188,6 +188,10 @@ public class CallableBuilder {
                     methodOrClass.getType(),
                     !CodegenUtil.isUnBoxed((TypedDeclaration)methodOrClass), 
                     BoxingStrategy.BOXED, methodOrClass.getType());
+        } else if (Strategy.isInstantiatorUntyped((Class)methodOrClass)) {
+            // $new method declared to return Object, so needs typecast
+            innerInvocation = gen.make().TypeCast(gen.makeJavaType(
+                    ((Class)methodOrClass).getType()), innerInvocation);
         }
         inner.useBody(List.<JCStatement>of(gen.make().Return(innerInvocation)));
         
