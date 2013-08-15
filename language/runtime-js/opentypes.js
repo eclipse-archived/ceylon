@@ -1,25 +1,9 @@
-//Add-on to AnnotatedDeclaration            //MethodDeclaration annotations at caca.ceylon (82:2-83:72)
-AnnotatedDeclaration$model$declaration.$$.prototype.annotations=function ($$$mptypes) {
-    var $$openInterface=this;
-    var ans = [];
-    var _ans = $$openInterface._type.$$metamodel$$.$an;
-    if (typeof(_ans)==='function') {
-      _ans = _ans();
-      $$openInterface._type.$$metamodel$$.$an=_ans;
-    }
-    for (var i=0; i<_ans.length;i++) {
-      var __a = _ans[i]();
-      if (isOfType(_ans[i], $$$mptypes.Annotation)) {
-        ans.push(__a);
-      }
-    }
-    return ans.length == 0 ? getEmpty() : ans.reifyCeylonType({Element:$$$mptypes.Annotation});
-};
-AnnotatedDeclaration$model$declaration.$$.prototype.annotations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Annotation'}},$ps:[],$cont:AnnotatedDeclaration$model$declaration,$tp:{Annotation:{'var':'out','satisfies':[{t:Annotation$model,a:{Value:'Annotation'}}]}},$an:function(){return[shared(),formal()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['AnnotatedDeclaration']['$m']['annotations']};};
-
-function _findTypeFromModel(mdl) {
-  console.log("IMPLEMENT ME!!!!!! _findTypeFromModel (native)");
-  return undefined;
+//Find the real declaration of something from its model definition
+function _findTypeFromModel(pkg,mdl) {
+  var mod = pkg.container;
+  //TODO this is very primitive needs a lot of rules replicated from the JsIdentifierNames
+  var nm = mdl.$nm + pkg.suffix;
+  return mod.meta[nm];
 }
 
 //ClassDefinition OpenFunction at caca.ceylon (18:0-36:0)
@@ -32,10 +16,10 @@ function OpenFunction(name, packageContainer, toplevel, meta, that){
     if (meta.$$metamodel$$ === undefined) {
       //it's a metamodel
       that.meta=meta;
-      that._type=_findTypeFromModel(meta);
+      that.tipo=_findTypeFromModel(packageContainer,meta);
     } else {
       //it's a type
-      that._type = meta;
+      that.tipo = meta;
       that.meta = meta.$$metamodel$$.d;
     }
     FunctionDeclaration$model$declaration(that);
@@ -56,9 +40,9 @@ function $init$OpenFunction(){
             
             //MethodDefinition bindAndApply at caca.ceylon (21:4-21:105)
             $$openFunction.bindAndApply=function bindAndApply(instance$3,types$4){
-                var $$openFunction=this;
-                if(types$4===undefined){types$4=getEmpty();}
-                throw Exception();
+              var $$openFunction=this;
+              if(types$4===undefined){types$4=getEmpty();}
+console.log("IMPLEMENT ME!!! OpenFunction.bindAndApply");
             };$$openFunction.bindAndApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Function$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Object$}},{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$model}}}}],$cont:OpenFunction,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['FunctionDeclaration']['$m']['bindAndApply']};};
             
             //MethodDefinition memberApply at caca.ceylon (22:4-23:54)
@@ -130,10 +114,10 @@ function OpenValue(name, packageContainer, toplevel, meta, that){
     if (meta.$$metamodel$$ === undefined) {
       //it's a metamodel
       that.meta=meta;
-      that._type=_findTypeFromModel(meta);
+      that.tipo=_findTypeFromModel(packageContainer,meta);
     } else {
       //it's a type
-      that._type = meta;
+      that.tipo = meta;
       that.meta = meta.$$metamodel$$.d;
     }
     ValueDeclaration$model$declaration(that);
@@ -188,10 +172,10 @@ function OpenClass(name, packageContainer, toplevel, meta, that){
     if (meta.$$metamodel$$ === undefined) {
       //it's a metamodel
       that.meta=meta;
-      that._type=_findTypeFromModel(meta);
+      that.tipo=_findTypeFromModel(packageContainer,meta);
     } else {
       //it's a type
-      that._type = meta;
+      that.tipo = meta;
       that.meta = meta.$$metamodel$$.d;
     }
     ClassDeclaration$model$declaration(that);
@@ -313,10 +297,10 @@ function OpenInterface(name, packageContainer, toplevel, meta, that) {
     if (meta.$$metamodel$$ === undefined) {
       //it's a metamodel
       that.meta=meta;
-      that._type=_findTypeFromModel(meta);
+      that.tipo=_findTypeFromModel(packageContainer,meta);
     } else {
       //it's a type
-      that._type = meta;
+      that.tipo = meta;
       that.meta = meta.$$metamodel$$.d;
     }
     InterfaceDeclaration$model$declaration(that);
