@@ -33,12 +33,21 @@ public class ProducedType extends ProducedReference {
     private ProducedType resolvedAliases;
     private Map<TypeDeclaration, ProducedType> superTypesCache = 
             new HashMap<TypeDeclaration, ProducedType>();
+    private boolean typeConstructor;
 
     ProducedType() {}
 
     @Override
     public TypeDeclaration getDeclaration() {
         return (TypeDeclaration) super.getDeclaration();
+    }
+    
+    public boolean isTypeConstructor() {
+        return typeConstructor;
+    }
+    
+    public void setTypeConstructor(boolean typeConstructor) {
+        this.typeConstructor = typeConstructor;
     }
     
     /**
@@ -177,6 +186,12 @@ public class ProducedType extends ProducedReference {
                         }
                     }
                 }
+                if (isTypeConstructor()&&type.isTypeConstructor()) {
+                    return true;
+                }
+                else if (isTypeConstructor()||type.isTypeConstructor()) {
+                    return false;
+                }
                 for (TypeParameter p: getDeclaration().getTypeParameters()) {
                     ProducedType arg = getTypeArguments().get(p);
                     ProducedType otherArg = type.getTypeArguments().get(p);
@@ -299,6 +314,12 @@ public class ProducedType extends ProducedReference {
                             return false;
                         }
                     }
+                }
+                if (isTypeConstructor() && type.isTypeConstructor()) {
+                    return true;
+                }
+                else if (isTypeConstructor() || type.isTypeConstructor()) {
+                    return false;
                 }
                 for (TypeParameter p: type.getDeclaration().getTypeParameters()) {
                     ProducedType arg = st.getTypeArguments().get(p);
@@ -1086,12 +1107,14 @@ public class ProducedType extends ProducedReference {
 		if (qt!=null && qt.containsUnknowns()) {
 			return true;
 		}
-		List<ProducedType> tas = getTypeArgumentList();
-		for (ProducedType at: tas) {
-    		if (at==null || at.containsUnknowns()) {
-                return true;
-            }
-        }
+		if (!isTypeConstructor()) {
+		    List<ProducedType> tas = getTypeArgumentList();
+		    for (ProducedType at: tas) {
+		        if (at==null || at.containsUnknowns()) {
+		            return true;
+		        }
+		    }
+		}
         return false;
     }
 
@@ -1187,7 +1210,12 @@ public class ProducedType extends ProducedReference {
                 if (pt.getDeclaration() instanceof TypeParameter) {
                     ProducedType sub = substitutions.get(pt.getDeclaration());
                     if (sub!=null) {
-                        return sub;
+                        if (pt.getDeclaration().getTypeParameters().isEmpty() || pt.isTypeConstructor()) {
+                            return sub;
+                        }
+                        else {
+                            return sub.getDeclaration().getProducedType(null, pt.getTypeArgumentList());
+                        }
                     }
                 }
                 dec = pt.getDeclaration();
@@ -1234,6 +1262,7 @@ public class ProducedType extends ProducedReference {
                 Map<TypeParameter, ProducedType> substitutions) {
             ProducedType type = new ProducedType();
             type.setDeclaration(dec);
+            type.setTypeConstructor(pt.isTypeConstructor());
             type.setUnderlyingType(pt.getUnderlyingType());
             ProducedType qt = pt.getQualifyingType();
             if (qt!=null) {
@@ -1282,7 +1311,9 @@ public class ProducedType extends ProducedReference {
 
     @Override
     public String toString() {
-        return "Type[" + getProducedTypeName() + "]";
+        return isTypeConstructor() ?
+                "TypeConstructor[" + getProducedTypeName() + "]" :
+                "Type[" + getProducedTypeName() + "]";
     }
     
     public String getProducedTypeName() {
@@ -1579,24 +1610,33 @@ public class ProducedType extends ProducedReference {
     		ut.setSatisfiedTypes(list);
     		return ut.canonicalize().getType();
     	}
-    	List<ProducedType> args = getTypeArgumentList();
-    	List<ProducedType> aliasedArgs = new ArrayList<ProducedType>(args.size());
-    	for (ProducedType arg: args) {
-    		aliasedArgs.add(arg==null ? null : arg.resolveAliases());
-    	}
-    	ProducedType qt = getQualifyingType();
-    	ProducedType aliasedQualifyingType = qt==null ? 
-    			null : qt.resolveAliases();
-    	if (d.isAlias()) {
-    		ProducedType et = d.getExtendedType();
-			if (et == null) {
-    			return new UnknownType(d.getUnit()).getType();
-    		}
-    		return et.resolveAliases()
-    				.substitute(arguments(d, aliasedQualifyingType, aliasedArgs));
+    	if (isTypeConstructor()) {
+    	    TypeDeclaration ud = d.isAlias() ? d.getExtendedTypeDeclaration() : d;
+    	    ProducedType rt = ud.getType();
+    	    //TODO: qualifying type!!!
+    	    rt.setTypeConstructor(true);
+    	    return rt;
     	}
     	else {
-    		return d.getProducedType(aliasedQualifyingType, aliasedArgs);
+    	    List<ProducedType> args = getTypeArgumentList();
+    	    List<ProducedType> aliasedArgs = new ArrayList<ProducedType>(args.size());
+    	    for (ProducedType arg: args) {
+    	        aliasedArgs.add(arg==null ? null : arg.resolveAliases());
+    	    }
+    	    ProducedType qt = getQualifyingType();
+    	    ProducedType aliasedQualifyingType = qt==null ? 
+    	            null : qt.resolveAliases();
+    	    if (d.isAlias()) {
+    	        ProducedType et = d.getExtendedType();
+    	        if (et == null) {
+    	            return new UnknownType(d.getUnit()).getType();
+    	        }
+    	        return et.resolveAliases()
+    	                .substitute(arguments(d, aliasedQualifyingType, aliasedArgs));
+    	    }
+    	    else {
+    	        return d.getProducedType(aliasedQualifyingType, aliasedArgs);
+    	    }
     	}
     }
     
@@ -1618,6 +1658,7 @@ public class ProducedType extends ProducedReference {
                 null : qt.simple();
         ProducedType ret = d.getProducedType(simpleQualifyingType, simpleArgs);
         ret.setUnderlyingType(underlyingType);
+        ret.setTypeConstructor(typeConstructor);
         ret.setRaw(isRaw);
         return ret;
     }

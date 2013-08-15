@@ -228,6 +228,7 @@
 "A single type parameter of a generic declaration."
 ^(TYPE_PARAMETER_DECLARATION:DECLARATION
     TYPE_VARIANCE?
+    TYPE_PARAMETER_LIST?
     TYPE_SPECIFIER?
     TypeParameter declarationModel;)
 "The variance of a type parameter."

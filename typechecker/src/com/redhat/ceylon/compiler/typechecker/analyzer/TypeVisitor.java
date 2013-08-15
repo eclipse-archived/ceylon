@@ -695,6 +695,8 @@ public class TypeVisitor extends Visitor {
 //            }
             that.setTypeModel(pt);
             that.setDeclarationModel(dec);
+            pt.setTypeConstructor(tal==null && 
+                    !dec.getTypeParameters().isEmpty());
         //}
     }
     

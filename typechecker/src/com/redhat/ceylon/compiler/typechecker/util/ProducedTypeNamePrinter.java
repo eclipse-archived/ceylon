@@ -384,8 +384,9 @@ public class ProducedTypeNamePrinter {
         }
 
         ptn.append(getSimpleDeclarationName(pt.getDeclaration(), unit));
-
-        if (printTypeParameters() && !pt.getTypeArgumentList().isEmpty()) {
+        
+        if (!pt.isTypeConstructor() && 
+                printTypeParameters() && !pt.getTypeArgumentList().isEmpty()) {
             ptn.append("<");
             boolean first = true;
             for (ProducedType t: pt.getTypeArgumentList()) {

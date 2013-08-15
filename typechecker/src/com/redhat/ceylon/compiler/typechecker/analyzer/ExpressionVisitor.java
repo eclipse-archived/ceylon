@@ -4184,7 +4184,7 @@ public class ExpressionVisitor extends Visitor {
                 List<ProducedType> ta = getTypeArguments(tal, 
                         type.getTypeParameters(), 
                         pt.getQualifyingType());
-                acceptsTypeArguments(type, ta, tal, that, that.getMetamodel());
+                acceptsTypeArguments(type, ta, tal, that, true/*that.getMetamodel()*/);
                 //the type has already been set by TypeVisitor
             }
         }

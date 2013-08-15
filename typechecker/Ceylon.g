@@ -934,6 +934,10 @@ typeParameter returns [TypeParameterDeclaration typeParameter]
       typeNameDeclaration
       { $typeParameter.setIdentifier($typeNameDeclaration.identifier); }
       (
+        typeParameters
+         { $typeParameter.setTypeParameterList($typeParameters.typeParameterList); }
+      )?
+      (
         typeDefault
         { $typeParameter.setTypeSpecifier($typeDefault.typeSpecifier); }
       )?
