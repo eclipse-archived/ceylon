@@ -103,7 +103,7 @@ public class CallableBuilder {
         this.numParams = paramLists.getParameters().size();
         this.minimumParams = 0;
         for(Parameter p : paramLists.getParameters()){
-            if(p.isDefaulted() || p.isSequenced())
+            if(p.isDefaulted() || (p.isSequenced() && !p.isAtLeastOne()))
                 break;
             this.minimumParams++;
         }
@@ -354,7 +354,7 @@ public class CallableBuilder {
             parameterDefaultValueMethods = ListBuffer.lb();
         }
         for(Tree.Parameter p : parameterListTree.getParameters()){
-            if(Decl.getDefaultArgument(p) != null || p.getParameterModel().isSequenced()){
+            if(Decl.getDefaultArgument(p) != null){
                 MethodDefinitionBuilder methodBuilder = gen.classGen().makeParamDefaultValueMethod(false, null, parameterListTree, p, null);
                 this.parameterDefaultValueMethods.append(methodBuilder.build());
             }
@@ -556,16 +556,22 @@ public class CallableBuilder {
 
     private JCExpression makeDefaultValueCall(Parameter defaultedParam, int i, 
             Tree.Term forwardCallTo){
-        // add the default value
-        List<JCExpression> defaultMethodArgs = List.nil();
-        // pass all the previous values
-        for(int a=i-1;a>=0;a--){
-            Parameter param = paramLists.getParameters().get(a);
-            JCExpression previousValue = gen.makeUnquotedIdent(getCallableTempVarName(param, forwardCallTo));
-            defaultMethodArgs = defaultMethodArgs.prepend(previousValue);
+        if (defaultedParam.isDefaulted()) {
+            // add the default value
+            List<JCExpression> defaultMethodArgs = List.nil();
+            // pass all the previous values
+            for(int a=i-1;a>=0;a--){
+                Parameter param = paramLists.getParameters().get(a);
+                JCExpression previousValue = gen.makeUnquotedIdent(getCallableTempVarName(param, forwardCallTo));
+                defaultMethodArgs = defaultMethodArgs.prepend(previousValue);
+            }
+            // now call the default value method
+            return defaultValueCall.makeDefaultValueMethod(gen, defaultedParam, forwardCallTo, defaultMethodArgs);
+        } else if (defaultedParam.isSequenced() && !defaultedParam.isAtLeastOne()) {
+            return gen.makeEmptyAsSequential(true);
+        } else {
+            return gen.makeErroneous(forwardCallTo, "Not a defaulted parameter");
         }
-        // now call the default value method
-        return defaultValueCall.makeDefaultValueMethod(gen, defaultedParam, forwardCallTo, defaultMethodArgs);
     }
     
     private JCTree makeCallMethod(List<JCStatement> body, int numParams) {

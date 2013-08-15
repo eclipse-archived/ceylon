@@ -1263,16 +1263,8 @@ class NamedArgumentInvocation extends Invocation {
                         argExpr = makeDefaultedArgumentMethodCall(param);
                         hasDefaulted |= true;
                     }
-                } else if (param.isSequenced()) {
-                    // FIXME: this special case is just plain weird, it looks very wrong
-                    if (getPrimaryDeclaration() instanceof Method
-                            && ((Method)getPrimaryDeclaration()).isParameter()) {
-                        // honestly I don't know if it needs a cast but it can't hurt
-                        argExpr = gen.makeEmptyAsSequential(true);
-                    } else {
-                        argExpr = makeDefaultedArgumentMethodCall(param);
-                        hasDefaulted |= true;
-                    }
+                } else if (param.isSequenced() && !param.isAtLeastOne()) {
+                    argExpr = gen.makeEmptyAsSequential(true);
                 } else if(gen.typeFact().isIterableType(param.getType())){
                     // must be an iterable we need to fill with empty
                     // FIXME: deal with this erasure bug later

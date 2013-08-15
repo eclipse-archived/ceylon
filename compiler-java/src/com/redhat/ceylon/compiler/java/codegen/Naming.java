@@ -721,6 +721,7 @@ public class Naming implements LocalId {
     
     JCExpression makeDefaultedParamMethod(JCExpression qualifier, Parameter param) {
         // TODO Can we merge this into makeName(..., NA_DPM) ?
+        Assert.that(param.isDefaulted());
         Declaration decl = param.getDeclaration();
         String methodName = getDefaultedParamMethodName(decl, param);
         if (Strategy.defaultParameterMethodOnSelf(param.getModel())) {
