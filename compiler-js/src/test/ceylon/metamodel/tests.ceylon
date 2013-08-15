@@ -1,6 +1,6 @@
 import ceylon.language.model { ... }
 import ceylon.language.model.declaration {
-  FunctionDeclaration, InterfaceDeclaration, ValueDeclaration
+  FunctionDeclaration, InterfaceDeclaration, ValueDeclaration, ClassDeclaration
 }
 import check { check,fail,results }
 
@@ -23,12 +23,27 @@ void literals<T>() {
     Method<String,String,[Integer]> finitial = `String.initial`;
     Method<Iterable<String>,Iterable<String>,[Integer]> ftaking = `Iterable<String>.taking`;
     FunctionDeclaration fdecl = `Iterable.taking`;
-    value taking1 = fdecl.bindAndApply({1,2,3,4,5}, `Integer`);
-    //TODO WTF can I do with taking1?
+    value taking1 = fdecl.bindAndApply({1,2,3,4,5});
+    if (is Function<Iterable<Integer>,[Integer]> taking1) {
+      check(taking1(3).sequence=={1,2,3}, "Function Iterable.taking failed");
+    } else {
+      fail("taking1 should be Function<Iterable<Integer>,[Integer]>");
+    }
     InterfaceDeclaration idecl = `Iterable`;
-    ValueDeclaration? cycledDecl = idecl.getMemberDeclaration("cycled");
+    check(!idecl.getMemberDeclaration<InterfaceDeclaration>("cycled") exists, "Iterable.cycled is not an interface");
+    check(!idecl.getMemberDeclaration<FunctionDeclaration>("cycled") exists, "Iterable.cycled is not a method");
+    check(!idecl.getMemberDeclaration<ClassDeclaration>("cycled") exists, "Iterable.cycled is not a class");
+    value cycledDecl = idecl.getMemberDeclaration<ValueDeclaration>("cycled");
     if (exists cycledDecl) {
       //TODO apply
+      value cycled1 = cycledDecl.apply(Singleton(1));
+      if (is {Integer*} cycled1) {
+        value iter = cycled1.iterator();
+        for (i in 1..100) { iter.next(); }
+        check(iter.next() == 1, "Iter 1");
+      } else {
+        fail("Applied 'cycled' should be {Integer*}");
+      }
     } else {
       fail("Iterable should have value 'cycled'");
     }
