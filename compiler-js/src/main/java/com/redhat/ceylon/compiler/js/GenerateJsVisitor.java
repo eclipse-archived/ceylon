@@ -4346,24 +4346,24 @@ public class GenerateJsVisitor extends Visitor
         return dynblock > 0;
     }
 
-    /** Tells whether the typeModel of a TypeLiteral or MemberLiteral node is open or closed. */
+    /** Tells whether the typeModel of a TypeLiteral or MemberLiteral node is open or closed.
+     * Some things are open and closed; we should prefer the open version since we can get the applied one
+     * from it, but this might cause problems when the closed version is expected... */
     private boolean isTypeLiteralModelOpen(ProducedType t) {
         final String qn = t.getProducedTypeQualifiedName();
-        if (qn.contains("ceylon.language.model::")) {
-            return false;
-        }
-        return true;
+        return qn.contains("ceylon.language.model.declaration::");
     }
 
     @Override
     public void visit(TypeLiteral that) {
         out(clAlias, "typeLiteral$model({Type:");
-        if (isTypeLiteralModelOpen(that.getTypeModel())) {
-            TypeDeclaration d = that.getType().getTypeModel().getDeclaration();
+        final ProducedType ltype = that.getType().getTypeModel();
+        if (isTypeLiteralModelOpen(that.getTypeModel()) && !ltype.containsTypeParameters()) {
+            TypeDeclaration d = ltype.getDeclaration();
             qualify(that,d);
             out(names.name(d));
         } else {
-            TypeUtils.typeNameOrList(that, that.getType().getTypeModel(), this, true);
+            TypeUtils.typeNameOrList(that, ltype, this, true);
         }
         out("})");
     }
@@ -4374,25 +4374,27 @@ public class GenerateJsVisitor extends Visitor
         if (ref == null) {
             that.addUnexpectedError("Member literal with no valid target");
         } else {
-            Declaration d = ref.getDeclaration();
-            final boolean closed = !isTypeLiteralModelOpen(that.getTypeModel());
+            final Declaration d = ref.getDeclaration();
+            final ProducedType ltype = that.getType() == null ? null : that.getType().getTypeModel();
+            final boolean open = isTypeLiteralModelOpen(that.getTypeModel())
+                    && (ltype == null || !ltype.containsTypeParameters());
             out(clAlias, "typeLiteral$model({Type:");
-            if (closed)out("{t:");
-            if (that.getType() == null) {
+            if (!open)out("{t:");
+            if (ltype == null) {
                 qualify(that, d);
             } else {
-                qualify(that, that.getType().getTypeModel().getDeclaration());
-                out(names.name(that.getType().getTypeModel().getDeclaration()));
+                qualify(that, ltype.getDeclaration());
+                out(names.name(ltype.getDeclaration()));
                 out(".$$.prototype.");
             }
             if (d instanceof Value) {
                 out("$prop$");
             }
             out(names.name(d));
-            if (closed) {
-                if (ref.getTypeArguments() != null && !ref.getTypeArguments().isEmpty()) {
+            if (!open) {
+                if (ltype != null && ltype.getTypeArguments() != null && !ltype.getTypeArguments().isEmpty()) {
                     out(",a:");
-                    TypeUtils.printTypeArguments(that, ref.getTypeArguments(), this);
+                    TypeUtils.printTypeArguments(that, ltype.getTypeArguments(), this);
                 }
                 out("}");
             }
