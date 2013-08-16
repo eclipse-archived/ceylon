@@ -13,7 +13,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     private ProducedType defaultTypeArgument;
     private boolean defaulted;
     private boolean constrained;
-
+    
     public boolean isInvariant() {
     	return !covariant && !contravariant;
     }

@@ -930,13 +930,13 @@ typeParameter returns [TypeParameterDeclaration typeParameter]
       ( 
         variance 
         { $typeParameter.setTypeVariance($variance.typeVariance); } 
-      )? 
+      )?
+      (
+        '@'
+        { $typeParameter.setTypeConstructor(true); }
+      )?
       typeNameDeclaration
       { $typeParameter.setIdentifier($typeNameDeclaration.identifier); }
-      (
-        typeParameters
-         { $typeParameter.setTypeParameterList($typeParameters.typeParameterList); }
-      )?
       (
         typeDefault
         { $typeParameter.setTypeSpecifier($typeDefault.typeSpecifier); }
@@ -959,6 +959,10 @@ typeConstraint returns [TypeConstraint typeConstraint]
       typeNameDeclaration 
       { $typeConstraint.setIdentifier($typeNameDeclaration.identifier); }
       //(typeParameters)?
+      (
+        typeParameters
+         { $typeConstraint.setTypeParameterList($typeParameters.typeParameterList); }
+      )?
       (
         parameters
         { $typeConstraint.setParameterList($parameters.parameterList); }
