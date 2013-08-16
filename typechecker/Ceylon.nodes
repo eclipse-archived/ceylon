@@ -258,6 +258,7 @@
 ^(abstract SIMPLE_TYPE:STATIC_TYPE
     IDENTIFIER 
     TYPE_ARGUMENT_LIST?
+    boolean typeConstructor;
     TypeDeclaration declarationModel;)
 
 ^(BASE_TYPE: SIMPLE_TYPE)

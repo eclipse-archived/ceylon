@@ -382,6 +382,8 @@ public class ProducedTypeNamePrinter {
                 ptn.append(getProducedTypeName(qt, unit)).append(".");
             }
         }
+        
+        if (pt.isTypeConstructor()) ptn.append("@");
 
         ptn.append(getSimpleDeclarationName(pt.getDeclaration(), unit));
         

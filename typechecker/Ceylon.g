@@ -2604,6 +2604,7 @@ abbreviatedType returns [StaticType type]
 qualifiedType returns [SimpleType type]
     : ot=typeNameWithArguments
       { BaseType bt = new BaseType(null);
+        bt.setTypeConstructor($ot.typeConstructor);
         bt.setIdentifier($ot.identifier);
         if ($ot.typeArgumentList!=null)
             bt.setTypeArgumentList($ot.typeArgumentList);
@@ -2612,6 +2613,7 @@ qualifiedType returns [SimpleType type]
         MEMBER_OP 
         it=typeNameWithArguments
         { QualifiedType qt = new QualifiedType($MEMBER_OP);
+          qt.setTypeConstructor($it.typeConstructor);
           qt.setIdentifier($it.identifier);
           if ($it.typeArgumentList!=null)
               qt.setTypeArgumentList($it.typeArgumentList);
@@ -2620,8 +2622,15 @@ qualifiedType returns [SimpleType type]
       )*
     ;
 
-typeNameWithArguments returns [Identifier identifier, TypeArgumentList typeArgumentList]
-    : typeName
+typeNameWithArguments returns [Identifier identifier, 
+                               TypeArgumentList typeArgumentList,
+                               boolean typeConstructor]
+    @init { $typeConstructor = false; }
+    : (
+        '@'
+        { $typeConstructor = true; }
+      )?
+      typeName
       { $identifier = $typeName.identifier; } 
       (
         typeArguments
@@ -3118,7 +3127,7 @@ resources returns [ResourceList resources]
 
 resource returns [Resource resource]
     @init { $resource = new Resource(null); }
-    : ( (COMPILER_ANNOTATION|declarationStart|specificationStart) 
+    : ( (COMPILER_ANNOTATION LIDENTIFIER|declarationStart|specificationStart) 
         => specifiedVariable
         { $resource.setVariable($specifiedVariable.variable); }
       | expression
