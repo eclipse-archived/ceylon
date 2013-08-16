@@ -525,10 +525,10 @@ public class TypeUtils {
         if (annGen != null) {
             annGen.generateAnnotations();
         }
-        gen.out(",pkg:'", d.getUnit().getPackage().getNameAsString(), "',d:$$METAMODEL$$['");
-        gen.out(d.getUnit().getPackage().getNameAsString(), "']");
+        //Path to its model
+        gen.out(",d:['", d.getUnit().getPackage().getNameAsString(), "'");
         if (d.isToplevel()) {
-            gen.out("['", d.getName(), "']");
+            gen.out(",'", d.getName(), "'");
         } else {
             ArrayList<String> path = new ArrayList<>();
             Declaration p = d;
@@ -554,10 +554,10 @@ public class TypeUtils {
             }
             //Output path
             for (String part : path) {
-                gen.out("['", part, "']");
+                gen.out(",'", part, "'");
             }
         }
-        gen.out("};}");
+        gen.out("]};}");
     }
 
     /** Prints out an object with a type constructor under the property "t" and its type arguments under
