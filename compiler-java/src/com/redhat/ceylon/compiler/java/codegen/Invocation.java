@@ -206,7 +206,7 @@ abstract class Invocation {
             }
         } else if (getPrimary() instanceof Tree.QualifiedTypeExpression) {
         } else {
-            if (this instanceof IndirectInvocation
+            if (isIndirect()
                     && getPrimaryDeclaration() != null
                     && (Decl.isGetter(getPrimaryDeclaration())
                             || Decl.isToplevel(getPrimaryDeclaration())
@@ -220,7 +220,7 @@ abstract class Invocation {
             } else if ((getPrimaryDeclaration() instanceof Method
                     && ((Method)getPrimaryDeclaration()).isParameter()
                         && !Strategy.createMethod((Method)getPrimaryDeclaration()))
-                    || (this instanceof IndirectInvocation)) {
+                    || isIndirect()) {
                 if (selector != null) {
                     actualPrimExpr = gen.naming.makeQualIdent(primaryExpr, selector);
                 } else {
@@ -247,10 +247,14 @@ abstract class Invocation {
     }
 
     boolean isMemberRefInvocation() {
-        return this instanceof IndirectInvocation
+        return isIndirect()
                 && getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression
                 && (getQmePrimary() instanceof Tree.BaseTypeExpression
                   || getQmePrimary() instanceof Tree.QualifiedTypeExpression);
+    }
+    
+    public boolean isIndirect() {
+        return false;
     }
 
 }
@@ -339,7 +343,6 @@ class IndirectInvocation extends SimpleInvocation {
     private final Comprehension comprehension;
     private final boolean variadic;
     private final boolean spread;
-    private final int minimumParameters;
 
     public IndirectInvocation(
             AbstractTransformer gen, 
@@ -356,7 +359,6 @@ class IndirectInvocation extends SimpleInvocation {
             tas.add(gen.getParameterTypeOfCallable(callableType, ii));
         }
         this.variadic = gen.isVariadicCallable(callableType);
-        this.minimumParameters = gen.getMinimumParameterCountForCallable(callableType);
         //final java.util.List<ProducedType> tas = primary.getTypeModel().getTypeArgumentList();
         final java.util.List<ProducedType> parameterTypes = tas.subList(1, tas.size());
         
@@ -379,6 +381,11 @@ class IndirectInvocation extends SimpleInvocation {
         this.comprehension = comprehension;
         this.argumentExpressions = argumentExpressions;
         this.parameterTypes = parameterTypes;
+    }
+    
+    @Override
+    public boolean isIndirect() {
+        return true;
     }
     
     @Override

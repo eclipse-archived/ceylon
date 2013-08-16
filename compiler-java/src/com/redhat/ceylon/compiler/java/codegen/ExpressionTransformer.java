@@ -2493,8 +2493,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     protected JCExpression transformPositionalInvocationOrInstantiation(Invocation invocation, CallBuilder callBuilder, TransformedInvocationPrimary transformedPrimary) {
         JCExpression resultExpr;
-        if (invocation instanceof IndirectInvocation
-                && ((IndirectInvocation)invocation).isMemberRefInvocation()) {
+        if (invocation.isMemberRefInvocation()) {
             resultExpr = transformInvocation(invocation, callBuilder, transformedPrimary);
         } else if (invocation.getPrimary() instanceof Tree.BaseTypeExpression) {
             resultExpr = transformBaseInstantiation(invocation, callBuilder, transformedPrimary);
