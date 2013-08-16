@@ -345,6 +345,7 @@ public class DeclarationVisitor extends Visitor {
             p.setCovariant("out".equals(v));
             p.setContravariant("in".equals(v));
         }
+        p.setTypeConstructor(that.getTypeConstructor());
         that.setDeclarationModel(p);
         visitDeclaration(that, p);
         super.visit(that);
@@ -1061,12 +1062,13 @@ public class DeclarationVisitor extends Visitor {
 
     @Override
     public void visit(Tree.TypeConstraint that) {
+        String name = name(that.getIdentifier());
         TypeParameter p = (TypeParameter) scope.getMemberOrParameter(unit, 
-        		name(that.getIdentifier()), null, false);
+        		name, null, false);
         that.setDeclarationModel(p);
         if (p==null) {
             that.addError("no matching type parameter for constraint: " + 
-                    name(that.getIdentifier()));
+                    name);
             p = new TypeParameter();
             p.setDeclaration(declaration);
             that.setDeclarationModel(p);
@@ -1075,7 +1077,7 @@ public class DeclarationVisitor extends Visitor {
         else {
         	if (p.isConstrained()) {
         		that.addError("duplicate constraint list for type parameter: " +
-        				p.getName());
+        				name);
         	}
         	p.setConstrained(true);
         }
@@ -1084,14 +1086,26 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
 
-        if ( that.getAbstractedType()!=null ) {
+        if (that.getAbstractedType()!=null) {
             that.addWarning("lower bound type constraints are not yet supported");
         }
-        /*if ( that.getCaseTypes()!=null ) {
+        /*if (that.getCaseTypes()!=null) {
             that.addWarning("enumerated type constraints are not yet supported");
         }*/
-        if ( that.getParameterList()!=null ) {
+        if (that.getParameterList()!=null) {
             that.addWarning("parameter bounds are not yet supported");
+        }
+        //TODO: we need to check this somewhere else, since not
+        //      every type parameter has a constraint
+        if (p.isTypeConstructor() && 
+                that.getTypeParameterList()==null) {
+            that.addError("type constructor must declare type parameters: " + 
+                    name);
+        }
+        if (!p.isTypeConstructor() && 
+                that.getTypeParameterList()!=null) {
+            that.getTypeParameterList()
+                    .addError("not a type constructor: " + name);
         }
     }
     

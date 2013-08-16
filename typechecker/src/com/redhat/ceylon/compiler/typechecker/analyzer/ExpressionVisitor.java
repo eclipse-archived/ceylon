@@ -4875,8 +4875,31 @@ public class ExpressionVisitor extends Visitor {
                     TypeParameter param = params.get(i);
                     ProducedType argType = typeArguments.get(i);
                     //Map<TypeParameter, ProducedType> self = Collections.singletonMap(param, arg);
-                    boolean argTypeMeaningful = argType!=null && 
-                            !(argType.getDeclaration() instanceof UnknownType);
+                    boolean argTypeMeaningful = argType!=null && !argType.isUnknown();
+                    if (argTypeMeaningful) {
+                        if (argType.isTypeConstructor() && !param.isTypeConstructor()) {
+                            parent.addError("type argument must be a regular type: parameter " + 
+                                    param.getName() + " is not a type constructor");
+                        }
+                        else if (!argType.isTypeConstructor() && param.isTypeConstructor()) {
+                            parent.addError("type argument must be a type constructor: parameter " + 
+                                    param.getName() + " is a type constructor");
+                        }
+                        else if (param.isTypeConstructor()) {
+                            List<TypeParameter> argTypeParams = argType.getDeclaration().getTypeParameters();
+                            int allowed = argTypeParams.size();
+                            int required = 0;
+                            for (TypeParameter tp: argTypeParams) {
+                                if (tp.isDefaulted()) break;
+                                required++;
+                            }
+                            int size = param.getTypeParameters().size();
+                            if (allowed<size || required>size) {
+                                parent.addError("type constructor must has wrong number of type parameters: parameter " + 
+                                        param.getName() + " has " + size + " type parameters");
+                            }
+                        }
+                    }
                     for (ProducedType st: param.getSatisfiedTypes()) {
                         //sts = sts.substitute(self);
                         ProducedType sts = st.getProducedType(receiver, dec, typeArguments);

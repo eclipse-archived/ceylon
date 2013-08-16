@@ -13,6 +13,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     private ProducedType defaultTypeArgument;
     private boolean defaulted;
     private boolean constrained;
+    private boolean typeConstructor;
     
     public boolean isInvariant() {
     	return !covariant && !contravariant;
@@ -33,7 +34,15 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     public void setContravariant(boolean contravariant) {
         this.contravariant = contravariant;
     }
-        
+    
+    public boolean isTypeConstructor() {
+        return typeConstructor;
+    }
+    
+    public void setTypeConstructor(boolean typeConstructor) {
+        this.typeConstructor = typeConstructor;
+    }
+    
     @Override
     public boolean isOverloaded() {
     	return false;
