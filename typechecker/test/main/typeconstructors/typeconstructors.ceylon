@@ -7,6 +7,11 @@ object listFunctor satisfies Functor<@List> {
             [ for (a in inList) apply(a) ];
 }
 
+object iterFunctor satisfies Functor<@Iterable> {
+    shared actual Iterable<Out> map<In,Out>(Out apply(In a))(Iterable<In> inIterable)
+            => { for (a in inIterable) apply(a) };
+}
+
 Fun<String> toString<@Fun>(Functor<@Fun> functor)(Fun<Object> inFun) 
         given Fun<Element> 
     => functor.map<Object,String>(Object.string)(inFun);
@@ -15,6 +20,8 @@ Fun<String> toString<@Fun>(Functor<@Fun> functor)(Fun<Object> inFun)
 void testFunctors() {
     value listToString = toString<@List>(listFunctor);
     @type:"List<String>" value strList = listToString([0, 0.0, 1, 1.0]);
+    value iterToString = toString<@Iterable>(iterFunctor);
+    @type:"Iterable<String,Null>" value strIter = iterToString({0, 0.0, 1, 1.0});
 }
 
 class X<@T>() given T<U> {
