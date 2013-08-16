@@ -1,0 +1,57 @@
+import ceylon.language.model {
+  ClosedType=Type, UnionType, IntersectionType,
+  Member, Interface, VariableAttribute, Class, ClassOrInterface, Attribute, Method, Value, Function
+}
+import ceylon.language.model.declaration {
+  ClassDeclaration, InterfaceDeclaration, ValueDeclaration, FunctionDeclaration,
+  TypeParameter }
+
+shared class AppliedClass<out Type, in Arguments>() satisfies Class<Type,Arguments>
+    given Type satisfies Object
+    given Arguments satisfies Anything[] {
+
+  shared actual ClassDeclaration declaration { throw Exception("Class declaration"); }
+  shared actual Map<TypeParameter, Type> typeArguments => LazyMap{};
+  shared actual Class<Anything, Nothing>? superclass => null;
+  shared actual Interface<Anything>[] interfaces => {};
+  shared actual Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType* types)
+    given Kind satisfies ClassOrInterface<Anything> => null;
+  shared actual Method<SubType, Type, Arguments>? getMethod<SubType, Type, Arguments>(String name, ClosedType* types)
+    given Arguments satisfies Anything[] => null;
+  shared actual Attribute<SubType, Type>? getAttribute<SubType, Type>(String name) => null;
+  shared actual VariableAttribute<SubType, Type>? getVariableAttribute<SubType, Type>(String name) => null;
+}
+
+shared class AppliedInterface<out Type>() satisfies Interface<Type>
+    given Type satisfies Object {
+  shared actual InterfaceDeclaration declaration { throw Exception("Interface declaration"); }
+  shared actual Map<TypeParameter, Type> typeArguments => LazyMap{};
+  shared actual Class<Anything, Nothing>? superclass => null;
+  shared actual Interface<Anything>[] interfaces => {};
+  shared actual Method<SubType, Type, Arguments>? getMethod<SubType, Type, Arguments>(String name, ClosedType* types)
+    given Arguments satisfies Anything[] => null;
+  shared actual Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType* types)
+    given Kind satisfies ClassOrInterface<Anything> => null;
+  shared actual Attribute<SubType, Type>? getAttribute<SubType, Type>(String name) => null;
+  shared actual VariableAttribute<SubType, Type>? getVariableAttribute<SubType, Type>(String name) => null;
+}
+
+shared class AppliedValue<out Type>() satisfies Value<Type> {
+  shared actual Type get() { throw Exception("Implement get"); }
+  shared actual actual ValueDeclaration declaration {throw Exception("Value.declaration"); }
+  shared actual ClosedType type { throw Exception("Value.type"); }
+}
+
+shared class AppliedFunction<out Type, in Arguments>() satisfies Function<Type,Arguments>
+    given Arguments satisfies Anything[] {
+  shared actual FunctionDeclaration declaration { throw Exception("Function declaration"); }
+  shared actual ClosedType type {throw Exception("Function.type"); }
+}
+
+shared class AppliedUnionType() satisfies UnionType {
+  shared actual List<ClosedType> caseTypes { throw Exception("Implement case types"); }
+}
+
+shared class AppliedIntersectionType() satisfies IntersectionType {
+  shared actual List<ClosedType> satisfiedTypes { throw Exception("Implement satisfied types"); }
+}
