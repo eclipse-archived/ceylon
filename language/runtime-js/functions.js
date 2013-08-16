@@ -240,12 +240,12 @@ function className(obj) {
     }
     return String$(tn);
 }
-className.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['className']};
+className.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','className']};
 
 function identityHash(obj) {
     return obj.BasicID;
 }
-identityHash.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['identityHash']};
+identityHash.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','identityHash']};
 
 function set_type_args(obj, targs) {
     if (obj===undefined)return;

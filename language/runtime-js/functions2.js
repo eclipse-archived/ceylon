@@ -11,7 +11,7 @@ function internalSort(comp, elems, $$$mptypes) {
     });
     return ArraySequence(arr, $$$mptypes);
 }
-internalSort.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['internalSort']};
+internalSort.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','internalSort']};
 
 function flatten(tf, $$$mptypes) {
     var rf = function() {
@@ -50,7 +50,7 @@ function flatten(tf, $$$mptypes) {
     rf.$$targs$$=$$$mptypes;
     return rf;
 }
-flatten.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['flatten']};
+flatten.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','flatten']};
 
 function unflatten(ff, $$$mptypes) {
     if (ff.$$metamodel$$ && ff.$$metamodel$$['$ps']) {
@@ -84,7 +84,7 @@ function unflatten(ff, $$$mptypes) {
     ru.$$targs$$=$$$mptypes;
     return ru;
 }
-unflatten.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['unflatten']};
+unflatten.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','unflatten']};
 exports.flatten=flatten;
 exports.unflatten=unflatten;
 
@@ -114,5 +114,5 @@ function integerRangeByIterable(range, step, $$$mptypes) {
         }
     }, {Element:range.$$targs$$.Element, Absent:range.$$targs$$.Absent});
 }
-integerRangeByIterable.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['integerRangeByIterable']};
+integerRangeByIterable.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','integerRangeByIterable']};
 exports.integerRangeByIterable=integerRangeByIterable;

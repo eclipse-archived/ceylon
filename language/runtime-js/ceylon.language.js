@@ -121,27 +121,29 @@ function Anything(wat) {
     return wat;
 }
 initType(Anything, 'ceylon.language::Anything');
-Anything.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Anything']};
+Anything.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$$METAMODEL$$,d:['ceylon.language','Anything']};
 function Null(wat) {
     return null;
 }
 initType(Null, 'ceylon.language::Null', Anything);
-Null.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Null']};
+Null.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$$METAMODEL$$,d:['ceylon.language','Null']};
 function Nothing(wat) {
     throw "Nothing";
 }
 initType(Nothing, 'ceylon.language::Nothing');
-Nothing.$$metamodel$$={$ps:[],$an:function(){return[shared()]},mod:$$METAMODEL$$,d:{"$mt":"cls","$an":{"shared":[]},"$nm":"Nothing"}};
+//This is quite a special case, since Nothing is not in the model, we need to insert it there
+$$METAMODEL$$['ceylon.language'].Nothing={"$mt":"cls","$an":{"shared":[]},"$nm":"Nothing"};
+Nothing.$$metamodel$$={$ps:[],$an:function(){return[shared()]},mod:$$METAMODEL$$,d:['ceylon.language','Nothing']};
 
 function Object$(wat) {
     return wat;
 }
 initTypeProto(Object$, 'ceylon.language::Object', Anything);
-Object$.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Object']};
+Object$.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$$METAMODEL$$,d:['ceylon.language','Object']};
 var Object$proto = Object$.$$.prototype;
 defineAttr(Object$proto, 'string', function(){
     return String$(className(this) + "@" + this.hash);
-},undefined,{$an:function(){return[shared(),$default()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Object']['$at']['string']});
+},undefined,{$an:function(){return[shared(),$default()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
 Object$proto.toString=function() { return this.string.valueOf(); }
 function $init$Object$() { return Object$; }
 function $init$Object() { return Object$; }
@@ -155,14 +157,14 @@ function $identityHash(x) {
 
 function Identifiable(obj) {}
 initType(Identifiable, "ceylon.language::Identifiable");
-Identifiable.$$metamodel$$={$an:function(){return[shared()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Identifiable']};
+Identifiable.$$metamodel$$={$an:function(){return[shared()]},mod:$$METAMODEL$$,d:['ceylon.language','Identifiable']};
 function $init$Identifiable() { return Identifiable; }
 var Identifiable$proto = Identifiable.$$.prototype;
 Identifiable$proto.equals = function(that) {
     return isOfType(that, {t:Identifiable}) && (that===this);
 }
 defineAttr(Identifiable$proto, 'hash', function(){ return $identityHash(this); },
-    undefined,{$an:function(){return[shared(),$default()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Identifiable']['$at']['hash']});
+    undefined,{$an:function(){return[shared(),$default()]},mod:$$METAMODEL$$,d:['ceylon.language','Identifiable','$at','hash']});
 
 //INTERFACES
 //Compiled from Ceylon sources
@@ -183,7 +185,7 @@ function NativeException(e) {
     return that;
 }
 initTypeProto(NativeException, 'ceylon.language::NativeException', $init$Exception());
-NativeException.$$metamodel$$={$nm:'NativeException',$mt:'cls',$ps:[{t:Exception}],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Exception']};
+NativeException.$$metamodel$$={$nm:'NativeException',$mt:'cls',$ps:[{t:Exception}],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','Exception']};
 exports.Identifiable=Identifiable;
 exports.identityHash=$identityHash;
 exports.Object=Object$;

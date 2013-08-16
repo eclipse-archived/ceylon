@@ -2,7 +2,7 @@ function Number$(wat) {
     return wat;
 }
 initType(Number$, 'ceylon.language::Number');
-Number$.$$metamodel$$={$an:function(){return[shared()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Number']};
+Number$.$$metamodel$$={$an:function(){return[shared()]},mod:$$METAMODEL$$,d:['ceylon.language','Number']};
 exports.Number=Number$;
 function $init$Number$() {
     if (Number$.$$===undefined) {
@@ -17,7 +17,7 @@ var toInt = function(float) {
 
 function JSNumber(value) { return Number(value); }
 initExistingType(JSNumber, Number, 'ceylon.language::JSNumber');
-JSNumber.$$metamodel$$={$nm:'JSNumber',$mt:'cls',$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Number']};
+JSNumber.$$metamodel$$={$nm:'JSNumber',$mt:'cls',$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','Number']};
 
 var origNumToString = Number.prototype.toString;
 inheritProto(JSNumber, Object$, Scalar, $init$Integral(), Exponentiable);
@@ -30,7 +30,7 @@ function Integer(value) {
 }
 initTypeProto(Integer, 'ceylon.language::Integer', Object$, Scalar, 
         $init$Integral(), Exponentiable, Binary);
-Integer.$$metamodel$$={$an:function(){return[shared(),native(),final()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Integer']};
+Integer.$$metamodel$$={$an:function(){return[shared(),native(),final()];},mod:$$METAMODEL$$,d:['ceylon.language','Integer']};
 
 function Float(value) {
     if (value && value.getT$name && value.getT$name() === 'ceylon.language::Float') {
@@ -41,7 +41,7 @@ function Float(value) {
     return that;
 }
 initTypeProto(Float, 'ceylon.language::Float', Object$, Scalar, Exponentiable);
-Float.$$metamodel$$={$an:function(){return[shared(),native(),final()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Float']};
+Float.$$metamodel$$={$an:function(){return[shared(),native(),final()];},mod:$$METAMODEL$$,d:['ceylon.language','Float']};
 
 var JSNum$proto = Number.prototype;
 JSNum$proto.getT$all = function() {
@@ -52,7 +52,7 @@ JSNum$proto.getT$name = function() {
 }
 JSNum$proto.toString = origNumToString;
 defineAttr(JSNum$proto, 'string', function(){ return String$(this.toString()); },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Object']['$at']['string']});
+  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
 JSNum$proto.plus = function(other) {
     return (this.float$||other.float$) ? Float(this+other) : (this+other);
 }
@@ -79,50 +79,50 @@ JSNum$proto.power = function(exp) {
 }
 defineAttr(JSNum$proto, 'negativeValue', function() {
     return this.float$ ? Float(-this) : -this;
-},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Invertable']['$at']['negativeValue']});
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Invertable','$at','negativeValue']});
 defineAttr(JSNum$proto, 'positiveValue', function() {
     return this.float$ ? this : this.valueOf();
-},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Invertable']['$at']['positiveValue']});
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Invertable','$at','positiveValue']});
 JSNum$proto.equals = function(other) { return (typeof(other)==='number' || other.constructor===Number) && other==this.valueOf(); }
 JSNum$proto.compare = function(other) {
     var value = this.valueOf();
     return value==other ? equal : (value<other ? smaller:larger);
 }
 defineAttr(JSNum$proto, '$float', function(){ return Float(this.valueOf()); },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Number']['$at']['float']});
+  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Number','$at','float']});
 defineAttr(JSNum$proto, 'integer', function(){ return toInt(this); },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Number']['$at']['integer']});
+  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Number','$at','integer']});
 defineAttr(JSNum$proto, 'integerValue', function(){ return toInt(this); },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Ordinal']['$at']['integerValue']});
+  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Ordinal','$at','integerValue']});
 defineAttr(JSNum$proto, 'character', function(){ return Character(this.valueOf()); },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Integer']['$at']['character']});
+  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Integer','$at','character']});
 defineAttr(JSNum$proto, 'successor', function(){ return this+1; },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Ordinal']['$at']['successor']});
+  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Ordinal','$at','successor']});
 defineAttr(JSNum$proto, 'predecessor', function(){ return this-1; },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Ordinal']['$at']['predecessor']});
+  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Ordinal','$at','predecessor']});
 defineAttr(JSNum$proto, 'unit', function(){ return this == 1; },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Integral']['$at']['unit']});
+  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Integral','$at','unit']});
 defineAttr(JSNum$proto, 'zero', function(){ return this == 0; },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Integral']['$at']['zero']});
+  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Integral','$at','zero']});
 defineAttr(JSNum$proto, 'fractionalPart', function() {
     if (!this.float$) { return 0; }
     return Float(this - (this>=0 ? Math.floor(this) : Math.ceil(this)));
-},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Number']['$at']['fractionalPart']});
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Number','$at','fractionalPart']});
 defineAttr(JSNum$proto, 'wholePart', function() {
     if (!this.float$) { return this.valueOf(); }
     return Float(this>=0 ? Math.floor(this) : Math.ceil(this));
-},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Number']['$at']['wholePart']});
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Number','$at','wholePart']});
 defineAttr(JSNum$proto, 'sign', function(){ return this > 0 ? 1 : this < 0 ? -1 : 0; },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Number']['$at']['sign']});
+  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Number','$at','sign']});
 defineAttr(JSNum$proto, 'hash', function() {
     return this.float$ ? String$(this.toPrecision()).hash : this.valueOf();
-},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Object']['$at']['hash']});
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','hash']});
 JSNum$proto.distanceFrom = function(other) {
     return (this.float$ ? this.wholePart : this) - other;
 }
 //Binary interface
 defineAttr(JSNum$proto, 'not', function(){ return ~this; },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Binary']['$at']['not']});
+  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Binary','$at','not']});
 JSNum$proto.leftLogicalShift = function(i) { return this << i; }
 JSNum$proto.rightLogicalShift = function(i) { return this >> i; }
 JSNum$proto.rightArithmeticShift = function(i) { return this >>> i; }
@@ -146,9 +146,9 @@ JSNum$proto.clear = function(index) {
     return this.set(index, false);
 }
 defineAttr(JSNum$proto, 'size', function(){ return 53; },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Binary']['$at']['size']});
+  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Binary','$at','size']});
 defineAttr(JSNum$proto, 'magnitude', function(){ return Math.abs(this); },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Number']['$at']['magnitude']});
+  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Number','$at','magnitude']});
 
 //-(2^53-1)
 var $minIntegerValue = Integer(-9007199254740991);
@@ -160,19 +160,19 @@ function getMaxIntegerValue() { return $maxIntegerValue; }
 function $parseFloat(s) { return Float(parseFloat(s)); }
 
 defineAttr(JSNum$proto, 'undefined', function(){ return isNaN(this); },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Float']['$at']['undefined']});
+  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Float','$at','undefined']});
 defineAttr(JSNum$proto, 'finite', function(){ return this!=Infinity && this!=-Infinity && !isNaN(this); },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Float']['$at']['finite']});
+  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Float','$at','finite']});
 defineAttr(JSNum$proto, 'infinite', function(){ return this==Infinity || this==-Infinity; },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Float']['$at']['infinite']});
+  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Float','$at','infinite']});
 defineAttr(JSNum$proto, 'strictlyPositive', function(){ return this>0 || (this==0 && (1/this==Infinity)); },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Float']['$at']['strictlyPositive']});
+  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Float','$at','strictlyPositive']});
 defineAttr(JSNum$proto, 'strictlyNegative', function() { return this<0 || (this==0 && (1/this==-Infinity)); },
-  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Float']['$at']['strictlyNegative']});
+  undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Float','$at','strictlyNegative']});
 
 var $infinity = Float(Infinity);
 function getInfinity() { return $infinity; }
-getInfinity.$$metamodel$$={mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['infinity']};
+getInfinity.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','infinity']};
 //TODO metamodel
 //function getNegativeInfinity() { return Float(-Infinity); }
 

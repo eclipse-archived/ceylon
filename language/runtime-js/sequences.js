@@ -3,7 +3,7 @@ function Array$($$targs$$) {
     List({Element:$$targs$$.Element}, that);
     return that;
 }
-Array$.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract(),native()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Array']};
+Array$.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract(),native()];},mod:$$METAMODEL$$,d:['ceylon.language','Array']};
 
 initExistingType(Array$, Array, 'ceylon.language::Array', Object$,
         Cloneable, Ranged, $init$List());
@@ -131,11 +131,11 @@ Array$proto.copyTo = function(other, srcpos, dstpos, length) {
 Array$proto.shorterThan = function(len) {
   return this.size < len;
 }
-Array$proto.shorterThan.$$metamodel$$={mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Iterable']['$m']['shorterThan']};
+Array$proto.shorterThan.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','Iterable','$m','shorterThan']};
 Array$proto.longerThan = function(len) {
   return this.size > len;
 }
-Array$proto.longerThan.$$metamodel$$={mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Iterable']['$m']['longerThan']};
+Array$proto.longerThan.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','Iterable','$m','longerThan']};
 
 exports.ArrayList=ArrayList;
 exports.array=function(elems, $$$ptypes) {
@@ -149,7 +149,7 @@ exports.array=function(elems, $$$ptypes) {
     e.$$targs$$=$$$ptypes;
     return e;
 }
-exports.array.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['array']};
+exports.array.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','array']};
 
 exports.arrayOfSize=function(size, elem, $$$mptypes) {
     if (size > 0) {
@@ -161,7 +161,7 @@ exports.arrayOfSize=function(size, elem, $$$mptypes) {
         return elems;
     } else return [];
 }
-exports.arrayOfSize.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['arrayOfSize']};
+exports.arrayOfSize.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','arrayOfSize']};
 
 function TypeCategory(seq, type) {
     var that = new TypeCategory.$$;
@@ -181,7 +181,7 @@ function SequenceBuilder($$targs$$) {
     that.$$targs$$=$$targs$$;
     return that;
 }
-SequenceBuilder.$$metamodel$$={$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['SequenceBuilder']};
+SequenceBuilder.$$metamodel$$={$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','SequenceBuilder']};
 
 initTypeProto(SequenceBuilder, 'ceylon.language::SequenceBuilder', $init$Basic());
 var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
@@ -205,7 +205,7 @@ function SequenceAppender(other, $$targs$$) {
     that.appendAll(other);
     return that;
 }
-SequenceAppender.$$metamodel$$={$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['SequenceAppender']};
+SequenceAppender.$$metamodel$$={$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','SequenceAppender']};
 
 initTypeProto(SequenceAppender, 'ceylon.language::SequenceAppender', SequenceBuilder);
 
