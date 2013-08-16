@@ -32,16 +32,11 @@ public class FreeInterface
         // TODO Auto-generated method stub
         return null;
     }
-    @Ignore
-    @Override
-    public Sequential<? extends ceylon.language.model.Type<?>> apply$types(){
-        return (Sequential) empty_.$get();
-    }
 
     @Ignore
     @Override
     public ceylon.language.model.Interface<? extends Object> apply(){
-        return apply(apply$types());
+        return apply((Sequential)empty_.$get());
     }
 
     @Override
@@ -51,17 +46,11 @@ public class FreeInterface
             Sequential<? extends ceylon.language.model.Type<?>> types){
         return bindAndApply(null, types);
     }
-    
-    @Ignore
-    @Override
-    public Sequential<? extends ceylon.language.model.Type<?>> bindAndApply$types(Object instance){
-        return (Sequential) empty_.$get();
-    }
 
     @Ignore
     @Override
     public ceylon.language.model.Interface<? extends Object> bindAndApply(Object instance){
-        return bindAndApply(instance, bindAndApply$types(instance));
+        return bindAndApply(instance, (Sequential)empty_.$get());
     }
 
     @Override

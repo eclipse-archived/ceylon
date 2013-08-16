@@ -130,14 +130,8 @@ public class FreeFunction
 
     @Ignore
     @Override
-    public Sequential<? extends ceylon.language.model.Type<?>> apply$types(){
-        return (Sequential) empty_.$get();
-    }
-
-    @Ignore
-    @Override
     public ceylon.language.model.Function<? extends Object, ? super Sequential<? extends Object>> apply(){
-        return apply(apply$types());
+        return apply((Sequential)empty_.$get());
     }
 
     @Override
@@ -148,14 +142,8 @@ public class FreeFunction
 
     @Ignore
     @Override
-    public Sequential<? extends ceylon.language.model.Type<?>> bindAndApply$types(Object instance){
-        return (Sequential) empty_.$get();
-    }
-
-    @Ignore
-    @Override
     public ceylon.language.model.Function<? extends Object, ? super Sequential<? extends Object>> bindAndApply(Object instance){
-        return bindAndApply(instance, bindAndApply$types(instance));
+        return bindAndApply(instance, (Sequential)empty_.$get());
     }
 
     @Override
@@ -174,16 +162,6 @@ public class FreeFunction
     @Ignore
     @Override
     public <Container, Type, Arguments extends Sequential<? extends Object>>
-        Sequential<? extends ceylon.language.model.Type<?>> memberApply$types(TypeDescriptor $reifiedContainer,
-                                                                               TypeDescriptor $reifiedType,
-                                                                               TypeDescriptor $reifiedArguments){
-        
-        return (Sequential) empty_.$get();
-    }
-
-    @Ignore
-    @Override
-    public <Container, Type, Arguments extends Sequential<? extends Object>>
         ceylon.language.model.Method<Container, Type, Arguments> memberApply(TypeDescriptor $reifiedContainer,
                                                                                  TypeDescriptor $reifiedType,
                                                                                  TypeDescriptor $reifiedArguments){
@@ -191,7 +169,7 @@ public class FreeFunction
         return this.<Container, Type, Arguments>memberApply($reifiedContainer,
                                                             $reifiedType,
                                                             $reifiedArguments,
-                                                            this.<Container, Type, Arguments>memberApply$types($reifiedContainer, $reifiedType, $reifiedArguments));
+                                                            (Sequential)empty_.$get());
     }
 
     @Override

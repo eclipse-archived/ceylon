@@ -232,22 +232,12 @@ public abstract class FreeClassOrInterface
     @Override
     public <Container, 
             Kind extends ceylon.language.model.ClassOrInterface<? extends Object>>
-        Sequential<? extends ceylon.language.model.Type<?>> memberApply$types(TypeDescriptor $reifiedContainer,
-                                                                                      TypeDescriptor $reifiedKind){
-        
-        return (Sequential) empty_.$get();
-    }
-
-    @Ignore
-    @Override
-    public <Container, 
-            Kind extends ceylon.language.model.ClassOrInterface<? extends Object>>
         ceylon.language.model.Member<Container, Kind> memberApply(TypeDescriptor $reifiedContainer,
                                                                       TypeDescriptor $reifiedKind){
         
         return this.<Container, Kind>memberApply($reifiedContainer,
                                                  $reifiedKind,
-                                                 this.<Container, Kind>memberApply$types($reifiedContainer, $reifiedKind));
+                                                 (Sequential)empty_.$get());
     }
 
     @TypeInfo("ceylon.language.model::Member<Container,Kind>")

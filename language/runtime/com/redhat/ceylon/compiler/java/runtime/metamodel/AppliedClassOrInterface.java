@@ -154,22 +154,13 @@ public class AppliedClassOrInterface<Type>
 
     @Ignore
     @Override
-    public Sequential<? extends ceylon.language.model.Type<?>> getMethod$types(@Ignore TypeDescriptor $reifiedSubType, 
-                                                                                @Ignore TypeDescriptor $reifiedType, 
-                                                                                @Ignore TypeDescriptor $reifiedArguments, 
-                                                                                String name){
-        return (Sequential) empty_.$get();
-    }
-
-    @Ignore
-    @Override
     public <SubType, Type, Arguments extends Sequential<? extends Object>>
     ceylon.language.model.Method<SubType, Type, Arguments> getMethod(@Ignore TypeDescriptor $reifiedSubType, 
                                                                          @Ignore TypeDescriptor $reifiedType, 
                                                                          @Ignore TypeDescriptor $reifiedArguments, 
                                                                          String name){
         
-        return getMethod($reifiedSubType, $reifiedType, $reifiedArguments, name, getMethod$types($reifiedSubType, $reifiedType, $reifiedArguments, name));
+        return getMethod($reifiedSubType, $reifiedType, $reifiedArguments, name, (Sequential)empty_.$get());
     }
 
     @Override
@@ -195,20 +186,12 @@ public class AppliedClassOrInterface<Type>
 
     @Ignore
     @Override
-    public Sequential<? extends ceylon.language.model.Type<?>> getClassOrInterface$types(@Ignore TypeDescriptor $reifiedSubType, 
-                                                                                                 @Ignore TypeDescriptor $reifiedKind, 
-                                                                                                 String name){
-        return (Sequential) empty_.$get();
-    }
-
-    @Ignore
-    @Override
     public <SubType, Kind extends ceylon.language.model.ClassOrInterface<? extends java.lang.Object>>
         ceylon.language.model.Member<SubType, Kind> getClassOrInterface(@Ignore TypeDescriptor $reifiedSubType, 
                                                                             @Ignore TypeDescriptor $reifiedKind, 
                                                                             String name){
         
-        return getClassOrInterface($reifiedSubType, $reifiedKind, name, getClassOrInterface$types($reifiedSubType, $reifiedKind, name));
+        return getClassOrInterface($reifiedSubType, $reifiedKind, name, (Sequential)empty_.$get());
     }
 
     @Override
