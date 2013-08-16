@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import ceylon.language.Sequential;
+import ceylon.language.empty_;
 import ceylon.language.model.Attribute$impl;
 import ceylon.language.model.ValueModel$impl;
 import ceylon.language.model.Model$impl;
@@ -99,5 +101,64 @@ public class AppliedAttribute<Container, Type>
         return decl.isVariable()
                 ? new AppliedVariableAttribute($reifiedSubType, reifiedValueType, value, valueTypedReference, container)
                 : new AppliedAttribute($reifiedSubType, reifiedValueType, value, valueTypedReference, container);
+    }
+    
+    @Override
+    @Ignore
+    public Value<? extends Type> $call$variadic() {
+        return $call$variadic(empty_.$get());
+    }
+    
+    @Override
+    @Ignore
+    public Value<? extends Type> $call$variadic(
+            Sequential<?> varargs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Ignore
+    public Value<? extends Type> $call$variadic(
+            Object arg0, Sequential<?> varargs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Ignore
+    public Value<? extends Type> $call$variadic(
+            Object arg0, Object arg1, Sequential<?> varargs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Ignore
+    public Value<? extends Type> $call$variadic(
+            Object arg0, Object arg1, Object arg2, Sequential<?> varargs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Ignore
+    public Value<? extends Type> $call$variadic(Object... argsAndVarargs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Ignore
+    public Value<? extends Type> $call$variadic(Object arg0) {
+        return $call$variadic(arg0, empty_.$get());
+    }
+
+    @Override
+    @Ignore
+    public Value<? extends Type> $call$variadic(Object arg0, Object arg1) {
+        return $call$variadic(arg0, arg1, empty_.$get());
+    }
+
+    @Override
+    @Ignore
+    public Value<? extends Type> $call$variadic(Object arg0, Object arg1,
+            Object arg2) {
+        return $call$variadic(arg0, arg1, arg2, empty_.$get());
     }
 }

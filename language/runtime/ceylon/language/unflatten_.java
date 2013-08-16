@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
@@ -26,7 +27,7 @@ public final class unflatten_ {
         @TypeInfo("ceylon.language::Callable<Return,Args>")
         final Callable<? extends Return> flatFunction) {
         
-        return new Callable<Return>() {
+        return new AbstractCallable<Return>($reifiedReturn, $reifiedArgs, null, (short)-1) {
 
 			@Override
 			public Return $call() {
@@ -125,13 +126,12 @@ public final class unflatten_ {
 			public Return $call(java.lang.Object... args) {
 				throw new UnsupportedOperationException();
 			}
+			
 
-            @Override
-            public short $getVariadicParameterIndex() {
-                return -1;
+            
+            public java.lang.String toString() {
+                return $getType().toString();
             }
-        	
-		};    
+        };
     }
-        
 }

@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import ceylon.language.Sequential;
+import ceylon.language.empty_;
 import ceylon.language.model.ClassOrInterface;
 import ceylon.language.model.Interface;
 import ceylon.language.model.InterfaceModel$impl;
@@ -99,5 +101,64 @@ public class AppliedMemberInterface<Container, Type>
     @Ignore
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(AppliedMemberInterface.class, $reifiedContainer, $reifiedType);
+    }
+
+    @Override
+    @Ignore
+    public Interface<? extends Type> $call$variadic() {
+        return $call$variadic(empty_.$get());
+    }
+    
+    @Override
+    @Ignore
+    public Interface<? extends Type> $call$variadic(
+            Sequential<?> varargs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Ignore
+    public Interface<? extends Type> $call$variadic(
+            Object arg0, Sequential<?> varargs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Ignore
+    public Interface<? extends Type> $call$variadic(
+            Object arg0, Object arg1, Sequential<?> varargs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Ignore
+    public Interface<? extends Type> $call$variadic(
+            Object arg0, Object arg1, Object arg2, Sequential<?> varargs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Ignore
+    public Interface<? extends Type> $call$variadic(Object... argsAndVarargs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Ignore
+    public Interface<? extends Type> $call$variadic(Object arg0) {
+        return $call$variadic(arg0, empty_.$get());
+    }
+
+    @Override
+    @Ignore
+    public Interface<? extends Type> $call$variadic(Object arg0, Object arg1) {
+        return $call$variadic(arg0, arg1, empty_.$get());
+    }
+
+    @Override
+    @Ignore
+    public Interface<? extends Type> $call$variadic(Object arg0, Object arg1,
+            Object arg2) {
+        return $call$variadic(arg0, arg1, arg2, empty_.$get());
     }
 }

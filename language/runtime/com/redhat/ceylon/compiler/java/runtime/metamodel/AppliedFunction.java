@@ -10,9 +10,10 @@ import java.util.List;
 import java.util.Map;
 
 import ceylon.language.Sequential;
-import ceylon.language.model.Model$impl;
-import ceylon.language.model.FunctionModel$impl;
+import ceylon.language.empty_;
 import ceylon.language.model.Function$impl;
+import ceylon.language.model.FunctionModel$impl;
+import ceylon.language.model.Model$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -290,5 +291,62 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     @Override
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(AppliedFunction.class, $reifiedType, $reifiedArguments);
+    }
+
+    @Override
+    @Ignore
+    public Type $call$variadic() {
+        return $call$variadic(empty_.$get());
+    }
+    
+    @Override
+    @Ignore
+    public Type $call$variadic(Sequential<?> varargs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Ignore
+    public Type $call$variadic(Object arg0,
+            Sequential<?> varargs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Ignore
+    public Type $call$variadic(Object arg0,
+            Object arg1, Sequential<?> varargs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Ignore
+    public Type $call$variadic(Object arg0,
+            Object arg1, Object arg2, Sequential<?> varargs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Ignore
+    public Type $call$variadic(Object... argsAndVarargs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Ignore
+    public Type $call$variadic(Object arg0) {
+        return $call$variadic(arg0, empty_.$get());
+    }
+
+    @Override
+    @Ignore
+    public Type $call$variadic(Object arg0, Object arg1) {
+        return $call$variadic(arg0, arg1, empty_.$get());
+    }
+
+    @Override
+    @Ignore
+    public Type $call$variadic(Object arg0, Object arg1, Object arg2) {
+        return $call$variadic(arg0, arg1, arg2, empty_.$get());
     }
 }

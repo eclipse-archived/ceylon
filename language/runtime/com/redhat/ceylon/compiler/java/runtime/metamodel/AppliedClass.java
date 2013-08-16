@@ -9,6 +9,7 @@ import java.util.List;
 
 import ceylon.language.Callable;
 import ceylon.language.Sequential;
+import ceylon.language.empty_;
 import ceylon.language.model.Class$impl;
 import ceylon.language.model.ClassModel$impl;
 
@@ -299,6 +300,46 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             throw new RuntimeException("Failed to invoke constructor for "+declaration.getName(), e);
         }
     }
+    
+    @Override
+    @Ignore
+    public Type $call$variadic() {
+        return $call$variadic(empty_.$get());
+    }
+
+    @Override
+    @Ignore
+    public Type $call$variadic(
+            Sequential<?> varargs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Ignore
+    public Type $call$variadic(
+            Object arg0, Sequential<?> varargs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Ignore
+    public Type $call$variadic(
+            Object arg0, Object arg1, Sequential<?> varargs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Ignore
+    public Type $call$variadic(
+            Object arg0, Object arg1, Object arg2, Sequential<?> varargs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Ignore
+    public Type $call$variadic(Object... argsAndVarargs) {
+        throw new UnsupportedOperationException();
+    }
 
     @Ignore
     @Override
@@ -312,4 +353,23 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(AppliedClass.class, $reifiedType, $reifiedArguments);
     }
+
+    @Override
+    @Ignore
+    public Type $call$variadic(Object arg0) {
+        return $call$variadic(arg0, empty_.$get());
+    }
+
+    @Override
+    @Ignore
+    public Type $call$variadic(Object arg0, Object arg1) {
+        return $call$variadic(arg0, arg1, empty_.$get());
+    }
+
+    @Override
+    @Ignore
+    public Type $call$variadic(Object arg0, Object arg1, Object arg2) {
+        return $call$variadic(arg0, arg1, arg2, empty_.$get());
+    }
+
 }

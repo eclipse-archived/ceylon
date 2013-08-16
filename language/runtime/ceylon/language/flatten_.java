@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
@@ -25,7 +26,8 @@ public final class flatten_ {
         @TypeInfo("ceylon.language::Callable<Return,ceylon.language::Tuple<Args,Args,ceylon.language::Empty>>")
         final Callable<? extends Return> tupleFunction) {
         
-        return new Callable<Return>() {
+        return new AbstractCallable<Return>($reifiedReturn, $reifiedArgs, 
+                null, (short)-1) {
 
 			@Override
 			public Return $call() {
@@ -64,13 +66,11 @@ public final class flatten_ {
 				}
 				return tupleFunction.$call(t);
 			}
-
-            @Override
-            public short $getVariadicParameterIndex() {
-                return -1;
+            
+            public java.lang.String toString() {
+                return $getType().toString();
             }
-        	
-		};    
-    }
         
+        };
+    }
 }
