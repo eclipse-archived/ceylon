@@ -1,8 +1,8 @@
-class X<T<U>>() {
+class X<@T>() given T<U> {
     shared T<String> f(T<Integer> t) => nothing;
 }
 
-T<String> getF<T<U>>(X<@T> x, T<Integer> t) {
+T<String> getF<@T>(X<@T> x, T<Integer> t) given T<U> {
     return x.f(t);
 }
 
