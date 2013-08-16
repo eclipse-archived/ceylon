@@ -206,7 +206,7 @@ abstract class Invocation {
             }
         } else if (getPrimary() instanceof Tree.QualifiedTypeExpression) {
         } else {
-            if (this instanceof IndirectInvocationBuilder
+            if (this instanceof IndirectInvocation
                     && getPrimaryDeclaration() != null
                     && (Decl.isGetter(getPrimaryDeclaration())
                             || Decl.isToplevel(getPrimaryDeclaration())
@@ -220,7 +220,7 @@ abstract class Invocation {
             } else if ((getPrimaryDeclaration() instanceof Method
                     && ((Method)getPrimaryDeclaration()).isParameter()
                         && !Strategy.createMethod((Method)getPrimaryDeclaration()))
-                    || (this instanceof IndirectInvocationBuilder)) {
+                    || (this instanceof IndirectInvocation)) {
                 if (selector != null) {
                     actualPrimExpr = gen.naming.makeQualIdent(primaryExpr, selector);
                 } else {
@@ -247,7 +247,7 @@ abstract class Invocation {
     }
 
     boolean isMemberRefInvocation() {
-        return this instanceof IndirectInvocationBuilder
+        return this instanceof IndirectInvocation
                 && getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression
                 && (getQmePrimary() instanceof Tree.BaseTypeExpression
                   || getQmePrimary() instanceof Tree.QualifiedTypeExpression);
@@ -332,7 +332,7 @@ abstract class SimpleInvocation extends Invocation {
  * Generates calls to Callable methods. This is for regular {@code Callable<T>} objects and not
  * functional parameters, which have more info like parameter names and default values.
  */
-class IndirectInvocationBuilder extends SimpleInvocation {
+class IndirectInvocation extends SimpleInvocation {
 
     private final java.util.List<ProducedType> parameterTypes;
     private final java.util.List<Tree.Expression> argumentExpressions;
@@ -341,7 +341,7 @@ class IndirectInvocationBuilder extends SimpleInvocation {
     private final boolean spread;
     private final int minimumParameters;
 
-    public IndirectInvocationBuilder(
+    public IndirectInvocation(
             AbstractTransformer gen, 
             Tree.Term primary,
             Declaration primaryDeclaration,
