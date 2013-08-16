@@ -1214,7 +1214,11 @@ public class ProducedType extends ProducedReference {
                             return sub;
                         }
                         else {
-                            return sub.getDeclaration().getProducedType(null, pt.getTypeArgumentList());
+                            List<ProducedType> sta = new ArrayList<ProducedType>();
+                            for (ProducedType ta: pt.getTypeArgumentList()) {
+                                sta.add(ta.substitute(substitutions));
+                            }
+                            return sub.getDeclaration().getProducedType(null, sta);
                         }
                     }
                 }
