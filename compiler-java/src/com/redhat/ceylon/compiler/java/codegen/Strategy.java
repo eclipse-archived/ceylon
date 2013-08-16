@@ -144,6 +144,19 @@ class Strategy {
                 && !Decl.withinInterface(decl);
     }
     
+    public static boolean hasDefaultParameterValueMethod(Parameter param) {
+        return param.isDefaulted();
+    }
+    
+    public static boolean hasDefaultParameterOverload(Parameter param) {
+        return param.isDefaulted() || 
+                (param.isSequenced() && !param.isAtLeastOne());
+    }
+    
+    public static boolean hasEmptyDefaultArgument(Parameter param) {
+        return (param.isSequenced() && !param.isAtLeastOne());
+    }
+    
     /**
      * Determines whether the given Class def should have a {@code main()} method generated.
      * I.e. it's a concrete top level Class without initializer parameters

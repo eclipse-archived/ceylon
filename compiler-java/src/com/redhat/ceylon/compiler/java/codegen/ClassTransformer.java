@@ -667,12 +667,12 @@ public class ClassTransformer extends AbstractTransformer {
             makeAttributeForValueParameter(classBuilder, param, annotations);
             makeMethodForFunctionalParameter(classBuilder, def, param, annotations);
             
-            if (paramModel.isDefaulted()
-                    || (paramModel.isSequenced() && !paramModel.isAtLeastOne())
+            if (Strategy.hasDefaultParameterValueMethod(paramModel)
+                    || Strategy.hasDefaultParameterOverload(paramModel)
                     || (generateInstantiator
                             && refinedParam != null
-                            && (refinedParam.isDefaulted()
-                                    || refinedParam.isSequenced() && !refinedParam.isAtLeastOne()))) {
+                            && (Strategy.hasDefaultParameterValueMethod(refinedParam)
+                                    || Strategy.hasDefaultParameterOverload(refinedParam)))) {
                 ClassDefinitionBuilder cbForDevaultValues;
                 ClassDefinitionBuilder cbForDevaultValuesDecls = null;
                 switch (Strategy.defaultParameterMethodOwner(model)) {
@@ -689,8 +689,9 @@ public class ClassTransformer extends AbstractTransformer {
                 default:
                     cbForDevaultValues = classBuilder.getCompanionBuilder(model);
                 }
-                if ((paramModel.isDefaulted() || (refinedParam != null && refinedParam.isDefaulted())) && 
-                        !(generateInstantiator && refinedParam != paramModel)) {
+                if ((Strategy.hasDefaultParameterValueMethod(paramModel) 
+                            || (refinedParam != null && Strategy.hasDefaultParameterValueMethod(refinedParam))) 
+                        && !(generateInstantiator && refinedParam != paramModel)) {
                     cbForDevaultValues.method(makeParamDefaultValueMethod(false, def.getDeclarationModel(), paramList, param, typeParameterList));
                     if (cbForDevaultValuesDecls != null) {
                         cbForDevaultValuesDecls.method(makeParamDefaultValueMethod(true, def.getDeclarationModel(), paramList, param, typeParameterList));
@@ -957,7 +958,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (!satisfiedInterfaces.contains((Interface)method.getContainer())) {
                     
                     for (Parameter param : parameters) {
-                        if (param.isDefaulted()) {
+                        if (Strategy.hasDefaultParameterValueMethod(param)) {
                             final ProducedTypedReference typedParameter = refinedTypedMember.getTypedParameter(param);
                             // If that method has a defaulted parameter, 
                             // we need to generate a default value method
@@ -974,7 +975,7 @@ public class ClassTransformer extends AbstractTransformer {
                             classBuilder.method(defaultValueDelegate);
                         }
                         
-                        if (param.isDefaulted() || (param.isSequenced() && !param.isAtLeastOne())) {
+                        if (Strategy.hasDefaultParameterOverload(param)) {
                             if ((method.isDefault() || method.isShared() && !method.isFormal())
                                     && (method == subMethod)) {
                                 MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, subMethod);
@@ -1084,7 +1085,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         String instantiatorMethodName = naming.getInstantiatorMethodName(klass);
         for (Parameter param : parameters) {
-            if (param.isDefaulted()) {
+            if (Strategy.hasDefaultParameterValueMethod(param)) {
                 final ProducedTypedReference typedParameter = typeMember.getTypedParameter(param);
                 // If that method has a defaulted parameter, 
                 // we need to generate a default value method
@@ -1100,7 +1101,7 @@ public class ClassTransformer extends AbstractTransformer {
                         null);
                 classBuilder.method(defaultValueDelegate);
             }
-            if (param.isDefaulted() || (param.isSequenced() && !param.isAtLeastOne())) {
+            if (Strategy.hasDefaultParameterOverload(param)) {
                 final MethodDefinitionBuilder overload = makeDelegateToCompanion(iface,
                         typeMember,
                         PUBLIC | FINAL, 
@@ -2010,8 +2011,8 @@ public class ClassTransformer extends AbstractTransformer {
             
             methodBuilder.parameter(parameterModel, annotations, needsRaw ? JT_RAW_TP_BOUND : 0, true);
 
-            if (parameterModel.isDefaulted()
-                    || (parameterModel.isSequenced() && !parameterModel.isAtLeastOne())) {
+            if (Strategy.hasDefaultParameterValueMethod(parameterModel)
+                    || Strategy.hasDefaultParameterOverload(parameterModel)) {
                 if (refinedDeclaration == methodModel
                         || (!Decl.withinInterface(methodModel) && body != null)) {
                     
@@ -2028,7 +2029,7 @@ public class ClassTransformer extends AbstractTransformer {
                     }
                     
                     if (refinedDeclaration == methodModel
-                            && parameterModel.isDefaulted()) {
+                            && Strategy.hasDefaultParameterValueMethod(parameterModel)) {
                         lb.append(makeParamDefaultValueMethod(defaultValuesBody, methodModel, parameterList, parameter, typeParameterList));
                     }
                 }
@@ -2390,7 +2391,7 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 if (useDefault) {
                     JCExpression defaultArgument;
-                    if (parameterModel.isDefaulted()) {
+                    if (Strategy.hasDefaultParameterValueMethod(parameterModel)) {
                         if (!initedVars) {
                             // Only call init vars if we actually invoke a defaulted param method
                             overloaded.initVars(currentParameter, vars);
@@ -2400,8 +2401,7 @@ public class ClassTransformer extends AbstractTransformer {
                         defaultArgument = make().Apply(makeTypeArguments(overloaded), 
                                 defaultValueMethodName, 
                                 ListBuffer.<JCExpression>lb().appendList(args).toList());
-                    } else if (parameterModel.isSequenced()
-                            && !parameterModel.isAtLeastOne()) {
+                    } else if (Strategy.hasEmptyDefaultArgument(parameterModel)) {
                         defaultArgument = makeEmptyAsSequential(true);
                     } else {
                         defaultArgument = makeErroneous(null, "Unsupported default argument");
@@ -3022,7 +3022,7 @@ public class ClassTransformer extends AbstractTransformer {
             Tree.ParameterList params, Tree.Parameter currentParam, TypeParameterList typeParameterList) {
         at(currentParam);
         Parameter parameter = currentParam.getParameterModel();
-        Assert.that(parameter.isDefaulted());
+        Assert.that(Strategy.hasDefaultParameterValueMethod(parameter));
         String name = Naming.getDefaultedParamMethodName(container, parameter );
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.systemMethod(this, name);
         methodBuilder.ignoreModelAnnotations();

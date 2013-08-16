@@ -103,7 +103,7 @@ public class CallableBuilder {
         this.numParams = paramLists.getParameters().size();
         this.minimumParams = 0;
         for(Parameter p : paramLists.getParameters()){
-            if(p.isDefaulted() || (p.isSequenced() && !p.isAtLeastOne()))
+            if(Strategy.hasDefaultParameterOverload(p))
                 break;
             this.minimumParams++;
         }
@@ -483,6 +483,7 @@ public class CallableBuilder {
         // read the value
         JCExpression paramExpression = getTypedParameter(param, a, i>3);
         JCExpression varInitialExpression;
+        // TODO Suspicious
         if(param.isDefaulted() || param.isSequenced()){
             if(i > 3){
                 // must check if it's defined
@@ -556,7 +557,7 @@ public class CallableBuilder {
 
     private JCExpression makeDefaultValueCall(Parameter defaultedParam, int i, 
             Tree.Term forwardCallTo){
-        if (defaultedParam.isDefaulted()) {
+        if (Strategy.hasDefaultParameterValueMethod(defaultedParam)) {
             // add the default value
             List<JCExpression> defaultMethodArgs = List.nil();
             // pass all the previous values
@@ -567,7 +568,7 @@ public class CallableBuilder {
             }
             // now call the default value method
             return defaultValueCall.makeDefaultValueMethod(gen, defaultedParam, forwardCallTo, defaultMethodArgs);
-        } else if (defaultedParam.isSequenced() && !defaultedParam.isAtLeastOne()) {
+        } else if (Strategy.hasEmptyDefaultArgument(defaultedParam)) {
             return gen.makeEmptyAsSequential(true);
         } else {
             return gen.makeErroneous(forwardCallTo, "Not a defaulted parameter");

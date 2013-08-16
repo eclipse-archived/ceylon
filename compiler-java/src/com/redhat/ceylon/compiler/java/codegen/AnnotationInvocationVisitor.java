@@ -224,7 +224,7 @@ class AnnotationInvocationVisitor extends Visitor {
                 }
             }
             
-            if (classParameter.isSequenced()) {
+            if (Strategy.hasEmptyDefaultArgument(classParameter)) {
                 appendArgument(args, classParameter, 
                         exprGen.make().NewArray(null,  null, com.sun.tools.javac.util.List.<JCExpression>nil()));
                 unbound.remove(classParameter);

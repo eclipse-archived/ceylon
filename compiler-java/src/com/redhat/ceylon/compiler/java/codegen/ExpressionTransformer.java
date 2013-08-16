@@ -2072,8 +2072,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression expr;
         at(param);
         
-        Tree.SpecifierOrInitializerExpression spec = Decl.getDefaultArgument(param);
-        if (spec != null) {
+        if (Strategy.hasDefaultParameterValueMethod(param.getParameterModel())) {
+            Tree.SpecifierOrInitializerExpression spec = Decl.getDefaultArgument(param);
             if (param instanceof FunctionalParameterDeclaration) {
                 Tree.FunctionalParameterDeclaration fpTree = (FunctionalParameterDeclaration) param;
                 Tree.SpecifierExpression lazy = (Tree.SpecifierExpression)spec;
@@ -2089,10 +2089,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                         CodegenUtil.getBoxingStrategy(param.getParameterModel().getModel()), 
                         param.getParameterModel().getType());
             }
-        } else if (param.getParameterModel().isSequenced()) {
-            expr = makeEmptyAsSequential(true);
         } else {
-            expr = makeErroneous(param, "No default and not sequenced");
+            expr = makeErroneous(param, "No defaulted");
         }
         //needDollarThis = false;
         return expr;

@@ -1235,7 +1235,7 @@ class NamedArgumentInvocation extends Invocation {
                     continue;
                 }
                 final JCExpression argExpr;
-                if (param.isDefaulted()) {
+                if (Strategy.hasDefaultParameterValueMethod(param)) {
                     // special handling for "element" optional param of java array constructors
                     if(getPrimaryDeclaration() instanceof Class
                             && gen.isJavaArray(((Class)getPrimaryDeclaration()).getType())){
@@ -1263,7 +1263,7 @@ class NamedArgumentInvocation extends Invocation {
                         argExpr = makeDefaultedArgumentMethodCall(param);
                         hasDefaulted |= true;
                     }
-                } else if (param.isSequenced() && !param.isAtLeastOne()) {
+                } else if (Strategy.hasEmptyDefaultArgument(param)) {
                     argExpr = gen.makeEmptyAsSequential(true);
                 } else if(gen.typeFact().isIterableType(param.getType())){
                     // must be an iterable we need to fill with empty

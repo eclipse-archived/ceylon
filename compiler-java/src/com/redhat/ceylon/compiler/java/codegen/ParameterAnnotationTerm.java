@@ -98,7 +98,7 @@ public class ParameterAnnotationTerm extends AnnotationTerm implements Annotatio
                     defaultArgument = p.getDefaultArgument();
                     if (defaultArgument != null) {
                         return defaultArgument.makeAnnotationArgumentValue(exprGen, ai, com.sun.tools.javac.util.List.<AnnotationFieldName>of(this));
-                    } else if (p.getParameter().isSequenced()) {
+                    } else if (Strategy.hasEmptyDefaultArgument(p.getParameter())) {
                         return exprGen.make().NewArray(null, null, com.sun.tools.javac.util.List.<JCExpression>nil());
                     }
                 }
