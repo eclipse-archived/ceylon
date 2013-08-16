@@ -11,7 +11,7 @@ shared class AppliedClass<out Type, in Arguments>() satisfies Class<Type,Argumen
     given Arguments satisfies Anything[] {
 
   shared actual ClassDeclaration declaration { throw Exception("Class declaration"); }
-  shared actual Map<TypeParameter, Type> typeArguments => LazyMap{};
+  shared actual Map<TypeParameter, ClosedType> typeArguments => LazyMap{};
   shared actual Class<Anything, Nothing>? superclass => null;
   shared actual Interface<Anything>[] interfaces => {};
   shared actual Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType* types)
@@ -25,7 +25,7 @@ shared class AppliedClass<out Type, in Arguments>() satisfies Class<Type,Argumen
 shared class AppliedInterface<out Type>() satisfies Interface<Type>
     given Type satisfies Object {
   shared actual InterfaceDeclaration declaration { throw Exception("Interface declaration"); }
-  shared actual Map<TypeParameter, Type> typeArguments => LazyMap{};
+  shared actual Map<TypeParameter, ClosedType> typeArguments => LazyMap{};
   shared actual Class<Anything, Nothing>? superclass => null;
   shared actual Interface<Anything>[] interfaces => {};
   shared actual Method<SubType, Type, Arguments>? getMethod<SubType, Type, Arguments>(String name, ClosedType* types)
