@@ -25,3 +25,10 @@ class SequencedParameterClassInstantiation(Integer a, Integer* args){
         SequencedParameterClassInstantiation c = SequencedParameterClassInstantiation(1, 2, 3);
     }
 }
+@noanno
+class SequencedParameterClassInstantiationNonempty(Integer a, Integer+ args){
+    shared void m() {
+        SequencedParameterClassInstantiationNonempty b = SequencedParameterClassInstantiationNonempty(1, 2);
+        SequencedParameterClassInstantiationNonempty c = SequencedParameterClassInstantiationNonempty(1, 2, 3);
+    }
+}

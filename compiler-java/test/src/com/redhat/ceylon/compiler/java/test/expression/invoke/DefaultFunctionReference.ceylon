@@ -24,8 +24,12 @@ void defaultFunctionReference(void f(Object o)=>print(o)) {
 void defaultFunctionReference2(String s="hi", void f(Object* o) => print(s + o.string)) {
     f(1);
 }
+void defaultFunctionReference3(String s="hi", void f(Object+ o) => print(s + o.string)) {
+    f(1);
+}
 @noanno
 void defaultFunctionReference_call() {
     defaultFunctionReference();
     defaultFunctionReference2();
+    defaultFunctionReference3();
 }

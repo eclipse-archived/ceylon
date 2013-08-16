@@ -21,9 +21,16 @@
 void callableArgumentSequenced_f(void foo(String* s)) {
 }
 @noanno
+void callableArgumentSequenced_fnonempty(void foo(String+ s)) {
+}
+@noanno
 void callableArgumentSequenced_g(String* s) {
+}
+@noanno
+void callableArgumentSequenced_gnonempty(String+ s) {
 }
 @noanno
 void callableArgumentSequenced_m() {
     callableArgumentSequenced_f(callableArgumentSequenced_g);
+    callableArgumentSequenced_fnonempty(callableArgumentSequenced_gnonempty);
 }

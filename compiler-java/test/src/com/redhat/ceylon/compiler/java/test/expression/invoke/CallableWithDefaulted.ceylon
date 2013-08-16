@@ -32,6 +32,17 @@ void callableWithDefaulted() {
     defaultedVariadic(1, "a", 3, for (i in ints) i);
     defaultedVariadic(1, "a", 3, 4, for (i in ints) i);
     
+    Callable<Anything, [String, Integer+]> defaultedNonemptyVariadic = function (String b, Integer+ args) => b;
+    
+    defaultedNonemptyVariadic("a", 1);
+    defaultedNonemptyVariadic("a", 1, 2);
+    defaultedNonemptyVariadic("a", *ints);
+    defaultedNonemptyVariadic("a", 3, *ints);
+    defaultedNonemptyVariadic("a", 3, 4, *ints);
+    defaultedNonemptyVariadic("a", for (i in ints) i);
+    defaultedNonemptyVariadic("a", 3, for (i in ints) i);
+    defaultedNonemptyVariadic("a", 3, 4, for (i in ints) i);
+    
     Callable<Anything, [Integer, String]> notDefaulted = function (Integer goto, String b) => goto;
     notDefaulted(1, "a");
 
@@ -49,6 +60,7 @@ void callableWithDefaulted() {
     Callable<Anything, [Integer, Integer=]> oneOrTwo = function (Integer a, Integer b = 2) => a;
     Callable<Anything, [Integer]> one = oneOrTwo;
     Callable<Anything, [Integer*]> oneOrPlenty = function (Integer* a) => a;
+    Callable<Anything, [Integer+]> oneOrPlenty2 = function (Integer+ a) => a;
     Callable<Anything, [Integer]> oneAgain = oneOrPlenty;
 }
 
@@ -56,8 +68,11 @@ void callableWithDefaulted() {
 class CallableWithDefaulted(){
     void defaultedVariadic(Integer a, String b = "b", Integer* args){
     }
+    void defaultedVariadicNonempty(Integer a, Integer+ args){
+    }
     void test(){
         value f = defaultedVariadic;
+        value g = defaultedVariadicNonempty;
     }
     void methodWithDefaultCallableParam(Integer bar(Integer a, Integer b) => a + b){
         methodWithDefaultCallableParam{

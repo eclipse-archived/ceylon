@@ -8,6 +8,14 @@ final class callableArgumentSequenced_f_ {
     static void callableArgumentSequenced_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
 }
+final class callableArgumentSequenced_fnonempty_ {
+    
+    private callableArgumentSequenced_fnonempty_() {
+    }
+    
+    static void callableArgumentSequenced_fnonempty(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+    }
+}
 final class callableArgumentSequenced_g_ {
     
     private callableArgumentSequenced_g_() {
@@ -25,6 +33,14 @@ final class callableArgumentSequenced_g_ {
     }
     
     static void callableArgumentSequenced_g(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    }
+}
+final class callableArgumentSequenced_gnonempty_ {
+    
+    private callableArgumentSequenced_gnonempty_() {
+    }
+    
+    static void callableArgumentSequenced_gnonempty(final .ceylon.language.Sequence<? extends .ceylon.language.String> s) {
     }
 }
 final class callableArgumentSequenced_m_ {
@@ -53,6 +69,20 @@ final class callableArgumentSequenced_m_ {
                     let
                     {
                         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_g_.callableArgumentSequenced_g($$s);
+                    }
+                    returning null;
+                );
+            }
+        });
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_fnonempty_.callableArgumentSequenced_fnonempty(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .ceylon.language.String.$TypeDescriptor), "Anything(String+)", (short)0){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequence $$s = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)$param$0;
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_gnonempty_.callableArgumentSequenced_gnonempty($$s);
                     }
                     returning null;
                 );

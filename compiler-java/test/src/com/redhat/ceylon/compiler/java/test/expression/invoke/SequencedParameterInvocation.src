@@ -53,16 +53,29 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
         );
     }
     
+    private final void m3$priv(final .java.lang.String a, final .ceylon.language.Sequence<? extends .ceylon.language.Integer> i) {
+    }
+    
+    private final void m4$priv(final .java.lang.String a, final .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> i) {
+    }
+    
     private final void f$priv() {
         m$priv("foo");
         m$priv("foo", .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L)}));
+        m3$priv("foo", .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.Integer.instance(2L),
+                .ceylon.language.Integer.instance(3L)}));
         final .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>> ints = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
         m$priv("foo", ints);
+        m3$priv("foo", ints);
         m$priv("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, ints, .ceylon.language.Integer.instance(1L)));
+        m3$priv("foo", (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, ints, .ceylon.language.Integer.instance(1L)));
         m$priv("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, ints, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
+        m3$priv("foo", (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, ints, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
         m$priv("foo", new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
@@ -94,7 +107,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                 };
             }
         }.getSequence());
-        m$priv("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        m3$priv("foo", (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
@@ -124,7 +137,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     }
                 };
             }
-        }.getSequence(), .ceylon.language.Integer.instance(1L)));
+        }.getSequence());
         m$priv("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
@@ -155,8 +168,105 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     }
                 };
             }
+        }.getSequence(), .ceylon.language.Integer.instance(1L)));
+        m3$priv("foo", (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                    {
+                        iter$0 = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}).iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
+                    private .ceylon.language.Integer i;
+                    private boolean i$exhausted;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmpitem5 = iter$0.next();
+                        i$exhausted = $ceylontmpitem5 == .ceylon.language.finished_.$get();
+                        if (i$exhausted) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Integer)$ceylontmpitem5;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return i;
+                        } else return .ceylon.language.finished_.$get();
+                    }
+                };
+            }
+        }.getSequence(), .ceylon.language.Integer.instance(1L)));
+        m$priv("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                    {
+                        iter$0 = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}).iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
+                    private .ceylon.language.Integer i;
+                    private boolean i$exhausted;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmpitem6 = iter$0.next();
+                        i$exhausted = $ceylontmpitem6 == .ceylon.language.finished_.$get();
+                        if (i$exhausted) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Integer)$ceylontmpitem6;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return i;
+                        } else return .ceylon.language.finished_.$get();
+                    }
+                };
+            }
+        }.getSequence(), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
+        m3$priv("foo", (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                    {
+                        iter$0 = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}).iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
+                    private .ceylon.language.Integer i;
+                    private boolean i$exhausted;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmpitem7 = iter$0.next();
+                        i$exhausted = $ceylontmpitem7 == .ceylon.language.finished_.$get();
+                        if (i$exhausted) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Integer)$ceylontmpitem7;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return i;
+                        } else return .ceylon.language.finished_.$get();
+                    }
+                };
+            }
         }.getSequence(), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
         m2$priv("foo", .ceylon.language.ArraySequence.<.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation>instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation.$TypeDescriptor, new .java.lang.Object[]{
+                this,
+                this,
+                this}));
+        m4$priv("foo", .ceylon.language.ArraySequence.<.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation>instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation.$TypeDescriptor, new .java.lang.Object[]{
                 this,
                 this,
                 this}));

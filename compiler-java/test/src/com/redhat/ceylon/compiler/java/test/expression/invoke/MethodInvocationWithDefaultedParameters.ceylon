@@ -32,6 +32,7 @@ class Fookls(init) {
     shared default void f8(Integer n = init) {}
     shared default void f9(Integer n = prop.successor) {}
     shared default void fa(Integer n = 5, Integer* seq) {}
+    shared default void fe(Integer n, Integer+ seq) {}
 }
 @noanno
 class Foosubkls(Integer init) extends Fookls(init) {
@@ -45,6 +46,7 @@ class Foosubkls(Integer init) extends Fookls(init) {
     shared actual void f8(Integer n) {}
     shared actual void f9(Integer n) {}
     shared actual void fa(Integer n, Integer* seq) {}
+    shared actual void fe(Integer n, Integer+ seq) {}
 }
 @noanno
 interface Barface {
@@ -57,6 +59,7 @@ interface Barface {
     shared formal void f7(Integer n = this.prop);
     shared formal void f9(Integer n = prop.successor);
     shared formal void fa(Integer n = 5, Integer* seq);
+    shared formal void fe(Integer n, Integer+ seq);
 }
 @noanno
 class Barkls() satisfies Barface {
@@ -69,6 +72,7 @@ class Barkls() satisfies Barface {
     shared actual void f7(Integer n) {}
     shared actual void f9(Integer n) {}
     shared actual void fa(Integer n, Integer* seq) {}
+    shared actual void fe(Integer n, Integer+ seq) {}
 }
 @noanno
 void methodInvocationWithDefaultedParameters() {
@@ -98,6 +102,8 @@ void methodInvocationWithDefaultedParameters() {
     f.fa(6);
     f.fa(6, 1, 2, 3);
     f.fa(6, *[1, 2, 3]);
+    f.fe(6, 1);
+    f.fe(6, *[1]);
     
     f.f1{};
     f.f1{n=6;};
@@ -123,6 +129,8 @@ void methodInvocationWithDefaultedParameters() {
     f.fa{seq=[1, 2, 3];};
     f.fa{n=6;};
     f.fa{n=6; seq=[1, 2, 3];};
+    
+    f.fe{n = 1; seq=[1, 2, 3];};
     
     Foosubkls f2 = Foosubkls(88);
     f2.f1();
@@ -150,6 +158,8 @@ void methodInvocationWithDefaultedParameters() {
     f2.fa(6);
     f2.fa(6, 1, 2, 3);
     f2.fa(6, *[1, 2, 3]);
+    f2.fe(6, 1);
+    f2.fe(6, *[1]);
     
     f2.f1{};
     f2.f1{n=6;};
@@ -175,6 +185,7 @@ void methodInvocationWithDefaultedParameters() {
     f2.fa{seq=[1, 2, 3];};
     f2.fa{n=6;};
     f2.fa{n=6; seq=[1, 2, 3];};
+    f2.fe{n=6; seq=[1];};
     
     Barface b = Barkls();
     b.f1();
@@ -197,6 +208,8 @@ void methodInvocationWithDefaultedParameters() {
     b.fa(6);
     b.fa(6, 1, 2, 3);
     b.fa(6, *[1, 2, 3]);
+    b.fe(6, 1, 2, 3);
+    b.fe(6, *[1, 2, 3]);
     
     b.f1{};
     b.f1{n=6;};
@@ -218,6 +231,7 @@ void methodInvocationWithDefaultedParameters() {
     b.fa{seq=[1, 2, 3];};
     b.fa{n=6;};
     b.fa{n=6; seq=[1, 2, 3];};
+    b.fe{n=6; seq=[1, 2, 3];};
     
     Barkls b2 = Barkls();
     b2.f1();
@@ -240,6 +254,8 @@ void methodInvocationWithDefaultedParameters() {
     b2.fa(6);
     b2.fa(6, 1, 2, 3);
     b2.fa(6, *[1, 2, 3]);
+    b2.fe(6, 1, 2, 3);
+    b2.fe(6, *[1, 2, 3]);
     
     b2.f1{};
     b2.f1{n=6;};
@@ -261,4 +277,5 @@ void methodInvocationWithDefaultedParameters() {
     b2.fa{seq=[1, 2, 3];};
     b2.fa{n=6;};
     b2.fa{n=6; seq=[1, 2, 3];};
+    b2.fe{n=6; seq=[1, 2, 3];};
 }

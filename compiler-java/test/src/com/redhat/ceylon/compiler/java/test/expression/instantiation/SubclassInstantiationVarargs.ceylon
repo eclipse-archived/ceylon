@@ -22,3 +22,9 @@ class Foo(String* name) {
 }
 @noanno
 class Bar(String name1, String name2) extends Foo(name1, name2) {}
+
+@noanno
+class FooNonempty(String+ name) {
+}
+@noanno
+class BarNonempty(String name1, String name2) extends FooNonempty(name1, name2) {}

@@ -126,6 +126,79 @@ final class defaultFunctionReference2_ {
         .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference2_.defaultFunctionReference2();
     }
 }
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class defaultFunctionReference3_ {
+    
+    private defaultFunctionReference3_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static void defaultFunctionReference3() {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$s$4 = .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference3_.defaultFunctionReference3$s();
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$f$5 = .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference3_.defaultFunctionReference3$f($ceylontmp$s$4);
+                defaultFunctionReference3($ceylontmp$s$4, $ceylontmp$f$5);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static final .java.lang.String defaultFunctionReference3$s() {
+        return "hi";
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static void defaultFunctionReference3(final .java.lang.String s) {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$f$6 = .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference3_.defaultFunctionReference3$f(s);
+                defaultFunctionReference3(s, $ceylontmp$f$6);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static final .ceylon.language.Callable<? extends .java.lang.Object> defaultFunctionReference3$f(final .java.lang.String s) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .ceylon.language.Object.$TypeDescriptor), "Anything(Object+)", (short)0){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequence<? extends .java.lang.Object> o = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.String.instance(s + o.toString()));
+                    }
+                    returning null;
+                );
+            }
+        };
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void defaultFunctionReference3(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String s, @.com.redhat.ceylon.compiler.java.metadata.Name("f")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Sequence<ceylon.language::Object>>")
+    final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+        f.$call(.ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Object.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference3_.defaultFunctionReference3();
+    }
+}
 final class defaultFunctionReference_call_ {
     
     private defaultFunctionReference_call_() {
@@ -134,6 +207,7 @@ final class defaultFunctionReference_call_ {
     static void defaultFunctionReference_call() {
         .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference_.defaultFunctionReference();
         .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference2_.defaultFunctionReference2();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference3_.defaultFunctionReference3();
     }
     
     public static void main(.java.lang.String[] args) {
