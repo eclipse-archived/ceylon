@@ -262,7 +262,12 @@ abstract class SimpleInvocation extends Invocation {
         super(gen, primary, primaryDeclaration, returnType, node);
     }
 
-    protected abstract boolean isParameterSequenced(int argIndex);
+    protected abstract boolean isParameterVariadicStar(int argIndex);
+    protected abstract boolean isParameterVariadicPlus(int argIndex);
+    
+    protected final boolean isParameterSequenced(int argIndex) {
+        return isParameterVariadicStar(argIndex) || isParameterVariadicPlus(argIndex);
+    }
 
     protected abstract ProducedType getParameterType(int argIndex);
 
@@ -382,7 +387,12 @@ class IndirectInvocationBuilder extends SimpleInvocation {
     }
 
     @Override
-    protected boolean isParameterSequenced(int argIndex) {
+    protected boolean isParameterVariadicStar(int argIndex) {
+        return variadic && argIndex >= parameterTypes.size() - 1;
+    }
+    
+    @Override
+    protected boolean isParameterVariadicPlus(int argIndex) {
         return variadic && argIndex >= parameterTypes.size() - 1;
     }
 
@@ -496,8 +506,13 @@ abstract class DirectInvocation extends SimpleInvocation {
     protected abstract Parameter getParameter(int argIndex);
     
     @Override
-    protected boolean isParameterSequenced(int argIndex) {
-        return getParameter(argIndex).isSequenced();
+    protected boolean isParameterVariadicStar(int argIndex) {
+        return getParameter(argIndex).isSequenced() && !getParameter(argIndex).isAtLeastOne();
+    }
+    
+    @Override
+    protected boolean isParameterVariadicPlus(int argIndex) {
+        return getParameter(argIndex).isSequenced() && getParameter(argIndex).isAtLeastOne();
     }
     
     @Override
