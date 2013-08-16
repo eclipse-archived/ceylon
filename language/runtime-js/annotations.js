@@ -27,5 +27,5 @@ function annotations$model(anntype, progelem, $$targs$$) {
   }
   return null;
 }
-annotations$model.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:'Values',$ps:[{$nm:'annotationType',$mt:'prm',$t:{t:ClassOrInterface$model,a:{Type:{t:ConstrainedAnnotation$model,a:{Values:'Values',Value:'Value',ProgramElement:'ProgramElement'}}}}},{$nm:'programElement',$mt:'prm',$t:'ProgramElement'}],$tp:{Value:{'satisfies':[{t:ConstrainedAnnotation$model,a:{Values:'Values',Value:'Value',ProgramElement:'ProgramElement'}}]},Values:{},ProgramElement:{'satisfies':[{t:Annotated$model}]}},$an:function(){return[shared(),$native()];},pkg:'ceylon.language.model',d:$$METAMODEL$$['ceylon.language.model']['annotations']};};
+annotations$model.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:'Values',$ps:[{$nm:'annotationType',$mt:'prm',$t:{t:ClassOrInterface$model,a:{Type:{t:ConstrainedAnnotation$model,a:{Values:'Values',Value:'Value',ProgramElement:'ProgramElement'}}}}},{$nm:'programElement',$mt:'prm',$t:'ProgramElement'}],$tp:{Value:{'satisfies':[{t:ConstrainedAnnotation$model,a:{Values:'Values',Value:'Value',ProgramElement:'ProgramElement'}}]},Values:{},ProgramElement:{'satisfies':[{t:Annotated$model}]}},$an:function(){return[shared(),$native()];},d:['ceylon.language.model','annotations']};};
 exports.annotations$model=annotations$model;
