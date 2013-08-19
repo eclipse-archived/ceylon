@@ -2083,7 +2083,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         fp.getParameterLists().get(0),
                         ((Tree.MethodDeclaration)fpTree.getTypedDeclaration()).getParameterLists().get(0),
                         getTypeForFunctionalParameter(fp),
-                        false).build();
+                        true).build();
             } else {
                 expr = expressionGen().transformExpression(spec.getExpression(), 
                         CodegenUtil.getBoxingStrategy(param.getParameterModel().getModel()), 
@@ -2263,6 +2263,14 @@ public class ExpressionTransformer extends AbstractTransformer {
                 result = result.append(exprAndType);
             else
                 arrayWrap.append(exprAndType.expression);
+        }
+        if (invocation.isIndirect()
+                && invocation.isParameterSequenced(numArguments)
+                && !invocation.isArgumentSpread(numArguments-1)
+                && ((IndirectInvocation)invocation).getNumParameters() > numArguments) {
+            // Calling convention for indirect variadic invocation's requires
+            // explicit variadic argument (can't use the overloading trick)
+            result = result.append(new ExpressionAndType(makeEmptyAsSequential(true), makeErroneous(invocation.getNode())));
         }
         if(wrapIntoArray){
             // must have at least one arg, so take the last one
@@ -3691,7 +3699,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     decl.getParameterLists().get(0),
                     paramExpr.getParameterLists().get(0),
                     paramExpr.getPrimary().getTypeModel(),
-                    decl.isDeferred());
+                    !decl.isDeferred());
             rhs = callableBuilder.build();
         }
 

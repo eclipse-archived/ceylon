@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
+import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -44,6 +45,7 @@ import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
@@ -52,8 +54,45 @@ import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
 
+/**
+ * Constructs anonymous subclasses of AbstractCallable, required for higher 
+ * order functions.
+ * 
+ * <ul>
+ * <li>If the Callable does not need to encode defaulted parameter values, and 
+ *     is not variadic we just generate the relevent {@code $call()}
+ *     method(s). This includes the case of a method reference to something 
+ *     with defaulted parameters, because the Callable itself doesn't need to 
+ *     encode the default parameter values.
+ * <li>If the Callable needs to encode defaulted parameter values itself (for
+ *     example if it's a Callable for an anonymous function,
+ *     or a method argument with defaulted parameters) then:
+ *     <ul>
+ *     <li>a {@code private $call$typed()} method is generated which encodes 
+ *         the actual method code,</li>
+ *     <li>{@code private $$paramName()} methods are generated for each 
+ *         defaulted parameter, and</li>
+ *     <li>the {@code public $call()} methods downcast their argument(s), 
+ *         invoke the necessary {@code $$paramName()} and delegate to 
+ *         {@code $call$typed()}.</li>
+ *     <ul>
+ * <li>If the Callable is variadic then:</li>
+ *     <ul>
+ *     <li>a {@code private $call$typed()} method is generated which encodes
+ *         the actual method code,</li>
+ *     <li>{@code public $call$variadic()} methods are generated for each 
+ *         arity greater than the number of non-defaulted parameters and less 
+ *         than or equal to 3, plus one which uses Javac varargs, and</li>
+ *     <li>the {@code $call()} methods delegate to {@code $call$variadic()} methods,
+ *         downcasting and obtaining default arguments if required,</li>
+ *     <ul>
+ * </ul>
+ * 
+ */
 public class CallableBuilder {
 
+    private static final int CALLABLE_MAX_FIZED_ARITY = 3;
+    
     static interface DefaultValueMethodTransformation {
         public JCExpression makeDefaultValueMethod(AbstractTransformer gen, 
                 Parameter defaultedParam, Tree.Term forwardCallTo, List<JCExpression> defaultMethodArgs);
@@ -89,43 +128,71 @@ public class CallableBuilder {
     private final AbstractTransformer gen;
     private final ProducedType typeModel;
     private final ParameterList paramLists;
-    private boolean noDelegates;
-    private int numParams;
-    private int minimumParams;
-    private boolean isVariadic;
-    private boolean hasOptionalParameters;
+    private final int numParams;
+    private final int minimumParams;
+    private final int minimumArguments;
+    private final boolean hasOptionalParameters;
+    private final boolean isVariadic;
+    /**
+     * For deferred declarations the default parameter value methods are 
+     * generated on the wrapper class, not on the Callable (#1177)
+     */
+    private boolean delegateDefaultedCalls = true;
     private java.util.List<ProducedType> parameterTypes;
+    
+    private ListBuffer<MethodDefinitionBuilder> parameterDefaultValueMethods;
+    
+    private CallableTransformation transformation;
     
     private CallableBuilder(CeylonTransformer gen, ProducedType typeModel, ParameterList paramLists) {
         this.gen = gen;
         this.typeModel = typeModel;
         this.paramLists = paramLists;
         this.numParams = paramLists.getParameters().size();
-        this.minimumParams = 0;
+        int minimumParams = 0;
+        int minimumArguments = 0;
         for(Parameter p : paramLists.getParameters()){
-            if(Strategy.hasDefaultParameterOverload(p))
-                break;
-            this.minimumParams++;
+            if(!p.isDefaulted())
+                minimumParams++;
+            if (!Strategy.hasDefaultParameterOverload(p)) {
+                minimumArguments++;
+            }
         }
+        this.minimumParams = minimumParams;
+        this.minimumArguments = minimumArguments;
         this.isVariadic = numParams > 0 && paramLists.getParameters().get(numParams-1).isSequenced();
         this.hasOptionalParameters = minimumParams != numParams;
     }
     
     /**
-     * Constructs an {@code AbstractCallable} suitable for wrapping a method reference.
+     * Constructs an {@code AbstractCallable} suitable for wrapping a 
+     * method reference. For example:
+     * <pre>
+     *   void someMethod() { ... }
+     *   Anything() ref = someMethod;
+     * </pre>
      */
     public static CallableBuilder methodReference(CeylonTransformer gen, Tree.Term expr, ParameterList parameterList) {
         CallableBuilder cb = new CallableBuilder(gen, expr.getTypeModel(), parameterList);
         cb.parameterTypes = cb.getParameterTypesFromCallableModel();
-        cb.forwardTo(expr);
+        CallableTransformation tx;
+        if (cb.isVariadic) {
+            tx = cb.new VariadicCallableTransformation(
+                    cb.new CallMethodWithForwardedBody(false, expr), expr);
+        } else {
+            tx = cb.new FixedArityCallableTransformation(cb.new CallMethodWithForwardedBody(true, expr), null);
+        }
+        cb.useTransformation(tx);
         return cb;
     }
     
     /**
-     * Used for "static" method or class references like
+     * Used for "static" method or class references. For example:
+     * <pre>
      *     value x = Integer.plus;
      *     value y = Foo.method;
      *     value z = Outer.Inner;
+     * </pre>
      */
     public static CallableBuilder unboundFunctionalMemberReference(CeylonTransformer gen, 
             ProducedType typeModel, 
@@ -193,7 +260,8 @@ public class CallableBuilder {
             innerInvocation = gen.make().TypeCast(gen.makeJavaType(
                     ((Class)methodOrClass).getType()), innerInvocation);
         }
-        inner.useBody(List.<JCStatement>of(gen.make().Return(innerInvocation)));
+        List<JCStatement> innerBody = List.<JCStatement>of(gen.make().Return(innerInvocation));
+        inner.useDefaultTransformation(innerBody);
         
         ParameterList outerPl = new ParameterList();
         Parameter instanceParameter = new Parameter();
@@ -205,16 +273,19 @@ public class CallableBuilder {
         outerPl.getParameters().add(instanceParameter);
         CallableBuilder outer = new CallableBuilder(gen, typeModel, outerPl);
         outer.parameterTypes = outer.getParameterTypesFromParameterModels();
-        outer.useBody(List.<JCStatement>of(gen.make().Return(inner.build())));
+        List<JCStatement> outerBody = List.<JCStatement>of(gen.make().Return(inner.build()));
+        outer.useDefaultTransformation(outerBody);
         
         return outer;
     }
     
     /**
-     * Used for "static" value references like
+     * Used for "static" value references. For example:
+     * <pre>
      *     value x = Integer.plus;
      *     value y = Foo.method;
      *     value z = Outer.Inner;
+     * </pre>
      */
     public static CallableBuilder unboundValueMemberReference(CeylonTransformer gen, 
             ProducedType typeModel, 
@@ -236,7 +307,8 @@ public class CallableBuilder {
         outerPl.getParameters().add(instanceParameter);
         CallableBuilder outer = new CallableBuilder(gen, typeModel, outerPl);
         outer.parameterTypes = outer.getParameterTypesFromParameterModels();
-        outer.useBody(List.<JCStatement>of(gen.make().Return(innerInvocation)));
+        List<JCStatement> innerBody = List.<JCStatement>of(gen.make().Return(innerInvocation));
+        outer.useDefaultTransformation(innerBody);
         
         return outer;
     }
@@ -247,10 +319,10 @@ public class CallableBuilder {
     public static CallableBuilder anonymous(
             CeylonTransformer gen, Tree.Expression expr, ParameterList parameterList, 
             Tree.ParameterList parameterListTree, 
-            ProducedType callableTypeModel, boolean noDelegates) {
+            ProducedType callableTypeModel, boolean delegateDefaultedCalls) {
         JCExpression transformedExpr = gen.expressionGen().transformExpression(expr, BoxingStrategy.BOXED, gen.getReturnTypeOfCallable(callableTypeModel));
         final List<JCStatement> stmts = List.<JCStatement>of(gen.make().Return(transformedExpr));
-        return methodArgument(gen, callableTypeModel, parameterList, parameterListTree, stmts, noDelegates);
+        return methodArgument(gen, callableTypeModel, parameterList, parameterListTree, stmts, delegateDefaultedCalls);
     }
 
     public static CallableBuilder methodArgument(
@@ -259,27 +331,72 @@ public class CallableBuilder {
             ParameterList parameterList,
             Tree.ParameterList parameterListTree, 
             List<JCStatement> stmts) {
-        return methodArgument(gen, callableTypeModel, parameterList, parameterListTree, stmts, false);
+        return methodArgument(gen, callableTypeModel, parameterList, parameterListTree, stmts, true);
     }
     
+    /**
+     * Transforms either a method argument in a named invocation, or an 
+     * anonymous method. For example:
+     * <pre>
+     *     namedInvocation(
+     *         methodArgument() {
+     *         }
+     *     );
+     * </pre>
+     * or
+     * <pre>
+     *     Integer() x;
+     *     x => () => 1;
+     * </pre>
+     * 
+     */
     public static CallableBuilder methodArgument(
             CeylonTransformer gen,
             ProducedType callableTypeModel,
             ParameterList parameterList,
             Tree.ParameterList parameterListTree, 
-            List<JCStatement> stmts, boolean noDelegates) {
+            List<JCStatement> stmts, boolean delegateDefaultedCalls) {
         
         CallableBuilder cb = new CallableBuilder(gen, callableTypeModel, parameterList);
         cb.parameterTypes = cb.getParameterTypesFromParameterModels();
         cb.parameterDefaultValueMethods(parameterListTree);
-        cb.noDelegates = noDelegates;
-        cb.useBody(stmts);
+        cb.delegateDefaultedCalls = delegateDefaultedCalls;
+        //cb.useDefaultTransformation(stmts);
+        
+        CallableTransformation tx;
+        MethodWithArity callTyped;
+        if (cb.isVariadic) {
+            if (cb.requiresCallTypedMethod()) {
+                callTyped = cb.new CallTypedMethod(stmts);
+            } else {
+                callTyped = cb.new CallMethodWithGivenBody(stmts);
+            }
+            tx = cb.new VariadicCallableTransformation(callTyped, null);
+        } else {
+            MethodWithArity call;
+            if (cb.requiresCallTypedMethod()) {
+                call = cb.new CallMethodDelegatingCallTyped();
+                callTyped = cb.new CallTypedMethod(stmts);
+            } else {
+                call = cb.new CallMethodWithGivenBody(stmts);
+                callTyped = null;
+            }
+            tx = cb.new FixedArityCallableTransformation(
+                    call,
+                    callTyped);
+        }
+        cb.useTransformation(tx);
+        
         return cb;
     }
     
     /**
      * Constructs an {@code AbstractCallable} suitable for use in a method 
-     * definition with a multiple parameter list.
+     * definition with a multiple parameter lists (i.e. an intermediate result 
+     * from method with multiple parameter lists). For example
+     * <pre>
+     *     String name(String first)(String second) => first + " " + second;
+     * </pre>
      */
     public static CallableBuilder mpl(
             CeylonTransformer gen,
@@ -294,69 +411,819 @@ public class CallableBuilder {
         }
         cb.parameterTypes = cb.getParameterTypesFromParameterModels();
         cb.parameterDefaultValueMethods(parameterListTree);
-        cb.useBody(body);
+        cb.useDefaultTransformation(body);
         return cb;
     }
-    
-    private ListBuffer<JCTree> parameterDefaultValueMethods;
-    
-    private ListBuffer<JCTree> callMethods = new ListBuffer<JCTree>();
-    
-    public CallableBuilder forwardTo(Tree.Term forwardCallTo) {
-        if (forwardCallTo == null) {
-            throw new RuntimeException();
-        }
-       
-        // now generate a method for each supported minimum number of parameters below 4
-        // which delegates to the $call$typed method if required
-        for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++){
-            ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
-            makeDefaultedCall(i, stmts, forwardCallTo);
-            makeForwardedInvocation(i, stmts, forwardCallTo);
-            callMethods.append(makeCallMethod(stmts.toList(), i));
-        }
-   
-        // generate the $call method for the max number of parameters,
-        // which delegates to the $call$typed method if required
-        ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
-        makeDefaultedCall(numParams, stmts, forwardCallTo);
-        makeForwardedInvocation(numParams, stmts, forwardCallTo);
-        callMethods.append(makeCallMethod(stmts.toList(), numParams));
-        
-        return this;
+
+    public int getMinimumParameters() {
+        return minimumParams;
     }
     
-    public CallableBuilder useBody(List<JCStatement> body) {
-        if (!noDelegates) {
-            // now generate a method for each supported minimum number of parameters below 4
-            // which delegates to the $call$typed method if required
-            for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++){
-                ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
-                makeDefaultedCall(i, stmts, null);
-                makeCallTypedCallOrBody(i, stmts, body);
-                callMethods.append(makeCallMethod(stmts.toList(), i));
+    public int getMinimumArguments() {
+        return minimumArguments;
+    }
+    
+    private Parameter getVariadicParameter() {
+        return paramLists.getParameters().get(numParams - 1);
+    }
+    
+    private ProducedType getVariadicType() {
+        return parameterTypes.get(numParams - 1);
+    }
+    
+    private ProducedType getVariadicIteratedType() {
+        return gen.typeFact().getIteratedType(getVariadicType());
+    }
+    
+    /**
+     * Abstraction over things which can generate a method to add to 
+     * the AbstractCallable we're building.
+     */
+    abstract class MethodWithArity {
+        /**
+         * Makes a method with the given (Java) arity.
+         */
+        abstract MethodDefinitionBuilder makeMethod(int arity);
+    }
+    
+    class CallMethodWithGivenBody extends MethodWithArity {
+        
+        private List<JCStatement> body;
+        private boolean usedBody = false;
+
+        CallMethodWithGivenBody(List<JCStatement> body) {
+            this.body = body;
+        }
+
+        @Override
+        MethodDefinitionBuilder makeMethod(int arity) {
+            if (arity < Math.min(getMinimumArguments(), CALLABLE_MAX_FIZED_ARITY+1)) {
+                return null;
+            }
+            if (usedBody) {
+                body = List.<JCStatement>of(gen.make().Exec(gen.makeErroneous()));
+            }
+            usedBody = true;
+            ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
+            int a = 0;
+            for(Parameter param : paramLists.getParameters()){
+                // don't read default parameter values for forwarded calls
+                stmts.append(makeDowncastOrDefaultVar(getCallableTempVarName(param, null), param, a, arity, null));
+                a++;
+            }
+            return makeCallMethod(stmts.appendList(body).toList(), arity);
+        }
+    }
+    
+    class CallMethodWithForwardedBody extends MethodWithArity {
+        
+        final boolean isCallMethod;
+        final private Tree.Term forwardCallTo;
+
+        CallMethodWithForwardedBody(boolean isCallMethod, Tree.Term term) {
+            this.isCallMethod = isCallMethod;
+            this.forwardCallTo = term;
+        }
+
+        @Override
+        MethodDefinitionBuilder makeMethod(int arity) {
+            if (arity < Math.min(getMinimumArguments(), CALLABLE_MAX_FIZED_ARITY+1)) {
+                return null;
+            }
+            ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
+            if (isCallMethod) {
+                int a = 0;
+                for(Parameter param : paramLists.getParameters()){
+                    // don't read default parameter values for forwarded calls
+                    if(forwardCallTo != null && arity == a)
+                        break;
+                    stmts.append(makeDowncastOrDefaultVar(getCallableTempVarName(param, forwardCallTo), param, a, arity, forwardCallTo));
+                    a++;
+                }
+            }
+            
+            ProducedReference target;
+            if (forwardCallTo instanceof Tree.MemberOrTypeExpression) {
+                target = ((Tree.MemberOrTypeExpression)forwardCallTo).getTarget();
+            } else if (forwardCallTo instanceof Tree.FunctionArgument) {
+                Method method = ((Tree.FunctionArgument) forwardCallTo).getDeclarationModel();
+                target = method.getProducedReference(null, Collections.<ProducedType>emptyList());
+            } else {
+                throw new RuntimeException(forwardCallTo.getNodeType());
+            }
+            TypeDeclaration primaryDeclaration = forwardCallTo.getTypeModel().getDeclaration();
+            CallableInvocation invocationBuilder = new CallableInvocation (
+                    gen,
+                    forwardCallTo,
+                    primaryDeclaration,
+                    target,
+                    gen.getReturnTypeOfCallable(forwardCallTo.getTypeModel()),
+                    forwardCallTo, 
+                    paramLists,
+                    arity, isCallMethod);
+            boolean prevCallableInv = gen.expressionGen().withinSyntheticClassBody(true);
+            JCExpression invocation;
+            try {
+                invocation = gen.expressionGen().transformInvocation(invocationBuilder);
+            } finally {
+                gen.expressionGen().withinSyntheticClassBody(prevCallableInv);
+            }
+            stmts.append(gen.make().Return(invocation));
+            
+            
+            return isCallMethod ? makeCallMethod(stmts.toList(), arity) : makeCallTypedMethod(stmts.toList());
+        }
+    }    
+    class CallMethodDelegatingCallTyped extends MethodWithArity {
+
+        /**
+         * Makes a call to {@code $call$typed()} if required, otherwise uses the 
+         * given body.
+         * @return 
+         */
+        @Override
+        MethodDefinitionBuilder makeMethod(int arity) {
+            if (arity < Math.min(getMinimumArguments(), CALLABLE_MAX_FIZED_ARITY+1)) {
+                return null;
+            }
+            ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
+            int a = 0;
+            for(Parameter param : paramLists.getParameters()){
+                // don't read default parameter values for forwarded calls
+                stmts.append(makeDowncastOrDefaultVar(
+                        getCallableTempVarName(param, null), param, a, arity, null));
+                a++;
+            }
+            // chain to n param typed method
+            List<JCExpression> args = List.nil();
+            // pass along the parameters
+            for(a=paramLists.getParameters().size()-1;a>=0;a--){
+                Parameter param = paramLists.getParameters().get(a);
+                args = args.prepend(getCallableTempVarName(param, null).makeIdent());
+            }
+            JCMethodInvocation chain = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getCallableTypedMethodName()), args);
+            stmts.append(gen.make().Return(chain));
+            return makeCallMethod(stmts.toList(), arity);
+        }
+        
+        
+    }
+    
+    /**
+     * Abstraction over various kinds of {@code $call()} method
+     */
+    abstract class CallableTransformation {
+        
+        final void appendMethods(ListBuffer<JCTree> classBody) {
+            if (delegateDefaultedCalls) {
+                // now generate a method for each supported minimum number of parameters below 4
+                // which delegates to the $call$typed method if required
+                for(int javaArity=0; javaArity <= CALLABLE_MAX_FIZED_ARITY+1; javaArity++){
+                    for (MethodDefinitionBuilder mdb : makeMethodsForArity(javaArity)) {
+                        if (mdb != null) {
+                            classBody.append(mdb.build());
+                        }
+                    }
+                }
+            } else {
+                // generate the $call method for the max number of parameters,
+                // (which delegates to the $call$typed method if required)
+                for (MethodDefinitionBuilder mdb : makeMethodsForArity(numParams)) {
+                    classBody.append(mdb.build());
+                }
+            }
+            
+            // if required, generate the $call$typed method 
+            MethodDefinitionBuilder callTypedMethod = makeCallTypedMethod();
+            if (callTypedMethod != null) {
+                JCMethodDecl callTyped = callTypedMethod.build();
+                Assert.that(callTyped.params.size() == numParams);
+                classBody.append(callTyped);
             }
         }
-        // generate the $call method for the max number of parameters,
-        // which delegates to the $call$typed method if required
-        ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
-        makeDefaultedCall(numParams, stmts, null);
-        makeCallTypedCallOrBody(numParams, stmts, body);
-        callMethods.append(makeCallMethod(stmts.toList(), numParams));
-        // generate the $call$typed method if required
-        if(hasOptionalParameters)
-            callMethods.append(makeCallTypedMethod(body));
+        
+        protected abstract Iterable<MethodDefinitionBuilder> makeMethodsForArity(int arity);
+        
+        /**
+         * Make the private $call$typed() method, whose arity must 
+         * be {@link #numParams}
+         * @return
+         */
+        abstract MethodDefinitionBuilder makeCallTypedMethod();
+    }
+    
+    protected final MethodDefinitionBuilder makeCallMethod(List<JCStatement> body, int arity) {
+        MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.callable(gen);
+        callMethod.isOverride(true);
+        callMethod.modifiers(Flags.PUBLIC);
+        ProducedType returnType = gen.getReturnTypeOfCallable(typeModel);
+        callMethod.resultType(gen.makeJavaType(returnType, JT_NO_PRIMITIVES), null);
+        // Now append formal parameters
+        switch (arity) {
+        case 3:
+            callMethod.parameter(makeCallableCallParam(0, arity-3));
+            // fall through
+        case 2:
+            callMethod.parameter(makeCallableCallParam(0, arity-2));
+            // fall through
+        case 1:
+            callMethod.parameter(makeCallableCallParam(0, arity-1));
+            break;
+        case 0:
+            break;
+        default: // use varargs
+            callMethod.parameter(makeCallableCallParam(Flags.VARARGS, 0));
+        }
+        
+        // Return the call result, or null if a void method
+        callMethod.body(body);
+        return callMethod;
+    }
+    
+    /**
+     * Builds a {@code $call()} method that
+     * <ul>
+     * <li>downcasts the parameters to their correct type,</li>
+     * <li>adds any default arguments, and<li>
+     * <li>delegates to the {@code $call$typed()} method</li>
+     * </ul>
+     */
+    class FixedArityCallableTransformation extends CallableTransformation {
+        
+        private final MethodWithArity call;
+        private final MethodWithArity callTyped;
+        
+        FixedArityCallableTransformation(MethodWithArity call, MethodWithArity callTyped) {
+            this.call = call;
+            this.callTyped = callTyped;
+        }
+        
+        @Override
+        protected List<MethodDefinitionBuilder> makeMethodsForArity(int arity) {
+            if (arity > numParams) {
+                return List.nil();
+            }
+            
+            return List.of(call.makeMethod(arity));
+        }
+        
+        @Override
+        MethodDefinitionBuilder makeCallTypedMethod() {
+            return callTyped != null ? callTyped.makeMethod(numParams) : null;
+        }
+    }
+    
+    private JCExpression makeRespread(List<JCExpression> arguments) {
+        
+        JCExpression invocation = gen.make().Apply(null, 
+                gen.naming.makeUnquotedIdent("$spreadVarargs"), 
+                arguments);
+        if (getVariadicParameter().isAtLeastOne()) {
+            //invocation = gen.expressionGen().applyErasureAndBoxing(
+            //        invocation, gen.typeFact().getSequentialType(et), true, BoxingStrategy.BOXED, getVariadicType())
+            invocation = gen.make().TypeCast(
+                    gen.makeJavaType(getVariadicType(), AbstractTransformer.JT_RAW), 
+                    invocation);
+        }
+        return invocation;
+    }
+    
+    /**
+     * Generates {@code $call()} methods for variadic Callables
+     */
+    class CallMethodForVariadic extends MethodWithArity {
+        
+        private final Tree.Term forwardCallTo;
+        
+        public CallMethodForVariadic(Tree.Term forwardCallTo) {
+            this.forwardCallTo = forwardCallTo;
+        }
+        
+        /** 
+         * Make the {@code $call()} method, which delegates to the $call$typed() 
+         */
+        @Override
+        MethodDefinitionBuilder makeMethod(final int arity) {
+            if (arity < Math.min(getMinimumArguments(), CALLABLE_MAX_FIZED_ARITY+1)) {
+                return null;
+            }
+            ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
+            ListBuffer<JCExpression> args = ListBuffer.lb();
+            /* if arity <= CALLABLE_MAX_FIZED_ARITY
+             *   for each parameter < arity:
+             *     if parameter is the variadic parameter
+             *         wrap it, and any remaining parameters into a sequential
+             *         and append to the args. Break.
+             *     if a < minimumParams: 
+             *         append downcastParameter to arguments 
+             *   does call$typed take more arguments?
+             *     is the parameter defaulted? append the default value expr to arguments
+             *     is the parameter sequenced (and possibly empty) append empty to arguments
+             * else // if we're generating the ... method
+             *   // isn't this effectively the runtime equivalent of the above?
+             */
+            if (arity <= CALLABLE_MAX_FIZED_ARITY) {
+                int a = 0;
+                for (; a <= arity; a++) {
+                    Parameter param = paramLists.getParameters().get(a);
+                    if (param.isSequenced()) {
+                        // wrap this and all remaining parameters into a sequential
+                        a = makeSequencedArgument(arity, stmts, args, a);
+                        break;
+                    }
+                    if (a < getMinimumArguments()) {
+                        // append the downcast parameter
+                        stmts.append(makeDowncastOrDefaultVar(
+                                getCallableTempVarName(param, forwardCallTo), param, a, arity, forwardCallTo));
+                        args.append(getCallableTempVarName(param, forwardCallTo).makeIdent());
+                    } else {
+                        break;
+                    }
+                }
+                for (; args.size() < numParams; a++) {
+                    Parameter param = paramLists.getParameters().get(a);
+                    if (param.isSequenced()) {
+                        //args.append(gen.makeEmptyAsSequential(true));
+                        a = makeSequencedArgument(arity, stmts, args, a);
+                    } else {
+                        SyntheticName name = getCallableTempVarName(param, forwardCallTo);
+                        stmts.append(makeDowncastOrDefaultVar(
+                                name, param, a, arity, forwardCallTo));
+                        args.append(name.makeIdent());
+                    }
+                }
+            } else { // we're generating the $call(Object...) method
+                // THE OLD CODE
+                // pass along the parameters
+                Parameter variadicParameter = getVariadicParameter();
+                int a = 0;
+                for(Parameter param : paramLists.getParameters()){
+                    // don't read default parameter values for forwarded calls
+                    if(param.isSequenced())
+                        break;
+                    stmts.append(makeDowncastOrDefaultVar(
+                            getCallableTempVarName(param, forwardCallTo), param, a, arity, forwardCallTo));
+                    args.append(getCallableTempVarName(param, forwardCallTo).makeIdent());
+                    a++;
+                }
+                ListBuffer<JCExpression> varargs = ListBuffer.<JCExpression>lb();
+                if (arity > CALLABLE_MAX_FIZED_ARITY) {
+                    
+                    args.append(makeRespread( 
+                            List.<JCExpression>of(
+                                    gen.makeReifiedTypeArgument(getVariadicIteratedType()),
+                                    gen.make().Literal(numParams-1),
+                                    gen.make().Binary(JCTree.MINUS, gen.naming.makeQualIdent(makeParamIdent(gen,  0), "length"), gen.make().Literal(numParams-1)),
+                                    makeParamIdent(gen,  0),
+                                    gen.makeEmpty())));
+                } else {
+                    JCExpression varargsSequence;
+                    for (int j = getMinimumParameters(); j < arity; j++) {
+                        Parameter param = paramLists.getParameters().get(Math.min(j, numParams-1));
+                        if (arity < numParams - 1) {
+                            stmts.append(makeDowncastOrDefaultVar(
+                                    getCallableTempVarName(param, forwardCallTo), param, j, arity, forwardCallTo));
+                        } else {
+                            varargs.append(gen.make().Ident(makeParamName(gen, j)));
+                        }
+                    }
+                    
+                    // TODO Sometimes we need to call Util.sequentialInstance
+                    
+                    if (varargs.isEmpty()) {
+                        varargsSequence = gen.makeEmptyAsSequential(true);
+                    } else {
+                        varargsSequence = gen.makeSequence(varargs.toList(), 
+                                getVariadicIteratedType(), 0);
+                    }
+                    SyntheticName vname = getCallableTempVarName(getVariadicParameter(), forwardCallTo).suffixedBy("$");
+                    args.append(vname.makeIdent());
+                    stmts.append(makeVar(variadicParameter, getVariadicType(), 
+                            forwardCallTo, vname, varargsSequence));
+                }
+                // /THE OLD CODE
+            }
+            
+            makeCallTypedCall(arity, stmts, args.toList());
+            MethodDefinitionBuilder callMethod = CallableBuilder.this.makeCallMethod(stmts.toList(), arity);
+            return callMethod;
+        }
+
+        private int makeSequencedArgument(final int arity,
+                ListBuffer<JCStatement> stmts, ListBuffer<JCExpression> args,
+                int a) {
+            ListBuffer<JCExpression> varargs = ListBuffer.<JCExpression>lb();
+            for (; a < arity; a++) {
+                Parameter param1 = paramLists.getParameters().get(Math.min(a, numParams-1));
+                if (arity < numParams - 1) {
+                    stmts.append(makeDowncastOrDefaultVar(
+                            getCallableTempVarName(param1, forwardCallTo), param1, a, arity, forwardCallTo));
+                } else {
+                    varargs.append(gen.make().Ident(makeParamName(gen, a)));
+                }
+            }
+            JCExpression varargsSequence;
+            if (varargs.isEmpty()) {
+                varargsSequence = gen.makeEmptyAsSequential(true);
+            } else {
+                varargsSequence = gen.makeSequence(varargs.toList(), 
+                        getVariadicIteratedType(), 0);
+            }
+            SyntheticName vname = getCallableTempVarName(getVariadicParameter(), forwardCallTo).suffixedBy("$");
+            args.append(vname.makeIdent());
+            stmts.append(makeVar(getVariadicParameter(), getVariadicType(), 
+                    forwardCallTo, vname, varargsSequence));
+            return a;
+        }
+
+        /**
+         * Makes a call to {@code $call$typed()} if required, otherwise uses the 
+         * given body.
+         */
+        private void makeCallTypedCall(final int arity, ListBuffer<JCStatement> stmts, List<JCExpression> args) {
+            JCMethodInvocation chain = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getCallableTypedMethodName()), args);
+            stmts.append(gen.make().Return(chain));
+        }
+    }
+    
+    
+    /**
+     * Generates {@code $call$variadic()} methods for variadic Callables
+     */
+    class CallVariadicMethodForVariadic extends MethodWithArity {
+        
+        private final Tree.Term forwardCallTo;
+        
+        public CallVariadicMethodForVariadic(Tree.Term forwardCallTo) {
+            this.forwardCallTo = forwardCallTo;
+        }
+        
+        private int makeSequencedArgument(final int arity,
+                ListBuffer<JCStatement> stmts, ListBuffer<JCExpression> args,
+                int a) {
+            ListBuffer<JCExpression> varargs = ListBuffer.<JCExpression>lb();
+            for (; a < arity; a++) {
+                Parameter param1 = paramLists.getParameters().get(Math.min(a, numParams-1));
+                if (arity < numParams - 1) {
+                    stmts.append(makeDowncastOrDefaultVar(
+                            getCallableTempVarName(param1, forwardCallTo), param1, a, arity, forwardCallTo));
+                } else {
+                    varargs.append(gen.make().Ident(makeParamName(gen, a)));
+                }
+            }
+            JCExpression varargsSequence;
+            if (varargs.isEmpty()) {
+                varargsSequence = gen.makeEmptyAsSequential(true);
+            } else {
+                varargsSequence = gen.makeSequence(varargs.toList(), 
+                        getVariadicIteratedType(), 0);
+            }
+            SyntheticName vname = getCallableTempVarName(getVariadicParameter(), forwardCallTo).suffixedBy("$");
+            args.append(vname.makeIdent());
+            stmts.append(makeVar(getVariadicParameter(), getVariadicType(), 
+                    forwardCallTo, vname, varargsSequence));
+            return a;
+        }
+        
+        @Override
+        MethodDefinitionBuilder makeMethod(final int arity) {
+            final int arity1 = arity+1;// The arity including the Sequential parameter
+            if (arity1 < getMinimumArguments()) {
+                return null;
+            }
+            ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
+            ListBuffer<JCExpression> args = ListBuffer.lb();
+            
+            
+            /* if arity <= CALLABLE_MAX_FIZED_ARITY:
+             *   if arity == numParams:
+             *     // we're good
+             *   elseif arity < numParams:
+             *     // we append downcast parameters or defaults
+             *     for each parameter < arity:
+             *       if a < minimumParams: 
+             *         append downcast Parameter to arguments
+             *       else if parameter is defaulted:
+             *         append defaulted/empty Parameter to arguments
+             *   else: // arity > numParams
+             *     // we respread
+             *     for each parameter < minimumParameters:
+             *       if parameter is the variadic parameter:
+             *          
+             *       else:
+             *         append downcast Parameter to arguments
+             * else:
+             *   TODO
+             * 
+             * 
+             * if arity <= CALLABLE_MAX_FIZED_ARITY
+             *   for each parameter < arity:
+             *     if parameter is the variadic parameter
+             *         "respread" Break.
+             *     if a < minimumParams: 
+             *         append downcastParameter to arguments
+             *     else:
+             *         break 
+             *   does call$typed take more arguments?
+             *     is the parameter defaulted? append the default value expr to arguments
+             *     is the parameter sequenced (and possibly empty) append empty to arguments
+             */
+            if (arity <= CALLABLE_MAX_FIZED_ARITY) {
+                if (arity1 <  getMinimumParameters()) {
+                    // destructuring
+                    int a = 0;
+                    for (; a < getMinimumArguments()-1; a++) {
+                        Parameter param = paramLists.getParameters().get(a);
+                        SyntheticName name = getCallableTempVarName(param, forwardCallTo);
+                        stmts.append(makeDowncastOrDefaultVar(
+                                name, param, a, arity, forwardCallTo));
+                        args.append(name.makeIdent());
+                    }
+                    for (; a < numParams-1; a++) {
+                        // Extract from the sequential
+                        Parameter param = paramLists.getParameters().get(a);
+                        SyntheticName name = getCallableTempVarName(param, forwardCallTo);
+                        JCExpression get = gen.make().Apply(null, 
+                                gen.makeQualIdent(makeParamIdent(gen, arity), "get"), 
+                                List.<JCExpression>of(gen.expressionGen().applyErasureAndBoxing(gen.make().Literal(a), 
+                                        gen.typeFact().getIntegerDeclaration().getType(), false, BoxingStrategy.BOXED, gen.typeFact().getIntegerDeclaration().getType())));
+                        get = gen.expressionGen().applyErasureAndBoxing(get, 
+                                parameterTypes.get(a), 
+                                true, true, BoxingStrategy.UNBOXED, 
+                                parameterTypes.get(a), 0);
+                        stmts.append(makeVar(param, parameterTypes.get(a),
+                                forwardCallTo, name, get));
+                        args.append(name.makeIdent());
+                    }
+                    // Get the rest of the sequential using spanFrom()
+                    Parameter param = paramLists.getParameters().get(numParams-1);
+                    SyntheticName name = getCallableTempVarName(param, forwardCallTo);
+                    JCExpression spanFrom = gen.make().Apply(null, 
+                            gen.makeQualIdent(makeParamIdent(gen, arity), "spanFrom"), 
+                            List.<JCExpression>of(gen.expressionGen().applyErasureAndBoxing(gen.make().Literal(a), 
+                                    gen.typeFact().getIntegerDeclaration().getType(), false, BoxingStrategy.BOXED, gen.typeFact().getIntegerDeclaration().getType())));
+                    spanFrom = gen.expressionGen().applyErasureAndBoxing(spanFrom, 
+                            parameterTypes.get(a), 
+                            true, true, BoxingStrategy.UNBOXED, 
+                            parameterTypes.get(a), 0);
+                    stmts.append(makeVar(param, parameterTypes.get(a),
+                            forwardCallTo, name, spanFrom));
+                    args.append(name.makeIdent());
+                } else if (arity1 == numParams) {
+                    for (int a= 0; a < numParams; a++) {
+                        Parameter param = paramLists.getParameters().get(a);
+                        SyntheticName name = getCallableTempVarName(param, forwardCallTo);
+                        stmts.append(makeDowncastOrDefaultVar(
+                                name, param, a, arity, forwardCallTo));
+                        args.append(name.makeIdent());
+                    }
+                } else if (arity1 < numParams) {
+                    int a = 0;
+                    for (; a <= arity; a++) {
+                        Parameter param = paramLists.getParameters().get(a);
+                        if (param.isSequenced()) {
+                            // wrap this and all remaining parameters into a sequential
+                            a = makeSequencedArgument(arity, stmts, args, a);
+                            break;
+                        }
+                        if (a < getMinimumArguments()) {
+                            // append the downcast parameter
+                            stmts.append(makeDowncastOrDefaultVar(
+                                    getCallableTempVarName(param, forwardCallTo), param, a, arity, forwardCallTo));
+                            args.append(getCallableTempVarName(param, forwardCallTo).makeIdent());
+                        } else {
+                            break;
+                        }
+                    }
+                    for (; args.size() < numParams; a++) {
+                        Parameter param = paramLists.getParameters().get(a);
+                        if (param.isSequenced()) {
+                            args.append(gen.makeEmptyAsSequential(true));
+                        } else {
+                            SyntheticName name = getCallableTempVarName(param, forwardCallTo);
+                            stmts.append(makeDowncastOrDefaultVar(
+                                    name, param, a, arity, forwardCallTo));
+                            args.append(name.makeIdent());
+                        }
+                    }
+                } else { // arity1 > numParams
+                    // respread
+                    int a = 0;
+                    for (; a < numParams; a++) {
+                        Parameter param = paramLists.getParameters().get(a);
+                        if (param.isSequenced()) {
+                            break;
+                        }
+                        SyntheticName name = getCallableTempVarName(param, forwardCallTo);
+                        stmts.append(makeDowncastOrDefaultVar(
+                                name, param, a, arity, forwardCallTo));
+                        args.append(name.makeIdent());
+                    }
+                    ListBuffer<JCExpression> variadicElements = ListBuffer.lb();
+                    for (; a < arity; a++) {
+                        Parameter param = paramLists.getParameters().get(Math.min(a, numParams-1));
+                        variadicElements.append(makeParameterExpr(param, a, getVariadicIteratedType(), false));
+                    }
+                    //if (arity1 > getMinimumArguments() + 1) {
+                        ListBuffer<JCExpression> spreadCallArgs = ListBuffer.lb();
+                        spreadCallArgs.append(gen.makeReifiedTypeArgument(getVariadicIteratedType()));
+                        if (arity > CALLABLE_MAX_FIZED_ARITY) {
+                            spreadCallArgs.append(gen.make().Literal(getMinimumArguments()));
+                            spreadCallArgs.append(makeParamIdent(gen, 0));
+                        } else {
+                            spreadCallArgs.append(gen.make().Literal(0));
+                            spreadCallArgs.append(gen.make().Literal(variadicElements.size()));
+                            spreadCallArgs.append(gen.make().NewArray(gen.make().QualIdent(gen.syms().objectType.tsym), List.<JCExpression>nil(), variadicElements.toList()));
+                            spreadCallArgs.append(makeParamIdent(gen, a));
+                        }
+                        args.append(makeRespread(spreadCallArgs.toList()));
+                    //}
+                }
+                
+            } else {
+                // OLD CODE
+                int a = 0;
+                for(Parameter param : paramLists.getParameters()){
+                    if (param.isSequenced() /*|| arity1 > getMinimumArguments() + 1
+                            && a == getMinimumArguments()*/) {
+                        break;
+                    }
+                    stmts.append(makeDowncastOrDefaultVar(
+                            getCallableTempVarName(param, forwardCallTo),
+                            param, a, arity1, forwardCallTo));
+                    args.append(getCallableTempVarName(param, forwardCallTo).makeIdent());
+                    a++;
+                }
+                ListBuffer<JCExpression> lb = ListBuffer.lb();
+                for (; a < arity1-1 && a < CALLABLE_MAX_FIZED_ARITY; a++) {
+                    Parameter param = paramLists.getParameters().get(Math.min(a, numParams-1));
+                    lb.append(makeParameterExpr(param, a, getVariadicIteratedType(), false));
+                }
+                //if (arity1 > getMinimumArguments() + 1) {
+                    ListBuffer<JCExpression> spreadCallArgs = ListBuffer.lb();
+                    spreadCallArgs.append(gen.makeReifiedTypeArgument(getVariadicIteratedType()));
+                    if (arity1 > CALLABLE_MAX_FIZED_ARITY+1) {
+                        spreadCallArgs.append(gen.make().Literal(getMinimumArguments()));
+                        spreadCallArgs.append(makeParamIdent(gen, 0));
+                    } else {
+                        spreadCallArgs.append(gen.make().Literal(0));
+                        spreadCallArgs.append(gen.make().Literal(lb.size()));
+                        spreadCallArgs.append(gen.make().NewArray(gen.make().QualIdent(gen.syms().objectType.tsym), List.<JCExpression>nil(), lb.toList()));
+                        spreadCallArgs.append(makeParamIdent(gen, a));
+                    }
+                    args.append(makeRespread(spreadCallArgs.toList()));
+                //}
+            }
+            MethodDefinitionBuilder callVaryMethod = MethodDefinitionBuilder.systemMethod(gen, Naming.getCallableVariadicMethodName());
+            callVaryMethod.isOverride(true);
+            callVaryMethod.modifiers(Flags.PUBLIC);
+            ProducedType returnType = gen.getReturnTypeOfCallable(typeModel);
+            callVaryMethod.resultType(gen.makeJavaType(returnType, JT_NO_PRIMITIVES), null);
+            // Now append formal parameters
+            switch (arity1) {
+            case 4:
+                callVaryMethod.parameter(makeCallableCallParam(0, arity1-4));
+                callVaryMethod.parameter(makeCallableCallParam(0, arity1-3));
+                callVaryMethod.parameter(makeCallableCallParam(0, arity1-2));
+                callVaryMethod.parameter(makeCallableVaryParam(0, arity1-1));
+                break;
+            case 3:
+                callVaryMethod.parameter(makeCallableCallParam(0, arity1-3));
+                callVaryMethod.parameter(makeCallableCallParam(0, arity1-2));
+                callVaryMethod.parameter(makeCallableVaryParam(0, arity1-1));
+                break;
+            case 2:
+                callVaryMethod.parameter(makeCallableCallParam(0, arity1-2));
+                callVaryMethod.parameter(makeCallableVaryParam(0, arity1-1));
+                break;
+            case 1:
+                callVaryMethod.parameter(makeCallableVaryParam(0, arity1-1));
+                break;
+            case 0:
+                break;
+            default: // use varargs
+                callVaryMethod.parameter(makeCallableCallParam(Flags.VARARGS, 0));
+            }
+            
+            // Return the call result, or null if a void method
+            makeCallTypedCall(arity1, stmts, args.toList());
+            callVaryMethod.body(stmts.toList());
+            return callVaryMethod;
+        }
+        
+        /**
+         * Makes a call to {@code $call$typed()} if required, otherwise uses the 
+         * given body.
+         */
+        private void makeCallTypedCall(final int arity, ListBuffer<JCStatement> stmts, List<JCExpression> args) {
+            JCMethodInvocation chain = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getCallableTypedMethodName()), args);
+            stmts.append(gen.make().Return(chain));
+        }
+    }
+    
+    /**
+     * <ul>
+     * <li>a {@code private $call$typed()} method is generated which encodes
+     *     the actual method code,</li>
+     * <li>the {@code public $call$variadic()} methods delegate to the 
+     *     {@code $call$typed()} method,
+     *     A {@code public $call$variadic()} method is generated for each
+     *     arity greater than the number of non-defaulted parameters and less
+     *     than or equal to {@link #CALLABLE_MAX_FIZED_ARITY}, plus one 
+     *     which uses Javac varargs</li>
+     * <li>the {@code $call()} methods delegate to the {@code $call$typed()} method,
+     *     downcasting and obtaining default arguments if required,</li>
+     * <ul>
+     */
+    class VariadicCallableTransformation extends CallableTransformation {
+        
+        private final CallMethodForVariadic call;
+        private final CallVariadicMethodForVariadic callVariadic;
+        private final MethodWithArity callTyped;
+        
+        VariadicCallableTransformation(MethodWithArity callTyped, Tree.Term forwardCallTo) {
+            this.call = new CallMethodForVariadic(forwardCallTo);
+            this.callVariadic = new CallVariadicMethodForVariadic(forwardCallTo);
+            this.callTyped = callTyped;
+        }
+        
+        @Override
+        protected List<MethodDefinitionBuilder> makeMethodsForArity(int arity) {
+            List<MethodDefinitionBuilder> result = List.<MethodDefinitionBuilder>nil();
+            MethodDefinitionBuilder callVaryMethod = callVariadic.makeMethod(arity);
+            if (callVaryMethod != null) {
+                result = result.prepend(callVaryMethod);
+            }
+            MethodDefinitionBuilder callMethod = call.makeMethod(arity);
+            if (callMethod != null) {
+                result = result.prepend(callMethod);
+            }
+            return result;
+        }
+        
+        /**
+         * Make the $call$typed() method
+         */
+        @Override
+        MethodDefinitionBuilder makeCallTypedMethod() {
+            return callTyped.makeMethod(numParams);
+        }
+    }
+    
+    private CallableBuilder useTransformation(CallableTransformation transformation) {
+        this.transformation = transformation;
         return this;
     }
     
-    public CallableBuilder parameterDefaultValueMethods(Tree.ParameterList parameterListTree) {
+    
+    private CallableBuilder useDefaultTransformation(List<JCStatement> stmts) {
+        CallableTransformation tx;
+        MethodWithArity callTyped;
+        if (isVariadic) {
+            if (requiresCallTypedMethod()) {
+                callTyped = new CallTypedMethod(stmts);
+            } else {
+                callTyped = new CallMethodWithGivenBody(stmts);
+            }
+            tx = new VariadicCallableTransformation(callTyped, null);
+        } else {
+            MethodWithArity call;
+            if (requiresCallTypedMethod()) {
+                call = new CallMethodDelegatingCallTyped();
+                callTyped = new CallTypedMethod(stmts);
+            } else {
+                call = new CallMethodWithGivenBody(stmts);
+                callTyped = null;
+            }
+            tx = new FixedArityCallableTransformation(
+                    call,
+                    callTyped);
+        }
+        useTransformation(tx);
+        /*
+        FixedArityCallableTransformation tx;
+        if (requiresCallTypedMethod()) {
+            tx = new FixedArityCallableTransformation(new CallMethodDelegatingCallTyped(), new CallTypedMethod(stmts));
+        } else {
+            tx = new FixedArityCallableTransformation(new CallMethodWithGivenBody(stmts), null);
+        }
+        useTransformation(tx);
+        */
+        return this;
+    }
+    
+    private boolean requiresCallTypedMethod() {
+        return hasOptionalParameters || isVariadic;
+    }
+    
+    private CallableBuilder parameterDefaultValueMethods(Tree.ParameterList parameterListTree) {
         if (parameterDefaultValueMethods == null) {
             parameterDefaultValueMethods = ListBuffer.lb();
         }
         for(Tree.Parameter p : parameterListTree.getParameters()){
             if(Decl.getDefaultArgument(p) != null){
                 MethodDefinitionBuilder methodBuilder = gen.classGen().makeParamDefaultValueMethod(false, null, parameterListTree, p, null);
-                this.parameterDefaultValueMethods.append(methodBuilder.build());
+                this.parameterDefaultValueMethods.append(methodBuilder);
             }
         }
         return this;
@@ -367,10 +1234,12 @@ public class CallableBuilder {
         ListBuffer<JCTree> classBody = new ListBuffer<JCTree>();
         
         if (parameterDefaultValueMethods != null) {
-            classBody.appendList(parameterDefaultValueMethods);
+            for (MethodDefinitionBuilder mdb : parameterDefaultValueMethods) {
+                classBody.append(mdb.build());
+            }
         }
         
-        classBody.appendList(callMethods);
+        transformation.appendMethods(classBody);
         
         JCClassDecl classDef = gen.make().AnonymousClassDef(gen.make().Modifiers(0), classBody.toList());
         
@@ -410,200 +1279,70 @@ public class CallableBuilder {
         return parameterTypes;
     }
     
-    private JCExpression getTypedParameter(Parameter param, int argIndex, boolean varargs){
+    /**
+     * Makes an expression, (appropriately downcasted or unboxed) for the
+     * given parameter of the {@code $call()} method.
+     */
+    private JCExpression makeCallParameterExpr(Parameter param, int argIndex, boolean varargs) {
+        ProducedType paramType = parameterTypes.get(Math.min(argIndex, numParams-1));
+        return makeParameterExpr(param, argIndex, paramType, varargs);
+    }
+    
+    /**
+     * Makes an expression, (appropriately downcasted or unboxed) for the
+     * given parameter of the {@code $call()} method.
+     */
+    private JCExpression makeParameterExpr(Parameter param, int argIndex, ProducedType paramType, boolean varargs){
         JCExpression argExpr;
         if (!varargs) {
             // The Callable has overridden one of the non-varargs call() 
             // methods
-            argExpr = gen.make().Ident(
-                    makeParamName(gen, argIndex));
+            argExpr = makeParamIdent(gen, argIndex);
         } else {
             // The Callable has overridden the varargs call() method
             // so we need to index into the varargs array
             argExpr = gen.make().Indexed(
-                    gen.make().Ident(makeParamName(gen, 0)), 
+                    makeParamIdent(gen, 0), 
                     gen.make().Literal(argIndex));
         }
-        // make sure we unbox it if required
+        
         argExpr = gen.expressionGen().applyErasureAndBoxing(argExpr, 
-                parameterTypes.get(argIndex), // it came in as Object, but we need to pretend its type
+                paramType, // it came in as Object, but we need to pretend its type
                 // is the parameter type because that's how unboxing determines how it has to unbox
                 true, // it's completely erased
                 true, // it came in boxed
                 CodegenUtil.getBoxingStrategy(param.getModel()), // see if we need to box 
-                parameterTypes.get(argIndex), // see what type we need
+                paramType, // see what type we need
                 ExpressionTransformer.EXPR_DOWN_CAST); // we're effectively downcasting it from Object
         return argExpr;
     }
     
-    private void makeDefaultedCall(final int i, ListBuffer<JCStatement> stmts, 
-            Tree.Term forwardCallTo) {
-        // collect every parameter
-        int a = 0;
-        for(Parameter param : paramLists.getParameters()){
-            // don't read default parameter values for forwarded calls
-            if(forwardCallTo != null && i == a)
-                break;
-            stmts.append(makeArgumentVar(param, a, i, forwardCallTo));
-            a++;
-        }
-    }
-    private void makeCallTypedCallOrBody(final int i, ListBuffer<JCStatement> stmts, List<JCStatement> body) {
-        if(hasOptionalParameters){
-            // chain to n param typed method
-            List<JCExpression> args = List.nil();
-            // pass along the parameters
-            for(int a=paramLists.getParameters().size()-1;a>=0;a--){
-                Parameter param = paramLists.getParameters().get(a);
-                args = args.prepend(gen.makeUnquotedIdent(getCallableTempVarName(param, null)));
-            }
-            JCMethodInvocation chain = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getCallableTypedMethodName()), args);
-            stmts.append(gen.make().Return(chain));
-        }else{
-            // insert the method body directly
-            stmts.appendList(body);
-        }
-        return;
-    }
-
-    /**
-     * <p>Makes a variable declaration for variable which will be used as an 
-     * argument to a call. The variable is initialized to either the 
-     * corresponding parameter,</p> 
-     * <pre>
-     *     Foo foo = (Foo)arg0;
-     * </pre>
-     * <p>or the default value for the corresponding parameter</p>
-     * <pre>
-     *     Bar bar = $$bar(**previous-args**);
-     * </pre>
-     */
-    private JCVariableDecl makeArgumentVar(final Parameter param, 
-            final int a, final int i, Tree.Term forwardCallTo) {
-        // read the value
-        JCExpression paramExpression = getTypedParameter(param, a, i>3);
-        JCExpression varInitialExpression;
-        // TODO Suspicious
-        if(param.isDefaulted() || param.isSequenced()){
-            if(i > 3){
-                // must check if it's defined
-                JCExpression test = gen.make().Binary(JCTree.GT, gen.makeSelect(getParamName(0), "length"), gen.makeInteger(a));
-                JCExpression elseBranch = makeDefaultValueCall(param, a, forwardCallTo);
-                varInitialExpression = gen.make().Conditional(test, paramExpression, elseBranch);
-            }else if(a >= i){
-                // get its default value because we don't have it
-                varInitialExpression = makeDefaultValueCall(param, a, forwardCallTo);
-            }else{
-                // we must have it
-                varInitialExpression = paramExpression;
-            }
-        }else{
-            varInitialExpression = paramExpression;
-        }
-        // store it in a local var
-        int flags = 0;
-        if(!CodegenUtil.isUnBoxed(param.getModel())){
-            flags |= AbstractTransformer.JT_NO_PRIMITIVES;
-        }
-        // Always go raw if we're forwarding, because we're building the call ourselves and we don't get a chance to apply erasure and
-        // casting to parameter expressions when we pass them to the forwarded method. Ideally we could set it up correctly so that
-        // the proper erasure is done when we read from the Callable.call Object param, but since we store it in a variable defined here,
-        // we'd need to duplicate some of the erasure logic here to make or not the type raw, and that would be worse.
-        // Besides, named parameter invocation does the same.
-        // See https://github.com/ceylon/ceylon-compiler/issues/1005
-        if(forwardCallTo != null)
-            flags |= AbstractTransformer.JT_RAW;
-        JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(Flags.FINAL), 
-                gen.naming.makeUnquotedName(getCallableTempVarName(param, forwardCallTo)), 
-                gen.makeJavaType(parameterTypes.get(a), flags),
-                varInitialExpression);
-        return var;
-    }
-
-    private void makeForwardedInvocation(int i, ListBuffer<JCStatement> stmts, Tree.Term forwardCallTo) {
-        ProducedReference target;
-        if (forwardCallTo instanceof Tree.MemberOrTypeExpression) {
-            target = ((Tree.MemberOrTypeExpression)forwardCallTo).getTarget();
-        } else if (forwardCallTo instanceof Tree.FunctionArgument) {
-            Method method = ((Tree.FunctionArgument) forwardCallTo).getDeclarationModel();
-            target = method.getProducedReference(null, Collections.<ProducedType>emptyList());
-        } else {
-            throw new RuntimeException(forwardCallTo.getNodeType());
-        }
-        TypeDeclaration primaryDeclaration = forwardCallTo.getTypeModel().getDeclaration();
-        CallableInvocation invocationBuilder = new CallableInvocation (
-                gen,
-                forwardCallTo,
-                primaryDeclaration,
-                target,
-                gen.getReturnTypeOfCallable(forwardCallTo.getTypeModel()),
-                forwardCallTo, 
-                paramLists,
-                i);
-        boolean prevCallableInv = gen.expressionGen().withinSyntheticClassBody(true);
-        JCExpression invocation;
-        try {
-            invocation = gen.expressionGen().transformInvocation(invocationBuilder);
-        } finally {
-            gen.expressionGen().withinSyntheticClassBody(prevCallableInv);
-        }
-        stmts.append(gen.make().Return(invocation));
-    }
-
-    private String getCallableTempVarName(Parameter param, Tree.Term forwardCallTo) {
+    
+    private Naming.SyntheticName getCallableTempVarName(Parameter param, Tree.Term forwardCallTo) {
         // prefix them with $$ if we only forward, otherwise we need them to have the proper names
-        return forwardCallTo != null ? Naming.getCallableTempVarName(param) : param.getName();
-    }
-
-    private JCExpression makeDefaultValueCall(Parameter defaultedParam, int i, 
-            Tree.Term forwardCallTo){
-        if (Strategy.hasDefaultParameterValueMethod(defaultedParam)) {
-            // add the default value
-            List<JCExpression> defaultMethodArgs = List.nil();
-            // pass all the previous values
-            for(int a=i-1;a>=0;a--){
-                Parameter param = paramLists.getParameters().get(a);
-                JCExpression previousValue = gen.makeUnquotedIdent(getCallableTempVarName(param, forwardCallTo));
-                defaultMethodArgs = defaultMethodArgs.prepend(previousValue);
-            }
-            // now call the default value method
-            return defaultValueCall.makeDefaultValueMethod(gen, defaultedParam, forwardCallTo, defaultMethodArgs);
-        } else if (Strategy.hasEmptyDefaultArgument(defaultedParam)) {
-            return gen.makeEmptyAsSequential(true);
-        } else {
-            return gen.makeErroneous(forwardCallTo, "Not a defaulted parameter");
-        }
+        return gen.naming.synthetic(forwardCallTo != null ? Naming.getCallableTempVarName(param) : param.getName());
     }
     
-    private JCTree makeCallMethod(List<JCStatement> body, int numParams) {
-        MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.callable(gen);
-        callMethod.isOverride(true);
-        callMethod.modifiers(Flags.PUBLIC);
-        ProducedType returnType = gen.getReturnTypeOfCallable(typeModel);
-        callMethod.resultType(gen.makeJavaType(returnType, JT_NO_PRIMITIVES), null);
-        // Now append formal parameters
-        switch (numParams) {
-        case 3:
-            callMethod.parameter(makeCallableCallParam(0, numParams-3));
-            // fall through
-        case 2:
-            callMethod.parameter(makeCallableCallParam(0, numParams-2));
-            // fall through
-        case 1:
-            callMethod.parameter(makeCallableCallParam(0, numParams-1));
-            break;
-        case 0:
-            break;
-        default: // use varargs
-            callMethod.parameter(makeCallableCallParam(Flags.VARARGS, 0));
+
+    class CallTypedMethod extends MethodWithArity {
+
+        private final List<JCStatement> stmts;
+
+        public CallTypedMethod(List<JCStatement> stmts) {
+            this.stmts = stmts;
         }
         
-        // Return the call result, or null if a void method
-        callMethod.body(body);
-        return callMethod.build();
+        @Override
+        MethodDefinitionBuilder makeMethod(int arity) {
+            return makeCallTypedMethod(stmts);
+        }
+        
     }
-
-    private JCTree makeCallTypedMethod(List<JCStatement> body) {
+    
+    /**
+     * Makes the {@code call$typed()} method, using the given body.
+     */
+    private MethodDefinitionBuilder makeCallTypedMethod(List<JCStatement> body) {
         // make the method
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.systemMethod(gen, Naming.getCallableTypedMethodName());
         methodBuilder.noAnnotations();
@@ -621,11 +1360,15 @@ public class CallableBuilder {
         }
         // Return the call result, or null if a void method
         methodBuilder.body(body);
-        return methodBuilder.build();
+        return methodBuilder;
     }
 
     private static Name makeParamName(AbstractTransformer gen, int paramIndex) {
         return gen.names().fromString(getParamName(paramIndex));
+    }
+    
+    private static JCExpression makeParamIdent(AbstractTransformer gen, int paramIndex) {
+        return gen.make().Ident(gen.names().fromString(getParamName(paramIndex)));
     }
 
     private static String getParamName(int paramIndex) {
@@ -646,4 +1389,113 @@ public class CallableBuilder {
                 makeParamName(gen, ii), type, null);
                 */
     }
+    
+    private ParameterDefinitionBuilder makeCallableVaryParam(long flags, int ii) {
+        ProducedType iteratedType = gen.typeFact().getIteratedType(parameterTypes.get(parameterTypes.size()-1));
+        // $call$var()'s variadic parameter is *always* erasred to Sequential
+        // even if it's a Variadic+ parameter
+        JCExpression type = gen.makeJavaType(gen.typeFact().getSequentialType(iteratedType), AbstractTransformer.JT_RAW);
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, getParamName(ii));
+        pdb.modifiers(Flags.FINAL | flags);
+        pdb.type(type, null);
+        return pdb;
+        /*
+        return gen.make().VarDef(gen.make().Modifiers(Flags.FINAL | Flags.PARAMETER | flags), 
+                makeParamName(gen, ii), type, null);
+                */
+    }
+    
+    /**
+     * <p>Makes a variable declaration for a variable which will be used as an 
+     * argument to a call. The variable is initialized to either the 
+     * corresponding parameter,</p> 
+     * <pre>
+     *     Foo foo = (Foo)arg0;
+     * </pre>
+     * <p>or the default value for the corresponding parameter</p>
+     * <pre>
+     *     Bar bar = $$bar(**previous-args**);
+     * </pre>
+     */
+    protected JCVariableDecl makeDowncastOrDefaultVar(
+            Naming.SyntheticName name,
+            final Parameter param, 
+            final int a, final int arity, Tree.Term forwardCallTo) {
+        JCExpression varInitialExpression = makeDowncastOrDefault(param, a, arity, forwardCallTo);
+        JCVariableDecl var = makeVar(param, parameterTypes.get(a), forwardCallTo,
+                name, varInitialExpression);
+        return var;
+    }
+
+    protected JCVariableDecl makeVar(final Parameter param, ProducedType parameterType,
+            Tree.Term forwardCallTo, Naming.SyntheticName name, JCExpression expr) {
+        // store it in a local var
+        int flags = 0;
+        if(!CodegenUtil.isUnBoxed(param.getModel())){
+            flags |= AbstractTransformer.JT_NO_PRIMITIVES;
+        }
+        // Always go raw if we're forwarding, because we're building the call ourselves and we don't get a chance to apply erasure and
+        // casting to parameter expressions when we pass them to the forwarded method. Ideally we could set it up correctly so that
+        // the proper erasure is done when we read from the Callable.call Object param, but since we store it in a variable defined here,
+        // we'd need to duplicate some of the erasure logic here to make or not the type raw, and that would be worse.
+        // Besides, named parameter invocation does the same.
+        // See https://github.com/ceylon/ceylon-compiler/issues/1005
+        if(forwardCallTo != null)
+            flags |= AbstractTransformer.JT_RAW;
+        JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(Flags.FINAL), 
+                name.asName(), 
+                gen.makeJavaType(parameterType, flags),
+                expr);
+        return var;
+    }
+
+    protected JCExpression makeDowncastOrDefault(final Parameter param,
+            final int a, final int arity, Tree.Term forwardCallTo) {
+        // read the value
+        JCExpression paramExpression = makeCallParameterExpr(param, a, arity > CALLABLE_MAX_FIZED_ARITY);
+        JCExpression varInitialExpression;
+        // TODO Suspicious
+        if(param.isDefaulted() || param.isSequenced()){
+            if(arity > CALLABLE_MAX_FIZED_ARITY){
+                // must check if it's defined
+                JCExpression test = gen.make().Binary(JCTree.GT, gen.makeSelect(getParamName(0), "length"), gen.makeInteger(a));
+                JCExpression elseBranch = makeDefaultValueCall(param, a, forwardCallTo);
+                varInitialExpression = gen.make().Conditional(test, paramExpression, elseBranch);
+            }else if(a >= arity && Strategy.hasDefaultParameterValueMethod(param)){
+                // get its default value because we don't have it
+                varInitialExpression = makeDefaultValueCall(param, a, forwardCallTo);
+            }else{
+                // we must have it
+                varInitialExpression = paramExpression;
+            }
+        }else{
+            varInitialExpression = paramExpression;
+        }
+        return varInitialExpression;
+    }
+    
+    /**
+     * Makes an invocation of a default parameter value method (if the 
+     * parameter is defaulted), or empty (if it's *variadic)
+     */
+    private JCExpression makeDefaultValueCall(Parameter defaultedParam, int i, 
+            Tree.Term forwardCallTo){
+        if (Strategy.hasDefaultParameterValueMethod(defaultedParam)) {
+            // add the default value
+            List<JCExpression> defaultMethodArgs = List.nil();
+            // pass all the previous values
+            for(int a=i-1;a>=0;a--){
+                Parameter param = paramLists.getParameters().get(a);
+                JCExpression previousValue = getCallableTempVarName(param, forwardCallTo).makeIdent();
+                defaultMethodArgs = defaultMethodArgs.prepend(previousValue);
+            }
+            // now call the default value method
+            return defaultValueCall.makeDefaultValueMethod(gen, defaultedParam, forwardCallTo, defaultMethodArgs);
+        } else if (Strategy.hasEmptyDefaultArgument(defaultedParam)) {
+            return gen.makeEmptyAsSequential(true);
+        } else {
+            return gen.makeErroneous(forwardCallTo, "Not a defaulted parameter");
+        }
+    }
+
 }
