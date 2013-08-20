@@ -402,7 +402,18 @@ class IndirectInvocationBuilder extends SimpleInvocation {
         // pretend they are typed, this saves a lot of casting.
         // except for sequenced parameters where we do care about the iterated type
         if(isParameterSequenced(argIndex)){
-            return parameterTypes.get(parameterTypes.size()-1);
+            if (isArgumentSpread(argIndex) 
+                    && isParameterVariadicPlus(argIndex)) {
+                // We might end up calling Util.sequentialInstance to handle 
+                // the spread and if the spread argument is empty, we need to 
+                // transform it to something of sequential type so we can 
+                // call sequentialInstance(). 
+                // No worries if we don't end up calling sequentialInstance(), 
+                // because the call it indirect, so not type-safe at the Java level anyway
+                return gen.typeFact().getSequentialType(gen.typeFact().getIteratedType(parameterTypes.get(parameterTypes.size()-1)));
+            } else {
+                return parameterTypes.get(parameterTypes.size()-1);
+            }
         }
         return gen.typeFact().getObjectDeclaration().getType();
     }
