@@ -2433,6 +2433,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                     true, boxingStrategy, paramType);
             JCExpression argType = makeJavaType(paramType, boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
             result = result.append(new ExpressionAndType(tupleElement, argType));
+        } else if (variadic
+                && invocation.isIndirect()
+                && argumentsToExtract == minimumTupleArguments
+                && !tupleUnbounded) {
+            result = result.append(new ExpressionAndType(makeEmptyAsSequential(true), makeJavaType(typeFact().getSequenceType(typeFact().getAnythingDeclaration().getType()), JT_RAW)));
         }
         return result;
     }
