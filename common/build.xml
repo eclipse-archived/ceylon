@@ -37,7 +37,7 @@
     </target>
 
     <!-- project compilation -->
-    <target name="compile" description="compile the type checker">
+    <target name="compile" description="compile Ceylon common">
         <mkdir dir="${build.classes}" />
         <javac
             srcdir="${src}"
@@ -64,7 +64,7 @@
         <fail if="value" />
         <basename file="${file}" property="filename" />
         <checksum file="${file}" property="value" algorithm="sha1" />
-        <echo file="${file}.sha1" message="${value}${checksum.binary-prefix}${filename}" />
+        <echo file="${file}.sha1" message="${value}" />
     </target>
 
     <!-- Repository targets -->
