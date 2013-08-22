@@ -400,7 +400,7 @@
         <fail if="value"/>
         <basename file="${file}" property="filename"/>
         <checksum file="${file}" property="value" algorithm="sha1"/>
-        <echo file="${file}.sha1" message="${value}${checksum.binary-prefix}${filename}"/>
+        <echo file="${file}.sha1" message="${value}"/>
     </target>
     <!-- Repository targets -->
     <target name="init.repo"
