@@ -177,7 +177,21 @@ function AppliedFunction(m,o) {
   for (x in f.getT$all()) { T$all[x]=f.getT$all()[x]; }
   f.getT$all=function() {return T$all; };
   //TODO add type arguments
-  f.$$targs$$={Type:mm.$t,Arguments:{t:Anything}};
+  var types = {t:Empty};
+  var t2s = [];
+  for (var i=mm.$ps.length-1; i>=0; i--) {
+    var e;
+    t2s.push(mm.$ps[i].$t);
+    if (t2s.length == 1) {
+      e = mm.$ps[i].$t;
+    } else {
+      var lt=[];
+      for (var j=0;j<t2s.legth;j++)lt.push(t2s[j]);
+      e = {t:'u', l:lt};
+    }
+    types = {t:Tuple,a:{Rest:types,First:mm.$ps[i].$t,Element:e}};
+  }
+  f.$$targs$$={Type:mm.$t,Arguments:types};
   return f;
 }
 
