@@ -45,15 +45,15 @@ public final class unflatten_ {
                 case 1:
                     // if the first param is variadic, just pass the sequence along
                     if(variadicParameterIndex == 0)
-                        return flatFunction.$call(seq);
+                        return flatFunction.$call$variadic(seq);
                     return flatFunction.$call(seq.get(Integer.instance(0)));
                 case 2:
                     switch(variadicParameterIndex){
                     // pass the sequence along
-                    case 0: return flatFunction.$call(seq);
+                    case 0: return flatFunction.$call$variadic(seq);
                     // extract the first, pass the rest
-                    case 1: return flatFunction.$call(seq.get(Integer.instance(0)), 
-                                                      seq.spanFrom(Integer.instance(1)));
+                    case 1: return flatFunction.$call$variadic(seq.get(Integer.instance(0)), 
+                                                      (Sequential)seq.spanFrom(Integer.instance(1)));
                     // no variadic param, or after we run out of elements to pass
                     default:
                         return flatFunction.$call(seq.get(Integer.instance(0)), 
@@ -62,14 +62,14 @@ public final class unflatten_ {
                 case 3:
                     switch(variadicParameterIndex){
                     // pass the sequence along
-                    case 0: return flatFunction.$call(seq);
+                    case 0: return flatFunction.$call$variadic(seq);
                     // extract the first, pass the rest
-                    case 1: return flatFunction.$call(seq.get(Integer.instance(0)), 
-                                                      seq.spanFrom(Integer.instance(1)));
+                    case 1: return flatFunction.$call$variadic(seq.get(Integer.instance(0)), 
+                                                      (Sequential)seq.spanFrom(Integer.instance(1)));
                     // extract the first and second, pass the rest
-                    case 2: return flatFunction.$call(seq.get(Integer.instance(0)),
+                    case 2: return flatFunction.$call$variadic(seq.get(Integer.instance(0)),
                                                       seq.get(Integer.instance(1)),
-                                                      seq.spanFrom(Integer.instance(2)));
+                                                      (Sequential)seq.spanFrom(Integer.instance(2)));
                     // no variadic param, or after we run out of elements to pass
                     default:
                     return flatFunction.$call(seq.get(Integer.instance(0)), 
@@ -79,14 +79,18 @@ public final class unflatten_ {
                 default:
                     switch(variadicParameterIndex){
                     // pass the sequence along
-                    case 0: return flatFunction.$call(seq);
+                    case 0: return flatFunction.$call$variadic(seq);
                     // extract the first, pass the rest
-                    case 1: return flatFunction.$call(seq.get(Integer.instance(0)), 
-                                                      seq.spanFrom(Integer.instance(1)));
+                    case 1: return flatFunction.$call$variadic(seq.get(Integer.instance(0)), 
+                                                     (Sequential)seq.spanFrom(Integer.instance(1)));
                     // extract the first and second, pass the rest
-                    case 2: return flatFunction.$call(seq.get(Integer.instance(0)),
+                    case 2: return flatFunction.$call$variadic(seq.get(Integer.instance(0)),
                                                       seq.get(Integer.instance(1)),
-                                                      seq.spanFrom(Integer.instance(2)));
+                                                      (Sequential)seq.spanFrom(Integer.instance(2)));
+                    case 3: return flatFunction.$call$variadic(seq.get(Integer.instance(0)),
+                                                    seq.get(Integer.instance(1)),
+                                                    seq.get(Integer.instance(2)),
+                                                    (Sequential)seq.spanFrom(Integer.instance(3)));
                     // no variadic param
                     case -1:
                         java.lang.Object[] args = Util.toArray(seq, new java.lang.Object[(int) seq.getSize()]);
@@ -106,6 +110,7 @@ public final class unflatten_ {
                         // add the remainder as a variadic arg if required
                         if(needsVariadic){
                             args[i] = seq.spanFrom(Integer.instance(beforeVariadic));
+                            return flatFunction.$call$variadic(args);
                         }
                         return flatFunction.$call(args);
                     }
