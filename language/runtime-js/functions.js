@@ -136,7 +136,7 @@ function isOfTypes(obj, types) {
     return _ints ? inters||unions : unions;
 }
 function extendsType(t1, t2) {
-    if (t1 === undefined) {
+    if (t1 === undefined || t1.t === undefined) {
         return true;//t2 === undefined;
     } else if (t1 === null) {
         return t2.t === Null;

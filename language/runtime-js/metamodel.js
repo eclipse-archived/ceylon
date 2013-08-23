@@ -63,7 +63,7 @@ function typeLiteral$model($$targs$$) {
       } else if (mdl['$mt'] === 'ifc') {
         return AppliedInterface(t,mdl['$tp']);
       } else if (mdl['$mt'] === 'mthd') {
-        return AppliedFunction(t,{Type:mm.$t,Arguments:mm.$ps});
+        return AppliedFunction(t);
       } else if (mdl['$mt'] === 'attr' || mdl['$mt'] === 'gttr') {
         return AppliedValue(t,{Container:{t:mm.$cont},Type:mm.$t});
       } else {
