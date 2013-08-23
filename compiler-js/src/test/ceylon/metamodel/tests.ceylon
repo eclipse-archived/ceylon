@@ -24,6 +24,8 @@ void literals<T>() {
     Method<Iterable<String>,Iterable<String>,[Integer]> ftaking = `Iterable<String>.taking`;
     FunctionDeclaration fdecl = `Iterable.taking`;
     value taking1 = fdecl.bindAndApply({1,2,3,4,5});
+    check(!taking1 is Function<String,[String]>, "taking1 is NOT String(String)");
+    check(!taking1 is Function<{Integer*},[String]>, "taking1 is NOT {Integer*}(String)");
     if (is Function<Iterable<Integer>,[Integer]> taking1) {
       check(taking1(3).sequence=={1,2,3}, "Function Iterable.taking failed");
     } else {
