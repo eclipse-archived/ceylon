@@ -24,7 +24,7 @@ Exception.$$.prototype.printStackTrace = function() {
       if (i==0) {
         if (this.$loc && this.$file) _src = ' (' + this.$file + " " + this.$loc + ')';
       }
-      print("    at " + mm[0] + "::" + mm.d[mm.d.length-1] + _src);
+      print("    at " + mm.d[0] + "::" + mm.d[mm.d.length-1] + _src);
     }
   }
 }
