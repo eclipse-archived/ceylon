@@ -1,3 +1,3 @@
-void javaMethod(JavaDeprecated t){
+void javaDeprecatedMethod(JavaDeprecated t){
     
 }
