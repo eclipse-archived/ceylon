@@ -76,7 +76,7 @@ public class TypeUtils {
             boolean hasParams = pt.getTypeArgumentList() != null && !pt.getTypeArgumentList().isEmpty();
             boolean closeBracket = false;
             if (composite) {
-                outputTypeList(node, d, gen, true);
+                outputTypeList(node, d, gen);
             } else if (d instanceof TypeParameter) {
                 resolveTypeParameter(node, (TypeParameter)d, gen);
             } else {
@@ -146,7 +146,7 @@ public class TypeUtils {
      * the property "a", or a union/intersection type with "u" or "i" under property "t" and the list
      * of types that compose it in an array under the property "l", or a type parameter as a reference to
      * already existing params. */
-    static void typeNameOrList(Node node, ProducedType pt, GenerateJsVisitor gen, boolean typeReferences) {
+    static void typeNameOrList(Node node, ProducedType pt, GenerateJsVisitor gen) {
         TypeDeclaration type = pt.getDeclaration();
         if (type.isAlias()) {
             type = type.getExtendedTypeDeclaration();
@@ -154,8 +154,8 @@ public class TypeUtils {
         boolean unionIntersection = type instanceof UnionType
                 || type instanceof IntersectionType;
         if (unionIntersection) {
-            outputTypeList(node, type, gen, typeReferences);
-        } else if (typeReferences) {
+            outputTypeList(node, type, gen);
+        } else {
             if (type instanceof TypeParameter) {
                 resolveTypeParameter(node, (TypeParameter)type, gen);
             } else {
@@ -167,13 +167,11 @@ public class TypeUtils {
                 }
                 gen.out("}");
             }
-        } else {
-            gen.out("'", type.getQualifiedNameString(), "'");
         }
     }
 
     /** Appends an object with the type's type and list of union/intersection types. */
-    static void outputTypeList(Node node, TypeDeclaration type, GenerateJsVisitor gen, boolean typeReferences) {
+    static void outputTypeList(Node node, TypeDeclaration type, GenerateJsVisitor gen) {
         gen.out("{ t:'");
         final List<ProducedType> subs;
         if (type instanceof IntersectionType) {
@@ -187,7 +185,7 @@ public class TypeUtils {
         boolean first = true;
         for (ProducedType t : subs) {
             if (!first) gen.out(",");
-            typeNameOrList(node, t, gen, typeReferences);
+            typeNameOrList(node, t, gen);
             first = false;
         }
         gen.out("]}");
@@ -317,7 +315,7 @@ public class TypeUtils {
         gen.out("(", tmp, "=");
         term.visit(gen);
         gen.out(",", GenerateJsVisitor.getClAlias(), "isOfType(", tmp, ",");
-        TypeUtils.typeNameOrList(term, t, gen, true);
+        TypeUtils.typeNameOrList(term, t, gen);
         gen.out(")?", tmp, ":");
         gen.generateThrow("dynamic objects cannot be used here", term);
         gen.out(")");

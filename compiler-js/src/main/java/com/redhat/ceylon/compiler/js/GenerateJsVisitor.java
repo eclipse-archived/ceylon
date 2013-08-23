@@ -798,7 +798,7 @@ public class GenerateJsVisitor extends Visitor
                             out(clAlias, "add_type_arg(");
                             self(d);
                             out(",'", e.getKey().getName(), "',");
-                            TypeUtils.typeNameOrList(that, e.getValue(), this, true);
+                            TypeUtils.typeNameOrList(that, e.getValue(), this);
                             out(");");
                             endLine();
                         }
@@ -3709,7 +3709,7 @@ public class GenerateJsVisitor extends Visitor
         }
         out(",");
         if (type!=null) {
-            TypeUtils.typeNameOrList(term, type.getTypeModel(), this, true);
+            TypeUtils.typeNameOrList(term, type.getTypeModel(), this);
         }
         out(")");
     }
@@ -4378,7 +4378,7 @@ public class GenerateJsVisitor extends Visitor
             qualify(that,d);
             out(names.name(d));
         } else {
-            TypeUtils.typeNameOrList(that, ltype, this, true);
+            TypeUtils.typeNameOrList(that, ltype, this);
         }
         out("})");
     }
