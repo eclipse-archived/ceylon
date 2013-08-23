@@ -64,6 +64,7 @@ issue235_1 void testIssue235_1() {
 issue235_2 void testIssue235_2() {
 }
 
+//annotest1("should be two")
 annotest2{count=5;}
 shared void test() {
   value a1 = annotations(`AnnoTest1`, `Example1`);
