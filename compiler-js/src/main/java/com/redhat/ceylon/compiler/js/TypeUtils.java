@@ -344,7 +344,22 @@ public class TypeUtils {
     /** This method encodes the type parameters of a Tuple (taken from a Callable) in the same way
      * as a parameter list for runtime. */
     void encodeTupleAsParameterListForRuntime(ProducedType _callable, GenerateJsVisitor gen) {
-        if (!_callable.getProducedTypeQualifiedName().startsWith("ceylon.language::Callable<")) {
+        if (_callable.getCaseTypes() != null) {
+            for (ProducedType pt : _callable.getCaseTypes()) {
+                if (pt.getProducedTypeQualifiedName().startsWith("ceylon.language::Callable<")) {
+                    _callable = pt;
+                    break;
+                }
+            }
+        } else if (_callable.getSatisfiedTypes() != null) {
+            for (ProducedType pt : _callable.getSatisfiedTypes()) {
+                if (pt.getProducedTypeQualifiedName().startsWith("ceylon.language::Callable<")) {
+                    _callable = pt;
+                    break;
+                }
+            }
+        }
+        if (!_callable.getProducedTypeQualifiedName().contains("ceylon.language::Callable<")) {
             gen.out("[/*WARNING: got ", _callable.getProducedTypeQualifiedName(), " instead of Callable*/]");
             return;
         }
@@ -368,7 +383,7 @@ public class TypeUtils {
                 metamodelTypeNameOrList(gen.getCurrentPackage(), _tuple.getTypeArgumentList().get(0), gen);
                 _tuple = _tuple.getTypeArgumentList().get(0);
             } else {
-                System.out.println("WTF? Tuple is actually " + _tuple.getProducedTypeQualifiedName() + ", " + _tuple.getClass().getName());
+                System.out.println("WARNING! Tuple is actually " + _tuple.getProducedTypeQualifiedName() + ", " + _tuple.getClass().getName());
                 if (pos > 100) {
                     System.exit(1);
                 }
