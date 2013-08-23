@@ -168,8 +168,19 @@ function $init$AppliedIntersectionType(){
 exports.$init$AppliedIntersectionType$model=$init$AppliedIntersectionType;
 $init$AppliedIntersectionType();
 
-function AppliedFunction(that) {
-  return that;
+function AppliedFunction(m,o) {
+  if (o) {
+    var f = function(){return m.apply(o,arguments);}
+    var mm=m.$$metamodel$$;
+    if (typeof(mm)==='function') {mm=mm();m.$$metamodel$$=mm;}
+    f.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language.model','Function'],$t:mm.$t,$ps:mm.$ps,$an:mm.$an};
+    var T$all={'ceylon.language.model::Function':Function$model};
+    for (x in f.getT$all()) { T$all[x]=f.getT$all()[x]; }
+    f.getT$all=function() {return T$all; };
+    //TODO add type arguments
+    return f;
+  }
+  return m;
 }
 
 

@@ -48,8 +48,8 @@ function $init$OpenFunction(){
               var $$openFunction=this;
               if(types$4===undefined){types$4=getEmpty();}
               //TODO check for naming rules
-              //TODO what else can be asked of an applied function?
-              return instance$3[this.name];
+              //WTF is types argument for?
+              return AppliedFunction(instance$3[this.name],instance$3);
             };$$openFunction.bindAndApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Function$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Object$}},{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$model}}}}],$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','FunctionDeclaration','$m','bindAndApply']};};
             
             //MethodDefinition memberApply at caca.ceylon (22:4-23:54)
