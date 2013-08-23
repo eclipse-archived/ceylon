@@ -29,37 +29,37 @@ public final class unflatten_ {
         
         return new AbstractCallable<Return>($reifiedReturn, $reifiedArgs, null, (short)-1) {
 
-			@Override
-			public Return $call() {
-				throw new UnsupportedOperationException();
-			}
+            @Override
+            public Return $call() {
+                throw new UnsupportedOperationException();
+            }
 
-			@Override
-			public Return $call(java.lang.Object arg0) {
-				Sequential seq = (Sequential) arg0;
-				int variadicParameterIndex = flatFunction.$getVariadicParameterIndex();
-				switch ((int) seq.getSize()) {
-				case 0:
-				    // even if the function is variadic it will overload $call so we're good
-					return flatFunction.$call();
-				case 1:
-				    // if the first param is variadic, just pass the sequence along
-				    if(variadicParameterIndex == 0)
-				        return flatFunction.$call(seq);
-					return flatFunction.$call(seq.get(Integer.instance(0)));
-				case 2:
-				    switch(variadicParameterIndex){
-				    // pass the sequence along
-				    case 0: return flatFunction.$call(seq);
-				    // extract the first, pass the rest
-				    case 1: return flatFunction.$call(seq.get(Integer.instance(0)), 
-				                                      seq.spanFrom(Integer.instance(1)));
-				    // no variadic param, or after we run out of elements to pass
-				    default:
-				        return flatFunction.$call(seq.get(Integer.instance(0)), 
-				                                  seq.get(Integer.instance(1)));
-				    }
-				case 3:
+            @Override
+            public Return $call(java.lang.Object arg0) {
+                Sequential seq = (Sequential) arg0;
+                int variadicParameterIndex = flatFunction.$getVariadicParameterIndex();
+                switch ((int) seq.getSize()) {
+                case 0:
+                    // even if the function is variadic it will overload $call so we're good
+                    return flatFunction.$call();
+                case 1:
+                    // if the first param is variadic, just pass the sequence along
+                    if(variadicParameterIndex == 0)
+                        return flatFunction.$call(seq);
+                    return flatFunction.$call(seq.get(Integer.instance(0)));
+                case 2:
+                    switch(variadicParameterIndex){
+                    // pass the sequence along
+                    case 0: return flatFunction.$call(seq);
+                    // extract the first, pass the rest
+                    case 1: return flatFunction.$call(seq.get(Integer.instance(0)), 
+                                                      seq.spanFrom(Integer.instance(1)));
+                    // no variadic param, or after we run out of elements to pass
+                    default:
+                        return flatFunction.$call(seq.get(Integer.instance(0)), 
+                                                  seq.get(Integer.instance(1)));
+                    }
+                case 3:
                     switch(variadicParameterIndex){
                     // pass the sequence along
                     case 0: return flatFunction.$call(seq);
@@ -72,11 +72,11 @@ public final class unflatten_ {
                                                       seq.spanFrom(Integer.instance(2)));
                     // no variadic param, or after we run out of elements to pass
                     default:
-					return flatFunction.$call(seq.get(Integer.instance(0)), 
-							                  seq.get(Integer.instance(1)), 
-							                  seq.get(Integer.instance(2)));
+                    return flatFunction.$call(seq.get(Integer.instance(0)), 
+                                              seq.get(Integer.instance(1)), 
+                                              seq.get(Integer.instance(2)));
                     }
-				default:
+                default:
                     switch(variadicParameterIndex){
                     // pass the sequence along
                     case 0: return flatFunction.$call(seq);
@@ -109,24 +109,24 @@ public final class unflatten_ {
                         }
                         return flatFunction.$call(args);
                     }
-				}
-			}
+                }
+            }
 
-			@Override
-			public Return $call(java.lang.Object arg0, java.lang.Object arg1) {
-				throw new UnsupportedOperationException();
-			}
+            @Override
+            public Return $call(java.lang.Object arg0, java.lang.Object arg1) {
+                throw new UnsupportedOperationException();
+            }
 
-			@Override
-			public Return $call(java.lang.Object arg0, java.lang.Object arg1, java.lang.Object arg2) {
-				throw new UnsupportedOperationException();
-			}
+            @Override
+            public Return $call(java.lang.Object arg0, java.lang.Object arg1, java.lang.Object arg2) {
+                throw new UnsupportedOperationException();
+            }
 
-			@Override
-			public Return $call(java.lang.Object... args) {
-				throw new UnsupportedOperationException();
-			}
-			
+            @Override
+            public Return $call(java.lang.Object... args) {
+                throw new UnsupportedOperationException();
+            }
+            
 
             
             public java.lang.String toString() {

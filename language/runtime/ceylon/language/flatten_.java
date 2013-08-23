@@ -29,43 +29,43 @@ public final class flatten_ {
         return new AbstractCallable<Return>($reifiedReturn, $reifiedArgs, 
                 null, (short)-1) {
 
-			@Override
-			public Return $call() {
-				return tupleFunction.$call();
-			}
+            @Override
+            public Return $call() {
+                return tupleFunction.$call();
+            }
 
-			@Override
-			public Return $call(java.lang.Object arg0) {
-			    // FIXME: implement reified
-				return tupleFunction.$call(new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, arg0, empty_.$get()));
-			}
-
-			@Override
-			public Return $call(java.lang.Object arg0, java.lang.Object arg1) {
+            @Override
+            public Return $call(java.lang.Object arg0) {
                 // FIXME: implement reified
-				return tupleFunction.$call(new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
-				                           arg0, new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
-				                                           arg1, empty_.$get())));
-			}
+                return tupleFunction.$call(new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, arg0, empty_.$get()));
+            }
 
-			@Override
-			public Return $call(java.lang.Object arg0, java.lang.Object arg1, java.lang.Object arg2) {
+            @Override
+            public Return $call(java.lang.Object arg0, java.lang.Object arg1) {
                 // FIXME: implement reified
-				return tupleFunction.$call(new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
-				                           arg0, new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
-				                                           arg1, new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
-				                                                           arg2, empty_.$get()))));
-			}
+                return tupleFunction.$call(new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
+                                           arg0, new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
+                                                           arg1, empty_.$get())));
+            }
 
-			@Override
-			public Return $call(java.lang.Object... args) {
-				Sequential t = empty_.$get();
-				for (int i=args.length-1;i>=0;i--) {
-				    // FIXME: implement reified
-					t = new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, args[i], t);
-				}
-				return tupleFunction.$call(t);
-			}
+            @Override
+            public Return $call(java.lang.Object arg0, java.lang.Object arg1, java.lang.Object arg2) {
+                // FIXME: implement reified
+                return tupleFunction.$call(new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
+                                           arg0, new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
+                                                           arg1, new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
+                                                                           arg2, empty_.$get()))));
+            }
+
+            @Override
+            public Return $call(java.lang.Object... args) {
+                Sequential t = empty_.$get();
+                for (int i=args.length-1;i>=0;i--) {
+                    // FIXME: implement reified
+                    t = new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, args[i], t);
+                }
+                return tupleFunction.$call(t);
+            }
             
             public java.lang.String toString() {
                 return $getType().toString();
