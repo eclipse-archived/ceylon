@@ -307,6 +307,7 @@ public class Naming implements LocalId {
             helper.append(klass.getName());
             if (Decl.isCeylon(klass)) {
                 if (flags.contains(DeclNameFlag.COMPANION)
+                    && Decl.isLocal(klass)
                     && last) {
                     helper.append(IMPL_POSTFIX);
                 } else if (flags.contains(DeclNameFlag.ANNOTATION)
