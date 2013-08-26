@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.nesting;
 
 interface MethodReturningInner$CI<T> {
     
-    public .com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner$CI<T> $com$redhat$ceylon$compiler$java$test$structure$nesting$MethodReturningInner$CI$impl();
+    public .com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner<T>.CI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$MethodReturningInner$CI$impl();
     
     public .com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner<T>.CI$impl.CIC CIC$new();
     

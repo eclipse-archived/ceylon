@@ -153,7 +153,7 @@ public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runti
 public interface OuterInterface$InnerInterface<Outer, Inner> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface$InnerInterface<Outer, Inner> $com$redhat$ceylon$compiler$java$test$structure$reified$OuterInterface$impl$InnerInterface$impl();
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface$impl<Outer>.InnerInterface$impl<Inner> $com$redhat$ceylon$compiler$java$test$structure$reified$OuterInterface$impl$InnerInterface$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.Shared$annotation

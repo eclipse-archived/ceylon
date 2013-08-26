@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.nesting.ici;
 
 interface I$IC$ICI<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
-    public .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$IC$ICI<T, X> $com$redhat$ceylon$compiler$java$test$structure$nesting$ici$I$impl$IC$ICI$impl();
+    public .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl<T, X>.IC.ICI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$ici$I$impl$IC$ICI$impl();
 }
 interface I<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
