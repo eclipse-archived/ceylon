@@ -16,7 +16,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ConditionScope;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.ImportList;
@@ -52,8 +51,8 @@ import com.redhat.ceylon.compiler.typechecker.util.UnitFactory;
  *
  */
 public class DeclarationVisitor extends Visitor {
-	
-	private final Package pkg;
+    
+    private final Package pkg;
     private final String filename;
     private Scope scope;
     private Unit unit;
@@ -65,7 +64,7 @@ public class DeclarationVisitor extends Visitor {
     protected UnitFactory unitFactory;
     
     public DeclarationVisitor(Package pkg, String filename,
-    		String fullPath, String relativePath, UnitFactory unitFactory) {
+            String fullPath, String relativePath, UnitFactory unitFactory) {
         scope = pkg;
         this.pkg = pkg;
         this.filename = filename;
@@ -111,7 +110,7 @@ public class DeclarationVisitor extends Visitor {
         unit.addDeclaration(model);
         Scope sc = getContainer(that);
         if (!(sc instanceof Package)) {
-        	sc.getMembers().add(model);
+            sc.getMembers().add(model);
         }
         
         handleDeclarationAnnotations(that, model);        
@@ -209,20 +208,20 @@ public class DeclarationVisitor extends Visitor {
         model.setContainer(getContainer(that));
     }
 
-	private Scope getContainer(Node that) {
+    private Scope getContainer(Node that) {
         if (that instanceof Tree.Declaration &&
-        		!(that instanceof Tree.Parameter) &&
-        		!(that instanceof Tree.Variable)) {
-        	Scope s = scope;
-        	while (s instanceof ConditionScope) {
-        		s = s.getScope();
-        	}
-			return s;
-		} 
+                !(that instanceof Tree.Parameter) &&
+                !(that instanceof Tree.Variable)) {
+            Scope s = scope;
+            while (s instanceof ConditionScope) {
+                s = s.getScope();
+            }
+            return s;
+        } 
         else {
-			return scope;
-		}
-	}
+            return scope;
+        }
+    }
     
     @Override
     public void visitAny(Node that) {
@@ -280,7 +279,10 @@ public class DeclarationVisitor extends Visitor {
         exitScope(o);
         if (that.getParameterList()==null) {
             that.addError("missing parameter list in class declaration: " + 
-                    name(that.getIdentifier()), 1000);
+                    name(that.getIdentifier()) + " must have a parameter list", 1000);
+        }
+        else {
+            c.addParameterList(that.getParameterList().getModel());
         }
         //TODO: is this still necessary??
         if (c.isClassOrInterfaceMember() && 
@@ -295,9 +297,6 @@ public class DeclarationVisitor extends Visitor {
             that.addError("class may not be both formal and final: " + 
                     name(that.getIdentifier()));
         }
-        /*if (c.isActual()) {
-        	that.addWarning("member class refinement not yet supported");
-        }*/
     }
 
     @Override
@@ -359,10 +358,24 @@ public class DeclarationVisitor extends Visitor {
         Scope o = enterScope(m);
         super.visit(that);
         exitScope(o);
-        checkMethodParameters(that);
+        setParameterLists(m, that.getParameterLists(), that);
         m.setDeclaredAnything(that.getType() instanceof Tree.VoidModifier);
         if (that.getType() instanceof Tree.ValueModifier) {
             that.getType().addError("functions may not be declared using the keyword value");
+        }
+    }
+
+    private static void setParameterLists(Method m, List<Tree.ParameterList> paramLists, 
+            Node that) {
+        for (Tree.ParameterList pl: paramLists) {
+            m.addParameterList(pl.getModel());
+            pl.getModel().setFirst(false);
+        }
+        if (paramLists.isEmpty()) {
+            that.addError("missing parameter list in function declaration", 1000);
+        }
+        else {
+            paramLists.get(0).getModel().setFirst(true);
         }
     }
     
@@ -382,7 +395,7 @@ public class DeclarationVisitor extends Visitor {
         Scope o = enterScope(m);
         super.visit(that);
         exitScope(o);
-        checkMethodArgumentParameters(that);
+        setParameterLists(m, that.getParameterLists(), that);
         m.setDeclaredAnything(that.getType() instanceof Tree.VoidModifier);
     }
     
@@ -399,38 +412,8 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         endDeclaration(d);
         exitScope(o);
-        checkFunctionArgumentParameters(that);
+        setParameterLists(m, that.getParameterLists(), that);
         m.setDeclaredAnything(that.getType() instanceof Tree.VoidModifier);
-        //that.addWarning("inline functions not yet supported");
-    }
-
-    private static void checkMethodParameters(Tree.AnyMethod that) {
-        if (that.getParameterLists().isEmpty()) {
-            that.addError("missing parameter list in function declaration: " + 
-                    name(that.getIdentifier()), 1000 );
-        }
-        /*if ( that.getParameterLists().size()>1 ) {
-            that.addWarning("higher-order methods are not yet supported");
-        }*/
-    }
-
-    private static void checkFunctionArgumentParameters(Tree.FunctionArgument that) {
-        if (that.getParameterLists().isEmpty()) {
-            that.addError("missing parameter list in functional argument declaration");
-        }
-        /*if ( that.getParameterLists().size()>1 ) {
-            that.addWarning("higher-order methods are not yet supported");
-        }*/
-    }
-
-    private static void checkMethodArgumentParameters(Tree.MethodArgument that) {
-        if (that.getParameterLists().isEmpty()) {
-            that.addError("missing parameter list in named argument declaration: " + 
-                    name(that.getIdentifier()) );
-        }
-        /*if ( that.getParameterLists().size()>1 ) {
-            that.addWarning("higher-order methods are not yet supported");
-        }*/
     }
 
     @Override
@@ -451,7 +434,7 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         if (c.isInterfaceMember()) {
-        	that.addError("object declaration may not occur directly in interface body");
+            that.addError("object declaration may not occur directly in interface body");
         }
     }
 
@@ -479,7 +462,7 @@ public class DeclarationVisitor extends Visitor {
         Value v = new Value();
         that.setDeclarationModel(v);
         v.setTransient(that.getSpecifierOrInitializerExpression() 
-        		instanceof Tree.LazySpecifierExpression);
+                instanceof Tree.LazySpecifierExpression);
         visitDeclaration(that, v);
         super.visit(that);
         if (v.isInterfaceMember() && !v.isFormal() && !v.isNative()) {
@@ -602,7 +585,7 @@ public class DeclarationVisitor extends Visitor {
         unit.addDeclaration(v);
         Scope sc = getContainer(that);
         if (!(sc instanceof Package)) {
-        	sc.getMembers().add(v);
+            sc.getMembers().add(v);
         }
         
         s.setParameter(p);
@@ -663,7 +646,7 @@ public class DeclarationVisitor extends Visitor {
         v.setInitializerParameter(p);
         parameterList.getParameters().add(p);
         if (p.isSequenced() && p.isDefaulted()) {
-        	getSpecifier(that).addError("variadic parameter may not specify default argument");
+            getSpecifier(that).addError("variadic parameter may not specify default argument");
         }
         if (p.isSequenced() && ((Tree.SequencedType) type).getAtLeastOne()) {
 //            that.getType().addWarning("nonempty variadic parameters are not yet supported");
@@ -681,7 +664,7 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.FunctionalParameterDeclaration that) {
         Parameter p = new Parameter();
         p.setDeclaration(declaration);
-		p.setDefaulted(getSpecifier(that)!=null);
+        p.setDefaulted(getSpecifier(that)!=null);
         Tree.Type type = that.getTypedDeclaration().getType();
         p.setDeclaredAnything(type instanceof Tree.VoidModifier);
         that.setParameterModel(p);
@@ -692,7 +675,7 @@ public class DeclarationVisitor extends Visitor {
         m.setInitializerParameter(p);
         parameterList.getParameters().add(p);
         if (type instanceof Tree.SequencedType) {
-        	type.addError("functional parameter type may not be variadic");
+            type.addError("functional parameter type may not be variadic");
         }
         if (m.isFormal()) {
             that.addError("parameters may not be annotated formal", 1312);
@@ -705,25 +688,7 @@ public class DeclarationVisitor extends Visitor {
         parameterList = new ParameterList();
         that.setModel(parameterList);
         super.visit(that);
-        if (scope instanceof Functional) {
-            Functional f = (Functional) scope;
-            boolean first = f.getParameterLists().isEmpty();
-            parameterList.setFirst(first);
-            if (f instanceof Class && !first) {
-                that.addError("classes may have only one parameter list");
-            }
-            else {
-                f.addParameterList(parameterList);
-            }
-        }
-        else {
-        	if (!(scope instanceof Specification)) {
-        		that.addError("may not have a parameter list");
-        	}
-            parameterList.setFirst(true);
-        }
-        parameterList = pl;
-        
+        parameterList = pl;        
     }
     
     private int id=0;
@@ -778,7 +743,7 @@ public class DeclarationVisitor extends Visitor {
         if (that.getSpecifierExpression()!=null) {
             Scope s = scope;
             if (scope instanceof ControlBlock) {
-            	scope = scope.getContainer();
+                scope = scope.getContainer();
             }
             that.getSpecifierExpression().visit(this);
             scope = s;
@@ -842,16 +807,16 @@ public class DeclarationVisitor extends Visitor {
     private static List<TypeParameter> getTypeParameters(Tree.TypeParameterList tpl) {
         List<TypeParameter> typeParameters = new ArrayList<TypeParameter>();
         if (tpl!=null) {
-        	boolean foundDefaulted=false;
+            boolean foundDefaulted=false;
             for (Tree.TypeParameterDeclaration tp: tpl.getTypeParameterDeclarations()) {
                 typeParameters.add(tp.getDeclarationModel());
                 if (tp.getTypeSpecifier()==null) {
-                	if (foundDefaulted) {
-                		tp.addError("required type parameter follows defaulted type parameter");
-                	}
+                    if (foundDefaulted) {
+                        tp.addError("required type parameter follows defaulted type parameter");
+                    }
                 }
                 else {
-                	foundDefaulted=true;
+                    foundDefaulted=true;
                 }
             }
         }
@@ -896,7 +861,7 @@ public class DeclarationVisitor extends Visitor {
                 that.addError("object declaration may not be annotated default", 1313);
             }
             /*else if (that instanceof Tree.Parameter) {
-            	that.addError("parameters may not be annotated default", 1313);
+                that.addError("parameters may not be annotated default", 1313);
             }*/
             else {
                 model.setDefault(true);
@@ -911,7 +876,7 @@ public class DeclarationVisitor extends Visitor {
             }
         }
         if (hasAnnotation(al, "native", unit)) {
-        	model.setNative(true);
+            model.setNative(true);
         }
         if (model.isFormal() && model.isDefault()) {
             that.addError("declaration may not be annotated both formal and default");
@@ -954,17 +919,17 @@ public class DeclarationVisitor extends Visitor {
                 }
             }
             else {
-            	that.addError("declaration is not a value, and may not be annotated late");
+                that.addError("declaration is not a value, and may not be annotated late");
             }
         }
         if (model instanceof Value) {
-        	Value value = (Value) model;
-        	if (value.isVariable() && value.isTransient()) {
-        		that.addError("value may not be annotated both variable and transient: " + model.getName());
-        	}
+            Value value = (Value) model;
+            if (value.isVariable() && value.isTransient()) {
+                that.addError("value may not be annotated both variable and transient: " + model.getName());
+            }
         }
         if (hasAnnotation(al, "deprecated", unit)) {
-        	model.setDeprecated(true);
+            model.setDeprecated(true);
         }
         if (hasAnnotation(al, "annotation", unit)) {
             if (!(model instanceof Method) && !(model instanceof Class)) {
@@ -1019,28 +984,28 @@ public class DeclarationVisitor extends Visitor {
         
         if (d.isFormal()) {
             if (d.getContainer() instanceof ClassOrInterface) {
-            	ClassOrInterface ci = (ClassOrInterface) d.getContainer();
-				if (!ci.isAbstract() && !ci.isFormal()) {
-					that.addError("formal member belongs to a concrete class", 900);
-				}
+                ClassOrInterface ci = (ClassOrInterface) d.getContainer();
+                if (!ci.isAbstract() && !ci.isFormal()) {
+                    that.addError("formal member belongs to a concrete class", 900);
+                }
             } 
             else {
                 that.addError("formal member does not belong to an interface or abstract class", 1100);
             }
             if (!(that instanceof Tree.AttributeDeclaration) && 
-            	!(that instanceof Tree.MethodDeclaration) &&
-            	!(that instanceof Tree.AnyClass)) {
-            	that.addError("formal member may not have a body", 1100);
+                !(that instanceof Tree.MethodDeclaration) &&
+                !(that instanceof Tree.AnyClass)) {
+                that.addError("formal member may not have a body", 1100);
             }
         }
         
         if (d.isNative()) {
-        	if (d.getContainer() instanceof Declaration) {
-        		Declaration ci = (Declaration) d.getContainer();
-        		if (!ci.isNative()) {
-        			that.addError("native member belongs to a non-native declaration");
-        		}
-        	}
+            if (d.getContainer() instanceof Declaration) {
+                Declaration ci = (Declaration) d.getContainer();
+                if (!ci.isNative()) {
+                    that.addError("native member belongs to a non-native declaration");
+                }
+            }
         }
         
         /*if ( !d.isFormal() && 
@@ -1064,7 +1029,7 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.TypeConstraint that) {
         String name = name(that.getIdentifier());
         TypeParameter p = (TypeParameter) scope.getMemberOrParameter(unit, 
-        		name, null, false);
+                name, null, false);
         that.setDeclarationModel(p);
         if (p==null) {
             that.addError("no matching type parameter for constraint: " + 
@@ -1075,11 +1040,11 @@ public class DeclarationVisitor extends Visitor {
             visitDeclaration(that, p);
         }
         else {
-        	if (p.isConstrained()) {
-        		that.addError("duplicate constraint list for type parameter: " +
-        				name);
-        	}
-        	p.setConstrained(true);
+            if (p.isConstrained()) {
+                that.addError("duplicate constraint list for type parameter: " +
+                        name);
+            }
+            p.setConstrained(true);
         }
         
         Scope o = enterScope(p);
@@ -1094,6 +1059,7 @@ public class DeclarationVisitor extends Visitor {
         }*/
         if (that.getParameterList()!=null) {
             that.addWarning("parameter bounds are not yet supported");
+            p.addParameterList(that.getParameterList().getModel());
         }
         //TODO: we need to check this somewhere else, since not
         //      every type parameter has a constraint
@@ -1111,19 +1077,19 @@ public class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.SpecifierStatement that) {
-    	Specification s = new Specification();
-    	s.setId(id++);
-    	visitElement(that, s);
-    	Scope o = enterScope(s);
+        Specification s = new Specification();
+        s.setId(id++);
+        visitElement(that, s);
+        Scope o = enterScope(s);
         super.visit(that);
         exitScope(o);
     }
 
     /*@Override
     public void visit(Tree.SpecifiedArgument that) {
-    	Specification s = new Specification();
-    	visitElement(that, s);
-    	Scope o = enterScope(s);
+        Specification s = new Specification();
+        visitElement(that, s);
+        Scope o = enterScope(s);
         super.visit(that);
         exitScope(o);
     }*/
@@ -1157,40 +1123,40 @@ public class DeclarationVisitor extends Visitor {
         scope = s;
     }
     
-	static final String digits = "\\d+";
-	static final String groups = "\\d{1,3}(_\\d{3})+";
-	static final String fractionalGroups = "(\\d{3}_)+\\d{1,3}";
-	static final String magnitude = "k|M|G|T|P";
-	static final String fractionalMagnitude = "m|u|n|p|f";
-	static final String exponent = "(e|E)(\\+|-)?" + digits;
+    static final String digits = "\\d+";
+    static final String groups = "\\d{1,3}(_\\d{3})+";
+    static final String fractionalGroups = "(\\d{3}_)+\\d{1,3}";
+    static final String magnitude = "k|M|G|T|P";
+    static final String fractionalMagnitude = "m|u|n|p|f";
+    static final String exponent = "(e|E)(\\+|-)?" + digits;
 
-	static final String hexDigits = "(\\d|[a-f]|[A-F])+";
-	static final String hexGroups = "(\\d|[a-f]|[A-F]){1,4}(_(\\d|[a-f]|[A-F]){4})+|(\\d|[a-f]|[A-F]){1,2}(_(\\d|[a-f]|[A-F]){2})+";
-	
-	static final String binDigits = "(0|1)+";
-	static final String binGroups = "(0|1){1,4}(_(0|1){4})+";
-	
-	@Override
+    static final String hexDigits = "(\\d|[a-f]|[A-F])+";
+    static final String hexGroups = "(\\d|[a-f]|[A-F]){1,4}(_(\\d|[a-f]|[A-F]){4})+|(\\d|[a-f]|[A-F]){1,2}(_(\\d|[a-f]|[A-F]){2})+";
+    
+    static final String binDigits = "(0|1)+";
+    static final String binGroups = "(0|1){1,4}(_(0|1){4})+";
+    
+    @Override
     public void visit(Tree.NaturalLiteral that) {
         super.visit(that);
-    	String text = that.getToken().getText();
-		if (!text.matches("^(" + digits + "|" + groups + ")(" + magnitude + ")?$") &&
-			!text.matches("#(" + hexDigits + "|" + hexGroups + ")") &&
-			!text.matches("\\$(" + binDigits + "|" + binGroups + ")")) {
-    		that.addError("illegal integer literal format");
-    	}    	
+        String text = that.getToken().getText();
+        if (!text.matches("^(" + digits + "|" + groups + ")(" + magnitude + ")?$") &&
+            !text.matches("#(" + hexDigits + "|" + hexGroups + ")") &&
+            !text.matches("\\$(" + binDigits + "|" + binGroups + ")")) {
+            that.addError("illegal integer literal format");
+        }        
     }
     
     @Override
     public void visit(Tree.FloatLiteral that) {
         super.visit(that);
-    	String text = that.getToken().getText();
-		if (!text.matches("^(" + digits + "|" + groups + ")(\\.(" + 
-				digits + "|" + fractionalGroups  + ")(" + 
-				magnitude + "|" + fractionalMagnitude + "|" + exponent + ")?|" +
-				fractionalMagnitude + ")$")) {
-    		that.addError("illegal floating literal format");
-    	}
+        String text = that.getToken().getText();
+        if (!text.matches("^(" + digits + "|" + groups + ")(\\.(" + 
+                digits + "|" + fractionalGroups  + ")(" + 
+                magnitude + "|" + fractionalMagnitude + "|" + exponent + ")?|" +
+                fractionalMagnitude + ")$")) {
+            that.addError("illegal floating literal format");
+        }
     }
     
     @Override
@@ -1205,26 +1171,26 @@ public class DeclarationVisitor extends Visitor {
         checkPositionalArguments(that.getPositionalArguments());
     }
 
-	private void checkPositionalArguments(List<Tree.PositionalArgument> args) {
-		for (int i=0; i<args.size()-1; i++) {
-        	Tree.PositionalArgument a = args.get(i);
-			if (a instanceof Tree.SpreadArgument) {
-        		a.addError("spread argument must be the last argument in the argument list");
-        	}
-			if (a instanceof Tree.Comprehension) {
-        		a.addError("comprehension must be the last argument in the argument list");
-        	}
+    private void checkPositionalArguments(List<Tree.PositionalArgument> args) {
+        for (int i=0; i<args.size()-1; i++) {
+            Tree.PositionalArgument a = args.get(i);
+            if (a instanceof Tree.SpreadArgument) {
+                a.addError("spread argument must be the last argument in the argument list");
+            }
+            if (a instanceof Tree.Comprehension) {
+                a.addError("comprehension must be the last argument in the argument list");
+            }
         }
-	}    
+    }    
     
     @Override
     public void visit(Tree.TryCatchStatement that) {
-    	super.visit(that);
-    	if (that.getCatchClauses().isEmpty() && 
-    			that.getFinallyClause()==null && 
-    			that.getTryClause().getResourceList()==null) {
-    		that.addError("try must have a catch, finally, or resource expression");
-    	}
+        super.visit(that);
+        if (that.getCatchClauses().isEmpty() && 
+                that.getFinallyClause()==null && 
+                that.getTryClause().getResourceList()==null) {
+            that.addError("try must have a catch, finally, or resource expression");
+        }
     }
     
     @Override
