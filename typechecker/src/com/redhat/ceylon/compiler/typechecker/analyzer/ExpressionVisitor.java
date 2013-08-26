@@ -2600,9 +2600,9 @@ public class ExpressionVisitor extends Visitor {
                     //checkSpreadArgumentSequential((Tree.SpreadArgument) a, at);
                     at = spreadType(at, unit, true);
                     checkAssignable(unit.getIteratedType(at), set, a,
-                            "spread argument must be assignable to variadic parameter ");
+                            "spread argument must be assignable to variadic parameter");
                     checkAssignable(at, paramType, a,
-                            "spread argument must be assignable to variadic parameter ");
+                            "spread argument must be assignable to variadic parameter");
                 }
                 else {
                     checkAssignable(at, set, a, 
