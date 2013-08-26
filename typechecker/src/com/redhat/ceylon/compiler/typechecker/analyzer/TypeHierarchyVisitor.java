@@ -284,8 +284,11 @@ public class TypeHierarchyVisitor extends Visitor {
                 for (Declaration actualNonFormal : currentMembers.actualsNonFormals) {
                     for (Declaration formal : aggregateMembers.formals) {
                         if (formal.getName().equals(actualNonFormal.getName())) {
-                            aggregateMembers.actualsNonFormals.remove(actualNonFormal);
-                            break;
+                            if (!formal.getUnit().getPackage().getModule().isJava() ||
+                                    !formal.isInterfaceMember()) {
+                                aggregateMembers.actualsNonFormals.remove(actualNonFormal);
+                                break;
+                            }
                         }
                     }
                 }

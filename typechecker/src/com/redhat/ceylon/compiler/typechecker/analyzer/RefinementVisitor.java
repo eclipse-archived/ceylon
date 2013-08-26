@@ -230,102 +230,111 @@ public class RefinementVisitor extends Visitor {
         broken = ob;
     }
 
-	private void validateRefinement(Tree.StatementOrArgument that, TypeDeclaration td) {
-		List<ProducedType> supertypes = td.getType().getSupertypes();
-		if (td instanceof TypeAlias && 
-				td.getExtendedType()!=null) {
-			supertypes.add(td.getExtendedType());
-		}
-		for (int i=0; i<supertypes.size(); i++) {
-		    ProducedType st1 = supertypes.get(i);
-		    for (int j=i+1; j<supertypes.size(); j++) {
-		        ProducedType st2 = supertypes.get(j);
-		        checkSupertypeIntersection(that, td, st1, st2);
-		    }
-		}
-		Unit unit = that.getUnit();
+    private void validateRefinement(Tree.StatementOrArgument that, TypeDeclaration td) {
+        List<ProducedType> supertypes = td.getType().getSupertypes();
+        if (td instanceof TypeAlias && 
+                td.getExtendedType()!=null) {
+            supertypes.add(td.getExtendedType());
+        }
+        for (int i=0; i<supertypes.size(); i++) {
+            ProducedType st1 = supertypes.get(i);
+            for (int j=i+1; j<supertypes.size(); j++) {
+                ProducedType st2 = supertypes.get(j);
+                checkSupertypeIntersection(that, td, st1, st2);
+            }
+        }
+        Unit unit = that.getUnit();
         if (!broken && td instanceof TypeParameter) {
-		    List<ProducedType> list = new ArrayList<ProducedType>();
-		    List<ProducedType> upperBounds = td.getSatisfiedTypes();
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            List<ProducedType> upperBounds = td.getSatisfiedTypes();
             for (ProducedType st: upperBounds) {
-		        addToIntersection(list, st, unit);
-		    }
-		    IntersectionType it = new IntersectionType(unit);
-		    it.setSatisfiedTypes(list);
-		    if (it.canonicalize().getType().isNothing()) {
-		        that.addError(typeDescription(td, unit) + 
-		                " has unsatisfiable upper bound constraints: the constraints " + 
-		                typeNamesAsIntersection(upperBounds, unit) + 
-		                " cannot be satisfied by any type except Nothing");
-		    }
-		}
-		if (!broken) {
-		    Set<String> errors = new HashSet<String>();
-		    for (ProducedType st: supertypes) {
-		        // don't do this check for ObjectArguments
-		        if (that instanceof Tree.Declaration) {
-		            if (!isCompletelyVisible(td, st)) {
-		                that.addError("supertype of type is not visible everywhere type is visible: " + 
-		                        st.getProducedTypeName(unit));
-		            }
-		            if(!checkModuleVisibility(td, st) ) {
-		                that.addError("supertype occurs in a type that is visible outside this module,"
-		                        +" but comes from an imported module that is not re-exported: " +
-		                        st.getProducedTypeName(unit));
-		            }
+                addToIntersection(list, st, unit);
+            }
+            IntersectionType it = new IntersectionType(unit);
+            it.setSatisfiedTypes(list);
+            if (it.canonicalize().getType().isNothing()) {
+                that.addError(typeDescription(td, unit) + 
+                        " has unsatisfiable upper bound constraints: the constraints " + 
+                        typeNamesAsIntersection(upperBounds, unit) + 
+                        " cannot be satisfied by any type except Nothing");
+            }
+        }
+        if (!broken) {
+            Set<String> errors = new HashSet<String>();
+            for (ProducedType st: supertypes) {
+                // don't do this check for ObjectArguments
+                if (that instanceof Tree.Declaration) {
+                    if (!isCompletelyVisible(td, st)) {
+                        that.addError("supertype of type is not visible everywhere type is visible: " + 
+                                st.getProducedTypeName(unit));
+                    }
+                    if(!checkModuleVisibility(td, st) ) {
+                        that.addError("supertype occurs in a type that is visible outside this module,"
+                                +" but comes from an imported module that is not re-exported: " +
+                                st.getProducedTypeName(unit));
+                    }
 
-		        }
-		        if (td instanceof ClassOrInterface && 
-		                !((ClassOrInterface) td).isAbstract() &&
-		                !((ClassOrInterface) td).isAlias()) {
-		            for (Declaration d: st.getDeclaration().getMembers()) {
-		                if (d.isShared() && isResolvable(d) && 
-		                		!errors.contains(d.getName())) {
-		                    Declaration r = td.getMember(d.getName(), null, false);
-		                    if (r==null || !r.refines(d) && 
-		                    		//squash bogus error when there is a dupe declaration
-		                    		!r.getContainer().equals(td)) {
-		                        //TODO: This seems to dupe some checks that are already 
-		                        //      done in TypeHierarchyVisitor, resulting in
-		                        //      multiple errors
-		                    	//TODO: figure out which other declaration causes the
-		                    	//      problem and display it to the user!
-		                    	if (r==null) {
-		                    		that.addError("member " + d.getName() +
-		                    				" is inherited ambiguously by " + td.getName() +
-		                    				" from " + st.getDeclaration().getName() +  
-		                    				" and another unrelated supertype");
-		                    	}
-		                    	else {
-		                    		that.addError("member " + d.getName() + 
-		                    				" is inherited ambiguously by " + td.getName() +
-		                    				" from " + st.getDeclaration().getName() +  
-		                    				" and another subtype of " + ((TypeDeclaration) r.getContainer()).getName() + 
-		                    				" and so must be refined by " + td.getName(), 350);
-		                    	}
-		                        errors.add(d.getName());
-		                    }
-		                    /*else if (!r.getContainer().equals(td)) { //the case where the member is actually declared by the current type is handled by checkRefinedTypeAndParameterTypes()
-		                        //TODO: I think this case never occurs, because getMember() always
-		                        //      returns null in the case of an ambiguity
-		                        List<ProducedType> typeArgs = new ArrayList<ProducedType>();
-		                        if (d instanceof Generic) {
-		                            for (TypeParameter refinedTypeParam: ((Generic) d).getTypeParameters()) {
-		                                typeArgs.add(refinedTypeParam.getType());
-		                            }
-		                        }
-		                        ProducedType t = td.getType().getTypedReference(r, typeArgs).getType();
-		                        ProducedType it = st.getTypedReference(d, typeArgs).getType();
-		                        checkAssignable(t, it, that, "type of member " + d.getName() + 
-		                                " must be assignable to all types inherited from instantiations of " +
-		                                st.getDeclaration().getName());
-		                    }*/
-		                }
-		            }
-		        }
-		    }
-		}
-	}
+                }
+                if (td instanceof ClassOrInterface && 
+                        !((ClassOrInterface) td).isAbstract() &&
+                        !((ClassOrInterface) td).isAlias()) {
+                    for (Declaration d: st.getDeclaration().getMembers()) {
+                        if (d.isShared() && isResolvable(d) && 
+                                !errors.contains(d.getName())) {
+                            Declaration r = td.getMember(d.getName(), null, false);
+                            if (r==null || !r.refines(d) && 
+                                    //squash bogus error when there is a dupe declaration
+                                    !r.getContainer().equals(td)) {
+                                //TODO: This seems to dupe some checks that are already 
+                                //      done in TypeHierarchyVisitor, resulting in
+                                //      multiple errors
+                                //TODO: figure out which other declaration causes the
+                                //      problem and display it to the user!
+                                if (r==null) {
+                                    that.addError("member " + d.getName() +
+                                            " is inherited ambiguously by " + td.getName() +
+                                            " from " + st.getDeclaration().getName() +  
+                                            " and another unrelated supertype");
+                                }
+                                else {
+                                    //TODO: I'm not really certain that the following
+                                    //      condition is correct, we really should 
+                                    //      check that the other declaration is a Java
+                                    //      interface member (see the TODO above)
+                                    if (!(d.getUnit().getPackage().getModule().isJava() &&
+                                            r.getUnit().getPackage().getModule().isJava() &&
+                                            r.isInterfaceMember() &&
+                                            d.isClassMember())) {
+                                        that.addError("member " + d.getName() + 
+                                                " is inherited ambiguously by " + td.getName() +
+                                                " from " + st.getDeclaration().getName() +  
+                                                " and another subtype of " + ((TypeDeclaration) r.getContainer()).getName() + 
+                                                " and so must be refined by " + td.getName(), 350);
+                                    }
+                                }
+                                errors.add(d.getName());
+                            }
+                            /*else if (!r.getContainer().equals(td)) { //the case where the member is actually declared by the current type is handled by checkRefinedTypeAndParameterTypes()
+                                //TODO: I think this case never occurs, because getMember() always
+                                //      returns null in the case of an ambiguity
+                                List<ProducedType> typeArgs = new ArrayList<ProducedType>();
+                                if (d instanceof Generic) {
+                                    for (TypeParameter refinedTypeParam: ((Generic) d).getTypeParameters()) {
+                                        typeArgs.add(refinedTypeParam.getType());
+                                    }
+                                }
+                                ProducedType t = td.getType().getTypedReference(r, typeArgs).getType();
+                                ProducedType it = st.getTypedReference(d, typeArgs).getType();
+                                checkAssignable(t, it, that, "type of member " + d.getName() + 
+                                        " must be assignable to all types inherited from instantiations of " +
+                                        st.getDeclaration().getName());
+                            }*/
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     private void checkSupertypeIntersection(Tree.StatementOrArgument that,
             TypeDeclaration td, ProducedType st1, ProducedType st2) {
@@ -407,7 +416,7 @@ public class RefinementVisitor extends Visitor {
                 }
                 ClassOrInterface declaringType = (ClassOrInterface) dec.getContainer();
                 Declaration refined = declaringType.getRefinedMember(dec.getName(), 
-                		getSignature(dec), false);
+                        getSignature(dec), false);
                 dec.setRefinedDeclaration(refined);
                 if (refined!=null) {
                     if (refined.isPackageVisibility() && 
@@ -452,7 +461,7 @@ public class RefinementVisitor extends Visitor {
                 }
                 else if (dec instanceof TypedDeclaration) {
                     if (refined instanceof Class || 
-                    	refined instanceof Method) {
+                        refined instanceof Method) {
                         that.addError("refined declaration is not an attribute: " + 
                                 message(refined));
                     }
@@ -485,7 +494,7 @@ public class RefinementVisitor extends Visitor {
     
     static String message(Declaration refined) {
         return refined.getName() + " in " + 
-        		((Declaration) refined.getContainer()).getName();
+                ((Declaration) refined.getContainer()).getName();
     }
 
     private void checkRefinedTypeAndParameterTypes(Tree.Declaration that,
@@ -504,31 +513,31 @@ public class RefinementVisitor extends Visitor {
                 TypeParameter refinedTypeParam = refinedTypeParams.get(i);
                 TypeParameter refiningTypeParam = refiningTypeParams.get(i);
                 ProducedType refinedProducedType = refinedTypeParam.getType();
-				for (ProducedType t: refiningTypeParam.getSatisfiedTypes()) {
-                	ProducedType bound = t.substitute(singletonMap(refiningTypeParam, refinedProducedType));
-                	Map<TypeParameter, ProducedType> args = ci.getType()
-                			.getSupertype((TypeDeclaration)refined.getContainer())
-                			.getTypeArguments();
-                	//for every type constraint of the refining member, there must
-                	//be at least one type constraint of the refined member which
-                	//is assignable to it, guaranteeing that the intersection of
-                	//the refined member bounds is assignable to the intersection
-                	//of the refining member bounds
-                	//TODO: would it be better to just form the intersections and
-                	//      test assignability directly (the error messages might
-                	//      not be as helpful, but it might be less restrictive)
-                	boolean ok = false;
-                	for (ProducedType st: refinedTypeParam.getSatisfiedTypes()) {
-                		if (st.substitute(args).isSubtypeOf(bound)) {
-                			ok = true;
-                		}
-                	}
-                	if (!ok) {
-                		that.addError("member type parameter " + refiningTypeParam.getName() +
-                				" has upper bound which refined member type parameter " + 
-                				refinedTypeParam.getName() + " of " + message(refined) + 
-                				" does not satisfy: " + t.getProducedTypeName(that.getUnit()));
-                	}
+                for (ProducedType t: refiningTypeParam.getSatisfiedTypes()) {
+                    ProducedType bound = t.substitute(singletonMap(refiningTypeParam, refinedProducedType));
+                    Map<TypeParameter, ProducedType> args = ci.getType()
+                            .getSupertype((TypeDeclaration)refined.getContainer())
+                            .getTypeArguments();
+                    //for every type constraint of the refining member, there must
+                    //be at least one type constraint of the refined member which
+                    //is assignable to it, guaranteeing that the intersection of
+                    //the refined member bounds is assignable to the intersection
+                    //of the refining member bounds
+                    //TODO: would it be better to just form the intersections and
+                    //      test assignability directly (the error messages might
+                    //      not be as helpful, but it might be less restrictive)
+                    boolean ok = false;
+                    for (ProducedType st: refinedTypeParam.getSatisfiedTypes()) {
+                        if (st.substitute(args).isSubtypeOf(bound)) {
+                            ok = true;
+                        }
+                    }
+                    if (!ok) {
+                        that.addError("member type parameter " + refiningTypeParam.getName() +
+                                " has upper bound which refined member type parameter " + 
+                                refinedTypeParam.getName() + " of " + message(refined) + 
+                                " does not satisfy: " + t.getProducedTypeName(that.getUnit()));
+                    }
                 }
                 typeArgs.add(refinedProducedType);
             }
@@ -621,7 +630,7 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkNonMember(Tree.Declaration that, Declaration dec) {
-    	if (!dec.isClassOrInterfaceMember()) {
+        if (!dec.isClassOrInterfaceMember()) {
             if (dec.isActual()) {
                 that.addError("actual declaration is not a member of a class or interface: " + dec.getName(), 1301);
             }
@@ -631,29 +640,29 @@ public class RefinementVisitor extends Visitor {
             if (dec.isDefault()) {
                 that.addError("default declaration is not a member of a class or interface: " + dec.getName(), 1303);
             }
-    	}
-    	else if (!dec.isShared()) {
-    		if (dec.isActual()) {
-    			that.addError("actual declaration must be shared: " + dec.getName(), 1301);
-    		}
-    		if (dec.isFormal()) {
-    			that.addError("formal declaration must be shared: " + dec.getName(), 1302);
-    		}
-    		if (dec.isDefault()) {
-    			that.addError("default declaration must be shared: " + dec.getName(), 1303);
-    		}
-    	}
-    	else {
-    		if (dec.isActual()) {
-    			that.addError("declaration may not be actual: " + dec.getName(), 1301);
-    		}
-    		if (dec.isFormal()) {
-    			that.addError("declaration may not be formal: " + dec.getName(), 1302);
-    		}
-    		if (dec.isDefault()) {
-    			that.addError("declaration may not be default: " + dec.getName(), 1303);
-    		}
-    	}
+        }
+        else if (!dec.isShared()) {
+            if (dec.isActual()) {
+                that.addError("actual declaration must be shared: " + dec.getName(), 1301);
+            }
+            if (dec.isFormal()) {
+                that.addError("formal declaration must be shared: " + dec.getName(), 1302);
+            }
+            if (dec.isDefault()) {
+                that.addError("default declaration must be shared: " + dec.getName(), 1303);
+            }
+        }
+        else {
+            if (dec.isActual()) {
+                that.addError("declaration may not be actual: " + dec.getName(), 1301);
+            }
+            if (dec.isFormal()) {
+                that.addError("declaration may not be formal: " + dec.getName(), 1302);
+            }
+            if (dec.isDefault()) {
+                that.addError("declaration may not be default: " + dec.getName(), 1303);
+            }
+        }
     }
     
     private static String containerName(ProducedReference member) {
@@ -665,10 +674,10 @@ public class RefinementVisitor extends Visitor {
             ParameterList params, ParameterList refinedParams) {
         if (params.getParameters().size()!=refinedParams.getParameters().size()) {
            that.addError("member does not have the same number of parameters as the member it refines: " + 
-        		   member.getDeclaration().getName() + 
-        		   " declared by " + containerName(member) +
-        		   " refining " + refinedMember.getDeclaration().getName() +
-        		   " declared by " + containerName(refinedMember));
+                   member.getDeclaration().getName() + 
+                   " declared by " + containerName(member) +
+                   " refining " + refinedMember.getDeclaration().getName() +
+                   " declared by " + containerName(refinedMember));
         }
         else {
             for (int i=0; i<params.getParameters().size(); i++) {
@@ -731,7 +740,7 @@ public class RefinementVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ParameterList that) {
-    	super.visit(that);
+        super.visit(that);
         boolean foundSequenced = false;
         boolean foundDefault = false;
         ParameterList pl = that.getModel();
@@ -740,7 +749,7 @@ public class RefinementVisitor extends Visitor {
                 Parameter pm = p.getParameterModel();
                 if (pm.isDefaulted()) {
                     if (foundSequenced) {
-                    	p.addError("defaulted parameter must occur before variadic parameter");
+                        p.addError("defaulted parameter must occur before variadic parameter");
                     }
                     foundDefault = true;
                     if (!pl.isFirst()) {
@@ -749,11 +758,11 @@ public class RefinementVisitor extends Visitor {
                 }
                 else if (pm.isSequenced()) {
                     if (foundSequenced) {
-						p.addError("parameter list may have at most one variadic parameter");
+                        p.addError("parameter list may have at most one variadic parameter");
                     }
                     foundSequenced = true;
                     if (!pl.isFirst()) {
-                    	p.addError("only the first parameter list may have a variadic parameter");
+                        p.addError("only the first parameter list may have a variadic parameter");
                     }
                     if (foundDefault && 
                             pm.isAtLeastOne()) {
