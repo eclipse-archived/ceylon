@@ -1,3 +1,5 @@
+import ceylon.language { Any=Anything }
+
 class Parameters() {
     void x1(@type:"String" String s) {}
     void x2(@type:"String" String s, @type:"Integer" Integer n) {}
@@ -52,5 +54,10 @@ class Parameters() {
     
     void withDefaultedCallableParams(Float f() => 0.5, Float g(Float x) => x) {}
     void withDefaultedFunctionParams(Float() f = () => 0.5, Float(Float) g = (Float x) => x) {}
+    
+    @error print(String({Character*} chars1));
+    @error value b1 = String({Character*} chars2);
+    @error print(print(Any val1));
+    @error value b2 = print(Any val2);
 
 }

@@ -635,51 +635,62 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.ParameterizedExpression that) {
         super.visit(that);
         Tree.Term p = that.getPrimary();
-        if (p.getTypeModel()!=null) {
-            ProducedType pt = p.getTypeModel();
-            if (pt!=null) {
-                for (int j=0; j<that.getParameterLists().size(); j++) {
-                    Tree.ParameterList pl = that.getParameterLists().get(j);
-                    ProducedType ct = pt.getSupertype(unit.getCallableDeclaration());
-                    if (ct==null) {
-                        pl.addError("no matching parameter list in referenced declaration");
-                    }
-                    else if (ct.getTypeArgumentList().size()>=2) {
-                        ProducedType tupleType = ct.getTypeArgumentList().get(1);
-                        List<ProducedType> argTypes = unit.getTupleElementTypes(tupleType);
-                        boolean variadic = unit.isTupleLengthUnbounded(tupleType);
-                        boolean atLeastOne = unit.isTupleVariantAtLeastOne(tupleType);
-                        List<Tree.Parameter> params = pl.getParameters();
-                        if (argTypes.size()!=params.size()) {
-                            pl.addError("wrong number of declared parameters: must have " + argTypes.size() + " parameters");
+        if (p instanceof Tree.QualifiedMemberExpression ||
+            p instanceof Tree.BaseMemberExpression) {
+            Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
+            if (p.getTypeModel()!=null && mte.getDeclaration()!=null) {
+                ProducedType pt = p.getTypeModel();
+                if (pt!=null) {
+                    for (int j=0; j<that.getParameterLists().size(); j++) {
+                        Tree.ParameterList pl = that.getParameterLists().get(j);
+                        ProducedType ct = pt.getSupertype(unit.getCallableDeclaration());
+                        String refName = mte.getDeclaration().getName();
+                        if (ct==null) {                        
+                            pl.addError("no matching parameter list in referenced declaration: " + 
+                                    refName);
                         }
-                        for (int i=0; i<argTypes.size()&&i<params.size(); i++) {
-                            ProducedType at = argTypes.get(i);
-                            Tree.Parameter param = params.get(i);
-                            ProducedType t = param.getParameterModel().getModel()
-                                    .getProducedTypedReference(null, Collections.<ProducedType>emptyList()).getFullType();
-                            checkAssignable(at, t, param, 
-                                    "declared parameter type must be a supertype of type declared in function declaration");
+                        else if (ct.getTypeArgumentList().size()>=2) {
+                            ProducedType tupleType = ct.getTypeArgumentList().get(1);
+                            List<ProducedType> argTypes = unit.getTupleElementTypes(tupleType);
+                            boolean variadic = unit.isTupleLengthUnbounded(tupleType);
+                            boolean atLeastOne = unit.isTupleVariantAtLeastOne(tupleType);
+                            List<Tree.Parameter> params = pl.getParameters();
+                            if (argTypes.size()!=params.size()) {
+                                pl.addError("wrong number of declared parameters: " + refName  + 
+                                        " has " + argTypes.size() + " parameters");
+                            }
+                            for (int i=0; i<argTypes.size()&&i<params.size(); i++) {
+                                ProducedType at = argTypes.get(i);
+                                Tree.Parameter param = params.get(i);
+                                ProducedType t = param.getParameterModel().getModel()
+                                        .getProducedTypedReference(null, Collections.<ProducedType>emptyList()).getFullType();
+                                checkAssignable(at, t, param, "type of parameter " + param.getParameterModel().getName() + 
+                                        " must be a supertype of parameter type in declaration of " + refName);
+                            }
+                            if (!params.isEmpty()) {
+                                Tree.Parameter lastParam = params.get(params.size()-1);
+                                boolean refSequenced = lastParam.getParameterModel().isSequenced();
+                                boolean refAtLeastOne = lastParam.getParameterModel().isAtLeastOne();
+                                if (refSequenced && !variadic) {
+                                    lastParam.addError("parameter list in declaration of " + refName + 
+                                            " does not have a variadic parameter");
+                                }
+                                else if (!refSequenced && variadic) {
+                                    lastParam.addError("parameter list in declaration of " + refName + 
+                                            " has a variadic parameter");
+                                }
+                                else if (refAtLeastOne && !atLeastOne) {
+                                    lastParam.addError("variadic parameter in declaration of " + refName + 
+                                            " is optional");
+                                }
+                                else if (!refAtLeastOne && atLeastOne) {
+                                    lastParam.addError("variadic parameter in declaration of " + refName + 
+                                            " is not optional");
+                                }
+                            }
+                            pt = ct.getTypeArgumentList().get(0);
+                            that.setTypeModel(pt);
                         }
-                        if (!params.isEmpty()) {
-                            Tree.Parameter lastParam = params.get(params.size()-1);
-                            boolean refSequenced = lastParam.getParameterModel().isSequenced();
-                            boolean refAtLeastOne = lastParam.getParameterModel().isAtLeastOne();
-                            if (refSequenced && !variadic) {
-                                lastParam.addError("parameter list in referenced declaration does not have a variadic parameter");
-                            }
-                            else if (!refSequenced && variadic) {
-                                lastParam.addError("parameter list in referenced declaration has a variadic parameter");                            
-                            }
-                            else if (refAtLeastOne && !atLeastOne) {
-                                lastParam.addError("variadic parameter of referenced declaration is optional");
-                            }
-                            else if (!refAtLeastOne && atLeastOne) {
-                                lastParam.addError("variadic parameter of referenced declaration is non-optional");
-                            }
-                        }
-                        pt = ct.getTypeArgumentList().get(0);
-                        that.setTypeModel(pt);
                     }
                 }
             }
@@ -765,7 +776,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
-            me.addError("illegal specification statement");
+            me.addError("illegal specification statement: only a function or value may be specified");
         }
     }
     
