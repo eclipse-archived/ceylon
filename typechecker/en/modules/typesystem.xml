@@ -1260,15 +1260,21 @@ Item item = comp of Item;</programlisting>
                     <para><literal>X</literal> is contravariant in <literal>T</literal> 
                     and <literal>A</literal> is exactly the intersection of all upper 
                     bounds on <literal>T</literal>, or <literal>Anything</literal> if 
-                    <literal>T</literal> has not upper bounds, or</para>
+                    <literal>T</literal> has no upper bounds, or</para>
                 </listitem>
                 <listitem>
-                    <para><literal>C</literal> is a generic type and <literal>A</literal> 
-                    is exactly <literal>S</literal> for some type parameter 
-                    <literal>S</literal> of <literal>C</literal>, and <literal>S</literal> 
-                    must have the same variance as <literal>T</literal>.</para>
+                    <para><literal>C</literal> is an instantiation of a generic type 
+                    <literal>G</literal> and <literal>A</literal> is exactly 
+                    <literal>S</literal> for some type parameter <literal>S</literal> 
+                    of <literal>G</literal>, and <literal>S</literal> must have the same 
+                    variance as <literal>T</literal>.</para>
                 </listitem>
             </itemizedlist>
+            
+            <comment><para>Note: these rules could be relaxed to allow the definition of
+            generic enumerated types where the list of cases of an instantiation of a 
+            generic type depends upon the given type arguments (a "generalized" algebraic
+            type).</para></comment>
             
         </section>
         
