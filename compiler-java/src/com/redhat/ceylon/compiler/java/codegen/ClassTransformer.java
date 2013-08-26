@@ -2923,6 +2923,8 @@ public class ClassTransformer extends AbstractTransformer {
             AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
                     // TODO attr build take a JCExpression className
                     .wrapped(this, null, model.getName(), model, true)
+                    .userAnnotations(makeAtIgnore())
+                    .userAnnotationsSetter(makeAtIgnore())
                     .immutable()
                     .initialValue(makeNewClass(naming.makeName(model, Naming.NA_FQ | Naming.NA_WRAPPER)))
                     .is(PUBLIC, Decl.isShared(decl))

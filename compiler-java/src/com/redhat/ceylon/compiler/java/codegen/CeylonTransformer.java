@@ -325,6 +325,11 @@ public class CeylonTransformer extends AbstractTransformer {
         
         builder.userAnnotations(expressionGen().transform(annotations));
         
+        if (Decl.isToplevel(declarationModel)) {
+            builder.userAnnotations(makeAtIgnore());
+            builder.userAnnotationsSetter(makeAtIgnore());
+        }
+        
         if (Decl.isLocal(declarationModel) || Decl.isLocalToInitializer(declarationModel)) {
             if(initialValue != null)
                 builder.valueConstructor();
