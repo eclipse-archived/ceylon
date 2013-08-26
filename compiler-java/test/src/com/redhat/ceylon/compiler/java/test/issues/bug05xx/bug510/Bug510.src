@@ -69,6 +69,7 @@ final class synchronized_ implements .com.redhat.ceylon.compiler.java.runtime.mo
         value = new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_()};
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510::synchronized")
     static .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_ $get() {
         try {
@@ -95,6 +96,7 @@ final class volatile_ {
         value = new long[]{5L};
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public static long $get() {
         try {
