@@ -244,7 +244,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <title><literal>this</literal></title>
             
             <para>The keyword <literal>this</literal> refers to the current instance,
-            as defined in <xref linkend="closureofaclassorinterface"/>, of the 
+            as defined in <xref linkend="currentinstanceofaclassorinterface"/>, of the 
             immediately containing class or interface (the class or interface in which 
             the expression appears). Its type is the type of the immediately containing 
             class or interface.</para>
@@ -255,9 +255,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <title><literal>outer</literal></title>
             
             <para>The keyword <literal>outer</literal> refers to the current instance,
-            as defined in <xref linkend="closureofaclassorinterface"/>, of the class or 
-            interface which immediately contains the immediately containing class or 
-            interface. Its type is assignable to the type of this class or interface.</para>
+            as defined in <xref linkend="currentinstanceofaclassorinterface"/>, of the 
+            class or interface which immediately contains the immediately containing 
+            class or interface. Its type is assignable to the type of this class or 
+            interface.</para>
             
         </section>
                     
@@ -403,7 +404,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>If a base expression is a reference to an attribute, method, or 
             member class of a class, the receiving instance is the current instance of 
-            that class, as defined by <xref linkend="closureofaclassorinterface"/>.
+            that class, as defined by <xref linkend="currentinstanceofaclassorinterface"/>.
             Otherwise, there is no receiving instance.</para>
         
         </section>

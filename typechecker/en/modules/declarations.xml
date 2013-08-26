@@ -2171,14 +2171,14 @@ case (hexadecimal) {
                 <listitem>
                     <para>A reference declared directly inside the body of a class represents 
                     a persistent value associated with every instance of the class, as defined 
-                    by <xref linkend="sequentialexecutionandclosure"/>. Repeated evaluation of 
-                    the attribute of a particular instance of the class returns the same result 
-                    until the attribute of the instance is assigned a new value.</para>
+                    by <xref linkend="currentinstanceofaclassorinterface"/>. Repeated evaluation 
+                    of the attribute of a particular instance of the class produces the same 
+                    result until the attribute of the instance is assigned a new value.</para>
                 </listitem>
                 <listitem>
                     <para>A reference declared inside a block represents state associated with 
                     a frame, that is, with a particular execution of the containing block of 
-                    code, as defined in <xref linkend="sequentialexecutionandclosure"/>.</para> 
+                    code, as defined in <xref linkend="currentframeofablock"/>.</para> 
                 </listitem>
             </itemizedlist>
             

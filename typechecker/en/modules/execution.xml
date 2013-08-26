@@ -268,8 +268,8 @@ void run() {
         <emphasis>current frames</emphasis> of containing blocks forms the closure of a 
         nested declaration.</para>
         
-        <section id="closureofaclassorinterface">
-            <title>Closure of a class or interface</title>
+        <section id="currentinstanceofaclassorinterface">
+            <title>Current instance of a class or interface</title>
             
             <para>If a statement is occurs directly or indirectly inside a class or interface 
             body, then there is always a <emphasis>current instance</emphasis> of the class or 
@@ -314,8 +314,8 @@ innerObject.member();</programlisting>
             
         </section>
         
-        <section id="closureofablock">
-            <title>Closure of a block</title>
+        <section id="currentframeofablock">
+            <title>Current frame of a block</title>
             
             <para>If a statement occurs directly or indirectly inside a block, then there 
             is always a <emphasis>current frame</emphasis> of the block when the statement 
