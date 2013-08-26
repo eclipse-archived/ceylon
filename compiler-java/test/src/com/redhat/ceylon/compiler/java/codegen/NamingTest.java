@@ -136,18 +136,14 @@ public class NamingTest {
     public void testC() throws Exception {
         final TypeDeclaration decl = findDecl("C.ceylon", "C");
         Assert.assertEquals("C", naming.declName(decl));
-        Assert.assertEquals("C$impl", naming.declName(decl, COMPANION));
         Assert.assertEquals(QUAL + "C", naming.declName(decl, QUALIFIED));
-        Assert.assertEquals(QUAL + "C$impl", naming.declName(decl, COMPANION, QUALIFIED));
     }
     
     @Test
     public void testCC() throws Exception {
         final TypeDeclaration decl = findDecl("CC.ceylon", "CC.C");
         Assert.assertEquals("C", naming.declName(decl));
-        Assert.assertEquals("C$impl", naming.declName(decl, COMPANION));
         Assert.assertEquals(QUAL + "CC.C", naming.declName(decl, QUALIFIED));
-        Assert.assertEquals(QUAL + "CC.C$impl", naming.declName(decl, COMPANION, QUALIFIED));
     }
     
     @Test
@@ -163,9 +159,7 @@ public class NamingTest {
     public void testCo() throws Exception {
         final TypeDeclaration decl = findDecl("Co.ceylon", "Co.o");
         Assert.assertEquals("o_", naming.declName(decl));
-        Assert.assertEquals("o$impl_", naming.declName(decl, COMPANION));
         Assert.assertEquals(QUAL + "Co.o_", naming.declName(decl, QUALIFIED));
-        Assert.assertEquals(QUAL + "Co.o$impl_", naming.declName(decl, COMPANION, QUALIFIED));
     }
     
     @Test
@@ -181,9 +175,7 @@ public class NamingTest {
     public void testIC() throws Exception {
         final TypeDeclaration decl = findDecl("IC.ceylon", "IC.C");
         Assert.assertEquals("C", naming.declName(decl));
-        Assert.assertEquals("C$impl", naming.declName(decl, COMPANION));
         Assert.assertEquals(QUAL + "IC$impl.C", naming.declName(decl, QUALIFIED));
-        Assert.assertEquals(QUAL + "IC$impl.C$impl", naming.declName(decl, COMPANION, QUALIFIED));
     }
     
     @Test
@@ -199,27 +191,21 @@ public class NamingTest {
     public void testIo() throws Exception {
         final TypeDeclaration decl = findDecl("Io.ceylon", "Io.o");
         Assert.assertEquals("o_", naming.declName(decl));
-        Assert.assertEquals("o$impl_", naming.declName(decl, COMPANION));
         Assert.assertEquals(QUAL + "Io$impl.o_", naming.declName(decl, QUALIFIED));
-        Assert.assertEquals(QUAL + "Io$impl.o$impl_", naming.declName(decl, COMPANION, QUALIFIED));
     }
     
     @Test
     public void testo() throws Exception {
         final TypeDeclaration decl = findDecl("o.ceylon", "o");
         Assert.assertEquals("o_", naming.declName(decl));
-        Assert.assertEquals("o$impl_", naming.declName(decl, COMPANION));
         Assert.assertEquals(QUAL + "o_", naming.declName(decl, QUALIFIED));
-        Assert.assertEquals(QUAL + "o$impl_", naming.declName(decl, COMPANION, QUALIFIED));
     }
     
     @Test
     public void testoC() throws Exception {
         final TypeDeclaration decl = findDecl("oC.ceylon", "oC.C");
         Assert.assertEquals("C", naming.declName(decl));
-        Assert.assertEquals("C$impl", naming.declName(decl, COMPANION));
         Assert.assertEquals(QUAL + "oC_.C", naming.declName(decl, QUALIFIED));
-        Assert.assertEquals(QUAL + "oC_.C$impl", naming.declName(decl, COMPANION, QUALIFIED));
     }
     
     @Test
@@ -235,9 +221,7 @@ public class NamingTest {
     public void testoo() throws Exception {
         final TypeDeclaration decl = findDecl("oo.ceylon", "oo.o");
         Assert.assertEquals("o_", naming.declName(decl));
-        Assert.assertEquals("o$impl_", naming.declName(decl, COMPANION));
         Assert.assertEquals(QUAL + "oo_.o_", naming.declName(decl, QUALIFIED));
-        Assert.assertEquals(QUAL + "oo_.o$impl_", naming.declName(decl, COMPANION, QUALIFIED));
     }
     
     @Test
@@ -253,9 +237,7 @@ public class NamingTest {
     public void testfCC() throws Exception {
         final TypeDeclaration decl = findDecl("fCC.ceylon", "fCC.CC.C");
         Assert.assertEquals("C", naming.declName(decl));
-        Assert.assertEquals("C$impl", naming.declName(decl, COMPANION));
         Assert.assertEquals("CC.C", naming.declName(decl, QUALIFIED));
-        Assert.assertEquals("CC.C$impl", naming.declName(decl, COMPANION, QUALIFIED));
     }
     
     @Test
@@ -280,9 +262,7 @@ public class NamingTest {
     public void testfIC() throws Exception {
         final TypeDeclaration decl = findDecl("fIC.ceylon", "fIC.IC.C");
         Assert.assertEquals("C", naming.declName(decl));
-        Assert.assertEquals("C$impl", naming.declName(decl, COMPANION));
         Assert.assertEquals("IC$impl.C", naming.declName(decl, QUALIFIED));
-        Assert.assertEquals("IC$impl.C$impl", naming.declName(decl, COMPANION, QUALIFIED));
     }
     
     @Test
