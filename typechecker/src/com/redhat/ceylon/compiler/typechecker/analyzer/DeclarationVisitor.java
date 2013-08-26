@@ -282,6 +282,7 @@ public class DeclarationVisitor extends Visitor {
                     name(that.getIdentifier()) + " must have a parameter list", 1000);
         }
         else {
+            that.getParameterList().getModel().setFirst(true);
             c.addParameterList(that.getParameterList().getModel());
         }
         //TODO: is this still necessary??
@@ -366,9 +367,10 @@ public class DeclarationVisitor extends Visitor {
 
     private static void setParameterLists(Method m, List<Tree.ParameterList> paramLists, 
             Node that) {
-        for (Tree.ParameterList pl: paramLists) {
-            m.addParameterList(pl.getModel());
-            pl.getModel().setFirst(false);
+        if (m!=null) {
+            for (Tree.ParameterList pl: paramLists) {
+                m.addParameterList(pl.getModel());
+            }
         }
         if (paramLists.isEmpty()) {
             that.addError("missing parameter list in function declaration", 1000);
@@ -414,7 +416,7 @@ public class DeclarationVisitor extends Visitor {
         setParameterLists(m, that.getParameterLists(), that);
         m.setDeclaredAnything(that.getType() instanceof Tree.VoidModifier);
     }
-
+    
     @Override
     public void visit(Tree.ObjectDefinition that) {
         /*if (that.getClassBody()==null) {
@@ -1058,12 +1060,26 @@ public class DeclarationVisitor extends Visitor {
         }*/
         if ( that.getParameterList()!=null ) {
             that.addWarning("parameter bounds are not yet supported");
+            that.getParameterList().getModel().setFirst(true);
             p.addParameterList(that.getParameterList().getModel());
         }
     }
     
     @Override
+    public void visit(Tree.ParameterizedExpression that) {
+        super.visit(that);
+        setParameterLists(null, that.getParameterLists(), that);
+        if (!that.getLeftTerm()) {
+            that.addError("parameterized expression not the target of a specification statement");
+        }
+    }
+    
+    @Override
     public void visit(Tree.SpecifierStatement that) {
+        Tree.Term lhs = that.getBaseMemberExpression();
+        if (lhs instanceof Tree.ParameterizedExpression) {
+            ((Tree.ParameterizedExpression) lhs).setLeftTerm(true);
+        }
         Specification s = new Specification();
         s.setId(id++);
         visitElement(that, s);

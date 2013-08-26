@@ -602,7 +602,8 @@
 
 ^(PARAMETERIZED_EXPRESSION:PRIMARY
     PRIMARY
-    PARAMETER_LIST*)
+    PARAMETER_LIST*
+    boolean leftTerm;)
 
 ^(abstract MEMBER_OR_TYPE_EXPRESSION:PRIMARY
     ProducedReference target;

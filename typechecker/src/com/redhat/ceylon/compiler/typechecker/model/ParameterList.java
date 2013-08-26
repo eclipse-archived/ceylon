@@ -7,7 +7,7 @@ public class ParameterList {
     
     private List<Parameter> parameters = new ArrayList<Parameter>();
     private boolean supportsNamedParameters = true;
-    private boolean first = true;
+    private boolean first;
     
     public List<Parameter> getParameters() {
         return parameters;
