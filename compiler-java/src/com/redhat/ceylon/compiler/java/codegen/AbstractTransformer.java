@@ -1266,7 +1266,9 @@ public abstract class AbstractTransformer implements Transformation {
             // special case for interfaces because we pull them into toplevel types
             if(Decl.isCeylon(simpleType.getDeclaration())
                     && qualifyingTypes.size() > 1
-                    && simpleType.getDeclaration() instanceof Interface){
+                    && simpleType.getDeclaration() instanceof Interface
+                    // this is only valid for interfaces, not for their companion which stay where they are
+                    && (flags & JT_COMPANION) == 0){
                 JCExpression baseType;
                 TypeDeclaration tdecl = simpleType.getDeclaration();
                 // collect all the qualifying type args we'd normally have
