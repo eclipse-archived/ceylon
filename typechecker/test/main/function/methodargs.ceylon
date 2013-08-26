@@ -105,8 +105,34 @@ shared void parameterizedByArgs<Args>(Args args, Callable<Anything,Args> fun)
 }
 
 void testSpreadTypeArg<Args>(Args args) 
-        given Args satisfies Anything[] {
-    @type:"Tuple<Anything,String,Args>" 
+        given Args satisfies Object[] {
+    @type:"Tuple<Object,String,Args>" 
+    value tup = ["hello", *args];
+}
+
+void testSpreadNoneptyTypeArg<Args>(Args args) 
+        given Args satisfies [Object+] {
+    @type:"Tuple<Object,String,Args>" 
+    value tup = ["hello", *args];
+}
+
+void testSpreadEmptyIterTypeArg<Args>(Args args) 
+        given Args satisfies {Object*} {
+    @type:"Tuple<Object,String,Sequential<Object>>" 
+    value tup = ["hello", *args];
+}
+
+void testSpreadNonemptyIterTypeArg<Args>(Args args) 
+        given Args satisfies {Object+} {
+    @type:"Tuple<Object,String,Sequence<Object>>" 
+    value tup = ["hello", *args];
+}
+
+void testSpreadUnkIterTypeArg<Args,Abs>(Args args) 
+        given Abs satisfies Null
+        given Args satisfies Iterable<Object,Abs> {
+    //@type:"Tuple<Object,String,Sequential<Object>&Iterable<Object,Abs>>" 
+    @type:"Tuple<Object,String,Sequential<Object>>" 
     value tup = ["hello", *args];
 }
 

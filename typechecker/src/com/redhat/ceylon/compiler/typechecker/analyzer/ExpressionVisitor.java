@@ -4387,42 +4387,45 @@ public class ExpressionVisitor extends Visitor {
     private ProducedType spreadType(ProducedType et, Unit unit,
             boolean requireSequential) {
         if (et==null) return null;
-        if (requireSequential &&
-                !(et.getDeclaration() instanceof TypeParameter)) {
+        if (requireSequential) {
             if (unit.isSequentialType(et)) {
-                // if it's already a subtype of Sequential, erase 
-                // out extraneous information, like that it is a
-                // String, just keeping information about what
-                // kind of tuple it is
-                List<ProducedType> elementTypes = unit.getTupleElementTypes(et);
-                boolean variadic = unit.isTupleLengthUnbounded(et);
-                boolean atLeastOne = unit.isTupleVariantAtLeastOne(et);
-                int minimumLength = unit.getTupleMinimumLength(et);
-                if (variadic) {
-                    ProducedType spt = elementTypes.get(elementTypes.size()-1);
-                    elementTypes.set(elementTypes.size()-1, unit.getIteratedType(spt));
+                if (et.getDeclaration() instanceof TypeParameter) {
+                    return et;
                 }
-                return unit.getTupleType(elementTypes, variadic, 
-                        atLeastOne, minimumLength);
+                else {
+                    // if it's already a subtype of Sequential, erase 
+                    // out extraneous information, like that it is a
+                    // String, just keeping information about what
+                    // kind of tuple it is
+                    List<ProducedType> elementTypes = unit.getTupleElementTypes(et);
+                    boolean variadic = unit.isTupleLengthUnbounded(et);
+                    boolean atLeastOne = unit.isTupleVariantAtLeastOne(et);
+                    int minimumLength = unit.getTupleMinimumLength(et);
+                    if (variadic) {
+                        ProducedType spt = elementTypes.get(elementTypes.size()-1);
+                        elementTypes.set(elementTypes.size()-1, unit.getIteratedType(spt));
+                    }
+                    return unit.getTupleType(elementTypes, variadic, 
+                            atLeastOne, minimumLength);
+                }
             }
             else {
                 // transform any Iterable into a Sequence without
                 // losing the information that it is nonempty, in
                 // the case that we know that for sure
-                return unit.isNonemptyIterableType(et) ?
+                ProducedType st = unit.isNonemptyIterableType(et) ?
                         unit.getSequenceType(unit.getIteratedType(et)) :
                         unit.getSequentialType(unit.getIteratedType(et));
+                // unless this is a tuple constructor, remember
+                // the original Iterable type arguments, to
+                // account for the possibility that the argument
+                // to Absent is a type parameter
+                //return intersectionType(et.getSupertype(unit.getIterableDeclaration()), st, unit);
+                // for now, just return the sequential type:
+                return st;
             }
         }
         else {
-            // unless this is a tuple constructor, remember
-            // the original Iterable type arguments, to
-            // account for the possibility that the argument
-            // to Absent is a type parameter
-            //ProducedType st = unit.isNonemptyIterableType(et) ?
-            //        unit.getSequenceType(unit.getIteratedType(et)) :
-            //        unit.getSequentialType(unit.getIteratedType(et))
-            //return intersectionType(et.getSupertype(unit.getIterableDeclaration()), st, unit);
             return et;
         }
     }
