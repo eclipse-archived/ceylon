@@ -67,6 +67,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -2447,7 +2448,13 @@ public class ExpressionVisitor extends Visitor {
         }
         
         for (int i=params.size(); i<args.size(); i++) {
-            args.get(i).addError("no matching parameter declared by " +
+            Tree.PositionalArgument arg = args.get(i);
+            if (arg instanceof Tree.SpreadArgument) {
+                if (unit.isEmptyType(arg.getTypeModel())) {
+                    continue;
+                }
+            }
+            arg.addError("no matching parameter declared by " +
                     pr.getDeclaration().getName(unit) + ": " + 
                     pr.getDeclaration().getName(unit) + " has " + 
                     params.size() + " parameters", 2000);
@@ -2517,9 +2524,10 @@ public class ExpressionVisitor extends Visitor {
                     Tree.PositionalArgument arg = args.get(i);
                     ProducedType at = arg.getTypeModel();
                     if (arg instanceof Tree.SpreadArgument) {
+                        int fd = firstDefaulted<0?-1:firstDefaulted<i?0:firstDefaulted-i;
                         checkSpreadIndirectArgument((Tree.SpreadArgument) arg, 
                                 paramTypes.subList(i, paramTypes.size()), 
-                                sequenced, atLeastOne, firstDefaulted-i, at);
+                                sequenced, atLeastOne, fd, at);
                         break;
                     }
                     else if (arg instanceof Tree.Comprehension) {
@@ -2550,7 +2558,13 @@ public class ExpressionVisitor extends Visitor {
             }
     
             for (int i=paramTypes.size(); i<args.size(); i++) {
-                args.get(i).addError("no matching parameter: function reference has " + 
+                Tree.PositionalArgument arg = args.get(i);
+                if (arg instanceof Tree.SpreadArgument) {
+                    if (unit.isEmptyType(arg.getTypeModel())) {
+                        continue;
+                    }
+                }
+                arg.addError("no matching parameter: function reference has " + 
                         paramTypes.size() + " parameters", 2000);
             }
     
@@ -2589,9 +2603,9 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkSequencedIndirectArgument(List<Tree.PositionalArgument> args, 
+    private void checkSequencedIndirectArgument(List<Tree.PositionalArgument> args,
             ProducedType paramType) {
-        ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
+        /*ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
         for (int i=0; i<args.size(); i++) {
             Tree.PositionalArgument a = args.get(i);
             ProducedType at = a.getTypeModel();
@@ -2607,6 +2621,27 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     checkAssignable(at, set, a, 
                             "argument must be assignable to variadic parameter");
+                }
+            }
+        }*/
+        ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
+        for (int j=0; j<args.size(); j++) {
+            Tree.PositionalArgument a = args.get(j);
+            ProducedType at = a.getTypeModel();
+            if (!isTypeUnknown(at) && !isTypeUnknown(paramType)) {
+                if (a instanceof Tree.SpreadArgument) {
+                    at = spreadType(at, unit, true);
+                    checkAssignable(at, paramType, a, 
+                            "spread argument must be assignable to variadic parameter",
+                                    2101);
+                }
+                else {
+                    checkAssignable(at, set, a, 
+                            "argument must be assignable to variadic parameter", 
+                                    2101);
+                    //if we already have an arg to a nonempty variadic parameter,
+                    //we can treat it like a possibly-empty variadic now
+                    paramType = paramType.getSupertype(unit.getSequentialDeclaration());
                 }
             }
         }

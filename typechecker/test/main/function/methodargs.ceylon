@@ -143,3 +143,56 @@ void testSpreadNoniterable({String*}? args) {
     printAll { @error *args };
     @error fun(*args);
 }
+
+void moreSpreadTests() {
+    function f(Integer a, Integer b, Integer+ c) => 1;
+    function f0(Integer a, Integer b=2, Integer* c) => 1;
+    value f1 = (Integer a, Integer b=2, Integer* c) => 1;
+    value f2 = (Integer a, Integer b, Integer+ c) => 1;
+    f(1, 2, 3, *empty);
+    f0(1, 2, 3, *empty);
+    f1(1, 2, 3, *empty);
+    f2(1, 2, 3, *empty);
+    @error f(1, 2, *empty);
+    @error f(1, *empty);
+    @error f(*empty);
+    f0(1, 2, *empty);
+    f0(1, *empty);
+    @error f0(*empty);
+    f1(1, 2, *empty);
+    f1(1, *empty);
+    @error f1(*empty);
+    @error f2(1, 2, *empty);
+    @error f2(1, *empty);
+    @error f2(*empty);
+    
+    f2(*[1, 2, 3]);
+    f2(*[1, 2, 3, 4]);
+    @error f2(*[1, 2]);
+    @error f2(*[1]);
+    @error f2(*[]);
+    f1(*[1, 2, 3]);
+    f1(*[1, 2, 3, 4]);
+    f1(*[1, 2]);
+    f1(*[1]);
+    @error f1(*[]);
+    
+    String g(String x="", String y="") => x+y;
+    String(String=, String=) g1 = g;
+    g("s1", "s2", *[]);
+    g("s1", *[]);
+    g(*[]);
+    g1("s1", "s2", *[]);
+    g1("s1", *[]);
+    g1(*[]);
+    
+    @error g("s1", "s2", *["s3"]);
+    @error g("s1", *["s2", "s3"]);
+    g("s1", *["s2"]);
+    g(*["s1"]);
+    @error g1("s1", "s2", *["s3"]);
+    @error g1("s1", *["s2", "s3"]);
+    g1("s1", *["s2"]);
+    g1(*["s1"]);
+
+}
