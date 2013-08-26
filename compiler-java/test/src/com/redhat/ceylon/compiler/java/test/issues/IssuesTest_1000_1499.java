@@ -409,4 +409,12 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     public void testBug1250() {
         compareWithJavaSource("bug12xx/Bug1250");
     }
+    
+    @Test
+    public void testBug1255() {
+        assertErrors("bug12xx/Bug1255",
+                new CompilerError(29, "spread argument is not iterable: {String*}? is not a subtype of Iterable"),
+                new CompilerError(29, "iterable element type could not be inferred")
+                );
+    }
 }
