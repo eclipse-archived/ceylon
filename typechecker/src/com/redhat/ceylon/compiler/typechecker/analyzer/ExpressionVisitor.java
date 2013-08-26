@@ -4389,9 +4389,9 @@ public class ExpressionVisitor extends Visitor {
         if (et==null) return null;
         if (requireSequential) {
             if (unit.isSequentialType(et)) {
-                if (et.getDeclaration() instanceof TypeParameter) {
+                //if (et.getDeclaration() instanceof TypeParameter) {
                     return et;
-                }
+                /*}
                 else {
                     // if it's already a subtype of Sequential, erase 
                     // out extraneous information, like that it is a
@@ -4407,7 +4407,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                     return unit.getTupleType(elementTypes, variadic, 
                             atLeastOne, minimumLength);
-                }
+                }*/
             }
             else {
                 // transform any Iterable into a Sequence without
