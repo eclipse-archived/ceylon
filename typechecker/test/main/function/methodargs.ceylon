@@ -106,8 +106,14 @@ shared void parameterizedByArgs<Args>(Args args, Callable<Anything,Args> fun)
 
 void testSpreadTypeArg<Args>(Args args) 
         given Args satisfies Anything[] {
-    //Note: the type really should be [String,*Args], 
-    //      if that were supported
-    @type:"Tuple<Anything,String,Sequential<Anything>>" 
+    @type:"Tuple<Anything,String,Args>" 
     value tup = ["hello", *args];
+}
+
+void testSpreadNoniterable({String*}? args) {
+    void fun(String* args) {}
+    @error value v1 = { @error *args };
+    @error value v2 = [ @error *args ];
+    printAll { @error *args };
+    @error fun(*args);
 }

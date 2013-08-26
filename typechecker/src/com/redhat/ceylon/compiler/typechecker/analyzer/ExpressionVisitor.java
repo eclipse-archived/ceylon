@@ -2462,9 +2462,10 @@ public class ExpressionVisitor extends Visitor {
         ProducedType rat = arg.getTypeModel();
         if (!isTypeUnknown(rat)) {
             if (!unit.isIterableType(rat)) {
-                arg.addError("spread argument is not iterable: " + 
+                //note: check already done by visit(SpreadArgument)
+                /*arg.addError("spread argument is not iterable: " + 
                         rat.getProducedTypeName(unit) + 
-                        " is not a subtype of Iterable");
+                        " is not a subtype of Iterable");*/
             }
             else {
                 ProducedType at = spreadType(rat, unit, true);
@@ -2562,9 +2563,10 @@ public class ExpressionVisitor extends Visitor {
         //checkSpreadArgumentSequential(sa, at);
         if (!isTypeUnknown(at)) {
             if (!unit.isIterableType(at)) {
-                sa.addError("spread argument is not iterable: " + 
+              //note: check already done by visit(SpreadArgument)
+                /*sa.addError("spread argument is not iterable: " + 
                         at.getProducedTypeName(unit) + 
-                        " is not a subtype of Iterable");
+                        " is not a subtype of Iterable");*/
             }
             else {
                 ProducedType sat = spreadType(at, unit, true);
@@ -2709,8 +2711,17 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.SpreadArgument that) {
         super.visit(that);
-        if (that.getExpression()!=null) {
-            that.setTypeModel(that.getExpression().getTypeModel());
+        Tree.Expression e = that.getExpression();
+        if (e!=null) {
+            ProducedType t = e.getTypeModel();
+            if (t!=null) {
+                if (!unit.isIterableType(t)) {
+                    e.addError("spread argument is not iterable: " + 
+                            t.getProducedTypeName(unit) + 
+                            " is not a subtype of Iterable");
+                }
+                that.setTypeModel(t);
+            }
         }
     }
 
@@ -4376,38 +4387,44 @@ public class ExpressionVisitor extends Visitor {
     private ProducedType spreadType(ProducedType et, Unit unit,
             boolean requireSequential) {
         if (et==null) return null;
-        if (unit.isSequentialType(et) && 
+        if (requireSequential &&
                 !(et.getDeclaration() instanceof TypeParameter)) {
-            // if it's already a subtype of Sequential, erase 
-            // out extraneous information, like that it is a
-            // String, just keeping information about what
-            // kind of tuple it is
-            List<ProducedType> elementTypes = unit.getTupleElementTypes(et);
-            boolean variadic = unit.isTupleLengthUnbounded(et);
-            boolean atLeastOne = unit.isTupleVariantAtLeastOne(et);
-            int minimumLength = unit.getTupleMinimumLength(et);
-            if (variadic) {
-                ProducedType spt = elementTypes.get(elementTypes.size()-1);
-                elementTypes.set(elementTypes.size()-1, unit.getIteratedType(spt));
+            if (unit.isSequentialType(et)) {
+                // if it's already a subtype of Sequential, erase 
+                // out extraneous information, like that it is a
+                // String, just keeping information about what
+                // kind of tuple it is
+                List<ProducedType> elementTypes = unit.getTupleElementTypes(et);
+                boolean variadic = unit.isTupleLengthUnbounded(et);
+                boolean atLeastOne = unit.isTupleVariantAtLeastOne(et);
+                int minimumLength = unit.getTupleMinimumLength(et);
+                if (variadic) {
+                    ProducedType spt = elementTypes.get(elementTypes.size()-1);
+                    elementTypes.set(elementTypes.size()-1, unit.getIteratedType(spt));
+                }
+                return unit.getTupleType(elementTypes, variadic, 
+                        atLeastOne, minimumLength);
             }
-            return unit.getTupleType(elementTypes, variadic, 
-                    atLeastOne, minimumLength);
+            else {
+                // transform any Iterable into a Sequence without
+                // losing the information that it is nonempty, in
+                // the case that we know that for sure
+                return unit.isNonemptyIterableType(et) ?
+                        unit.getSequenceType(unit.getIteratedType(et)) :
+                        unit.getSequentialType(unit.getIteratedType(et));
+            }
         }
         else {
-            // transform any Iterable into a Sequence without
-            // losing the information that it is nonempty, in
-            // the case that we know that for sure
-            ProducedType st = unit.isNonemptyIterableType(et) ?
-                    unit.getSequenceType(unit.getIteratedType(et)) :
-                    unit.getSequentialType(unit.getIteratedType(et)); 
             // unless this is a tuple constructor, remember
             // the original Iterable type arguments, to
             // account for the possibility that the argument
             // to Absent is a type parameter
-            return requireSequential ? 
-                    st : intersectionType(st, et, unit);
+            //ProducedType st = unit.isNonemptyIterableType(et) ?
+            //        unit.getSequenceType(unit.getIteratedType(et)) :
+            //        unit.getSequentialType(unit.getIteratedType(et))
+            //return intersectionType(et.getSupertype(unit.getIterableDeclaration()), st, unit);
+            return et;
         }
-
     }
     
     @Override public void visit(Tree.Dynamic that) {
@@ -4440,14 +4457,17 @@ public class ExpressionVisitor extends Visitor {
         ProducedType st = null;
         Tree.SequencedArgument sa = that.getSequencedArgument();
         if (sa!=null) {
-            List<Tree.PositionalArgument> pas = sa.getPositionalArguments();
-            st = getTupleType(pas, false)
-                    .getSupertype(unit.getIterableDeclaration());
+            ProducedType tt = getTupleType(sa.getPositionalArguments(), false);
+            if (tt!=null) {
+                st = tt.getSupertype(unit.getIterableDeclaration());
+                if (st==null) {
+                    st = unit.getIterableType(new UnknownType(unit).getType());
+                }
+            }
         }
         else {
             st = unit.getEmptyDeclaration().getType();
         }
-        
         if (st!=null) {
             that.setTypeModel(st);
             if (st.containsUnknowns()) {
