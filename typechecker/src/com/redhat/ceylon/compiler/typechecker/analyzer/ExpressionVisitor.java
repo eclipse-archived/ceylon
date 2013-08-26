@@ -2604,25 +2604,6 @@ public class ExpressionVisitor extends Visitor {
 
     private void checkSequencedIndirectArgument(List<Tree.PositionalArgument> args,
             ProducedType paramType) {
-        /*ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
-        for (int i=0; i<args.size(); i++) {
-            Tree.PositionalArgument a = args.get(i);
-            ProducedType at = a.getTypeModel();
-            if (!isTypeUnknown(at) && !isTypeUnknown(set)) {
-                if (a instanceof Tree.SpreadArgument) {
-                    //checkSpreadArgumentSequential((Tree.SpreadArgument) a, at);
-                    at = spreadType(at, unit, true);
-                    checkAssignable(unit.getIteratedType(at), set, a,
-                            "spread argument must be assignable to variadic parameter");
-                    checkAssignable(at, paramType, a,
-                            "spread argument must be assignable to variadic parameter");
-                }
-                else {
-                    checkAssignable(at, set, a, 
-                            "argument must be assignable to variadic parameter");
-                }
-            }
-        }*/
         ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
         for (int j=0; j<args.size(); j++) {
             Tree.PositionalArgument a = args.get(j);
