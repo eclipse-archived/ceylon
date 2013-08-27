@@ -162,7 +162,31 @@ public class AnnotationVisitor extends Visitor {
             }
         }
     }
-
+    
+    @Override 
+    public void visit(Tree.PackageDescriptor that) {
+        super.visit(that);
+        Unit unit = that.getUnit();
+        checkAnnotations(that.getAnnotationList(), 
+                unit.getPackageDeclarationType(), null);
+    }
+    
+    @Override 
+    public void visit(Tree.ModuleDescriptor that) {
+        super.visit(that);
+        Unit unit = that.getUnit();
+        checkAnnotations(that.getAnnotationList(), 
+                unit.getModuleDeclarationType(), null);
+    }
+    
+    @Override 
+    public void visit(Tree.ImportModule that) {
+        super.visit(that);
+        Unit unit = that.getUnit();
+        checkAnnotations(that.getAnnotationList(), 
+                unit.getImportDeclarationType(), null);
+    }
+    
     @Override
     public void visit(Tree.AnyClass that) {
         super.visit(that);

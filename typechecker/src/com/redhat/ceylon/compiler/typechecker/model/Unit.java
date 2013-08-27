@@ -964,6 +964,18 @@ public class Unit {
                 firstDefaulted);
     }
     
+    public ProducedType getPackageDeclarationType() {
+        return getLanguageModuleDeclarationTypeDeclaration("Package").getType();
+    }
+    
+    public ProducedType getModuleDeclarationType() {
+        return getLanguageModuleDeclarationTypeDeclaration("Module").getType();
+    }
+    
+    public ProducedType getImportDeclarationType() {
+        return getLanguageModuleDeclarationTypeDeclaration("Import").getType();
+    }
+    
     public ProducedType getClassDeclarationType() {
         return getLanguageModuleDeclarationTypeDeclaration("ClassDeclaration").getType();
     }
