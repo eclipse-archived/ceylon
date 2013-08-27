@@ -20,7 +20,7 @@ annotation An an() => An();
 final annotation class Fun() satisfies OptionalAnnotation<Fun,FunctionDeclaration> {}
 annotation Fun fun() => Fun();
 
-final annotation class Att() satisfies OptionalAnnotation<Att,ValueDeclaration&ValueModel<String>> {}
+final annotation class Att() satisfies OptionalAnnotation<Att,ValueDeclaration> {}
 annotation Att att() => Att();
 
 "A class"
@@ -81,7 +81,7 @@ an fun String emptyStringFun1() => "";
 @error fun String emptyStringAtt1 => "";
 an att String emptyStringAtt2 => "";
 an fun String? emptyOptionalStringFun() => null;
-@error att String? emptyOptionalStringAtt => null;
+att String? emptyOptionalStringAtt => null;
 an fun String? emptyStringFunWithParam(String s) => s;
 
 An? fan = annotations(`An`, `emptyStringFun1`);

@@ -458,7 +458,8 @@ public class AnnotationVisitor extends Visitor {
                 ProducedType pet = t.getSupertype(getConstrainedAnnotationDeclaration(unit));
                 if (pet!=null && pet.getTypeArgumentList().size()>2) {
                     ProducedType ct = pet.getTypeArgumentList().get(2);
-                    checkAssignable(intersectionType(declarationType,metatype, unit), ct, ann, 
+                    ProducedType mt = declarationType; //intersectionType(declarationType,metatype, unit);
+                    checkAssignable(mt, ct, ann, 
                             "annotated program element does not satisfy annotation constraints");
                 }
             }
