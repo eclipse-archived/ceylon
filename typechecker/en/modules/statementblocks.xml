@@ -810,7 +810,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
                     is refined by all of these members, except</para>
                 </listitem>
                 <listitem>
-                    <para>in the case of certain pathologica intersection types, where 
+                    <para>in the case of certain pathological intersection types, where 
                     two of the intersected types declare distinct members with the same 
                     name, that do not refine any member of a common supertype (in which 
                     case what we actually have are disjoint types that are nevertheless 
