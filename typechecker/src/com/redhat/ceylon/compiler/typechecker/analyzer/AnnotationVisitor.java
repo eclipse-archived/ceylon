@@ -20,7 +20,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
-public class ConstraintVisitor extends Visitor {
+public class AnnotationVisitor extends Visitor {
     
     private static boolean isIllegalAnnotationParameterType(ProducedType pt) {
         if (pt!=null) {
