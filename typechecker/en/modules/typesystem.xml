@@ -1447,7 +1447,7 @@ Item item = comp of Item;</programlisting>
             type constraint.</para>
             
             <comment><para>Note: this restriction exists to eliminate certain undecidable cases
-            described in Tate et al.</para></comment>
+            described in the paper Taming Wildcards in Java's Type System, by Tate et al.</para></comment>
             
             <para>To determine if a type expression occurs in a covariant or contravariant 
             position, we first consider how the type occurs syntactically.</para> 
