@@ -358,8 +358,8 @@
             <itemizedlist>
                 <listitem>
                     <para>a condition variable of a condition belonging to a condition list is 
-                    in scope in any condition of the same condition list that occurs lexically later, 
-                    and</para>
+                    in scope in any condition of the same condition list that occurs lexically 
+                    later, and</para>
                 </listitem>
                 <listitem>
                     <para>a resource expression variable of a <literal>try</literal> statement 
@@ -373,6 +373,9 @@
                 </listitem>
             </itemizedlist>
             
+            <comment><para>Note: if no reference to an un-<literal>shared</literal> declaration 
+            occurs within the scope of the declaration, a compiler warning is produced.</para></comment>
+        
         </section>
     
         <section id="hidingdeclaration">
@@ -917,9 +920,6 @@ Integer f(Integer n) => n+package.n;</programlisting>
         to termination of the method. Each conditional branch must end in a 
         <literal>return</literal> or <literal>throw</literal> directive.</para>
         -->
-        
-        <comment><para>Note: an unused un-<literal>shared</literal> declaration results in a 
-        compiler warning.</para></comment>
         
         <section id="expressionstatements">
             <title>Expression statements</title>
