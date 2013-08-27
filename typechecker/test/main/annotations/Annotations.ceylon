@@ -11,7 +11,7 @@ annotation Meta persistent(String column, ClassDeclaration type, Boolean update)
 final annotation class Fun() satisfies OptionalAnnotation<Fun,FunctionDeclaration> {}
 annotation Fun fun() => Fun();
 
-final annotation class Att() satisfies OptionalAnnotation<Att,ValueDeclaration&AttributeModel<String>> {}
+final annotation class Att() satisfies OptionalAnnotation<Att,ValueDeclaration&ValueModel<String>> {}
 annotation Att att() => Att();
 
 "A class"
