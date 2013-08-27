@@ -1224,13 +1224,15 @@ public class ExpressionTransformer extends AbstractTransformer {
             return makeEmpty();// A tuple terminated by empty
         }
         ProducedType restType;
+        ProducedType tupleSuperType;
         if (tupleType.getSupertype(typeFact().getEmptyDeclaration()) != null) {
             return makeEmpty();// A tuple terminated by *[] (another kind of empty)
-        } else 
-        if (tupleType.getTypeArgumentList().size()==3) {//An intermediate Tuple
-            restType = tupleType.getTypeArgumentList().get(2);
-        } else {// A Tuple terminated by a Element[]
-            restType = typeFact().getSequentialType(tupleType.getTypeArgumentList().get(0));
+        } else if ((tupleSuperType = tupleType.getSupertype(typeFact().getTupleDeclaration())) != null) {
+            // An intermediate Tuple
+            restType = tupleSuperType.getTypeArgumentList().get(2);
+        } else {
+            // Must be a subtype of Sequential
+            restType = tupleType.getSupertype(typeFact().getSequentialDeclaration());
         }
         // Recurse the transform the rest
         JCExpression rest = makeTuple(restType, expressions.subList(1, expressions.size()));
