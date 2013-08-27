@@ -797,27 +797,34 @@ Integer f(Integer n) => n+package.n;</programlisting>
                     element, and</para>
                 </listitem>
                 <listitem>
-                    <para>if there are multiple visible members with the given name 
-                    or imported name, then it is guaranteed by the type system and
+                    <para>if there are multiple visible members with the given name or 
+                    imported name, then it is guaranteed by the type system and
                     <xref linkend="declarationnameuniqueness"/> that there is exactly 
                     one such member which is not refined by another member, except</para>
                 </listitem>
                 <listitem>
-                    <para>in the case of certain intersection types, where two of the
-                    intersected types declare distinct members with the same name,
-                    that do not refine any member of a common supertype (in which case 
-                    what we actually have are disjoint types that are nevertheless not 
-                    considered provably disjoint within the rules of the typesystem), 
+                    <para>if the qualifying type is an intersection type, in which case 
+                    there may be multiple members which are not refined by another 
+                    member, but where there is exactly one such member that is refined 
+                    by each of these members, but is not refined by another member that 
+                    is refined by all of these members, except</para>
+                </listitem>
+                <listitem>
+                    <para>in the case of certain pathologica intersection types, where 
+                    two of the intersected types declare distinct members with the same 
+                    name, that do not refine any member of a common supertype (in which 
+                    case what we actually have are disjoint types that are nevertheless 
+                    not considered provably disjoint within the rules of the typesystem), 
                     and in this case the qualified reference is considered illegal.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>Then the reference is to the unique unrefined member or nested class. 
-            If the program element is contained in the body of a class or interface, 
-            and the member declaration directly occurs in the body of the class or 
-            interface, and the qualified reference is a value reference or callable 
-            reference, and the receiver expression is a self reference to the instance 
-            being initialized, then:</para>
+            <para>Then the reference is to the unique member or nested class. If the 
+            program element is contained in the body of a class or interface, and the 
+            member declaration directly occurs in the body of the class or interface, 
+            and the qualified reference is a value reference or callable reference, and 
+            the receiver expression is a self reference to the instance being 
+            initialized, then:</para>
             
             <itemizedlist>
                 <listitem>
