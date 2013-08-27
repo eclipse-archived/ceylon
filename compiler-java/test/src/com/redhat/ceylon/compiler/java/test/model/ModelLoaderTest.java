@@ -50,6 +50,7 @@ import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
+import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionUtils;
 import com.redhat.ceylon.compiler.loader.model.LazyElement;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -819,5 +820,103 @@ public class ModelLoaderTest extends CompilerTest {
                 // FIXME: I wish I knew how to get rid of that one...
                 new CompilerError(3, "constructor BogusTopLevelClass in class com.redhat.ceylon.compiler.java.test.model.BogusTopLevelClass<T> cannot be applied to given types;\n  required: no arguments\n  found: com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor\n  reason: actual and formal argument lists differ in length")
         );
+    }
+
+    interface I<T,X,B extends Number> {
+        void foo();
+        void params(int i);
+        void parameterised(T t);
+        void parameterised(T t, String s);
+        void parameterised2(X t);
+        <M> void mparameterised();
+        void parameterisedB(B b);
+    }
+    interface I2<B extends Number> {
+        void parameterisedB(B b);
+    }
+    class RawC implements I2 {
+        @Override
+        public void parameterisedB(Number b) {}
+    }
+    class C<T,B extends Number> implements I<Integer,T,B> {
+        @Override
+        public void foo() {}
+        // this one does not override anything 
+        public void bar() {}
+        @Override
+        public void params(int i){}
+        // overrides a generic method
+        @Override
+        public void parameterised(Integer t) {}
+        // overrides a generic method
+        @Override
+        public void parameterised(Integer t, String s) {}
+        // overrides a generic method
+        @Override
+        public void parameterised2(T t) {}
+        // this one does not override anything 
+        public void parameterised(String t) {}
+        @Override
+        public void mparameterised() {}
+        // overrides a generic method with bounded type
+        @Override
+        public void parameterisedB(B b) {}
+        
+    }
+    class C2 extends C<String, Integer> {
+        public void params(){}
+        public void parameterised(Integer t, int i) {}
+    }
+    class Container<O> {
+        class Inner<I> {
+            public void method(O o, I i){}
+        }
+    }
+    class ContainerSubClass extends Container<Integer> {
+        class Inner extends Container<Integer>.Inner<String> {
+            @Override
+            public void method(Integer o, String i) {}
+        }
+    }
+    class Visibility {
+        protected void prot(){}
+        void pkg(){}
+        private void priv(){}
+    }
+    class VisibilitySubClass extends Visibility {
+        protected void prot(){}
+        void pkg(){}
+        private void priv(){}
+    }
+    interface Channel {}
+    interface WebSocketChannel extends  Channel {}
+    
+    public abstract class AbstractReceiveListener implements ChannelListener<WebSocketChannel> {
+        @Override
+        public void handleEvent(WebSocketChannel channel) {}
+    }
+    public interface ChannelListener<T extends Channel> {
+        void handleEvent(T channel);
+    }
+
+    @Test
+    public void testReflectionOverriding() throws NoSuchMethodException, SecurityException{
+        Assert.assertTrue(ReflectionUtils.isOverridingMethod(C.class.getDeclaredMethod("foo")));
+        Assert.assertFalse(ReflectionUtils.isOverridingMethod(C.class.getDeclaredMethod("bar")));
+        Assert.assertTrue(ReflectionUtils.isOverridingMethod(C.class.getDeclaredMethod("params", int.class)));
+        Assert.assertFalse(ReflectionUtils.isOverridingMethod(C2.class.getDeclaredMethod("params")));
+        Assert.assertTrue(ReflectionUtils.isOverridingMethod(C.class.getDeclaredMethod("parameterised", Integer.class)));
+        Assert.assertTrue(ReflectionUtils.isOverridingMethod(C.class.getDeclaredMethod("parameterised", Integer.class, String.class)));
+        Assert.assertTrue(ReflectionUtils.isOverridingMethod(C.class.getDeclaredMethod("parameterised2", Object.class)));
+        Assert.assertFalse(ReflectionUtils.isOverridingMethod(C2.class.getDeclaredMethod("parameterised", Integer.class, int.class)));
+        Assert.assertFalse(ReflectionUtils.isOverridingMethod(C.class.getDeclaredMethod("parameterised", String.class)));
+        Assert.assertTrue(ReflectionUtils.isOverridingMethod(C.class.getDeclaredMethod("mparameterised")));
+        Assert.assertTrue(ReflectionUtils.isOverridingMethod(C.class.getDeclaredMethod("parameterisedB", Number.class)));
+        Assert.assertTrue(ReflectionUtils.isOverridingMethod(RawC.class.getDeclaredMethod("parameterisedB", Number.class)));
+        Assert.assertTrue(ReflectionUtils.isOverridingMethod(ContainerSubClass.Inner.class.getDeclaredMethod("method", Integer.class, String.class)));
+        Assert.assertTrue(ReflectionUtils.isOverridingMethod(VisibilitySubClass.class.getDeclaredMethod("prot")));
+        Assert.assertTrue(ReflectionUtils.isOverridingMethod(VisibilitySubClass.class.getDeclaredMethod("pkg")));
+        Assert.assertFalse(ReflectionUtils.isOverridingMethod(VisibilitySubClass.class.getDeclaredMethod("priv")));
+        Assert.assertTrue(ReflectionUtils.isOverridingMethod(AbstractReceiveListener.class.getDeclaredMethod("handleEvent", WebSocketChannel.class)));
     }
 }
