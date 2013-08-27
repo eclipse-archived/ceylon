@@ -4,7 +4,7 @@ import ceylon.language.model.declaration {
 
 shared interface Model of ClassOrInterface<Anything>
                         | FunctionModel<Anything, Nothing> 
-                        | AttributeModel<Anything> {
+                        | ValueModel<Anything> {
     
     shared formal TopLevelOrMemberDeclaration declaration;
 }

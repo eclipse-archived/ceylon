@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.model.Attribute$impl;
-import ceylon.language.model.AttributeModel$impl;
+import ceylon.language.model.ValueModel$impl;
 import ceylon.language.model.Model$impl;
 import ceylon.language.model.Value;
 import ceylon.language.model.declaration.ValueDeclaration;
@@ -50,7 +50,7 @@ public class AppliedAttribute<Container, Type>
 
     @Override
     @Ignore
-    public AttributeModel$impl<Type> $ceylon$language$model$AttributeModel$impl() {
+    public ValueModel$impl<Type> $ceylon$language$model$ValueModel$impl() {
         // TODO Auto-generated method stub
         return null;
     }

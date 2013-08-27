@@ -5,7 +5,7 @@ import java.util.Collections;
 import ceylon.language.model.Value;
 import ceylon.language.model.Value$impl;
 import ceylon.language.model.Model$impl;
-import ceylon.language.model.AttributeModel$impl;
+import ceylon.language.model.ValueModel$impl;
 import ceylon.language.model.declaration.ValueDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -46,7 +46,7 @@ public class FreeAttributeWithAppliedValue<Type>
 
     @Override
     @Ignore
-    public AttributeModel$impl $ceylon$language$model$AttributeModel$impl() {
+    public ValueModel$impl $ceylon$language$model$ValueModel$impl() {
         // TODO Auto-generated method stub
         return null;
     }

@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 
 import ceylon.language.model.Model$impl;
 import ceylon.language.model.Value$impl;
-import ceylon.language.model.AttributeModel$impl;
+import ceylon.language.model.ValueModel$impl;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -147,7 +147,7 @@ public class AppliedValue<Type>
 
     @Override
     @Ignore
-    public AttributeModel$impl<Type> $ceylon$language$model$AttributeModel$impl() {
+    public ValueModel$impl<Type> $ceylon$language$model$ValueModel$impl() {
         // TODO Auto-generated method stub
         return null;
     }

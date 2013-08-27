@@ -5,7 +5,7 @@ import ceylon.language.model {
     ClosedType = Type
 }
 
-shared interface AttributeModel<out Type>
+shared interface ValueModel<out Type>
         satisfies Model {
 
     shared formal actual ValueDeclaration declaration;

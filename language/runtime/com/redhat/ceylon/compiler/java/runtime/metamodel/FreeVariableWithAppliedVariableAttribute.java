@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ceylon.language.model.Attribute$impl;
-import ceylon.language.model.AttributeModel$impl;
+import ceylon.language.model.ValueModel$impl;
 import ceylon.language.model.ClassOrInterface;
 import ceylon.language.model.Member$impl;
 import ceylon.language.model.Model$impl;
@@ -65,7 +65,7 @@ public class FreeVariableWithAppliedVariableAttribute<Container, Type>
 
     @Override
     @Ignore
-    public AttributeModel$impl<Type> $ceylon$language$model$AttributeModel$impl() {
+    public ValueModel$impl<Type> $ceylon$language$model$ValueModel$impl() {
         // TODO Auto-generated method stub
         return null;
     }
