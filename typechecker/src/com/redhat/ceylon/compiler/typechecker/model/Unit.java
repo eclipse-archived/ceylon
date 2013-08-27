@@ -920,7 +920,7 @@ public class Unit {
     public ProducedType getClassMetatype(ProducedType literalType) {
         Class c = (Class) literalType.getDeclaration();
         ParameterList parameterList = c.getParameterList();
-        ProducedType parameterTuple = getParameterTypesAsTupleType(parameterList.getParameters(), literalType);
+        ProducedType parameterTuple = getParameterTypesAsTupleType(parameterList != null ? parameterList.getParameters() : Collections.<Parameter>emptyList(), literalType);
         if (literalType.getDeclaration().isMember()) {
             return getLanguageModuleModelTypeDeclaration("MemberClass")
                     .getProducedType(null, asList(literalType.getQualifyingType(), literalType, parameterTuple));
