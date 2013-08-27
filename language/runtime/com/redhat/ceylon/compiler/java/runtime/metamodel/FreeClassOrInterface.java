@@ -308,6 +308,10 @@ public abstract class FreeClassOrInterface
     <T extends FreeTopLevelOrMemberDeclaration> T findDeclaration(@Ignore TypeDescriptor $reifiedT, String name) {
         checkInit();
         for(ceylon.language.model.declaration.TopLevelOrMemberDeclaration decl : declarations){
+            // skip anonymous types which can't be looked up by name
+            if(decl instanceof ceylon.language.model.declaration.ClassDeclaration
+                    && ((ceylon.language.model.declaration.ClassDeclaration) decl).getAnonymous())
+                continue;
             // in theory we can't have several members with the same name so no need to check the type
             // FIXME: interop and overloading
             if(decl.getName().equals(name))
