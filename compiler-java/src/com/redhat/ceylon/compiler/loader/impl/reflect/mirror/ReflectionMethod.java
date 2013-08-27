@@ -181,39 +181,11 @@ public class ReflectionMethod implements MethodMirror {
         if(overridingMethod != null)
             return overridingMethod.booleanValue();
         
-        String name = method.getName();
-        Class<?>[] parameterTypes;
         if(method instanceof Method)
-            parameterTypes = ((Method)method).getParameterTypes();
+            overridingMethod = ReflectionUtils.isOverridingMethod((Method) method);
         else
-            parameterTypes = ((Constructor<?>)method).getParameterTypes();
-        Class<?> declaringClass = method.getDeclaringClass();
-        // try the superclass first
-        Class<?> superclass = declaringClass.getSuperclass();
-        if(superclass != null){
-            try {
-                superclass.getMethod(name, parameterTypes);
-                // present
-                overridingMethod = Boolean.TRUE;
-                return true;
-            } catch (Exception e) {
-                // not present
-            }
-        }
-        // now try the interfaces
-        for(Class<?> interfce : declaringClass.getInterfaces()){
-            try {
-                interfce.getMethod(name, parameterTypes);
-                // present
-                overridingMethod = Boolean.TRUE;
-                return true;
-            } catch (Exception e) {
-                // not present
-            }
-        }
-        // not overriding anything
-        overridingMethod = Boolean.FALSE;
-        return false;
+            overridingMethod = false;
+        return overridingMethod;
     }
 
     @Override
