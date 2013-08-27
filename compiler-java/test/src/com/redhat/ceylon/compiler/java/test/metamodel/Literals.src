@@ -401,7 +401,7 @@ final class LitInterface$impl {
 public interface LitParameterisedInterface$Member<T, X> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface$Member<T, X> $com$redhat$ceylon$compiler$java$test$metamodel$LitParameterisedInterface$impl$Member$impl();
+    public .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface$impl<T>.Member$impl<X> $com$redhat$ceylon$compiler$java$test$metamodel$LitParameterisedInterface$impl$Member$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
@@ -661,6 +661,7 @@ final class litValue_ {
         value = new long[]{2L};
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public static long $get() {
         try {
@@ -682,6 +683,7 @@ final class litVariable_ {
     }
     
     @.ceylon.language.Variable$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("variable")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public static long $get() {
@@ -692,6 +694,7 @@ final class litVariable_ {
         }
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void $set(@.com.redhat.ceylon.compiler.java.metadata.Name("litVariable")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long litVariable) {
