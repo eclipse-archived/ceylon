@@ -47,6 +47,7 @@ abstract class RWTop<X, Y>() {
     shared formal RWContrParam<Integer> m3();
     shared formal RWContrParam<Integer> m3_erasure();
     shared formal T tParam<T>();
+    shared formal T tParamErasure<T>();
     shared formal T tBoundParam<T>() given T satisfies Number;
     shared formal T tCovBoundParam<out T>() given T satisfies Integer;
     shared formal X typeBound();
@@ -63,6 +64,7 @@ abstract class RWBottom<Z>() extends RWTop<Number, Z>() {
     shared actual formal RWContrParamExt<Number> m3();
     shared actual formal RWContrParamExt<Number|Category> m3_erasure();
     shared actual formal S tParam<S>();
+    shared actual formal S&Number tParamErasure<S>();
     shared actual formal S tBoundParam<S>();
     shared actual formal S tCovBoundParam<out S>() given S satisfies Number;
     shared actual formal Number typeBound();

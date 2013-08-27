@@ -162,6 +162,8 @@ abstract class RWTop<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     public abstract <T>T tParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT);
     
+    public abstract <T>T tParamErasure(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT);
+    
     public abstract <T extends .ceylon.language.Number>T tBoundParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT);
     
     public abstract <T extends .ceylon.language.Integer>T tCovBoundParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT);
@@ -204,6 +206,9 @@ abstract class RWBottom<Z> extends .com.redhat.ceylon.compiler.java.test.structu
     
     @.java.lang.Override
     public abstract <S>S tParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS);
+    
+    @.java.lang.Override
+    public abstract <S>S tParamErasure(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS);
     
     @.java.lang.Override
     public abstract <S extends .ceylon.language.Number>S tBoundParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS);
