@@ -64,6 +64,7 @@ class Annotations() {
         SequencedDescription[] ds = annotations<SequencedDescription,SequencedDescription[],Annotated>(sdt(this), at.declaration);
     }*/
     
+    fun fun fun String emptyStringFun0() => "";
     fun String emptyStringFun1() => "";
     @error att String emptyStringFun2() => "";
     @error fun String emptyStringAtt1 => "";

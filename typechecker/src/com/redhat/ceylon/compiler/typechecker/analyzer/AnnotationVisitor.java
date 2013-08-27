@@ -178,6 +178,13 @@ public class AnnotationVisitor extends Visitor {
                 .getMemberOrParameter(unit, "ConstrainedAnnotation", null, false);
     }
 
+    private static TypeDeclaration getOptionalAnnotationDeclaration(Unit unit) {
+        return (TypeDeclaration) unit.getPackage().getModule()
+                .getLanguageModule()
+                .getDirectPackage("ceylon.language.model")
+                .getMemberOrParameter(unit, "OptionalAnnotation", null, false);
+    }
+
     private static TypeDeclaration getDeclarationDeclaration(Unit unit) {
         return (TypeDeclaration) unit.getPackage().getModule()
                 .getLanguageModule()
@@ -444,7 +451,8 @@ public class AnnotationVisitor extends Visitor {
     private void checkAnnotations(AnnotationList annotationList,
             ProducedType declarationType, ProducedType metatype) {
         Unit unit = annotationList.getUnit();
-        for (Annotation ann: annotationList.getAnnotations()) {
+        List<Annotation> anns = annotationList.getAnnotations();
+        for (Annotation ann: anns) {
             ProducedType t = ann.getTypeModel();
             if (t!=null) {
                 ProducedType pet = t.getSupertype(getConstrainedAnnotationDeclaration(unit));
@@ -452,6 +460,19 @@ public class AnnotationVisitor extends Visitor {
                     ProducedType ct = pet.getTypeArgumentList().get(2);
                     checkAssignable(intersectionType(declarationType,metatype, unit), ct, ann, 
                             "annotated program element does not satisfy annotation constraints");
+                }
+            }
+        }
+        for (int i=0; i<anns.size(); i++) {
+            ProducedType t = anns.get(i).getTypeModel();
+            if (t!=null && t.getSupertype(getOptionalAnnotationDeclaration(unit))!=null) {
+                for (int j=0; j<i; j++) {
+                    ProducedType ot = anns.get(j).getTypeModel();
+                    if (ot!=null && ot.getDeclaration().equals(t.getDeclaration())) {
+                        anns.get(i).addError("duplicate annotation: there are multiple annotations of type " + 
+                                t.getDeclaration().getName());
+                        break;
+                    }
                 }
             }
         }
