@@ -1087,7 +1087,7 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
     }
-
+    
     /*@Override
     public void visit(Tree.SpecifiedArgument that) {
         Specification s = new Specification();
@@ -1102,21 +1102,21 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         that.addWarning("satisfies conditions are not yet supported");
     }
-
+    
     /*@Override
     public void visit(Tree.Comprehension that) {
         super.visit(that);
         that.addWarning("comprehensions are not yet supported");
     }*/
-
+    
     @Override
     public void visit(Tree.Assertion that) {
         Declaration d = beginDeclaration(null);
         super.visit(that);
         endDeclaration(d);
     }    
-
-    @Override
+    
+    /*@Override
     public void visit(Tree.AnnotationList that) {
         Scope s = scope;
         if (declaration instanceof Scope) {
@@ -1124,42 +1124,11 @@ public class DeclarationVisitor extends Visitor {
         }
         super.visit(that);
         scope = s;
-    }
+    }*/
     
-    static final String digits = "\\d+";
-    static final String groups = "\\d{1,3}(_\\d{3})+";
-    static final String fractionalGroups = "(\\d{3}_)+\\d{1,3}";
-    static final String magnitude = "k|M|G|T|P";
-    static final String fractionalMagnitude = "m|u|n|p|f";
-    static final String exponent = "(e|E)(\\+|-)?" + digits;
-
-    static final String hexDigits = "(\\d|[a-f]|[A-F])+";
-    static final String hexGroups = "(\\d|[a-f]|[A-F]){1,4}(_(\\d|[a-f]|[A-F]){4})+|(\\d|[a-f]|[A-F]){1,2}(_(\\d|[a-f]|[A-F]){2})+";
-    
-    static final String binDigits = "(0|1)+";
-    static final String binGroups = "(0|1){1,4}(_(0|1){4})+";
-    
-    @Override
-    public void visit(Tree.NaturalLiteral that) {
+    public void visit(Tree.Annotation that) {
         super.visit(that);
-        String text = that.getToken().getText();
-        if (!text.matches("^(" + digits + "|" + groups + ")(" + magnitude + ")?$") &&
-            !text.matches("#(" + hexDigits + "|" + hexGroups + ")") &&
-            !text.matches("\\$(" + binDigits + "|" + binGroups + ")")) {
-            that.addError("illegal integer literal format");
-        }        
-    }
-    
-    @Override
-    public void visit(Tree.FloatLiteral that) {
-        super.visit(that);
-        String text = that.getToken().getText();
-        if (!text.matches("^(" + digits + "|" + groups + ")(\\.(" + 
-                digits + "|" + fractionalGroups  + ")(" + 
-                magnitude + "|" + fractionalMagnitude + "|" + exponent + ")?|" +
-                fractionalMagnitude + ")$")) {
-            that.addError("illegal floating literal format");
-        }
+        that.getPrimary().setScope(pkg);
     }
     
     @Override
@@ -1167,13 +1136,13 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         checkPositionalArguments(that.getPositionalArguments());
     }
-
+    
     @Override
     public void visit(Tree.SequencedArgument that) {
         super.visit(that);
         checkPositionalArguments(that.getPositionalArguments());
     }
-
+    
     private void checkPositionalArguments(List<Tree.PositionalArgument> args) {
         for (int i=0; i<args.size()-1; i++) {
             Tree.PositionalArgument a = args.get(i);

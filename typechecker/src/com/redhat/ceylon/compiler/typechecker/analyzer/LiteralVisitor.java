@@ -15,10 +15,9 @@ import java.util.regex.Pattern;
 import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Literal;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotedLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
@@ -101,10 +100,49 @@ public class LiteralVisitor extends Visitor {
         that.setText(result.toString());
     }
     
+    static final String digits = "\\d+";
+    static final String groups = "\\d{1,3}(_\\d{3})+";
+    static final String fractionalGroups = "(\\d{3}_)+\\d{1,3}";
+    static final String magnitude = "k|M|G|T|P";
+    static final String fractionalMagnitude = "m|u|n|p|f";
+    static final String exponent = "(e|E)(\\+|-)?" + digits;
+
+    static final String hexDigits = "(\\d|[a-f]|[A-F])+";
+    static final String hexGroups = "(\\d|[a-f]|[A-F]){1,4}(_(\\d|[a-f]|[A-F]){4})+|(\\d|[a-f]|[A-F]){1,2}(_(\\d|[a-f]|[A-F]){2})+";
+    
+    static final String binDigits = "(0|1)+";
+    static final String binGroups = "(0|1){1,4}(_(0|1){4})+";
+    
     @Override
-    public void visit(FloatLiteral that) {
-    	that.setText(that.getText()
-    			.replace("_", "")
+    public void visit(Tree.NaturalLiteral that) {
+        super.visit(that);
+        String text = that.getToken().getText();
+        if (!text.matches("^(" + digits + "|" + groups + ")(" + magnitude + ")?$") &&
+            !text.matches("#(" + hexDigits + "|" + hexGroups + ")") &&
+            !text.matches("\\$(" + binDigits + "|" + binGroups + ")")) {
+            that.addError("illegal integer literal format");
+        }        
+        that.setText(that.getText()
+                .replace("_", "")
+                .replace("k", "000")
+                .replace("M", "000000")
+                .replace("G", "000000000")
+                .replace("T", "000000000000")
+                .replace("P", "000000000000000"));
+    }
+    
+    @Override
+    public void visit(Tree.FloatLiteral that) {
+        super.visit(that);
+        String text = that.getToken().getText();
+        if (!text.matches("^(" + digits + "|" + groups + ")(\\.(" + 
+                digits + "|" + fractionalGroups  + ")(" + 
+                magnitude + "|" + fractionalMagnitude + "|" + exponent + ")?|" +
+                fractionalMagnitude + ")$")) {
+            that.addError("illegal floating literal format");
+        }
+        that.setText(that.getText()
+                .replace("_", "")
                 .replace("k", "e+3")
                 .replace("M", "e+6")
                 .replace("G", "e+9")
@@ -116,18 +154,7 @@ public class LiteralVisitor extends Visitor {
                 .replace("p", "e-12")
                 .replace("f", "e-15"));
     }
-    
-    @Override
-    public void visit(NaturalLiteral that) {
-    	that.setText(that.getText()
-    			.replace("_", "")
-                .replace("k", "000")
-                .replace("M", "000000")
-                .replace("G", "000000000")
-                .replace("T", "000000000000")
-                .replace("P", "000000000000000"));
-    }
-    
+        
     private static boolean stripIndent(final String text, final int indentation, 
             final StringBuilder result) {
         boolean correctlyIndented = true;

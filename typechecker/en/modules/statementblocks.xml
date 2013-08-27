@@ -357,19 +357,32 @@
             
             <itemizedlist>
                 <listitem>
-                    <para>a condition variable of a condition belonging to a condition list is 
+                    <para>A condition variable of a condition belonging to a condition list is 
                     in scope in any condition of the same condition list that occurs lexically 
-                    later, and</para>
+                    later.</para>
                 </listitem>
                 <listitem>
-                    <para>a resource expression variable of a <literal>try</literal> statement 
+                    <para>A resource expression variable of a <literal>try</literal> statement 
                     is in scope in any resource expression of the same resource expression list 
-                    that occurs lexically later, and</para>
+                    that occurs lexically later.</para>
                 </listitem>
                 <listitem>
-                    <para>an iteration variable or condition variable of a comprehension is in 
+                    <para>An iteration variable or condition variable of a comprehension is in 
                     scope in any clause of the comprehension that occurs lexically later, since
                     comprehension clauses are viewed as nested bodies.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>And finally, there are special rules for annotation lists, defined in 
+            <xref linkend="annotationlists"/>:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>An annotation argument list belongs to the annotated declaration.</para>
+                    </listitem>
+                <listitem>
+                    <para>An annotation name is considered to occur directly in the compilation 
+                    unit containing the program element.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1277,7 +1290,7 @@ else {
 }</programlisting></comment>
             
         </section>
-            
+        
         <section id="definiteuninitialization">
             <title>Definite uninitialization</title>
             

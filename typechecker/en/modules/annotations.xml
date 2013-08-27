@@ -48,11 +48,16 @@ shared deprecated</programlisting>
             resolved according to <xref linkend="unqualifiedreferenceresolution"/>.</para>
             
             <para>A list of annotations does not require punctuation between the 
-            individual annotations in the list. An annotation list may begin with a 
-            string literal, in which case it is interpreted as the argument of a 
+            individual annotations in the list. An annotation list may begin with 
+            a string literal, in which case it is interpreted as the argument of a 
             <literal>doc</literal> annotation.</para>
             
             <synopsis>Annotations: StringLiteral? Annotation*</synopsis>
+            
+            <para>Every annotation is an invocation expression, as defined by
+            <xref linkend="invocationexpressions"/>, of an annotation constructor.
+            The annotation name is interpreted as a base expression, as defined in 
+            <xref linkend="baseexpressions"/>.</para>
             
         </section>
         
@@ -91,9 +96,6 @@ shared deprecated</programlisting>
             
             <para>A named argument to an annotation may not be an inline function, value,
             or anonymous class.</para>
-            
-            <para>Every annotation is an invocation expression, as defined by
-            <xref linkend="invocationexpressions"/>, of an annotation constructor.</para>
             
         </section>
         
