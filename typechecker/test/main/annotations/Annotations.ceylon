@@ -10,7 +10,7 @@ import ceylon.language.model.declaration {
 final annotation class SeeThese(shared Declaration* declarations) satisfies Annotation<SeeThese> {}
 annotation SeeThese seethese(Declaration* declarations) => SeeThese(*declarations);
 
-final annotation class Meta(shared actual String string) satisfies SequencedAnnotation<Meta,Annotated> {}
+final annotation class Meta(shared actual String string) satisfies SequencedAnnotation<Meta> {}
 annotation Meta table(String name, String schema) { return Meta(name); }
 annotation Meta persistent(String column, ClassDeclaration type, Boolean update) { return Meta(column); }
 
