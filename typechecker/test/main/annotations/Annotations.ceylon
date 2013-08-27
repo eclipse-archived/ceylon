@@ -1,5 +1,5 @@
 import ceylon.language.model { ... }
-import ceylon.language.model.declaration { Declaration, ClassDeclaration }
+import ceylon.language.model.declaration { Declaration, ClassDeclaration, ValueDeclaration, FunctionDeclaration }
 
 final annotation class SeeThese(shared Declaration* declarations) satisfies Annotation<SeeThese> {}
 annotation SeeThese seethese(Declaration* declarations) => SeeThese(*declarations);
@@ -7,6 +7,12 @@ annotation SeeThese seethese(Declaration* declarations) => SeeThese(*declaration
 final annotation class Meta(shared actual String string) satisfies SequencedAnnotation<Meta,Annotated> {}
 annotation Meta table(String name, String schema) { return Meta(name); }
 annotation Meta persistent(String column, ClassDeclaration type, Boolean update) { return Meta(column); }
+
+final annotation class Fun() satisfies OptionalAnnotation<Fun,FunctionDeclaration> {}
+annotation Fun fun() => Fun();
+
+final annotation class Att() satisfies OptionalAnnotation<Att,ValueDeclaration&AttributeModel<String>> {}
+annotation Att att() => Att();
 
 "A class"
 by ("Gavin King",
@@ -57,4 +63,12 @@ class Annotations() {
         TypeDescription? d = annotations<TypeDescription,TypeDescription?,Annotated>(tdt(this), at.declaration);
         SequencedDescription[] ds = annotations<SequencedDescription,SequencedDescription[],Annotated>(sdt(this), at.declaration);
     }*/
+    
+    fun String emptyStringFun1() => "";
+    @error att String emptyStringFun2() => "";
+    @error fun String emptyStringAtt1 => "";
+    att String emptyStringAtt2 => "";
+    fun String? emptyOptionalStringFun() => null;
+    @error att String? emptyOptionalStringAtt => null;
+    fun String? emptyStringFunWithParam(String s) => s;
 }

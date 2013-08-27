@@ -500,32 +500,6 @@ public class Util {
         return sb;
     }
 
-    public static ProducedType getParameterTypesAsTupleType(Unit unit, 
-            List<Parameter> params, ProducedReference pr) {
-        List<ProducedType> paramTypes = new ArrayList<ProducedType>();
-        int max = params.size()-1;
-        int firstDefaulted = -1;
-        boolean sequenced = false;
-        boolean atLeastOne = false;
-        for (int i=0; i<=max; i++) {
-            Parameter p = params.get(i);
-            ProducedType ft = pr.getTypedParameter(p).getFullType();
-            if (firstDefaulted<0 && p.isDefaulted()) {
-                firstDefaulted = i;
-            }
-            if (i==max && p.isSequenced()) {
-                sequenced = true;
-                atLeastOne = p.isAtLeastOne();
-                if (ft!=null) {
-                    ft = unit.getIteratedType(ft);
-                }
-            }
-            paramTypes.add(ft);
-        }
-        return unit.getTupleType(paramTypes, sequenced, atLeastOne, 
-                firstDefaulted);
-    }
-
     public static Tree.Term eliminateParensAndWidening(Tree.Term term) {
         while (term instanceof Tree.OfOp ||
                term instanceof Tree.Expression) {

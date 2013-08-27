@@ -4,6 +4,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersectio
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
+import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -858,7 +859,7 @@ public class Unit {
     public TypeDeclaration getLanguageModuleModelTypeDeclaration(String name) {
         return (TypeDeclaration) getLanguageModuleModelDeclaration(name);
     }
-    public TypeDeclaration getLanguageModuleModelDeclarationTypeDeclaration(String name) {
+    public TypeDeclaration getLanguageModuleDeclarationTypeDeclaration(String name) {
         return (TypeDeclaration) getLanguageModuleModelDeclarationDeclaration(name);
     }
     
@@ -882,6 +883,106 @@ public class Unit {
     }
     public Map<String, String> getModifiers() {
         return modifiers;
+    }
+
+    public ProducedType getValueMetatype(ProducedTypedReference pr) {
+        boolean variable = pr.getDeclaration().isVariable();
+        if (pr.getQualifyingType() != null) {
+            return getLanguageModuleModelTypeDeclaration(variable ? "VariableAttribute" : "Attribute")
+                    .getProducedType(null, asList(pr.getQualifyingType(), pr.getType()));
+        }
+        else {
+            return getLanguageModuleModelTypeDeclaration(variable ? "Variable" : "Value")
+                    .getProducedType(null, asList(pr.getType()));
+        }
+    }
+
+    public ProducedType getFunctionMetatype(ProducedTypedReference pr) {
+        Functional f = (Functional) pr.getDeclaration();
+        ParameterList fpl = f.getParameterLists().get(0);
+        ProducedType parameterTuple = getParameterTypesAsTupleType(fpl.getParameters(), pr);
+        ProducedType returnType = getCallableReturnType(pr.getFullType());
+        if (returnType == null) {
+            return null;
+        }
+        else {
+            if (pr.getQualifyingType() != null) {
+                return getLanguageModuleModelTypeDeclaration("Method")
+                        .getProducedType(null, asList(pr.getQualifyingType(), returnType, parameterTuple));
+            }
+            else {
+                return getLanguageModuleModelTypeDeclaration("Function")
+                        .getProducedType(null, asList(returnType, parameterTuple));
+            }
+        }
+    }
+    
+    public ProducedType getClassMetatype(ProducedType literalType) {
+        Class c = (Class) literalType.getDeclaration();
+        ParameterList parameterList = c.getParameterList();
+        ProducedType parameterTuple = getParameterTypesAsTupleType(parameterList.getParameters(), literalType);
+        if (literalType.getDeclaration().isMember()) {
+            return getLanguageModuleModelTypeDeclaration("MemberClass")
+                    .getProducedType(null, asList(literalType.getQualifyingType(), literalType, parameterTuple));
+        }
+        else {
+            return getLanguageModuleModelTypeDeclaration("Class")
+                    .getProducedType(null, asList(literalType, parameterTuple));
+        }
+    }
+    
+    public ProducedType getInterfaceMetatype(ProducedType literalType) {
+        if (literalType.getDeclaration().isMember()) {
+            return getLanguageModuleModelTypeDeclaration("MemberInterface")
+                    .getProducedType(null, asList(literalType.getQualifyingType(), literalType));
+        }
+        else {
+            return getLanguageModuleModelTypeDeclaration("Interface")
+                    .getProducedType(null, asList(literalType));
+        }
+    }
+
+    public ProducedType getParameterTypesAsTupleType(List<Parameter> params, 
+            ProducedReference pr) {
+        List<ProducedType> paramTypes = new ArrayList<ProducedType>();
+        int max = params.size()-1;
+        int firstDefaulted = -1;
+        boolean sequenced = false;
+        boolean atLeastOne = false;
+        for (int i=0; i<=max; i++) {
+            Parameter p = params.get(i);
+            ProducedType ft = pr.getTypedParameter(p).getFullType();
+            if (firstDefaulted<0 && p.isDefaulted()) {
+                firstDefaulted = i;
+            }
+            if (i==max && p.isSequenced()) {
+                sequenced = true;
+                atLeastOne = p.isAtLeastOne();
+                if (ft!=null) {
+                    ft = getIteratedType(ft);
+                }
+            }
+            paramTypes.add(ft);
+        }
+        return getTupleType(paramTypes, sequenced, atLeastOne, 
+                firstDefaulted);
+    }
+
+    public ProducedType getClassDeclarationType() {
+        return getLanguageModuleDeclarationTypeDeclaration("ClassDeclaration").getType();
+    }
+    
+    public ProducedType getInterfaceDeclarationType() {
+        return getLanguageModuleDeclarationTypeDeclaration("InterfaceDeclaration").getType();
+    }
+
+    public ProducedType getFunctionDeclarationType() {
+        return getLanguageModuleDeclarationTypeDeclaration("FunctionDeclaration").getType();
+    }
+
+    public ProducedType getValueDeclarationType(TypedDeclaration value) {
+        String name = value.isVariable() ? "VariableDeclaration" : "ValueDeclaration";
+        return getLanguageModuleDeclarationTypeDeclaration(name).getType();
     }
 
 }

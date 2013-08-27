@@ -6,7 +6,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCallable
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkSupertype;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminateParensAndWidening;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypesAsTupleType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeMember;
@@ -32,7 +31,6 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.MISSING_NAME;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
-import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1826,8 +1824,7 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType at = a.getTypeModel();
                 if (a instanceof Tree.SpreadArgument) {
                     at = spreadType(at, unit, true);
-                    ProducedType ptt = getParameterTypesAsTupleType(unit, 
-                            params.subList(i, params.size()), pr);
+                    ProducedType ptt = unit.getParameterTypesAsTupleType(params.subList(i, params.size()), pr);
                     addToUnionOrIntersection(tp, inferredTypes, inferTypeArg(tp, ptt, at, 
                             new ArrayList<TypeParameter>()));
                 }
@@ -2476,7 +2473,7 @@ public class ExpressionVisitor extends Visitor {
             else {
                 ProducedType at = spreadType(rat, unit, true);
                 //checkSpreadArgumentSequential(arg, at);
-                ProducedType ptt = Util.getParameterTypesAsTupleType(unit, psl, pr);
+                ProducedType ptt = unit.getParameterTypesAsTupleType(psl, pr);
                 if (!isTypeUnknown(at) && !isTypeUnknown(ptt)) {
                     checkAssignable(at, ptt, arg, 
                             "spread argument not assignable to parameter types");
@@ -5550,7 +5547,6 @@ public class ExpressionVisitor extends Visitor {
     private void setMetamodelType(Tree.MemberLiteral that, Declaration result, ProducedType outerType) {
         if (result instanceof Method) {
             TypedDeclaration method = (TypedDeclaration) result;
-            ParameterList parameterList = ((Functional) method).getParameterLists().get(0);
             Tree.TypeArgumentList tal = that.getTypeArgumentList();
             // there's no model for local values that are not parameters
             if ((!result.isClassOrInterfaceMember()||!result.isShared())
@@ -5571,12 +5567,11 @@ public class ExpressionVisitor extends Visitor {
                 if (acceptsTypeArguments(method, ta, tal, that, false)) {
                     ProducedTypedReference pr = method.getProducedTypedReference(outerType, ta);
                     that.setTarget(pr);
-                    that.setTypeModel(getFunctionMetaType(that, result, outerType,
-                            parameterList, pr));
+                    that.setTypeModel(getFunctionMetaType(that, result, outerType, pr));
                 }
             }
             else {
-                that.setTypeModel(getTypeLiteralFunctionDeclarationType());
+                that.setTypeModel(unit.getFunctionDeclarationType());
                 that.setWantsDeclaration(true);
             }
             /*else {
@@ -5584,7 +5579,7 @@ public class ExpressionVisitor extends Visitor {
             }*/
         }
         else if (result instanceof Value) {
-            TypedDeclaration value = (TypedDeclaration) result;
+            Value value = (Value) result;
             // there's no model for local values that are not parameters
             if ((!result.isClassOrInterfaceMember()||!result.isShared())
                     && !result.isToplevel()){
@@ -5629,33 +5624,33 @@ public class ExpressionVisitor extends Visitor {
     private ProducedType getInterfaceMetaType(Tree.TypeLiteral that,
             ProducedType literalType, TypeDeclaration declaration) {
         if (!isParameterised(declaration)) {
-            return intersectionType(getTypeLiteralInterfaceType(declaration, literalType), 
-                    unit.getLanguageModuleModelDeclarationTypeDeclaration("InterfaceDeclaration").getType(), unit);
+            return intersectionType(unit.getInterfaceMetatype(literalType), 
+                    unit.getInterfaceDeclarationType(), unit);
         }
         else if (isTypeUnknown(literalType)) {
             that.setWantsDeclaration(true);
-            return unit.getLanguageModuleModelDeclarationTypeDeclaration("InterfaceDeclaration").getType();
+            return unit.getInterfaceDeclarationType();
         }
         else {
-            return getTypeLiteralInterfaceType(declaration, literalType);
+            return unit.getInterfaceMetatype(literalType);
         }
     }
 
     private ProducedType getClassMetaType(Tree.TypeLiteral that,
             ProducedType literalType, TypeDeclaration declaration) {
         if (!isParameterised(declaration)) {
-            return intersectionType(getTypeLiteralClassType(declaration, literalType), 
-                    unit.getLanguageModuleModelDeclarationTypeDeclaration("ClassDeclaration").getType(), unit);
+            return intersectionType(unit.getClassMetatype(literalType), 
+                    unit.getClassDeclarationType(), unit);
         }
         else if (isTypeUnknown(literalType)) {
             that.setWantsDeclaration(true);
-            return unit.getLanguageModuleModelDeclarationTypeDeclaration("ClassDeclaration").getType();
+            return unit.getClassDeclarationType();
         }
         else {
-            return getTypeLiteralClassType(declaration, literalType);
+            return unit.getClassMetatype(literalType);
         }
     }
-    
+
     private void checkNonlocalType(Node that, TypeDeclaration declaration) {
         if (declaration instanceof UnionType) {
             for (TypeDeclaration ctd: declaration.getCaseTypeDeclarations()) {
@@ -5677,30 +5672,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private ProducedType getTypeLiteralClassType(TypeDeclaration declaration, ProducedType literalType) {
-        ParameterList parameterList = ((Class) declaration).getParameterList();
-        ProducedType parameterTuple = getParameterTypesAsTupleType(unit, parameterList.getParameters(), literalType);
-        if (declaration.isMember()) {
-            return unit.getLanguageModuleModelTypeDeclaration("MemberClass")
-                    .getProducedType(null, asList(literalType.getQualifyingType(), literalType, parameterTuple));
-        }
-        else {
-            return unit.getLanguageModuleModelTypeDeclaration("Class")
-                    .getProducedType(null, asList(literalType, parameterTuple));
-        }
-    }
-    
-    private ProducedType getTypeLiteralInterfaceType(TypeDeclaration declaration, ProducedType literalType) {
-        if (declaration.isMember()) {
-            return unit.getLanguageModuleModelTypeDeclaration("MemberInterface")
-                    .getProducedType(null, asList(literalType.getQualifyingType(), literalType));
-        }
-        else {
-            return unit.getLanguageModuleModelTypeDeclaration("Interface")
-                    .getProducedType(null, asList(literalType));
-        }
-    }
-
     private boolean isParameterised(Declaration declaration) {
         if (declaration instanceof Generic && 
                 !((Generic) declaration).getTypeParameters().isEmpty()) {
@@ -5713,77 +5684,39 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private ProducedType getValueMetaType(Tree.MemberLiteral that,
-            Declaration result, ProducedType outerType, TypedDeclaration value,
+            Declaration result, ProducedType outerType, Value value,
             ProducedTypedReference pr) {
         if (!isParameterised(result)) {
-            return intersectionType(getTypeLiteralAttributeType(pr, value), 
-                    getTypeLiteralValueDeclarationType(value), unit);
+            return intersectionType(unit.getValueMetatype(pr), 
+                    unit.getValueDeclarationType(value), 
+                    unit);
         } 
         else if (isTypeUnknown(pr.getType()) ||
                 that.getType()!=null && isTypeUnknown(outerType)) {
             that.setWantsDeclaration(true);
-            return getTypeLiteralValueDeclarationType(value);
+            return unit.getValueDeclarationType(value);
         } 
         else {
-            return getTypeLiteralAttributeType(pr, value);
+            return unit.getValueMetatype(pr);
         }
     }
 
     private ProducedType getFunctionMetaType(Tree.MemberLiteral that,
             Declaration result, ProducedType outerType,
-            ParameterList parameterList, ProducedTypedReference pr) {
+            ProducedTypedReference pr) {
         if (!isParameterised(result)) {
-            return intersectionType(getTypeLiteralFunctionType(pr, parameterList), 
-                    getTypeLiteralFunctionDeclarationType(), unit);
+            return intersectionType(unit.getFunctionMetatype(pr), 
+                    unit.getFunctionDeclarationType(), 
+                    unit);
         }
         else if (isTypeUnknown(pr.getFullType()) ||
                 that.getType()!=null && isTypeUnknown(outerType)) {
             that.setWantsDeclaration(true);
-            return getTypeLiteralFunctionDeclarationType();
+            return unit.getFunctionDeclarationType();
         }
         else {
-            return getTypeLiteralFunctionType(pr, parameterList);
+            return unit.getFunctionMetatype(pr);
         }
     }
 
-    private ProducedType getTypeLiteralFunctionDeclarationType() {
-        return unit.getLanguageModuleModelDeclarationTypeDeclaration("FunctionDeclaration").getType();
-    }
-
-    // should really be a Value|Parameter but hey ;)
-    private ProducedType getTypeLiteralValueDeclarationType(TypedDeclaration param) {
-        return unit.getLanguageModuleModelDeclarationTypeDeclaration(param.isVariable() ? "VariableDeclaration" : "ValueDeclaration")
-                .getType();
-    }
-
-    // should really be a Value|Parameter but hey ;)
-    private ProducedType getTypeLiteralAttributeType(ProducedTypedReference pr, TypedDeclaration value) {
-        if (pr.getQualifyingType() != null) {
-            return unit.getLanguageModuleModelTypeDeclaration(value.isVariable() ? "VariableAttribute" : "Attribute")
-                    .getProducedType(null, asList(pr.getQualifyingType(), pr.getType()));
-        }
-        else {
-            return unit.getLanguageModuleModelTypeDeclaration(value.isVariable() ? "Variable" : "Value")
-                    .getProducedType(null, asList(pr.getType()));
-        }
-    }
-
-    private ProducedType getTypeLiteralFunctionType(ProducedTypedReference pr, ParameterList parameterList) {
-        ProducedType parameterTuple = getParameterTypesAsTupleType(unit, parameterList.getParameters(), pr);
-        ProducedType returnType = unit.getCallableReturnType(pr.getFullType());
-        if (returnType == null) {
-            return null;
-        }
-        else {
-            if (pr.getQualifyingType() != null) {
-                return unit.getLanguageModuleModelTypeDeclaration("Method")
-                        .getProducedType(null, asList(pr.getQualifyingType(), returnType, parameterTuple));
-            }
-            else {
-                return unit.getLanguageModuleModelTypeDeclaration("Function")
-                        .getProducedType(null, asList(returnType, parameterTuple));
-            }
-        }
-    }
-    
 }

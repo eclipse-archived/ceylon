@@ -1,9 +1,14 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
@@ -12,10 +17,13 @@ import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -163,6 +171,13 @@ public class AnnotationVisitor extends Visitor {
                 .getMemberOrParameter(unit, "Annotation", null, false);
     }
 
+    private static TypeDeclaration getConstrainedAnnotationDeclaration(Unit unit) {
+        return (TypeDeclaration) unit.getPackage().getModule()
+                .getLanguageModule()
+                .getDirectPackage("ceylon.language.model")
+                .getMemberOrParameter(unit, "ConstrainedAnnotation", null, false);
+    }
+
     private static TypeDeclaration getDeclarationDeclaration(Unit unit) {
         return (TypeDeclaration) unit.getPackage().getModule()
                 .getLanguageModule()
@@ -175,33 +190,37 @@ public class AnnotationVisitor extends Visitor {
         super.visit(that);
         Class c = that.getDeclarationModel();
         if (c.isAnnotation()) {
-            if (c.isParameterized()) {
-                that.addError("annotation class may not be a parameterized type");
-            }
-            /*if (c.isAbstract()) {
-                that.addError("annotation class may not be abstract");
-            }*/
-            if (!c.isFinal()) {
-                that.addError("annotation class must be final");
-            }
-            if (!c.getExtendedTypeDeclaration()
-                    .equals(that.getUnit().getBasicDeclaration())) {
-                that.addError("annotation class must directly extend Basic");
-            }
-            TypeDeclaration annotationDec = getAnnotationDeclaration(that.getUnit());
-            if (!c.inherits(annotationDec)) {
-                that.addError("annotation class must be a subtype of Annotation");
-            }
-            for (Tree.Parameter pn: that.getParameterList().getParameters()) {
-                checkAnnotationParameter(c, pn);
-            }
-            if (that instanceof Tree.ClassDefinition) {
-                Tree.ClassBody body = ((Tree.ClassDefinition) that).getClassBody();
-                if (body!=null && getExecutableStatements(body).size()>0) {
-                    that.addError("annotation class body may not contain executable statements");
-                }
-            }
+            checkAnnotationType(that, c);
         }
+        
+        TypeDeclaration dm = that.getDeclarationModel();
+        Unit unit = that.getUnit();
+        checkAnnotations(that.getAnnotationList(), 
+                unit.getClassDeclarationType(),
+                unit.getClassMetatype(dm.getProducedType(qualifyingType(dm), 
+                        Collections.<ProducedType>emptyList())));
+    }
+
+    @Override 
+    public void visit(Tree.AnyInterface that) {
+        super.visit(that);
+        TypeDeclaration dm = that.getDeclarationModel();
+        Unit unit = that.getUnit();
+        checkAnnotations(that.getAnnotationList(), 
+                unit.getInterfaceDeclarationType(),
+                unit.getInterfaceMetatype(dm.getProducedType(qualifyingType(dm), 
+                        Collections.<ProducedType>emptyList())));
+    }
+    
+    @Override
+    public void visit(Tree.AnyAttribute that) {
+        super.visit(that);
+        TypedDeclaration dm = that.getDeclarationModel();
+        Unit unit = that.getUnit();
+        checkAnnotations(that.getAnnotationList(), 
+                unit.getValueDeclarationType(dm),
+                unit.getValueMetatype(dm.getProducedTypedReference(qualifyingType(dm), 
+                        Collections.<ProducedType>emptyList())));
     }
 
     @Override
@@ -209,70 +228,110 @@ public class AnnotationVisitor extends Visitor {
         super.visit(that);
         Method a = that.getDeclarationModel();
         if (a.isAnnotation()) {
-            Tree.Type type = that.getType();
-            if (type!=null) {
-                ProducedType t = type.getTypeModel();
-                if (t!=null && t.getDeclaration()!=null) {
-                    if (t.getDeclaration().isAnnotation()) {
-                        if (!that.getUnit().getPackage().getQualifiedNameString()
-                                .equals("ceylon.language")) {
-                            String packageName = t.getDeclaration()
-                                    .getUnit().getPackage().getQualifiedNameString();
-                            String typeName = t.getDeclaration().getName();
-                            if (packageName.equals("ceylon.language") && 
-                                    (typeName.equals("Shared") ||
-                                    typeName.equals("Abstract") || 
-                                    typeName.equals("Default") ||
-                                    typeName.equals("Formal") ||
-                                    typeName.equals("Actual") ||
-                                    typeName.equals("Final") ||
-                                    typeName.equals("Variable") ||
-                                    typeName.equals("Late") ||
-                                    typeName.equals("Native") ||
-                                    typeName.equals("Deprecated") ||
-                                    typeName.equals("Annotation"))) {
-                                type.addError("annotation constructor may not return modifier annotation type");
-                            }
+            checkAnnotationConstructor(that, a);
+        }
+        
+        TypedDeclaration dm = that.getDeclarationModel();
+        Unit unit = that.getUnit();
+        checkAnnotations(that.getAnnotationList(), 
+                unit.getFunctionDeclarationType(),
+                unit.getFunctionMetatype(dm.getProducedTypedReference(qualifyingType(dm), 
+                        Collections.<ProducedType>emptyList())));
+    }
+
+    private void checkAnnotationType(Tree.AnyClass that, Class c) {
+        if (c.isParameterized()) {
+            that.addError("annotation class may not be a parameterized type");
+        }
+        /*if (c.isAbstract()) {
+            that.addError("annotation class may not be abstract");
+        }*/
+        if (!c.isFinal()) {
+            that.addError("annotation class must be final");
+        }
+        if (!c.getExtendedTypeDeclaration()
+                .equals(that.getUnit().getBasicDeclaration())) {
+            that.addError("annotation class must directly extend Basic");
+        }
+        TypeDeclaration annotationDec = getAnnotationDeclaration(that.getUnit());
+        if (!c.inherits(annotationDec)) {
+            that.addError("annotation class must be a subtype of Annotation");
+        }
+        for (Tree.Parameter pn: that.getParameterList().getParameters()) {
+            checkAnnotationParameter(c, pn);
+        }
+        if (that instanceof Tree.ClassDefinition) {
+            Tree.ClassBody body = ((Tree.ClassDefinition) that).getClassBody();
+            if (body!=null && getExecutableStatements(body).size()>0) {
+                that.addError("annotation class body may not contain executable statements");
+            }
+        }
+    }
+
+    private void checkAnnotationConstructor(Tree.AnyMethod that, Method a) {
+        Tree.Type type = that.getType();
+        if (type!=null) {
+            ProducedType t = type.getTypeModel();
+            if (t!=null && t.getDeclaration()!=null) {
+                if (t.getDeclaration().isAnnotation()) {
+                    if (!that.getUnit().getPackage().getQualifiedNameString()
+                            .equals("ceylon.language")) {
+                        String packageName = t.getDeclaration()
+                                .getUnit().getPackage().getQualifiedNameString();
+                        String typeName = t.getDeclaration().getName();
+                        if (packageName.equals("ceylon.language") && 
+                                (typeName.equals("Shared") ||
+                                typeName.equals("Abstract") || 
+                                typeName.equals("Default") ||
+                                typeName.equals("Formal") ||
+                                typeName.equals("Actual") ||
+                                typeName.equals("Final") ||
+                                typeName.equals("Variable") ||
+                                typeName.equals("Late") ||
+                                typeName.equals("Native") ||
+                                typeName.equals("Deprecated") ||
+                                typeName.equals("Annotation"))) {
+                            type.addError("annotation constructor may not return modifier annotation type");
                         }
-                    } 
+                    }
+                } 
+                else {
+                    type.addError("annotation constructor must return an annotation type");
+                }
+            }
+        }
+        List<Tree.ParameterList> pls = that.getParameterLists();
+        if (pls.size() == 1) {
+            for (Tree.Parameter pn: pls.get(0).getParameters()) {
+                checkAnnotationParameter(a, pn);
+            }
+        }
+        else {
+            that.addError("annotation constructor must have exactly one parameter list");
+        }
+        if (that instanceof Tree.MethodDefinition) {
+            Tree.Block block = ((Tree.MethodDefinition) that).getBlock();
+            if (block!=null) {
+                List<Tree.Statement> list = getExecutableStatements(block);
+                if (list.size()==1) {
+                    Tree.Statement s = list.get(0);
+                    if (s instanceof Tree.Return) {
+                        Tree.Expression e = ((Tree.Return) s).getExpression();
+                        checkAnnotationInstantiation(a, e, a.getType());
+                    }
                     else {
-                        type.addError("annotation constructor must return an annotation type");
+                        s.addError("annotation constructor body must return an annotation instance");
                     }
                 }
-            }
-            List<Tree.ParameterList> pls = that.getParameterLists();
-            if (pls.size() == 1) {
-                for (Tree.Parameter pn: pls.get(0).getParameters()) {
-                    checkAnnotationParameter(a, pn);
+                else {
+                    block.addError("annotation constructor body must have exactly one statement");
                 }
             }
-            else {
-                that.addError("annotation constructor must have exactly one parameter list");
-            }
-            if (that instanceof Tree.MethodDefinition) {
-                Tree.Block block = ((Tree.MethodDefinition) that).getBlock();
-                if (block!=null) {
-                    List<Tree.Statement> list = getExecutableStatements(block);
-                    if (list.size()==1) {
-                        Tree.Statement s = list.get(0);
-                        if (s instanceof Tree.Return) {
-                            Tree.Expression e = ((Tree.Return) s).getExpression();
-                            checkAnnotationInstantiation(a, e, a.getType());
-                        }
-                        else {
-                            s.addError("annotation constructor body must return an annotation instance");
-                        }
-                    }
-                    else {
-                        block.addError("annotation constructor body must have exactly one statement");
-                    }
-                }
-            }
-            else {
-                Tree.SpecifierExpression se = ((Tree.MethodDeclaration) that).getSpecifierExpression();
-                if (se!=null) {
-                    checkAnnotationInstantiation(a, se.getExpression(), a.getType());
-                }
+        }
+        else {
+            Tree.SpecifierExpression se = ((Tree.MethodDeclaration) that).getSpecifierExpression();
+            if (se!=null) {
+                checkAnnotationInstantiation(a, se.getExpression(), a.getType());
             }
         }
     }
@@ -358,7 +417,8 @@ public class AnnotationVisitor extends Visitor {
         }
     }
     
-    @Override public void visit(Tree.Annotation that) {
+    @Override 
+    public void visit(Tree.Annotation that) {
         super.visit(that);
         Declaration dec = ((Tree.MemberOrTypeExpression) that.getPrimary()).getDeclaration();
         /*if (dec!=null && !dec.isToplevel()) {
@@ -369,6 +429,31 @@ public class AnnotationVisitor extends Visitor {
         }
         else {
             checkAnnotationArguments(null, (Tree.InvocationExpression) that);
+        }
+    }
+    
+    private static ProducedType qualifyingType(Declaration d) {
+        if (d.isClassOrInterfaceMember()) {
+            return ((ClassOrInterface) d.getContainer()).getType();
+        }
+        else {
+            return null;
+        }
+    }
+
+    private void checkAnnotations(AnnotationList annotationList,
+            ProducedType declarationType, ProducedType metatype) {
+        Unit unit = annotationList.getUnit();
+        for (Annotation ann: annotationList.getAnnotations()) {
+            ProducedType t = ann.getTypeModel();
+            if (t!=null) {
+                ProducedType pet = t.getSupertype(getConstrainedAnnotationDeclaration(unit));
+                if (pet!=null && pet.getTypeArgumentList().size()>2) {
+                    ProducedType ct = pet.getTypeArgumentList().get(2);
+                    checkAssignable(intersectionType(declarationType,metatype, unit), ct, ann, 
+                            "annotated program element does not satisfy annotation constraints");
+                }
+            }
         }
     }
     
