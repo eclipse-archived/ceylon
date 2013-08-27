@@ -824,10 +824,30 @@ public abstract class AbstractTransformer implements Transformation {
             pr = declaration;
         } else {
             ProducedType refinedType = refinedDeclaration.getType();
-            // if the refined type is a method TypeParam, use the original decl that will be more correct
+            // if the refined type is a method TypeParam, use the original decl that will be more correct,
+            // since it may have changed name
             if(refinedType.getDeclaration() instanceof TypeParameter
                     && refinedType.getDeclaration().getContainer() instanceof Method){
-                pr = declaration;
+                // find its index in the refined declaration
+                TypeParameter refinedTypeParameter = (TypeParameter) refinedType.getDeclaration();
+                Method refinedMethod = (Method) refinedTypeParameter.getContainer();
+                int i=0;
+                for(TypeParameter tp : refinedMethod.getTypeParameters()){
+                    if(tp.getName().equals(refinedTypeParameter.getName()))
+                        break;
+                    i++;
+                }
+                if(i >= refinedMethod.getTypeParameters().size()){
+                    throw new RuntimeException("Can't find type parameter "+refinedTypeParameter.getName()+" in its container "+refinedMethod.getName());
+                }
+                // the refining method type parameter should be at the same index
+                if(declaration.getDeclaration() instanceof Method == false)
+                    throw new RuntimeException("Refining declaration is not a method: "+declaration);
+                Method refiningMethod = (Method) declaration.getDeclaration();
+                if(i >= refiningMethod.getTypeParameters().size()){
+                    throw new RuntimeException("Refining method does not have enough type parameters to refine "+refinedMethod.getName());
+                }
+                pr = refiningMethod.getTypeParameters().get(i).getType();
             } else {
                 pr = refinedType;
             }
