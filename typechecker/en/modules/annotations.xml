@@ -257,7 +257,8 @@ shared deprecated</programlisting>
                     <literal>OptionalAnnotation&lt;A,P&gt;</literal>,
                     or <literal>SequencedAnnotation&lt;A,P&gt;</literal> then an annotation 
                     of annotation type <literal>A</literal> may not occur at a program 
-                    element whose metamodel expression type is not assignable to 
+                    element whose untyped metamodel expression type, as defined in
+                    <xref linkend="untypedmetamodelexpressions"/>, is not assignable to 
                     <literal>P</literal>.</para>
                 </listitem>
             </itemizedlist>
