@@ -117,7 +117,7 @@
         character or underscore. Additionally, an identifier may be qualified using 
         the prefix <literal>\i</literal> or <literal>\I</literal> to disambiguate it 
         from a reserved word or to explicitly specify whether it should be considered
-        an uppercase or lowercase identifier.</para>
+        an initial uppercase or initial lowercase identifier.</para>
         
         <synopsis>LIdentifier: LowercaseChar IdentifierChar* | "\i" IdentifierChar+</synopsis>
         <synopsis>UIdentifier: UppercaseChar IdentifierChar* | "\I" IdentifierChar+</synopsis>
@@ -136,9 +136,9 @@
 
         <para>The prefix <literal>\I</literal> or <literal>\i</literal> is not 
         considered part of the identifier name. Therefore, <literal>\iperson</literal>
-        is just a lowercase identifier named <literal>person</literal> and
-        <literal>\Iperson</literal> is an <emphasis>uppercase</emphasis> identifier 
-        named <literal>person</literal>.</para>
+        is just an initial lowercase identifier named <literal>person</literal> and
+        <literal>\Iperson</literal> is an initial <emphasis>uppercase</emphasis> 
+        identifier named <literal>person</literal>.</para>
                         
         <para>The following reserved words are not legal identifier names unless they 
         appear escaped using <literal>\i</literal> or <literal>\I</literal>:</para>
