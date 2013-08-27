@@ -48,6 +48,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionalParameterDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
@@ -73,7 +74,13 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     @Override
     public void visit(FunctionArgument that) {
         super.visit(that);
-        boxMethod(that.getDeclarationModel());
+        that.getDeclarationModel().setUnboxed(false);
+    }
+    
+    @Override
+    public void visit(MethodArgument that) {
+        super.visit(that);
+        that.getDeclarationModel().setUnboxed(false);
     }
     
     @Override
