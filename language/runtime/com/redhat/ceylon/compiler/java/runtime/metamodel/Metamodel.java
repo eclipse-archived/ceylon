@@ -667,7 +667,7 @@ public class Metamodel {
         if(!decl.getParameterLists().isEmpty()){
             List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
             com.redhat.ceylon.compiler.typechecker.model.ProducedType tupleType 
-            = com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypesAsTupleType(unit, parameters, producedReference);
+            = unit.getParameterTypesAsTupleType(parameters, producedReference);
             return Metamodel.getTypeDescriptorForProducedType(tupleType);
         }else{
             return TypeDescriptor.NothingType;
