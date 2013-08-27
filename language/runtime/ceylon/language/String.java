@@ -2075,6 +2075,9 @@ public final class String
         }
     }
 
+    @Ceylon(major = 5)
+    @Class
+    @SatisfiedTypes("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
     private static final class Inclusions implements Iterable<Integer,java.lang.Object>, ReifiedType {
         @Ignore
         private final ceylon.language.Iterable$impl<Integer,java.lang.Object> $ceylon$language$Iterable$this;
