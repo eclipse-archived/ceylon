@@ -645,8 +645,8 @@ Integer f(Integer n) => n+package.n;</programlisting>
             not inferrable within the body of the value or function 
             itself.</para></comment>
             
-            <para>For any other declaration, that is, for declarations which 
-            explicitly specify a type, the type is considered inferrable to a 
+            <para>For any other declaration, including any declaration which 
+            explicitly specifies its type, the type is considered inferrable to a 
             program element if the declaration is in scope at the program 
             element.</para>
             
