@@ -773,11 +773,9 @@ void checkMetamodelRefs() {
         d20.decl is FunctionDeclaration,
         `AAbstractClass.formalMethod` == d20.decl);
     
-    /* XXX waiting fix for #1244
     assert(exists d21 = decls[21],
         d21.decl is ValueDeclaration,
         `AAbstractClass.objectMember` == d21.decl);
-    */
 
     assert(exists d22 = decls[22],
         d22.decl is ClassDeclaration,
