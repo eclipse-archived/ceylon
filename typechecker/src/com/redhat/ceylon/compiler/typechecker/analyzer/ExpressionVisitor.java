@@ -47,7 +47,9 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
@@ -5464,6 +5466,22 @@ public class ExpressionVisitor extends Visitor {
         TypeDeclaration ut = new UnknownType(unit);
         ut.setExtendedType(unit.getAnythingDeclaration().getType());
         return ut.getType();
+    }
+    
+    @Override
+    public void visit(Tree.PackageLiteral that) {
+        super.visit(that);
+        Package p = TypeVisitor.getPackage(that.getImportPath());
+        that.getImportPath().setModel(p);
+        that.setTypeModel(unit.getPackageDeclarationType());
+    }
+    
+    @Override
+    public void visit(Tree.ModuleLiteral that) {
+        super.visit(that);
+        Module m = TypeVisitor.getModule(that.getImportPath());
+        that.getImportPath().setModel(m);
+        that.setTypeModel(unit.getModuleDeclarationType());
     }
     
     @Override

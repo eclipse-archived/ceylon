@@ -147,10 +147,42 @@ public class TypeVisitor extends Visitor {
     	}
     }
 
-    private Package getPackage(Tree.ImportPath path) {
+    public static Module getModule(Tree.ImportPath path) {
         if (path!=null && !path.getIdentifiers().isEmpty()) {
             String nameToImport = formatPath(path.getIdentifiers());
-            Module module = unit.getPackage().getModule();
+            Module module = path.getUnit().getPackage().getModule();
+            Package pkg = module.getPackage(nameToImport);
+            if (pkg != null) {
+                Module mod = pkg.getModule();
+                if (!pkg.getNameAsString().equals(mod.getNameAsString())) {
+                    path.addError("not a module: " + nameToImport);
+                    return null;
+                }
+                if (mod.equals(module)) {
+                    return mod;
+                }
+                //check that the package really does belong to
+                //an imported module, to work around bug where
+                //default package thinks it can see stuff in
+                //all modules in the same source dir
+                Set<Module> visited = new HashSet<Module>();
+                for (ModuleImport mi: module.getImports()) {
+                    if (findModuleInTransitiveImports(mi.getModule(), 
+                            mod, visited)) {
+                        return mod; 
+                    }
+                }
+            }
+            path.addError("module not found in dependent modules: " + 
+                    nameToImport);
+        }
+        return null;
+    }
+
+    public static Package getPackage(Tree.ImportPath path) {
+        if (path!=null && !path.getIdentifiers().isEmpty()) {
+            String nameToImport = formatPath(path.getIdentifiers());
+            Module module = path.getUnit().getPackage().getModule();
             Package pkg = module.getPackage(nameToImport);
             if (pkg != null) {
                 if (pkg.getModule().equals(module)) {
@@ -192,7 +224,7 @@ public class TypeVisitor extends Visitor {
 //        }
 //    }
     
-    private boolean findModuleInTransitiveImports(Module moduleToVisit, 
+    private static boolean findModuleInTransitiveImports(Module moduleToVisit, 
             Module moduleToFind, Set<Module> visited) {
         if (!visited.add(moduleToVisit))
             return false;

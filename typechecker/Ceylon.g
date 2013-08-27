@@ -2419,11 +2419,29 @@ iterableType returns [IterableType type]
 
 metaLiteral returns [MetaLiteral meta]
     @init { TypeLiteral tl=null; 
-            MemberLiteral ml=null; }
+            MemberLiteral ml=null; 
+            PackageLiteral p=null;
+            ModuleLiteral m=null; }
     : d1=BACKTICK
       { tl = new TypeLiteral($d1);
         $meta = tl; }
     (
+      MODULE
+      { m = new ModuleLiteral($d1);
+        m.setEndToken($MODULE); 
+        $meta=m; }
+      p1=packagePath
+      { m.setImportPath($p1.importPath); 
+        m.setEndToken(null); }
+    |
+      PACKAGE
+      { p = new PackageLiteral($d1);
+        p.setEndToken($PACKAGE); 
+        $meta=p; }
+      p2=packagePath
+      { p.setImportPath($p2.importPath); 
+        p.setEndToken(null); }
+    |
       (abbreviatedType MEMBER_OP) =>
       { ml = new MemberLiteral($d1);
         $meta = ml; }
