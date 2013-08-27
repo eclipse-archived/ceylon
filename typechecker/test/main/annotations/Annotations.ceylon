@@ -1,5 +1,11 @@
 import ceylon.language.model { ... }
-import ceylon.language.model.declaration { Declaration, ClassDeclaration, ValueDeclaration, FunctionDeclaration }
+import ceylon.language.model.declaration { 
+    Declaration, 
+    ClassDeclaration, 
+    ValueDeclaration, 
+    FunctionDeclaration, 
+    AnnotatedDeclaration 
+}
 
 final annotation class SeeThese(shared Declaration* declarations) satisfies Annotation<SeeThese> {}
 annotation SeeThese seethese(Declaration* declarations) => SeeThese(*declarations);
@@ -7,6 +13,9 @@ annotation SeeThese seethese(Declaration* declarations) => SeeThese(*declaration
 final annotation class Meta(shared actual String string) satisfies SequencedAnnotation<Meta,Annotated> {}
 annotation Meta table(String name, String schema) { return Meta(name); }
 annotation Meta persistent(String column, ClassDeclaration type, Boolean update) { return Meta(column); }
+
+final annotation class An() satisfies OptionalAnnotation<An,AnnotatedDeclaration> {}
+annotation An an() => An();
 
 final annotation class Fun() satisfies OptionalAnnotation<Fun,FunctionDeclaration> {}
 annotation Fun fun() => Fun();
@@ -64,12 +73,18 @@ class Annotations() {
         SequencedDescription[] ds = annotations<SequencedDescription,SequencedDescription[],Annotated>(sdt(this), at.declaration);
     }*/
     
-    @error fun fun fun String emptyStringFun0() => "";
-    fun String emptyStringFun1() => "";
-    @error att String emptyStringFun2() => "";
-    @error fun String emptyStringAtt1 => "";
-    att String emptyStringAtt2 => "";
-    fun String? emptyOptionalStringFun() => null;
-    @error att String? emptyOptionalStringAtt => null;
-    fun String? emptyStringFunWithParam(String s) => s;
 }
+
+@error fun fun fun String emptyStringFun0() => "";
+an fun String emptyStringFun1() => "";
+@error att String emptyStringFun2() => "";
+@error fun String emptyStringAtt1 => "";
+an att String emptyStringAtt2 => "";
+an fun String? emptyOptionalStringFun() => null;
+@error att String? emptyOptionalStringAtt => null;
+an fun String? emptyStringFunWithParam(String s) => s;
+
+An? fan = annotations(`An`, `emptyStringFun1`);
+An? van = annotations(`An`, `emptyStringAtt2`);
+Fun? ffun = annotations(`Fun`, `emptyStringFun1`);
+Att? vatt = annotations(`Att`, `emptyStringAtt2`);
