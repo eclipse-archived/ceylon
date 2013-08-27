@@ -378,8 +378,8 @@
         
         </section>
     
-        <section id="hidingdeclaration">
-            <title>Hiding a declaration</title>
+        <section id="hiddendeclarations">
+            <title>Hidden declarations</title>
         
             <para>If two declarations with the same name or imported name, as defined in 
             <xref linkend="importedname"/>, are both in scope at a certain program element, then 

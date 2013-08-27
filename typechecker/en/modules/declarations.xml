@@ -200,7 +200,7 @@ TypeConstraints?
         compilation unit.</para>
         
         <para>An imported function or value may not hide, as defined in 
-        <xref linkend="hidingdeclaration"/>, any of the modifiers declared in 
+        <xref linkend="hiddendeclarations"/>, any of the modifiers declared in 
         <literal>ceylon.language</literal> listed in <xref linkend="declarationmodifiers"/>,
         unless the modifier itself has an alias import in the compilation unit.</para>
         
