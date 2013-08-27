@@ -218,8 +218,6 @@ public class Unit {
      * Search for a declaration in {@code ceylon.language.model} 
      */
     public Declaration getLanguageModuleModelDeclaration(String name) {
-        //all elements in ceylon.language are auto-imported
-        //traverse all default module packages provided they have not been traversed yet
         Module languageModule = getPackage().getModule().getLanguageModule();
         if ( languageModule != null && languageModule.isAvailable() ) {
             Package languageScope = languageModule.getPackage("ceylon.language.model");
@@ -236,9 +234,7 @@ public class Unit {
     /**
      * Search for a declaration in {@code ceylon.language.model.declaration} 
      */
-    public Declaration getLanguageModuleModelDeclarationDeclaration(String name) {
-        //all elements in ceylon.language are auto-imported
-        //traverse all default module packages provided they have not been traversed yet
+    public Declaration getLanguageModuleDeclarationDeclaration(String name) {
         Module languageModule = getPackage().getModule().getLanguageModule();
         if ( languageModule != null && languageModule.isAvailable() ) {
             Package languageScope = languageModule.getPackage("ceylon.language.model.declaration");
@@ -728,12 +724,12 @@ public class Unit {
             return pt;
         }
     }
-
+    
     public ProducedType nonemptyArgs(ProducedType args) {
         return isPossiblyEmptyType(args) ? 
                 getNonemptyType(args) : args;
     }
-
+    
     public List<ProducedType> getTupleElementTypes(ProducedType args) {
         if (args!=null) {
             ProducedType tst = nonemptyArgs(args).getSupertype(getTupleDeclaration());
@@ -826,7 +822,7 @@ public class Unit {
         }
         return 0;
     }
-
+    
     public List<ProducedType> getCallableArgumentTypes(ProducedType t){
         ProducedType tuple = getCallableTuple(t);
         if(tuple != null)
@@ -855,12 +851,12 @@ public class Unit {
         }
         return null;
     }
-
+    
     public TypeDeclaration getLanguageModuleModelTypeDeclaration(String name) {
         return (TypeDeclaration) getLanguageModuleModelDeclaration(name);
     }
     public TypeDeclaration getLanguageModuleDeclarationTypeDeclaration(String name) {
-        return (TypeDeclaration) getLanguageModuleModelDeclarationDeclaration(name);
+        return (TypeDeclaration) getLanguageModuleDeclarationDeclaration(name);
     }
     
     private final Map<String,String> modifiers = new HashMap<String,String>();
@@ -884,7 +880,7 @@ public class Unit {
     public Map<String, String> getModifiers() {
         return modifiers;
     }
-
+    
     public ProducedType getValueMetatype(ProducedTypedReference pr) {
         boolean variable = pr.getDeclaration().isVariable();
         if (pr.getQualifyingType() != null) {
@@ -896,7 +892,7 @@ public class Unit {
                     .getProducedType(null, asList(pr.getType()));
         }
     }
-
+    
     public ProducedType getFunctionMetatype(ProducedTypedReference pr) {
         Functional f = (Functional) pr.getDeclaration();
         ParameterList fpl = f.getParameterLists().get(0);
@@ -967,7 +963,7 @@ public class Unit {
         return getTupleType(paramTypes, sequenced, atLeastOne, 
                 firstDefaulted);
     }
-
+    
     public ProducedType getClassDeclarationType() {
         return getLanguageModuleDeclarationTypeDeclaration("ClassDeclaration").getType();
     }
@@ -975,14 +971,30 @@ public class Unit {
     public ProducedType getInterfaceDeclarationType() {
         return getLanguageModuleDeclarationTypeDeclaration("InterfaceDeclaration").getType();
     }
-
+    
     public ProducedType getFunctionDeclarationType() {
         return getLanguageModuleDeclarationTypeDeclaration("FunctionDeclaration").getType();
     }
-
+    
     public ProducedType getValueDeclarationType(TypedDeclaration value) {
         String name = value.isVariable() ? "VariableDeclaration" : "ValueDeclaration";
         return getLanguageModuleDeclarationTypeDeclaration(name).getType();
     }
-
+    
+    public TypeDeclaration getAnnotationDeclaration() {
+        return getLanguageModuleModelTypeDeclaration("Annotation");
+    }
+    
+    public TypeDeclaration getConstrainedAnnotationDeclaration() {
+        return getLanguageModuleModelTypeDeclaration("ConstrainedAnnotation");
+    }
+    
+    public TypeDeclaration getOptionalAnnotationDeclaration() {
+        return getLanguageModuleModelTypeDeclaration("OptionalAnnotation");
+    }
+    
+    public TypeDeclaration getDeclarationDeclaration() {
+        return getLanguageModuleDeclarationTypeDeclaration("Declaration");
+    }
+    
 }

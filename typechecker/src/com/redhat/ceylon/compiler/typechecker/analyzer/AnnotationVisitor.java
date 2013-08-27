@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,7 +44,7 @@ public class AnnotationVisitor extends Visitor {
                     !ptd.equals(unit.getCharacterDeclaration()) &&
                     !ptd.equals(unit.getIterableDeclaration()) &&
                     !ptd.equals(unit.getSequentialDeclaration()) &&
-                    !pt.isSubtypeOf(getDeclarationDeclaration(unit).getType())) {
+                    !pt.isSubtypeOf(unit.getDeclarationDeclaration().getType())) {
                 return true;
             }
             if (ptd.equals(unit.getIterableDeclaration()) ||
@@ -164,34 +163,6 @@ public class AnnotationVisitor extends Visitor {
         }
     }
 
-    private static TypeDeclaration getAnnotationDeclaration(Unit unit) {
-        return (TypeDeclaration) unit.getPackage().getModule()
-                .getLanguageModule()
-                .getDirectPackage("ceylon.language.model")
-                .getMemberOrParameter(unit, "Annotation", null, false);
-    }
-
-    private static TypeDeclaration getConstrainedAnnotationDeclaration(Unit unit) {
-        return (TypeDeclaration) unit.getPackage().getModule()
-                .getLanguageModule()
-                .getDirectPackage("ceylon.language.model")
-                .getMemberOrParameter(unit, "ConstrainedAnnotation", null, false);
-    }
-
-    private static TypeDeclaration getOptionalAnnotationDeclaration(Unit unit) {
-        return (TypeDeclaration) unit.getPackage().getModule()
-                .getLanguageModule()
-                .getDirectPackage("ceylon.language.model")
-                .getMemberOrParameter(unit, "OptionalAnnotation", null, false);
-    }
-
-    private static TypeDeclaration getDeclarationDeclaration(Unit unit) {
-        return (TypeDeclaration) unit.getPackage().getModule()
-                .getLanguageModule()
-                .getDirectPackage("ceylon.language.model.declaration")
-                .getMemberOrParameter(unit, "Declaration", null, false);
-    }
-
     @Override
     public void visit(Tree.AnyClass that) {
         super.visit(that);
@@ -260,7 +231,7 @@ public class AnnotationVisitor extends Visitor {
                 .equals(that.getUnit().getBasicDeclaration())) {
             that.addError("annotation class must directly extend Basic");
         }
-        TypeDeclaration annotationDec = getAnnotationDeclaration(that.getUnit());
+        TypeDeclaration annotationDec = that.getUnit().getAnnotationDeclaration();
         if (!c.inherits(annotationDec)) {
             that.addError("annotation class must be a subtype of Annotation");
         }
@@ -455,7 +426,7 @@ public class AnnotationVisitor extends Visitor {
         for (Annotation ann: anns) {
             ProducedType t = ann.getTypeModel();
             if (t!=null) {
-                ProducedType pet = t.getSupertype(getConstrainedAnnotationDeclaration(unit));
+                ProducedType pet = t.getSupertype(unit.getConstrainedAnnotationDeclaration());
                 if (pet!=null && pet.getTypeArgumentList().size()>2) {
                     ProducedType ct = pet.getTypeArgumentList().get(2);
                     ProducedType mt = declarationType; //intersectionType(declarationType,metatype, unit);
@@ -466,7 +437,7 @@ public class AnnotationVisitor extends Visitor {
         }
         for (int i=0; i<anns.size(); i++) {
             ProducedType t = anns.get(i).getTypeModel();
-            if (t!=null && t.getSupertype(getOptionalAnnotationDeclaration(unit))!=null) {
+            if (t!=null && t.getSupertype(unit.getOptionalAnnotationDeclaration())!=null) {
                 for (int j=0; j<i; j++) {
                     ProducedType ot = anns.get(j).getTypeModel();
                     if (ot!=null && ot.getDeclaration().equals(t.getDeclaration())) {
