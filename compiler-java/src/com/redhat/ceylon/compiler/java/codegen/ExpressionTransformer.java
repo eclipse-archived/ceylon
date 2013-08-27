@@ -1036,7 +1036,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }else{
                 return makeErroneous(expr, "declaration type not supported yet: "+declaration);
             }
-            TypeDeclaration metamodelDecl = (TypeDeclaration) typeFact().getLanguageModuleModelDeclarationDeclaration(memberClassName);
+            TypeDeclaration metamodelDecl = (TypeDeclaration) typeFact().getLanguageModuleDeclarationDeclaration(memberClassName);
             JCExpression memberType = makeJavaType(metamodelDecl.getType());
             JCExpression reifiedMemberType = makeReifiedTypeArgument(metamodelDecl.getType());
             JCExpression memberCall = make().Apply(List.of(memberType), 
@@ -1132,7 +1132,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression metamodelCall = makeMetamodelInvocation("getOrCreateMetamodel", List.of(classLiteral), null);
             ProducedType exprType = expr.getTypeModel().resolveAliases();
             // now cast if required
-            if(!exprType.isExactly(((TypeDeclaration)typeFact().getLanguageModuleModelDeclarationDeclaration("ClassOrInterfaceDeclaration")).getType())){
+            if(!exprType.isExactly(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("ClassOrInterfaceDeclaration")).getType())){
                 JCExpression type = makeJavaType(exprType, JT_NO_PRIMITIVES);
                 return make().TypeCast(type, metamodelCall);
             }

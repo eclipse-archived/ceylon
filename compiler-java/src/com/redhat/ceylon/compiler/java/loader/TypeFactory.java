@@ -174,6 +174,6 @@ public class TypeFactory extends Unit {
     }
 
     public TypeDeclaration getMetamodelDeclarationDeclaration() {
-        return (TypeDeclaration) getLanguageModuleModelDeclarationDeclaration("Declaration");
+        return (TypeDeclaration) getLanguageModuleDeclarationDeclaration("Declaration");
     }
 }
