@@ -417,4 +417,9 @@ public class IssuesTest_1000_1499 extends CompilerTest {
                 new CompilerError(29, "iterable element type could not be inferred")
                 );
     }
+    
+    @Test
+    public void testBug1257() {
+        compareWithJavaSource("bug12xx/Bug1257");
+    }
 }
