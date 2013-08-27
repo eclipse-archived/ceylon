@@ -276,6 +276,14 @@ public class Naming implements LocalId {
         do {
             l.add(s);
             s = s.getContainer();
+            if(s == null){
+                System.err.println("Null container for declaration "+decl);
+                System.err.println("Declaration class: "+decl.getClass());
+                System.err.println("Qualifying expr "+qualifyingExpr);
+                for(Scope scope : l){
+                    System.err.println("Scope: "+scope);
+                }
+            }
         } while (!(s instanceof Package));
         Collections.reverse(l);
         
