@@ -155,13 +155,15 @@ TypeConstraints?
         <itemizedlist>
             <listitem>
                 <para>the package belongs to the same module as the compilation unit 
-                containing the <literal>import</literal> statement, or</para>
+                containing the <literal>import</literal> statement, as specified by 
+                <xref linkend="sourcelayout"/>, or</para>
             </listitem>
             <listitem>
                 <para>the package is declared <literal>shared</literal> in its
-                package descriptor, and the module descriptor of the module containing 
-                the <literal>import</literal> statement explicitly imports the module 
-                containing the package, as defined by 
+                package descriptor, and the module descriptor of the module to which
+                the compilation unit containing the <literal>import</literal> statement 
+                belongs, as specified by <xref linkend="sourcelayout"/>, explicitly or 
+                implicitly imports the module containing the package, as defined by 
                 <xref linkend="moduledescriptors"/>.</para>
             </listitem>
         </itemizedlist>
