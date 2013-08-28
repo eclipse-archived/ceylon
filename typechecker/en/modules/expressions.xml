@@ -346,7 +346,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         member expressions and invocation expressions from an atom, base 
         expression, or static expression.</para>
         
-        <synopsis>Primary: Atom | BaseExpression | MemberExpression | StaticExpression | Invocation</synopsis>
+        <synopsis>Primary: Atom | BaseExpression | MemberExpression | StaticExpression | Invocation | Meta</synopsis>
         
         <para>More complex expressions are formed by combining expressions using 
         operators, including assignment operators, and anonymous functions.</para>    
@@ -2742,6 +2742,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <programlisting>Attribute&lt;Person,String&gt; personNameAttribute = `Person.name`;</programlisting>
         <programlisting>Method&lt;Person,Anything,[String]&gt; personSayMethod = `Person.say`;</programlisting>
         
+        <para>A metamodel expression may refer to a type, a function or value,
+        or a package or module.</para>
+        
+        <synopsis>Meta: MetaType | MetaBase | MetaMember | MetaPackage | MetaModule</synopsis>
+        
         <para>A <emphasis>type metamodel expression</emphasis> is a type, as
         defined by <xref linkend="type"/>, surrounded by backticks.</para>
         
@@ -2766,7 +2771,26 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         method of the type. The member is resolved as a member of the type 
         according to <xref linkend="qualifiedreferenceresolution"/>.</para>
         
-        <comment><para>TODO: define the syntax for package and module references.</para></comment>
+        <para>A <emphasis>package metamodel expression</emphasis> is a package
+        name, as defined by <xref linkend="packages"/>, with the keyword
+        <literal>package</literal>, surrounded by backticks.</para>
+        
+        <synopsis>MetaPackage: "`" "package" FullPackageName "`"</synopsis>
+        
+        <para>The package name must refer to a package from which an 
+        <literal>import</literal> statement in the same compilation unit may 
+        import declarations, as defined by <xref linkend="imports"/>.</para>
+        
+        <para>A <emphasis>module metamodel expression</emphasis> is a module
+        name, as defined by <xref linkend="modulenamesandversionidentifiers"/>, 
+        with the keyword <literal>module</literal>, surrounded by backticks.</para>
+        
+        <synopsis>MetaPackage: "`" "module" FullPackageName "`"</synopsis>
+        
+        <para>The module name must refer to the module to which the 
+        compilation unit belongs, as specified by <xref linkend="sourcelayout"/>, 
+        or to a module imported by the module to which the compilation unit 
+        belongs, as defined by <xref linkend="moduledescriptors"/>.</para>
         
         <section id="typedanduntypedmetamodelexpressions">
             <title>Typed and untyped metamodel expressions</title>
@@ -2797,6 +2821,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             in a metamodel expression, the metamodel expression is called an
             <emphasis>uptyped metamodel expression</emphasis>. Otherwise, the metamodel
             expression is called a <emphasis>typed metamodel expression</emphasis>.</para>
+            
+            <para>Package and module metamodel expressions are considered untyped.</para>
         
         </section>
         
@@ -2886,6 +2912,14 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             declaration referenced. For an untyped metamodel expression:</para>
             
             <itemizedlist>
+                <listitem>
+                    <para>for a module, the type is 
+                    <literal>Module</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>for a package, the type is 
+                    <literal>Package</literal>,</para>
+                </listitem>
                 <listitem>
                     <para>for a value, the type is 
                     <literal>ValueDeclaration</literal>,</para>
