@@ -163,6 +163,10 @@ void literals<T>(){
     // not supported yet: https://github.com/ceylon/ceylon-compiler/issues/1200
     //FunctionDeclaration parameterisedParamAndSharedMethod = `LitParameterisedClassWithParameters.parameterAndSharedMethod`;
     FunctionDeclaration parameterisedSharedMethodAndParam = `LitParameterisedClassWithParameters.sharedMethodAndParameter`;
+
+    // Modules and packages
+    Module m = `module com.redhat.ceylon.compiler.java.test.metamodel`;
+    Package p = `package com.redhat.ceylon.compiler.java.test.metamodel`;
 }
 
 class RelativeLiterals(shared String str = "a") {
