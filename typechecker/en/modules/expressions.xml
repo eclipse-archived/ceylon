@@ -1253,8 +1253,17 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                     <para>inline <literal>try/catch</literal> exceptional conditions?</para>
                 </listitem>
             </itemizedlist>
-            <para>Finally, should we support let expressions, possibly reusing the keyword
+            </comment>
+            
+        </section>
+        
+        <section id="letexpressions">
+            <title>Let expressions</title>
+            
+            <comment>
+            <para>Should we support let expressions, possibly reusing the keyword
             <literal>given</literal>?</para>
+            <programlisting>given (dist = sqrt(x^2+y^2)) [x/dist,y/dist]</programlisting>
             </comment>
         
         </section>
