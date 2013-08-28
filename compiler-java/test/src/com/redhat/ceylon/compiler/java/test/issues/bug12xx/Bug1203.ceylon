@@ -20,17 +20,79 @@
 
 @noanno
 class Bug1203Super() {
-    shared default void m(String s = "hello") {
-        print(s);
-    }
+    shared default Integer m(Integer s = 1) { return s; }
 }
 
 @noanno
 class Bug1203Sub() extends Bug1203Super() {
-    shared actual void m(String s) { super.m(); }
+    shared actual Integer m(Integer s) { return super.m(); }
+}
+
+@noanno
+interface Bug1203Super2 {
+    shared formal Integer m(Integer s = 2);
+}
+
+@noanno
+class Bug1203Sub2a() satisfies Bug1203Super2 {
+    shared actual default Integer m(Integer s) { return 20 + s; }
+}
+
+@noanno
+abstract class Bug1203Sub2b() satisfies Bug1203Super2 {
+}
+
+@noanno
+class Bug1203SubSub2a() extends Bug1203Sub2a() {
+    shared actual Integer m(Integer s) { return super.m(); }
+}
+
+@noanno
+interface Bug1203Super3 {
+    shared default Integer m(Integer s = 3) { return s; }
+}
+
+@noanno
+class Bug1203Sub3() satisfies Bug1203Super3 {
+    shared actual Integer m(Integer s) { return super.m(); }
+}
+
+@noanno
+abstract class Bug1203Super4() {
+    shared formal Integer m(Integer s = 4);
+}
+
+@noanno
+class Bug1203Sub4() extends Bug1203Super4() {
+    shared actual default Integer m(Integer s) { return 40 + s; }
+}
+
+@noanno
+class Bug1203SubSub4() extends Bug1203Sub4() {
+    shared actual Integer m(Integer s) { return super.m(); }
+}
+
+@noanno
+interface Bug1203Super5 {
+    shared default void m(Integer s = 5) { }
+}
+
+@noanno
+class Bug1203Sub5() satisfies Bug1203Super5 {
+    shared actual default Integer m(Integer s) { return s; }
+}
+
+@noanno
+class Bug1203SubSub5() extends Bug1203Sub5() {
+    shared actual Integer m(Integer s) { return 50 + s; }
 }
 
 @noanno
 void bug1203() {
-    Bug1203Sub().m();
+    assert(Bug1203Sub().m(0) == 1);
+    assert(Bug1203SubSub2a().m(0) == 22);
+    assert(Bug1203Sub3().m(0) == 3);
+    assert(Bug1203SubSub4().m(0) == 44);
+    assert(Bug1203Sub5().m() == 5);
+    assert(Bug1203SubSub5().m() == 55);
 }
