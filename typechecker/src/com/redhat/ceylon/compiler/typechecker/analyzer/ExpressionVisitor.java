@@ -5639,6 +5639,10 @@ public class ExpressionVisitor extends Visitor {
         else if (declaration instanceof TypeParameter) {
             return unit.getLanguageModuleModelTypeDeclaration("Type").getType();
         }
+        //this case only for type aliases!
+        else if (declaration instanceof Class || declaration instanceof Interface) {
+            return unit.getLanguageModuleModelTypeDeclaration("Type").getType();
+        }
         else {
             return new UnknownType(unit).getType();
         }

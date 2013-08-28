@@ -23,7 +23,7 @@ void test<T>() {
     // couldn't find a way to assert that its type is really nothingType since it's an anonymous type
     @type:"Basic&Type" 
     value nothingType = `String&Integer`;
-    @type:"ClassDeclaration&Class<NoParams,Empty>" 
+    @type:"AliasDeclaration&Type" 
     value aliasType = `Alias`;
     
     // members
