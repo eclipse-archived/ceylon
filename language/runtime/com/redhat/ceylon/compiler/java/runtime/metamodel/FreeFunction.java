@@ -130,7 +130,7 @@ public class FreeFunction
 
     @Ignore
     @Override
-    public Sequential<? extends ceylon.language.model.Type> apply$types(){
+    public Sequential<? extends ceylon.language.model.Type<?>> apply$types(){
         return (Sequential) empty_.$get();
     }
 
@@ -142,13 +142,13 @@ public class FreeFunction
 
     @Override
     @TypeInfo("ceylon.language.model::Function<ceylon.language::Anything,ceylon.language::Nothing>")
-    public ceylon.language.model.Function<? extends Object, ? super Sequential<? extends Object>> apply(@Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type>") @Sequenced Sequential<? extends ceylon.language.model.Type> types){
+    public ceylon.language.model.Function<? extends Object, ? super Sequential<? extends Object>> apply(@Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> types){
         return bindAndApply(null, types);
     }
 
     @Ignore
     @Override
-    public Sequential<? extends ceylon.language.model.Type> bindAndApply$types(Object instance){
+    public Sequential<? extends ceylon.language.model.Type<?>> bindAndApply$types(Object instance){
         return (Sequential) empty_.$get();
     }
 
@@ -162,7 +162,7 @@ public class FreeFunction
     @TypeInfo("ceylon.language.model::Function<ceylon.language::Anything,ceylon.language::Nothing>")
     public ceylon.language.model.Function<? extends Object, ? super Sequential<? extends Object>> bindAndApply(
             @Name("instance") @TypeInfo("ceylon.language::Object") Object instance, 
-            @Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type>") @Sequenced Sequential<? extends ceylon.language.model.Type> types){
+            @Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> types){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         // FIXME: should have the container type
         com.redhat.ceylon.compiler.typechecker.model.ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);
@@ -174,7 +174,7 @@ public class FreeFunction
     @Ignore
     @Override
     public <Container, Type, Arguments extends Sequential<? extends Object>>
-        Sequential<? extends ceylon.language.model.Type> memberApply$types(TypeDescriptor $reifiedContainer,
+        Sequential<? extends ceylon.language.model.Type<?>> memberApply$types(TypeDescriptor $reifiedContainer,
                                                                                TypeDescriptor $reifiedType,
                                                                                TypeDescriptor $reifiedArguments){
         
@@ -200,7 +200,7 @@ public class FreeFunction
                 @Ignore TypeDescriptor $reifiedContainer,
                 @Ignore TypeDescriptor $reifiedType,
                 @Ignore TypeDescriptor $reifiedArguments,
-                @Name("types") @Sequenced Sequential<? extends ceylon.language.model.Type> types){
+                @Name("types") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> types){
         // FIXME: container?
         return getAppliedMethod($reifiedContainer, $reifiedType, $reifiedArguments, types, null);
     }
@@ -209,7 +209,7 @@ public class FreeFunction
     ceylon.language.model.Method<Container, Type, Arguments> getAppliedMethod(@Ignore TypeDescriptor $reifiedContainer, 
                                                                                   @Ignore TypeDescriptor $reifiedType, 
                                                                                   @Ignore TypeDescriptor $reifiedArguments, 
-                                                                                  Sequential<? extends ceylon.language.model.Type> types,
+                                                                                  Sequential<? extends ceylon.language.model.Type<?>> types,
                                                                                   ceylon.language.model.ClassOrInterface<? extends Object> container){
         // if we don't have any TP our declaration will also be a Method
         if(!Metamodel.hasTypeParameters((Generic) declaration))

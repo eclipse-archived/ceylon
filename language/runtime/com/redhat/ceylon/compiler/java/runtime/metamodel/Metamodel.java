@@ -330,10 +330,12 @@ public class Metamodel {
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedMemberInterface(reifiedContainer, reifiedType, pt);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType){
-            return new AppliedUnionType(declaration.getCaseTypes());
+            TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
+            return new AppliedUnionType(reifiedType, declaration.getCaseTypes());
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType){
-            return new AppliedIntersectionType(declaration.getSatisfiedTypes());
+            TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
+            return new AppliedIntersectionType(reifiedType, declaration.getSatisfiedTypes());
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType){
             return ceylon.language.model.nothingType_.$get();

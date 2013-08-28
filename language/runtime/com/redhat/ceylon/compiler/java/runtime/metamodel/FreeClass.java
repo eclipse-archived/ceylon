@@ -96,7 +96,7 @@ public class FreeClass
 
     @Ignore
     @Override
-    public Sequential<? extends ceylon.language.model.Type> apply$types(){
+    public Sequential<? extends ceylon.language.model.Type<?>> apply$types(){
         return (Sequential) empty_.$get();
     }
 
@@ -109,14 +109,14 @@ public class FreeClass
     @Override
     @TypeInfo("ceylon.language.model::Class<ceylon.language::Anything,ceylon.language::Nothing>")
     public ceylon.language.model.Class<? extends Object, ? super Sequential<? extends Object>> apply(
-            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type>") 
-            Sequential<? extends ceylon.language.model.Type> types){
+            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") 
+            Sequential<? extends ceylon.language.model.Type<?>> types){
         return bindAndApply(null, types);
     }
 
     @Ignore
     @Override
-    public Sequential<? extends ceylon.language.model.Type> bindAndApply$types(Object instance){
+    public Sequential<? extends ceylon.language.model.Type<?>> bindAndApply$types(Object instance){
         return (Sequential) empty_.$get();
     }
 
@@ -130,8 +130,8 @@ public class FreeClass
     @TypeInfo("ceylon.language.model::Class<ceylon.language::Anything,ceylon.language::Nothing>")
     public ceylon.language.model.Class<? extends Object, ? super Sequential<? extends Object>> bindAndApply(
             @Name("instance") @TypeInfo("ceylon.language::Object") Object instance,
-            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type>") 
-            Sequential<? extends ceylon.language.model.Type> types){
+            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") 
+            Sequential<? extends ceylon.language.model.Type<?>> types){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         // FIXME: this is wrong because it does not include the container type
         com.redhat.ceylon.compiler.typechecker.model.ProducedType appliedClassType = declaration.getProducedReference(null, producedTypes).getType();

@@ -281,8 +281,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::Type")
-    public ceylon.language.model.Type getType() {
+    @TypeInfo("ceylon.language.model::Type<Type>")
+    public ceylon.language.model.Type<? extends Type> getType() {
         return type;
     }
 

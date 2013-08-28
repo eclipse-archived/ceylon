@@ -9,10 +9,10 @@ import ceylon.language.model {
 shared interface FunctionDeclaration
         satisfies FunctionOrValueDeclaration & GenericDeclaration & FunctionalDeclaration {
 
-    shared formal AppliedFunction<Anything, Nothing> apply(Type* types);
+    shared formal AppliedFunction<Anything, Nothing> apply(Type<Anything>* types);
 
-    shared formal AppliedFunction<Anything, Nothing> bindAndApply(Object instance, Type* types);
+    shared formal AppliedFunction<Anything, Nothing> bindAndApply(Object instance, Type<Anything>* types);
 
-    shared formal Method<Container, MethodType, Arguments> memberApply<Container, MethodType, Arguments>(Type* types)
+    shared formal Method<Container, MethodType, Arguments> memberApply<Container, MethodType, Arguments>(Type<Anything>* types)
         given Arguments satisfies Anything[];
 }

@@ -34,7 +34,7 @@ public class FreeInterface
     }
     @Ignore
     @Override
-    public Sequential<? extends ceylon.language.model.Type> apply$types(){
+    public Sequential<? extends ceylon.language.model.Type<?>> apply$types(){
         return (Sequential) empty_.$get();
     }
 
@@ -47,14 +47,14 @@ public class FreeInterface
     @Override
     @TypeInfo("ceylon.language.model::Interface<ceylon.language::Anything>")
     public ceylon.language.model.Interface<? extends Object> apply(
-            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type>") 
-            Sequential<? extends ceylon.language.model.Type> types){
+            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") 
+            Sequential<? extends ceylon.language.model.Type<?>> types){
         return bindAndApply(null, types);
     }
     
     @Ignore
     @Override
-    public Sequential<? extends ceylon.language.model.Type> bindAndApply$types(Object instance){
+    public Sequential<? extends ceylon.language.model.Type<?>> bindAndApply$types(Object instance){
         return (Sequential) empty_.$get();
     }
 
@@ -68,8 +68,8 @@ public class FreeInterface
     @TypeInfo("ceylon.language.model::Interface<ceylon.language::Anything>")
     public ceylon.language.model.Interface<? extends Object> bindAndApply(
             @Name("instance") @TypeInfo("ceylon.language::Object") Object instance,
-            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type>") 
-            Sequential<? extends ceylon.language.model.Type> types){
+            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") 
+            Sequential<? extends ceylon.language.model.Type<?>> types){
         // FIXME: refactor with FreeClass.bindAndApply
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         // FIXME: this is wrong because it does not include the container type

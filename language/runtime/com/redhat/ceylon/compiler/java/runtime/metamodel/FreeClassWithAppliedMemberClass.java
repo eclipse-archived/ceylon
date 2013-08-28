@@ -157,7 +157,7 @@ public class FreeClassWithAppliedMemberClass<Container, Type, Arguments extends 
         @TypeParameter("Container"), 
         @TypeParameter(value = "Kind", satisfies = "ceylon.language.model::ClassOrInterface<ceylon.language::Anything>") 
     })
-    public <Container, Kind extends ClassOrInterface<? extends Object>> Member<Container, Kind> memberApply(@Ignore TypeDescriptor $reifiedContainer, @Ignore TypeDescriptor $reifiedKind, @Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type>") @Sequenced Sequential<? extends ceylon.language.model.Type> types) {
+    public <Container, Kind extends ClassOrInterface<? extends Object>> Member<Container, Kind> memberApply(@Ignore TypeDescriptor $reifiedContainer, @Ignore TypeDescriptor $reifiedKind, @Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> types) {
         // TODO: check arguments
         return (Member)this;
     }
@@ -209,14 +209,14 @@ public class FreeClassWithAppliedMemberClass<Container, Type, Arguments extends 
         @TypeParameter(value = "SubType"), 
         @TypeParameter(value = "Kind", satisfies = "ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
     })
-    public <SubType, Kind extends ClassOrInterface<? extends Object>> Member<? super SubType, ? extends Kind> getClassOrInterface(@Ignore TypeDescriptor arg0, @Ignore TypeDescriptor arg1, @Name("name") @TypeInfo("ceylon.language::String") String arg2, @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type>") Sequential<? extends ceylon.language.model.Type> arg3) {
+    public <SubType, Kind extends ClassOrInterface<? extends Object>> Member<? super SubType, ? extends Kind> getClassOrInterface(@Ignore TypeDescriptor arg0, @Ignore TypeDescriptor arg1, @Name("name") @TypeInfo("ceylon.language::String") String arg2, @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") Sequential<? extends ceylon.language.model.Type<?>> arg3) {
         checkInit();
         return memberDelegate.getClassOrInterface(arg0, arg1, arg2, arg3);
     }
 
     @Override
     @Ignore
-    public <SubType, Kind extends ClassOrInterface<? extends Object>> Sequential<? extends ceylon.language.model.Type> getClassOrInterface$types(TypeDescriptor arg0, TypeDescriptor arg1, String arg2) {
+    public <SubType, Kind extends ClassOrInterface<? extends Object>> Sequential<? extends ceylon.language.model.Type<?>> getClassOrInterface$types(TypeDescriptor arg0, TypeDescriptor arg1, String arg2) {
         checkInit();
         return memberDelegate.getClassOrInterface$types(arg0, arg1, arg2);
     }
@@ -244,14 +244,14 @@ public class FreeClassWithAppliedMemberClass<Container, Type, Arguments extends 
                                                                                                        @Ignore TypeDescriptor $reifiedType, 
                                                                                                        @Ignore TypeDescriptor $reifiedArguments, 
                                                                                                        String name, 
-                                                                                                       @Name("types") @Sequenced Sequential<? extends ceylon.language.model.Type> types) {
+                                                                                                       @Name("types") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> types) {
         checkInit();
         return memberDelegate.getMethod($reifiedSubType, $reifiedType, $reifiedArguments, name, types);
     }
 
     @Override
     @Ignore
-    public Sequential<? extends ceylon.language.model.Type> getMethod$types(@Ignore TypeDescriptor $reifiedSubType, 
+    public Sequential<? extends ceylon.language.model.Type<?>> getMethod$types(@Ignore TypeDescriptor $reifiedSubType, 
                                                                                 @Ignore TypeDescriptor $reifiedType, 
                                                                                 @Ignore TypeDescriptor $reifiedArguments, 
                                                                                 String name){
@@ -274,8 +274,8 @@ public class FreeClassWithAppliedMemberClass<Container, Type, Arguments extends 
     }
 
     @Override
-    @TypeInfo("ceylon.language::Map<ceylon.language.model.declaration::TypeParameter,ceylon.language.model::Type>")
-    public Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type> getTypeArguments() {
+    @TypeInfo("ceylon.language::Map<ceylon.language.model.declaration::TypeParameter,ceylon.language.model::Type<ceylon.language::Anything>>")
+    public Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> getTypeArguments() {
         checkInit();
         return memberDelegate.getTypeArguments();
     }

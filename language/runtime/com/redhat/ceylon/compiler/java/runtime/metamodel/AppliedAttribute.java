@@ -28,7 +28,7 @@ public class AppliedAttribute<Container, Type>
 
     protected FreeAttribute declaration;
     protected ProducedTypedReference typedReference;
-    private ceylon.language.model.Type closedType;
+    private ceylon.language.model.Type<? extends Type> closedType;
     @Ignore
     protected final TypeDescriptor $reifiedType;
     
@@ -76,8 +76,8 @@ public class AppliedAttribute<Container, Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::Type")
-    public ceylon.language.model.Type getType() {
+    @TypeInfo("ceylon.language.model::Type<Type>")
+    public ceylon.language.model.Type<? extends Type> getType() {
         return closedType;
     }
     

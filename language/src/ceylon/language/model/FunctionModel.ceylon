@@ -11,5 +11,5 @@ shared interface FunctionModel<out Type, in Arguments>
     
     shared formal actual FunctionDeclaration declaration;
 
-    shared formal ClosedType type;
+    shared formal ClosedType<Type> type;
 }

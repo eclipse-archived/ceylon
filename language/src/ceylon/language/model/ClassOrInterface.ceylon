@@ -9,12 +9,12 @@ import ceylon.language.model {
 
 shared interface ClassOrInterface<out Type> 
     of ClassModel<Type, Nothing> | InterfaceModel<Type>
-    satisfies Model & ClosedType {
+    satisfies Model & ClosedType<Type> {
     
     shared formal actual ClassOrInterfaceDeclaration declaration;
     
     // FIXME: turn that into an interface and add to Function too
-    shared formal Map<TypeParameter, ClosedType> typeArguments;
+    shared formal Map<TypeParameter, ClosedType<Anything>> typeArguments;
     
     // FIXME: ClassModel probably?
     shared formal Class<Anything, Nothing>? superclass;
@@ -23,10 +23,10 @@ shared interface ClassOrInterface<out Type>
     shared formal Interface<Anything>[] interfaces;
 
     // FIXME: introduce MemberClassOrInterface?
-    shared formal Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType* types)
+    shared formal Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType<Anything>* types)
         given Kind satisfies ClassOrInterface<Anything>;
     
-    shared formal Method<SubType, Type, Arguments>? getMethod<SubType, Type, Arguments>(String name, ClosedType* types)
+    shared formal Method<SubType, Type, Arguments>? getMethod<SubType, Type, Arguments>(String name, ClosedType<Anything>* types)
         given Arguments satisfies Anything[];
     
     shared formal Attribute<SubType, Type>? getAttribute<SubType, Type>(String name);

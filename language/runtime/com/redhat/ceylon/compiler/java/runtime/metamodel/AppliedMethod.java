@@ -29,7 +29,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
 
     private FreeFunction declaration;
     private ProducedTypedReference appliedFunction;
-    private ceylon.language.model.Type closedType;
+    private ceylon.language.model.Type<Type> closedType;
     @Ignore
     private TypeDescriptor $reifiedType;
     @Ignore
@@ -82,8 +82,8 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::Type")
-    public ceylon.language.model.Type getType() {
+    @TypeInfo("ceylon.language.model::Type<Type>")
+    public ceylon.language.model.Type<? extends Type> getType() {
         return closedType;
     }
 

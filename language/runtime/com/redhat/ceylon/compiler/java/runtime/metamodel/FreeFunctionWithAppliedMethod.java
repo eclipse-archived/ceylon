@@ -129,7 +129,7 @@ public class FreeFunctionWithAppliedMethod<Container, Type, Arguments extends Se
             @Ignore TypeDescriptor $reifiedContainer,
             @Ignore TypeDescriptor $reifiedType,
             @Ignore TypeDescriptor $reifiedArguments,
-            @Name("types") @Sequenced Sequential<? extends ceylon.language.model.Type> types){
+            @Name("types") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> types){
         // TODO: check arguments
         return (ceylon.language.model.Method)this;
     }
@@ -147,8 +147,8 @@ public class FreeFunctionWithAppliedMethod<Container, Type, Arguments extends Se
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::Type")
-    public ceylon.language.model.Type getType() {
+    @TypeInfo("ceylon.language.model::Type<Type>")
+    public ceylon.language.model.Type<? extends Type> getType() {
         return memberDelegate.getType();
     }
 

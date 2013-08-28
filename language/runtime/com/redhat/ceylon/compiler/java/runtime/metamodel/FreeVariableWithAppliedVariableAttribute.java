@@ -36,7 +36,7 @@ public class FreeVariableWithAppliedVariableAttribute<Container, Type>
     private TypeDescriptor $reifiedContainer;
     @Ignore
     private TypeDescriptor $reifiedType;
-    private ceylon.language.model.Type closedType;
+    private ceylon.language.model.Type<Type> closedType;
 
     protected FreeVariableWithAppliedVariableAttribute(@Ignore TypeDescriptor $reifiedContainer,
             @Ignore TypeDescriptor $reifiedType,
@@ -104,8 +104,8 @@ public class FreeVariableWithAppliedVariableAttribute<Container, Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::Type")
-    public ceylon.language.model.Type getType() {
+    @TypeInfo("ceylon.language.model::Type<Type>")
+    public ceylon.language.model.Type<? extends Type> getType() {
         return closedType;
     }
 

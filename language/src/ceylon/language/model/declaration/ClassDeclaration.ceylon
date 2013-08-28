@@ -8,7 +8,7 @@ shared interface ClassDeclaration
     
     shared formal Boolean anonymous;
     
-    shared formal actual AppliedClass<Anything, Nothing> apply(Type* types);
+    shared formal actual AppliedClass<Anything, Nothing> apply(Type<Anything>* types);
 
-    shared formal actual AppliedClass<Anything, Nothing> bindAndApply(Object instance, Type* types);
+    shared formal actual AppliedClass<Anything, Nothing> bindAndApply(Object instance, Type<Anything>* types);
 }

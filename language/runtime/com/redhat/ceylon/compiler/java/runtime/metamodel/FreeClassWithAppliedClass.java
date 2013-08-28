@@ -143,14 +143,14 @@ public class FreeClassWithAppliedClass<Type, Arguments extends Sequential<? exte
     public <SubType, Kind extends ClassOrInterface<? extends Object>> Member<SubType, Kind> getClassOrInterface(@Ignore TypeDescriptor $reifiedSubType,
             @Ignore TypeDescriptor $reifiedKind, 
             @Name("name") @TypeInfo("ceylon.language::String") String name, 
-            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type>") Sequential<? extends ceylon.language.model.Type> types) {
+            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") Sequential<? extends ceylon.language.model.Type<?>> types) {
         checkInit();
         return typeDelegate.<SubType,Kind>getClassOrInterface($reifiedSubType, $reifiedKind, name, types);
     }
 
     @Override
     @Ignore
-    public <SubType, Kind extends ClassOrInterface<? extends Object>> Sequential<? extends ceylon.language.model.Type> getClassOrInterface$types(TypeDescriptor $reifiedSubType, 
+    public <SubType, Kind extends ClassOrInterface<? extends Object>> Sequential<? extends ceylon.language.model.Type<?>> getClassOrInterface$types(TypeDescriptor $reifiedSubType, 
             TypeDescriptor $reifiedKind, 
             String name) {
         checkInit();
@@ -180,14 +180,14 @@ public class FreeClassWithAppliedClass<Type, Arguments extends Sequential<? exte
                                                                              @Ignore TypeDescriptor $reifiedType, 
                                                                              @Ignore TypeDescriptor $reifiedArguments, 
                                                                              String name, 
-                                                                             @Name("types") @Sequenced Sequential<? extends ceylon.language.model.Type> types) {
+                                                                             @Name("types") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> types) {
         checkInit();
         return typeDelegate.getMethod($reifiedSubType, $reifiedType, $reifiedArguments, name, types);
     }
 
     @Override
     @Ignore
-    public Sequential<? extends ceylon.language.model.Type> getMethod$types(@Ignore TypeDescriptor $reifiedSubType, 
+    public Sequential<? extends ceylon.language.model.Type<?>> getMethod$types(@Ignore TypeDescriptor $reifiedSubType, 
                                                                                 @Ignore TypeDescriptor $reifiedType, 
                                                                                 @Ignore TypeDescriptor $reifiedArguments, 
                                                                                 String name){
@@ -210,8 +210,8 @@ public class FreeClassWithAppliedClass<Type, Arguments extends Sequential<? exte
     }
 
     @Override
-    @TypeInfo("ceylon.language::Map<ceylon.language.model.declaration::TypeParameter,ceylon.language.model::Type>")
-    public Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type> getTypeArguments() {
+    @TypeInfo("ceylon.language::Map<ceylon.language.model.declaration::TypeParameter,ceylon.language.model::Type<ceylon.language::Anything>>")
+    public Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> getTypeArguments() {
         checkInit();
         return typeDelegate.getTypeArguments();
     }
@@ -266,7 +266,7 @@ public class FreeClassWithAppliedClass<Type, Arguments extends Sequential<? exte
 
     @Override
     @TypeInfo("ceylon.language.model::Class<ceylon.language::Anything,ceylon.language::Nothing>")
-    public ceylon.language.model.Class<? extends Object, ? super Sequential<? extends Object>> apply(@Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type>") Sequential<? extends ceylon.language.model.Type> types) {
+    public ceylon.language.model.Class<? extends Object, ? super Sequential<? extends Object>> apply(@Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") Sequential<? extends ceylon.language.model.Type<?>> types) {
         // TODO: check arguments
         return (ceylon.language.model.Class) this;
     }

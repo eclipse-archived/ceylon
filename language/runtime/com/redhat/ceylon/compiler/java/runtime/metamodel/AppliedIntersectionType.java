@@ -13,18 +13,30 @@ import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class AppliedIntersectionType 
-    implements ceylon.language.model.IntersectionType, ReifiedType {
+@TypeParameters({
+    @TypeParameter(value = "Intersection", variance = Variance.OUT),
+})
+public class AppliedIntersectionType<Intersection>
+    implements ceylon.language.model.IntersectionType<Intersection>, ReifiedType {
 
+    @Override
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(AppliedIntersectionType.class);
-    
-    protected Sequential<ceylon.language.model.Type> satisfiedTypes;
+    public TypeDescriptor $getType() {
+        return TypeDescriptor.klass(AppliedIntersectionType.class, $reifiedIntersection);
+    }
+        
+    @Ignore
+    protected TypeDescriptor $reifiedIntersection;
+
+    protected Sequential<ceylon.language.model.Type<?>> satisfiedTypes;
     
     @Override
     public String toString() {
@@ -38,13 +50,14 @@ public class AppliedIntersectionType
         return sb.toString();
     }
 
-    AppliedIntersectionType(List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes){
-        ceylon.language.model.Type[] types = new ceylon.language.model.Type[satisfiedTypes.size()];
+    AppliedIntersectionType(@Ignore TypeDescriptor $reifiedType, List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes){
+        this.$reifiedIntersection = $reifiedType;
+        ceylon.language.model.Type<?>[] types = new ceylon.language.model.Type<?>[satisfiedTypes.size()];
         int i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : satisfiedTypes){
             types[i++] = Metamodel.getAppliedMetamodel(pt);
         }
-        this.satisfiedTypes = (Sequential)Util.sequentialInstance(ceylon.language.model.Type.$TypeDescriptor, types);
+        this.satisfiedTypes = (Sequential)Util.sequentialInstance(TypeDescriptor.klass(ceylon.language.model.Type.class, ceylon.language.Anything.$TypeDescriptor), types);
     }
 
     @Override
@@ -62,14 +75,9 @@ public class AppliedIntersectionType
     }
 
     @Override
-    @TypeInfo("ceylon.language.Sequential<ceylon.language.model::Type>")
-    public ceylon.language.Sequential<? extends ceylon.language.model.Type> getSatisfiedTypes() {
+    @TypeInfo("ceylon.language.Sequential<ceylon.language.model::Type<ceylon.language::Anything>")
+    public ceylon.language.Sequential<? extends ceylon.language.model.Type<?>> getSatisfiedTypes() {
         return satisfiedTypes;
     }
 
-    @Ignore
-    @Override
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
-    }
 }

@@ -36,7 +36,7 @@ public class FreeAttributeWithAppliedAttribute<Container, Type>
     @Ignore
     private TypeDescriptor $reifiedType;
 
-    private ceylon.language.model.Type closedType;
+    private ceylon.language.model.Type<Type> closedType;
     private AppliedAttribute<Container, Type> memberDelegate;
 
     protected FreeAttributeWithAppliedAttribute(@Ignore TypeDescriptor $reifiedContainer,
@@ -97,8 +97,8 @@ public class FreeAttributeWithAppliedAttribute<Container, Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::Type")
-    public ceylon.language.model.Type getType() {
+    @TypeInfo("ceylon.language.model::Type<Type>")
+    public ceylon.language.model.Type<? extends Type> getType() {
         return closedType;
     }
 

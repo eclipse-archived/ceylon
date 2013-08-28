@@ -10,5 +10,5 @@ shared interface ValueModel<out Type>
 
     shared formal actual ValueDeclaration declaration;
     
-    shared formal ClosedType type;
+    shared formal ClosedType<Type> type;
 }

@@ -132,14 +132,14 @@ public class FreeInterfaceWithAppliedInterface<Type>
     public <SubType, Kind extends ClassOrInterface<? extends Object>> Member<SubType, Kind> getClassOrInterface(@Ignore TypeDescriptor $reifiedSubType,
             @Ignore TypeDescriptor $reifiedKind, 
             @Name("name") @TypeInfo("ceylon.language::String") String name,
-            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type>") Sequential<? extends ceylon.language.model.Type> types) {
+            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") Sequential<? extends ceylon.language.model.Type<?>> types) {
         checkInit();
         return typeDelegate.getClassOrInterface($reifiedSubType, $reifiedKind, name, types);
     }
 
     @Override
     @Ignore
-    public <SubType, Kind extends ClassOrInterface<? extends Object>> Sequential<? extends ceylon.language.model.Type> getClassOrInterface$types(TypeDescriptor $reifiedSubType, 
+    public <SubType, Kind extends ClassOrInterface<? extends Object>> Sequential<? extends ceylon.language.model.Type<?>> getClassOrInterface$types(TypeDescriptor $reifiedSubType, 
             TypeDescriptor $reifiedKind, 
             String name) {
         checkInit();
@@ -169,14 +169,14 @@ public class FreeInterfaceWithAppliedInterface<Type>
                                                                              @Ignore TypeDescriptor $reifiedType, 
                                                                              @Ignore TypeDescriptor $reifiedArguments, 
                                                                              String name, 
-                                                                             @Name("types") @Sequenced Sequential<? extends ceylon.language.model.Type> types) {
+                                                                             @Name("types") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> types) {
         checkInit();
         return typeDelegate.getMethod($reifiedSubType, $reifiedType, $reifiedArguments, name, types);
     }
 
     @Override
     @Ignore
-    public Sequential<? extends ceylon.language.model.Type> getMethod$types(@Ignore TypeDescriptor $reifiedSubType, 
+    public Sequential<? extends ceylon.language.model.Type<?>> getMethod$types(@Ignore TypeDescriptor $reifiedSubType, 
                                                                                 @Ignore TypeDescriptor $reifiedType, 
                                                                                 @Ignore TypeDescriptor $reifiedArguments, 
                                                                                 String name){
@@ -199,8 +199,8 @@ public class FreeInterfaceWithAppliedInterface<Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language::Map<ceylon.language.model.declaration::TypeParameter,ceylon.language.model::Type>")
-    public Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type> getTypeArguments() {
+    @TypeInfo("ceylon.language::Map<ceylon.language.model.declaration::TypeParameter,ceylon.language.model::Type<ceylon.language::Anything>>")
+    public Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> getTypeArguments() {
         checkInit();
         return typeDelegate.getTypeArguments();
     }
@@ -213,7 +213,7 @@ public class FreeInterfaceWithAppliedInterface<Type>
 
     @Override
     @TypeInfo("ceylon.language.model::Interface<ceylon.language::Anything>")
-    public ceylon.language.model.Interface<? extends Object> apply(@Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type>") Sequential<? extends ceylon.language.model.Type> types) {
+    public ceylon.language.model.Interface<? extends Object> apply(@Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") Sequential<? extends ceylon.language.model.Type<?>> types) {
         return this;
     }
 

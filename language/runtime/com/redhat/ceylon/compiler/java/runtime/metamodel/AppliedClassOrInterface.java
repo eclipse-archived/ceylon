@@ -38,7 +38,7 @@ public class AppliedClassOrInterface<Type>
     private volatile boolean initialised;
     final com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType;
     protected com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface declaration;
-    protected ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type> typeArguments;
+    protected ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> typeArguments;
     protected ceylon.language.model.Class<? extends Object, ? super Sequential<? extends Object>> superclass;
     protected Sequential<ceylon.language.model.Interface<? extends Object>> interfaces;
     @Ignore
@@ -90,8 +90,8 @@ public class AppliedClassOrInterface<Type>
     protected void init() {
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface decl = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) producedType.getDeclaration();
         this.declaration = (FreeClassOrInterface) Metamodel.getOrCreateMetamodel(decl);
-        java.util.Map<ceylon.language.model.declaration.TypeParameter, ceylon.language.model.Type> typeArguments 
-            = new LinkedHashMap<ceylon.language.model.declaration.TypeParameter, ceylon.language.model.Type>();
+        java.util.Map<ceylon.language.model.declaration.TypeParameter, ceylon.language.model.Type<?>> typeArguments 
+            = new LinkedHashMap<ceylon.language.model.declaration.TypeParameter, ceylon.language.model.Type<?>>();
         Iterator<? extends ceylon.language.model.declaration.TypeParameter> typeParameters = declaration.getTypeParameterDeclarations().iterator();
         Object it;
         java.util.Map<com.redhat.ceylon.compiler.typechecker.model.TypeParameter, com.redhat.ceylon.compiler.typechecker.model.ProducedType> ptArguments 
@@ -104,8 +104,8 @@ public class AppliedClassOrInterface<Type>
             typeArguments.put(tp, ptArgWrapped);
         }
         this.typeArguments = new InternalMap<ceylon.language.model.declaration.TypeParameter, 
-                                             ceylon.language.model.Type>(ceylon.language.model.declaration.TypeParameter.$TypeDescriptor, 
-                                                                                    ceylon.language.model.Type.$TypeDescriptor, 
+                                             ceylon.language.model.Type<?>>(ceylon.language.model.declaration.TypeParameter.$TypeDescriptor, 
+                                                     TypeDescriptor.klass(ceylon.language.model.Type.class, ceylon.language.Anything.$TypeDescriptor), 
                                                                                     typeArguments);
         
         com.redhat.ceylon.compiler.typechecker.model.ProducedType superType = decl.getExtendedType();
@@ -126,8 +126,8 @@ public class AppliedClassOrInterface<Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language::Map<ceylon.language.model.declaration::TypeParameter,ceylon.language.model::Type>")
-    public Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type> getTypeArguments() {
+    @TypeInfo("ceylon.language::Map<ceylon.language.model.declaration::TypeParameter,ceylon.language.model::Type<ceylon.language::Anything>")
+    public Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> getTypeArguments() {
         return typeArguments;
     }
 
@@ -154,7 +154,7 @@ public class AppliedClassOrInterface<Type>
 
     @Ignore
     @Override
-    public Sequential<? extends ceylon.language.model.Type> getMethod$types(@Ignore TypeDescriptor $reifiedSubType, 
+    public Sequential<? extends ceylon.language.model.Type<?>> getMethod$types(@Ignore TypeDescriptor $reifiedSubType, 
                                                                                 @Ignore TypeDescriptor $reifiedType, 
                                                                                 @Ignore TypeDescriptor $reifiedArguments, 
                                                                                 String name){
@@ -184,7 +184,7 @@ public class AppliedClassOrInterface<Type>
                                                                              @Ignore TypeDescriptor $reifiedType, 
                                                                              @Ignore TypeDescriptor $reifiedArguments, 
                                                                              String name, 
-                                                                             @Name("types") @Sequenced Sequential<? extends ceylon.language.model.Type> types) {
+                                                                             @Name("types") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> types) {
         
         checkInit();
         final FreeFunction method = declaration.findMethod(name);
@@ -195,7 +195,7 @@ public class AppliedClassOrInterface<Type>
 
     @Ignore
     @Override
-    public Sequential<? extends ceylon.language.model.Type> getClassOrInterface$types(@Ignore TypeDescriptor $reifiedSubType, 
+    public Sequential<? extends ceylon.language.model.Type<?>> getClassOrInterface$types(@Ignore TypeDescriptor $reifiedSubType, 
                                                                                                  @Ignore TypeDescriptor $reifiedKind, 
                                                                                                  String name){
         return (Sequential) empty_.$get();
@@ -221,7 +221,7 @@ public class AppliedClassOrInterface<Type>
         ceylon.language.model.Member<SubType, Kind> getClassOrInterface(@Ignore TypeDescriptor $reifiedSubType, 
                                                                             @Ignore TypeDescriptor $reifiedKind, 
                                                                             String name, 
-                                                                            @Name("types") @Sequenced Sequential<? extends ceylon.language.model.Type> types) {
+                                                                            @Name("types") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> types) {
         
         checkInit();
         final FreeClassOrInterface type = declaration.findType(name);

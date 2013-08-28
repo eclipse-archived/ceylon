@@ -232,7 +232,7 @@ public abstract class FreeClassOrInterface
     @Override
     public <Container, 
             Kind extends ceylon.language.model.ClassOrInterface<? extends Object>>
-        Sequential<? extends ceylon.language.model.Type> memberApply$types(TypeDescriptor $reifiedContainer,
+        Sequential<? extends ceylon.language.model.Type<?>> memberApply$types(TypeDescriptor $reifiedContainer,
                                                                                       TypeDescriptor $reifiedKind){
         
         return (Sequential) empty_.$get();
@@ -261,7 +261,7 @@ public abstract class FreeClassOrInterface
         ceylon.language.model.Member<Container, Kind> memberApply(
                 @Ignore TypeDescriptor $reifiedContainer,
                 @Ignore TypeDescriptor $reifiedKind,
-                @Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type>") @Sequenced Sequential<? extends ceylon.language.model.Type> types){
+                @Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> types){
         // FIXME: check this
         AppliedClassOrInterface<Container> containerType = (AppliedClassOrInterface<Container>) Metamodel.getAppliedMetamodel($reifiedContainer);
         return getAppliedClassOrInterface($reifiedContainer, $reifiedKind, types, containerType);
@@ -270,7 +270,7 @@ public abstract class FreeClassOrInterface
     <Type, Kind extends ceylon.language.model.ClassOrInterface<? extends Object>>
     ceylon.language.model.Member<Type, Kind> getAppliedClassOrInterface(@Ignore TypeDescriptor $reifiedType, 
                                                                             @Ignore TypeDescriptor $reifiedKind, 
-                                                                            Sequential<? extends ceylon.language.model.Type> types,
+                                                                            Sequential<? extends ceylon.language.model.Type<?>> types,
                                                                             AppliedClassOrInterface<Type> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         ProducedReference producedReference = declaration.getProducedReference(container.producedType, producedTypes);

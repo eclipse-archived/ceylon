@@ -106,8 +106,8 @@ public class FreeFunctionWithAppliedFunction<Type, Arguments extends Sequential<
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::Type")
-    public ceylon.language.model.Type getType() {
+    @TypeInfo("ceylon.language.model::Type<Type>")
+    public ceylon.language.model.Type<? extends Type> getType() {
         return typeDelegate.getType();
     }
 
@@ -119,7 +119,7 @@ public class FreeFunctionWithAppliedFunction<Type, Arguments extends Sequential<
 
     @Override
     @TypeInfo("ceylon.language.model::Function<ceylon.language::Anything,ceylon.language::Nothing>")
-    public ceylon.language.model.Function<? extends Object, ? super Sequential<? extends Object>> apply(@Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type>") @Sequenced Sequential<? extends ceylon.language.model.Type> types){
+    public ceylon.language.model.Function<? extends Object, ? super Sequential<? extends Object>> apply(@Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> types){
         return (Function)this;
     }
     

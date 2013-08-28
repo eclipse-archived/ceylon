@@ -34,7 +34,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 public class AppliedValue<Type> 
         implements ceylon.language.model.Value<Type>, ReifiedType {
 
-    private ceylon.language.model.Type type;
+    private ceylon.language.model.Type<Type> type;
     @Ignore
     protected TypeDescriptor $reifiedType;
     protected FreeAttribute declaration;
@@ -175,8 +175,8 @@ public class AppliedValue<Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::Type")
-    public ceylon.language.model.Type getType() {
+    @TypeInfo("ceylon.language.model::Type<Type>")
+    public ceylon.language.model.Type<? extends Type> getType() {
         return type;
     }
 

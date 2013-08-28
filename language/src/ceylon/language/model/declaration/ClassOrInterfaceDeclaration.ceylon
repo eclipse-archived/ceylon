@@ -25,11 +25,11 @@ shared interface ClassOrInterfaceDeclaration
     shared formal Kind? getMemberDeclaration<Kind>(String name) 
             given Kind satisfies TopLevelOrMemberDeclaration;
     
-    shared formal AppliedClassOrInterface<Anything> apply(Type* types);
+    shared formal AppliedClassOrInterface<Anything> apply(Type<Anything>* types);
     
-    shared formal AppliedClassOrInterface<Anything> bindAndApply(Object instance, Type* types);
+    shared formal AppliedClassOrInterface<Anything> bindAndApply(Object instance, Type<Anything>* types);
 
-    shared formal AppliedMember<Container, Kind> memberApply<Container, Kind>(Type* types)
+    shared formal AppliedMember<Container, Kind> memberApply<Container, Kind>(Type<Anything>* types)
         given Kind satisfies AppliedClassOrInterface<Anything>;
 
 }
