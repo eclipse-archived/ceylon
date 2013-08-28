@@ -5628,20 +5628,20 @@ public class ExpressionVisitor extends Visitor {
     private ProducedType getTypeMetaType(Tree.TypeLiteral that,
             ProducedType literalType, TypeDeclaration declaration) {
         if (declaration instanceof UnionType) {
-            return unit.getLanguageModuleModelTypeDeclaration("UnionType").getType();
+            return producedType(unit.getLanguageModuleModelTypeDeclaration("UnionType"), literalType);
         }
         else if (declaration instanceof IntersectionType) {
-            return unit.getLanguageModuleModelTypeDeclaration("IntersectionType").getType();
+            return producedType(unit.getLanguageModuleModelTypeDeclaration("IntersectionType"), literalType);
         }
         else if (declaration instanceof NothingType) {
             return ((TypedDeclaration) unit.getLanguageModuleModelDeclaration("nothingType")).getType();
         }
         else if (declaration instanceof TypeParameter) {
-            return unit.getLanguageModuleModelTypeDeclaration("Type").getType();
+            return producedType(unit.getLanguageModuleModelTypeDeclaration("Type"), literalType);
         }
         //this case only for type aliases!
         else if (declaration instanceof Class || declaration instanceof Interface) {
-            return unit.getLanguageModuleModelTypeDeclaration("Type").getType();
+            return producedType(unit.getLanguageModuleModelTypeDeclaration("Type"), literalType);
         }
         else {
             return new UnknownType(unit).getType();
