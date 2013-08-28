@@ -42,27 +42,11 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
     private ModuleSet moduleset = new ModuleSet();
     private boolean includeNonShared;
     private boolean includeSourceCode;
-    private String user;
-    private String pass;
     
     public CeylonDocAntTask() {
         super("doc");
     }
     
-    /**
-     * Sets the user name for the output module repository (HTTP only)
-     */
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    /**
-     * Sets the password for the output module repository (HTTP only)
-     */
-    public void setPass(String pass) {
-        this.pass = pass;
-    }
-
     /**
      * Include even non-shared declarations
      */
