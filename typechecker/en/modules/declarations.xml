@@ -1711,7 +1711,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         a function declaration must either have an explicit return type, or a return type 
         must be inferrable.</para>
             
-        <section id="callabletype">
+        <section id="callabletypeoffunction">
             <title>Callable type of a function</title>
             
             <para>The <emphasis>callable type</emphasis> of a function captures the return
