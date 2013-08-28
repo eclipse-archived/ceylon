@@ -1186,4 +1186,25 @@ public class DeclarationVisitor extends Visitor {
             }
         }
     }
+    
+    private boolean declarationReference=false;
+    
+    @Override
+    public void visit(Tree.MetaLiteral that) {
+        declarationReference = that instanceof Tree.ClassLiteral || 
+                that instanceof Tree.InterfaceLiteral ||
+                that instanceof Tree.AliasLiteral ||
+                that instanceof Tree.TypeParameterLiteral ||
+                that instanceof Tree.ValueLiteral ||
+                that instanceof Tree.FunctionLiteral;
+        super.visit(that);
+        declarationReference = false;
+    }
+    
+    @Override
+    public void visit(Tree.StaticType that) {
+        that.setMetamodel(declarationReference);
+        super.visit(that);
+    }
+    
 }

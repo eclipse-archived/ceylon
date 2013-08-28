@@ -5492,26 +5492,46 @@ public class ExpressionVisitor extends Visitor {
             // FIXME: should we disallow type parameters in there?
             ProducedType literalType = that.getType().getTypeModel();
             if (literalType != null) {
-                boolean isAlias = literalType.getDeclaration() instanceof TypeAlias;
-                literalType = literalType.resolveAliases();
                 TypeDeclaration declaration = literalType.getDeclaration();
-                if (declaration != null) {
+                that.setWantsDeclaration(true);
+                if (that instanceof Tree.ClassLiteral) {
+                    if (!(declaration instanceof Class)) {
+                        that.getType().addError("not a class");
+                    }
+                    that.setTypeModel(unit.getClassDeclarationType());
+                }
+                else if (that instanceof Tree.InterfaceLiteral) {
+                    if (!(declaration instanceof Interface)) {
+                        that.getType().addError("not an interface");
+                    }
+                    that.setTypeModel(unit.getInterfaceDeclarationType());
+                }
+                else if (that instanceof Tree.AliasLiteral) {
+                    if (!(declaration instanceof TypeAlias)) {
+                        that.getType().addError("not a type alias");
+                    }
+                    that.setTypeModel(unit.getAliasDeclarationType());
+                }
+                else if (that instanceof Tree.TypeParameterLiteral) {
+                    if (!(declaration instanceof TypeParameter)) {
+                        that.getType().addError("not a type parameter");
+                    }
+                    that.setTypeModel(unit.getTypeParameterDeclarationType());
+                }
+                else if (declaration != null) {
+                    that.setWantsDeclaration(false);
+                    literalType = literalType.resolveAliases();
                     that.setDeclaration(declaration);
                     checkNonlocalType(that.getType(), declaration);
-                    ProducedType metatype;
-                    if (isAlias) {
-                        metatype = getAliasMetaType(that, literalType, declaration);
-                    }
-                    else if (declaration instanceof Class) {
-                        metatype = getClassMetaType(that, literalType, declaration);
+                    if (declaration instanceof Class) {
+                        that.setTypeModel(unit.getClassMetatype(literalType));
                     }
                     else if (declaration instanceof Interface) {
-                        metatype = getInterfaceMetaType(that, literalType, declaration);
+                        that.setTypeModel(unit.getInterfaceMetatype(literalType));
                     }
                     else {
-                        metatype = getTypeMetaType(that, literalType, declaration);
+                        that.setTypeModel(getTypeMetaType(literalType));
                     }
-                    that.setTypeModel(metatype);
                 }
             }
         }
@@ -5545,18 +5565,19 @@ public class ExpressionVisitor extends Visitor {
                         }
                     }
                     else {
-                        checkQualifiedVisibility(that, (TypedDeclaration) member, name, container, false);
+                        checkQualifiedVisibility(that, member, name, container, false);
                         that.setDeclaration(member);
-                        setMetamodelType(that, member, qualifyingType);
+                        setMemberMetatype(that, member);
                     }
                 }
             }
             else {
-                Declaration result = that.getScope().getMemberOrParameter(unit, name, null, false);
-                if (result instanceof TypedDeclaration) {
-                    checkBaseVisibility(that, (TypedDeclaration) result, name);
+                TypedDeclaration result = getTypedDeclaration(that.getScope(), 
+                        name, null, false, unit);
+                if (result!=null) {
+                    checkBaseVisibility(that, result, name);
                     that.setDeclaration(result);
-                    setMetamodelType(that, result, that.getScope().getDeclaringType(result));
+                    setMemberMetatype(that, result);
                 }
                 else {
                     that.addError("function or value does not exist: " +
@@ -5567,12 +5588,38 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    private void setMemberMetatype(Tree.MemberLiteral that, TypedDeclaration result) {
+        //TODO: temporarily needed to avoid NPE in backend!!!
+        ProducedType outerType = that.getScope().getDeclaringType(result);
+        ProducedTypedReference pr = result.getProducedTypedReference(outerType, 
+                Collections.<ProducedType>emptyList());
+        
+        if (that instanceof Tree.ValueLiteral) {
+            if (!(result instanceof Value)) {
+                that.getIdentifier().addError("not a value");
+            }
+            that.setWantsDeclaration(true);
+            that.setTypeModel(unit.getValueDeclarationType((Value)result));
+        }
+        else if (that instanceof Tree.FunctionLiteral) {
+            if (!(result instanceof Method)) {
+                that.getIdentifier().addError("not a function");
+            }
+            that.setWantsDeclaration(true);
+            that.setTarget(pr);
+            that.setTypeModel(unit.getFunctionDeclarationType());
+        }
+        else {
+            setMetamodelType(that, result, outerType);
+        }
+    }
+
     private void setMetamodelType(Tree.MemberLiteral that, Declaration result, ProducedType outerType) {
         if (result instanceof Method) {
-            TypedDeclaration method = (TypedDeclaration) result;
+            Method method = (Method) result;
             Tree.TypeArgumentList tal = that.getTypeArgumentList();
             // there's no model for local values that are not parameters
-            if ((!result.isClassOrInterfaceMember()||!result.isShared())
+            if ((!result.isClassOrInterfaceMember() || !result.isShared())
                     && !result.isToplevel()) {
                 if (result.isParameter()) {
                     that.addWarning("metamodel reference to function parameter not yet supported");
@@ -5590,21 +5637,17 @@ public class ExpressionVisitor extends Visitor {
                 if (acceptsTypeArguments(method, ta, tal, that, false)) {
                     ProducedTypedReference pr = method.getProducedTypedReference(outerType, ta);
                     that.setTarget(pr);
-                    that.setTypeModel(getFunctionMetaType(that, result, outerType, pr));
+                    that.setTypeModel(unit.getFunctionMetatype(pr));
                 }
             }
             else {
-                that.setTypeModel(unit.getFunctionDeclarationType());
-                that.setWantsDeclaration(true);
-            }
-            /*else {
                 that.addError("missing type arguments to: " + method.getName(unit));
-            }*/
+            }
         }
         else if (result instanceof Value) {
             Value value = (Value) result;
             // there's no model for local values that are not parameters
-            if ((!result.isClassOrInterfaceMember()||!result.isShared())
+            if ((!result.isClassOrInterfaceMember() || !result.isShared())
                     && !result.isToplevel()){
                 if (result.isParameter()) {
                     that.addWarning("metamodel reference to function parameter not yet supported");
@@ -5620,13 +5663,13 @@ public class ExpressionVisitor extends Visitor {
                 ProducedTypedReference pr = value.getProducedTypedReference(outerType, 
                         Collections.<ProducedType>emptyList());
                 that.setTarget(pr);
-                that.setTypeModel(getValueMetaType(that, result, outerType, value, pr));
+                that.setTypeModel(unit.getValueMetatype(pr));
             }
         }
     }
 
-    private ProducedType getTypeMetaType(Tree.TypeLiteral that,
-            ProducedType literalType, TypeDeclaration declaration) {
+    private ProducedType getTypeMetaType(ProducedType literalType) {
+        TypeDeclaration declaration = literalType.getDeclaration();
         if (declaration instanceof UnionType) {
             return producedType(unit.getLanguageModuleModelTypeDeclaration("UnionType"), literalType);
         }
@@ -5647,52 +5690,7 @@ public class ExpressionVisitor extends Visitor {
             return new UnknownType(unit).getType();
         }
     }
-
-    private ProducedType getInterfaceMetaType(Tree.TypeLiteral that,
-            ProducedType literalType, TypeDeclaration declaration) {
-        if (!isParameterised(declaration)) {
-            return intersectionType(unit.getInterfaceMetatype(literalType), 
-                    unit.getInterfaceDeclarationType(), unit);
-        }
-        else if (isTypeUnknown(literalType)) {
-            that.setWantsDeclaration(true);
-            return unit.getInterfaceDeclarationType();
-        }
-        else {
-            return unit.getInterfaceMetatype(literalType);
-        }
-    }
-
-    private ProducedType getAliasMetaType(Tree.TypeLiteral that,
-            ProducedType literalType, TypeDeclaration declaration) {
-        if (!isParameterised(declaration)) {
-            return intersectionType(getTypeMetaType(that, literalType, declaration),
-                    unit.getAliasDeclarationType(), unit);
-        }
-        else if (isTypeUnknown(literalType)) {
-            that.setWantsDeclaration(true);
-            return unit.getAliasDeclarationType();
-        }
-        else {
-            return getTypeMetaType(that, literalType, declaration);
-        }
-    }
-
-    private ProducedType getClassMetaType(Tree.TypeLiteral that,
-            ProducedType literalType, TypeDeclaration declaration) {
-        if (!isParameterised(declaration)) {
-            return intersectionType(unit.getClassMetatype(literalType), 
-                    unit.getClassDeclarationType(), unit);
-        }
-        else if (isTypeUnknown(literalType)) {
-            that.setWantsDeclaration(true);
-            return unit.getClassDeclarationType();
-        }
-        else {
-            return unit.getClassMetatype(literalType);
-        }
-    }
-
+    
     private void checkNonlocalType(Node that, TypeDeclaration declaration) {
         if (declaration instanceof UnionType) {
             for (TypeDeclaration ctd: declaration.getCaseTypeDeclarations()) {
@@ -5714,51 +5712,4 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private boolean isParameterised(Declaration declaration) {
-        if (declaration instanceof Generic && 
-                !((Generic) declaration).getTypeParameters().isEmpty()) {
-            return true;
-        }
-        if (declaration.isClassOrInterfaceMember()) {
-            return isParameterised((ClassOrInterface) declaration.getContainer());
-        }
-        return false;
-    }
-
-    private ProducedType getValueMetaType(Tree.MemberLiteral that,
-            Declaration result, ProducedType outerType, Value value,
-            ProducedTypedReference pr) {
-        if (!isParameterised(result)) {
-            return intersectionType(unit.getValueMetatype(pr), 
-                    unit.getValueDeclarationType(value), 
-                    unit);
-        } 
-        else if (isTypeUnknown(pr.getType()) ||
-                that.getType()!=null && isTypeUnknown(outerType)) {
-            that.setWantsDeclaration(true);
-            return unit.getValueDeclarationType(value);
-        } 
-        else {
-            return unit.getValueMetatype(pr);
-        }
-    }
-
-    private ProducedType getFunctionMetaType(Tree.MemberLiteral that,
-            Declaration result, ProducedType outerType,
-            ProducedTypedReference pr) {
-        if (!isParameterised(result)) {
-            return intersectionType(unit.getFunctionMetatype(pr), 
-                    unit.getFunctionDeclarationType(), 
-                    unit);
-        }
-        else if (isTypeUnknown(pr.getFullType()) ||
-                that.getType()!=null && isTypeUnknown(outerType)) {
-            that.setWantsDeclaration(true);
-            return unit.getFunctionDeclarationType();
-        }
-        else {
-            return unit.getFunctionMetatype(pr);
-        }
-    }
-
 }
