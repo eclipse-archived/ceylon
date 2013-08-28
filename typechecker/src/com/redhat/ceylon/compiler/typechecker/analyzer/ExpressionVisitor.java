@@ -5507,47 +5507,47 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         if (that.getType() != null) {
             // FIXME: should we disallow type parameters in there?
-            ProducedType literalType = that.getType().getTypeModel();
-            if (literalType != null) {
-                TypeDeclaration declaration = literalType.getDeclaration();
+            ProducedType t = that.getType().getTypeModel();
+            if (t != null) {
+                TypeDeclaration d = t.getDeclaration();
+                that.setDeclaration(d);
                 that.setWantsDeclaration(true);
                 if (that instanceof Tree.ClassLiteral) {
-                    if (!(declaration instanceof Class)) {
+                    if (!(d instanceof Class)) {
                         that.getType().addError("not a class");
                     }
                     that.setTypeModel(unit.getClassDeclarationType());
                 }
                 else if (that instanceof Tree.InterfaceLiteral) {
-                    if (!(declaration instanceof Interface)) {
+                    if (!(d instanceof Interface)) {
                         that.getType().addError("not an interface");
                     }
                     that.setTypeModel(unit.getInterfaceDeclarationType());
                 }
                 else if (that instanceof Tree.AliasLiteral) {
-                    if (!(declaration instanceof TypeAlias)) {
+                    if (!(d instanceof TypeAlias)) {
                         that.getType().addError("not a type alias");
                     }
                     that.setTypeModel(unit.getAliasDeclarationType());
                 }
                 else if (that instanceof Tree.TypeParameterLiteral) {
-                    if (!(declaration instanceof TypeParameter)) {
+                    if (!(d instanceof TypeParameter)) {
                         that.getType().addError("not a type parameter");
                     }
                     that.setTypeModel(unit.getTypeParameterDeclarationType());
                 }
-                else if (declaration != null) {
+                else if (d != null) {
                     that.setWantsDeclaration(false);
-                    literalType = literalType.resolveAliases();
-                    that.setDeclaration(declaration);
-                    checkNonlocalType(that.getType(), declaration);
-                    if (declaration instanceof Class) {
-                        that.setTypeModel(unit.getClassMetatype(literalType));
+                    t = t.resolveAliases();
+                    checkNonlocalType(that.getType(), t.getDeclaration());
+                    if (d instanceof Class) {
+                        that.setTypeModel(unit.getClassMetatype(t));
                     }
-                    else if (declaration instanceof Interface) {
-                        that.setTypeModel(unit.getInterfaceMetatype(literalType));
+                    else if (d instanceof Interface) {
+                        that.setTypeModel(unit.getInterfaceMetatype(t));
                     }
                     else {
-                        that.setTypeModel(getTypeMetaType(literalType));
+                        that.setTypeModel(getTypeMetaType(t));
                     }
                 }
             }
@@ -5560,19 +5560,19 @@ public class ExpressionVisitor extends Visitor {
         if (that.getIdentifier() != null) {
             String name = name(that.getIdentifier());
             if (that.getType() != null) {
-                ProducedType qualifyingType = that.getType().getTypeModel();
-                if (qualifyingType != null) {
-                    qualifyingType = qualifyingType.resolveAliases();
-                    TypeDeclaration d = qualifyingType.getDeclaration();
-                    if (d instanceof UnknownType) {
+                ProducedType qt = that.getType().getTypeModel();
+                if (qt != null) {
+                    qt = qt.resolveAliases();
+                    TypeDeclaration qtd = qt.getDeclaration();
+                    if (qtd instanceof UnknownType) {
                         // let it go, we already logged an error for the missing type
                         return;
                     }
-                    checkNonlocalType(that.getType(), d);
-                    String container = "type " + d.getName(unit);
-                    TypedDeclaration member = getTypedMember(d, name, null, false, unit);
+                    checkNonlocalType(that.getType(), qtd);
+                    String container = "type " + qtd.getName(unit);
+                    TypedDeclaration member = getTypedMember(qtd, name, null, false, unit);
                     if (member==null) {
-                        if (d.isMemberAmbiguous(name, unit, null, false)) {
+                        if (qtd.isMemberAmbiguous(name, unit, null, false)) {
                             that.addError("method or attribute is ambiguous: " +
                                     name + " for " + container);
                         }
@@ -5583,7 +5583,6 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         checkQualifiedVisibility(that, member, name, container, false);
-                        that.setDeclaration(member);
                         setMemberMetatype(that, member);
                     }
                 }
@@ -5593,7 +5592,6 @@ public class ExpressionVisitor extends Visitor {
                         name, null, false, unit);
                 if (result!=null) {
                     checkBaseVisibility(that, result, name);
-                    that.setDeclaration(result);
                     setMemberMetatype(that, result);
                 }
                 else {
@@ -5606,11 +5604,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void setMemberMetatype(Tree.MemberLiteral that, TypedDeclaration result) {
-        //TODO: temporarily needed to avoid NPE in backend!!!
-        ProducedType outerType = that.getScope().getDeclaringType(result);
-        ProducedTypedReference pr = result.getProducedTypedReference(outerType, 
-                Collections.<ProducedType>emptyList());
-        
+        that.setDeclaration(result);
         if (that instanceof Tree.ValueLiteral) {
             if (!(result instanceof Value)) {
                 that.getIdentifier().addError("not a value");
@@ -5623,10 +5617,10 @@ public class ExpressionVisitor extends Visitor {
                 that.getIdentifier().addError("not a function");
             }
             that.setWantsDeclaration(true);
-            that.setTarget(pr);
             that.setTypeModel(unit.getFunctionDeclarationType());
         }
         else {
+            ProducedType outerType = that.getScope().getDeclaringType(result);
             setMetamodelType(that, result, outerType);
         }
     }
