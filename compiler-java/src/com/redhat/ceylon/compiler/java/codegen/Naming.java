@@ -49,6 +49,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.code.Type;
@@ -282,6 +283,10 @@ public class Naming implements LocalId {
                 System.err.println("Qualifying expr "+qualifyingExpr);
                 for(Scope scope : l){
                     System.err.println("Scope: "+scope);
+                }
+                if(decl instanceof UnknownType){
+                    UnknownType ut = (UnknownType) decl;
+                    ut.reportErrors();
                 }
             }
         } while (!(s instanceof Package));
