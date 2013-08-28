@@ -2421,7 +2421,13 @@ metaLiteral returns [MetaLiteral meta]
     @init { TypeLiteral tl=null; 
             MemberLiteral ml=null; 
             PackageLiteral p=null;
-            ModuleLiteral m=null; }
+            ModuleLiteral m=null; 
+            ClassLiteral c=null;
+            InterfaceLiteral i=null;
+            AliasLiteral a=null;
+            TypeParameterLiteral tp=null;
+            ValueLiteral v=null;
+            FunctionLiteral f=null; }
     : d1=BACKTICK
       { tl = new TypeLiteral($d1);
         $meta = tl; }
@@ -2442,12 +2448,73 @@ metaLiteral returns [MetaLiteral meta]
       { p.setImportPath($p2.importPath); 
         p.setEndToken(null); }
     |
+      CLASS_DEFINITION
+      { c = new ClassLiteral($d1);
+        c.setEndToken($CLASS_DEFINITION); 
+        $meta=c; }
+      ct=type
+      { c.setType($ct.type); 
+        c.setEndToken(null); }
+    |
+      INTERFACE_DEFINITION
+      { i = new InterfaceLiteral($d1);
+        i.setEndToken($INTERFACE_DEFINITION); 
+        $meta=i; }
+      it=type
+      { i.setType($it.type); 
+        i.setEndToken(null); }
+    |
+      ALIAS
+      { a = new AliasLiteral($d1);
+        a.setEndToken($ALIAS); 
+        $meta=a; }
+      at=type
+      { a.setType($at.type); 
+        a.setEndToken(null); }
+    |
+      TYPE_CONSTRAINT
+      { tp = new TypeParameterLiteral($d1);
+        tp.setEndToken($TYPE_CONSTRAINT); 
+        $meta=tp; }
+      tt=type
+      { tp.setType($tt.type); 
+        tp.setEndToken(null); }
+    |
+      VALUE_MODIFIER
+      { v = new ValueLiteral($d1);
+        v.setEndToken($VALUE_MODIFIER); 
+        $meta=v; }
+      (
+        vt=type
+        { v.setType($vt.type); 
+          v.setEndToken(null); }
+        vo=MEMBER_OP
+        { v.setEndToken($vo); }
+      )?
+      vm=memberName
+      { v.setIdentifier($vm.identifier); 
+        v.setEndToken(null); }
+    |
+      FUNCTION_MODIFIER
+      { f = new FunctionLiteral($d1);
+        f.setEndToken($FUNCTION_MODIFIER); 
+        $meta=f; }
+      (
+        ft=type
+        { f.setType($ft.type); 
+          f.setEndToken(null); }
+        fo=MEMBER_OP
+        { f.setEndToken($fo); }
+      )?
+      fm=memberName
+      { f.setIdentifier($fm.identifier); 
+        f.setEndToken(null); }
+    |
       (abbreviatedType MEMBER_OP) =>
       { ml = new MemberLiteral($d1);
         $meta = ml; }
       at=abbreviatedType
-      { ml.setType($at.type); 
-        $at.type.setMetamodel(true); }
+      { ml.setType($at.type); }
       o1=MEMBER_OP
       { ml.setEndToken($o1); }
       m1=memberName
@@ -2461,8 +2528,7 @@ metaLiteral returns [MetaLiteral meta]
       { ml = new MemberLiteral($d1);
         $meta = ml; }
       gt=groupedType
-      { ml.setType($gt.type); 
-        $gt.type.setMetamodel(true); }
+      { ml.setType($gt.type); }
       o2=MEMBER_OP
       { ml.setEndToken($o2); }
       m2=memberName
@@ -2475,8 +2541,7 @@ metaLiteral returns [MetaLiteral meta]
     | t=type
       { tl = new TypeLiteral($d1);
         $meta = tl;
-        tl.setType($t.type); 
-        $t.type.setMetamodel(true); }
+        tl.setType($t.type); }
     | m3=memberName
       { ml = new MemberLiteral($d1);
         $meta = ml;

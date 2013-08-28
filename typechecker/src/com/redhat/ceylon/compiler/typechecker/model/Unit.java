@@ -988,6 +988,10 @@ public class Unit {
         return getLanguageModuleDeclarationTypeDeclaration("AliasDeclaration").getType();
     }
     
+    public ProducedType getTypeParameterDeclarationType() {
+        return getLanguageModuleDeclarationTypeDeclaration("TypeParameter").getType();
+    }
+    
     public ProducedType getFunctionDeclarationType() {
         return getLanguageModuleDeclarationTypeDeclaration("FunctionDeclaration").getType();
     }

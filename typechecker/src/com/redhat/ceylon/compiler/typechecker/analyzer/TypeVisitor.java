@@ -667,9 +667,6 @@ public class TypeVisitor extends Visitor {
     
     @Override
     public void visit(Tree.QualifiedType that) {
-        if (that.getMetamodel()) {
-            that.getOuterType().setMetamodel(true);
-        }
         super.visit(that);
         ProducedType pt = that.getOuterType().getTypeModel();
         if (pt!=null) {
