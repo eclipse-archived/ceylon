@@ -305,16 +305,18 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <xref linkend="functions"/>, with no name, defined within an expression. 
             It comprises one or more parameter lists, followed by an expression.</para>
             
-            <synopsis>FunctionExpression: ("function" | "void")? Parameters+ ("=>" Expression | Block)</synopsis>
+            <synopsis>FunctionExpression: ("function" | "void")? Parameters+ (LazySpecifier | Block)</synopsis>
             
             <para>The parameters are the parameters of the function. The lazy 
-            specifier or block of code is the implementation of the function. if 
+            specifier or block of code is the implementation of the function. If 
             the <literal>void</literal> keyword is specified, the function is a 
-            <literal>void</literal> function. Otherwise it its return type is 
+            <literal>void</literal> function. Otherwise, it is a 
+            non-<literal>void</literal> function, and its return type is 
             inferred.</para>
             
             <para>The type of an anonymous function expression is the callable 
-            type of the function.</para>
+            type of the function, as specified in 
+            <xref linkend="callabletypeoffunction"/>.</para>
             
             <programlisting>(Value x, Value y) => x&lt;=&gt;y</programlisting>
             
@@ -1077,7 +1079,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                     <para>Otherwise, if it is a lazy specification statement with a parameter 
                     list, its type is the callable type formed from the type of the expression,
                     interpreted as a function return type, and the types of its parameter lists, 
-                    according to <xref linkend="callabletype"/>.</para>
+                    according to <xref linkend="callabletypeoffunction"/>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1113,7 +1115,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>An inline function argument is a streamlined function declaration, as
             defined in <xref linkend="functions"/>. The type of the argument is the callable 
-            type of the function, as defined by <xref linkend="callabletype"/>.</para>
+            type of the function, as defined by <xref linkend="callabletypeoffunction"/>.</para>
             
             <synopsis>FunctionArgument: FunctionHeader (Block | LazySpecifier ";")</synopsis>
             
