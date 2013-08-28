@@ -976,6 +976,20 @@ public class ExpressionTransformer extends AbstractTransformer {
         throw Assert.fail();
     }
 
+    public JCTree transform(Tree.PackageLiteral expr) {
+        at(expr);
+        
+        Package pkg = (Package) expr.getImportPath().getModel();
+        return makePackageLiteralCall(pkg);
+    }
+
+    public JCTree transform(Tree.ModuleLiteral expr) {
+        at(expr);
+
+        Module mod = (Module) expr.getImportPath().getModel();
+        return makeModuleLiteralCall(mod);
+    }
+
     public JCTree transform(Tree.MemberLiteral expr) {
         at(expr);
         
@@ -986,22 +1000,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             // toplevel method or attribute: we need to fetch them from their module/package
             Package pkg = Decl.getPackageContainer(declaration.getContainer());
 
-            // get the module
-            Module module = pkg.getModule();
-            JCExpression modulesGetIdent = naming.makeFQIdent("ceylon", "language", "model", "modules_", "$get");
-            JCExpression modulesGet = make().Apply(null, modulesGetIdent, List.<JCExpression>nil());
-            JCExpression moduleCall;
-            if(module.isDefault()){
-                moduleCall = make().Apply(null, makeSelect(modulesGet, "getDefault"), List.<JCExpression>nil());
-            }else{
-                moduleCall = make().Apply(null, makeSelect(modulesGet, "find"), 
-                                          List.<JCExpression>of(ceylonLiteral(module.getNameAsString()),
-                                                                ceylonLiteral(module.getVersion())));
-            }
-            
-            // now get the package
-            JCExpression packageCall = make().Apply(null, makeSelect(moduleCall, "findPackage"), 
-                                                    List.<JCExpression>of(ceylonLiteral(pkg.getNameAsString())));
+            // get the package
+            JCExpression packageCall = makePackageLiteralCall(pkg);
             
             // now get the toplevel
             String getter = Decl.isMethod(declaration) ? "getFunction" : "getValue";
@@ -1088,6 +1088,28 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
+    private JCExpression makePackageLiteralCall(Package pkg) {
+        // get the module
+        Module module = pkg.getModule();
+        JCExpression moduleCall = makeModuleLiteralCall(module);
+        
+        // now get the package
+        return make().Apply(null, makeSelect(moduleCall, "findPackage"), 
+                                             List.<JCExpression>of(ceylonLiteral(pkg.getNameAsString())));
+    }
+
+    private JCExpression makeModuleLiteralCall(Module module) {
+        JCExpression modulesGetIdent = naming.makeFQIdent("ceylon", "language", "model", "modules_", "$get");
+        JCExpression modulesGet = make().Apply(null, modulesGetIdent, List.<JCExpression>nil());
+        if(module.isDefault()){
+            return make().Apply(null, makeSelect(modulesGet, "getDefault"), List.<JCExpression>nil());
+        }else{
+            return make().Apply(null, makeSelect(modulesGet, "find"), 
+                                      List.<JCExpression>of(ceylonLiteral(module.getNameAsString()),
+                                                            ceylonLiteral(module.getVersion())));
+        }
+    }
+
     private JCExpression getClosedTypesSequential(java.util.List<ProducedType> typeModels) {
         ListBuffer<JCExpression> closedTypes = new ListBuffer<JCExpression>();
         for (ProducedType producedType : typeModels) {
