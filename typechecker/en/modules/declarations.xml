@@ -3,8 +3,8 @@
     
     <para>Ceylon is a statically typed language. Classes, interfaces, functions, values 
     and aliases must be declared before use. The declaration of a function or value must 
-    include an explicit type, or allow the type to be inferred. This allows the compiler 
-    to detect many errors, including:</para>
+    include an explicit type, or allow the type to be inferred. Static typing allows the 
+    compiler to detect many errors, including:</para>
     
     <itemizedlist>
         <listitem><para>typing errors in identifier names,</para></listitem>
@@ -15,6 +15,7 @@
         <listitem><para>argument lists which do not match parameter lists,</para></listitem>
         <listitem><para>type argument lists which do not match type parameter 
         lists,</para></listitem>
+        <listitem><para>operands to which an operator cannot apply,</para></listitem>
         <listitem><para>incompatible assignment of an expression of one type to a
         program element of a different type,</para></listitem>
         <listitem><para>evaluation of a value before it has been explicitly specified 
