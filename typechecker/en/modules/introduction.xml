@@ -255,7 +255,7 @@
             <para>
             Ceylon features an especially elegant approach to generic type argument 
             inference, making it possible to instantiate container types, even 
-            inhomogoneous container types, without the need to explicitly mention any 
+            inhomogeneous container types, without the need to explicitly mention any 
             types at all.  
             </para>
             
