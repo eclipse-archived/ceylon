@@ -1,7 +1,8 @@
 import ceylon.language.model{Annotated}
 
 shared interface TopLevelOrMemberDeclaration of FunctionOrValueDeclaration |
-                                                ClassOrInterfaceDeclaration
+                                                ClassOrInterfaceDeclaration |
+                                                AliasDeclaration
         satisfies AnnotatedDeclaration & TypedDeclaration {
     
     // FIXME: that name sucks
