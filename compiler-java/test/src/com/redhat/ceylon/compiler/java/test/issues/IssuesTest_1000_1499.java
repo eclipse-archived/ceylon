@@ -390,6 +390,12 @@ public class IssuesTest_1000_1499 extends CompilerTest {
         compareWithJavaSource("bug12xx/Bug1239");
     }
 
+    @Ignore("https://github.com/ceylon/ceylon-compiler/issues/1240")
+    @Test
+    public void testBug1240() {
+        compareWithJavaSource("bug12xx/Bug1240");
+    }
+
     @Test
     public void testBug1242() {
         compareWithJavaSource("bug12xx/Bug1242");
