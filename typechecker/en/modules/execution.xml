@@ -1215,7 +1215,7 @@ String result = middleObject.string;</programlisting>
             <para>The expression which produces the source stream for a child 
             <literal>for</literal> clause may refer to an iteration variable of a
             parent <literal>for</literal> clause. In this case the child clause is 
-            considered <emphasis>correlated</emphasis>. Otherwise it is considered a 
+            considered <emphasis>correlated</emphasis>. Otherwise it is considered 
             <emphasis>uncorrelated</emphasis>.</para>
             
             <para>In either case, the child clause produces a stream of frames. 
