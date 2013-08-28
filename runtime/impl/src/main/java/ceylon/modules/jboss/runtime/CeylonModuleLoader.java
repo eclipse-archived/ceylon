@@ -19,6 +19,7 @@ package ceylon.modules.jboss.runtime;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -130,9 +131,13 @@ public class CeylonModuleLoader extends ModuleLoader {
     }
 
     protected void init() throws Exception {
-        org.jboss.modules.Module languageModule = org.jboss.modules.Module.getBootModuleLoader().loadModule(LANGUAGE);
-        ArtifactResult languageModuleArtifactResult = findArtifact(LANGUAGE);
-        UtilRegistryTransformer.registerModule(LANGUAGE.getName(), LANGUAGE.getSlot(), languageModuleArtifactResult, SecurityActions.getClassLoader(languageModule));
+        // The runtime model needs knowledge of these modules existing at runtime, since the language module
+        // implementation contains types from these modules
+        for(ModuleIdentifier initialModule : Arrays.asList(LANGUAGE, COMMON, TYPECHECKER, COMPILER, CMR)){
+            org.jboss.modules.Module module = org.jboss.modules.Module.getBootModuleLoader().loadModule(initialModule);
+            ArtifactResult moduleArtifactResult = findArtifact(initialModule);
+            UtilRegistryTransformer.registerModule(initialModule.getName(), initialModule.getSlot(), moduleArtifactResult, SecurityActions.getClassLoader(module));
+        }
     }
 
     /**
