@@ -58,6 +58,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.Specification;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -5491,13 +5492,17 @@ public class ExpressionVisitor extends Visitor {
             // FIXME: should we disallow type parameters in there?
             ProducedType literalType = that.getType().getTypeModel();
             if (literalType != null) {
+                boolean isAlias = literalType.getDeclaration() instanceof TypeAlias;
                 literalType = literalType.resolveAliases();
                 TypeDeclaration declaration = literalType.getDeclaration();
                 if (declaration != null) {
                     that.setDeclaration(declaration);
                     checkNonlocalType(that.getType(), declaration);
                     ProducedType metatype;
-                    if (declaration instanceof Class) {
+                    if (isAlias) {
+                        metatype = getAliasMetaType(that, literalType, declaration);
+                    }
+                    else if (declaration instanceof Class) {
                         metatype = getClassMetaType(that, literalType, declaration);
                     }
                     else if (declaration instanceof Interface) {
@@ -5651,6 +5656,21 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             return unit.getInterfaceMetatype(literalType);
+        }
+    }
+
+    private ProducedType getAliasMetaType(Tree.TypeLiteral that,
+            ProducedType literalType, TypeDeclaration declaration) {
+        if (!isParameterised(declaration)) {
+            return intersectionType(getTypeMetaType(that, literalType, declaration),
+                    unit.getAliasDeclarationType(), unit);
+        }
+        else if (isTypeUnknown(literalType)) {
+            that.setWantsDeclaration(true);
+            return unit.getAliasDeclarationType();
+        }
+        else {
+            return getTypeMetaType(that, literalType, declaration);
         }
     }
 

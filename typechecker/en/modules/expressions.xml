@@ -2938,12 +2938,17 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                     <literal>FunctionDeclaration</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>for a class, the type is 
+                    <para>for a type alias declared using the keyword
+                    <literal>alias</literal>, the type is 
+                    <literal>AliasDeclaration</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>for a class or class alias, the type is 
                     <literal>ClassDeclaration</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para>for an interface, the type is 
-                    <literal>InterfaceDeclaration</literal>.</para>
+                    <para>for an interface or interface alias, the type 
+                    is <literal>InterfaceDeclaration</literal>.</para>
                 </listitem>
             </itemizedlist>
             

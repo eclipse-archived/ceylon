@@ -984,6 +984,10 @@ public class Unit {
         return getLanguageModuleDeclarationTypeDeclaration("InterfaceDeclaration").getType();
     }
     
+    public ProducedType getAliasDeclarationType() {
+        return getLanguageModuleDeclarationTypeDeclaration("AliasDeclaration").getType();
+    }
+    
     public ProducedType getFunctionDeclarationType() {
         return getLanguageModuleDeclarationTypeDeclaration("FunctionDeclaration").getType();
     }
