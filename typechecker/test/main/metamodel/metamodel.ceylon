@@ -265,3 +265,12 @@ void meta() {
     value cd8 = `Foo<Object>.Bar<List>`;
 }
 
+void testPackagesModules() {
+    @type:"Module" value m0 = `module ceylon.language`;
+    @type:"Package" value p0 = `package ceylon.language.model`;
+    @type:"Package" value p1 = `package metamodel`;
+    @error value m1 = `module ceylon.language.model`;
+    @error value m2 = `module foo.bar`;
+    @error value p2 = `package foo.bar.baz`;
+}
+
