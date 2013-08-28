@@ -5620,12 +5620,15 @@ public class ExpressionVisitor extends Visitor {
             that.setTypeModel(unit.getFunctionDeclarationType());
         }
         else {
-            ProducedType outerType = that.getScope().getDeclaringType(result);
-            setMetamodelType(that, result, outerType);
+            setMetamodelType(that, result);
         }
     }
 
-    private void setMetamodelType(Tree.MemberLiteral that, Declaration result, ProducedType outerType) {
+    private void setMetamodelType(Tree.MemberLiteral that, Declaration result) {
+        ProducedType outerType = !result.isClassOrInterfaceMember() ? null : 
+            that.getType()==null ? 
+                that.getScope().getDeclaringType(result) : 
+                that.getType().getTypeModel();
         if (result instanceof Method) {
             Method method = (Method) result;
             Tree.TypeArgumentList tal = that.getTypeArgumentList();
