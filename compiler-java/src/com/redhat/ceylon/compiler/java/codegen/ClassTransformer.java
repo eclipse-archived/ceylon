@@ -787,15 +787,9 @@ public class ClassTransformer extends AbstractTransformer {
             ProducedTypedReference typedRef = getTypedReference(attr);
             ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
             ProducedType paramType = nonWideningType(typedRef, nonWideningTypedRef);
-            if(paramType.isUnknown()){
-                System.err.println("Unknown parameter "+parameter.getName()+" for class "+decl.getContainer());
-            }
             type = makeJavaType(nonWideningTypedRef.getDeclaration(), paramType, 0);
         } else {
             ProducedType paramType = decl.getType();
-            if(paramType.isUnknown()){
-                System.err.println("Unknown parameter "+parameter.getName()+" for class "+decl.getContainer());
-            }
             type = makeJavaType(decl, paramType, 0);
         }
         return type;
