@@ -89,7 +89,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "Determines if this iterable object has more elements
      than the given length. This is an efficient operation 
      for iterable objects with many elements."
-    see (`value Iterable.size`)
+    see (`value size`)
     shared default Boolean longerThan(Integer length) {
         if (length<0) {
             return true;
@@ -106,7 +106,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "Determines if this iterable object has fewer elements
      than the given length. This is an efficient operation 
      for iterable objects with many elements."
-    see (`value Iterable.size`)
+    see (`value size`)
     shared default Boolean shorterThan(Integer length) {
         if (length<=0) {
             return false;
@@ -153,7 +153,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "An `Iterable` containing the results of applying
      the given mapping to the elements of to this 
      container."
-    see (`function Iterable.collect`)
+    see (`function collect`)
     shared default Iterable<Result,Absent> map<Result>(
             "The mapping to apply to the elements."
             Result collecting(Element elem)) =>
@@ -167,7 +167,7 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "An `Iterable` containing the elements of this 
      container that satisfy the given predicate."
-    see (`function Iterable.select`)
+    see (`function select`)
     shared default {Element*} filter(
             "The predicate the elements must satisfy."
             Boolean selecting(Element elem)) =>
@@ -233,7 +233,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "A sequence containing the results of applying the
      given mapping to the elements of this container. An 
      eager counterpart to `map()`."
-    see (`function Iterable.map`)
+    see (`function map`)
     shared default Result[] collect<Result>(
             "The transformation applied to the elements."
             Result collecting(Element element)) =>
@@ -242,7 +242,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "A sequence containing the elements of this 
      container that satisfy the given predicate. An 
      eager counterpart to `filter()`."
-    see (`function Iterable.filter`)
+    see (`function filter`)
     shared default Element[] select(
             "The predicate the elements must satisfy."
             Boolean selecting(Element element)) =>
@@ -561,7 +561,7 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "A non-finite iterable object that produces the elements 
      of this iterable object, repeatedly."
-    see (`function Iterable.cycle`)
+    see (`function cycle`)
     shared default Iterable<Element,Absent> cycled {
         object iterable satisfies Iterable<Element,Absent> {
             value orig => outer;
@@ -588,7 +588,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "A finite iterable object that produces the elements of 
      this iterable object, repeatedly, the given number of
      times."
-    see (`value Iterable.cycled`, `function Iterable.repeat`)
+    see (`value cycled`, `function repeat`)
     shared default Iterable<Element,Absent> cycle(Integer times) {
         object iterable satisfies Iterable<Element,Absent> {
             value orig => outer;
@@ -622,7 +622,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "Returns a list formed by repeating the elements of this
      iterable object the given number of times, or an empty 
      list if `times<=0`. An eager counterpart to `cycle()`."
-    see (`function Iterable.cycle`)
+    see (`function cycle`)
     shared default List<Element> repeat(Integer times) {
         value sb = SequenceBuilder<Element>();
         variable value count=0;

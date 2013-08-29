@@ -2,7 +2,7 @@
  constructing a new sequence by incrementally appending 
  elements to the empty sequence. This class is mutable
  but threadsafe."
-see (`interface SequenceAppender`, 
+see (`class SequenceAppender`, 
      `function join`, 
      `class Singleton`)
 shared native class SequenceBuilder<Element>() {
