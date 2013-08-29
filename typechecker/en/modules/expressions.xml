@@ -348,7 +348,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         member expressions and invocation expressions from an atom, base 
         expression, or static expression.</para>
         
-        <synopsis>Primary: Atom | BaseExpression | MemberExpression | StaticExpression | Invocation | Meta</synopsis>
+        <synopsis>Primary: Atom | BaseExpression | MemberExpression | StaticExpression | Invocation | Meta | Dec</synopsis>
         
         <para>More complex expressions are formed by combining expressions using 
         operators, including assignment operators, and anonymous functions.</para>    
@@ -2746,27 +2746,29 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Metamodel expressions</title>
         
         <para>A <emphasis>metamodel expression</emphasis> is a reference to
-        a program element and evaluates to a metamodel of program element.</para>
+        a type, a class, a function, or a value. It evaluates to a metamodel 
+        object whose static type captures the type itself, the callable type 
+        of the class, the callable type of the function, or the type of the 
+        value, respectively.</para>
         
-        <programlisting>Class&lt;Person,[Name]&gt; personClass = `Person`;</programlisting>
-        <programlisting>Interface&lt;List&lt;String&gt;&gt; stringListInterface = `List&lt;String&gt;`;</programlisting>
-        <programlisting>Attribute&lt;Person,String&gt; personNameAttribute = `Person.name`;</programlisting>
-        <programlisting>Method&lt;Person,Anything,[String]&gt; personSayMethod = `Person.say`;</programlisting>
-        
-        <para>A metamodel expression may refer to a type, a function or value,
-        or a package or module.</para>
-        
-        <synopsis>Meta: MetaType | MetaBase | MetaMember | MetaPackage | MetaModule</synopsis>
+        <synopsis>Meta: TypeMeta | BaseMeta | MemberMeta</synopsis>
         
         <para>A <emphasis>type metamodel expression</emphasis> is a type, as
         defined by <xref linkend="type"/>, surrounded by backticks.</para>
         
-        <synopsis>MetaType: "`" Type "`"</synopsis>
+        <synopsis>TypeMeta: "`" Type "`"</synopsis>
+        
+        <para>The type may or may not be a reference to a class or interface.</para>
+        
+        <programlisting>Class&lt;Person,[Name]&gt; personClass = `Person`;</programlisting>
+        <programlisting>Interface&lt;List&lt;String&gt;&gt; stringListInterface = `List&lt;String&gt;`;</programlisting>
+        <programlisting>UnionType&lt;Integer|Float&gt; numberType = `Number`;</programlisting>
+        <programlisting>Type&lt;Element&gt; elementType = `Element`;</programlisting>        
         
         <para>A <emphasis>base metamodel expression</emphasis> is a member name, 
         with an optional list of type arguments, surrounded by backticks.</para>
         
-        <synopsis>MetaBase: "`" MemberName TypeArguments? "`"</synopsis>
+        <synopsis>BaseMeta: "`" MemberName TypeArguments? "`"</synopsis>
         
         <para>A base metamodel expression is a reference to a value or function. 
         The referenced declaration is determined according to
@@ -2776,77 +2778,30 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         defined by <xref linkend="type"/>, followed by a member name, with an 
         optional list of type arguments, surrounded by backticks.</para>
         
-        <synopsis>MetaMember: "`" (QualifiedType|GroupedType) "." MemberName TypeArguments? "`"</synopsis>
+        <synopsis>MemberMeta: "`" (QualifiedType|GroupedType) "." MemberName TypeArguments? "`"</synopsis>
         
         <para>A member metamodel expression is a reference to an attribute or 
         method of the type. The member is resolved as a member of the type 
         according to <xref linkend="qualifiedreferenceresolution"/>.</para>
         
-        <para>A <emphasis>package metamodel expression</emphasis> is a package
-        name, as defined by <xref linkend="packages"/>, with the keyword
-        <literal>package</literal>, surrounded by backticks.</para>
+        <programlisting>Function&lt;Float,[{Float+}]&gt; sumFunction = `sum&lt;Float&gt;`;</programlisting>
+        <programlisting>Attribute&lt;Person,String&gt; personNameAttribute = `Person.name`;</programlisting>
+        <programlisting>Method&lt;Person,Anything,[String]&gt; personSayMethod = `Person.say`;</programlisting>
         
-        <synopsis>MetaPackage: "`" "package" FullPackageName "`"</synopsis>
+        <para>Type argument inference is impossible in a metamodel expression,
+        so type arguments must be explicitly provided for every generic 
+        declaration.</para>
         
-        <para>The package name must refer to a package from which an 
-        <literal>import</literal> statement in the same compilation unit may 
-        import declarations, as defined by <xref linkend="imports"/>.</para>
-        
-        <para>A <emphasis>module metamodel expression</emphasis> is a module
-        name, as defined by <xref linkend="modulenamesandversionidentifiers"/>, 
-        with the keyword <literal>module</literal>, surrounded by backticks.</para>
-        
-        <synopsis>MetaPackage: "`" "module" FullPackageName "`"</synopsis>
-        
-        <para>The module name must refer to the module to which the 
-        compilation unit belongs, as specified by <xref linkend="sourcelayout"/>, 
-        or to a module imported by the module to which the compilation unit 
-        belongs, as defined by <xref linkend="moduledescriptors"/>.</para>
-        
-        <section id="typedanduntypedmetamodelexpressions">
-            <title>Typed and untyped metamodel expressions</title>
-            
-            <para>Metamodel expressions may or may not include type arguments to 
-            generic types or generic functions. However:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>if a parameterized type occurs inside a union or intersection, 
-                    type arguments must be supplied,</para>
-                </listitem>
-                <listitem>
-                    <para>if a parameterized type occurs inside a type argument list, 
-                    type arguments must be supplied,</para>
-                </listitem>
-                <listitem>
-                    <para>if a parameterized type qualifies a type with type arguments, 
-                    type arguments must be supplied, or</para>
-                </listitem>
-                <listitem>
-                    <para>if a parameterized type qualifies a function reference with 
-                    type arguments, type arguments must be supplied.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <para>If a generic type or generic function with no type arguments occurs 
-            in a metamodel expression, the metamodel expression is called an
-            <emphasis>uptyped metamodel expression</emphasis>. Otherwise, the metamodel
-            expression is called a <emphasis>typed metamodel expression</emphasis>.</para>
-            
-            <para>Package and module metamodel expressions are considered untyped.</para>
-        
-        </section>
-        
-        <section id="typedmetamodelexpressions">
-            <title>Typed metamodel expressions</title>
+        <section id="typeofametamodelexpression">
+            <title>Type of a metamodel expression</title>
             
             <para>The type of a metamodel expression depends upon the kind of 
-            declaration referenced. For a typed metamodel expression:</para>
+            declaration referenced:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>for a toplevel value of type <literal>R</literal>, the 
-                    type is <literal>Value&lt;R&gt;</literal>,</para>
+                    <para>for a toplevel value of type <literal>R</literal>, 
+                    the type is <literal>Value&lt;R&gt;</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>for a toplevel function of callable type 
@@ -2916,11 +2871,104 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
         </section>
         
-        <section id="untypedmetamodelexpressions">
-            <title>Untyped metamodel expressions</title>
+    </section>
+    
+    <section id="referenceexpressions">
+        <title>Reference expressions</title>
+        
+        <para>A <emphasis>reference expression</emphasis> is a reference to
+        a program element and evaluates to a detyped metamodel of the program 
+        element. Reference expressions are used primarily in annotations, 
+        especially the documentation annotations listed in 
+        <xref linkend="documentation"/>. A reference expression may refer to:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>a class, interface, type alias, or type parameter,</para>
+            </listitem>
+            <listitem>
+                <para>a function or value, or</para>
+            </listitem>
+            <listitem>
+                <para>a package or module.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <synopsis>Dec: TypeDec | MemberDec | PackageDec | ModuleDec</synopsis>
+        
+        <section id="declarationreferences">
+            <title>Declaration references</title>
             
-            <para>The type of a metamodel expression depends upon the kind of 
-            declaration referenced. For an untyped metamodel expression:</para>
+            <para>A <emphasis>class reference expression</emphasis>, 
+            <emphasis>interface reference expression</emphasis>,
+            <emphasis>alias reference expression</emphasis>, or
+            <emphasis>type parameter reference expression</emphasis> is a
+            series of initial uppercase identifiers, with the keyword 
+            <literal>class</literal>, <literal>interface</literal>, 
+            <literal>alias</literal>, or <literal>given</literal>, respectively, 
+            surrounded by backticks.</para>
+            
+            <synopsis>TypeDec: "`" ("class" | "interface" | "alias" | "given") (TypeName ".")* TypeName "`"</synopsis>
+            
+            <para>A <emphasis>value reference expression</emphasis> or
+            <emphasis>function reference expression</emphasis> is an initial
+            lowercase identifier, qualified by a list of initial uppercase 
+            identifiers, with the keyword <literal>value</literal> or
+            <literal>function</literal>, surrounded by backticks.</para>
+            
+            <synopsis>MemberDec: "`" ("value" | "function") (TypeName ".")* MemberName "`"</synopsis>
+            
+            <para>A reference expression is a reference to a declaration. 
+            The referenced declaration is determined according to
+            <xref linkend="unqualifiedreferenceresolution"/> and
+            <xref linkend="qualifiedreferenceresolution"/>. The kind of the
+            referenced declaration must match the kind of reference indicated
+            by the keyword.</para>
+        
+            <programlisting>ClassDeclaration personClass = `class Person`;</programlisting>
+            <programlisting>InterfaceDeclaration stringListInterface = `interface List`;</programlisting>
+            <programlisting>AliasDeclaration numberAlias = `alias Number`;</programlisting>
+            <programlisting>TypeParameter elementTypeParameter = `given Element`;</programlisting>
+            <programlisting>ValueDeclaration personNameAttribute = `value Person.name`;</programlisting>
+            <programlisting>FunctionDeclaration personSayMethod = `function Person.say`;</programlisting>
+            
+        </section>
+        
+        <section id="packageandmodulereferences">
+            <title>Package and module references</title>
+            
+            <para>A <emphasis>package reference expression</emphasis> is a package
+            name, as defined by <xref linkend="packages"/>, with the keyword
+            <literal>package</literal>, surrounded by backticks.</para>
+            
+            <synopsis>PackageDec: "`" "package" FullPackageName "`"</synopsis>
+            
+            <para>The package name must refer to a package from which an 
+            <literal>import</literal> statement in the same compilation unit may 
+            import declarations, as defined by <xref linkend="imports"/>.</para>
+            
+            <programlisting>Package modelPackage = `package ceylon.language.model`;</programlisting>
+            
+            <para>A <emphasis>module reference expression</emphasis> is a module
+            name, as defined by <xref linkend="modulenamesandversionidentifiers"/>, 
+            with the keyword <literal>module</literal>, surrounded by backticks.</para>
+            
+            <synopsis>ModuleDec: "`" "module" FullPackageName "`"</synopsis>
+            
+            <para>The module name must refer to the module to which the 
+            compilation unit belongs, as specified by <xref linkend="sourcelayout"/>, 
+            or to a module imported by the module to which the compilation unit 
+            belongs, as defined by <xref linkend="moduledescriptors"/>.</para>
+            
+            <programlisting>Module languageModule = `module ceylon.language`;</programlisting>
+        
+        </section>
+        
+        <section id="typeofareferenceexpression">
+            <title>Type of a reference expression</title>
+            
+            <para>The type of a reference expression depends upon the kind of 
+            program element referenced:</para>
             
             <itemizedlist>
                 <listitem>
@@ -2938,6 +2986,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 <listitem>
                     <para>for a function, the type is 
                     <literal>FunctionDeclaration</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>for a type parameter, the type is 
+                    <literal>TypeParameter</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>for a type alias declared using the keyword
@@ -2958,4 +3010,4 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
     </section>
     
-</chapter>
+ </chapter>

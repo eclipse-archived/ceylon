@@ -29,9 +29,9 @@
         <programlisting>"The user login action"
 by ("Gavin King",
     "Andrew Haley")
-throws (`DatabaseException`,
+throws (`class DatabaseException`,
         "if database access fails")
-see (`LogoutAction.logout`)
+see (`function LogoutAction.logout`)
 scope (session) 
 action { description="Log In"; url="/login"; }
 shared deprecated</programlisting>
@@ -259,18 +259,18 @@ shared deprecated</programlisting>
                     <literal>OptionalAnnotation&lt;A,P&gt;</literal>,
                     or <literal>SequencedAnnotation&lt;A,P&gt;</literal> then an annotation 
                     of annotation type <literal>A</literal> may not occur at a program 
-                    element whose untyped metamodel expression type, as defined in
-                    <xref linkend="untypedmetamodelexpressions"/>, is not assignable to 
+                    element whose reference expression type, as defined in
+                    <xref linkend="typeofareferenceexpression"/>, is not assignable to 
                     <literal>P</literal>.</para>
                 </listitem>
             </itemizedlist>
             
             <programlisting><![CDATA[shared annotation class Scope()
         of request | session | application
-        satisfies OptionalAnnotation<Scope,Type<Object>> {}]]></programlisting>
+        satisfies OptionalAnnotation<Scope,ClassOrInterfaceDeclaration> {}]]></programlisting>
             
             <programlisting><![CDATA[shared annotation class Todo(String text)
-        satisfies SequencedAnnotation<Todo,Annotated> {
+        satisfies SequencedAnnotation<Todo> {
     string => text;
 }]]></programlisting>
             
@@ -291,8 +291,8 @@ shared deprecated</programlisting>
         <literal>annotations()</literal> defined in the package
         <literal>ceylon.language.model</literal>.</para>
         
-        <programlisting>Scope scope = annotations(`Scope`, `Person`) ? request;</programlisting>
-        <programlisting>Todo[] todos = annotations(`Todo`, `method`);</programlisting>
+        <programlisting>Scope scope = annotations(`Scope`, `class Person`) else request;</programlisting>
+        <programlisting>Todo[] todos = annotations(`Todo`, `function method`);</programlisting>
         
     </section>
     
