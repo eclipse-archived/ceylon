@@ -1,0 +1,45 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
+
+final class bug1263_ {
+    
+    private bug1263_() {
+    }
+    
+    static void bug1263() {
+        
+        final class Node$impl {
+            
+            private final Node $init$foo() {
+                return null;
+            }
+        }
+        
+        class Node implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            Node() {
+                (
+                    let
+                    {
+                        Node$impl $ceylontmp$impl$0 = new Node$impl();
+                        Node $ceylontmp$foo$1 = $ceylontmp$impl$0.$init$foo();
+                        this($ceylontmp$foo$1);
+                    }
+                    returning null;
+                );
+            }
+            
+            Node(final Node foo) {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Node.class);
+            }
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1263_.bug1263();
+    }
+}

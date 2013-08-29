@@ -1,0 +1,106 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
+
+final class bug1165_ {
+    
+    private bug1165_() {
+    }
+    
+    static void bug1165() {
+        
+        class B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            B(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> data) {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(B.class);
+            }
+        }
+        
+        class P implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            P(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> params) {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(P.class);
+            }
+        }
+        
+        class Body implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            Body(final P p) {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Body.class);
+            }
+        }
+        
+        class Html implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            Html(final Head head, final Body body) {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Html.class);
+            }
+        }
+        
+        class Head implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            Head(final .java.lang.String title) {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Head.class);
+            }
+        }
+        final Html html = (
+            let
+            {
+                Head $arg$0$0 = (
+                    let
+                    {
+                        .java.lang.String $arg$1$0 = "Hello";
+                    }
+                    returning new Head($arg$1$0);
+                );
+                Body $arg$0$1 = (
+                    let
+                    {
+                        P $arg$2$0 = (
+                            let
+                            {
+                                .ceylon.language.Iterable $arg$3$0 = .ceylon.language.ArraySequence.<.java.lang.Object>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(B.class)), new .java.lang.Object[]{
+                                        .ceylon.language.String.instance("Hello "),
+                                        (
+                                            let
+                                            {
+                                                .ceylon.language.Iterable $arg$4$0 = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("JUDCon")});
+                                            }
+                                            returning new B($arg$4$0);
+                                        ),
+                                        .ceylon.language.String.instance(" guys")});
+                            }
+                            returning new P($arg$3$0);
+                        );
+                    }
+                    returning new Body($arg$2$0);
+                );
+            }
+            returning new Html($arg$0$0, $arg$0$1);
+        );
+        .ceylon.language.print_.print(html);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1165_.bug1165();
+    }
+}
