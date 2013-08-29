@@ -192,3 +192,10 @@ class MrX() extends P() {
     shared actual void x() {}
 }
 @error class MrY() extends P() {}
+
+void testMaybeNum() {
+    MaybeNum? val = null;
+    MaybeNum foo = val;
+}
+
+alias MaybeNum => Integer|Float|Null;
