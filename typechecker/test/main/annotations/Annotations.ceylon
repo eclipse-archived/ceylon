@@ -34,6 +34,8 @@ final annotation class TypeDescription(String desc)
 final annotation class SequencedDescription(String desc) 
     satisfies SequencedAnnotation<SequencedDescription,Annotated> {}
 
+class TrimmedString() {}
+    
 class Annotations() {
     
     void print("the thing to print" String text) {}
@@ -45,10 +47,8 @@ class Annotations() {
         "Emmanuel Bernard")
     class LocalClass() {}
     
-    seethese (`ToplevelClass`, `Annotations`)
+    seethese (`class ToplevelClass`, `class Annotations`)
     void accept(LocalClass c) {}
-    
-    class TrimmedString() {}
     
     table { name = "people"; 
             schema = "my"; }
@@ -56,7 +56,7 @@ class Annotations() {
         
         persistent { column = "fullName";
                      update = true;
-                     type = `TrimmedString`; }
+                     type = `class TrimmedString`; }
         shared String name = "Gavin King";
         
     }
@@ -84,7 +84,7 @@ an fun String? emptyOptionalStringFun() => null;
 att String? emptyOptionalStringAtt => null;
 an fun String? emptyStringFunWithParam(String s) => s;
 
-An? fan = annotations(`An`, `emptyStringFun1`);
-An? van = annotations(`An`, `emptyStringAtt2`);
-Fun? ffun = annotations(`Fun`, `emptyStringFun1`);
-Att? vatt = annotations(`Att`, `emptyStringAtt2`);
+An? fan = annotations(`An`, `function emptyStringFun1`);
+An? van = annotations(`An`, `value emptyStringAtt2`);
+Fun? ffun = annotations(`Fun`, `function emptyStringFun1`);
+Att? vatt = annotations(`Att`, `value emptyStringAtt2`);
