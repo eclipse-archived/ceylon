@@ -30,6 +30,8 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.FileUtil;
@@ -43,8 +45,18 @@ public class DocToolToolTest {
 
     protected final ToolFactory pluginFactory = new ToolFactory();
     protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
-    private File dir = FileUtil.makeTempDir("DocToolToolTest");
+    private File dir;
     
+    @Before
+    public void setup(){
+        dir = FileUtil.makeTempDir("DocToolToolTest");
+    }
+
+    @After
+    public void cleanup(){
+        FileUtil.delete(dir);
+    }
+
     private void runDocTool(String toolName, String... otherArgs) throws IOException {
         ToolModel<CeylonDocToolTool> model = pluginLoader.loadToolModel("doc-tool");
         Assert.assertTrue(model.isPorcelain());
