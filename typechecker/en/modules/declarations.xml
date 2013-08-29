@@ -1538,11 +1538,10 @@ String escapedSearchString = sql.escape(searchString);</programlisting>
             <para>A class declaration may enumerate a list of cases of the class.</para>
             
             <programlisting>shared abstract class Boolean() 
-        of true | false 
-        extends Case() {}
+        of true | false {}
         
-shared object true extends Boolean() {}
-shared object false extends Boolean() {}</programlisting>
+shared object true extends Boolean() { string => "true"; }
+shared object false extends Boolean() { string => "false"; }</programlisting>
             
             <programlisting><![CDATA[shared abstract class Node<Element>(String name) 
         of Branch<Element> | Leaf<Element> { ... }
@@ -1567,7 +1566,9 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             
             <comment><para>Note: in a future release of the language, we will introduce 
             an abbreviated syntax like:</para>
-            <programlisting>shared abstract class Boolean() of object true | object false {}</programlisting>
+            <programlisting>shared abstract class Boolean(shared actual String string) 
+        of object true ("true") | 
+           object false ("false") {}</programlisting>
             </comment>
             
         </section>
