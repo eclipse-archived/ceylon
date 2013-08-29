@@ -274,14 +274,27 @@
         <section id="metaprogramming">
             <title>Metaprogramming</title>
             
-            <para>
+            <para>In other statically typed languages, runtime metaprogramming, 
+            or <emphasis>reflection</emphasis>, is a messy business involving
+            untypesafe strings and typecasting. Even worse, in Java, generic
+            type arguments are erased at runtime, and unavailable via reflection. 
+            Ceylon, uniquely, features a <emphasis>typesafe metamodel</emphasis> 
+            and typed <emphasis>metamodel expressions</emphasis>. Since generic 
+            type arguments are reified at runtime, the metamodel fully captures 
+            generic types at both compile time and execution time.</para>
+            
+            <para>Ceylon's support for program element <emphasis>annotations</emphasis>
+            is based around this metamodel. Annotations are more flexible than
+            in Java or C#, and have a much cleaner syntax.</para>
+            
+            <!--para>
             Ceylon provides sophisticated support for meta-programming, including program
             element <emphasis>annotations</emphasis>, a typesafe <emphasis>metamodel</emphasis>, 
             and <emphasis>events</emphasis>. Generic code may invoke members reflectively 
             and intercept member invocations. This facility is more powerful, and much more 
             typesafe, than reflection in Java.
-            </para>
-        
+            </para-->
+            
         </section>
         
     </section>
@@ -657,7 +670,7 @@ Float y = origin[1];
 Null z = origin[2]; //only two elements!</programlisting>
             
         </section>
-    
+        
     </section>
     
 </chapter>
