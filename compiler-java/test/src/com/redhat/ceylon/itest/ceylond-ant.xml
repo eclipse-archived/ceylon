@@ -7,47 +7,45 @@
     </target>
   
   <target name="ant-tasks" depends="-init">
-    <taskdef name="ceylonc" classname="com.redhat.ceylon.ant.Ceylonc" />
-    <taskdef name="ceylond" classname="com.redhat.ceylon.ant.Ceylond" />
-    <taskdef name="ceylon" classname="com.redhat.ceylon.ant.Ceylon" />
+    <typedef resource="com/redhat/ceylon/ant/antlib.xml"/>
   </target>
       
   <target name="foo-alone" depends="ant-tasks">
-    <ceylond
+    <ceylon-doc
       executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}">
         <module name="com.example.foo"/>
-    </ceylond>
+    </ceylon-doc>
   </target>
 
   <target name="foo-file" depends="ant-tasks,foo-alone">
     <echo message="Hello, world"/>
-    <ceylond
+    <ceylon-doc
       executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}">
         <include name="com/example/foo/a/foo.ceylon"/>
-    </ceylond>
+    </ceylon-doc>
   </target>
 
   <target name="bar-alone" depends="ant-tasks">
-    <ceylond
+    <ceylon-doc
       executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}">
        <module name="com.example.bar"/>
-    </ceylond>
+    </ceylon-doc>
   </target>
 
   <target name="foo-and-bar" depends="ant-tasks">
-    <ceylond
+    <ceylon-doc
       executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}">
        <module name="com.example.foo"/>
        <module name="com.example.bar"/>
-    </ceylond>
+    </ceylon-doc>
   </target>
 
 </project>
