@@ -23,10 +23,10 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class CeylonAntTest extends AntBasedTest {
+public class CeylonRunAntTest extends AntBasedTest {
 
-    public CeylonAntTest() throws Exception {
-        super("test/src/com/redhat/ceylon/itest/ceylon-ant.xml");
+    public CeylonRunAntTest() throws Exception {
+        super("test/src/com/redhat/ceylon/itest/ceylon-run-ant.xml");
     }
     
     @Test

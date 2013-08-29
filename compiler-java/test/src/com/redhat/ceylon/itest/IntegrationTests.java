@@ -31,9 +31,9 @@ import org.junit.runners.Suite.SuiteClasses;
     CeylonDocScriptTest.class,
     CeylonRunScriptTest.class,
     // Tests of the ant tasks
-    CeyloncAntTest.class,
-    CeylondAntTest.class,
-    CeylonAntTest.class,
+    CeylonCompileAntTest.class,
+    CeylonDocAntTest.class,
+    CeylonRunAntTest.class,
     // Tests of the old-style scripts
     //CeyloncScriptTest.class,
     //CeylondScriptTest.class,

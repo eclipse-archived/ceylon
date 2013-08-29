@@ -1,4 +1,4 @@
-<project name="ceylond Ant Task test" >
+<project name="ceylon-doc Ant Task test" >
   <target name="-init">
       <echo message="ant.home: ${ant.home}"/>
       <echo message="ant.file: ${ant.file}"/>

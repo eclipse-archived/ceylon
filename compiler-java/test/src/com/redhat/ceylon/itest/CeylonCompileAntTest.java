@@ -25,10 +25,10 @@ import java.util.regex.Pattern;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class CeyloncAntTest extends AntBasedTest {
+public class CeylonCompileAntTest extends AntBasedTest {
 
-    public CeyloncAntTest() throws Exception {
-        super("test/src/com/redhat/ceylon/itest/ceylonc-ant.xml");
+    public CeylonCompileAntTest() throws Exception {
+        super("test/src/com/redhat/ceylon/itest/ceylon-compile-ant.xml");
     }
     
     @Test
@@ -49,7 +49,7 @@ public class CeyloncAntTest extends AntBasedTest {
         Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.src.sha1").exists());
         Assert.assertEquals(1, new File(result.getOut(), "com/example").list().length);
         
-        assertNotContainsMatch(result.getStdout(), Pattern.compile("^  \\[ceylonc\\] Model tree for .*?com.example.foo.foo\\.ceylon$", Pattern.MULTILINE));
+        assertNotContainsMatch(result.getStdout(), Pattern.compile("^  \\[ceylon-compile\\] Model tree for .*?com.example.foo.foo\\.ceylon$", Pattern.MULTILINE));
     }
     
     @Test
@@ -62,15 +62,15 @@ public class CeyloncAntTest extends AntBasedTest {
         Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.src").exists());
         Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.src.sha1").exists());
         Assert.assertEquals(1, new File(result.getOut(), "com/example").list().length);
-        assertNotContainsMatch(result.getStdout(), Pattern.compile("^  \\[ceylonc\\] Model tree for .*?com.example.foo.foo\\.ceylon$", Pattern.MULTILINE));
-        assertNotContains(result.getStdout(), "[ceylonc] No need to compile com.example.foo, it's up to date");
-        assertNotContains(result.getStdout(), "[ceylonc] Everything's up to date");
+        assertNotContainsMatch(result.getStdout(), Pattern.compile("^  \\[ceylon-compile\\] Model tree for .*?com.example.foo.foo\\.ceylon$", Pattern.MULTILINE));
+        assertNotContains(result.getStdout(), "[ceylon-compile] No need to compile com.example.foo, it's up to date");
+        assertNotContains(result.getStdout(), "[ceylon-compile] Everything's up to date");
         final long lastModified = car.lastModified();
         
         result = ant("foo-alone");
         Assert.assertEquals(0, result.getStatusCode());
-        assertContains(result.getStdout(), "[ceylonc] No need to compile com.example.foo, it's up to date");
-        assertContains(result.getStdout(), "[ceylonc] Everything's up to date");
+        assertContains(result.getStdout(), "[ceylon-compile] No need to compile com.example.foo, it's up to date");
+        assertContains(result.getStdout(), "[ceylon-compile] Everything's up to date");
         Assert.assertEquals(lastModified, car.lastModified());
     }
     
@@ -86,7 +86,7 @@ public class CeyloncAntTest extends AntBasedTest {
         Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.src.sha1").exists());
         Assert.assertEquals(1, new File(result.getOut(), "com/example").list().length);
         
-        assertContainsMatch(result.getStdout(), Pattern.compile("^  \\[ceylonc\\] Model tree for .*?com/example/foo/a/foo\\.ceylon\\]$", Pattern.MULTILINE));
+        assertContainsMatch(result.getStdout(), Pattern.compile("^\\[ceylon-compile\\] Model tree for .*?com/example/foo/a/foo\\.ceylon\\]$", Pattern.MULTILINE));
     }
     
     @Test
@@ -101,7 +101,7 @@ public class CeyloncAntTest extends AntBasedTest {
         Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.src.sha1").exists());
         Assert.assertEquals(1, new File(result.getOut(), "com/example").list().length);
         
-        assertContains(result.getStdout(), "[ceylonc] [0ms] Program start");
+        assertContains(result.getStdout(), "[ceylon-compile] [0ms] Program start");
     }
     
     @Test
@@ -122,32 +122,32 @@ public class CeyloncAntTest extends AntBasedTest {
     public void testCompileFileFromFooTwice() throws Exception {
         AntResult result = ant("foo-file");
         Assert.assertEquals(0, result.getStatusCode());
-        assertNotContains(result.getStdout(), "[ceylonc] No need to compile com.example.foo, it's up to date");
-        assertNotContains(result.getStdout(), "[ceylonc] Everything's up to date");
+        assertNotContains(result.getStdout(), "[ceylon-compile] No need to compile com.example.foo, it's up to date");
+        assertNotContains(result.getStdout(), "[ceylon-compile] Everything's up to date");
         File car = new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.car");
         Assert.assertTrue(car.exists());
         long lastModified = car.lastModified();
         
         result = ant("foo-file-mtime");
         Assert.assertEquals(0, result.getStatusCode());
-        assertContainsMatch(result.getStdout(), Pattern.compile("^  \\[ceylonc\\] No need to compile .*?/test/src/com/redhat/ceylon/itest/com/example/foo/a/foo.ceylon, it's up to date$", Pattern.MULTILINE));
-        assertContains(result.getStdout(), "[ceylonc] Everything's up to date");
+        assertContainsMatch(result.getStdout(), Pattern.compile("^\\[ceylon-compile\\] No need to compile .*?/test/src/com/redhat/ceylon/itest/com/example/foo/a/foo.ceylon, it's up to date$", Pattern.MULTILINE));
+        assertContains(result.getStdout(), "[ceylon-compile] Everything's up to date");
         Assert.assertEquals(lastModified, car.lastModified());
     }
     
     @Test
     public void testCompileModuleFooClasspath() throws Exception {
-        // TODO Test with a <ceylonc classpath="">
+        // TODO Test with a <ceylon-compile classpath="">
     }
     
     @Test
     public void testCompileModuleFooClasspathref() throws Exception {
-        // TODO Test with a <ceylonc classpathref="">
+        // TODO Test with a <ceylon-compile classpathref="">
     }
     
     @Test
     public void testCompileModuleFooRep() throws Exception {
-        // TODO Test with a <ceylonc><rep/>
+        // TODO Test with a <ceylon-compile><rep/>
     }
     
     @Test

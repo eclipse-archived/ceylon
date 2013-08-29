@@ -7,63 +7,61 @@
     </target>
   
   <target name="ant-tasks" depends="-init">
-    <taskdef name="ceylonc" classname="com.redhat.ceylon.ant.Ceylonc" />
-    <taskdef name="ceylond" classname="com.redhat.ceylon.ant.Ceylond" />
-    <taskdef name="ceylon" classname="com.redhat.ceylon.ant.Ceylon" />
+    <typedef resource="com/redhat/ceylon/ant/antlib.xml"/>
   </target>
       
   <target name="compile-foo" depends="ant-tasks">
-    <ceylonc executable="${script.cey}"
+    <ceylon-compile executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}">
       <module name="com.example.foo"/>
-    </ceylonc>
+    </ceylon-compile>
   </target>
   
   <target name="exec-hello-compiled" depends="compile-foo">
-    <ceylon executable="${script.cey}" 
+    <ceylon-run executable="${script.cey}" 
       run="com.example.foo.a.hello"
       module="com.example.foo/1.0">
       <rep url="${arg.out}"/>
-    </ceylon>
+    </ceylon-run>
   </target>
   
   <target name="exec-goodbye-compiled" depends="compile-foo">
-    <ceylon executable="${script.cey}"
+    <ceylon-run executable="${script.cey}"
       run="com.example.foo.a.Goodbye"
       module="com.example.foo/1.0">
       <rep url="${arg.out}"/>
-    </ceylon>
+    </ceylon-run>
   </target>
   
   <target name="exec-foo-compiled" depends="compile-foo">
-    <ceylon executable="${script.cey}" 
+    <ceylon-run executable="${script.cey}" 
       module="com.example.foo/1.0">
       <rep url="${arg.out}"/>
-    </ceylon>
+    </ceylon-run>
   </target>
   
   <target name="exec-hello-source" depends="ant-tasks">
-    <ceylon executable="${script.cey}" 
+    <ceylon-run executable="${script.cey}" 
       src="${arg.src}"
       run="com.example.foo.a.hello"
       module="com.example.foo/1.0">
-    </ceylon>
+    </ceylon-run>
   </target>
   
   <target name="exec-goodbye-source" depends="ant-tasks">
-    <ceylon executable="${script.cey}" 
+    <ceylon-run executable="${script.cey}" 
       src="${arg.src}"
       run="com.example.foo.a.Goodbye"
       module="com.example.foo/1.0">
-    </ceylon>
+    </ceylon-run>
   </target>
   
   <target name="exec-foo-source" depends="ant-tasks">
-    <ceylon executable="${script.cey}"
+    <ceylon-run executable="${script.cey}"
       src="${arg.src}"
       module="com.example.foo/1.0">
-    </ceylon>
+    </ceylon-run>
   </target>
 
 </project>

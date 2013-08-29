@@ -1,4 +1,4 @@
-<project name="ceylonc Ant Task test" >
+<project name="ceylon-compile Ant Task test" >
   <target name="-init">
       <echo message="ant.home: ${ant.home}"/>
       <echo message="ant.file: ${ant.file}"/>
@@ -7,32 +7,30 @@
     </target>
   
   <target name="ant-tasks" depends="-init">
-    <taskdef name="ceylonc" classname="com.redhat.ceylon.ant.Ceylonc" />
-    <taskdef name="ceylond" classname="com.redhat.ceylon.ant.Ceylond" />
-    <taskdef name="ceylon" classname="com.redhat.ceylon.ant.Ceylon" />
+    <typedef resource="com/redhat/ceylon/ant/antlib.xml"/>
   </target>
   
   <target name="no-module-or-files" depends="ant-tasks">
-    <ceylonc
+    <ceylon-compile
       executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}"
       verbose="${arg.verbose}">
-    </ceylonc>
+    </ceylon-compile>
   </target>
   
   <target name="foo-alone" depends="ant-tasks">
-    <ceylonc
+    <ceylon-compile
     	executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}"
       verbose="${arg.verbose}">
         <module name="com.example.foo"/>
-    </ceylonc>
+    </ceylon-compile>
   </target>
 
   <target name="foo-file" depends="ant-tasks,foo-alone">
-    <ceylonc
+    <ceylon-compile
     	executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}"
@@ -41,11 +39,11 @@
         <files>
           <include name="com/example/foo/a/foo.ceylon"/>
         </files>
-    </ceylonc>
+    </ceylon-compile>
   </target>
   
   <target name="foo-file-mtime" depends="ant-tasks,foo-alone">
-      <ceylonc
+      <ceylon-compile
       	executable="${script.cey}"
         src="${arg.src}"
         out="${arg.out}"
@@ -53,20 +51,20 @@
           <files>
             <include name="com/example/foo/a/foo.ceylon"/>
           </files>
-      </ceylonc>
+      </ceylon-compile>
     </target>
 
   <target name="bar-alone" depends="ant-tasks">
-    <ceylonc
+    <ceylon-compile
     	executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}">
        <module name="com.example.bar"/>
-    </ceylonc>
+    </ceylon-compile>
   </target>
   
   <target name="foo-and-file-from-bar" depends="ant-tasks">
-      <ceylonc
+      <ceylon-compile
       	executable="${script.cey}"
         src="${arg.src}"
         out="${arg.out}"
@@ -76,21 +74,21 @@
           <files>
             <include name="com/example/bar/b/bar.ceylon"/>
           </files>
-      </ceylonc>
+      </ceylon-compile>
     </target>
 
   <target name="foo-and-bar" depends="ant-tasks">
-    <ceylonc
+    <ceylon-compile
     	executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}">
        <module name="com.example.foo"/>
        <module name="com.example.bar"/>
-    </ceylonc>
+    </ceylon-compile>
   </target>
   
   <target name="bad-fail-on-error" depends="ant-tasks">
-    <ceylonc
+    <ceylon-compile
     	executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}"
@@ -98,7 +96,7 @@
       failonerror="false"
       errorproperty="continued">
         <module name="com.example.bad"/>
-    </ceylonc>
+    </ceylon-compile>
     <echo message="I'll carry on regardless"/>
     <echo message="continued: ${continued}"/>
   </target>

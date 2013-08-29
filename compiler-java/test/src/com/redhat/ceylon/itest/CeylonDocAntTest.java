@@ -27,10 +27,10 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class CeylondAntTest extends AntBasedTest {
+public class CeylonDocAntTest extends AntBasedTest {
 
-    public CeylondAntTest() throws Exception {
-        super("test/src/com/redhat/ceylon/itest/ceylond-ant.xml");
+    public CeylonDocAntTest() throws Exception {
+        super("test/src/com/redhat/ceylon/itest/ceylon-doc-ant.xml");
     }
     
     @Test
