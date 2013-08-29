@@ -474,14 +474,14 @@ public class MethodDefinitionBuilder {
         return sb.toString();
     }
 
-    public MethodDefinitionBuilder reifiedTypeParameters(java.util.List<TypeParameterDeclaration> typeParams) {
-        for(TypeParameterDeclaration typeParam : typeParams)
+    public MethodDefinitionBuilder reifiedTypeParameters(java.util.List<TypeParameter> typeParams) {
+        for(TypeParameter typeParam : typeParams)
             reifiedTypeParameter(typeParam);
         return this;
     }
 
-    public MethodDefinitionBuilder reifiedTypeParameter(TypeParameterDeclaration param) {
-        return reifiedTypeParameter(param.getIdentifier().getText());
+    public MethodDefinitionBuilder reifiedTypeParameter(TypeParameter param) {
+        return reifiedTypeParameter(param.getName());
     }
     
     private MethodDefinitionBuilder reifiedTypeParameter(String name) {
