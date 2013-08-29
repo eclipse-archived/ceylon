@@ -30,7 +30,7 @@ shared native object process {
     
     "Print a line to the standard output of the 
      virtual machine process."
-    see (`print`)
+    see (`function print`)
     shared void writeLine(String line="") { 
         write(line);
         write(newline); 

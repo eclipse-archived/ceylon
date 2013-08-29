@@ -13,7 +13,7 @@
    optional types. This neatly voids the problem of
    deciding the value of the expression `null==null`,
    which is simply illegal."""
-see (`Basic`, `Null`)
+see (`class Basic`, `class Null`)
 by ("Gavin")
 shared abstract class Object() 
         extends Anything() {

@@ -1,5 +1,5 @@
 "A 32-bit Unicode character."
-see (`String`)
+see (`class String`)
 by ("Gavin")
 shared final native class Character(Character character)
         extends Object()

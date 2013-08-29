@@ -69,7 +69,7 @@ import ceylon.language { internalFirst = first }
      the receiving iterable object.
    
    Eager operations normally return a sequence."""
-see (`Collection`)
+see (`interface Collection`)
 by ("Gavin")
 shared interface Iterable<out Element, out Absent=Null>
         satisfies Container<Element,Absent> 
@@ -89,7 +89,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "Determines if this iterable object has more elements
      than the given length. This is an efficient operation 
      for iterable objects with many elements."
-    see (`Iterable.size`)
+    see (`value Iterable.size`)
     shared default Boolean longerThan(Integer length) {
         if (length<0) {
             return true;
@@ -106,7 +106,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "Determines if this iterable object has fewer elements
      than the given length. This is an efficient operation 
      for iterable objects with many elements."
-    see (`Iterable.size`)
+    see (`value Iterable.size`)
     shared default Boolean shorterThan(Integer length) {
         if (length<=0) {
             return false;
@@ -153,7 +153,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "An `Iterable` containing the results of applying
      the given mapping to the elements of to this 
      container."
-    see (`Iterable.collect`)
+    see (`function Iterable.collect`)
     shared default Iterable<Result,Absent> map<Result>(
             "The mapping to apply to the elements."
             Result collecting(Element elem)) =>
@@ -167,7 +167,7 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "An `Iterable` containing the elements of this 
      container that satisfy the given predicate."
-    see (`Iterable.select`)
+    see (`function Iterable.select`)
     shared default {Element*} filter(
             "The predicate the elements must satisfy."
             Boolean selecting(Element elem)) =>
@@ -224,7 +224,7 @@ shared interface Iterable<out Element, out Absent=Null>
          \"Hello World!\".sort(byIncreasing((Character c) => c.lowercased))
      
      This operation is eager by nature."
-    see (`byIncreasing`, `byDecreasing`)
+    see (`function byIncreasing`, `function byDecreasing`)
     shared default Element[] sort(
             "The function comparing pairs of elements."
             Comparison comparing(Element x, Element y)) =>
@@ -233,7 +233,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "A sequence containing the results of applying the
      given mapping to the elements of this container. An 
      eager counterpart to `map()`."
-    see (`Iterable.map`)
+    see (`function Iterable.map`)
     shared default Result[] collect<Result>(
             "The transformation applied to the elements."
             Result collecting(Element element)) =>
@@ -242,7 +242,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "A sequence containing the elements of this 
      container that satisfy the given predicate. An 
      eager counterpart to `filter()`."
-    see (`Iterable.filter`)
+    see (`function Iterable.filter`)
     shared default Element[] select(
             "The predicate the elements must satisfy."
             Boolean selecting(Element element)) =>
@@ -390,8 +390,9 @@ shared interface Iterable<out Element, out Absent=Null>
      
      results in an iterable object with the elements
      `0`, `3`, `6`, and `9` in that order."
-    throws (`Exception`, "if the given step size is nonpositive, 
-                          i.e. `step<1`") //TODO: this is an assertion
+    throws (`class AssertionException`, 
+            "if the given step size is nonpositive, 
+             i.e. `step<1`")
     shared default Iterable<Element,Absent> by(Integer step) {
         "step size must be greater than zero"
         assert (step > 0);
@@ -560,7 +561,7 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "A non-finite iterable object that produces the elements 
      of this iterable object, repeatedly."
-    see (`Iterable.cycle`)
+    see (`function Iterable.cycle`)
     shared default Iterable<Element,Absent> cycled {
         object iterable satisfies Iterable<Element,Absent> {
             value orig => outer;
@@ -587,7 +588,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "A finite iterable object that produces the elements of 
      this iterable object, repeatedly, the given number of
      times."
-    see (`Iterable.cycled`, `Iterable.repeat`)
+    see (`value Iterable.cycled`, `function Iterable.repeat`)
     shared default Iterable<Element,Absent> cycle(Integer times) {
         object iterable satisfies Iterable<Element,Absent> {
             value orig => outer;
@@ -621,7 +622,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "Returns a list formed by repeating the elements of this
      iterable object the given number of times, or an empty 
      list if `times<=0`. An eager counterpart to `cycle()`."
-    see (`Iterable.cycle`)
+    see (`function Iterable.cycle`)
     shared default List<Element> repeat(Integer times) {
         value sb = SequenceBuilder<Element>();
         variable value count=0;

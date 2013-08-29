@@ -3,7 +3,8 @@
  `Integer` and `Float`. Additionally, a numeric type 
  is expected to define a total order via an 
  implementation of `Comparable`."
-see (`Integer`, `Float`, `Comparable`)
+see (`class Integer`, `class Float`, 
+     `interface Comparable`)
 by ("Gavin")
 shared interface Numeric<Other> of Other
         satisfies Summable<Other> & Invertable<Other>
@@ -19,7 +20,7 @@ shared interface Numeric<Other> of Other
     "The quotient obtained by dividing this number by 
      the given number. For integral numeric types, this 
      operation results in a remainder."
-    see (`Integral`)
+    see (`interface Integral`)
     shared formal Other divided(Other other);
 
 }

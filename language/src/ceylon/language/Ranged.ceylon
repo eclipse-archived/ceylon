@@ -8,7 +8,9 @@
  
      print(\"hello world\"[0..5])
  "
-see (`List`, `Sequence`, `String`)
+see (`interface List`, 
+     `interface Sequence`, 
+     `class String`)
 shared interface Ranged<in Index, out Span> of Span
         given Index satisfies Comparable<Index> {
     
