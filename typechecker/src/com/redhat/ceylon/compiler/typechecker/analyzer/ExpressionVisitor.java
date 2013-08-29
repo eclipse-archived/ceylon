@@ -2200,7 +2200,9 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             Parameter sp = getUnspecifiedParameter(pr, pl, foundParameters);
-            foundParameters.add(sp);
+            if (sp!=null && !unit.isNonemptyIterableType(sp.getType())) {
+                foundParameters.add(sp);
+            }
         }
             
         for (Parameter p: pl.getParameters()) {
