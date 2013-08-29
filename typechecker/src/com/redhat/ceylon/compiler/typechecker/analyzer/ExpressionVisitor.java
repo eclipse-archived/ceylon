@@ -5593,21 +5593,21 @@ public class ExpressionVisitor extends Visitor {
     private void setMemberMetatype(Tree.MemberLiteral that, TypedDeclaration result) {
         that.setDeclaration(result);
         if (that instanceof Tree.ValueLiteral) {
-            if (!(result instanceof Value)) {
+            if (result instanceof Value) {
+                checkNonlocal(that, result);
+            }
+            else {
                 that.getIdentifier().addError("not a value");
             }
-            else {
-                checkNonlocal(that, result);
-            }
             that.setWantsDeclaration(true);
-            that.setTypeModel(unit.getValueDeclarationType((Value)result));
+            that.setTypeModel(unit.getValueDeclarationType(result));
         }
         else if (that instanceof Tree.FunctionLiteral) {
-            if (!(result instanceof Method)) {
-                that.getIdentifier().addError("not a function");
+            if (result instanceof Method) {
+                checkNonlocal(that, result);
             }
             else {
-                checkNonlocal(that, result);
+                that.getIdentifier().addError("not a function");
             }
             that.setWantsDeclaration(true);
             that.setTypeModel(unit.getFunctionDeclarationType());
@@ -5626,16 +5626,6 @@ public class ExpressionVisitor extends Visitor {
         if (result instanceof Method) {
             Method method = (Method) result;
             Tree.TypeArgumentList tal = that.getTypeArgumentList();
-            // there's no model for local values that are not parameters
-            if ((!result.isClassOrInterfaceMember() || !result.isShared())
-                    && !result.isToplevel()) {
-                if (result.isParameter()) {
-                    that.addWarning("metamodel reference to function parameter not yet supported");
-                }
-                else {
-                    that.addError("metamodel reference to local function");
-                }
-            }
             if (explicitTypeArguments(method, tal, null)) {
                 List<ProducedType> ta = getTypeArguments(tal, getTypeParameters(method),
                         outerType);
@@ -5654,16 +5644,6 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (result instanceof Value) {
             Value value = (Value) result;
-            // there's no model for local values that are not parameters
-            if ((!result.isClassOrInterfaceMember() || !result.isShared())
-                    && !result.isToplevel()){
-                if (result.isParameter()) {
-                    that.addWarning("metamodel reference to function parameter not yet supported");
-                }
-                else{
-                    that.addError("metamodel reference to local value");
-                }
-            }
             if (that.getTypeArgumentList() != null) {
                 that.addError("does not accept type arguments: " + result.getName(unit));
             }
@@ -5700,13 +5680,10 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkNonlocal(Node that, Declaration declaration) {
-        if (declaration.isClassOrInterfaceMember()) {
-            if (declaration.isShared()) return;
+        if ((!declaration.isClassOrInterfaceMember() || !declaration.isShared())
+                    && !declaration.isToplevel()) {
+            that.addError("metamodel reference to local declaration");
         }
-        else if (declaration.isToplevel()) {
-            return;
-        }
-        that.addWarning("metamodel reference to local declaration not yet supported");
     }
     
     /*private void checkNonlocalType(Node that, TypeDeclaration declaration) {
