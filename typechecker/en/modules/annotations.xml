@@ -170,7 +170,7 @@ shared deprecated</programlisting>
             <para>A named argument appearing in the definition of an annotation constructor
             may not be an inline function, value, or anonymous class.</para>
             
-            <programlisting>shared annotation Scope scope(Scope s) => s;</programlisting>
+            <programlisting>shared annotation Scope scope(ScopeType s) => Scope(s);</programlisting>
             <programlisting>shared annotation Todo todo(String text) => Todo(text);</programlisting>
             
             <para>An annotation constructor parameter may have a default argument, which must
@@ -265,9 +265,13 @@ shared deprecated</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <programlisting><![CDATA[shared annotation class Scope()
-        of request | session | application
-        satisfies OptionalAnnotation<Scope,ClassOrInterfaceDeclaration> {}]]></programlisting>
+            <programlisting><![CDATA[shared final annotation class Scope(shared ScopeType scope)
+        satisfies OptionalAnnotation<Scope,ClassOrInterfaceDeclaration> {
+    string => (scope==request then "request")
+         else (scope==session then "session")
+         else (scope==application then "application")
+         else nothing;
+}]]></programlisting>
             
             <programlisting><![CDATA[shared annotation class Todo(String text)
         satisfies SequencedAnnotation<Todo> {
@@ -291,7 +295,7 @@ shared deprecated</programlisting>
         <literal>annotations()</literal> defined in the package
         <literal>ceylon.language.model</literal>.</para>
         
-        <programlisting>Scope scope = annotations(`Scope`, `class Person`) else request;</programlisting>
+        <programlisting>Scope scope = annotations(`Scope`, `class Person`) else Scope(request);</programlisting>
         <programlisting>Todo[] todos = annotations(`Todo`, `function method`);</programlisting>
         
     </section>
