@@ -5516,6 +5516,9 @@ public class ExpressionVisitor extends Visitor {
                     if (!(d instanceof Class)) {
                         that.getType().addError("not a class");
                     }
+                    else {
+                        checkNonlocal(that, d);
+                    }
                     that.setTypeModel(unit.getClassDeclarationType());
                 }
                 else if (that instanceof Tree.InterfaceLiteral) {
@@ -5539,8 +5542,9 @@ public class ExpressionVisitor extends Visitor {
                 else if (d != null) {
                     that.setWantsDeclaration(false);
                     t = t.resolveAliases();
-                    checkNonlocalType(that.getType(), t.getDeclaration());
+                    //checkNonlocalType(that.getType(), t.getDeclaration());
                     if (d instanceof Class) {
+                        checkNonlocal(that, t.getDeclaration());
                         that.setTypeModel(unit.getClassMetatype(t));
                     }
                     else if (d instanceof Interface) {
@@ -5568,7 +5572,7 @@ public class ExpressionVisitor extends Visitor {
                         // let it go, we already logged an error for the missing type
                         return;
                     }
-                    checkNonlocalType(that.getType(), qtd);
+                    //checkNonlocalType(that.getType(), qtd);
                     String container = "type " + qtd.getName(unit);
                     TypedDeclaration member = getTypedMember(qtd, name, null, false, unit);
                     if (member==null) {
@@ -5609,6 +5613,9 @@ public class ExpressionVisitor extends Visitor {
             if (!(result instanceof Value)) {
                 that.getIdentifier().addError("not a value");
             }
+            else {
+                checkNonlocal(that, result);
+            }
             that.setWantsDeclaration(true);
             that.setTypeModel(unit.getValueDeclarationType((Value)result));
         }
@@ -5616,10 +5623,14 @@ public class ExpressionVisitor extends Visitor {
             if (!(result instanceof Method)) {
                 that.getIdentifier().addError("not a function");
             }
+            else {
+                checkNonlocal(that, result);
+            }
             that.setWantsDeclaration(true);
             that.setTypeModel(unit.getFunctionDeclarationType());
         }
         else {
+            checkNonlocal(that, result);
             setMetamodelType(that, result);
         }
     }
@@ -5705,7 +5716,17 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void checkNonlocalType(Node that, TypeDeclaration declaration) {
+    private void checkNonlocal(Node that, Declaration declaration) {
+        if (declaration.isClassOrInterfaceMember()) {
+            if (declaration.isShared()) return;
+        }
+        else if (declaration.isToplevel()) {
+            return;
+        }
+        that.addWarning("metamodel reference to local declaration not yet supported");
+    }
+    
+    /*private void checkNonlocalType(Node that, TypeDeclaration declaration) {
         if (declaration instanceof UnionType) {
             for (TypeDeclaration ctd: declaration.getCaseTypeDeclarations()) {
                 checkNonlocalType(that, ctd);
@@ -5724,6 +5745,6 @@ public class ExpressionVisitor extends Visitor {
         else if (declaration.getContainer() instanceof TypeDeclaration) {
             checkNonlocalType(that, (TypeDeclaration) declaration.getContainer());
         }
-    }
+    }*/
     
 }
