@@ -5,13 +5,11 @@ shared abstract class Boolean()
         of true | false {}
 
 "A value representing truth in Boolean logic."
-by ("Gavin")
 shared object true extends Boolean() {
-    shared actual String string => "true";
+    string => "true";
 }
 
 "A value representing falsity in Boolean logic."
-by ("Gavin")
 shared object false extends Boolean() {
-    shared actual String string => "false";
+    string => "false";
 }
