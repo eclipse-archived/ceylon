@@ -9,7 +9,7 @@
  - `Sequence<Element>`, abbreviated `[Element+]` 
     represents a non-empty sequence, and has the very
     important subclass `Tuple`."
-see (`Tuple`)
+see (`class Tuple`)
 shared interface Sequential<out Element>
         of []|[Element+]
         satisfies List<Element> & 

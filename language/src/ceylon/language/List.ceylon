@@ -17,7 +17,9 @@
    idiom:
    
        for (i->char in "hello world".indexed) { ... }"""
-see (`Sequence`, `Empty`, `Array`)
+see (`interface Sequence`, 
+     `interface Empty`, 
+     `class Array`)
 shared interface List<out Element>
         satisfies Collection<Element> &
                   Correspondence<Integer,Element> &
@@ -26,12 +28,12 @@ shared interface List<out Element>
     
     "The index of the last element of the list, or
      null if the list is empty."
-    see (`List.size`)
+    see (`value List.size`)
     shared formal Integer? lastIndex;
     
     "The number of elements in this sequence, always
      `sequence.lastIndex+1`."
-    see (`List.lastIndex`)
+    see (`value List.lastIndex`)
     shared actual default Integer size => (lastIndex else -1) + 1;
     
     shared actual default Boolean shorterThan(Integer length) 
@@ -155,7 +157,7 @@ shared interface List<out Element>
     
     "Returns a new `List` that starts with the specified
      element, followed by the elements of this `List`."
-    see (`following`)
+    see (`function following`)
     shared default [Element|Other+] withLeading<Other>(
             "The first element of the resulting sequence."
             Other element) {
@@ -384,7 +386,7 @@ shared interface List<out Element>
      list no longer than the given length. If this list is 
      shorter than the given length, return this list. 
      Otherwise return a list of the given length."
-    see (`List.terminal`)
+    see (`function List.terminal`)
     shared default List<Element> initial(Integer length)
             => this[0:length];
     
@@ -392,7 +394,7 @@ shared interface List<out Element>
      no longer than the given length. If this list is 
      shorter than the given length, return this list. 
      Otherwise return a list of the given length."
-    see (`List.initial`)
+    see (`function List.initial`)
     shared default List<Element> terminal(Integer length) {
         if (exists l = lastIndex, length>0) {
             return this[l-length+1..l];

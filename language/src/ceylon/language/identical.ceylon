@@ -1,7 +1,7 @@
 "Determine if the arguments are identical. Equivalent to
  `x===y`. Only instances of `Identifiable` have 
  well-defined identity."
-see (`identityHash`)
+see (`function identityHash`)
 shared Boolean identical(
         "An object with well-defined identity."
         Identifiable x, 

@@ -1,6 +1,8 @@
 "Given a nonempty stream of `Comparable` values, 
  return the largest value in the stream."
-see (`Comparable`, `min`, `largest`)
+see (`interface Comparable`, 
+     `function min`, 
+     `function largest`)
 shared Absent|Value max<Value,Absent>(Iterable<Value,Absent> values) 
         given Value satisfies Comparable<Value>
         given Absent satisfies Null {

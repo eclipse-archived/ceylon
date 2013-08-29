@@ -14,7 +14,7 @@
  The `get()` operation and item operator result in an
  optional type, to reflect the possibility that there is
  no item for the given key."
-see (`Map`, `List`, `Category`)
+see (`interface Map`, `interface List`, `interface Category`)
 by ("Gavin")
 shared interface Correspondence<in Key, out Item>
         given Key satisfies Object {
@@ -22,23 +22,25 @@ shared interface Correspondence<in Key, out Item>
     "Returns the value defined for the given key, or 
      `null` if there is no value defined for the given 
      key."
-    see (`Correspondence.items`)
+    see (`function Correspondence.items`)
     shared formal Item? get(Key key);
     
     "Determines if there is a value defined for the 
      given key."
-    see (`Correspondence.definesAny`, `Correspondence.definesEvery`, `Correspondence.keys`)
+    see (`function Correspondence.definesAny`, 
+         `function Correspondence.definesEvery`, 
+         `value Correspondence.keys`)
     shared default Boolean defines(Key key) => 
             get(key) exists;
     
     "The `Category` of all keys for which a value is 
      defined by this `Correspondence`."
-    see (`Correspondence.defines`)
+    see (`function Correspondence.defines`)
     shared default Category keys => Keys(this);
     
     "Determines if this `Correspondence` defines a value
      for every one of the given keys."
-    see (`Correspondence.defines`)
+    see (`function Correspondence.defines`)
     shared default Boolean definesEvery({Key*} keys) {
         for (key in keys) {
             if (!defines(key)) {
@@ -52,7 +54,7 @@ shared interface Correspondence<in Key, out Item>
     
     "Determines if this `Correspondence` defines a value
      for any one of the given keys."
-    see (`Correspondence.defines`)
+    see (`function Correspondence.defines`)
     shared default Boolean definesAny({Key*} keys) {
         for (key in keys) {
             if (defines(key)) {
@@ -66,7 +68,7 @@ shared interface Correspondence<in Key, out Item>
     
     "Returns the items defined for the given keys, in
      the same order as the corresponding keys."
-    see (`Correspondence.get`)
+    see (`function Correspondence.get`)
     shared default Item?[] items({Key*} keys) =>
             [ for (key in keys) get(key) ];
     
