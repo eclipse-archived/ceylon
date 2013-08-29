@@ -27,6 +27,7 @@ package com.redhat.ceylon.ant;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.Set;
 
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Commandline;
@@ -40,6 +41,7 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
     };
 
     private ModuleSet moduleset = new ModuleSet();
+    private LinkSet linkset = new LinkSet();
     private boolean includeNonShared;
     private boolean includeSourceCode;
     
@@ -78,6 +80,25 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
     }
 
     /**
+     * Adds a link for a {@code <link>} nested element
+     * @param link the new link
+     */
+    public void addConfiguredLink(Link link) {
+        linkset.addConfiguredLink(link);
+    }
+    /**
+     * Adds a set of links for a {@code <linkset>} nested element
+     * @param linkset the new link set
+     */
+    public void addConfiguredLinkset(LinkSet reposet) {
+        this.linkset.addConfiguredLinkSet(reposet);
+    }
+    
+    protected Set<Link> getLinkset() {
+        return linkset.getLinks();
+    }
+
+    /**
      * Perform the compilation.
      */
     @Override
@@ -109,6 +130,12 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
             cmd.createArgument().setValue("--source-code");
         if(includeNonShared)
             cmd.createArgument().setValue("--non-shared");
+        // links
+        for (Link link : linkset.getLinks()) {
+            log("Adding link: "+link, Project.MSG_VERBOSE);
+            cmd.createArgument().setValue("--link");
+            cmd.createArgument().setValue(link.toString());
+        }
         // modules to document
         for (Module module : moduleset.getModules()) {
             log("Adding module: "+module, Project.MSG_VERBOSE);
