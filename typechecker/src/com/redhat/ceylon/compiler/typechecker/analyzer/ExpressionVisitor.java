@@ -362,12 +362,6 @@ public class ExpressionVisitor extends Visitor {
             v.getType().setTypeModel(it);
             v.getDeclarationModel().setType(it);
         }
-        else if (that.getExpression()!=null) {
-            that.getExpression().visit(this);
-        }
-        /*if (that.getExpression()!=null) {
-            that.getExpression().visit(this);
-        }*/
     }
     
     @Override public void visit(Tree.SatisfiesCondition that) {
@@ -405,19 +399,6 @@ public class ExpressionVisitor extends Visitor {
                 term = se.getExpression().getTerm();
             }
         }
-        else if (that.getExpression()!=null) {
-            //note: this is only here to handle
-            //      erroneous syntax elegantly
-            that.getExpression().visit(this);
-            t = that.getExpression().getTypeModel();
-            term = that.getExpression().getTerm();
-        }
-        /*Tree.Expression e = that.getExpression();
-        if (e!=null) {
-            e.visit(this);
-            t = e.getTypeModel();
-            n = e;
-        }*/
         if (that instanceof Tree.ExistsCondition) {
             checkOptional(t, term, n);
         }
