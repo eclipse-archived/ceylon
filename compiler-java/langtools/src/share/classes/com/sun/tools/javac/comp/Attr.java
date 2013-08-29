@@ -622,6 +622,18 @@ public class Attr extends JCTree.Visitor {
             attribStat(l.head, env);
     }
 
+    // Ceylon(Stef): Pre-enters local non-anonymous classes to allow mutual-visibility
+    // see https://github.com/ceylon/ceylon-compiler/issues/1165
+    <T extends JCTree> void completeLocalTypes(List<T> trees, Env<AttrContext> env) {
+        for (List<T> l = trees; l.nonEmpty(); l = l.tail){
+            T tree = l.head;
+            if(tree instanceof JCTree.JCClassDecl
+               && (env.info.scope.owner.kind & (VAR | MTH)) != 0
+               && !((JCTree.JCClassDecl) tree).name.isEmpty())
+                enter.classEnter(tree, env);
+        }
+    }
+
     /** Attribute the arguments in a method call, returning a list of types.
      */
     List<Type> attribArgs(List<JCExpression> trees, Env<AttrContext> env) {
@@ -794,8 +806,15 @@ public class Attr extends JCTree.Visitor {
 
     public void visitClassDef(JCClassDecl tree) {
         // Local classes have not been entered yet, so we need to do it now:
-        if ((env.info.scope.owner.kind & (VAR | MTH)) != 0)
-            enter.classEnter(tree, env);
+        if ((env.info.scope.owner.kind & (VAR | MTH)) != 0){
+            // Ceylon(Stef): Java needs to enter local classes, but Ceylon does not unless they are anonymous
+            // because we pre-enter local non-anonymous classes in visitBlock to allow mutual-visibility
+            // see https://github.com/ceylon/ceylon-compiler/issues/1165
+            if(!Context.isCeylon()
+                    || tree.name.isEmpty()){
+                enter.classEnter(tree, env);
+            }
+        }
 
         ClassSymbol c = tree.sym;
         if (c == null) {
@@ -1021,11 +1040,19 @@ public class Attr extends JCTree.Visitor {
                 new MethodSymbol(tree.flags | BLOCK, names.empty, null,
                                  env.info.scope.owner);
             if ((tree.flags & STATIC) != 0) localEnv.info.staticLevel++;
+            // Ceylon(Stef): Ceylon pre-enters local non-anonymous classes to allow mutual-visibility
+            // see https://github.com/ceylon/ceylon-compiler/issues/1165
+            if(Context.isCeylon())
+                completeLocalTypes(tree.stats, localEnv);
             attribStats(tree.stats, localEnv);
         } else {
             // Create a new local environment with a local scope.
             Env<AttrContext> localEnv =
                 env.dup(tree, env.info.dup(env.info.scope.dup()));
+            // Ceylon(Stef): Ceylon pre-enters local non-anonymous classes to allow mutual-visibility
+            // see https://github.com/ceylon/ceylon-compiler/issues/1165
+            if(Context.isCeylon())
+                completeLocalTypes(tree.stats, localEnv);
             attribStats(tree.stats, localEnv);
             localEnv.info.scope.leave();
         }
@@ -3297,8 +3324,11 @@ public class Attr extends JCTree.Visitor {
             // visit each var def in this new env (side note: this is not a real LET since in theory each
             // new variable should see the ones defined previously)
             // do statements if we have any
-            if(tree.stats != null)
+            if(tree.stats != null){
+                if(Context.isCeylon())
+                    completeLocalTypes(tree.stats, localEnv);
                 attribStats(tree.stats, localEnv);
+            }
             // now attribute the expression with the LET expected type (pt)
             attribExpr(tree.expr, localEnv, pt);
             // the type of the LET is the type of the expression
