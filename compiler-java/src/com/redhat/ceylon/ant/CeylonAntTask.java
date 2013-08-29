@@ -191,7 +191,7 @@ public abstract class CeylonAntTask extends Task {
                 // backward compat with verbose previously being a Boolean
                 appendOption(cmd, "--verbose");
             } else {
-                appendOptionArgument(cmd, "--verbose", verbose);
+                appendOption(cmd, "--verbose="+verbose);
             }
         }
     }
