@@ -196,3 +196,18 @@ void moreSpreadTests() {
     g1(*["s1"]);
 
 }
+
+void testFooBar() {
+    void foo({String+} items) {}
+    @error foo(); // error: missing argument to required parameter items of foo
+    @error foo{}; // NO ERROR
+    foo{""};
+    foo{items={""};};
+    void bar({String+} items1, {String+} items2) {}
+    @error bar(); // error: missing argument to required parameter items1 (and items2) of foo
+    @error bar({""}); // error: missing argument to required parameter items2 of foo
+    @error bar{}; // error: missing argument to required parameter items2 of foo
+    @error bar{items1 = {""};}; // NO ERROR
+    bar{items1 = {""}; ""};
+    bar{items1 = {""}; items2 = {""};};
+}
