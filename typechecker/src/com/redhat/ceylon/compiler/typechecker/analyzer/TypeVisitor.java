@@ -483,13 +483,13 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.UnionType that) {
         super.visit(that);
-        UnionType ut = new UnionType(unit);
         List<ProducedType> types = new ArrayList<ProducedType>();
         for (Tree.StaticType st: that.getStaticTypes()) {
             //addToUnion( types, st.getTypeModel() );
         	ProducedType t = st.getTypeModel();
 			if (t!=null) types.add(t);
         }
+        UnionType ut = new UnionType(unit);
         ut.setCaseTypes(types);
         that.setTypeModel(ut.getType());
         //that.setTarget(pt);
@@ -498,13 +498,13 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.IntersectionType that) {
         super.visit(that);
-        IntersectionType it = new IntersectionType(unit);
         List<ProducedType> types = new ArrayList<ProducedType>();
         for (Tree.StaticType st: that.getStaticTypes()) {
             //addToIntersection(types, st.getTypeModel(), unit);
         	ProducedType t = st.getTypeModel();
 			if (t!=null) types.add(t);
         }
+        IntersectionType it = new IntersectionType(unit);
         it.setSatisfiedTypes(types);
         that.setTypeModel(it.getType());
         //that.setTarget(pt);
@@ -546,10 +546,13 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.OptionalType that) {
         super.visit(that);
+        List<ProducedType> types = new ArrayList<ProducedType>();
+        types.add(unit.getNullDeclaration().getType());
         ProducedType dt = that.getDefiniteType().getTypeModel();
-        if (dt!=null) {
-            that.setTypeModel(unit.getOptionalType(dt));
-        }
+        if (dt!=null) types.add(dt);
+        UnionType ut = new UnionType(unit);
+        ut.setCaseTypes(types);
+        that.setTypeModel(ut.getType());
     }
     
     @Override
