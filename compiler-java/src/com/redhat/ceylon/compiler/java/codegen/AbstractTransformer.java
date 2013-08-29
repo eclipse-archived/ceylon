@@ -2637,14 +2637,20 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     // Creates comparisons of expressions against types
-    JCExpression makeTypeTest(JCExpression firstTimeExpr, Naming.CName varName, ProducedType type) {
+    JCExpression makeTypeTest(JCExpression firstTimeExpr, Naming.CName varName, ProducedType testedType, ProducedType expressionType) {
         JCExpression result = null;
         // make sure aliases are resolved
-        type = type.resolveAliases();
-        if (typeFact().isUnion(type)) {
-            UnionType union = (UnionType)type.getDeclaration();
+        testedType = testedType.resolveAliases();
+        // optimisation when all we're doing is making sure it is not null
+        if(expressionType != null
+                && expressionType.isExactly(typeFact().getOptionalType(testedType))){
+            JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : varName.makeIdent();
+            return make().Binary(JCTree.NE, varExpr, makeNull());
+        }
+        if (typeFact().isUnion(testedType)) {
+            UnionType union = (UnionType)testedType.getDeclaration();
             for (ProducedType pt : union.getCaseTypes()) {
-                JCExpression partExpr = makeTypeTest(firstTimeExpr, varName, pt);
+                JCExpression partExpr = makeTypeTest(firstTimeExpr, varName, pt, expressionType);
                 firstTimeExpr = null;
                 if (result == null) {
                     result = partExpr;
@@ -2652,10 +2658,10 @@ public abstract class AbstractTransformer implements Transformation {
                     result = make().Binary(JCTree.OR, result, partExpr);
                 }
             }
-        } else if (typeFact().isIntersection(type)) {
-            IntersectionType union = (IntersectionType)type.getDeclaration();
+        } else if (typeFact().isIntersection(testedType)) {
+            IntersectionType union = (IntersectionType)testedType.getDeclaration();
             for (ProducedType pt : union.getSatisfiedTypes()) {
-                JCExpression partExpr = makeTypeTest(firstTimeExpr, varName, pt);
+                JCExpression partExpr = makeTypeTest(firstTimeExpr, varName, pt, expressionType);
                 firstTimeExpr = null;
                 if (result == null) {
                     result = partExpr;
@@ -2665,30 +2671,30 @@ public abstract class AbstractTransformer implements Transformation {
             }
         } else {
             JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : varName.makeIdent();
-            if (isAnything(type)){
+            if (isAnything(testedType)){
                 // everything is Void, it's the root of the hierarchy
                 return makeIgnoredEvalAndReturn(varExpr, makeBoolean(true));
-            } else if (type.isExactly(typeFact().getNullDeclaration().getType())){
+            } else if (testedType.isExactly(typeFact().getNullDeclaration().getType())){
                 // is Null => is null
                 return make().Binary(JCTree.EQ, varExpr, makeNull());
-            } else if (type.isExactly(typeFact().getObjectDeclaration().getType())){
+            } else if (testedType.isExactly(typeFact().getObjectDeclaration().getType())){
                 // is Object => is not null
                 return make().Binary(JCTree.NE, varExpr, makeNull());
-            } else if (type.isExactly(typeFact().getIdentifiableDeclaration().getType())){
+            } else if (testedType.isExactly(typeFact().getIdentifiableDeclaration().getType())){
                 // it's erased
                 return makeUtilInvocation("isIdentifiable", List.of(varExpr), null);
-            } else if (type.isExactly(typeFact().getBasicDeclaration().getType())){
+            } else if (testedType.isExactly(typeFact().getBasicDeclaration().getType())){
                 // it's erased
                 return makeUtilInvocation("isBasic", List.of(varExpr), null);
-            } else if (type.getDeclaration() instanceof NothingType){
+            } else if (testedType.getDeclaration() instanceof NothingType){
                 // nothing is Bottom
                 return makeIgnoredEvalAndReturn(varExpr, makeBoolean(false));
-            } else if ((!type.getTypeArguments().isEmpty() || isTypeParameter(type))
-                        && !canOptimiseReifiedTypeTest(type)){
+            } else if ((!testedType.getTypeArguments().isEmpty() || isTypeParameter(testedType))
+                        && !canOptimiseReifiedTypeTest(testedType)){
                 // requires a little magic
-                return makeUtilInvocation("isReified", List.of(varExpr, makeReifiedTypeArgument(type)), null);
+                return makeUtilInvocation("isReified", List.of(varExpr, makeReifiedTypeArgument(testedType)), null);
             } else {
-                JCExpression rawTypeExpr = makeJavaType(type, JT_NO_PRIMITIVES | JT_RAW);
+                JCExpression rawTypeExpr = makeJavaType(testedType, JT_NO_PRIMITIVES | JT_RAW);
                 result = make().TypeTest(varExpr, rawTypeExpr);
             }
         }

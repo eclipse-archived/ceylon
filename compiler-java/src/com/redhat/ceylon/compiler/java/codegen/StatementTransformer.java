@@ -909,11 +909,16 @@ public class StatementTransformer extends AbstractTransformer {
                 expr = make().Assign(testVar.makeIdent(), expr);
             }
             
+            ProducedType expressionType;
+            if(cond.getVariable().getSpecifierExpression() != null)
+                expressionType = cond.getVariable().getSpecifierExpression().getExpression().getTypeModel();
+            else
+                expressionType = cond.getVariable().getDeclarationModel().getOriginalDeclaration().getType();
             // Test on the tmpVar in the following condition
             expr = makeTypeTest(expr, isErasedToObjectOptimization() ? getVariableName() : testVar,
                     // only test the types we're testing for, not the type of
                     // the variable (which can be more precise)
-                    cond.getType().getTypeModel());
+                    cond.getType().getTypeModel(), expressionType);
             if (negate) {
                 expr = make().Unary(JCTree.NOT, expr);
             }
@@ -2148,7 +2153,7 @@ public class StatementTransformer extends AbstractTransformer {
             CaseClause caseClause = caseClauses.get(ii);
             CaseItem caseItem = caseClause.getCaseItem();
             if (caseItem instanceof IsCase) {
-                last = transformCaseIs(selectorAlias, caseClause, (IsCase)caseItem, last);
+                last = transformCaseIs(selectorAlias, caseClause, (IsCase)caseItem, last, switchClause.getExpression().getTypeModel());
             } else if (caseItem instanceof SatisfiesCase) {
                 // TODO Support for 'case (satisfies ...)' is not implemented yet
                 return make().Exec(makeErroneous(caseItem, "switch/satisfies not implemented yet"));
@@ -2186,10 +2191,10 @@ public class StatementTransformer extends AbstractTransformer {
      * @return
      */
     private JCStatement transformCaseIs(Naming.SyntheticName selectorAlias,
-            CaseClause caseClause, IsCase isCase, JCStatement last) {
+            CaseClause caseClause, IsCase isCase, JCStatement last, ProducedType expressionType) {
         at(isCase);
         ProducedType type = isCase.getType().getTypeModel();
-        JCExpression cond = makeTypeTest(null, selectorAlias, type);
+        JCExpression cond = makeTypeTest(null, selectorAlias, type, expressionType);
         
         String name = isCase.getVariable().getIdentifier().getText();
 
