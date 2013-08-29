@@ -82,17 +82,44 @@ final class test_ {
         }
         if (.com.redhat.ceylon.compiler.java.Util.isReified(obj, $reifiedKey)) {
         }
-        .java.lang.Object $obj$9;
-        if (($obj$9 = obj) instanceof .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2) {
-            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2<? extends .java.lang.Object, ? extends .java.lang.Object> $obj$10 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2)$obj$9;
+        final Key objOrNot = (Key).ceylon.language.nothing_.$get();
+        .java.lang.Object $objOrNot$9;
+        if (($objOrNot$9 = objOrNot) != null) {
+            final Key $objOrNot$10 = (Key)$objOrNot$9;
         }
-        .java.lang.Object $obj$12;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified($obj$12 = obj, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor))) {
-            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<.java.lang.Object, .java.lang.Object> $obj$13 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)$obj$12;
+        .java.lang.Object $objOrNot$12;
+        if (($objOrNot$12 = objOrNot) != null || $objOrNot$12 instanceof .ceylon.language.Integer) {
+            final Key $objOrNot$13 = (Key)$objOrNot$12;
         }
-        .java.lang.Object $obj$15;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified($obj$15 = obj, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor))) {
-            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<.java.lang.Object, .ceylon.language.Integer> $obj$16 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)$obj$15;
+        .java.lang.Object $fu$15;
+        if (($fu$15 = objOrNot) != null) {
+            final Key $fu$16 = (Key)$fu$15;
+        }
+        final boolean b = (
+            let
+            {
+                .java.lang.Object $ceylontmp17 = objOrNot;
+            }
+            returning $ceylontmp17 != null;
+        );
+        {
+            .java.lang.Object $sel$18 = objOrNot;
+            if ($sel$18 != null) {
+                final Key $objOrNot$19 = (Key)$sel$18;
+            } else {
+            }
+        }
+        .java.lang.Object $obj$21;
+        if (($obj$21 = obj) instanceof .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2<? extends .java.lang.Object, ? extends .java.lang.Object> $obj$22 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2)$obj$21;
+        }
+        .java.lang.Object $obj$24;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified($obj$24 = obj, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor))) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<.java.lang.Object, .java.lang.Object> $obj$25 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)$obj$24;
+        }
+        .java.lang.Object $obj$27;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified($obj$27 = obj, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor))) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<.java.lang.Object, .ceylon.language.Integer> $obj$28 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)$obj$27;
         }
     }
 }

@@ -41,7 +41,7 @@ class ForIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                         while (true) {
                             if (!this.x()) break;
                             .java.lang.Object $x$1 = null;
-                            if (($x$1 = x) instanceof .ceylon.language.Integer) {
+                            if (($x$1 = x) != null) {
                                 $x$2 = ((.ceylon.language.Integer)$x$1).longValue();
                                 break;
                             }
@@ -88,7 +88,7 @@ class ForIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                         while (true) {
                             if (!this.x()) break;
                             .java.lang.Object $y$4 = null;
-                            if (($y$4 = x) instanceof .ceylon.language.Integer) {
+                            if (($y$4 = x) != null) {
                                 $y$5 = ((.ceylon.language.Integer)$y$4).longValue();
                                 break;
                             }

@@ -15,7 +15,7 @@ class MethodIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     private final long m1$priv(final .ceylon.language.Integer x) {
         .java.lang.Object $x$1;
-        if (($x$1 = x) instanceof .ceylon.language.Integer) {
+        if (($x$1 = x) != null) {
             final long $x$2 = ((.ceylon.language.Integer)$x$1).longValue();
             return $x$2;
         } else {
@@ -25,7 +25,7 @@ class MethodIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     private final long m2$priv(final .ceylon.language.Integer x) {
         .java.lang.Object $y$4;
-        if (($y$4 = x) instanceof .ceylon.language.Integer) {
+        if (($y$4 = x) != null) {
             final long $y$5 = ((.ceylon.language.Integer)$y$4).longValue();
             return $y$5;
         } else {

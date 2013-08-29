@@ -16,6 +16,19 @@ void test<Key,Value>(Object obj){
     }
     if(is Key obj){
     }
+    Key? objOrNot = nothing;
+    // optimised away
+    if(is Key objOrNot){
+    }
+    if(is Key|Integer objOrNot){
+    }
+    if(is Key fu = objOrNot){
+    }
+    Boolean b = objOrNot is Key;
+    switch(objOrNot)
+    case(is Key){
+    }
+    else{}
     // optimised away
     if(is TestInterface2<Anything,Anything> obj){
     }

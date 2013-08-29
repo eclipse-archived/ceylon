@@ -16,7 +16,7 @@ class AssertIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     private final long m1$priv(final .ceylon.language.Integer x) {
         final long $x$2;
         .java.lang.Object $x$1 = null;
-        if (($x$1 = x) instanceof .ceylon.language.Integer) {
+        if (($x$1 = x) != null) {
             $x$2 = ((.ceylon.language.Integer)$x$1).longValue();
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer x"));
         return $x$2;
@@ -25,7 +25,7 @@ class AssertIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     private final long m2$priv(final .ceylon.language.Integer x) {
         final long $y$5;
         .java.lang.Object $y$4 = null;
-        if (($y$4 = x) instanceof .ceylon.language.Integer) {
+        if (($y$4 = x) != null) {
             $y$5 = ((.ceylon.language.Integer)$y$4).longValue();
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer y=x"));
         return $y$5;
