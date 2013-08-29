@@ -48,4 +48,29 @@
     </ceylon-doc>
   </target>
 
+  <target name="links" depends="ant-tasks">
+    <ceylon-doc
+      executable="${script.cey}"
+      src="${arg.src}"
+      out="${arg.out}">
+       <link url="file://${arg.out}"/>
+       <module name="com.example.foo"/>
+       <module name="com.example.bar"/>
+    </ceylon-doc>
+  </target>
+
+  <target name="linkset" depends="ant-tasks">
+  	<linkset id="links">
+      <link url="file://${arg.out}"/>
+    </linkset>
+    <ceylon-doc
+      executable="${script.cey}"
+      src="${arg.src}"
+      out="${arg.out}">
+       <linkset refid="links"/>
+       <module name="com.example.foo"/>
+       <module name="com.example.bar"/>
+    </ceylon-doc>
+  </target>
+
 </project>

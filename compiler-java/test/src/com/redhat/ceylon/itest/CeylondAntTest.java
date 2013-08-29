@@ -19,7 +19,10 @@
  */
 package com.redhat.ceylon.itest;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -45,7 +48,42 @@ public class CeylondAntTest extends AntBasedTest {
         Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/module-doc/a/index.html").exists());
         Assert.assertEquals(1, new File(result.getOut(), "com/example").list().length);
     }
-    
+
+    @Test
+    public void testDocumentModuleLinks() throws Exception {
+        testDocumentModuleLinks("links");
+    }
+
+    @Test
+    public void testDocumentModuleLinkset() throws Exception {
+        testDocumentModuleLinks("linkset");
+    }
+
+    private void testDocumentModuleLinks(String target) throws Exception {
+        AntResult result = ant(target);
+        Assert.assertEquals(0, result.getStatusCode());
+        Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/module-doc/a/index.html").exists());
+        Assert.assertTrue(new File(result.getOut(), "com/example/bar/1.0/module-doc/b/index.html").exists());
+        File cFile = new File(result.getOut(), "com/example/bar/1.0/module-doc/b/C.type.html");
+        Assert.assertTrue(cFile.exists());
+        Assert.assertEquals(2, new File(result.getOut(), "com/example").list().length);
+        
+        String total = readFile(cFile);
+        assertContains(total, "<a class='link' href='file://"+result.getOut().getPath()+"/com/example/foo/1.0/module-doc/a/I.type.html' title='Go to com.example.foo.a::I'>I</a>");
+    }
+
+    private String readFile(File cFile) throws IOException {
+        BufferedReader fr = new BufferedReader(new FileReader(cFile));
+        StringBuffer sb = new StringBuffer();
+        String line;
+        while((line = fr.readLine()) != null){
+            sb.append(line);
+            System.err.print(line);
+        }
+        fr.close();
+        return sb.toString();
+    }
+
     @Test
     public void testDocumentModuleFooTwice() throws Exception {
         AntResult result = ant("foo-alone");
@@ -53,15 +91,15 @@ public class CeylondAntTest extends AntBasedTest {
         File index = new File(result.getOut(), "com/example/foo/1.0/module-doc/a/index.html");
         Assert.assertTrue(index.exists());
         Assert.assertEquals(1, new File(result.getOut(), "com/example").list().length);
-        assertNotContains(result.getStdout(), "[ceylond] No need to compile com.example.foo, it's up to date");
-        assertNotContains(result.getStdout(), "[ceylond] Everything's up to date");
+        assertNotContains(result.getStdout(), "[ceylon-doc] No need to compile com.example.foo, it's up to date");
+        assertNotContains(result.getStdout(), "[ceylon-doc] Everything's up to date");
         final long lastModified = index.lastModified();
         
         result = ant("foo-alone");
         Assert.assertEquals(0, result.getStatusCode());
         Assert.assertTrue(index.exists());
-        assertContains(result.getStdout(), "[ceylond] No need to compile com.example.foo, it's up to date");
-        assertContains(result.getStdout(), "[ceylond] Everything's up to date");
+        assertContains(result.getStdout(), "[ceylon-doc] No need to compile com.example.foo, it's up to date");
+        assertContains(result.getStdout(), "[ceylon-doc] Everything's up to date");
         Assert.assertEquals(lastModified, index.lastModified());
     }
     
