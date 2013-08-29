@@ -1460,6 +1460,9 @@ public class ExpressionVisitor extends Visitor {
             if (!isTypeUnknown(et)) {
                 checkAssignable(et, unit.getExceptionDeclaration().getType(), 
                         e, "thrown expression must be an exception");
+                if (et.getDeclaration().isParameterized()) {
+                    e.addWarning("parameterized types in throw not yet supported");
+                }
             }
         }
     }
@@ -4518,14 +4521,21 @@ public class ExpressionVisitor extends Visitor {
         Tree.Variable var = that.getVariable();
         if (var!=null) {
             ProducedType et = unit.getExceptionDeclaration().getType();
-            if (var.getType() instanceof Tree.LocalModifier) {
-                var.getType().setTypeModel(et);
+            Tree.Type vt = var.getType();
+            if (vt instanceof Tree.LocalModifier) {
+                vt.setTypeModel(et);
                 var.getDeclarationModel().setType(et);
             }
             else {
-                checkAssignable(var.getType().getTypeModel(), et, 
-                        var.getType(), 
+                checkAssignable(vt.getTypeModel(), et, vt, 
                         "catch type must be an exception type");
+                TypeDeclaration d = vt.getTypeModel().getDeclaration();
+                if (d instanceof IntersectionType) {
+                    vt.addWarning("intersection types in catch not yet supported");
+                }
+                else if (d.isParameterized()) {
+                    vt.addWarning("parameterized types in catch not yet supported");
+                }
             }
         }
     }
@@ -5080,11 +5090,11 @@ public class ExpressionVisitor extends Visitor {
     public void visit(Tree.ExtendedType that) {
         visitExtendedOrAliasedType(that.getType(), 
                 that.getInvocationExpression());
-
+        
         inExtendsClause = true;
         super.visit(that);
         inExtendsClause = false;
-
+        
         TypeDeclaration td = (TypeDeclaration) that.getScope();
         Tree.SimpleType et = that.getType();
         if (et!=null) {
@@ -5107,6 +5117,10 @@ public class ExpressionVisitor extends Visitor {
                                     etd.getName(unit));
                         }
                     }
+                }
+                if (td.isParameterized() &&
+                        type.getSupertype(unit.getExceptionDeclaration())!=null) {
+                    et.addWarning("generic exception types not yet supported");
                 }
             }
         }
