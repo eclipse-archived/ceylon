@@ -9,7 +9,7 @@ shared class TestClass<Key, Value>()
     satisfies TestInterface<Key, Integer>{}
 
 @noanno
-void test<Key,Value>(Object obj){
+void test<Key,Value>(Object obj) given Key satisfies Object {
     if(is TestClass<String,Integer> obj){
     }
     if(is TestInterface<String,Value> obj){
@@ -37,4 +37,10 @@ void test<Key,Value>(Object obj){
     }
     if(is TestInterface<Anything,Integer> obj){
     }
+}
+
+shared void first<Value,Absent>()
+        given Absent satisfies Null {
+    Value? first = nothing;
+    assert (is Absent|Value first);
 }

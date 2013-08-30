@@ -2643,6 +2643,7 @@ public abstract class AbstractTransformer implements Transformation {
         testedType = testedType.resolveAliases();
         // optimisation when all we're doing is making sure it is not null
         if(expressionType != null
+                && testedType.getSupertype(typeFact().getObjectDeclaration()) != null
                 && expressionType.isExactly(typeFact().getOptionalType(testedType))){
             JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : varName.makeIdent();
             return make().Binary(JCTree.NE, varExpr, makeNull());

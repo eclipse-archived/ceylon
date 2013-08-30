@@ -80,46 +80,83 @@ final class test_ {
         if (.com.redhat.ceylon.compiler.java.Util.isReified($obj$4 = obj, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, .ceylon.language.String.$TypeDescriptor, $reifiedValue))) {
             final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<.ceylon.language.String, Value> $obj$5 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)$obj$4;
         }
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(obj, $reifiedKey)) {
+        .java.lang.Object $obj$7;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified($obj$7 = obj, $reifiedKey)) {
+            final Key $obj$8 = (Key)$obj$7;
         }
         final Key objOrNot = (Key).ceylon.language.nothing_.$get();
-        .java.lang.Object $objOrNot$9;
-        if (($objOrNot$9 = objOrNot) != null) {
-            final Key $objOrNot$10 = (Key)$objOrNot$9;
+        .java.lang.Object $objOrNot$10;
+        if (($objOrNot$10 = objOrNot) != null) {
+            final Key $objOrNot$11 = (Key)$objOrNot$10;
         }
-        .java.lang.Object $objOrNot$12;
-        if (($objOrNot$12 = objOrNot) != null || $objOrNot$12 instanceof .ceylon.language.Integer) {
-            final Key $objOrNot$13 = (Key)$objOrNot$12;
+        .java.lang.Object $objOrNot$13;
+        if (($objOrNot$13 = objOrNot) != null || $objOrNot$13 instanceof .ceylon.language.Integer) {
+            final Key $objOrNot$14 = (Key)$objOrNot$13;
         }
-        .java.lang.Object $fu$15;
-        if (($fu$15 = objOrNot) != null) {
-            final Key $fu$16 = (Key)$fu$15;
+        .java.lang.Object $fu$16;
+        if (($fu$16 = objOrNot) != null) {
+            final Key $fu$17 = (Key)$fu$16;
         }
         final boolean b = (
             let
             {
-                .java.lang.Object $ceylontmp17 = objOrNot;
+                .java.lang.Object $ceylontmp18 = objOrNot;
             }
-            returning $ceylontmp17 != null;
+            returning $ceylontmp18 != null;
         );
         {
-            .java.lang.Object $sel$18 = objOrNot;
-            if ($sel$18 != null) {
-                final Key $objOrNot$19 = (Key)$sel$18;
+            .java.lang.Object $sel$19 = objOrNot;
+            if ($sel$19 != null) {
+                final Key $objOrNot$20 = (Key)$sel$19;
             } else {
             }
         }
-        .java.lang.Object $obj$21;
-        if (($obj$21 = obj) instanceof .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2) {
-            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2<? extends .java.lang.Object, ? extends .java.lang.Object> $obj$22 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2)$obj$21;
+        .java.lang.Object $obj$22;
+        if (($obj$22 = obj) instanceof .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2<? extends .java.lang.Object, ? extends .java.lang.Object> $obj$23 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2)$obj$22;
         }
-        .java.lang.Object $obj$24;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified($obj$24 = obj, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor))) {
-            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<.java.lang.Object, .java.lang.Object> $obj$25 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)$obj$24;
+        .java.lang.Object $obj$25;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified($obj$25 = obj, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor))) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<.java.lang.Object, .java.lang.Object> $obj$26 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)$obj$25;
         }
-        .java.lang.Object $obj$27;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified($obj$27 = obj, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor))) {
-            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<.java.lang.Object, .ceylon.language.Integer> $obj$28 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)$obj$27;
+        .java.lang.Object $obj$28;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified($obj$28 = obj, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor))) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<.java.lang.Object, .ceylon.language.Integer> $obj$29 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)$obj$28;
         }
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class first_ {
+    
+    private first_() {
+    }
+    
+    @.ceylon.language.Shared$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "Value",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {}),
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "Absent",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {"ceylon.language::Null"},
+                    caseTypes = {})})
+    public static <Value, Absent>void first(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAbsent) {
+        final Value first = (Value).ceylon.language.nothing_.$get();
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(first, $reifiedAbsent) || .com.redhat.ceylon.compiler.java.Util.isReified(first, $reifiedValue)) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Absent|Value first"));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.reified.first_.first(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
 }
