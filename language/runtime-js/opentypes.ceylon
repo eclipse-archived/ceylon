@@ -17,9 +17,9 @@ import ceylon.language.model {
 
 class OpenFunction(shared actual String name, shared actual Package packageContainer, shared actual Boolean toplevel) satisfies FunctionDeclaration {
 
-    shared actual AppliedFunction<Anything, Nothing> apply(Type* types) { throw; }
-    shared actual AppliedFunction<Anything, Nothing> bindAndApply(Object instance, Type* types) { throw; }
-    shared actual Method<Container, MethodType, Arguments> memberApply<Container, MethodType, Arguments>(Type* types)
+    shared actual AppliedFunction<Anything, Nothing> apply(Type<Anything>* types) { throw; }
+    shared actual AppliedFunction<Anything, Nothing> bindAndApply(Object instance, Type<Anything>* types) { throw; }
+    shared actual Method<Container, MethodType, Arguments> memberApply<Container, MethodType, Arguments>(Type<Anything>* types)
         given Arguments satisfies Anything[] { throw; }
 
     shared actual Boolean defaulted => false;
@@ -46,9 +46,9 @@ class OpenValue(shared actual String name, shared actual Package packageContaine
 
 class OpenClass(shared actual String name, shared actual Package packageContainer, shared actual Boolean toplevel) satisfies ClassDeclaration {
   shared actual Boolean anonymous => false;
-  shared actual AppliedClass<Anything, Nothing> apply(Type* types) { throw; }
-  shared actual AppliedClass<Anything, Nothing> bindAndApply(Object instance, Type* types) { throw; }
-  shared actual AppliedMember<Container, Kind> memberApply<Container, Kind>(Type* types)
+  shared actual AppliedClass<Anything, Nothing> apply(Type<Anything>* types) { throw; }
+  shared actual AppliedClass<Anything, Nothing> bindAndApply(Object instance, Type<Anything>* types) { throw; }
+  shared actual AppliedMember<Container, Kind> memberApply<Container, Kind>(Type<Anything>* types)
         given Kind satisfies AppliedClassOrInterface<Anything> { throw; }
   shared actual Kind[] memberDeclarations<Kind>() 
             given Kind satisfies TopLevelOrMemberDeclaration => [];
@@ -70,9 +70,9 @@ class OpenClass(shared actual String name, shared actual Package packageContaine
 }
 
 class OpenInterface(shared actual String name, shared actual Package packageContainer, shared actual Boolean toplevel) satisfies InterfaceDeclaration {
-  shared actual AppliedInterface<Anything> apply(Type* types) { throw; }
-  shared actual AppliedInterface<Anything> bindAndApply(Object instance, Type* types) { throw; }
-  shared actual AppliedMember<Container, Kind> memberApply<Container, Kind>(Type* types)
+  shared actual AppliedInterface<Anything> apply(Type<Anything>* types) { throw; }
+  shared actual AppliedInterface<Anything> bindAndApply(Object instance, Type<Anything>* types) { throw; }
+  shared actual AppliedMember<Container, Kind> memberApply<Container, Kind>(Type<Anything>* types)
         given Kind satisfies AppliedClassOrInterface<Anything> { throw; }
 
   shared actual Kind[] memberDeclarations<Kind>() 
