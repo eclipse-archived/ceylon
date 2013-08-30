@@ -1008,12 +1008,21 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression toplevelCall = make().Apply(null, makeSelect(packageCall, getter), 
                                                      List.<JCExpression>of(ceylonLiteral(declaration.getName())));
             
-            if(Decl.isMethod(declaration) && expr.getTypeArgumentList() != null){
+            List<JCExpression> closedTypeArgs = List.<JCExpression>nil();
+            if(Decl.isMethod(declaration)
+                    && !expr.getWantsDeclaration()
+                    && expr.getTypeArgumentList() != null){
                 JCExpression closedTypesExpr = getClosedTypesSequential(expr.getTypeArgumentList().getTypeModels());
                 // must apply it
-                return make().Apply(null, makeSelect(toplevelCall, "apply"), List.of(closedTypesExpr));
+                closedTypeArgs = List.of(closedTypesExpr);
+            } 
+            if(!expr.getWantsDeclaration()){
+                toplevelCall = make().Apply(null, makeSelect(toplevelCall, "apply"), closedTypeArgs);
             }
-            return toplevelCall;
+            // add cast
+            ProducedType exprType = expr.getTypeModel().resolveAliases();
+            JCExpression typeClass = makeJavaType(exprType, JT_NO_PRIMITIVES);
+            return make().TypeCast(typeClass, toplevelCall);
         }else if(expr.getWantsDeclaration()){
             // it's a member we get from its container declaration
             // FIXME: other containers?
@@ -1115,7 +1124,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         for (ProducedType producedType : typeModels) {
             closedTypes.add(makeTypeLiteralCall(producedType));
         }
-        ProducedType elementType = typeFact().getMetamodelTypeDeclaration().getType();
+        ProducedType elementType = typeFact().getMetamodelTypeDeclaration().getProducedType(null, Arrays.asList(typeFact().getAnythingDeclaration().getType()));
         // now wrap into a sequential
         return makeSequence(closedTypes.toList(), elementType, CeylonTransformer.JT_CLASS_NEW);
     }
