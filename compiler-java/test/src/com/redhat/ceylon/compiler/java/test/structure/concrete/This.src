@@ -24,14 +24,14 @@ final class This$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.This $this;
     
-    public final long m2() {
+    public long m2() {
         return (
             let
             {
                 long $ceylontmp$i1$0 = m2$i1();
                 long $ceylontmp$i2$1 = m2$i2($ceylontmp$i1$0);
             }
-            returning $this.m2($ceylontmp$i1$0, $ceylontmp$i2$1);
+            returning m2$($ceylontmp$i1$0, $ceylontmp$i2$1);
         );
     }
     
@@ -39,13 +39,13 @@ final class This$impl {
         return $this.m1();
     }
     
-    public final long m2(final long i1) {
+    public long m2(final long i1) {
         return (
             let
             {
                 long $ceylontmp$i2$2 = m2$i2(i1);
             }
-            returning $this.m2(i1, $ceylontmp$i2$2);
+            returning m2$(i1, $ceylontmp$i2$2);
         );
     }
     
@@ -53,8 +53,12 @@ final class This$impl {
         return $this.m1();
     }
     
-    public long m2(final long i1, final long i2) {
+    private final long m2$(final long i1, final long i2) {
         return $this.m1() + $this.m1() + i1 + i2;
+    }
+    
+    public long m2(final long i1, final long i2) {
+        return m2$(i1, i2);
     }
     
     class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {

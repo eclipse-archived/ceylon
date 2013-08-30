@@ -23,7 +23,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             let
             {
                 .ceylon.language.Sequential<? extends T> $ceylontmp$s$0 = m2$s(i);
-                m2(i, $ceylontmp$s$0);
+                m2$(i, $ceylontmp$s$0);
             }
             returning null;
         );
@@ -33,7 +33,17 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
+    private final void m2$(final long i, final .ceylon.language.Sequential<? extends T> s) {
+    }
+    
     public final void m2(final long i, final .ceylon.language.Sequential<? extends T> s) {
+        (
+            let
+            {
+                m2$(i, s);
+            }
+            returning null;
+        );
     }
     
     private final void spreadTuple$priv(final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> args) {
@@ -278,7 +288,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             let
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$33 = m4$i();
-                m4($ceylontmp$i$33);
+                m4$($ceylontmp$i$33);
             }
             returning null;
         );
@@ -288,7 +298,17 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
+    private final void m4$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+    }
+    
     public final void m4(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+        (
+            let
+            {
+                m4$(i);
+            }
+            returning null;
+        );
     }
     
     private final void spreadIterator$priv(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iter, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> nonEmptyIter) {

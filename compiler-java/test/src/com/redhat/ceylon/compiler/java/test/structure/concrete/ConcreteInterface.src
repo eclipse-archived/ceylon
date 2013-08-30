@@ -22,29 +22,8 @@ final class I1$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1 $this;
     
-    public final .java.lang.String m1() {
-        return (
-            let
-            {
-                long $ceylontmp$i$0 = m1$i();
-                boolean $ceylontmp$b$1 = m1$b($ceylontmp$i$0);
-            }
-            returning $this.m1($ceylontmp$i$0, $ceylontmp$b$1);
-        );
-    }
-    
     public final long m1$i() {
         return 0L;
-    }
-    
-    public final .java.lang.String m1(final long i) {
-        return (
-            let
-            {
-                boolean $ceylontmp$b$2 = m1$b(i);
-            }
-            returning $this.m1(i, $ceylontmp$b$2);
-        );
     }
     
     public final boolean m1$b(final long i) {
@@ -73,29 +52,8 @@ final class I2$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 $this;
     
-    public final .java.lang.String m2() {
-        return (
-            let
-            {
-                long $ceylontmp$i$3 = m2$i();
-                boolean $ceylontmp$b$4 = m2$b($ceylontmp$i$3);
-            }
-            returning $this.m2($ceylontmp$i$3, $ceylontmp$b$4);
-        );
-    }
-    
     public final long m2$i() {
         return 0L;
-    }
-    
-    public final .java.lang.String m2(final long i) {
-        return (
-            let
-            {
-                boolean $ceylontmp$b$5 = m2$b(i);
-            }
-            returning $this.m2(i, $ceylontmp$b$5);
-        );
     }
     
     public final boolean m2$b(final long i) {
@@ -121,18 +79,8 @@ class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
     }
     
     @.java.lang.Override
-    public final .java.lang.String m1() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this.m1();
-    }
-    
-    @.java.lang.Override
     public final boolean m1$b(final long i) {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this.m1$b(i);
-    }
-    
-    @.java.lang.Override
-    public final .java.lang.String m1(final long i) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this.m1(i);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this;
     
@@ -147,28 +95,68 @@ class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
     }
     
     @.java.lang.Override
-    public final .java.lang.String m2() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this.m2();
-    }
-    
-    @.java.lang.Override
     public final boolean m2$b(final long i) {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this.m2$b(i);
     }
     
-    @.java.lang.Override
-    public final .java.lang.String m2(final long i) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this.m2(i);
+    public final .java.lang.String m1() {
+        return (
+            let
+            {
+                long $ceylontmp$i$0 = m1$i();
+                boolean $ceylontmp$b$1 = m1$b($ceylontmp$i$0);
+            }
+            returning m1$($ceylontmp$i$0, $ceylontmp$b$1);
+        );
+    }
+    
+    public final .java.lang.String m1(final long i) {
+        return (
+            let
+            {
+                boolean $ceylontmp$b$2 = m1$b(i);
+            }
+            returning m1$(i, $ceylontmp$b$2);
+        );
+    }
+    
+    private final .java.lang.String m1$(final long i, final boolean b) {
+        return "";
     }
     
     @.java.lang.Override
     public final .java.lang.String m1(final long i, final boolean b) {
+        return m1$(i, b);
+    }
+    
+    public final .java.lang.String m2() {
+        return (
+            let
+            {
+                long $ceylontmp$i$3 = m2$i();
+                boolean $ceylontmp$b$4 = m2$b($ceylontmp$i$3);
+            }
+            returning m2$($ceylontmp$i$3, $ceylontmp$b$4);
+        );
+    }
+    
+    public final .java.lang.String m2(final long i) {
+        return (
+            let
+            {
+                boolean $ceylontmp$b$5 = m2$b(i);
+            }
+            returning m2$(i, $ceylontmp$b$5);
+        );
+    }
+    
+    private final .java.lang.String m2$(final long i, final boolean b) {
         return "";
     }
     
     @.java.lang.Override
     public final .java.lang.String m2(final long i, final boolean b) {
-        return "";
+        return m2$(i, b);
     }
     
     public static void main(.java.lang.String[] args) {

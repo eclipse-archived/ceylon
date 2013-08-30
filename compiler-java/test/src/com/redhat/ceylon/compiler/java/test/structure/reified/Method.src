@@ -71,7 +71,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
             {
                 long $ceylontmp$a$0 = methodWithOverloads$a($reifiedT);
                 long $ceylontmp$b$1 = methodWithOverloads$b($reifiedT, $ceylontmp$a$0);
-                methodWithOverloads($reifiedT, $ceylontmp$a$0, $ceylontmp$b$1);
+                methodWithOverloads$($reifiedT, $ceylontmp$a$0, $ceylontmp$b$1);
             }
             returning null;
         );
@@ -88,7 +88,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
             let
             {
                 long $ceylontmp$b$2 = methodWithOverloads$b($reifiedT, a);
-                methodWithOverloads($reifiedT, a, $ceylontmp$b$2);
+                methodWithOverloads$($reifiedT, a, $ceylontmp$b$2);
             }
             returning null;
         );
@@ -97,6 +97,10 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final <T>long methodWithOverloads$b(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final long a) {
         return 3L;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final <T>void methodWithOverloads$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final long a, final long b) {
     }
     
     @.ceylon.language.Shared$annotation
@@ -115,6 +119,13 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long b) {
+        (
+            let
+            {
+                methodWithOverloads$($reifiedT, a, b);
+            }
+            returning null;
+        );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
@@ -215,13 +226,13 @@ public final class MethodInterface$impl {
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface $this;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final <T>void methodWithOverloads(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    public <T>void methodWithOverloads(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         (
             let
             {
                 long $ceylontmp$a$5 = methodWithOverloads$a($reifiedT);
                 long $ceylontmp$b$6 = methodWithOverloads$b($reifiedT, $ceylontmp$a$5);
-                $this.methodWithOverloads($reifiedT, $ceylontmp$a$5, $ceylontmp$b$6);
+                methodWithOverloads$($reifiedT, $ceylontmp$a$5, $ceylontmp$b$6);
             }
             returning null;
         );
@@ -233,12 +244,12 @@ public final class MethodInterface$impl {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final <T>void methodWithOverloads(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final long a) {
+    public <T>void methodWithOverloads(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final long a) {
         (
             let
             {
                 long $ceylontmp$b$7 = methodWithOverloads$b($reifiedT, a);
-                $this.methodWithOverloads($reifiedT, a, $ceylontmp$b$7);
+                methodWithOverloads$($reifiedT, a, $ceylontmp$b$7);
             }
             returning null;
         );
@@ -249,8 +260,19 @@ public final class MethodInterface$impl {
         return 3L;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final <T>void methodWithOverloads$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final long a, final long b) {
+    }
+    
     public <T>void methodWithOverloads(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final long a, final long b) {
+        (
+            let
+            {
+                methodWithOverloads$($reifiedT, a, b);
+            }
+            returning null;
+        );
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
@@ -295,10 +317,17 @@ public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.run
         return $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this.methodWithOverloads$a($reifiedT);
     }
     
-    @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final <T>void methodWithOverloads(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this.methodWithOverloads($reifiedT);
+    public <T>void methodWithOverloads(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        (
+            let
+            {
+                long $ceylontmp$a$8 = methodWithOverloads$a($reifiedT);
+                long $ceylontmp$b$9 = methodWithOverloads$b($reifiedT, $ceylontmp$a$8);
+                methodWithOverloads$($reifiedT, $ceylontmp$a$8, $ceylontmp$b$9);
+            }
+            returning null;
+        );
     }
     
     @.java.lang.Override
@@ -307,15 +336,26 @@ public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.run
         return $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this.methodWithOverloads$b($reifiedT, a);
     }
     
-    @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final <T>void methodWithOverloads(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final long a) {
-        $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this.methodWithOverloads($reifiedT, a);
+    public <T>void methodWithOverloads(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final long a) {
+        (
+            let
+            {
+                long $ceylontmp$b$10 = methodWithOverloads$b($reifiedT, a);
+                methodWithOverloads$($reifiedT, a, $ceylontmp$b$10);
+            }
+            returning null;
+        );
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final <T>void methodWithOverloads(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final long a, final long b) {
+        $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this.methodWithOverloads($reifiedT, a, b);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final <T>void methodWithOverloads$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final long a, final long b) {
         $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this.methodWithOverloads($reifiedT, a, b);
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m$specifier;

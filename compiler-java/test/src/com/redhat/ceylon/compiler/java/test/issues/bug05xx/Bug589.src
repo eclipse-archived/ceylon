@@ -5,15 +5,7 @@ public abstract class Bug589 implements .com.redhat.ceylon.compiler.java.runtime
     public Bug589() {
     }
     
-    public .java.lang.Object inc() {
-        return (
-            let
-            {
-                long $ceylontmp$i$0 = inc$i();
-            }
-            returning inc($ceylontmp$i$0);
-        );
-    }
+    public abstract .java.lang.Object inc();
     
     public final long inc$i() {
         return 1L;

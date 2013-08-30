@@ -19,7 +19,7 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> i
             {
                 U $ceylontmp$u$0 = m1$u($reifiedU, b);
             }
-            returning m1$priv($reifiedU, b, $ceylontmp$u$0);
+            returning m1$priv$($reifiedU, b, $ceylontmp$u$0);
         );
     }
     
@@ -27,8 +27,12 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> i
         return null;
     }
     
-    private final <U>T m1$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final X b, final U u) {
+    private final <U>T m1$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final X b, final U u) {
         throw new .ceylon.language.Exception(null, null);
+    }
+    
+    private final <U>T m1$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final X b, final U u) {
+        return m1$priv$($reifiedU, b, u);
     }
     
     final class CI$impl {

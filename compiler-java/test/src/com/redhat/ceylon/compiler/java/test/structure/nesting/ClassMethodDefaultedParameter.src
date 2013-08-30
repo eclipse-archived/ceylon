@@ -12,7 +12,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
             let
             {
                 long $ceylontmp$i$0 = m$i();
-                m$priv($ceylontmp$i$0);
+                m$priv$($ceylontmp$i$0);
             }
             returning null;
         );
@@ -22,7 +22,17 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return 1L;
     }
     
+    private final void m$priv$(final long i) {
+    }
+    
     private final void m$priv(final long i) {
+        (
+            let
+            {
+                m$priv$(i);
+            }
+            returning null;
+        );
     }
     
     public final long m2() {
@@ -31,7 +41,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
             {
                 long $ceylontmp$i$1 = m2$i();
             }
-            returning m2($ceylontmp$i$1);
+            returning m2$($ceylontmp$i$1);
         );
     }
     
@@ -39,8 +49,12 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return 1L;
     }
     
-    public final long m2(final long i) {
+    private final long m2$(final long i) {
         return i;
+    }
+    
+    public final long m2(final long i) {
+        return m2$(i);
     }
     
     private final long m3$priv() {
@@ -50,7 +64,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
                 long $ceylontmp$i$2 = m3$i();
                 long $ceylontmp$n$3 = m3$n($ceylontmp$i$2);
             }
-            returning m3$priv($ceylontmp$i$2, $ceylontmp$n$3);
+            returning m3$priv$($ceylontmp$i$2, $ceylontmp$n$3);
         );
     }
     
@@ -64,7 +78,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
             {
                 long $ceylontmp$n$4 = m3$n(i);
             }
-            returning m3$priv(i, $ceylontmp$n$4);
+            returning m3$priv$(i, $ceylontmp$n$4);
         );
     }
     
@@ -72,8 +86,12 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return 2L * i;
     }
     
-    private final long m3$priv(final long i, final long n) {
+    private final long m3$priv$(final long i, final long n) {
         return i;
+    }
+    
+    private final long m3$priv(final long i, final long n) {
+        return m3$priv$(i, n);
     }
     
     private final long m4$priv(final long i) {
@@ -82,7 +100,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
             {
                 long $ceylontmp$n$5 = m4$n(i);
             }
-            returning m4$priv(i, $ceylontmp$n$5);
+            returning m4$priv$(i, $ceylontmp$n$5);
         );
     }
     
@@ -90,8 +108,12 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return 2L * i;
     }
     
-    private final long m4$priv(final long i, final long n) {
+    private final long m4$priv$(final long i, final long n) {
         return i;
+    }
+    
+    private final long m4$priv(final long i, final long n) {
+        return m4$priv$(i, n);
     }
     
     private final <U>long m5$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i) {
@@ -101,7 +123,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
                 T $ceylontmp$t$6 = m5$t($reifiedU, i);
                 U $ceylontmp$u$7 = m5$u($reifiedU, i, $ceylontmp$t$6);
             }
-            returning m5$priv($reifiedU, i, $ceylontmp$t$6, $ceylontmp$u$7);
+            returning m5$priv$($reifiedU, i, $ceylontmp$t$6, $ceylontmp$u$7);
         );
     }
     
@@ -115,7 +137,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
             {
                 U $ceylontmp$u$8 = m5$u($reifiedU, i, t);
             }
-            returning m5$priv($reifiedU, i, t, $ceylontmp$u$8);
+            returning m5$priv$($reifiedU, i, t, $ceylontmp$u$8);
         );
     }
     
@@ -123,8 +145,12 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return null;
     }
     
-    private final <U>long m5$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i, final T t, final U u) {
+    private final <U>long m5$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i, final T t, final U u) {
         return i;
+    }
+    
+    private final <U>long m5$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i, final T t, final U u) {
+        return m5$priv$($reifiedU, i, t, u);
     }
     
     private final void positional$priv(final .com.redhat.ceylon.compiler.java.test.structure.nesting.C<.ceylon.language.Boolean> c) {

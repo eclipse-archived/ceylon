@@ -10,7 +10,7 @@ class InvocationWithVarargsAndComprehensions implements .com.redhat.ceylon.compi
             let
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$0 = m$b();
-                m$priv($ceylontmp$b$0);
+                m$priv$($ceylontmp$b$0);
             }
             returning null;
         );
@@ -20,8 +20,18 @@ class InvocationWithVarargsAndComprehensions implements .com.redhat.ceylon.compi
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void m$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
+    private final void m$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.Empty, ? extends .ceylon.language.Empty, ? extends .ceylon.language.Empty>>> t = new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.String.instance("a"), new .ceylon.language.Tuple<.ceylon.language.Empty, .ceylon.language.Empty, .ceylon.language.Empty>(.ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.empty_.$get(), .ceylon.language.empty_.$get())));
+    }
+    
+    private final void m$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
+        (
+            let
+            {
+                m$priv$(b);
+            }
+            returning null;
+        );
     }
     
     public static void main(.java.lang.String[] args) {

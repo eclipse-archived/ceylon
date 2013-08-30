@@ -66,12 +66,12 @@ public final class Visitable$impl {
         return null;
     }
     
-    public final void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
+    public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
         (
             let
             {
                 .ceylon.language.Sequential $ceylontmp$tags$0 = visitAroundTags$tags(visitor, name);
-                $this.visitAroundTags(visitor, name, $ceylontmp$tags$0);
+                visitAroundTags$(visitor, name, $ceylontmp$tags$0);
             }
             returning null;
         );
@@ -81,7 +81,17 @@ public final class Visitable$impl {
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
+    private final void visitAroundTags$(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
+    }
+    
     public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
+        (
+            let
+            {
+                visitAroundTags$(visitor, name, tags);
+            }
+            returning null;
+        );
     }
 }
 public class Html implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
@@ -144,13 +154,23 @@ public class Html implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return (.ceylon.language.Sequential)$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags$tags(visitor, name);
     }
     
-    @.java.lang.Override
-    public final void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
-        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name);
+    public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
+        (
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$tags$4 = visitAroundTags$tags(visitor, name);
+                visitAroundTags$(visitor, name, $ceylontmp$tags$4);
+            }
+            returning null;
+        );
     }
     
     @.java.lang.Override
     public final void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name, tags);
+    }
+    
+    private final void visitAroundTags$(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
         $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name, tags);
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head head;
@@ -186,8 +206,8 @@ public class Head implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         (
             let
             {
-                .ceylon.language.String $ceylontmp$title$4 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head.$init$title();
-                this($ceylontmp$title$4);
+                .ceylon.language.String $ceylontmp$title$5 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head.$init$title();
+                this($ceylontmp$title$5);
             }
             returning null;
         );
@@ -223,13 +243,23 @@ public class Head implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return (.ceylon.language.Sequential)$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags$tags(visitor, name);
     }
     
-    @.java.lang.Override
-    public final void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
-        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name);
+    public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
+        (
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$tags$6 = visitAroundTags$tags(visitor, name);
+                visitAroundTags$(visitor, name, $ceylontmp$tags$6);
+            }
+            returning null;
+        );
     }
     
     @.java.lang.Override
     public final void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name, tags);
+    }
+    
+    private final void visitAroundTags$(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
         $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name, tags);
     }
     private final .ceylon.language.String title;
@@ -284,8 +314,8 @@ public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.iss
         (
             let
             {
-                .ceylon.language.Sequential $ceylontmp$initialTags$5 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Container.<TagType>$init$initialTags($reifiedTagType, name);
-                this($reifiedTagType, name, $ceylontmp$initialTags$5);
+                .ceylon.language.Sequential $ceylontmp$initialTags$7 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Container.<TagType>$init$initialTags($reifiedTagType, name);
+                this($reifiedTagType, name, $ceylontmp$initialTags$7);
             }
             returning null;
         );
@@ -323,13 +353,23 @@ public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.iss
         return (.ceylon.language.Sequential)$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags$tags(visitor, name);
     }
     
-    @.java.lang.Override
-    public final void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
-        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name);
+    public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
+        (
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$tags$8 = visitAroundTags$tags(visitor, name);
+                visitAroundTags$(visitor, name, $ceylontmp$tags$8);
+            }
+            returning null;
+        );
     }
     
     @.java.lang.Override
     public final void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name, tags);
+    }
+    
+    private final void visitAroundTags$(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
         $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name, tags);
     }
     private final .ceylon.language.Sequential tags;
@@ -355,8 +395,8 @@ public class Body extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.C
         (
             let
             {
-                .ceylon.language.Sequential $ceylontmp$initialTags$6 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body.$init$initialTags();
-                this($ceylontmp$initialTags$6);
+                .ceylon.language.Sequential $ceylontmp$initialTags$9 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body.$init$initialTags();
+                this($ceylontmp$initialTags$9);
             }
             returning null;
         );
@@ -382,8 +422,8 @@ public class Block extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.
         (
             let
             {
-                .ceylon.language.Sequential $ceylontmp$initialTags$7 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Block.$init$initialTags(name);
-                this(name, $ceylontmp$initialTags$7);
+                .ceylon.language.Sequential $ceylontmp$initialTags$10 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Block.$init$initialTags(name);
+                this(name, $ceylontmp$initialTags$10);
             }
             returning null;
         );
@@ -416,8 +456,8 @@ public class P extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bloc
         (
             let
             {
-                .ceylon.language.Sequential $ceylontmp$tags$8 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.P.$init$tags();
-                this($ceylontmp$tags$8);
+                .ceylon.language.Sequential $ceylontmp$tags$11 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.P.$init$tags();
+                this($ceylontmp$tags$11);
             }
             returning null;
         );
@@ -443,8 +483,8 @@ public class Inline extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx
         (
             let
             {
-                .ceylon.language.Sequential $ceylontmp$initialTags$9 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Inline.$init$initialTags(name);
-                this(name, $ceylontmp$initialTags$9);
+                .ceylon.language.Sequential $ceylontmp$initialTags$12 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Inline.$init$initialTags(name);
+                this(name, $ceylontmp$initialTags$12);
             }
             returning null;
         );
@@ -484,8 +524,8 @@ public class B extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Inli
         (
             let
             {
-                .ceylon.language.Sequential $ceylontmp$tags$10 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.B.$init$tags();
-                this($ceylontmp$tags$10);
+                .ceylon.language.Sequential $ceylontmp$tags$13 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.B.$init$tags();
+                this($ceylontmp$tags$13);
             }
             returning null;
         );

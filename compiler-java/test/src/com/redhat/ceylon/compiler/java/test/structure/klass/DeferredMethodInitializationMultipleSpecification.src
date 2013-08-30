@@ -17,7 +17,7 @@ class DeferredMethodInitializationMultipleSpecification implements .com.redhat.c
                     {
                         .java.lang.String $ceylontmp$name$0 = s$name();
                     }
-                    returning s$priv($ceylontmp$name$0);
+                    returning s$priv$($ceylontmp$name$0);
                 );
             }
             
@@ -25,8 +25,12 @@ class DeferredMethodInitializationMultipleSpecification implements .com.redhat.c
                 return "world";
             }
             
-            private final .java.lang.String s$priv(final .java.lang.String name) {
+            private final .java.lang.String s$priv$(final .java.lang.String name) {
                 if (s$priv == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return s$priv.$call(.ceylon.language.String.instance(name)).toString();
+            }
+            
+            private final .java.lang.String s$priv(final .java.lang.String name) {
+                return s$priv$(name);
             }
         }
         final s_ s = new s_();

@@ -10,7 +10,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
             let
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$0 = m$i(a);
-                m$priv(a, $ceylontmp$i$0);
+                m$priv$(a, $ceylontmp$i$0);
             }
             returning null;
         );
@@ -20,7 +20,17 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
+    private final void m$priv$(final .java.lang.String a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+    }
+    
     private final void m$priv(final .java.lang.String a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+        (
+            let
+            {
+                m$priv$(a, i);
+            }
+            returning null;
+        );
     }
     
     private final void m2$priv(final .java.lang.String a) {
@@ -28,7 +38,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
             let
             {
                 .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> $ceylontmp$i$1 = m2$i(a);
-                m2$priv(a, $ceylontmp$i$1);
+                m2$priv$(a, $ceylontmp$i$1);
             }
             returning null;
         );
@@ -38,7 +48,17 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
+    private final void m2$priv$(final .java.lang.String a, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> i) {
+    }
+    
     private final void m2$priv(final .java.lang.String a, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> i) {
+        (
+            let
+            {
+                m2$priv$(a, i);
+            }
+            returning null;
+        );
     }
     
     private final void f$priv() {

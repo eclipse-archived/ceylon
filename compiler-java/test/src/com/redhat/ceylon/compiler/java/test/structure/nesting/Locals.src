@@ -48,7 +48,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
             let
             {
                 long $ceylontmp$i$4 = local$i();
-                local$priv($ceylontmp$i$4);
+                local$priv$($ceylontmp$i$4);
             }
             returning null;
         );
@@ -58,7 +58,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
         return 0L;
     }
     
-    private final void local$priv(final long i) {
+    private final void local$priv$(final long i) {
         
         final class LC$impl {
             
@@ -217,6 +217,16 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
         }
     }
     
+    private final void local$priv(final long i) {
+        (
+            let
+            {
+                local$priv$(i);
+            }
+            returning null;
+        );
+    }
+    
     private final long $C$init$i() {
         return 0L;
     }
@@ -248,7 +258,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                 let
                 {
                     long $ceylontmp$j$9 = local2$j();
-                    local2$priv($ceylontmp$j$9);
+                    local2$priv$($ceylontmp$j$9);
                 }
                 returning null;
             );
@@ -258,7 +268,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
             return 0L;
         }
         
-        private final void local2$priv(final long j) {
+        private final void local2$priv$(final long j) {
             
             final class CL$impl {
                 
@@ -353,6 +363,16 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
             }
         }
         
+        private final void local2$priv(final long j) {
+            (
+                let
+                {
+                    local2$priv$(j);
+                }
+                returning null;
+            );
+        }
+        
         @.java.lang.Override
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local.C.class));
@@ -366,12 +386,12 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
         }
         private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I $this;
         
-        private final void local3$priv() {
+        private void local3$priv() {
             (
                 let
                 {
                     long $ceylontmp$i$13 = local3$i();
-                    local3$priv($ceylontmp$i$13);
+                    local3$priv$($ceylontmp$i$13);
                 }
                 returning null;
             );
@@ -381,7 +401,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
             return 0L;
         }
         
-        private void local3$priv(final long i) {
+        private final void local3$priv$(final long i) {
             
             final class IL$impl {
                 
@@ -474,6 +494,16 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                     return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(IL.class);
                 }
             }
+        }
+        
+        private void local3$priv(final long i) {
+            (
+                let
+                {
+                    local3$priv$(i);
+                }
+                returning null;
+            );
         }
     }
     

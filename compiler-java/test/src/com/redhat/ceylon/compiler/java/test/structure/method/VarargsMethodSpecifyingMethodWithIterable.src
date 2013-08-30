@@ -14,7 +14,7 @@ class VarargsMethodSpecifyingMethodWithIterable implements .com.redhat.ceylon.co
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ints$0 = bar$ints();
             }
-            returning bar$priv($ceylontmp$ints$0);
+            returning bar$priv$($ceylontmp$ints$0);
         );
     }
     
@@ -22,7 +22,7 @@ class VarargsMethodSpecifyingMethodWithIterable implements .com.redhat.ceylon.co
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final .java.lang.Object bar$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
+    private final .java.lang.Object bar$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
         return (
             let
             {
@@ -30,6 +30,10 @@ class VarargsMethodSpecifyingMethodWithIterable implements .com.redhat.ceylon.co
             }
             returning null;
         );
+    }
+    
+    private final .java.lang.Object bar$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
+        return bar$priv$(ints);
     }
     
     public static void main(.java.lang.String[] args) {

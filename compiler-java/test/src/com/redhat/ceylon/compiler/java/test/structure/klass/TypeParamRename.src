@@ -4,11 +4,11 @@ interface TypeParamRename<T, U> {
     
     public .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<T, U> $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$impl();
     
-    public U m();
+    public U m(final T t1);
     
-    public abstract T m$t();
+    public abstract T m$t2(final T t1);
     
-    public U m(final T t);
+    public U m(final T t1, final T t2);
     
     public <V, W>W m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedW);
     
@@ -32,31 +32,35 @@ final class TypeParamRename$impl<T, U> {
         this.$reifiedT = $reifiedT;
     }
     
-    public final U m() {
+    public U m(final T t1) {
         return (
             let
             {
-                T $ceylontmp$t$0 = m$t();
+                T $ceylontmp$t2$0 = m$t2(t1);
             }
-            returning $this.m($ceylontmp$t$0);
+            returning m$(t1, $ceylontmp$t2$0);
         );
     }
     
-    public final T m$t() {
+    public final T m$t2(final T t1) {
         return null;
     }
     
-    public U m(final T t) {
+    private final U m$(final T t1, final T t2) {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    public final <V, W>W m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedW) {
+    public U m(final T t1, final T t2) {
+        return m$(t1, t2);
+    }
+    
+    public <V, W>W m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedW) {
         return (
             let
             {
                 V $ceylontmp$v$1 = m2$v($reifiedV, $reifiedW);
             }
-            returning $this.m2($reifiedV, $reifiedW, $ceylontmp$v$1);
+            returning m2$($reifiedV, $reifiedW, $ceylontmp$v$1);
         );
     }
     
@@ -64,8 +68,12 @@ final class TypeParamRename$impl<T, U> {
         return null;
     }
     
-    public <V, W>W m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedW, final V v) {
+    private final <V, W>W m2$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedW, final V v) {
         throw new .ceylon.language.Exception(null, null);
+    }
+    
+    public <V, W>W m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedW, final V v) {
+        return m2$($reifiedV, $reifiedW, v);
     }
 }
 class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<X, Y> {
@@ -85,18 +93,27 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.java.lang.Override
-    public final X m$t() {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m$t();
+    public final X m$t2(final X t1) {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m$t2(t1);
+    }
+    
+    public Y m(final X t1) {
+        return (
+            let
+            {
+                X $ceylontmp$t2$2 = m$t2(t1);
+            }
+            returning m$(t1, $ceylontmp$t2$2);
+        );
     }
     
     @.java.lang.Override
-    public final Y m() {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m();
+    public final Y m(final X t1, final X t2) {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m(t1, t2);
     }
     
-    @.java.lang.Override
-    public final Y m(final X t) {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m(t);
+    private final Y m$(final X t1, final X t2) {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m(t1, t2);
     }
     
     @.java.lang.Override
@@ -104,14 +121,23 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runti
         return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m2$v($reifiedA, $reifiedB);
     }
     
-    @.java.lang.Override
     public <A, B>B m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB) {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m2($reifiedA, $reifiedB);
+        return (
+            let
+            {
+                A $ceylontmp$v$3 = m2$v($reifiedA, $reifiedB);
+            }
+            returning m2$($reifiedA, $reifiedB, $ceylontmp$v$3);
+        );
+    }
+    
+    private <A, B>B m2$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB, final A v) {
+        throw new .ceylon.language.Exception(null, null);
     }
     
     @.java.lang.Override
     public <A, B>B m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB, final A v) {
-        throw new .ceylon.language.Exception(null, null);
+        return m2$($reifiedA, $reifiedB, v);
     }
     
     public static void main(.java.lang.String[] args) {

@@ -26,16 +26,6 @@ final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language
         this.$reifiedT = $reifiedT;
     }
     
-    public final <U>T m1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final X b) {
-        return (
-            let
-            {
-                U $ceylontmp$u$0 = m1$u($reifiedU, b);
-            }
-            returning $this.m1($reifiedU, b, $ceylontmp$u$0);
-        );
-    }
-    
     public final <U>U m1$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final X b) {
         return null;
     }

@@ -10,7 +10,7 @@ class VarargsMethodSpecifyingMethodWithVarargs implements .com.redhat.ceylon.com
             let
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$0 = foo$seq();
-                foo$priv($ceylontmp$seq$0);
+                foo$priv$($ceylontmp$seq$0);
             }
             returning null;
         );
@@ -20,7 +20,17 @@ class VarargsMethodSpecifyingMethodWithVarargs implements .com.redhat.ceylon.com
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
+    private final void foo$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    }
+    
     private final void foo$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+        (
+            let
+            {
+                foo$priv$(seq);
+            }
+            returning null;
+        );
     }
     
     private final .java.lang.Object bar$priv() {
@@ -29,7 +39,7 @@ class VarargsMethodSpecifyingMethodWithVarargs implements .com.redhat.ceylon.com
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ints$1 = bar$ints();
             }
-            returning bar$priv($ceylontmp$ints$1);
+            returning bar$priv$($ceylontmp$ints$1);
         );
     }
     
@@ -37,7 +47,7 @@ class VarargsMethodSpecifyingMethodWithVarargs implements .com.redhat.ceylon.com
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final .java.lang.Object bar$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
+    private final .java.lang.Object bar$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
         return (
             let
             {
@@ -45,6 +55,10 @@ class VarargsMethodSpecifyingMethodWithVarargs implements .com.redhat.ceylon.com
             }
             returning null;
         );
+    }
+    
+    private final .java.lang.Object bar$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
+        return bar$priv$(ints);
     }
     
     public static void main(.java.lang.String[] args) {

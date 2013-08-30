@@ -65,7 +65,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
                     let
                     {
                         .ceylon.language.Sequential<? extends T> $ceylontmp$t$0 = m2$t(arg1);
-                        m2(arg1, $ceylontmp$t$0);
+                        m2$(arg1, $ceylontmp$t$0);
                     }
                     returning null;
                 );
@@ -74,6 +74,10 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public final .ceylon.language.Sequential<? extends T> m2$t(final long arg1) {
                 return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            private final void m2$(final long arg1, final .ceylon.language.Sequential<? extends T> t) {
             }
             
             @.ceylon.language.Shared$annotation
@@ -85,6 +89,13 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             @.com.redhat.ceylon.compiler.java.metadata.Sequenced
             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<T>")
             final .ceylon.language.Sequential<? extends T> t) {
+                (
+                    let
+                    {
+                        m2$(arg1, t);
+                    }
+                    returning null;
+                );
             }
             
             @.ceylon.language.Shared$annotation

@@ -13,13 +13,18 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$0 = narySequenced$s(s1, s2, s3, s4);
             }
-            returning narySequenced(s1, s2, s3, s4, $ceylontmp$s$0);
+            returning narySequenced$(s1, s2, s3, s4, $ceylontmp$s$0);
         );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final .ceylon.language.Sequential<? extends .ceylon.language.String> narySequenced$s(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.String narySequenced$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+        return new .java.lang.StringBuilder().append("narySequenced(").append(s1).append(", ").append(s2).append(", ").append(s3).append(", ").append(s4).append("; ").append(s.toString()).append(")").toString();
     }
     
     @.ceylon.language.Shared$annotation
@@ -37,7 +42,7 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.Sequenced
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
     final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
-        return new .java.lang.StringBuilder().append("narySequenced(").append(s1).append(", ").append(s2).append(", ").append(s3).append(", ").append(s4).append("; ").append(s.toString()).append(")").toString();
+        return narySequenced$(s1, s2, s3, s4, s);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug11xx::Bug1184")

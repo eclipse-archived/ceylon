@@ -35,7 +35,7 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType 
             let
             {
                 .java.lang.String $ceylontmp$a$0 = m$a();
-                m($ceylontmp$a$0);
+                m$($ceylontmp$a$0);
             }
             returning null;
         );
@@ -45,7 +45,17 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType 
         return getInit$priv() + getSharedInit() + getParam$priv() + getSharedParam();
     }
     
+    private final void m$(final .java.lang.String a) {
+    }
+    
     public final void m(final .java.lang.String a) {
+        (
+            let
+            {
+                m$(a);
+            }
+            returning null;
+        );
     }
     
     @.java.lang.Override

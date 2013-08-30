@@ -26,11 +26,6 @@ abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceyl
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger set(final long index) {
-        return $ceylon$language$Binary$this.set(index);
-    }
-    
-    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger clear(final long index) {
         return $ceylon$language$Binary$this.clear(index);
     }

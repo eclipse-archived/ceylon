@@ -88,6 +88,21 @@ class Bug1203SubSub5() extends Bug1203Sub5() {
 }
 
 @noanno
+shared class Bug1203Super6() {
+    shared default void m(Integer s = 6) { }
+}
+
+@noanno
+shared class Bug1203Sub6() extends Bug1203Super6() {
+    shared actual default Integer m(Integer s) { return s; }
+}
+
+@noanno
+class Bug1203SubSub6() extends Bug1203Sub6() {
+    shared actual Integer m(Integer s) { return 60 + s; }
+}
+
+@noanno
 void bug1203() {
     assert(Bug1203Sub().m(0) == 1);
     assert(Bug1203SubSub2a().m(0) == 22);
@@ -95,4 +110,6 @@ void bug1203() {
     assert(Bug1203SubSub4().m(0) == 44);
     assert(Bug1203Sub5().m() == 5);
     assert(Bug1203SubSub5().m() == 55);
+    assert(Bug1203Sub6().m() == 6);
+    assert(Bug1203SubSub6().m() == 66);
 }

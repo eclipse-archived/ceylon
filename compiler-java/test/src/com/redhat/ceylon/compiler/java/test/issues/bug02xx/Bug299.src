@@ -30,7 +30,7 @@ class Bug299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                 let
                 {
                     .java.lang.String $ceylontmp$s$1 = m$s();
-                    m$priv($ceylontmp$s$1);
+                    m$priv$($ceylontmp$s$1);
                 }
                 returning null;
             );
@@ -40,7 +40,17 @@ class Bug299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             return "b";
         }
         
+        private final void m$priv$(final .java.lang.String s) {
+        }
+        
         private final void m$priv(final .java.lang.String s) {
+            (
+                let
+                {
+                    m$priv$(s);
+                }
+                returning null;
+            );
         }
         
         @.java.lang.Override
@@ -80,7 +90,7 @@ class Bug299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                     let
                     {
                         .java.lang.String $ceylontmp$s$4 = m$s();
-                        m$priv($ceylontmp$s$4);
+                        m$priv$($ceylontmp$s$4);
                     }
                     returning null;
                 );
@@ -90,7 +100,17 @@ class Bug299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                 return "b";
             }
             
+            private final void m$priv$(final .java.lang.String s) {
+            }
+            
             private final void m$priv(final .java.lang.String s) {
+                (
+                    let
+                    {
+                        m$priv$(s);
+                    }
+                    returning null;
+                );
             }
             
             @.java.lang.Override

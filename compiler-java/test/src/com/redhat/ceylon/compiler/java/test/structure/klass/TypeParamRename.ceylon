@@ -19,7 +19,7 @@
  */
 @noanno
 interface TypeParamRename<T,U> {
-    shared U m(T? t=null) {throw;}
+    shared U m(T t1, T? t2=null) {throw;}
     shared default W m2<V,W>(V? v = null){throw;}
 }
 @noanno

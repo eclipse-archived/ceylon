@@ -349,7 +349,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
             {
                 .java.lang.String $ceylontmp$b$3 = defaultedVariadic$b(a);
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$args$4 = defaultedVariadic$args(a, $ceylontmp$b$3);
-                defaultedVariadic$priv(a, $ceylontmp$b$3, $ceylontmp$args$4);
+                defaultedVariadic$priv$(a, $ceylontmp$b$3, $ceylontmp$args$4);
             }
             returning null;
         );
@@ -364,7 +364,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
             let
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$args$5 = defaultedVariadic$args(a, b);
-                defaultedVariadic$priv(a, b, $ceylontmp$args$5);
+                defaultedVariadic$priv$(a, b, $ceylontmp$args$5);
             }
             returning null;
         );
@@ -374,7 +374,17 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
+    private final void defaultedVariadic$priv$(final long a, final .java.lang.String b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
+    }
+    
     private final void defaultedVariadic$priv(final long a, final .java.lang.String b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
+        (
+            let
+            {
+                defaultedVariadic$priv$(a, b, args);
+            }
+            returning null;
+        );
     }
     
     private final void test$priv() {
@@ -426,7 +436,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
             let
             {
                 .ceylon.language.Callable<? extends .ceylon.language.Integer> $ceylontmp$bar$7 = methodWithDefaultCallableParam$bar();
-                methodWithDefaultCallableParam$priv($ceylontmp$bar$7);
+                methodWithDefaultCallableParam$priv$($ceylontmp$bar$7);
             }
             returning null;
         );
@@ -444,7 +454,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
         };
     }
     
-    private final void methodWithDefaultCallableParam$priv(final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar) {
+    private final void methodWithDefaultCallableParam$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar) {
         (
             let
             {
@@ -463,12 +473,22 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
         );
     }
     
+    private final void methodWithDefaultCallableParam$priv(final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar) {
+        (
+            let
+            {
+                methodWithDefaultCallableParam$priv$(bar);
+            }
+            returning null;
+        );
+    }
+    
     private final void methodWithDefaultCallableParam2$priv() {
         (
             let
             {
                 .ceylon.language.Callable<? extends .ceylon.language.Integer> $ceylontmp$bar$8 = methodWithDefaultCallableParam2$bar();
-                methodWithDefaultCallableParam2$priv($ceylontmp$bar$8);
+                methodWithDefaultCallableParam2$priv$($ceylontmp$bar$8);
             }
             returning null;
         );
@@ -484,7 +504,17 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
         };
     }
     
+    private final void methodWithDefaultCallableParam2$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar) {
+    }
+    
     private final void methodWithDefaultCallableParam2$priv(final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar) {
+        (
+            let
+            {
+                methodWithDefaultCallableParam2$priv$(bar);
+            }
+            returning null;
+        );
     }
     
     public static void main(.java.lang.String[] args) {
