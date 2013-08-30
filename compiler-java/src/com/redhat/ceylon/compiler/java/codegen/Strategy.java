@@ -24,6 +24,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -105,15 +106,15 @@ class Strategy {
         return defaultParameterMethodStatic(decl.getDeclarationModel());
     }
     
-    public static boolean defaultParameterMethodStatic(Declaration decl) {
+    public static boolean defaultParameterMethodStatic(Element decl) {
         if (decl instanceof MethodOrValue
                 && ((MethodOrValue)decl).isParameter()) {
-            decl = (Declaration) ((MethodOrValue)decl).getContainer();
+            decl = (Element) ((MethodOrValue)decl).getContainer();
         }
         // Only top-level methods have static default value methods
         return ((decl instanceof Method && !((Method)decl).isParameter())
                 || decl instanceof Class) 
-                && decl.isToplevel();
+                && ((Declaration)decl).isToplevel();
     }
     
     public static boolean defaultParameterMethodOnOuter(Tree.Declaration decl) {
@@ -122,15 +123,15 @@ class Strategy {
         return defaultParameterMethodOnOuter(decl.getDeclarationModel());
     }
     
-    public static boolean defaultParameterMethodOnOuter(Declaration decl) {
-        if (decl instanceof MethodOrValue
-                && ((MethodOrValue)decl).isParameter()) {
-            decl = (Declaration) ((MethodOrValue)decl).getContainer();
+    public static boolean defaultParameterMethodOnOuter(Element elem) {
+        if (elem instanceof MethodOrValue
+                && ((MethodOrValue)elem).isParameter()) {
+            elem = (Element) ((MethodOrValue)elem).getContainer();
         }
         // Only inner classes have their default value methods on their outer
-        return (decl instanceof Class) 
-                && !decl.isToplevel()
-                && !Decl.isLocal(decl);
+        return (elem instanceof Class) 
+                && !((Class)elem).isToplevel()
+                && !Decl.isLocal((Class)elem);
     }
     
     public static boolean defaultParameterMethodOnSelf(Tree.Declaration decl) {
