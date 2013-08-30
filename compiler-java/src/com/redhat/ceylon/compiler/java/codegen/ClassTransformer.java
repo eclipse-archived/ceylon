@@ -1428,6 +1428,7 @@ public class ClassTransformer extends AbstractTransformer {
                 // copy from formal declaration
                 for (ParameterList pl : m.getParameterLists()) {
                     Tree.ParameterList tpl = new Tree.ParameterList(null);
+                    tpl.setModel(pl);
                     for (Parameter p : pl.getParameters()) {
                         Tree.Parameter tp = null;
                         if (p.getModel() instanceof Value) {
