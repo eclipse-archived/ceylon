@@ -880,6 +880,7 @@ public class ExpressionVisitor extends Visitor {
                     null : tpls.get(i++);
             int j=0;
             for (Parameter p: pl.getParameters()) {
+                p.setDeclaration(m);
                 ProducedType pt = rm.getTypedParameter(p).getFullType();
                 //TODO: meaningful errors when parameters don't line up
                 //      currently this is handled elsewhere, but we can
