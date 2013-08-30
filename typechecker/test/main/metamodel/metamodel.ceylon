@@ -30,7 +30,7 @@ void test<T>() {
     value parameterTypeParameter = `given T`;
     @type:"Type<T>" 
     value parameterType = `T`;
-    @type:"Basic&Type<Nothing>"
+    @type:"Type<Nothing>"
     value nothingType = `String&Integer`;
     @type:"AliasDeclaration" 
     value aliasTypeAlias = `alias Alias`;
@@ -282,7 +282,7 @@ void meta() {
     @type:"UnionType<List<String>|String>" 
     value ut2 = `List<String>|String`; 
     @error value it1 = `List&String`; 
-    @type:"Basic&Type<Nothing>"
+    @type:"Type<Nothing>"
     value it2 = `List<String>&Integer`; 
     @type:"Type<List<Character>>"
     value it3 = `List<Character>&{Character*}`; 

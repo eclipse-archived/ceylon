@@ -5694,7 +5694,8 @@ public class ExpressionVisitor extends Visitor {
             return producedType(unit.getLanguageModuleModelTypeDeclaration("IntersectionType"), literalType);
         }
         else if (declaration instanceof NothingType) {
-            return ((TypedDeclaration) unit.getLanguageModuleModelDeclaration("nothingType")).getType();
+            return producedType(unit.getLanguageModuleModelTypeDeclaration("Type"), 
+                    unit.getNothingDeclaration().getType());
         }
         else if (declaration instanceof TypeParameter) {
             return producedType(unit.getLanguageModuleModelTypeDeclaration("Type"), literalType);
