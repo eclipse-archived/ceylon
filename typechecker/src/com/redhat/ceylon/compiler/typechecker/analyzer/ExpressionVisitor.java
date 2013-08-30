@@ -899,7 +899,6 @@ public class ExpressionVisitor extends Visitor {
                     null : tpls.get(i++);
             int j=0;
             for (Parameter p: pl.getParameters()) {
-                p.setDeclaration(m);
                 ProducedType pt = rm.getTypedParameter(p).getFullType();
                 //TODO: meaningful errors when parameters don't line up
                 //      currently this is handled elsewhere, but we can
@@ -928,6 +927,7 @@ public class ExpressionVisitor extends Visitor {
                     checkAssignable(rpt, pt, tp, 
                             "declared parameter type must exactly the same as type of parameter of refined method");
                     rp.setDefaulted(p.isDefaulted());
+                    rp.setDeclaration(m);
                     l.getParameters().add(rp);
                 }
             }
