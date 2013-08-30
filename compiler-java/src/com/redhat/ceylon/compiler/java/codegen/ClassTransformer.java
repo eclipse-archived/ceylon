@@ -1903,7 +1903,7 @@ public class ClassTransformer extends AbstractTransformer {
                             true,
                             true,
                             null,
-                            model.isShared() ? daoCompanionDollarThis : daoCompanion,//daoCompanionDollarThis,
+                            daoCompanion,
                             false);   
                 } else {
                     companionDefs = transformMethod(def,
@@ -1911,7 +1911,7 @@ public class ClassTransformer extends AbstractTransformer {
                             false,
                             !model.isShared(),
                             transformMplBody(def.getParameterLists(), model, body),
-                            model.isShared() ? daoCompanionDollarThis : daoCompanion,//daoCompanionDollarThis,
+                            daoCompanion,
                             false);
                 }
             } else if (def instanceof Tree.MethodDefinition) {
@@ -1920,7 +1920,7 @@ public class ClassTransformer extends AbstractTransformer {
                         false,
                         !model.isShared(),
                         transformMethodBlock((Tree.MethodDefinition)def),
-                        model.isShared() ? daoCompanionDollarThis : daoCompanion,
+                        daoCompanion,
                         false);
             } else {
                 throw new RuntimeException();
@@ -2408,19 +2408,6 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
     final DaoCompanion daoCompanion = new DaoCompanion();
-    
-    /**
-     * specialises {@link DaoCompanion} for transforming dpms 
-     * on companion classes where the we delegate to the $this instances 
-     * canonical method.
-     */
-    private class DaoCompanionDollarThis extends DaoCompanion {
-        @Override
-        JCExpression makeMethodNameQualifier() {
-            return naming.makeQuotedThis();
-        }
-    }
-    final DaoCompanionDollarThis daoCompanionDollarThis = new DaoCompanionDollarThis();
     
     /**
      * a transformation for an overloaded 
