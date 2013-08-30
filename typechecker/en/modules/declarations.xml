@@ -490,6 +490,9 @@ TypeConstraints?
             
             <synopsis>ValueParameter: Annotations (Type | "dynamic") MemberName</synopsis>
             
+            <para>A value parameter may be declared using the keyword <literal>dynamic</literal> 
+            in place of the parameter type. Such a parameter has no type.</para>
+            
             <para>An argument to a value parameter must be an expression whose type is
             assignable to the type of the value parameter.</para>
             
@@ -506,9 +509,6 @@ TypeConstraints?
             
             <!--para>A parameter may not be be declared <literal>variable</literal>, and 
             may not be assigned to within the body of the method or class.</para-->
-            
-            <para>A value parameter may be declared using the keyword <literal>dynamic</literal> 
-            in place of the parameter type. Such a parameter has no type.</para>
             
         </section>
         
@@ -1664,7 +1664,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
     <section id="functions">
         <title>Functions</title>
         
-        <para>A <emphasis>function</emphasis> is a callable block of code. Functions 
+        <para>A <emphasis>function</emphasis> is a callable block of code. A function 
         may have parameters and may return a value. If a function belongs to a type,
         it is called a <emphasis>method</emphasis>.</para>
         
@@ -1675,14 +1675,13 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         specify a type, called the <emphasis>return type</emphasis>, to which the values 
         the method returns are assignable, or it may specify that the function is a 
         <literal>void</literal> function&mdash;a function which does not return a useful 
-        value, and only useful for its effect. The return type of a <literal>void</literal> 
-        function is considered to be <literal>Anything</literal> defined in 
-        <literal>ceylon.language</literal>. A generic function declaration may have a list 
-        of type constraints.</para>
+        value, and only useful for its effect. A generic function declaration may have a 
+        list of type constraints.</para>
         
         <synopsis>FunctionHeader: (Type | "function" | "dynamic" | "void") MemberName TypeParameters? Parameters+ TypeConstraints?</synopsis>
         
-        <para>The Ceylon compiler preserves the names of function parameters.</para>
+        <para>A function may be declared using the keyword <literal>dynamic</literal> 
+        in place of its return type. Such a function has no return type.</para>
         
         <para>A function implementation may be specified using either:</para>
         
@@ -1697,15 +1696,15 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         
         <para>If a function is a parameter, it must not specify any implementation.</para>
         
+        <para>The return type of a <literal>void</literal> function is considered to be 
+        <literal>Anything</literal> defined in <literal>ceylon.language</literal>.</para>
+        
         <comment><para>Note: a <literal>void</literal> function with a concrete 
         implementation returns the value <literal>null</literal>. However, since a
         <literal>void</literal> function may be a reference to a non-<literal>void</literal> 
         function, or a method refined by a non-<literal>void</literal> function, 
         this behavior can not be depended upon and is not implied by the semantics 
         of <literal>void</literal>.</para></comment>
-        
-        <para>A function may be declared using the keyword <literal>dynamic</literal> 
-        in place of its return type. Such a function has no return type.</para>
         
         <section id="callabletypeoffunction">
             <title>Callable type of a function</title>
@@ -2132,17 +2131,17 @@ case (hexadecimal) {
             </listitem>
         </itemizedlist>
         
-        <synopsis>ValueDeclaration: Annotations ValueHeader (Block | (Specifier | LazySpecifier)? ";")</synopsis>
-        
         <para>If a value belongs to a type, it is called an <emphasis>attribute</emphasis>.</para>
         
-        <para>All value declarations specify the attribute name. A value declaration may 
-        specify a type. A value may be <emphasis>variable</emphasis>, in which case it
-        may be freely assigned using the assignment and compound assignment operators 
-        defined in <xref linkend="operators"/>. This is the case for a reference annotated 
-        <literal>variable</literal>, or for a getter with a matching setter.</para>
+        <synopsis>ValueDeclaration: Annotations ValueHeader (Block | (Specifier | LazySpecifier)? ";")</synopsis>
+        
+        <para>All value declarations specify the value name. A value declaration may 
+        specify a type.</para>
             
         <synopsis>ValueHeader: (Type | "value" | "dynamic") MemberName</synopsis>
+        
+        <para>A value may be declared using the keyword <literal>dynamic</literal> in 
+        place of its type. Such a value has no type.</para>
         
         <comment><para>Note: syntactically a value declaration looks like a function 
         declaration with zero parameter lists. It is often helpful, in thinking about the 
@@ -2150,8 +2149,10 @@ case (hexadecimal) {
         with zero parameter lists, or, alternatively, that a function is a value of type 
         <literal>Callable</literal>.</para></comment>
         
-        <para>A value may be declared using the keyword <literal>dynamic</literal> in 
-        place of its type. Such a value has no type.</para>
+        <para>A value may be <emphasis>variable</emphasis>, in which case it may be freely 
+        assigned using the assignment and compound assignment operators defined in 
+        <xref linkend="operators"/>. This is the case for a reference annotated 
+        <literal>variable</literal>, or for a getter with a matching setter.</para>
         
         <section id="references">
             <title>References</title>
