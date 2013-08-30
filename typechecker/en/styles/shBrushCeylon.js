@@ -26,7 +26,7 @@
                        'assert dynamic if else switch case for while try catch finally then ' +
                        'this outer super is exists nonempty';
         var annotations = 'shared abstract formal default actual variable deprecated small late ' +
-                          'literal doc by see throws optional license';
+                          'literal doc by see throws optional license tagged final native annotation';
         
         this.regexList = [
             { regex: /\/\/.*/gi, css: 'color3' },                                               // line end comments
