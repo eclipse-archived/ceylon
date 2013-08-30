@@ -273,7 +273,7 @@ shared deprecated</programlisting>
          else nothing;
 }]]></programlisting>
             
-            <programlisting><![CDATA[shared annotation class Todo(String text)
+            <programlisting><![CDATA[shared final annotation class Todo(String text)
         satisfies SequencedAnnotation<Todo> {
     string => text;
 }]]></programlisting>
