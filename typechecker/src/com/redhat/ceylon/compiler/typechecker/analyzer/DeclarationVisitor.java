@@ -496,7 +496,7 @@ public class DeclarationVisitor extends Visitor {
                     type.addError("toplevel value must explicitly specify a type", 200);
                 }
             }
-            else if (v.isShared() && !dynamic) {
+            else if (v.isShared()) {
                 type.addError("shared value must explicitly specify a type", 200);
             }
         }
@@ -520,7 +520,7 @@ public class DeclarationVisitor extends Visitor {
                     type.addError("toplevel function must explicitly specify a return type", 200);
                 }
             }
-            else if (m.isShared() && !dynamic) {
+            else if (m.isShared()) {
                 type.addError("shared function must explicitly specify a return type", 200);
             }
         }

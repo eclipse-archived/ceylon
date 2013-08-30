@@ -595,18 +595,24 @@ public class ExpressionVisitor extends Visitor {
         Value dec = that.getDeclarationModel();
         Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
         Tree.Type type = that.getType();
-        if (!dynamic && sie==null &&
-                type instanceof Tree.LocalModifier) {
-            type.addError("value must specify an explicit type or definition", 200);
-        }
-        if (!dec.isParameter()) {
-            inferType(that, sie);
-        }
-        if (type!=null) {
-            ProducedType t = type.getTypeModel();
-            if (!isTypeUnknown(t)) {
-                checkType(t, dec.getName(), sie, 2100);
+        inferType(that, sie);
+        ProducedType t = type.getTypeModel();
+        if (type instanceof Tree.LocalModifier) {
+            if (dec.isParameter()) {
+                type.addError("parameter may not have inferred type: " + 
+                        dec.getName());
             }
+            else {
+                if (sie==null) {
+                    type.addError("value must specify an explicit type or definition", 200);
+                }
+                else if (isTypeUnknown(t)) {
+                    type.addError("value type could not be inferred");
+                }
+            }
+        }
+        if (!isTypeUnknown(t)) {
+            checkType(t, dec.getName(), sie, 2100);
         }
         Setter setter = dec.getSetter();
         if (setter!=null) {
@@ -942,14 +948,8 @@ public class ExpressionVisitor extends Visitor {
         if (type instanceof Tree.LocalModifier) {
             Parameter p = that.getParameterModel();
             type.setTypeModel(new UnknownType(unit).getType());
-            if (!dynamic) {
-                type.addError("parameter may not have inferred type: " + 
-                        p.getName());
-            }
-            else if (p.getDeclaration().isShared() && !dynamic) {
-                type.addError("shared parameter may not have inferred type: " + 
-                        p.getName());
-            }
+            type.addError("parameter may not have inferred type: " + 
+                    p.getName());
         }
     }
     
@@ -1045,7 +1045,8 @@ public class ExpressionVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.AttributeGetterDefinition that) {
-        Tree.Type rt = beginReturnScope(that.getType());
+        Tree.Type type = that.getType();
+        Tree.Type rt = beginReturnScope(type);
         Value dec = that.getDeclarationModel();
         Declaration od = beginReturnDeclaration(dec);
         super.visit(that);
@@ -1054,6 +1055,11 @@ public class ExpressionVisitor extends Visitor {
         Setter setter = dec.getSetter();
         if (setter!=null) {
             setter.getParameter().getModel().setType(dec.getType());
+        }
+        if (type instanceof Tree.LocalModifier) {
+            if (isTypeUnknown(type.getTypeModel())) {
+                type.addError("getter type could not be inferred");
+            }
         }
     }
 
@@ -1075,6 +1081,11 @@ public class ExpressionVisitor extends Visitor {
                 if (!isTypeUnknown(t)) {
                     checkType(t, that.getDeclarationModel().getName(), se, 2100);
                 }
+            }
+        }
+        if (type instanceof Tree.LocalModifier) {
+            if (isTypeUnknown(type.getTypeModel())) {
+                type.addError("argument type could not be inferred");
             }
         }
     }
@@ -1100,37 +1111,51 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
+        Tree.Type type = that.getType();
         Tree.SpecifierExpression se = that.getSpecifierExpression();
         if (se!=null) {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
                 ProducedType returnType = e.getTypeModel();
                 inferFunctionType(that, returnType);
-                if (that.getType()!=null) {
-                    checkFunctionType(returnType, that.getType(), se);
+                if (type!=null && 
+                        !(type instanceof Tree.DynamicModifier)) {
+                    checkFunctionType(returnType, type, se);
                 }
-                if (that.getType() instanceof Tree.VoidModifier && 
+                if (type instanceof Tree.VoidModifier && 
                         !isSatementExpression(e)) {
                     se.addError("function is declared void so specified expression must be a statement: " +
                             that.getDeclarationModel().getName());
                 }
             }
         }
+        if (type instanceof Tree.LocalModifier) {
+            if (isTypeUnknown(type.getTypeModel())) {
+                type.addError("function type could not be inferred");
+            }
+        }
     }
 
     @Override public void visit(Tree.MethodDefinition that) {
-        Tree.Type rt = beginReturnScope(that.getType());           
+        Tree.Type type = that.getType();
+        Tree.Type rt = beginReturnScope(type);
         Declaration od = beginReturnDeclaration(that.getDeclarationModel());
         super.visit(that);
         endReturnDeclaration(od);
         endReturnScope(rt, that.getDeclarationModel());
+        if (type instanceof Tree.LocalModifier) {
+            if (isTypeUnknown(type.getTypeModel())) {
+                type.addError("function type could not be inferred");
+            }
+        }
     }
 
     @Override public void visit(Tree.MethodArgument that) {
         Tree.SpecifierExpression se = that.getSpecifierExpression();
         Method d = that.getDeclarationModel();
+        Tree.Type type = that.getType();
         if (se==null) {
-            Tree.Type rt = beginReturnScope(that.getType());           
+            Tree.Type rt = beginReturnScope(type);           
             Declaration od = beginReturnDeclaration(d);
             super.visit(that);
             endReturnDeclaration(od);
@@ -1142,13 +1167,19 @@ public class ExpressionVisitor extends Visitor {
             if (e!=null) {
                 ProducedType returnType = e.getTypeModel();
                 inferFunctionType(that, returnType);
-                if (that.getType()!=null) {
-                    checkFunctionType(returnType, that.getType(), se);
+                if (type!=null && 
+                        !(type instanceof Tree.DynamicModifier)) {
+                    checkFunctionType(returnType, type, se);
                 }
                 if (d.isDeclaredVoid() && !isSatementExpression(e)) {
                     se.addError("functional argument is declared void so specified expression must be a statement: " + 
                             d.getName());
                 }
+            }
+        }
+        if (type instanceof Tree.LocalModifier) {
+            if (isTypeUnknown(type.getTypeModel())) {
+                type.addError("argument type could not be inferred");
             }
         }
     }

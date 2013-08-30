@@ -435,11 +435,18 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
             MethodDefinition mdef=new MethodDefinition(null);
             MethodDeclaration mdec=new MethodDeclaration(null); 
             $declaration = adec; }
-    : variadicType
-      { adef.setType($variadicType.type);
-        adec.setType($variadicType.type); 
-        mdef.setType($variadicType.type);
-        mdec.setType($variadicType.type); }
+    : ( variadicType
+        { adef.setType($variadicType.type);
+          adec.setType($variadicType.type); 
+          mdef.setType($variadicType.type);
+          mdec.setType($variadicType.type); }
+      | DYNAMIC
+        { DynamicModifier dm = new DynamicModifier($DYNAMIC);
+          adef.setType(dm);
+          adec.setType(dm); 
+          mdef.setType(dm);
+          mdec.setType(dm); }
+      )
       memberNameDeclaration
       { adef.setIdentifier($memberNameDeclaration.identifier);
         adec.setIdentifier($memberNameDeclaration.identifier); 
@@ -855,6 +862,8 @@ parameter returns [ParameterDeclaration parameter]
       | FUNCTION_MODIFIER
         { m.setType(new FunctionModifier($FUNCTION_MODIFIER));
           $parameter=fp; }
+      | DYNAMIC
+        { a.setType(new DynamicModifier($DYNAMIC)); }
       | VALUE_MODIFIER
         { a.setType(new ValueModifier($VALUE_MODIFIER)); }
       )
@@ -1054,7 +1063,7 @@ declarationStart
     | CLASS_DEFINITION
     | OBJECT_DEFINITION
     | ALIAS 
-    | variadicType LIDENTIFIER
+    | (variadicType|DYNAMIC) LIDENTIFIER
     ;
 
 statement returns [Statement statement]

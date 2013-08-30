@@ -319,6 +319,8 @@
 ^(PACKAGE_LITERAL:META_LITERAL
     IMPORT_PATH)
 
+^(DYNAMIC_MODIFIER: TYPE)
+
 "Specifies that the type of a block local declaration should be inferred."
 ^(abstract LOCAL_MODIFIER: TYPE)
 

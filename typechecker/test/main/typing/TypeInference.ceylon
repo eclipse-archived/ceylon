@@ -40,7 +40,7 @@ interface TypeInference {
         void m(){
             @type:"unknown" @error value n = test();
         }
-        @type:"unknown" function f() {
+        @type:"unknown" @error function f() {
             @error return test();
         }
         function test(){
@@ -68,11 +68,11 @@ interface TypeInference {
         
         @error @type:"unknown" value x = burp;
         
-        @type:"unknown" value y {
+        @type:"unknown" @error value y {
             @error return burp;
         }
         
-        @type:"unknown" function f() {
+        @type:"unknown" @error function f() {
             @error return burp;
         }
         
@@ -80,7 +80,7 @@ interface TypeInference {
         
         @error @type:"unknown" value seq = [ @error burp ].sequence;
         
-        @type:"unknown" function createSeq() {
+        @type:"unknown" @error function createSeq() {
             @error @type:"unknown" return [ @error hi ].sequence;
         }
         
