@@ -94,7 +94,7 @@ shared final annotation class Native()
  in platform-native code."  
 shared annotation Native native() => Native();
 
-"The annotation class the [[doc]] annotation."
+"The annotation class for the [[doc]] annotation."
 shared final annotation class Doc(shared String description)
         satisfies OptionalAnnotation<Doc, Annotated> {}
 
