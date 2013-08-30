@@ -3,5 +3,5 @@ abstract class Bug1244(){
 }
 
 void bug1244() {
-    String s = `Bug1244.objectMember`.name;
+    String s = `value Bug1244.objectMember`.name;
 }

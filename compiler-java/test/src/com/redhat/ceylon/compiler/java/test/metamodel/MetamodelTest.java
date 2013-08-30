@@ -109,7 +109,7 @@ public class MetamodelTest extends CompilerTest {
     @Test
     public void testBug1209() {
         assertErrors("bug1209",
-                new CompilerError(3, "metamodel reference to local value")
+                new CompilerError(3, "metamodel reference to local declaration")
         );
     }
 

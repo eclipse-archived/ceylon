@@ -151,6 +151,9 @@ void visitMembers(ClassOrInterfaceDeclaration decl){
         case(is InterfaceDeclaration){
             visitInterface(m);
         }
+        case(is AliasDeclaration){
+            // FIXME: implement
+        }
     }
 }
 void visitFunction(FunctionDeclaration func) {
@@ -252,7 +255,7 @@ void visitOpenType(OpenType pt){
     }
 }
 
-void visitType(Type pt){
+void visitType(Type<Anything> pt){
     if(is ClassOrInterface<Anything> pt){
         output(pt.declaration.name);
         variable Boolean once = true;
@@ -264,7 +267,7 @@ void visitType(Type pt){
                 }else{
                     output(", ");
                 }
-                Type? arg = pt.typeArguments.get(tp);
+                Type<Anything>? arg = pt.typeArguments.get(tp);
                 if(exists arg){
                     visitType(arg);
                 }else{
@@ -273,9 +276,9 @@ void visitType(Type pt){
             }
             output(">");
         }
-    }else if(is UnionType pt){
+    }else if(is UnionType<Anything> pt){
         variable Boolean once = true;
-        for(Type type in pt.caseTypes){
+        for(Type<Anything> type in pt.caseTypes){
             if(once){
                 once = false;
             }else{
@@ -283,9 +286,9 @@ void visitType(Type pt){
             }
             visitType(type);
         }
-    }else if(is IntersectionType pt){
+    }else if(is IntersectionType<Anything> pt){
         variable Boolean once = true;
-        for(Type type in pt.satisfiedTypes){
+        for(Type<Anything> type in pt.satisfiedTypes){
             if(once){
                 once = false;
             }else{

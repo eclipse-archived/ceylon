@@ -7,5 +7,5 @@ annotation Bug263Annotation bug263annotation(String s) => Bug263Annotation(s);
 
 bug263annotation("hello")
 void bug263() {
-    print(`bug263`.annotations<Bug263Annotation>());
+    print(`function bug263`.annotations<Bug263Annotation>());
 }

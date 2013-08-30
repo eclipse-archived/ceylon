@@ -1,3 +1,3 @@
 void bug1210() {
-    value im = `Iterable.map`;
+    value im = `function Iterable.map`;
 }

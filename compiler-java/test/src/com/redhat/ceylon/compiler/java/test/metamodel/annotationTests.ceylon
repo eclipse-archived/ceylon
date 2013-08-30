@@ -683,7 +683,7 @@ void checkPackage() {
 }
 
 void checkMetamodelRefs() {
-    value decls = annotations(`Decl`, `MetamodelRefs`);
+    value decls = annotations(`Decl`, `class MetamodelRefs`);
     
     assert(exists d0 = decls[0],
         d0.decl is ValueDeclaration,
