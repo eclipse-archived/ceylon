@@ -374,7 +374,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void defaultedVariadic$priv$(final long a, final .java.lang.String b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
+    private void defaultedVariadic$priv$(final long a, final .java.lang.String b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
     }
     
     private final void defaultedVariadic$priv(final long a, final .java.lang.String b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
@@ -454,7 +454,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
         };
     }
     
-    private final void methodWithDefaultCallableParam$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar) {
+    private void methodWithDefaultCallableParam$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar) {
         (
             let
             {
@@ -504,7 +504,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
         };
     }
     
-    private final void methodWithDefaultCallableParam2$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar) {
+    private void methodWithDefaultCallableParam2$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar) {
     }
     
     private final void methodWithDefaultCallableParam2$priv(final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar) {

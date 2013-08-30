@@ -20,7 +20,7 @@ class IterableMethodSpecifyingMethodWithVarargs implements .com.redhat.ceylon.co
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void foo$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    private void foo$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
     }
     
     private final void foo$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {

@@ -81,7 +81,7 @@ public final class Visitable$impl {
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void visitAroundTags$(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
+    private void visitAroundTags$(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
     }
     
     public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
@@ -154,6 +154,7 @@ public class Html implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return (.ceylon.language.Sequential)$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags$tags(visitor, name);
     }
     
+    @.java.lang.Override
     public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
         (
             let
@@ -170,7 +171,7 @@ public class Html implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name, tags);
     }
     
-    private final void visitAroundTags$(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
+    private void visitAroundTags$(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
         $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name, tags);
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head head;
@@ -243,6 +244,7 @@ public class Head implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return (.ceylon.language.Sequential)$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags$tags(visitor, name);
     }
     
+    @.java.lang.Override
     public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
         (
             let
@@ -259,7 +261,7 @@ public class Head implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name, tags);
     }
     
-    private final void visitAroundTags$(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
+    private void visitAroundTags$(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
         $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name, tags);
     }
     private final .ceylon.language.String title;
@@ -353,6 +355,7 @@ public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.iss
         return (.ceylon.language.Sequential)$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags$tags(visitor, name);
     }
     
+    @.java.lang.Override
     public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
         (
             let
@@ -369,7 +372,7 @@ public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.iss
         $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name, tags);
     }
     
-    private final void visitAroundTags$(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
+    private void visitAroundTags$(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
         $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name, tags);
     }
     private final .ceylon.language.Sequential tags;

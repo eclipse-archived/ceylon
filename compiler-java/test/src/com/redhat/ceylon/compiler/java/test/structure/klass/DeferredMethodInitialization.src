@@ -25,7 +25,7 @@ class DeferredInitializedMethod implements .com.redhat.ceylon.compiler.java.runt
                 return "world";
             }
             
-            private final .java.lang.String s$priv$(final .java.lang.String name) {
+            private .java.lang.String s$priv$(final .java.lang.String name) {
                 if (s$priv == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return s$priv.$call(.ceylon.language.String.instance(name)).toString();
             }
             

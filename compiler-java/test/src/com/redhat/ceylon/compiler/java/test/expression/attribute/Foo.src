@@ -45,7 +45,7 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType 
         return getInit$priv() + getSharedInit() + getParam$priv() + getSharedParam();
     }
     
-    private final void m$(final .java.lang.String a) {
+    private void m$(final .java.lang.String a) {
     }
     
     public final void m(final .java.lang.String a) {

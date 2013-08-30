@@ -468,7 +468,7 @@ final class EC_ErasedMember$impl<Element, Absent> {
         return .ceylon.language.nothing_.$get();
     }
     
-    private final .java.lang.Object defaultedParams$(final .java.lang.Object p) {
+    private .java.lang.Object defaultedParams$(final .java.lang.Object p) {
         return null;
     }
     
@@ -534,6 +534,7 @@ class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.r
         return (Element)$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this.defaultedParams$p();
     }
     
+    @.java.lang.Override
     public .java.lang.Object defaultedParams() {
         return (
             let

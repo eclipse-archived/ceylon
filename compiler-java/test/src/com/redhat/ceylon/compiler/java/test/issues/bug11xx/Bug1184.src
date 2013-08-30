@@ -23,7 +23,7 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private final .java.lang.String narySequenced$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private .java.lang.String narySequenced$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return new .java.lang.StringBuilder().append("narySequenced(").append(s1).append(", ").append(s2).append(", ").append(s3).append(", ").append(s4).append("; ").append(s.toString()).append(")").toString();
     }
     

@@ -32,7 +32,7 @@ public final class Bug1151_A$impl {
         return 1L;
     }
     
-    private final .java.lang.Object methodA$(final long a) {
+    private .java.lang.Object methodA$(final long a) {
         return null;
     }
     
@@ -54,7 +54,7 @@ public final class Bug1151_A$impl {
         return 1L;
     }
     
-    private final .java.lang.Object methodA2$priv$(final long a) {
+    private .java.lang.Object methodA2$priv$(final long a) {
         return null;
     }
     
@@ -76,7 +76,7 @@ public final class Bug1151_A$impl {
         return 1L;
     }
     
-    private final .java.lang.Object methodA3$priv$(final long a) {
+    private .java.lang.Object methodA3$priv$(final long a) {
         return null;
     }
     
@@ -125,7 +125,7 @@ public class Bug1151_B implements .com.redhat.ceylon.compiler.java.runtime.model
         return 1L;
     }
     
-    private final .java.lang.Object methodB2$priv$(final long a) {
+    private .java.lang.Object methodB2$priv$(final long a) {
         return null;
     }
     
@@ -172,7 +172,7 @@ public class Bug1151_C extends .com.redhat.ceylon.compiler.java.test.issues.bug1
         );
     }
     
-    private final .ceylon.language.Integer methodA$(final long a) {
+    private .ceylon.language.Integer methodA$(final long a) {
         return .ceylon.language.Integer.instance(a);
     }
     
@@ -191,7 +191,7 @@ public class Bug1151_C extends .com.redhat.ceylon.compiler.java.test.issues.bug1
         );
     }
     
-    private final .ceylon.language.Integer methodB$(final long a) {
+    private .ceylon.language.Integer methodB$(final long a) {
         return .ceylon.language.Integer.instance(a);
     }
     

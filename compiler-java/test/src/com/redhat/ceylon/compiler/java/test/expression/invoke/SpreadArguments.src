@@ -33,7 +33,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void m2$(final long i, final .ceylon.language.Sequential<? extends T> s) {
+    private void m2$(final long i, final .ceylon.language.Sequential<? extends T> s) {
     }
     
     public final void m2(final long i, final .ceylon.language.Sequential<? extends T> s) {
@@ -298,7 +298,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void m4$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+    private void m4$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
     }
     
     public final void m4(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {

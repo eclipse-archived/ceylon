@@ -19,7 +19,7 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final <Value extends .ceylon.language.Summable<Value>>Value variadicSum$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, final .ceylon.language.Sequential<? extends Value> values) {
+    private <Value extends .ceylon.language.Summable<Value>>Value variadicSum$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, final .ceylon.language.Sequential<? extends Value> values) {
         return (Value).ceylon.language.nothing_.$get();
     }
     
@@ -41,7 +41,7 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return (.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.$get();
     }
     
-    private final <Value extends .ceylon.language.Summable<Value>>Value defaultedSum$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, final .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> dummy) {
+    private <Value extends .ceylon.language.Summable<Value>>Value defaultedSum$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, final .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> dummy) {
         return (Value).ceylon.language.nothing_.$get();
     }
     

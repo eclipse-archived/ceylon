@@ -31,7 +31,7 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void m2$priv$(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    private void m2$priv$(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
         m2.$call(.ceylon.language.Integer.instance(i), seq);
     }
     

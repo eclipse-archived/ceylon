@@ -139,7 +139,7 @@ class RawInImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.runtime
         );
     }
     
-    private final .java.lang.Object mDefaulted$(final .java.lang.Object t) {
+    private .java.lang.Object mDefaulted$(final .java.lang.Object t) {
         return null;
     }
     

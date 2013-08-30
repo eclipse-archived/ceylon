@@ -310,7 +310,7 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
         );
     }
     
-    private final .java.lang.Object f1$(final long n) {
+    private .java.lang.Object f1$(final long n) {
         return null;
     }
     
@@ -329,7 +329,7 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
         );
     }
     
-    private final .java.lang.Object f2$(final long n, final .java.lang.String s) {
+    private .java.lang.Object f2$(final long n, final .java.lang.String s) {
         return null;
     }
     
@@ -359,7 +359,7 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
         );
     }
     
-    private final .java.lang.Object f3$(final long n, final long m) {
+    private .java.lang.Object f3$(final long n, final long m) {
         return null;
     }
     
@@ -389,7 +389,7 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
         );
     }
     
-    private final .java.lang.Object f4$(final long n, final long m) {
+    private .java.lang.Object f4$(final long n, final long m) {
         return null;
     }
     
@@ -408,7 +408,7 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
         );
     }
     
-    private final .java.lang.Object f5$(final long n) {
+    private .java.lang.Object f5$(final long n) {
         return null;
     }
     
@@ -427,7 +427,7 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
         );
     }
     
-    private final .java.lang.Object f6$(final long n) {
+    private .java.lang.Object f6$(final long n) {
         return null;
     }
     
@@ -446,7 +446,7 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
         );
     }
     
-    private final .java.lang.Object f7$(final long n) {
+    private .java.lang.Object f7$(final long n) {
         return null;
     }
     
@@ -465,7 +465,7 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
         );
     }
     
-    private final .java.lang.Object f8$(final long n) {
+    private .java.lang.Object f8$(final long n) {
         return null;
     }
     
@@ -484,7 +484,7 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
         );
     }
     
-    private final .java.lang.Object f9$(final long n) {
+    private .java.lang.Object f9$(final long n) {
         return null;
     }
     
@@ -514,7 +514,7 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
         );
     }
     
-    private final .java.lang.Object fa$(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    private .java.lang.Object fa$(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
         return null;
     }
     
@@ -731,7 +731,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         );
     }
     
-    private final .java.lang.Object f1$(final long n) {
+    private .java.lang.Object f1$(final long n) {
         return null;
     }
     
@@ -750,7 +750,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         );
     }
     
-    private final .java.lang.Object f2$(final long n, final .java.lang.String s) {
+    private .java.lang.Object f2$(final long n, final .java.lang.String s) {
         return null;
     }
     
@@ -780,7 +780,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         );
     }
     
-    private final .java.lang.Object f3$(final long n, final long m) {
+    private .java.lang.Object f3$(final long n, final long m) {
         return null;
     }
     
@@ -810,7 +810,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         );
     }
     
-    private final .java.lang.Object f4$(final long n, final long m) {
+    private .java.lang.Object f4$(final long n, final long m) {
         return null;
     }
     
@@ -829,7 +829,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         );
     }
     
-    private final .java.lang.Object f5$(final long n) {
+    private .java.lang.Object f5$(final long n) {
         return null;
     }
     
@@ -848,7 +848,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         );
     }
     
-    private final .java.lang.Object f7$(final long n) {
+    private .java.lang.Object f7$(final long n) {
         return null;
     }
     
@@ -867,7 +867,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         );
     }
     
-    private final .java.lang.Object f9$(final long n) {
+    private .java.lang.Object f9$(final long n) {
         return null;
     }
     
@@ -897,7 +897,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         );
     }
     
-    private final .java.lang.Object fa$(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    private .java.lang.Object fa$(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
         return null;
     }
     

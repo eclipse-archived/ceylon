@@ -20,7 +20,7 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void m$priv$(final long a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
+    private void m$priv$(final long a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
     }
     
     private final void m$priv(final long a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
@@ -48,7 +48,7 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void m2$priv$(final .java.lang.Throwable a, final .ceylon.language.Sequential<? extends .java.lang.Throwable> b) {
+    private void m2$priv$(final .java.lang.Throwable a, final .ceylon.language.Sequential<? extends .java.lang.Throwable> b) {
     }
     
     private final void m2$priv(final .java.lang.Throwable a, final .ceylon.language.Sequential<? extends .java.lang.Throwable> b) {
@@ -76,7 +76,7 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void m3$priv$(final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence a, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> b) {
+    private void m3$priv$(final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence a, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> b) {
     }
     
     private final void m3$priv(final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence a, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> b) {

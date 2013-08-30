@@ -34,7 +34,7 @@ final class I1$impl {
         return $this.i1();
     }
     
-    private final long m1$(final long n) {
+    private long m1$(final long n) {
         return n + $this.i1();
     }
     
@@ -59,6 +59,7 @@ class CI1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this.m1$n();
     }
     
+    @.java.lang.Override
     public long m1() {
         return (
             let
@@ -128,7 +129,7 @@ final class I2$impl {
         return $this.i2();
     }
     
-    private final long m2$(final long n) {
+    private long m2$(final long n) {
         return n + $this.i2();
     }
     
@@ -182,7 +183,7 @@ final class I4$impl {
         return $this.i4();
     }
     
-    private final long m4$(final long n) {
+    private long m4$(final long n) {
         return n;
     }
     
@@ -208,6 +209,7 @@ class CI3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this.m1$n();
     }
     
+    @.java.lang.Override
     public long m1() {
         return (
             let
@@ -258,7 +260,7 @@ class CI3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
         );
     }
     
-    private final long m2$(final long n) {
+    private long m2$(final long n) {
         return 2L;
     }
     
@@ -304,6 +306,7 @@ abstract class A7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this.m1$n();
     }
     
+    @.java.lang.Override
     public long m1() {
         return (
             let
@@ -334,6 +337,7 @@ abstract class A7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this.m2$n();
     }
     
+    @.java.lang.Override
     public long m2() {
         return (
             let
@@ -379,7 +383,7 @@ abstract class A7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         );
     }
     
-    private final long m4$(final long n) {
+    private long m4$(final long n) {
         return 5L;
     }
     

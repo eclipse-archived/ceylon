@@ -25,7 +25,7 @@ class MethodDefaultedParamCaptureInitParam implements .com.redhat.ceylon.compile
         return getS$priv();
     }
     
-    private final .java.lang.String m$priv$(final .java.lang.String t) {
+    private .java.lang.String m$priv$(final .java.lang.String t) {
         return t;
     }
     

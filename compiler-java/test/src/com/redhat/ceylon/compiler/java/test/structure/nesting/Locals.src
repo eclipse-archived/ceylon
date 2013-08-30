@@ -58,7 +58,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
         return 0L;
     }
     
-    private final void local$priv$(final long i) {
+    private void local$priv$(final long i) {
         
         final class LC$impl {
             
@@ -268,7 +268,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
             return 0L;
         }
         
-        private final void local2$priv$(final long j) {
+        private void local2$priv$(final long j) {
             
             final class CL$impl {
                 
@@ -401,7 +401,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
             return 0L;
         }
         
-        private final void local3$priv$(final long i) {
+        private void local3$priv$(final long i) {
             
             final class IL$impl {
                 

@@ -29,7 +29,7 @@ class NamedArgumentWithEmptySequence implements .com.redhat.ceylon.compiler.java
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void m$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
+    private void m$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
     }
     
     private final void m$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {

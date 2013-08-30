@@ -46,7 +46,7 @@ final class TypeParamRename$impl<T, U> {
         return null;
     }
     
-    private final U m$(final T t1, final T t2) {
+    private U m$(final T t1, final T t2) {
         throw new .ceylon.language.Exception(null, null);
     }
     
@@ -68,7 +68,7 @@ final class TypeParamRename$impl<T, U> {
         return null;
     }
     
-    private final <V, W>W m2$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedW, final V v) {
+    private <V, W>W m2$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedW, final V v) {
         throw new .ceylon.language.Exception(null, null);
     }
     
@@ -97,6 +97,7 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runti
         return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m$t2(t1);
     }
     
+    @.java.lang.Override
     public Y m(final X t1) {
         return (
             let
@@ -112,7 +113,7 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runti
         return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m(t1, t2);
     }
     
-    private final Y m$(final X t1, final X t2) {
+    private Y m$(final X t1, final X t2) {
         return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m(t1, t2);
     }
     

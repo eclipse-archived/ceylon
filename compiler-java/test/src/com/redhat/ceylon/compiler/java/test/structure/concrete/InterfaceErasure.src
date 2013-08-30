@@ -81,7 +81,7 @@ final class InterfaceErasure$impl<Element, Absent> {
         return .ceylon.language.nothing_.$get();
     }
     
-    private final .java.lang.Object defaultedParams$(final .java.lang.Object p, final .java.lang.Object p2) {
+    private .java.lang.Object defaultedParams$(final .java.lang.Object p, final .java.lang.Object p2) {
         return null;
     }
     
@@ -162,6 +162,7 @@ class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.
         return (Element)$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this.defaultedParams$p();
     }
     
+    @.java.lang.Override
     public .java.lang.Object defaultedParams() {
         return (
             let
@@ -178,6 +179,7 @@ class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.
         return (Element)$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this.defaultedParams$p2(p);
     }
     
+    @.java.lang.Override
     public .java.lang.Object defaultedParams(final .java.lang.Object p) {
         return (
             let

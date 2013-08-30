@@ -22,7 +22,7 @@ class VarargsMethodSpecifyingMethodWithIterable implements .com.redhat.ceylon.co
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final .java.lang.Object bar$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
+    private .java.lang.Object bar$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
         return (
             let
             {

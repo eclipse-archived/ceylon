@@ -22,7 +22,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return 1L;
     }
     
-    private final void m$priv$(final long i) {
+    private void m$priv$(final long i) {
     }
     
     private final void m$priv(final long i) {
@@ -49,7 +49,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return 1L;
     }
     
-    private final long m2$(final long i) {
+    private long m2$(final long i) {
         return i;
     }
     
@@ -86,7 +86,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return 2L * i;
     }
     
-    private final long m3$priv$(final long i, final long n) {
+    private long m3$priv$(final long i, final long n) {
         return i;
     }
     
@@ -108,7 +108,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return 2L * i;
     }
     
-    private final long m4$priv$(final long i, final long n) {
+    private long m4$priv$(final long i, final long n) {
         return i;
     }
     
@@ -145,7 +145,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return null;
     }
     
-    private final <U>long m5$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i, final T t, final U u) {
+    private <U>long m5$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i, final T t, final U u) {
         return i;
     }
     

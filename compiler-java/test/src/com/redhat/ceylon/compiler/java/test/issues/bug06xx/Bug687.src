@@ -23,7 +23,7 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final <T extends .ceylon.language.Number>void sort$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Sequential<? extends T> elements) {
+    private <T extends .ceylon.language.Number>void sort$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Sequential<? extends T> elements) {
     }
     
     public final <T extends .ceylon.language.Number>void sort(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Sequential<? extends T> elements) {
@@ -54,7 +54,7 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void sort2$(final .ceylon.language.Sequential elements) {
+    private void sort2$(final .ceylon.language.Sequential elements) {
     }
     
     public final void sort2(final .ceylon.language.Sequential elements) {

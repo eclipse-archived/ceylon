@@ -1012,7 +1012,7 @@ public class ClassTransformer extends AbstractTransformer {
                         && (method == subMethod)) {
                     final MethodDefinitionBuilder canonicalMethod = makeDelegateToCompanion(iface,
                             typedMember,
-                            PRIVATE | (method.isDefault() ? 0 : FINAL),
+                            PRIVATE,
                             method.getTypeParameters(), 
                             method.getType(), 
                             Naming.selector(method, Naming.NA_CANONICAL_METHOD), 
@@ -2717,6 +2717,18 @@ public class ClassTransformer extends AbstractTransformer {
             }
             return paramType;
         }
+
+        @Override
+        public MethodDefinitionBuilder makeOverload(
+                MethodDefinitionBuilder overloadBuilder,
+                ParameterList parameterList, Parameter currentParameter,
+                java.util.List<TypeParameter> typeParameterList) {
+            overloadBuilder.isOverride(true);
+            return super.makeOverload(overloadBuilder, parameterList, currentParameter,
+                    typeParameterList);
+        }
+        
+        
     }
     
     /**
@@ -2742,7 +2754,7 @@ public class ClassTransformer extends AbstractTransformer {
         protected long getModifiers() {
             long mods = super.getModifiers();
             if (useBody) {
-                mods = mods & ~PUBLIC | PRIVATE;
+                mods = mods & ~PUBLIC & ~FINAL | PRIVATE;
             }
             return mods;
         }

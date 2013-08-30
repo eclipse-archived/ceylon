@@ -26,7 +26,7 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         return 5L;
     }
     
-    private final void f1$priv$(final long n) {
+    private void f1$priv$(final long n) {
     }
     
     private final void f1$priv(final long n) {
@@ -54,7 +54,7 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         return "test";
     }
     
-    private final void f2$(final long n, final .java.lang.String s) {
+    private void f2$(final long n, final .java.lang.String s) {
     }
     
     public final void f2(final long n, final .java.lang.String s) {
@@ -98,7 +98,7 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         return n;
     }
     
-    private final void f3$(final long n, final long m) {
+    private void f3$(final long n, final long m) {
     }
     
     public final void f3(final long n, final long m) {
@@ -142,7 +142,7 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         return n + 1L;
     }
     
-    private final void f4$(final long n, final long m) {
+    private void f4$(final long n, final long m) {
     }
     
     public final void f4(final long n, final long m) {
@@ -170,7 +170,7 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         return getProp();
     }
     
-    private final void f5$(final long n) {
+    private void f5$(final long n) {
     }
     
     public final void f5(final long n) {
@@ -214,7 +214,7 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void f6$(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    private void f6$(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
     }
     
     public final void f6(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {

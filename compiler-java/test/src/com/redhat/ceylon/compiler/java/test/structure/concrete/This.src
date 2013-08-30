@@ -53,7 +53,7 @@ final class This$impl {
         return $this.m1();
     }
     
-    private final long m2$(final long i1, final long i2) {
+    private long m2$(final long i1, final long i2) {
         return $this.m1() + $this.m1() + i1 + i2;
     }
     

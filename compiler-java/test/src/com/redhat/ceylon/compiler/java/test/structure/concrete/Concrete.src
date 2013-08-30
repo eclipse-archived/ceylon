@@ -78,7 +78,7 @@ final class Concrete$impl<A> {
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void mNonShared$priv$(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
+    private void mNonShared$priv$(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
     }
     
     private void mNonShared$priv(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
@@ -122,7 +122,7 @@ final class Concrete$impl<A> {
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void mShared$(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
+    private void mShared$(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
         mNonShared$priv();
     }
     
@@ -173,7 +173,7 @@ final class Concrete$impl<A> {
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final .java.lang.Object mDefault$(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
+    private .java.lang.Object mDefault$(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
         return null;
     }
     
@@ -352,6 +352,7 @@ class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared$a();
     }
     
+    @.java.lang.Override
     public void mShared() {
         (
             let
@@ -369,6 +370,7 @@ class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared$aseq(a);
     }
     
+    @.java.lang.Override
     public void mShared(final B a) {
         (
             let
@@ -385,7 +387,7 @@ class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.
         $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared(a, aseq);
     }
     
-    private final void mShared$(final B a, final .ceylon.language.Sequential<? extends B> aseq) {
+    private void mShared$(final B a, final .ceylon.language.Sequential<? extends B> aseq) {
         $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared(a, aseq);
     }
     
@@ -404,6 +406,7 @@ class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault$a();
     }
     
+    @.java.lang.Override
     public .java.lang.Object mDefault() {
         return (
             let
@@ -420,6 +423,7 @@ class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault$aseq(a);
     }
     
+    @.java.lang.Override
     public .java.lang.Object mDefault(final B a) {
         return (
             let
@@ -460,7 +464,7 @@ class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.
         );
     }
     
-    private final .java.lang.Object mFormal$(final B b, final .ceylon.language.Sequential<? extends B> bseq) {
+    private .java.lang.Object mFormal$(final B b, final .ceylon.language.Sequential<? extends B> bseq) {
         return null;
     }
     
@@ -650,6 +654,7 @@ class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.run
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared$a();
     }
     
+    @.java.lang.Override
     public void mShared() {
         (
             let
@@ -667,6 +672,7 @@ class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.run
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared$aseq(a);
     }
     
+    @.java.lang.Override
     public void mShared(final C a) {
         (
             let
@@ -683,7 +689,7 @@ class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.run
         $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared(a, aseq);
     }
     
-    private final void mShared$(final C a, final .ceylon.language.Sequential<? extends C> aseq) {
+    private void mShared$(final C a, final .ceylon.language.Sequential<? extends C> aseq) {
         $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared(a, aseq);
     }
     
@@ -728,7 +734,7 @@ class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.run
         );
     }
     
-    private final .java.lang.Object mFormal$(final C c, final .ceylon.language.Sequential<? extends C> cseq) {
+    private .java.lang.Object mFormal$(final C c, final .ceylon.language.Sequential<? extends C> cseq) {
         return null;
     }
     
@@ -758,7 +764,7 @@ class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.run
         );
     }
     
-    private final .java.lang.Object mDefault$(final C c, final .ceylon.language.Sequential<? extends C> cseq) {
+    private .java.lang.Object mDefault$(final C c, final .ceylon.language.Sequential<? extends C> cseq) {
         return null;
     }
     
@@ -948,6 +954,7 @@ abstract class Abstract<D> implements .com.redhat.ceylon.compiler.java.runtime.m
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared$a();
     }
     
+    @.java.lang.Override
     public void mShared() {
         (
             let
@@ -965,6 +972,7 @@ abstract class Abstract<D> implements .com.redhat.ceylon.compiler.java.runtime.m
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared$aseq(a);
     }
     
+    @.java.lang.Override
     public void mShared(final D a) {
         (
             let
@@ -981,7 +989,7 @@ abstract class Abstract<D> implements .com.redhat.ceylon.compiler.java.runtime.m
         $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared(a, aseq);
     }
     
-    private final void mShared$(final D a, final .ceylon.language.Sequential<? extends D> aseq) {
+    private void mShared$(final D a, final .ceylon.language.Sequential<? extends D> aseq) {
         $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared(a, aseq);
     }
     
@@ -1000,6 +1008,7 @@ abstract class Abstract<D> implements .com.redhat.ceylon.compiler.java.runtime.m
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault$a();
     }
     
+    @.java.lang.Override
     public .java.lang.Object mDefault() {
         return (
             let
@@ -1016,6 +1025,7 @@ abstract class Abstract<D> implements .com.redhat.ceylon.compiler.java.runtime.m
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault$aseq(a);
     }
     
+    @.java.lang.Override
     public .java.lang.Object mDefault(final D a) {
         return (
             let
@@ -1221,7 +1231,7 @@ class AbstractSub<E> extends .com.redhat.ceylon.compiler.java.test.structure.con
         );
     }
     
-    private final .java.lang.Object mFormal$(final E e, final .ceylon.language.Sequential<? extends E> eseq) {
+    private .java.lang.Object mFormal$(final E e, final .ceylon.language.Sequential<? extends E> eseq) {
         return null;
     }
     
@@ -1411,6 +1421,7 @@ abstract class AbstractImpl<F> implements .com.redhat.ceylon.compiler.java.runti
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared$a();
     }
     
+    @.java.lang.Override
     public void mShared() {
         (
             let
@@ -1428,6 +1439,7 @@ abstract class AbstractImpl<F> implements .com.redhat.ceylon.compiler.java.runti
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared$aseq(a);
     }
     
+    @.java.lang.Override
     public void mShared(final F a) {
         (
             let
@@ -1444,7 +1456,7 @@ abstract class AbstractImpl<F> implements .com.redhat.ceylon.compiler.java.runti
         $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared(a, aseq);
     }
     
-    private final void mShared$(final F a, final .ceylon.language.Sequential<? extends F> aseq) {
+    private void mShared$(final F a, final .ceylon.language.Sequential<? extends F> aseq) {
         $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared(a, aseq);
     }
     
@@ -1489,7 +1501,7 @@ abstract class AbstractImpl<F> implements .com.redhat.ceylon.compiler.java.runti
         );
     }
     
-    private final .java.lang.Object mFormal$(final F f, final .ceylon.language.Sequential<? extends F> fseq) {
+    private .java.lang.Object mFormal$(final F f, final .ceylon.language.Sequential<? extends F> fseq) {
         return null;
     }
     
@@ -1714,7 +1726,7 @@ class AbstractImplSub<G> extends .com.redhat.ceylon.compiler.java.test.structure
         );
     }
     
-    private final .java.lang.Object mDefault$(final G g, final .ceylon.language.Sequential<? extends G> gseq) {
+    private .java.lang.Object mDefault$(final G g, final .ceylon.language.Sequential<? extends G> gseq) {
         return null;
     }
     

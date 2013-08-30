@@ -132,7 +132,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return "s";
     }
     
-    private final .java.lang.String unaryDefaulted$(final .java.lang.String s) {
+    private .java.lang.String unaryDefaulted$(final .java.lang.String s) {
         return new .java.lang.StringBuilder().append("unaryDefaulted(").append(s).append(")").toString();
     }
     
@@ -169,7 +169,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return "s2";
     }
     
-    private final .java.lang.String binaryDefaulted$(final .java.lang.String s1, final .java.lang.String s2) {
+    private .java.lang.String binaryDefaulted$(final .java.lang.String s1, final .java.lang.String s2) {
         return new .java.lang.StringBuilder().append("binaryDefaulted(").append(s1).append(", ").append(s2).append(")").toString();
     }
     
@@ -222,7 +222,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return "s3";
     }
     
-    private final .java.lang.String ternaryDefaulted$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
+    private .java.lang.String ternaryDefaulted$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
         return new .java.lang.StringBuilder().append("ternaryDefaulted(").append(s1).append(", ").append(s2).append(", ").append(s3).append(")").toString();
     }
     
@@ -292,7 +292,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return "s4";
     }
     
-    private final .java.lang.String naryDefaulted$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
+    private .java.lang.String naryDefaulted$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
         return new .java.lang.StringBuilder().append("naryDefaulted(").append(s1).append(", ").append(s2).append(", ").append(s3).append(", ").append(s4).append(")").toString();
     }
     
@@ -507,7 +507,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final .java.lang.String nullarySequenced$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private .java.lang.String nullarySequenced$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return new .java.lang.StringBuilder().append("nullarySequenced(").append(s.toString()).append(")").toString();
     }
     
@@ -529,7 +529,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final .java.lang.String unarySequenced$(final .java.lang.String s1, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private .java.lang.String unarySequenced$(final .java.lang.String s1, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return new .java.lang.StringBuilder().append("unarySequenced(").append(s1).append("; ").append(s.toString()).append(")").toString();
     }
     
@@ -551,7 +551,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final .java.lang.String binarySequenced$(final .java.lang.String s1, final .java.lang.String s2, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private .java.lang.String binarySequenced$(final .java.lang.String s1, final .java.lang.String s2, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return new .java.lang.StringBuilder().append("binarySequenced(").append(s1).append(", ").append(s2).append("; ").append(s.toString()).append(")").toString();
     }
     
@@ -573,7 +573,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final .java.lang.String ternarySequenced$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private .java.lang.String ternarySequenced$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return new .java.lang.StringBuilder().append("ternarySequenced(").append(s1).append(", ").append(s2).append(", ").append(s3).append("; ").append(s.toString()).append(")").toString();
     }
     
@@ -595,7 +595,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final .java.lang.String narySequenced$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private .java.lang.String narySequenced$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return new .java.lang.StringBuilder().append("narySequenced(").append(s1).append(", ").append(s2).append(", ").append(s3).append(", ").append(s4).append("; ").append(s.toString()).append(")").toString();
     }
     

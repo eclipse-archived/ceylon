@@ -20,7 +20,7 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void f1$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
+    private void f1$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
         .java.lang.Object $elem$0;
         for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n$iter$1 = ns.iterator(); !(($elem$0 = $n$iter$1.next()) instanceof .ceylon.language.Finished); ) {
             final long n = ((.ceylon.language.Integer)$elem$0).longValue();
@@ -52,7 +52,7 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void f2$(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
+    private void f2$(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
         .java.lang.Object $elem$3;
         for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n$iter$4 = ns.iterator(); !(($elem$3 = $n$iter$4.next()) instanceof .ceylon.language.Finished); ) {
             final long n = ((.ceylon.language.Integer)$elem$3).longValue();
@@ -84,7 +84,7 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void f3$(final .ceylon.language.Sequential<? extends .java.lang.Object> os) {
+    private void f3$(final .ceylon.language.Sequential<? extends .java.lang.Object> os) {
         .java.lang.Object $elem$6;
         for (.ceylon.language.Iterator<? extends .java.lang.Object> $o$iter$7 = os.iterator(); !(($elem$6 = $o$iter$7.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.Object o = (.java.lang.Object)$elem$6;

@@ -20,7 +20,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void m$priv$(final .java.lang.String a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+    private void m$priv$(final .java.lang.String a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
     }
     
     private final void m$priv(final .java.lang.String a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
@@ -48,7 +48,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void m2$priv$(final .java.lang.String a, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> i) {
+    private void m2$priv$(final .java.lang.String a, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> i) {
     }
     
     private final void m2$priv(final .java.lang.String a, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> i) {

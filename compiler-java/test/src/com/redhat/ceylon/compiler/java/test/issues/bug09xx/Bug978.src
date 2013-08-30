@@ -25,7 +25,7 @@ class Bug978 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final .java.lang.String join$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private .java.lang.String join$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return "";
     }
     

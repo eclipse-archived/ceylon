@@ -27,7 +27,7 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> i
         return null;
     }
     
-    private final <U>T m1$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final X b, final U u) {
+    private <U>T m1$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final X b, final U u) {
         throw new .ceylon.language.Exception(null, null);
     }
     

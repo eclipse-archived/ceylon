@@ -120,7 +120,7 @@ class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
         );
     }
     
-    private final .java.lang.String m1$(final long i, final boolean b) {
+    private .java.lang.String m1$(final long i, final boolean b) {
         return "";
     }
     
@@ -150,7 +150,7 @@ class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
         );
     }
     
-    private final .java.lang.String m2$(final long i, final boolean b) {
+    private .java.lang.String m2$(final long i, final boolean b) {
         return "";
     }
     

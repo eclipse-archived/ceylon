@@ -22,7 +22,7 @@ class NamedArgumentSequencedTypeParamInvocation<T> implements .com.redhat.ceylon
         return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
-    private final void algo$(final .ceylon.language.Sequential<? extends T> strings) {
+    private void algo$(final .ceylon.language.Sequential<? extends T> strings) {
     }
     
     public final void algo(final .ceylon.language.Sequential<? extends T> strings) {
