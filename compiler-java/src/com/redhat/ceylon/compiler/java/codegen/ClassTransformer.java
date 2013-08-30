@@ -2388,12 +2388,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (useDefault) {
                     JCExpression defaultValueMethodName = naming.makeDefaultedParamMethod(overloaded.makeDefaultArgumentValueMethodQualifier(), parameterModel);
                     Naming.SyntheticName varName = naming.temp("$"+parameterModel.getName()+"$");
-                    ProducedType paramType = null;
-                    if (parameterModel.getModel() instanceof Method) {
-                        paramType = typeFact().getCallableType(parameterModel.getType());
-                    } else {
-                        paramType = parameterModel.getType();
-                    }
+                    ProducedType paramType = overloaded.parameterType(parameterModel);
                     vars.append(makeVar(varName, 
                             makeJavaType(paramType, CodegenUtil.isUnBoxed(parameterModel.getModel()) ? 0 : JT_NO_PRIMITIVES), 
                             make().Apply(makeTypeArguments(overloaded), 
@@ -2530,6 +2525,16 @@ public class ClassTransformer extends AbstractTransformer {
         protected abstract void appendImplicitArguments(java.util.List<TypeParameter> typeParameterList,
                 MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args);
         
+        protected ProducedType parameterType(Parameter parameterModel) {
+            ProducedType paramType = null;
+            if (parameterModel.getModel() instanceof Method) {
+                paramType = typeFact().getCallableType(parameterModel.getType());
+            } else {
+                paramType = parameterModel.getType();
+            }
+            return paramType;
+        }
+
         protected abstract void initVars(Parameter currentParameter, ListBuffer<JCStatement> vars);
 
         protected final boolean defaultParameterMethodOnSelf() {
@@ -2604,6 +2609,7 @@ public class ClassTransformer extends AbstractTransformer {
         protected Method getModel() {
             return method;
         }
+        
         @Override
         protected long getModifiers() {
             long mods = transformMethodDeclFlags(method);
