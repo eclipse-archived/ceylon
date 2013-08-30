@@ -488,7 +488,7 @@ TypeConstraints?
             Like any other value declaration, it has a name, type, and, optionally, 
             annotations.</para>
             
-            <synopsis>ValueParameter: Annotations (Type | "value") MemberName</synopsis>
+            <synopsis>ValueParameter: Annotations (Type | "dynamic") MemberName</synopsis>
             
             <para>An argument to a value parameter must be an expression whose type is
             assignable to the type of the value parameter.</para>
@@ -507,10 +507,8 @@ TypeConstraints?
             <!--para>A parameter may not be be declared <literal>variable</literal>, and 
             may not be assigned to within the body of the method or class.</para-->
             
-            <para>Inside a <literal>dynamic</literal> block, a value parameter may be 
-            declared using the keyword <literal>value</literal> in place of the parameter 
-            type. Such a parameter has no type. In other locations, a parameter declaration 
-            must have an explicit type.</para>
+            <para>A value parameter may be declared using the keyword <literal>dynamic</literal> 
+            in place of the parameter type. Such a parameter has no type.</para>
             
         </section>
         
@@ -1682,7 +1680,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <literal>ceylon.language</literal>. A generic function declaration may have a list 
         of type constraints.</para>
         
-        <synopsis>FunctionHeader: (Type | "function" | "void") MemberName TypeParameters? Parameters+ TypeConstraints?</synopsis>
+        <synopsis>FunctionHeader: (Type | "function" | "dynamic" | "void") MemberName TypeParameters? Parameters+ TypeConstraints?</synopsis>
         
         <para>The Ceylon compiler preserves the names of function parameters.</para>
         
@@ -1706,12 +1704,9 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         this behavior can not be depended upon and is not implied by the semantics 
         of <literal>void</literal>.</para></comment>
         
-        <para>Inside a <literal>dynamic</literal> block, a function may be declared using 
-        the keyword <literal>function</literal> in place of its return type, even if no 
-        return type may be inferred. Such a function has no return type. In other locations, 
-        a function declaration must either have an explicit return type, or a return type 
-        must be inferrable.</para>
-            
+        <para>A function may be declared using the keyword <literal>dynamic</literal> 
+        in place of its return type. Such a function has no return type.</para>
+        
         <section id="callabletypeoffunction">
             <title>Callable type of a function</title>
             
@@ -2147,7 +2142,7 @@ case (hexadecimal) {
         defined in <xref linkend="operators"/>. This is the case for a reference annotated 
         <literal>variable</literal>, or for a getter with a matching setter.</para>
             
-        <synopsis>ValueHeader: (Type | "value") MemberName</synopsis>
+        <synopsis>ValueHeader: (Type | "value" | "dynamic") MemberName</synopsis>
         
         <comment><para>Note: syntactically a value declaration looks like a function 
         declaration with zero parameter lists. It is often helpful, in thinking about the 
@@ -2155,11 +2150,9 @@ case (hexadecimal) {
         with zero parameter lists, or, alternatively, that a function is a value of type 
         <literal>Callable</literal>.</para></comment>
         
-        <para>Inside a <literal>dynamic</literal> block, a value may be declared using the 
-        keyword <literal>value</literal> in place of its type, even if no type may be
-        inferred. Such a value has no type. In other locations, a value declaration must 
-        either have an explicit type, or a type must be inferrable.</para>
-            
+        <para>A value may be declared using the keyword <literal>dynamic</literal> in 
+        place of its type. Such a value has no type.</para>
+        
         <section id="references">
             <title>References</title>
             

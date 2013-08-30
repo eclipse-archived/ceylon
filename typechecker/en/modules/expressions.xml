@@ -452,6 +452,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>A value declaration is never generic, so a value reference never
             has a type argument list.</para>
             
+            <para>A value reference that does not occur within any <literal>dynamic</literal>
+            block may not refer to a value declaration or value parameter with no type.</para>
+            
             <para>A value reference which occurs within a <literal>dynamic</literal> 
             block and which does not reference any statically typed declaration, or
             which references a value declaration or value parameter with no type, 
@@ -500,6 +503,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             the interpretation of static expressions such as <literal>Person.string</literal>
             and <literal>Person.equals</literal>.</para></comment>
                     
+            <para>A callable reference that does not occur within any <literal>dynamic</literal>
+            block may not refer to a function declaration with no return type.</para>
+            
             <para>A callable reference which occurs within a <literal>dynamic</literal> 
             block and which references a function declaration with no return type, has 
             no type.</para>
@@ -693,6 +699,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>If an argument expression has no type, or if its parameter has no type, 
             and the invocation occurs within a <literal>dynamic</literal> block, then the 
             argument is not type-checked at compile time.</para>
+            
+            <para>An invocation expression that does not occur within any <literal>dynamic</literal>
+            block may not assign an argument to a value parameter with no type.</para>
             
         </section>
         
