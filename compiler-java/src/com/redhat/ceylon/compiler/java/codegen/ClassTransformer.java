@@ -1989,13 +1989,14 @@ public class ClassTransformer extends AbstractTransformer {
             needsRaw = needsRawification(inheritedFrom);
         }
         
-        final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(
-                this, methodModel);
+        final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, methodModel);
         
         // do the reified type param arguments
-        if(typeParameterList != null && gen().supportsReified(methodModel))
+        if (typeParameterList != null && gen().supportsReified(methodModel)) {
             methodBuilder.reifiedTypeParameters(typeParameterListModel(typeParameterList));
+        }
         
+        boolean hasOverloads = false;
         Tree.ParameterList parameterList = parameterLists.get(0);
         for (final Tree.Parameter parameter : parameterList.getParameters()) {
             Parameter parameterModel = parameter.getParameterModel();
@@ -2008,16 +2009,15 @@ public class ClassTransformer extends AbstractTransformer {
             
             methodBuilder.parameter(parameterModel, annotations, needsRaw ? JT_RAW_TP_BOUND : 0, true);
 
-            if (parameterModel.isDefaulted()
-                    || parameterModel.isSequenced()) {
+            if (parameterModel.isDefaulted() || parameterModel.isSequenced()) {
                 if (refinedDeclaration == methodModel
-                        || (!methodModel.getType().isExactly(
-                                ((TypedDeclaration)refinedDeclaration).getType())
-                                && !Decl.withinInterface(refinedDeclaration))) {
+                        || (!Decl.withinInterface(methodModel) && body != null)) {
                     
-                    if (daoTransformation != null) {
+                    if (daoTransformation != null && (daoTransformation instanceof DaoCompanion == false || body != null)) {
+                        DaoBody daoTrans = (body == null) ? daoAbstract : daoThis;
                         MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, methodModel);
-                        MethodDefinitionBuilder overloadedMethod = new DefaultedArgumentMethod(daoTransformation, methodModel).makeOverload(
+                        MethodDefinitionBuilder overloadedMethod = new DefaultedArgumentMethod(daoTrans, methodModel)
+                            .makeOverload(
                                 overloadBuilder, 
                                 parameterList.getModel(),
                                 parameter.getParameterModel(),
@@ -2029,12 +2029,30 @@ public class ClassTransformer extends AbstractTransformer {
                         lb.append(makeParamDefaultValueMethod(defaultValuesBody, methodModel, parameterList, parameter, typeParameterList));
                     }
                 }
+                
+                hasOverloads = true;
             }
+        }
+
+        // Determine if we need to generate a "canonical" method
+        boolean createCanonical = hasOverloads
+                && Decl.withinClassOrInterface(methodModel)
+                && body != null;
+        
+        if (createCanonical) {
+            // Creates the private "canonical" method containing the actual body
+            MethodDefinitionBuilder canonicalBuilder = MethodDefinitionBuilder.method2(this, Naming.selector(methodModel, Naming.NA_CANONICAL_METHOD));
+            MethodDefinitionBuilder canonicalMethod = new CanonicalMethod(daoTransformation, methodModel, body)
+                .makeOverload(
+                    canonicalBuilder, 
+                    parameterList.getModel(),
+                    null,
+                    typeParameterListModel(typeParameterList));
+            lb.append(canonicalMethod);
         }
         
         if (transformMethod) {
-            methodBuilder
-                .modifiers(transformMethodDeclFlags(methodModel));
+            methodBuilder.modifiers(transformMethodDeclFlags(methodModel));
             if (actual) {
                 methodBuilder.isOverride(methodModel.isActual());
             }
@@ -2048,14 +2066,25 @@ public class ClassTransformer extends AbstractTransformer {
             if (!needsRaw) {
                 copyTypeParameters(methodModel, methodBuilder);
             }
-            if (body != null) {
-                // Construct the outermost method using the body we've built so far
-                methodBuilder.body(body);
-            } else {
-                methodBuilder.noBody();
-            }
             
-            lb.append(methodBuilder);
+            if (createCanonical) {
+                // Creates method that redirects to the "canonical" method containing the actual body
+                MethodDefinitionBuilder overloadedMethod = new CanonicalMethod(daoThis, methodModel)
+                    .makeOverload(
+                        methodBuilder, 
+                        parameterList.getModel(),
+                        null,
+                        typeParameterListModel(typeParameterList));
+                lb.append(overloadedMethod);
+            } else {
+                if (body != null) {
+                    // Construct the outermost method using the body we've built so far
+                    methodBuilder.body(body);
+                } else {
+                    methodBuilder.noBody();
+                }
+                lb.append(methodBuilder);
+            }
         }
         return lb.toList();
     }
@@ -2585,7 +2614,11 @@ public class ClassTransformer extends AbstractTransformer {
 
         @Override
         protected final JCExpression makeMethodName() {
-            return naming.makeQualifiedName(daoBody.makeMethodNameQualifier(), method, Naming.NA_MEMBER);
+            int flags = Naming.NA_MEMBER;
+            if (Decl.withinClassOrInterface(method)) {
+                flags |= Naming.NA_CANONICAL_METHOD;
+            }
+            return naming.makeQualifiedName(daoBody.makeMethodNameQualifier(), method, flags);
         }
 
         @Override
@@ -2617,6 +2650,77 @@ public class ClassTransformer extends AbstractTransformer {
         protected JCIdent makeDefaultArgumentValueMethodQualifier() {
             return null;
         }
+    }
+    
+    /**
+     * A transformation for generating the canonical <em>method</em> used by the
+     * defaulted argument overload methods
+     */
+    class CanonicalMethod extends DefaultedArgumentMethod {
+        private List<JCStatement> body;
+        private boolean useBody;
+        
+        CanonicalMethod(DaoBody daoBody, Method method) {
+            super(daoBody, method);
+            useBody = false;
+        }
+        
+        CanonicalMethod(DaoBody daoBody, Method method, List<JCStatement> body) {
+            super(daoBody, method);
+            this.body = body;
+            useBody = true;
+        }
+        
+        @Override
+        protected long getModifiers() {
+            long mods = super.getModifiers();
+            if (useBody) {
+                mods = mods & ~PUBLIC | PRIVATE;
+            }
+            return mods;
+        }
+        
+        /**
+         * Generates a canonical method
+         */
+        public MethodDefinitionBuilder makeOverload (
+                MethodDefinitionBuilder canonicalBuilder,
+                ParameterList parameterList,
+                Parameter currentParameter,
+                java.util.List<TypeParameter> typeParameterList) {
+
+            if (!useBody) {
+                daoBody.makeBody(this, canonicalBuilder,
+                        parameterList,
+                        currentParameter,
+                        typeParameterList);
+            } else {
+                // Make the declaration
+                // need annotations for BC, but the method isn't really there
+                canonicalBuilder.ignoreModelAnnotations();
+                canonicalBuilder.modifiers(getModifiers());
+                resultType(canonicalBuilder);
+                typeParameters(canonicalBuilder);
+
+                appendImplicitParameters(typeParameterList, canonicalBuilder);
+                for (Parameter parameter : parameterList.getParameters()) {
+                    if (currentParameter != null && parameter == currentParameter) {
+                        break;
+                    }
+                    canonicalBuilder.parameter(parameter, null, 0, false);
+                }
+                
+                if (body != null) {
+                    // Construct the outermost method using the body we've built so far
+                    canonicalBuilder.body(body);
+                } else {
+                    canonicalBuilder.noBody();
+                }
+            }
+            
+            return canonicalBuilder;
+        }
+
     }
     
     /**
