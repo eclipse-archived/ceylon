@@ -21,8 +21,8 @@
     
     function Brush()
     {
-        var keywords = 'module package import alias class interface object given value assign void function of ' +
-                       'extends satisfies adapts abstracts in out return break continue throw ' +
+        var keywords = 'assembly module package import alias class interface object given value assign void function of ' +
+                       'extends satisfies abstracts in out return break continue throw ' +
                        'assert dynamic if else switch case for while try catch finally then ' +
                        'this outer super is exists nonempty';
         var annotations = 'shared abstract formal default actual variable deprecated small late ' +
