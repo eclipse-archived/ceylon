@@ -130,7 +130,7 @@ void checkAToplevelAttributeAnnotations() {
     
     assert(nonempty see = annotations(seeAnnotation, aToplevelAttributeDecl));
     assert(see.size == 1);
-    assert(see.first.programElements.contains(`aToplevelGetterSetter`));
+    assert(see.first.programElements.contains(`value aToplevelGetterSetter`));
     
     assert(exists enumed = annotations(enumeratedAnnotation, aToplevelAttributeDecl));
     assert(enumed.c == larger);
@@ -171,7 +171,7 @@ void checkAToplevelGetterSetterAnnotations() {
     
     assert(nonempty see = annotations(seeAnnotation, aToplevelGetterSetterDecl));
     assert(see.size == 1);
-    assert(see.first.programElements.contains(`aToplevelAttribute`));
+    assert(see.first.programElements.contains(`value aToplevelAttribute`));
 }
 
 void checkAToplevelFunctionAnnotations() {
@@ -687,123 +687,123 @@ void checkMetamodelRefs() {
     
     assert(exists d0 = decls[0],
         d0.decl is ValueDeclaration,
-        `aToplevelAttribute` == d0.decl);
+        `value aToplevelAttribute` == d0.decl);
     
     assert(exists d1 = decls[1],
         d1.decl is ValueDeclaration,
-        `aToplevelGetterSetter` == d1.decl);
+        `value aToplevelGetterSetter` == d1.decl);
     
     assert(exists d2 = decls[2],
         d2.decl is FunctionDeclaration,
-        `aToplevelFunction` == d2.decl);
+        `function aToplevelFunction` == d2.decl);
     
     assert(exists d3 = decls[3],
         d3.decl is ValueDeclaration,
-        `aToplevelObject` == d3.decl);
+        `value aToplevelObject` == d3.decl);
     
     assert(exists d4 = decls[4],
         d4.decl is InterfaceDeclaration,
-        `AInterface` == d4.decl);
+        `interface AInterface` == d4.decl);
     
     assert(exists d5 = decls[5],
         d5.decl is FunctionDeclaration,
-        `AInterface.FormalInnerClass.method` == d5.decl);
+        `function AInterface.FormalInnerClass.method` == d5.decl);
     
     assert(exists d6 = decls[6],
         d6.decl is ClassDeclaration,
-        `AInterface.DefaultInnerClass` == d6.decl);
+        `class AInterface.DefaultInnerClass` == d6.decl);
     
     assert(exists d7 = decls[7],
         d7.decl is FunctionDeclaration,
-        `AInterface.DefaultInnerClass.method` == d7.decl);
+        `function AInterface.DefaultInnerClass.method` == d7.decl);
     
     assert(exists d8 = decls[8],
         d8.decl is InterfaceDeclaration,
-        `AInterface.SharedInnerInterface` == d8.decl);
+        `interface AInterface.SharedInnerInterface` == d8.decl);
     
     assert(exists d9 = decls[9],
         d9.decl is FunctionDeclaration,
-        `AInterface.SharedInnerInterface.method` == d9.decl);
+        `function AInterface.SharedInnerInterface.method` == d9.decl);
     
     assert(exists d10 = decls[10],
         d10.decl is ValueDeclaration,
-        `AInterface.formalAttribute` == d10.decl);
+        `value AInterface.formalAttribute` == d10.decl);
     
     assert(exists d11 = decls[11],
         d11.decl is ValueDeclaration,
-        `AInterface.defaultGetterSetter` == d11.decl);
+        `value AInterface.defaultGetterSetter` == d11.decl);
     
     assert(exists d12 = decls[12],
         d12.decl is ValueDeclaration,
-        `AInterface.getterSetter` == d12.decl);
+        `value AInterface.getterSetter` == d12.decl);
     
 //Illegal decl(`AInterface.nonsharedGetterSetter`)
 
     assert(exists d13 = decls[13],
         d13.decl is FunctionDeclaration,
-        `AInterface.formalMethod` == d13.decl);
+        `function AInterface.formalMethod` == d13.decl);
     
     assert(exists d14 = decls[14],
         d14.decl is FunctionDeclaration,
-        `AInterface.defaultMethod` == d14.decl);
+        `function AInterface.defaultMethod` == d14.decl);
     
     assert(exists d15 = decls[15],
         d15.decl is FunctionDeclaration,
-        `AInterface.method` == d15.decl);
+        `function AInterface.method` == d15.decl);
     
 //Illegal decl(`AInterface.nonsharedMethod`)
 
     assert(exists d16 = decls[16],
         d16.decl is ClassDeclaration,
-        `AAbstractClass` == d16.decl);
+        `class AAbstractClass` == d16.decl);
     
     assert(exists d17 = decls[17],
         d17.decl is ClassDeclaration,
-        `AAbstractClass.FormalInnerClass` == d17.decl);
+        `class AAbstractClass.FormalInnerClass` == d17.decl);
     
     assert(exists d18 = decls[18],
         d18.decl is ClassDeclaration,
-        `AAbstractClass.DefaultInnerClass` == d18.decl);
+        `class AAbstractClass.DefaultInnerClass` == d18.decl);
     
     assert(exists d19 = decls[19],
         d19.decl is ValueDeclaration,
-        `AAbstractClass.formalAttribute` == d19.decl);
+        `value AAbstractClass.formalAttribute` == d19.decl);
     
     assert(exists d20 = decls[20],
         d20.decl is FunctionDeclaration,
-        `AAbstractClass.formalMethod` == d20.decl);
+        `function AAbstractClass.formalMethod` == d20.decl);
     
     assert(exists d21 = decls[21],
         d21.decl is ValueDeclaration,
-        `AAbstractClass.objectMember` == d21.decl);
+        `value AAbstractClass.objectMember` == d21.decl);
 
     assert(exists d22 = decls[22],
         d22.decl is ClassDeclaration,
-        `AAbstractClass.InnerClass` == d22.decl);
+        `class AAbstractClass.InnerClass` == d22.decl);
     
     assert(exists d23 = decls[23],
         d23.decl is FunctionDeclaration,
-        `AAbstractClass.InnerClass.method` == d23.decl);
+        `function AAbstractClass.InnerClass.method` == d23.decl);
     
     assert(exists d24 = decls[24],
         d24.decl is InterfaceDeclaration,
-        `AAbstractClass.InnerInterface` == d24.decl);
+        `interface AAbstractClass.InnerInterface` == d24.decl);
     
     assert(exists d25 = decls[25],
         d25.decl is FunctionDeclaration,
-        `AAbstractClass.InnerInterface.method` == d25.decl);
+        `function AAbstractClass.InnerInterface.method` == d25.decl);
     
     assert(exists d26 = decls[26],
         d26.decl is ClassDeclaration,
-        `AClass` == d26.decl);
+        `class AClass` == d26.decl);
     
     assert(exists d27 = decls[27],
         d27.decl is ClassDeclaration,
-        `MetamodelRefs` == d27.decl);
+        `class MetamodelRefs` == d27.decl);
     
     assert(exists d28 = decls[28],
         d28.decl is ValueDeclaration,
-        `MetamodelRefs.parameter` == d28.decl);
+        `value MetamodelRefs.parameter` == d28.decl);
 }
 
 void annotationTests() {
