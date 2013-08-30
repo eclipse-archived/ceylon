@@ -96,9 +96,6 @@ public class AppliedAttribute<Container, Type>
                                                                FreeAttribute value, ProducedTypedReference valueTypedReference, 
                                                                com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration decl,
                                                                ceylon.language.model.ClassOrInterface<? extends Object> container) {
-        // if the container has no TP, the declaration will also be an Attribute
-        if(!Metamodel.hasTypeParameters((Generic) decl.getContainer()))
-            return (ceylon.language.model.Attribute) Metamodel.getOrCreateMetamodel(decl);
         return decl.isVariable()
                 ? new AppliedVariableAttribute($reifiedSubType, reifiedValueType, value, valueTypedReference, container)
                 : new AppliedAttribute($reifiedSubType, reifiedValueType, value, valueTypedReference, container);

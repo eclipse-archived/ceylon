@@ -211,9 +211,6 @@ public class FreeFunction
                                                                                   @Ignore TypeDescriptor $reifiedArguments, 
                                                                                   Sequential<? extends ceylon.language.model.Type<?>> types,
                                                                                   ceylon.language.model.ClassOrInterface<? extends Object> container){
-        // if we don't have any TP our declaration will also be a Method
-        if(!Metamodel.hasTypeParameters((Generic) declaration))
-            return (ceylon.language.model.Method)Metamodel.getOrCreateMetamodel(declaration);
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         // FIXME: check this null qualifying type
         // this is most likely wrong as it doesn't seem to substitute the containing type parameters

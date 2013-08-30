@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -146,88 +145,19 @@ public class Metamodel {
             if(ret == null){
                 if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
                     com.redhat.ceylon.compiler.typechecker.model.Class klass = (com.redhat.ceylon.compiler.typechecker.model.Class) declaration;
-                    if(!hasTypeParameters(klass)){
-                        if(klass.isToplevel()){
-                            ProducedReference pr = klass.getProducedReference(null, Collections.<ProducedType>emptyList());
-                            TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pr.getType());
-                            TypeDescriptor reifiedArguments = klass.isAnonymous() ? TypeDescriptor.NothingType : getTypeDescriptorForArguments(klass.getUnit(), klass, pr);
-                            ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassWithAppliedClass(reifiedType, reifiedArguments, klass);
-                        }else{
-                            // FIXME: other types of containers?
-                            com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface container = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) klass.getContainer();
-                            ProducedReference pr = klass.getProducedReference(container.getType(), Collections.<ProducedType>emptyList());
-                            TypeDescriptor containerType = getTypeDescriptorForProducedType(container.getType());
-                            TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pr.getType());
-                            TypeDescriptor reifiedArguments = klass.isAnonymous() ? TypeDescriptor.NothingType : getTypeDescriptorForArguments(klass.getUnit(), klass, pr);
-                            ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassWithAppliedMemberClass(containerType, reifiedType, reifiedArguments, klass);
-                        }
-                    }else
-                        ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClass(klass);
+                    ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClass(klass);
                 }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
                     com.redhat.ceylon.compiler.typechecker.model.Interface interf = (com.redhat.ceylon.compiler.typechecker.model.Interface)declaration;
-                    if(!hasTypeParameters(interf)){
-                        if(interf.isToplevel()){
-                            ProducedReference pr = interf.getProducedReference(null, Collections.<ProducedType>emptyList());
-                            TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pr.getType());
-                            ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeInterfaceWithAppliedInterface(reifiedType, interf);
-                        }else{
-                            // FIXME: other types of containers?
-                            com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface container = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) interf.getContainer();
-                            ProducedReference pr = interf.getProducedReference(container.getType(), Collections.<ProducedType>emptyList());
-                            TypeDescriptor containerType = getTypeDescriptorForProducedType(container.getType());
-                            TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pr.getType());
-                            ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeInterfaceWithAppliedMemberInterface(containerType, reifiedType, interf);
-                        }
-                    }else
-                        ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeInterface(interf);
+                    ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeInterface(interf);
                 }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method){
                     com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration method = (com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration)declaration;
-                    if(method.getContainer() instanceof Method == false
-                       && !hasTypeParameters(method)){
-                        if(method.isToplevel()){
-                            ProducedReference pr = method.getProducedReference(null, Collections.<ProducedType>emptyList());
-                            TypeDescriptor reifiedType = getTypeDescriptorForFunction(pr);
-                            TypeDescriptor reifiedArguments = getTypeDescriptorForArguments(method.getUnit(), (Functional)method, pr);
-                            ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunctionWithAppliedFunction(reifiedType, reifiedArguments, method);
-                        }else{
-                            // FIXME: other types of containers?
-                            com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface container = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) method.getContainer();
-                            ProducedReference pr = method.getProducedReference(container.getType(), Collections.<ProducedType>emptyList());
-                            TypeDescriptor containerType = getTypeDescriptorForProducedType(container.getType());
-                            TypeDescriptor reifiedType = getTypeDescriptorForFunction(pr);
-                            TypeDescriptor reifiedArguments = getTypeDescriptorForArguments(method.getUnit(), (Functional)method, pr);
-                            ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunctionWithAppliedMethod(containerType, reifiedType, reifiedArguments, method);
-                        }
-                    }else{
-                        ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunction(method);
-                    }
+                    ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunction(method);
                 }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value){
                     com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration value = (com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration)declaration;
-                    // FIXME: other container types?
-                    if(value.getContainer() instanceof Method == false
-                       && (value.isToplevel() 
-                          || !hasTypeParameters((Generic) value.getContainer()))){
-                        TypeDescriptor reifiedType = getTypeDescriptorForProducedType(value.getType());
-                        if(value.isToplevel()){
-                            if(value.isVariable())
-                                ret = new FreeVariableWithAppliedVariable(reifiedType, value);
-                            else
-                                ret = new FreeAttributeWithAppliedValue(reifiedType, value);
-                        }else{
-                            // FIXME: other container types?
-                            TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)value.getContainer()).getType());
-                            if(value.isVariable()){
-                                ret = new FreeVariableWithAppliedVariableAttribute(reifiedContainer, reifiedType, value);
-                            }else{
-                                ret = new FreeAttributeWithAppliedAttribute(reifiedContainer, reifiedType, value);
-                            }
-                        }
-                    }else{
-                        if (value.isVariable()) {
-                            ret = new FreeVariable(value);
-                        } else {
-                            ret = new FreeAttribute(value);
-                        }
+                    if (value.isVariable()) {
+                        ret = new FreeVariable(value);
+                    } else {
+                        ret = new FreeAttribute(value);
                     }
                 }else{
                     throw new RuntimeException("Declaration type not supported yet: "+declaration);
@@ -301,9 +231,6 @@ public class Metamodel {
     public static ceylon.language.model.Type getAppliedMetamodel(ProducedType pt) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
-            // if there are no TP the declaration model will also be an applied type
-            if(!hasTypeParameters(declaration))
-                return (ceylon.language.model.Type)getOrCreateMetamodel(declaration);
             // anonymous classes don't have parameter lists
             TypeDescriptor reifiedArguments;
             if(!declaration.isAnonymous())
@@ -319,9 +246,6 @@ public class Metamodel {
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedMemberClass(reifiedContainer, reifiedType, reifiedArguments, pt);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
-            // if there are no TP the declaration model will also be an applied type
-            if(!hasTypeParameters(declaration))
-                return (ceylon.language.model.Type)getOrCreateMetamodel(declaration);
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
             if(declaration.isToplevel())
                 return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedInterface(reifiedType, pt);
@@ -455,14 +379,6 @@ public class Metamodel {
     public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.model.Type pt) {
         if(pt instanceof AppliedClassOrInterface)
             return ((AppliedClassOrInterface)pt).producedType;
-        if(pt instanceof FreeClassWithAppliedClass)
-            return ((TypeDeclaration)((FreeClassWithAppliedClass) pt).declaration).getType();
-        if(pt instanceof FreeClassWithAppliedMemberClass)
-            return ((TypeDeclaration)((FreeClassWithAppliedMemberClass) pt).declaration).getType();
-        if(pt instanceof FreeInterfaceWithAppliedInterface)
-            return ((TypeDeclaration)((FreeInterfaceWithAppliedInterface) pt).declaration).getType();
-        if(pt instanceof FreeInterfaceWithAppliedMemberInterface)
-            return ((TypeDeclaration)((FreeInterfaceWithAppliedMemberInterface) pt).declaration).getType();
             
         throw new RuntimeException("Unsupported applied produced type: " + pt);
     }
