@@ -32,7 +32,7 @@ shared final annotation class Variable()
         satisfies OptionalAnnotation<Variable, ValueDeclaration> {}
 
 "Annotation to mark an value as variable. A `variable` value 
- must be assigned multiple times." 
+ may be assigned multiple times."
 shared annotation Variable variable() => Variable();
 
 "The annotation class for [[abstract]]."
