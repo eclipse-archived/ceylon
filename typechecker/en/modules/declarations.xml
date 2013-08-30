@@ -653,7 +653,9 @@ TypeConstraints?
 
         <para>An interface may declare <literal>formal</literal> methods, attributes,
         and member classes, and concrete methods, getters, setters, and member classes.
-        An interface may not declare a member field or member <literal>object</literal>.</para>
+        A reference declaration, as defined in <xref linkend="references"/>, or 
+        anonymous class declaration, as defined in <xref linkend="anonymousclasses"/>,
+        may not directly occur in the body of an interface.</para>
         
         <para>A non-<literal>abstract </literal> nested class declaration is called a
         <emphasis>member class</emphasis> of the interface. A nested interface or 
@@ -671,7 +673,10 @@ TypeConstraints?
                     <para>a statement or control structure,</para>
                 </listitem>
                 <listitem>
-                    <para>a method or attribute declaration with a non-lazy specifier, or</para>
+                    <para>a reference declaration,</para>
+                </listitem>
+                <listitem>
+                    <para>a forward-declared method or attribute declaration, or</para>
                 </listitem>
                 <listitem>
                     <para>an <literal>object</literal> declaration.</para>
@@ -1093,7 +1098,7 @@ TypeConstraints?
                     <para>a statement or control structure,</para>
                 </listitem>
                 <listitem>
-                    <para>a method or attribute declaration with a non-lazy specifier,</para>
+                    <para>a reference declaration,</para>
                 </listitem>
                 <listitem>
                     <para>a forward-declared method or attribute declaration not
