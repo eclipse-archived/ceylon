@@ -1255,6 +1255,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                     <para>inline <literal>try/catch</literal> exceptional conditions?</para>
                 </listitem>
             </itemizedlist>
+            <para>For example:</para>
+            <programlisting>Float evaluated => switch (expr)
+        case (is Literal) expr.integer
+        case (is Plus) expr.left.evaluated + expr.right.evaluated
+        case (is Times) expr.left.evaluated * expr.right.evaluated;</programlisting>
             </comment>
             
         </section>
