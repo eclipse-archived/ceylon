@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
+import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +20,7 @@ public abstract class TypeDeclaration extends Declaration
     private ProducedType extendedType;
     private List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>();
     private List<ProducedType> caseTypes = null;
-    private List<TypeParameter> typeParameters = Collections.emptyList();
+    private List<TypeParameter> typeParameters = emptyList();
     private ProducedType selfType;
     private List<ProducedType> brokenSupertypes = new ArrayList<ProducedType>();
     

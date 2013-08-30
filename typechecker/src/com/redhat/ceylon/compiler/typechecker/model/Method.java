@@ -1,9 +1,9 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
+import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -18,7 +18,7 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     
     //private boolean formal;
 
-    private List<TypeParameter> typeParameters = Collections.emptyList();
+    private List<TypeParameter> typeParameters = emptyList();
     private List<ParameterList> parameterLists = new ArrayList<ParameterList>();
     private boolean overloaded;
     private boolean abstraction;
