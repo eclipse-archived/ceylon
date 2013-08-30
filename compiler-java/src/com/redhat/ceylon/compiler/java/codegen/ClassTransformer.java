@@ -953,6 +953,7 @@ public class ClassTransformer extends AbstractTransformer {
                 final ProducedTypedReference refinedTypedMember = model.getType().getTypedMember(subMethod, Collections.<ProducedType>emptyList());
                 final java.util.List<TypeParameter> typeParameters = subMethod.getTypeParameters();
                 final java.util.List<Parameter> parameters = subMethod.getParameterLists().get(0).getParameters();
+                boolean hasOverloads = false;
                 if (!satisfiedInterfaces.contains((Interface)method.getContainer())) {
                     
                     for (Parameter param : parameters) {
@@ -969,18 +970,23 @@ public class ClassTransformer extends AbstractTransformer {
                                     typedParameter.getType(), 
                                     Naming.getDefaultedParamMethodName(method, param), 
                                     parameters.subList(0, parameters.indexOf(param)),
-                                    param.getModel().getTypeErased());
+                                    param.getModel().getTypeErased(),
+                                    null);
                             classBuilder.method(defaultValueDelegate);
+
+                            if ((method.isDefault() || method.isShared() && !method.isFormal())
+                                    && (method == subMethod)) {
+                                MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, subMethod);
+                                MethodDefinitionBuilder overload = new DefaultedArgumentMethod(daoThis, subMethod)
+                                    .makeOverload(
+                                        overloadBuilder, 
+                                        subMethod.getParameterLists().get(0),
+                                        param,
+                                        typeParameters);
+                                classBuilder.method(overload);
+                            }
                             
-                            final MethodDefinitionBuilder overload = makeDelegateToCompanion(iface,
-                                    refinedTypedMember,
-                                    PUBLIC | (method.isDefault() ? 0 : FINAL), 
-                                    typeParameters,  
-                                    typedMember.getType(), 
-                                    naming.selector(method), 
-                                    parameters.subList(0, parameters.indexOf(param)),
-                                    ((Method) member).getTypeErased());
-                            classBuilder.method(overload);
+                            hasOverloads = true;
                         }
                     }
                 }
@@ -996,7 +1002,8 @@ public class ClassTransformer extends AbstractTransformer {
                             method.getType(), 
                             naming.selector(method), 
                             method.getParameterLists().get(0).getParameters(),
-                            ((Method) member).getTypeErased());
+                            ((Method) member).getTypeErased(),
+                            null);
                     classBuilder.method(concreteMemberDelegate);
                      
                 }
@@ -1013,7 +1020,8 @@ public class ClassTransformer extends AbstractTransformer {
                                 typedMember.getType(), 
                                 Naming.getGetterName(attr), 
                                 Collections.<Parameter>emptyList(),
-                                attr.getTypeErased());
+                                attr.getTypeErased(),
+                                null);
                         classBuilder.method(getterDelegate);
                     }
                     if (member instanceof Setter) { 
@@ -1024,7 +1032,8 @@ public class ClassTransformer extends AbstractTransformer {
                                 typeFact().getAnythingDeclaration().getType(), 
                                 Naming.getSetterName(attr), 
                                 Collections.<Parameter>singletonList(((Setter)member).getParameter()),
-                                ((Setter) member).getTypeErased());
+                                ((Setter) member).getTypeErased(),
+                                null);
                         classBuilder.method(setterDelegate);
                     }
                     if (Decl.isValue(member) 
@@ -1073,7 +1082,8 @@ public class ClassTransformer extends AbstractTransformer {
                         typedParameter.getType(),
                         Naming.getDefaultedParamMethodName(klass, param), 
                         parameters.subList(0, parameters.indexOf(param)),
-                        param.getModel().getTypeErased());
+                        param.getModel().getTypeErased(),
+                        null);
                 classBuilder.method(defaultValueDelegate);
                 
                 final MethodDefinitionBuilder overload = makeDelegateToCompanion(iface,
@@ -1083,7 +1093,8 @@ public class ClassTransformer extends AbstractTransformer {
                         typeMember.getType(), 
                         instantiatorMethodName, 
                         parameters.subList(0, parameters.indexOf(param)),
-                        false);
+                        false,
+                        null);
                 classBuilder.method(overload);
             }
         }
@@ -1094,7 +1105,8 @@ public class ClassTransformer extends AbstractTransformer {
                 typeMember.getType(), 
                 instantiatorMethodName, 
                 parameters,
-                false);
+                false,
+                null);
         classBuilder.method(overload);
     }
 
@@ -1131,15 +1143,20 @@ public class ClassTransformer extends AbstractTransformer {
      * Generates a method which delegates to the companion instance $Foo$impl
      */
     private MethodDefinitionBuilder makeDelegateToCompanion(Interface iface,
-            ProducedReference typedMember, final long mods,
+            ProducedReference typedMember,
+            final long mods,
             final java.util.List<TypeParameter> typeParameters,
             final ProducedType methodType,
-            final String methodName, final java.util.List<Parameter> parameters, 
-            boolean typeErased) {
+            final String methodName,
+            final java.util.List<Parameter> parameters, 
+            boolean typeErased,
+            final String targetMethodName) {
         final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.systemMethod(gen(), methodName);
         concreteWrapper.modifiers(mods);
         concreteWrapper.ignoreModelAnnotations();
-        concreteWrapper.isOverride(true);
+        if ((mods & PRIVATE) == 0) {
+            concreteWrapper.isOverride(true);
+        }
         if(typeParameters != null)
             concreteWrapper.reifiedTypeParametersFromModel(typeParameters);
         for (TypeParameter tp : typeParameters) {
@@ -1183,7 +1200,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         JCExpression expr = make().Apply(
                 null,  // TODO Type args
-                makeSelect(getCompanionFieldName(iface), methodName),
+                makeSelect(getCompanionFieldName(iface), (targetMethodName != null) ? targetMethodName : methodName),
                 arguments.toList());
         
         if (!explicitReturn) {
