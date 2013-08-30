@@ -2,10 +2,6 @@ package ceylon.language.model;
 
 import ceylon.language.Sequence;
 import ceylon.language.Sequential;
-import ceylon.language.model.Annotation;
-import ceylon.language.model.ClassOrInterface;
-import ceylon.language.model.ConstrainedAnnotation;
-import ceylon.language.model.OptionalAnnotation;
 
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -42,8 +38,8 @@ public final class annotations_ {
             @Ignore
             final TypeDescriptor $reifiedProgramElement, 
             @Name("annotationType")
-            @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language.model::ConstrainedAnnotation<Value,Values,ProgramElement>>")
-            final ClassOrInterface<? extends ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>> annotationType, 
+            @TypeInfo("ceylon.language.model::Class<ceylon.language.model::ConstrainedAnnotation<Value,Values,ProgramElement>,ceylon.language::Nothing>")
+            final Class<? extends ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>,?> annotationType, 
             @Name("programElement")
             @TypeInfo("ProgramElement")
             final ProgramElement programElement) {

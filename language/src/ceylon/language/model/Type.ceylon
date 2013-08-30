@@ -1,4 +1,4 @@
-shared interface Type<out Type> /* of ClassOrInterface
+shared interface Type<out Type=Anything> /* of ClassOrInterface
                                  | UnionType
                                  | IntersectionType
                                  | nothingType */ {}

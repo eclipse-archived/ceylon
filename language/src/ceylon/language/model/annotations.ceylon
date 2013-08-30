@@ -8,8 +8,8 @@
  */
 
 shared native Values annotations<Value,Values,ProgramElement>(
-              ClassOrInterface<ConstrainedAnnotation<Value,Values,ProgramElement>> annotationType,
+              Class<ConstrainedAnnotation<Value,Values,ProgramElement>> annotationType,
               ProgramElement programElement)
            given Value satisfies ConstrainedAnnotation<Value,Values,ProgramElement>
            //given Values of <Value?> | <Value[]>
-           given ProgramElement satisfies Annotated { throw; }
+           given ProgramElement satisfies Annotated;
