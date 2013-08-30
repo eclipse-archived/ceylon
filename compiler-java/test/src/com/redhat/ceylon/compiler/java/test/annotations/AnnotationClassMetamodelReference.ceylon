@@ -4,13 +4,13 @@ import ceylon.language.model.declaration { Declaration, ClassOrInterfaceDeclarat
 @nomodel
 annotation final class AnnotationClassMetamodelReference(Declaration mmr) satisfies SequencedAnnotation<AnnotationClassMetamodelReference, ClassOrInterfaceDeclaration>{}
 @nomodel
-annotation final class AnnotationClassMetamodelReferenceDefaulted(Declaration mmr=`AnnotationClassMetamodelReference`) satisfies SequencedAnnotation<AnnotationClassMetamodelReferenceDefaulted, ClassOrInterfaceDeclaration>{}
+annotation final class AnnotationClassMetamodelReferenceDefaulted(Declaration mmr=`class AnnotationClassMetamodelReference`) satisfies SequencedAnnotation<AnnotationClassMetamodelReferenceDefaulted, ClassOrInterfaceDeclaration>{}
 @nomodel
 annotation final class AnnotationClassMetamodelReferenceVariadic(Declaration* mmrs) satisfies SequencedAnnotation<AnnotationClassMetamodelReferenceVariadic, ClassOrInterfaceDeclaration>{}
 @nomodel
 annotation AnnotationClassMetamodelReference annotationClassMetamodelReference(Declaration mmr) => AnnotationClassMetamodelReference(mmr);
 @nomodel
-annotation AnnotationClassMetamodelReference annotationClassMetamodelReferenceLiteral() => AnnotationClassMetamodelReference(`AnnotationClassMetamodelReference`);
+annotation AnnotationClassMetamodelReference annotationClassMetamodelReferenceLiteral() => AnnotationClassMetamodelReference(`class AnnotationClassMetamodelReference`);
 @nomodel
 annotation AnnotationClassMetamodelReferenceDefaulted annotationClassMetamodelReferenceDefaulted1(Declaration mmr) => AnnotationClassMetamodelReferenceDefaulted(mmr);
 @nomodel
@@ -22,27 +22,27 @@ annotation AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelRef
 @nomodel
 annotation AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelReferenceVariadic3(Declaration mmr) => AnnotationClassMetamodelReferenceVariadic(mmr, mmr);
 @nomodel
-annotationClassMetamodelReference(`Anything`)
-annotationClassMetamodelReference(`process`)
+annotationClassMetamodelReference(`class Anything`)
+annotationClassMetamodelReference(`value process`)
 //illegal annotationClassMetamodelReference(`List<String>`)
-annotationClassMetamodelReference(`Declaration`)
-annotationClassMetamodelReference(`List`)
-annotationClassMetamodelReference(`List.size`)
-annotationClassMetamodelReference(`List.get`)
-annotationClassMetamodelReference(`sort`)
-annotationClassMetamodelReference(`true`)
+annotationClassMetamodelReference(`interface Declaration`)
+annotationClassMetamodelReference(`interface List`)
+annotationClassMetamodelReference(`value List.size`)
+annotationClassMetamodelReference(`function List.get`)
+annotationClassMetamodelReference(`function sort`)
+annotationClassMetamodelReference(`value true`)
 //illegal annotationClassMetamodelReference(`sort<String>`)
 // TODO annotationClassMetamodelReference(`package`)
 // TODO annotationClassMetamodelReference(`package ceylon.language`)
 // TODO annotationClassMetamodelReference(`module`)
 // TODO annotationClassMetamodelReference(`module ceylon.language`)
 annotationClassMetamodelReferenceLiteral
-annotationClassMetamodelReferenceDefaulted1(`Anything`)
+annotationClassMetamodelReferenceDefaulted1(`class Anything`)
 annotationClassMetamodelReferenceDefaulted2()
 annotationClassMetamodelReferenceVariadic1()
-annotationClassMetamodelReferenceVariadic1(`Anything`)
-annotationClassMetamodelReferenceVariadic1(`Anything`, `process`)
+annotationClassMetamodelReferenceVariadic1(`class Anything`)
+annotationClassMetamodelReferenceVariadic1(`class Anything`, `value process`)
 // TODO literals for inner classes and interfaces
 annotationClassMetamodelReferenceVariadic2()
-annotationClassMetamodelReferenceVariadic3(`false`)
+annotationClassMetamodelReferenceVariadic3(`value false`)
 class AnnotationClassMetamodelReference_callsite() {}

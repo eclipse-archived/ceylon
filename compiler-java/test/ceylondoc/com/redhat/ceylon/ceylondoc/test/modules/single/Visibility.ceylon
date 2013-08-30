@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 "This is `SharedClass`"
-see(`PrivateClass`) 
+see(`class PrivateClass`) 
 shared class SharedClass() {
     "This simple attribte is `shared`"
     shared Integer sharedAttribute = 1;
@@ -46,7 +46,7 @@ shared class SharedClass() {
 
 "This is `PrivateClass`"
 by("Tom Bentley")
-see(`SharedClass`)
+see(`class SharedClass`)
 class PrivateClass() {
     
     "This simple attribte is `shared`"
