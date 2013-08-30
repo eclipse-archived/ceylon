@@ -1005,7 +1005,21 @@ public class ClassTransformer extends AbstractTransformer {
                             ((Method) member).getTypeErased(),
                             null);
                     classBuilder.method(concreteMemberDelegate);
-                     
+                }
+                
+                if (hasOverloads
+                        && (method.isDefault() || method.isShared() && !method.isFormal())
+                        && (method == subMethod)) {
+                    final MethodDefinitionBuilder canonicalMethod = makeDelegateToCompanion(iface,
+                            typedMember,
+                            PRIVATE | (method.isDefault() ? 0 : FINAL),
+                            method.getTypeParameters(), 
+                            method.getType(), 
+                            Naming.selector(method, Naming.NA_CANONICAL_METHOD), 
+                            method.getParameterLists().get(0).getParameters(),
+                            ((Method) member).getTypeErased(),
+                            naming.selector(method));
+                    classBuilder.method(canonicalMethod);
                 }
             } else if (member instanceof Value
                     || member instanceof Setter) {
