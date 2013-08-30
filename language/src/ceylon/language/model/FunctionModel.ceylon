@@ -5,7 +5,7 @@ import ceylon.language.model {
     ClosedType = Type
 }
 
-shared interface FunctionModel<out Type, in Arguments>
+shared interface FunctionModel<out Type=Anything, in Arguments=Nothing>
         satisfies Model
         given Arguments satisfies Anything[] {
     

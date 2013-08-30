@@ -2,7 +2,7 @@ import ceylon.language.model.declaration {
     ClassDeclaration
 }
 
-shared interface ClassModel<out Type, in Arguments>
+shared interface ClassModel<out Type=Anything, in Arguments=Nothing>
     satisfies ClassOrInterface<Type>
     given Arguments satisfies Anything[] {
     

@@ -7,7 +7,7 @@ import ceylon.language.model {
     ClosedType = Type
 }
 
-shared interface ClassOrInterface<out Type> 
+shared interface ClassOrInterface<out Type=Anything> 
     of ClassModel<Type, Nothing> | InterfaceModel<Type>
     satisfies Model & ClosedType<Type> {
     
