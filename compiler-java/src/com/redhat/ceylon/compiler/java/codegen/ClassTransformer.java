@@ -2511,6 +2511,15 @@ public class ClassTransformer extends AbstractTransformer {
 
         protected abstract void typeParameters(MethodDefinitionBuilder overloadBuilder);
 
+        protected void parameters(MethodDefinitionBuilder overloadBuilder, ParameterList parameterList, Parameter currentParameter) {
+            for (Parameter parameter : parameterList.getParameters()) {
+                if (currentParameter != null && parameter == currentParameter) {
+                    break;
+                }
+                overloadBuilder.parameter(parameter, null, 0, false);
+            }
+        }
+        
         protected final void appendImplicitParameters(java.util.List<TypeParameter> typeParameterList,
                 MethodDefinitionBuilder overloadBuilder) {
             if(typeParameterList != null){
@@ -2564,12 +2573,7 @@ public class ClassTransformer extends AbstractTransformer {
             typeParameters(overloadBuilder);
 
             appendImplicitParameters(typeParameterList, overloadBuilder);
-            for (Parameter parameter : parameterList.getParameters()) {
-                if (currentParameter != null && parameter == currentParameter) {
-                    break;
-                }
-                overloadBuilder.parameter(parameter, null, 0, false);
-            }
+            parameters(overloadBuilder, parameterList, currentParameter);
             
             // Make the body
             // TODO MPL
@@ -2630,7 +2634,7 @@ public class ClassTransformer extends AbstractTransformer {
         protected void typeParameters(MethodDefinitionBuilder overloadBuilder) {
             copyTypeParameters(method, overloadBuilder);
         }
-        
+
         @Override
         protected void appendImplicitArguments(java.util.List<TypeParameter> typeParameterList,
                 MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args) {
@@ -2703,12 +2707,7 @@ public class ClassTransformer extends AbstractTransformer {
                 typeParameters(canonicalBuilder);
 
                 appendImplicitParameters(typeParameterList, canonicalBuilder);
-                for (Parameter parameter : parameterList.getParameters()) {
-                    if (currentParameter != null && parameter == currentParameter) {
-                        break;
-                    }
-                    canonicalBuilder.parameter(parameter, null, 0, false);
-                }
+                parameters(canonicalBuilder, parameterList, currentParameter);
                 
                 if (body != null) {
                     // Construct the outermost method using the body we've built so far
