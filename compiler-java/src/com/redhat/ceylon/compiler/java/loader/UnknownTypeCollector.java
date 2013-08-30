@@ -75,11 +75,13 @@ public class UnknownTypeCollector extends Visitor {
     }
 
     private void collectUnknownTypesResolved(ProducedType type, Map<Declaration, Declaration> visited) {
-        TypeDeclaration declaration = type.getDeclaration();
-        if(declaration != null)
-            collectUnknownTypes(declaration, visited);
-        for(ProducedType tl : type.getTypeArgumentList()){
-            collectUnknownTypesResolved(tl, visited);
+        if(type != null){
+            TypeDeclaration declaration = type.getDeclaration();
+            if(declaration != null)
+                collectUnknownTypes(declaration, visited);
+            for(ProducedType tl : type.getTypeArgumentList()){
+                collectUnknownTypesResolved(tl, visited);
+            }
         }
     }
 
