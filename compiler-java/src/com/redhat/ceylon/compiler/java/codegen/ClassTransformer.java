@@ -977,7 +977,7 @@ public class ClassTransformer extends AbstractTransformer {
                             if ((method.isDefault() || method.isShared() && !method.isFormal())
                                     && (method == subMethod)) {
                                 MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, subMethod);
-                                MethodDefinitionBuilder overload = new DefaultedArgumentMethod(daoThis, subMethod)
+                                MethodDefinitionBuilder overload = new DefaultedArgumentMethodTyped(daoThis, typedMember)
                                     .makeOverload(
                                         overloadBuilder, 
                                         subMethod.getParameterLists().get(0),
@@ -2659,6 +2659,63 @@ public class ClassTransformer extends AbstractTransformer {
         @Override
         protected JCIdent makeDefaultArgumentValueMethodQualifier() {
             return null;
+        }
+    }
+    
+    /**
+     * A transformation for generating overloaded <em>methods</em> for 
+     * defaulted arguments. 
+     */
+    class DefaultedArgumentMethodTyped extends DefaultedArgumentMethod {
+        private ProducedTypedReference typedMember;
+
+        DefaultedArgumentMethodTyped(DaoBody daoBody, ProducedTypedReference typedMember) {
+            super(daoBody, (Method)typedMember.getDeclaration());
+            this.typedMember = typedMember;
+        }
+
+        @Override
+        protected void resultType(MethodDefinitionBuilder overloadBuilder) {
+            if (!isAnything(getModel().getType())
+                    || !Decl.isUnboxedVoid(getModel())
+                    || Strategy.useBoxedVoid((Method)getModel())) {
+                ProducedTypedReference typedRef = (ProducedTypedReference) typedMember;
+                overloadBuilder.resultTypeNonWidening(typedRef, typedMember.getType(), 0);
+            } else {
+                super.resultType(overloadBuilder);
+            }
+        }
+        
+        @Override
+        protected void parameters(MethodDefinitionBuilder overloadBuilder, ParameterList parameterList, Parameter currentParameter) {
+            for (Parameter param : parameterList.getParameters()) {
+                if (currentParameter != null && param == currentParameter) {
+                    break;
+                }
+                ProducedType type = paramType(param);
+                overloadBuilder.parameter(param, type, FINAL, 0, true);
+            }
+        }
+        
+        @Override
+        protected ProducedType parameterType(Parameter parameter) {
+            ProducedType paramType = paramType(parameter);
+            if (parameter.getModel() instanceof Method) {
+                paramType = typeFact().getCallableType(parameter.getType());
+            }
+            return paramType;
+        }
+
+        private ProducedType paramType(Parameter parameter) {
+            final ProducedTypedReference typedParameter = typedMember.getTypedParameter(parameter);
+            ProducedType paramType;
+            // if the supertype method itself got erased to Object, we can't do better than this
+            if (gen().willEraseToObject(parameter.getType()) && !gen().willEraseToBestBounds(parameter)) {
+                paramType = typeFact().getObjectDeclaration().getType();
+            } else {
+                paramType = typedParameter.getType();
+            }
+            return paramType;
         }
     }
     
