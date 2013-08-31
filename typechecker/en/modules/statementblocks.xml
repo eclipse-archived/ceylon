@@ -1610,6 +1610,9 @@ else {
             
             <synopsis>ExistsOrNonemptyCondition: ("exists" | "nonempty") (Variable Specifier | MemberName)</synopsis>
             
+            <comment><para>TODO: are we going to allow <literal>is Type this</literal> and 
+            <literal>is Type outer</literal> to narrow the type of a self reference?</para></comment>
+            
             <para>The type of the value reference or expression must be:</para>
             
             <itemizedlist>
