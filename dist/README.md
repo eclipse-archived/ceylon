@@ -40,7 +40,7 @@ The command line tools are located in the `bin` directory.
 
 The API documentation for the language module `ceylon.language` may be found here:
 
-- `repo/ceylon/language/0.5/module-doc`
+- `repo/ceylon/language/0.6/module-doc`
 
 ## Running the sample programs
 
