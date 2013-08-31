@@ -5563,7 +5563,7 @@ public class ExpressionVisitor extends Visitor {
                         that.setTypeModel(unit.getInterfaceMetatype(t));
                     }
                     else {
-                        that.setTypeModel(getTypeMetaType(t));
+                        that.setTypeModel(unit.getTypeMetaType(t));
                     }
                 }
             }
@@ -5685,19 +5685,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private ProducedType getTypeMetaType(ProducedType literalType) {
-        TypeDeclaration declaration = literalType.getDeclaration();
-        if (declaration instanceof UnionType) {
-            return producedType(unit.getLanguageModuleModelTypeDeclaration("UnionType"), literalType);
-        }
-        else if (declaration instanceof IntersectionType) {
-            return producedType(unit.getLanguageModuleModelTypeDeclaration("IntersectionType"), literalType);
-        }
-        else {
-            return producedType(unit.getLanguageModuleModelTypeDeclaration("Type"), literalType);
-        }
-    }
-    
     private void checkNonlocal(Node that, Declaration declaration) {
         if ((!declaration.isClassOrInterfaceMember() || !declaration.isShared())
                     && !declaration.isToplevel()) {

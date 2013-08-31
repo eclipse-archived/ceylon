@@ -938,6 +938,19 @@ public class Unit {
         }
     }
 
+    public ProducedType getTypeMetaType(ProducedType literalType) {
+        TypeDeclaration declaration = literalType.getDeclaration();
+        if (declaration instanceof UnionType) {
+            return producedType(getLanguageModuleModelTypeDeclaration("UnionType"), literalType);
+        }
+        else if (declaration instanceof IntersectionType) {
+            return producedType(getLanguageModuleModelTypeDeclaration("IntersectionType"), literalType);
+        }
+        else {
+            return producedType(getLanguageModuleModelTypeDeclaration("Type"), literalType);
+        }
+    }
+    
     public ProducedType getParameterTypesAsTupleType(List<Parameter> params, 
             ProducedReference pr) {
         List<ProducedType> paramTypes = new ArrayList<ProducedType>();
