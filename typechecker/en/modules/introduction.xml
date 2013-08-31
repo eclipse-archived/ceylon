@@ -287,6 +287,9 @@
             is based around this metamodel. Annotations are more flexible than
             in Java or C#, and have a much cleaner syntax.</para>
             
+            <para>Ceylon does not support macros or any other kind of compile-time
+            metaprogramming.</para>
+            
             <!--para>
             Ceylon provides sophisticated support for meta-programming, including program
             element <emphasis>annotations</emphasis>, a typesafe <emphasis>metamodel</emphasis>, 
