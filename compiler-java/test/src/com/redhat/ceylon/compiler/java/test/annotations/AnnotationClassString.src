@@ -188,7 +188,7 @@ final class AnnotationClassStringSequenceDefaulted implements .com.redhat.ceylon
     }
     
     static .ceylon.language.Sequential<? extends .ceylon.language.String> $init$s() {
-        return new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.String.instance("foo"), .ceylon.language.empty_.$get());
+        return new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("foo"));
     }
     protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaulted> $ceylon$language$model$Annotation$this;
     

@@ -6,7 +6,7 @@ final class bug1257SpreadTypeArg_ {
     }
     
     static <Args extends .ceylon.language.Sequential<? extends .java.lang.Object>>void bug1257SpreadTypeArg(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedArgs, final Args args) {
-        final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends Args> tup = new .ceylon.language.Tuple<.java.lang.Object, .ceylon.language.String, Args>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, $reifiedArgs, .ceylon.language.String.instance("hello"), args);
+        final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends Args> tup = new .ceylon.language.Tuple<.java.lang.Object, .ceylon.language.String, Args>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.String.instance("hello"), args);
     }
 }
 final class bug1257SpreadNoneptyTypeArg_ {
@@ -15,7 +15,7 @@ final class bug1257SpreadNoneptyTypeArg_ {
     }
     
     static <Args extends .ceylon.language.Sequence<? extends .java.lang.Object>>void bug1257SpreadNoneptyTypeArg(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedArgs, final Args args) {
-        final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends Args> tup = new .ceylon.language.Tuple<.java.lang.Object, .ceylon.language.String, Args>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, $reifiedArgs, .ceylon.language.String.instance("hello"), args);
+        final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends Args> tup = new .ceylon.language.Tuple<.java.lang.Object, .ceylon.language.String, Args>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.String.instance("hello"), args);
     }
 }
 final class bug1257SpreadEmptyIterTypeArg_ {
@@ -24,7 +24,7 @@ final class bug1257SpreadEmptyIterTypeArg_ {
     }
     
     static <Args extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>>void bug1257SpreadEmptyIterTypeArg(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedArgs, final Args args) {
-        final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>> tup = new .ceylon.language.Tuple<.java.lang.Object, .ceylon.language.String, .ceylon.language.Sequential<? extends .java.lang.Object>>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Object.$TypeDescriptor), .ceylon.language.String.instance("hello"), args.getSequence());
+        final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>> tup = new .ceylon.language.Tuple<.java.lang.Object, .ceylon.language.String, .ceylon.language.Sequential<? extends .java.lang.Object>>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.String.instance("hello"), args.getSequence());
     }
 }
 final class bug1257SpreadNonemptyIterTypeArg_ {
@@ -33,7 +33,7 @@ final class bug1257SpreadNonemptyIterTypeArg_ {
     }
     
     static <Args extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>>void bug1257SpreadNonemptyIterTypeArg(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedArgs, final Args args) {
-        final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>> tup = new .ceylon.language.Tuple<.java.lang.Object, .ceylon.language.String, .ceylon.language.Sequence<? extends .java.lang.Object>>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .ceylon.language.Object.$TypeDescriptor), .ceylon.language.String.instance("hello"), (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)args.getSequence());
+        final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>> tup = new .ceylon.language.Tuple<.java.lang.Object, .ceylon.language.String, .ceylon.language.Sequence<? extends .java.lang.Object>>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.String.instance("hello"), (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)args.getSequence());
     }
 }
 final class bug1257SpreadUnkIterTypeArg_ {
@@ -42,6 +42,6 @@ final class bug1257SpreadUnkIterTypeArg_ {
     }
     
     static <Args extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends Abs>, Abs>void bug1257SpreadUnkIterTypeArg(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedArgs, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAbs, final Args args) {
-        final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>> tup = new .ceylon.language.Tuple<.java.lang.Object, .ceylon.language.String, .ceylon.language.Sequential<? extends .java.lang.Object>>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Object.$TypeDescriptor), .ceylon.language.String.instance("hello"), args.getSequence());
+        final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>> tup = new .ceylon.language.Tuple<.java.lang.Object, .ceylon.language.String, .ceylon.language.Sequential<? extends .java.lang.Object>>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.String.instance("hello"), args.getSequence());
     }
 }

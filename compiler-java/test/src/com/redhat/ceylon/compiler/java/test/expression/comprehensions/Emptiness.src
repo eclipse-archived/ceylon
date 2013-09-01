@@ -319,7 +319,7 @@ final class emptinessParameterised_ {
                         if (this.f()) {
                             final Element e = this.e;
                             final Element f = this.f;
-                            return new .ceylon.language.Tuple<Element, Element, .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Empty>>($reifiedElement, $reifiedElement, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reifiedElement, $reifiedElement, .ceylon.language.Empty.$TypeDescriptor), e, new .ceylon.language.Tuple<Element, Element, .ceylon.language.Empty>($reifiedElement, $reifiedElement, .ceylon.language.Empty.$TypeDescriptor, f, .ceylon.language.empty_.$get()));
+                            return new .ceylon.language.Tuple<Element, Element, .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Empty>>($reifiedElement, e, f);
                         } else return .ceylon.language.finished_.$get();
                     }
                 };

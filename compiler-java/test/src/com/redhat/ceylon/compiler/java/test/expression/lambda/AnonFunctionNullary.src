@@ -24,7 +24,7 @@ final class anonFunctionNullary_ {
             
             @.java.lang.Override
             public .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty> $call() {
-                return new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.String.instance(""), .ceylon.language.empty_.$get());
+                return new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance(""));
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Integer> i1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()", (short)-1){
@@ -45,7 +45,7 @@ final class anonFunctionNullary_ {
             
             @.java.lang.Override
             public .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty> $call() {
-                return new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.empty_.$get());
+                return new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L));
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Float> f1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Float()", (short)-1){
@@ -66,14 +66,14 @@ final class anonFunctionNullary_ {
             
             @.java.lang.Override
             public .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty> $call() {
-                return new .ceylon.language.Tuple<.ceylon.language.Float, .ceylon.language.Float, .ceylon.language.Empty>(.ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Float.instance(1.0), .ceylon.language.empty_.$get());
+                return new .ceylon.language.Tuple<.ceylon.language.Float, .ceylon.language.Float, .ceylon.language.Empty>(.ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.instance(1.0));
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> if3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor), .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Empty.$TypeDescriptor, "[Integer, Float]()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>> $call() {
-                return new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor), .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Float, .ceylon.language.Float, .ceylon.language.Empty>(.ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Float.instance(1.0), .ceylon.language.empty_.$get()));
+                return new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor), .ceylon.language.Integer.instance(1L), .ceylon.language.Float.instance(1.0));
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Boolean> b1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Boolean()", (short)-1){
@@ -94,7 +94,7 @@ final class anonFunctionNullary_ {
             
             @.java.lang.Override
             public .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty> $call() {
-                return new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Empty>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Boolean.instance(true), .ceylon.language.empty_.$get());
+                return new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Empty>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.instance(true));
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Comparison> c1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Comparison>(.ceylon.language.Comparison.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Comparison()", (short)-1){
@@ -115,7 +115,7 @@ final class anonFunctionNullary_ {
             
             @.java.lang.Override
             public .ceylon.language.Tuple<.ceylon.language.Comparison, ? extends .ceylon.language.Comparison, ? extends .ceylon.language.Tuple<.ceylon.language.Comparison, ? extends .ceylon.language.Comparison, ? extends .ceylon.language.Empty>> $call() {
-                return new .ceylon.language.Tuple<.ceylon.language.Comparison, .ceylon.language.Comparison, .ceylon.language.Tuple<.ceylon.language.Comparison, ? extends .ceylon.language.Comparison, ? extends .ceylon.language.Empty>>(.ceylon.language.Comparison.$TypeDescriptor, .ceylon.language.Comparison.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Comparison.$TypeDescriptor, .ceylon.language.Comparison.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.larger_.$get(), new .ceylon.language.Tuple<.ceylon.language.Comparison, .ceylon.language.Comparison, .ceylon.language.Empty>(.ceylon.language.Comparison.$TypeDescriptor, .ceylon.language.Comparison.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.smaller_.$get(), .ceylon.language.empty_.$get()));
+                return new .ceylon.language.Tuple<.ceylon.language.Comparison, .ceylon.language.Comparison, .ceylon.language.Tuple<.ceylon.language.Comparison, ? extends .ceylon.language.Comparison, ? extends .ceylon.language.Empty>>(.ceylon.language.Comparison.$TypeDescriptor, .ceylon.language.larger_.$get(), .ceylon.language.smaller_.$get());
             }
         };
         final .ceylon.language.Callable<? extends T> t1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<T>($reifiedT, .ceylon.language.Empty.$TypeDescriptor, "T()", (short)-1){
@@ -136,14 +136,14 @@ final class anonFunctionNullary_ {
             
             @.java.lang.Override
             public .ceylon.language.Tuple<T, ? extends T, ? extends .ceylon.language.Empty> $call() {
-                return new .ceylon.language.Tuple<T, T, .ceylon.language.Empty>($reifiedT, $reifiedT, .ceylon.language.Empty.$TypeDescriptor, t, .ceylon.language.empty_.$get());
+                return new .ceylon.language.Tuple<T, T, .ceylon.language.Empty>($reifiedT, t);
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> it3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Tuple<.java.lang.Object, ? extends T, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reifiedT, .ceylon.language.Integer.$TypeDescriptor), $reifiedT, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Empty.$TypeDescriptor, "[T, Integer]()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Tuple<.java.lang.Object, ? extends T, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>> $call() {
-                return new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reifiedT, .ceylon.language.Integer.$TypeDescriptor), $reifiedT, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), t, new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.empty_.$get()));
+                return new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reifiedT, .ceylon.language.Integer.$TypeDescriptor), t, .ceylon.language.Integer.instance(1L));
             }
         };
     }
