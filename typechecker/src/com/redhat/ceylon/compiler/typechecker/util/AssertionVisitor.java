@@ -203,49 +203,55 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
 
 	private String file(Node that) {
 		Unit unit = that.getUnit();
-		return !unit.getRelativePath().isEmpty() ?
-				unit.getRelativePath() : 
+		String relativePath = unit.getRelativePath();
+        return !relativePath.isEmpty() ?
+				relativePath : 
 				unit.getFilename();
 	}
 
     private void checkErrors(Node that) {
-    	for (Message err: foundErrors) {
-            if (err instanceof UnexpectedError) {
-                out( (UnexpectedError) err );
-            }
-    	}
-    	if (expectingError) {
+        try {
             for (Message err: foundErrors) {
-                if (err instanceof AnalysisError ||
-                		err instanceof LexError ||
-                		err instanceof ParseError) {
-                    return;
+                if (err instanceof UnexpectedError) {
+                    out( (UnexpectedError) err );
                 }
             }
-            out(that, "no errors");
+            if (expectingError) {
+                for (Message err: foundErrors) {
+                    if (err instanceof AnalysisError ||
+                            err instanceof LexError ||
+                            err instanceof ParseError) {
+                        return;
+                    }
+                }
+                out(that, "no errors");
+            }
+            else {
+                for (Message err: foundErrors) {
+                    if (err instanceof LexError) {
+                        out( that, (LexError) err );
+                    }
+                    else if (err instanceof ParseError) {
+                        out( that, (ParseError) err );
+                    }
+                    else if (err instanceof AnalysisError) {
+                        out( (AnalysisError) err );
+                    }
+                    else if (err instanceof AnalysisWarning) {
+                        if (includeWarnings()) {
+                            out( (AnalysisWarning) err );
+                        }
+                    } 
+                    else if (err instanceof UsageWarning) {
+                        if (usageWarnings) {
+                            out( (UsageWarning) err );
+                        }
+                    }
+                }
+            }
         }
-        else {
-            for (Message err: foundErrors) {
-                if (err instanceof LexError) {
-                    out( that, (LexError) err );
-                }
-                else if (err instanceof ParseError) {
-                    out( that, (ParseError) err );
-                }
-                else if (err instanceof AnalysisError) {
-                    out( (AnalysisError) err );
-                }
-                else if (err instanceof AnalysisWarning) {
-                    if (includeWarnings()) {
-                        out( (AnalysisWarning) err );
-                    }
-                } 
-                else if (err instanceof UsageWarning) {
-                    if (usageWarnings) {
-                        out( (UsageWarning) err );
-                    }
-                }
-            }
+        catch (Exception e) {
+            e.printStackTrace();
         }
     }
     
