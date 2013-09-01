@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,7 +14,13 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     private ProducedType defaultTypeArgument;
     private boolean defaulted;
     private boolean constrained;
+    private List<Declaration> members = new ArrayList<Declaration>(0);
 
+    @Override
+    public List<Declaration> getMembers() {
+        return members;
+    }
+    
     public boolean isInvariant() {
     	return !covariant && !contravariant;
     }
