@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -20,37 +21,39 @@ public abstract class ProducedReference {
     public ProducedType getQualifyingType() {
         return qualifyingType;
     }
-
+    
     void setQualifyingType(ProducedType qualifyingType) {
         this.qualifyingType = qualifyingType;
     }
-
+    
     public Declaration getDeclaration() {
         return declaration;
     }
-
+    
     void setDeclaration(Declaration type) {
         this.declaration = type;
     }
-
+    
     public Map<TypeParameter, ProducedType> getTypeArguments() {
-    	if (declaration instanceof Generic) {
-    		for (TypeParameter pt: ((Generic)declaration).getTypeParameters()) {
-    			if (!typeArguments.containsKey(pt)) {
-    				ProducedType dta = pt.getDefaultTypeArgument();
-    				if (dta!=null) {
-    					typeArguments.put(pt, dta.substitute(typeArguments));
-    				}
-    			}
-    		}
-    	}
         return typeArguments;
     }
-
+    
     void setTypeArguments(Map<TypeParameter, ProducedType> typeArguments) {
-        this.typeArguments = typeArguments;
+        if (declaration==null) throw new IllegalStateException("set the Declaration first");
+        this.typeArguments = new HashMap<TypeParameter,ProducedType>(typeArguments.size());
+        this.typeArguments.putAll(typeArguments);
+        if (declaration instanceof Generic) {
+            for (TypeParameter pt: ((Generic)declaration).getTypeParameters()) {
+                if (!typeArguments.containsKey(pt)) {
+                    ProducedType dta = pt.getDefaultTypeArgument();
+                    if (dta!=null) {
+                        this.typeArguments.put(pt, dta.substitute(typeArguments));
+                    }
+                }
+            }
+        }
     }
-
+    
     public abstract ProducedType getType();
     
     public ProducedType getFullType() {
