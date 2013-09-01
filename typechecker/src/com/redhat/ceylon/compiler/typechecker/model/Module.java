@@ -93,9 +93,8 @@ public class Module
     public Map<String, DeclarationWithProximity> getAvailableDeclarations(String startingWith) {
     	Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
     	for (Package p: getAllPackages()) {
-    		String moduleName = p.getModule().getNameAsString();
-			boolean isLanguageModule = moduleName.equals(LANGUAGE_MODULE_NAME);
-			String packageName = p.getNameAsString();
+    		String packageName = p.getNameAsString();
+			boolean isLanguageModule = packageName.equals(LANGUAGE_MODULE_NAME);
 			boolean isDefaultPackage = packageName.isEmpty();
 			if (!isDefaultPackage) {
     			for (Declaration d: p.getMembers()) {

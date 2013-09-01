@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
+import static com.redhat.ceylon.compiler.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +14,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -277,11 +279,11 @@ public class AnnotationVisitor extends Visitor {
             if (t!=null && t.getDeclaration()!=null) {
                 if (t.getDeclaration().isAnnotation()) {
                     if (!that.getUnit().getPackage().getQualifiedNameString()
-                            .equals("ceylon.language")) {
+                            .equals(LANGUAGE_MODULE_NAME)) {
                         String packageName = t.getDeclaration()
                                 .getUnit().getPackage().getQualifiedNameString();
                         String typeName = t.getDeclaration().getName();
-                        if (packageName.equals("ceylon.language") && 
+                        if (packageName.equals(LANGUAGE_MODULE_NAME) && 
                                 (typeName.equals("Shared") ||
                                 typeName.equals("Abstract") || 
                                 typeName.equals("Default") ||

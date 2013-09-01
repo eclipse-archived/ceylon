@@ -22,6 +22,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ImportList;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -1170,7 +1171,7 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         Tree.ImportPath path = that.getImportPath();
         if (path!=null && 
-                formatPath(path.getIdentifiers()).equals("ceylon.language")) {
+                formatPath(path.getIdentifiers()).equals(Module.LANGUAGE_MODULE_NAME)) {
             Tree.ImportMemberOrTypeList imtl = that.getImportMemberOrTypeList();
             if (imtl!=null) {
                 for (Tree.ImportMemberOrType imt: imtl.getImportMemberOrTypes()) {

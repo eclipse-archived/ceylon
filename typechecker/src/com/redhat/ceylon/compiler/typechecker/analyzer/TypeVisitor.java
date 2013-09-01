@@ -436,7 +436,7 @@ public class TypeVisitor extends Visitor {
             Map<String, String> mods = unit.getModifiers();
             if (mods.containsValue(alias) &&
                     (!d.getUnit().getPackage().getNameAsString()
-                            .equals("ceylon.language") ||
+                            .equals(Module.LANGUAGE_MODULE_NAME) ||
                     !mods.containsKey(d.getName()))) {
                 member.addError("import hides a language modifier: " + alias);
             }
