@@ -4,18 +4,23 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.lookupMember;
+import static java.util.Collections.emptyList;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public abstract class Element {
-
+    
+    Element() {}
+    
 	private Scope container;
 	private Scope scope;
 	protected Unit unit;
-	private List<Declaration> members = new ArrayList<Declaration>(3);
-
+    
+	public List<Declaration> getMembers() {
+        return emptyList();
+    }
+    
     public Unit getUnit() {
         return unit;
     }
@@ -40,10 +45,6 @@ public abstract class Element {
     	this.scope = scope;
     }
     
-    public List<Declaration> getMembers() {
-        return members;
-    }
-
     public String getQualifiedNameString() {
         return getContainer().getQualifiedNameString();
     }
@@ -63,7 +64,7 @@ public abstract class Element {
     }
 
     public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
-        return lookupMember(members, name, signature, ellipsis);
+        return lookupMember(getMembers(), name, signature, ellipsis);
     }
 
     /**
@@ -75,7 +76,7 @@ public abstract class Element {
     }
 
     public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis) {
-        return lookupMember(members, name, signature, ellipsis);
+        return lookupMember(getMembers(), name, signature, ellipsis);
     }
 
     public ProducedType getDeclaringType(Declaration d) {

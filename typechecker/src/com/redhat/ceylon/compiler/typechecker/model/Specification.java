@@ -1,9 +1,18 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Specification extends Element implements Scope {
     
     private int id;
     private TypedDeclaration declaration;
+    private List<Declaration> members = new ArrayList<Declaration>(3);
+    
+    @Override
+    public List<Declaration> getMembers() {
+        return members;
+    }
     
     public void setId(int id) {
         this.id = id;

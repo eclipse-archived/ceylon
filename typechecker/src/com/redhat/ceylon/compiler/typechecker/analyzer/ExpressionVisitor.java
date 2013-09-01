@@ -5166,6 +5166,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         TypeDeclaration td = (TypeDeclaration) that.getScope();
         Set<TypeDeclaration> set = new HashSet<TypeDeclaration>();
+        if (td.getSatisfiedTypes().isEmpty()) return; //handle undecidability case
         for (Tree.StaticType t: that.getTypes()) {
             ProducedType type = t.getTypeModel();
             if (unit.isCallableType(type) && !inLanguageModule(that.getUnit())) {

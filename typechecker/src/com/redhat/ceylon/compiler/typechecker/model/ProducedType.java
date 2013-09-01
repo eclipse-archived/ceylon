@@ -32,7 +32,7 @@ public class ProducedType extends ProducedReference {
     private boolean isRaw;
     private ProducedType resolvedAliases;
     private Map<TypeDeclaration, ProducedType> superTypesCache = 
-            new HashMap<TypeDeclaration, ProducedType>();
+            new HashMap<TypeDeclaration, ProducedType>(5);
 
     ProducedType() {}
 
@@ -576,10 +576,15 @@ public class ProducedType extends ProducedReference {
         boolean complexType = dec instanceof UnionType 
         		|| dec instanceof IntersectionType;
         if (!complexType && superTypesCache.containsKey(dec)) {
+            /*SoftReference<ProducedType> ref = superTypesCache.get(dec);
+            if (ref==null) return null;
+            ProducedType pt = ref.get();
+            if (pt!=null) return pt;*/
             return superTypesCache.get(dec);
         }
         ProducedType superType = getSupertype(new SupertypeCriteria(dec));
         if (!complexType) superTypesCache.put(dec, superType);
+        //if (!complexType) superTypesCache.put(dec, superType==null?null:new SoftReference<ProducedType>(superType));
         return superType;
     }
     
@@ -905,8 +910,9 @@ public class ProducedType extends ProducedReference {
     public List<ProducedType> getTypeArgumentList() {
         List<TypeParameter> tps = getDeclaration().getTypeParameters();
         List<ProducedType> lpt = new ArrayList<ProducedType>(tps.size());
-        for (TypeParameter tp : tps) {
-            lpt.add(getTypeArguments().get(tp));
+        Map<TypeParameter, ProducedType> args = getTypeArguments();
+        for (TypeParameter tp: tps) {
+            lpt.add(args.get(tp));
         }
         return lpt;
     }
@@ -1076,14 +1082,17 @@ public class ProducedType extends ProducedReference {
 			return true;
 		}
         else if (d instanceof UnionType) {
-            for (ProducedType ct: getCaseTypes()) {
+            for (ProducedType ct: getDeclaration().getCaseTypes()) {
                 if (ct.containsUnknowns()) return true;
             }
         }
         else if (d instanceof IntersectionType) {
-            for (ProducedType st: getSatisfiedTypes()) {
+            for (ProducedType st: getDeclaration().getSatisfiedTypes()) {
                 if (st.containsUnknowns()) return true;
             }
+        }
+        else if (d instanceof NothingType) {
+            return false;
         }
 		ProducedType qt = getQualifyingType();
 		if (qt!=null && qt.containsUnknowns()) {
@@ -1100,16 +1109,20 @@ public class ProducedType extends ProducedReference {
 
     private List<ProducedType> getInternalSatisfiedTypes() {
         List<ProducedType> sts = getDeclaration().getSatisfiedTypes();
+        Map<TypeParameter, ProducedType> args = getTypeArguments();
+        if (args.isEmpty()) return sts;
         List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>(sts.size());
         for (ProducedType st: sts) {
-            satisfiedTypes.add(st.substituteInternal(getTypeArguments()));
+            satisfiedTypes.add(st.substituteInternal(args));
         }
         return satisfiedTypes;
     }
 
     private ProducedType getInternalExtendedType() {
         ProducedType extendedType = getDeclaration().getExtendedType();
-        return extendedType==null?null:extendedType.substituteInternal(getTypeArguments());
+        Map<TypeParameter, ProducedType> args = getTypeArguments();
+        if (args.isEmpty()) return extendedType;
+        return extendedType==null?null:extendedType.substituteInternal(args);
     }
 
     private List<ProducedType> getInternalCaseTypes() {
@@ -1118,9 +1131,11 @@ public class ProducedType extends ProducedReference {
             return null;
         }
         else {
+            Map<TypeParameter, ProducedType> args = getTypeArguments();
+            if (args.isEmpty()) return cts;
             List<ProducedType> caseTypes = new ArrayList<ProducedType>(cts.size());
             for (ProducedType ct: cts) {
-                caseTypes.add(ct.substituteInternal(getTypeArguments()));
+                caseTypes.add(ct.substituteInternal(args));
             }
             return caseTypes;
         }
@@ -1129,9 +1144,10 @@ public class ProducedType extends ProducedReference {
     public List<ProducedType> getSatisfiedTypes() {
         Map<TypeParameter, ProducedType> args = getTypeArguments();
         List<ProducedType> sts = getDeclaration().getSatisfiedTypes();
+        if (args.isEmpty()) return sts; 
         List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>(sts.size());
-        for (ProducedType satisfiedType: sts) {
-            satisfiedTypes.add(args.isEmpty() ? satisfiedType : satisfiedType.substitute(args));
+        for (ProducedType st: sts) {
+            satisfiedTypes.add(st.substitute(args));
         }
         return satisfiedTypes;
     }
@@ -1153,9 +1169,11 @@ public class ProducedType extends ProducedReference {
             return null;
         }
         else {
+            Map<TypeParameter, ProducedType> args = getTypeArguments();
+            if (args.isEmpty()) return cts;
             List<ProducedType> caseTypes = new ArrayList<ProducedType>(cts.size());
             for (ProducedType ct: cts) {
-                caseTypes.add(ct.substitute(getTypeArguments()));
+                caseTypes.add(ct.substitute(args));
             }
             return caseTypes;
         }

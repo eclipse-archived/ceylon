@@ -2,8 +2,8 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.contains;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.list;
+import static java.util.Collections.emptyList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +24,6 @@ public abstract class Declaration
 	private boolean deprecated;
 	private boolean def;
 	private boolean annotation;
-    private List<Annotation> annotations = new ArrayList<Annotation>(4);
     private Scope visibleScope;
     private Declaration refinedDeclaration = this;
     private boolean staticallyImportable;
@@ -69,11 +68,6 @@ public abstract class Declaration
     public void setDeprecated(boolean deprecated) {
 		this.deprecated = deprecated;
 	}
-
-    @Override
-    public List<Annotation> getAnnotations() {
-        return annotations;
-    }
 
     String toStringName() {
         Scope c = getContainer();
@@ -230,6 +224,11 @@ public abstract class Declaration
     
     public boolean isMember() {
     	return false;
+    }
+    
+    @Override
+    public List<Annotation> getAnnotations() {
+        return emptyList();
     }
     
     public boolean isStaticallyImportable() {

@@ -139,9 +139,6 @@ public abstract class TypeDeclaration extends Declaration
      */
     public ProducedType getProducedType(ProducedType qualifyingType,
             List<ProducedType> typeArguments) {
-        /*if (!acceptsArguments(this, typeArguments)) {
-              return null;
-          }*/
     	if (qualifyingType!=null && qualifyingType.isNothing()) {
     		return qualifyingType;
     	}
@@ -164,11 +161,11 @@ public abstract class TypeDeclaration extends Declaration
      * really correct!
      */
     public ProducedType getType() {
-        ProducedType pt = new ProducedType();
+        ProducedType type = new ProducedType();
         if (isMember()) {
-            pt.setQualifyingType(((ClassOrInterface) getContainer()).getType());
+            type.setQualifyingType(((ClassOrInterface) getContainer()).getType());
         }
-        pt.setDeclaration(this);
+        type.setDeclaration(this);
         //each type parameter is its own argument
         Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
         for (TypeParameter p: getTypeParameters()) {
@@ -176,8 +173,8 @@ public abstract class TypeDeclaration extends Declaration
             pta.setDeclaration(p);
             map.put(p, pta);
         }
-        pt.setTypeArguments(map);
-        return pt;
+        type.setTypeArguments(map);
+        return type;
     }
 
     private List<Declaration> getMembers(String name, 

@@ -9,7 +9,13 @@ public class NamedArgumentList extends Element implements Scope {
     private ParameterList parameterList;
     private List<String> argumentNames = new ArrayList<String>();
     private int id;
-        
+    private List<Declaration> members = new ArrayList<Declaration>(3);
+    
+    @Override
+    public List<Declaration> getMembers() {
+        return members;
+    }
+    
     public ParameterList getParameterList() {
         return parameterList;
     }
