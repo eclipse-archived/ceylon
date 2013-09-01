@@ -30,7 +30,7 @@ void undecidable() {
 void moreundecidable() {
     interface Co<out P> {}
     @error interface A satisfies Co<B&Co<A>> {}
-    interface B satisfies Co<A&Co<B>> {}
+    @error interface B satisfies Co<A&Co<B>> {}
     @error Co<A&B&Co<A&B>> foo(Co<A&B> co) => co;
 }
 
