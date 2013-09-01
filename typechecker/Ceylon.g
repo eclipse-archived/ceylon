@@ -858,7 +858,7 @@ parameter returns [ParameterDeclaration parameter]
           m.setType($variadicType.type); }
       | VOID_MODIFIER
         { m.setType(new VoidModifier($VOID_MODIFIER));
-          $parameter=vp; }
+          $parameter=fp; }
       | FUNCTION_MODIFIER
         { m.setType(new FunctionModifier($FUNCTION_MODIFIER));
           $parameter=fp; }
