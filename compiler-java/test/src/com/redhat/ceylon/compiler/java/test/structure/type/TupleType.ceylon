@@ -33,6 +33,7 @@ void tupleTypeTest() {
     String a = tup.first;
     Integer b = tup.rest.first;
     Float c = tup.rest.rest.first;
+    Integer sum = [1, 2, 3].first + [1, 2, 3].rest.first;
 
     [String, String] hibye = ["hello", "goodbye"];
     [String, String] fun() {
