@@ -417,8 +417,8 @@ public class Unit {
         	    boolean hasSequenced = false;
         	    boolean atLeastOne = false;
         	    int firstDefaulted = -1;
-    	        List<ProducedType> args = new ArrayList<ProducedType>();
     	    	List<Parameter> ps = pls.get(i).getParameters();
+                List<ProducedType> args = new ArrayList<ProducedType>(ps.size());
 				for (int j=0; j<ps.size(); j++) {
 					Parameter p = ps.get(j);
     	    		ProducedTypedReference np = ref.getTypedParameter(p);
@@ -711,9 +711,11 @@ public class Unit {
     public ProducedType denotableType(ProducedType pt) {
         if ( pt!=null && pt.getDeclaration()!=null &&
                 pt.getDeclaration().isAnonymous() ) {
-            List<ProducedType> list = new ArrayList<ProducedType>();
-            addToIntersection(list, pt.getSupertype(pt.getDeclaration().getExtendedTypeDeclaration()), this);
-            for (TypeDeclaration td: pt.getDeclaration().getSatisfiedTypeDeclarations()) {
+            ClassOrInterface etd = pt.getDeclaration().getExtendedTypeDeclaration();
+            List<TypeDeclaration> stds = pt.getDeclaration().getSatisfiedTypeDeclarations();
+            List<ProducedType> list = new ArrayList<ProducedType>(stds.size()+1);
+            addToIntersection(list, pt.getSupertype(etd), this);
+            for (TypeDeclaration td: stds) {
                 addToIntersection(list, pt.getSupertype(td), this);
             }
             IntersectionType it = new IntersectionType(this);
@@ -953,7 +955,7 @@ public class Unit {
     
     public ProducedType getParameterTypesAsTupleType(List<Parameter> params, 
             ProducedReference pr) {
-        List<ProducedType> paramTypes = new ArrayList<ProducedType>();
+        List<ProducedType> paramTypes = new ArrayList<ProducedType>(params.size());
         int max = params.size()-1;
         int firstDefaulted = -1;
         boolean sequenced = false;

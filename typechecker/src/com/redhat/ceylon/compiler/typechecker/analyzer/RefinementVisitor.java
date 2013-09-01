@@ -245,8 +245,8 @@ public class RefinementVisitor extends Visitor {
         }
         Unit unit = that.getUnit();
         if (!broken && td instanceof TypeParameter) {
-            List<ProducedType> list = new ArrayList<ProducedType>();
             List<ProducedType> upperBounds = td.getSatisfiedTypes();
+            List<ProducedType> list = new ArrayList<ProducedType>(upperBounds.size());
             for (ProducedType st: upperBounds) {
                 addToIntersection(list, st, unit);
             }
@@ -499,7 +499,7 @@ public class RefinementVisitor extends Visitor {
 
     private void checkRefinedTypeAndParameterTypes(Tree.Declaration that,
             Declaration dec, ClassOrInterface ci, Declaration refined) {
-        List<ProducedType> typeArgs = new ArrayList<ProducedType>();
+        List<ProducedType> typeArgs = new ArrayList<ProducedType>(3);
         if (refined instanceof Generic && dec instanceof Generic) {
             List<TypeParameter> refinedTypeParams = ((Generic) refined).getTypeParameters();
             List<TypeParameter> refiningTypeParams = ((Generic) dec).getTypeParameters();

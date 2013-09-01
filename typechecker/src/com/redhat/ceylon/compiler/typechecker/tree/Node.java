@@ -24,8 +24,8 @@ public abstract class Node {
     private Token endToken;
     private Scope scope;
     private Unit unit;
-    private List<Message> errors = new ArrayList<Message>();
-    private List<Node> children = new ArrayList<Node>();
+    private List<Message> errors = new ArrayList<Message>(2);
+    private List<Node> children = new ArrayList<Node>(4);
     
     protected Node(Token token) {
         this.token = token;

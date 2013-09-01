@@ -6,6 +6,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.UnitFactory;
 
@@ -807,10 +809,12 @@ public class DeclarationVisitor extends Visitor {
     }
     
     private static List<TypeParameter> getTypeParameters(Tree.TypeParameterList tpl) {
-        List<TypeParameter> typeParameters = new ArrayList<TypeParameter>();
+        List<TypeParameter> typeParameters = Collections.emptyList();
         if (tpl!=null) {
             boolean foundDefaulted=false;
-            for (Tree.TypeParameterDeclaration tp: tpl.getTypeParameterDeclarations()) {
+            List<TypeParameterDeclaration> tpds = tpl.getTypeParameterDeclarations();
+            typeParameters = new ArrayList<TypeParameter>(tpds.size());
+            for (Tree.TypeParameterDeclaration tp: tpds) {
                 typeParameters.add(tp.getDeclarationModel());
                 if (tp.getTypeSpecifier()==null) {
                     if (foundDefaulted) {

@@ -83,9 +83,10 @@ public class IntersectionType extends TypeDeclaration {
 		for (ProducedType st: sts) {
 			if (st.getDeclaration() instanceof UnionType) {
 				TypeDeclaration result = new UnionType(unit);
-				List<ProducedType> ulist = new ArrayList<ProducedType>();
-				for (ProducedType ct: st.getDeclaration().getCaseTypes()) {
-					List<ProducedType> ilist = new ArrayList<ProducedType>();
+                List<ProducedType> caseTypes = st.getDeclaration().getCaseTypes();
+				List<ProducedType> ulist = new ArrayList<ProducedType>(caseTypes.size());
+                for (ProducedType ct: caseTypes) {
+					List<ProducedType> ilist = new ArrayList<ProducedType>(sts.size());
 					for (ProducedType pt: sts) {
 						if (pt==st) {
 							addToIntersection(ilist, ct, unit);

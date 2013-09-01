@@ -24,7 +24,7 @@ public abstract class Declaration
 	private boolean deprecated;
 	private boolean def;
 	private boolean annotation;
-    private List<Annotation> annotations = new ArrayList<Annotation>();
+    private List<Annotation> annotations = new ArrayList<Annotation>(4);
     private Scope visibleScope;
     private Declaration refinedDeclaration = this;
     private boolean staticallyImportable;

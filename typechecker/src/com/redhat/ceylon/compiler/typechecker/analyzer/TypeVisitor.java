@@ -483,7 +483,7 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.UnionType that) {
         super.visit(that);
-        List<ProducedType> types = new ArrayList<ProducedType>();
+        List<ProducedType> types = new ArrayList<ProducedType>(that.getStaticTypes().size());
         for (Tree.StaticType st: that.getStaticTypes()) {
             //addToUnion( types, st.getTypeModel() );
         	ProducedType t = st.getTypeModel();
@@ -498,7 +498,7 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.IntersectionType that) {
         super.visit(that);
-        List<ProducedType> types = new ArrayList<ProducedType>();
+        List<ProducedType> types = new ArrayList<ProducedType>(that.getStaticTypes().size());
         for (Tree.StaticType st: that.getStaticTypes()) {
             //addToIntersection(types, st.getTypeModel(), unit);
         	ProducedType t = st.getTypeModel();
@@ -546,7 +546,7 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.OptionalType that) {
         super.visit(that);
-        List<ProducedType> types = new ArrayList<ProducedType>();
+        List<ProducedType> types = new ArrayList<ProducedType>(2);
         types.add(unit.getNullDeclaration().getType());
         ProducedType dt = that.getDefiniteType().getTypeModel();
         if (dt!=null) types.add(dt);
@@ -580,7 +580,7 @@ public class TypeVisitor extends Visitor {
     }
 
 	private ProducedType getTupleType(List<Tree.Type> ets) {
-		List<ProducedType> args = new ArrayList<ProducedType>();
+		List<ProducedType> args = new ArrayList<ProducedType>(ets.size());
         boolean sequenced = false;
         boolean atleastone = false;
 		int firstDefaulted = -1;
@@ -864,7 +864,7 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.TypeParameterList that) {
         super.visit(that);
         List<Tree.TypeParameterDeclaration> tpds = that.getTypeParameterDeclarations();
-        List<TypeParameter> params = new ArrayList<TypeParameter>();
+        List<TypeParameter> params = new ArrayList<TypeParameter>(tpds.size());
         for (int i=tpds.size()-1; i>=0; i--) {
             Tree.TypeParameterDeclaration tpd = tpds.get(i);
             if (tpd!=null) {
@@ -1077,7 +1077,7 @@ public class TypeVisitor extends Visitor {
             that.addError("alias may not satisfy a type");
             return;
         }
-        List<ProducedType> list = new ArrayList<ProducedType>();
+        List<ProducedType> list = new ArrayList<ProducedType>(that.getTypes().size());
         if ( that.getTypes().isEmpty() ) {
             that.addError("missing types in satisfies");
         }
@@ -1168,8 +1168,9 @@ public class TypeVisitor extends Visitor {
             that.addError("alias may not have cases or a self type");
             return;
         }
-    	List<ProducedType> list = new ArrayList<ProducedType>();
         List<BaseMemberExpression> bmes = that.getBaseMemberExpressions();
+        List<Tree.StaticType> cts = that.getTypes();
+        List<ProducedType> list = new ArrayList<ProducedType>(bmes.size()+cts.size());
         if (td instanceof TypeParameter) {
         	if (!bmes.isEmpty()) {
         		that.addError("cases of type parameter must be a types");
@@ -1188,7 +1189,6 @@ public class TypeVisitor extends Visitor {
         		}
         	}
         }
-        List<Tree.StaticType> cts = that.getTypes();
         for (Tree.StaticType st: cts) {
         	ProducedType type = st.getTypeModel();
         	if (type!=null) {

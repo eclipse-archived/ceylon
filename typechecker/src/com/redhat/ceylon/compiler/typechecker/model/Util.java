@@ -348,7 +348,7 @@ public class Util {
     }
     
     static <T> List<T> list(List<T> list, T element) {
-        List<T> result = new ArrayList<T>();
+        List<T> result = new ArrayList<T>(list.size()+1);
         result.addAll(list);
         result.add(element);
         return result;
@@ -660,7 +660,7 @@ public class Util {
 
     public static ProducedType unionType(ProducedType lhst, ProducedType rhst, 
             Unit unit) {
-        List<ProducedType> list = new ArrayList<ProducedType>();
+        List<ProducedType> list = new ArrayList<ProducedType>(2);
         addToUnion(list, rhst);
         addToUnion(list, lhst);
         UnionType ut = new UnionType(unit);
@@ -670,7 +670,7 @@ public class Util {
 
     public static ProducedType intersectionType(ProducedType lhst, ProducedType rhst, 
             Unit unit) {
-        List<ProducedType> list = new ArrayList<ProducedType>();
+        List<ProducedType> list = new ArrayList<ProducedType>(2);
         addToIntersection(list, rhst, unit);
         addToIntersection(list, lhst, unit);
         IntersectionType it = new IntersectionType(unit);
@@ -689,7 +689,7 @@ public class Util {
     
     public static Declaration lookupMember(List<Declaration> members, String name,
             List<ProducedType> signature, boolean ellipsis) {
-        List<Declaration> results = new ArrayList<Declaration>();
+        List<Declaration> results = new ArrayList<Declaration>(1);
         Declaration inexactMatch = null;
         for (Declaration d: members) {
             if (isResolvable(d) && isNamed(name, d)) {
@@ -757,7 +757,7 @@ public class Util {
     
     public static Declaration findMatchingOverloadedClass(Class abstractionClass, 
             List<ProducedType> signature, boolean ellipsis) {
-        List<Declaration> results = new ArrayList<Declaration>();
+        List<Declaration> results = new ArrayList<Declaration>(1);
         if (!abstractionClass.isAbstraction()) {
             return abstractionClass;
         }
@@ -845,8 +845,9 @@ public class Util {
     public static ProducedType principalInstantiation(
             TypeDeclaration dec, ProducedType first, ProducedType second, 
             Unit unit) {
-        List<ProducedType> args = new ArrayList<ProducedType>();
-        for (TypeParameter tp: dec.getTypeParameters()) {
+        List<TypeParameter> tps = dec.getTypeParameters();
+        List<ProducedType> args = new ArrayList<ProducedType>(tps.size());
+        for (TypeParameter tp: tps) {
             ProducedType arg;
             ProducedType rta = first.getTypeArguments().get(tp);
             ProducedType prta = second.getTypeArguments().get(tp);
@@ -900,7 +901,7 @@ public class Util {
     }
 
     public static ProducedType intersectionOfSupertypes(ClassOrInterface ci) {
-        List<ProducedType> list = new ArrayList<ProducedType>();
+        List<ProducedType> list = new ArrayList<ProducedType>(ci.getSatisfiedTypes().size()+1);
         list.add(ci.getExtendedType());
         list.addAll(ci.getSatisfiedTypes());
         IntersectionType it = new IntersectionType(ci.getUnit());

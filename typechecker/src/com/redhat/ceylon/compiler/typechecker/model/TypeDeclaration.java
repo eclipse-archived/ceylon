@@ -18,11 +18,11 @@ public abstract class TypeDeclaration extends Declaration
         implements ImportableScope, Generic, Cloneable {
 
     private ProducedType extendedType;
-    private List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>();
+    private List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>(3);
     private List<ProducedType> caseTypes = null;
     private List<TypeParameter> typeParameters = emptyList();
     private ProducedType selfType;
-    private List<ProducedType> brokenSupertypes = new ArrayList<ProducedType>();
+    private List<ProducedType> brokenSupertypes = new ArrayList<ProducedType>(1);
     
     @Override
     protected TypeDeclaration clone() {
@@ -75,8 +75,9 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     public List<TypeDeclaration> getSatisfiedTypeDeclarations() {
-        List<TypeDeclaration> list = new ArrayList<TypeDeclaration>();
-        for (ProducedType pt: getSatisfiedTypes()) {
+        List<ProducedType> sts = getSatisfiedTypes();
+        List<TypeDeclaration> list = new ArrayList<TypeDeclaration>(sts.size());
+        for (ProducedType pt: sts) {
             list.add(pt==null?null:pt.getDeclaration());
         }
         return list;
@@ -91,17 +92,17 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     public List<TypeDeclaration> getCaseTypeDeclarations() {
-        List<TypeDeclaration> list = new ArrayList<TypeDeclaration>();
         List<ProducedType> caseTypes = getCaseTypes();
         if (caseTypes==null) {
             return null;
         }
         else {
+            List<TypeDeclaration> list = new ArrayList<TypeDeclaration>(caseTypes.size());
             for (ProducedType pt: caseTypes) {
                 list.add(pt==null?null:pt.getDeclaration());
             }
+            return list;
         }
-        return list;
     }
 
     public List<ProducedType> getCaseTypes() {

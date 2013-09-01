@@ -358,8 +358,9 @@ public class ProducedType extends ProducedReference {
             return unit.getNothingDeclaration().getType();
         }
         else if (dec instanceof UnionType) {
-            List<ProducedType> types = new ArrayList<ProducedType>();
-            for (ProducedType ct: getCaseTypes()) {
+            List<ProducedType> caseTypes = getCaseTypes();
+            List<ProducedType> types = new ArrayList<ProducedType>(caseTypes.size());
+            for (ProducedType ct: caseTypes) {
 //                if (ct.getSupertype(nd)==null) {
                     addToUnion(types, ct.eliminateNull());
 //                }
@@ -381,8 +382,9 @@ public class ProducedType extends ProducedReference {
         else {
             ProducedType ucts = getUnionOfCases();
             if (ucts.getDeclaration() instanceof UnionType) {
-                List<ProducedType> types = new ArrayList<ProducedType>();
-                for (ProducedType ct: ucts.getCaseTypes()) {
+                List<ProducedType> cts = ucts.getCaseTypes();
+                List<ProducedType> types = new ArrayList<ProducedType>(cts.size());
+                for (ProducedType ct: cts) {
                     addToUnion(types, ct.minus(pt));
                 }
                 UnionType ut = new UnionType(unit);
@@ -775,7 +777,7 @@ public class ProducedType extends ProducedReference {
                         	//the two possible results (since A|B is always
                         	//a supertype of A&B)
                         	UnionType ut = new UnionType(unit);
-                        	List<ProducedType> caseTypes = new ArrayList<ProducedType>();
+                        	List<ProducedType> caseTypes = new ArrayList<ProducedType>(2);
                         	//if (extendedType!=null) caseTypes.add(extendedType);
                         	//caseTypes.addAll(satisfiedTypes);
                         	caseTypes.add(result);
@@ -821,9 +823,9 @@ public class ProducedType extends ProducedReference {
         //now try to construct a common produced
         //type that is a common supertype by taking
         //the type args and unioning them
-        List<ProducedType> args = new ArrayList<ProducedType>();
+        List<ProducedType> args = new ArrayList<ProducedType>(dec.getTypeParameters().size());
         for (TypeParameter tp: dec.getTypeParameters()) {
-            List<ProducedType> list2 = new ArrayList<ProducedType>();
+            List<ProducedType> list2 = new ArrayList<ProducedType>(caseTypes.size());
             ProducedType result;
             if (tp.isContravariant()) { 
                 for (ProducedType pt: caseTypes) {
@@ -872,7 +874,7 @@ public class ProducedType extends ProducedReference {
         ProducedType outerType;
         if (dec.isMember()) {
             TypeDeclaration outer = (TypeDeclaration) dec.getContainer();
-            List<ProducedType> list = new ArrayList<ProducedType>();
+            List<ProducedType> list = new ArrayList<ProducedType>(caseTypes.size());
             for (ProducedType pt: caseTypes) {
                 if (pt==null) {
                     return null;
@@ -901,8 +903,9 @@ public class ProducedType extends ProducedReference {
      * Get the type arguments as a tuple. 
      */
     public List<ProducedType> getTypeArgumentList() {
-        List<ProducedType> lpt = new ArrayList<ProducedType>();
-        for (TypeParameter tp : getDeclaration().getTypeParameters()) {
+        List<TypeParameter> tps = getDeclaration().getTypeParameters();
+        List<ProducedType> lpt = new ArrayList<ProducedType>(tps.size());
+        for (TypeParameter tp : tps) {
             lpt.add(getTypeArguments().get(tp));
         }
         return lpt;
@@ -1096,8 +1099,9 @@ public class ProducedType extends ProducedReference {
     }
 
     private List<ProducedType> getInternalSatisfiedTypes() {
-        List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>();
-        for (ProducedType st: getDeclaration().getSatisfiedTypes()) {
+        List<ProducedType> sts = getDeclaration().getSatisfiedTypes();
+        List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>(sts.size());
+        for (ProducedType st: sts) {
             satisfiedTypes.add(st.substituteInternal(getTypeArguments()));
         }
         return satisfiedTypes;
@@ -1109,12 +1113,13 @@ public class ProducedType extends ProducedReference {
     }
 
     private List<ProducedType> getInternalCaseTypes() {
-        if (getDeclaration().getCaseTypes()==null) {
+        List<ProducedType> cts = getDeclaration().getCaseTypes();
+        if (cts==null) {
             return null;
         }
         else {
-            List<ProducedType> caseTypes = new ArrayList<ProducedType>();
-            for (ProducedType ct: getDeclaration().getCaseTypes()) {
+            List<ProducedType> caseTypes = new ArrayList<ProducedType>(cts.size());
+            for (ProducedType ct: cts) {
                 caseTypes.add(ct.substituteInternal(getTypeArguments()));
             }
             return caseTypes;
@@ -1122,9 +1127,10 @@ public class ProducedType extends ProducedReference {
     }
 
     public List<ProducedType> getSatisfiedTypes() {
-        List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>();
         Map<TypeParameter, ProducedType> args = getTypeArguments();
-        for (ProducedType satisfiedType: getDeclaration().getSatisfiedTypes()) {
+        List<ProducedType> sts = getDeclaration().getSatisfiedTypes();
+        List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>(sts.size());
+        for (ProducedType satisfiedType: sts) {
             satisfiedTypes.add(args.isEmpty() ? satisfiedType : satisfiedType.substitute(args));
         }
         return satisfiedTypes;
@@ -1142,12 +1148,13 @@ public class ProducedType extends ProducedReference {
     }
 
     public List<ProducedType> getCaseTypes() {
-        if (getDeclaration().getCaseTypes()==null) {
+        List<ProducedType> cts = getDeclaration().getCaseTypes();
+        if (cts==null) {
             return null;
         }
         else {
-            List<ProducedType> caseTypes = new ArrayList<ProducedType>();
-            for (ProducedType ct: getDeclaration().getCaseTypes()) {
+            List<ProducedType> caseTypes = new ArrayList<ProducedType>(cts.size());
+            for (ProducedType ct: cts) {
                 caseTypes.add(ct.substitute(getTypeArguments()));
             }
             return caseTypes;
@@ -1167,8 +1174,9 @@ public class ProducedType extends ProducedReference {
             Declaration dec;
             if (pt.getDeclaration() instanceof UnionType) {
                 UnionType ut = new UnionType(pt.getDeclaration().getUnit());
-                List<ProducedType> types = new ArrayList<ProducedType>();
-                for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {
+                List<ProducedType> cts = pt.getDeclaration().getCaseTypes();
+                List<ProducedType> types = new ArrayList<ProducedType>(cts.size());
+                for (ProducedType ct: cts) {
                     addTypeToUnion(ct, substitutions, types);
                 }
                 ut.setCaseTypes(types);
@@ -1176,8 +1184,9 @@ public class ProducedType extends ProducedReference {
             }
             else if (pt.getDeclaration() instanceof IntersectionType) {
                 IntersectionType it = new IntersectionType(pt.getDeclaration().getUnit());
-                List<ProducedType> types = new ArrayList<ProducedType>();
-                for (ProducedType ct: pt.getDeclaration().getSatisfiedTypes()) {
+                List<ProducedType> sts = pt.getDeclaration().getSatisfiedTypes();
+                List<ProducedType> types = new ArrayList<ProducedType>(sts.size());
+                for (ProducedType ct: sts) {
                     addTypeToIntersection(ct, substitutions, types);
                 }
                 it.setSatisfiedTypes(types);
@@ -1383,8 +1392,9 @@ public class ProducedType extends ProducedReference {
         //of X are the intersection (U|V)&B canonicalized to
         //the union U&B|V&B
         if (sdt instanceof IntersectionType) {
-            List<ProducedType> list = new ArrayList<ProducedType>();
-            for (ProducedType st: sdt.getSatisfiedTypes()) {
+            List<ProducedType> sts = sdt.getSatisfiedTypes();
+            List<ProducedType> list = new ArrayList<ProducedType>(sts.size());
+            for (ProducedType st: sts) {
                 addToIntersection(list, st.getUnionOfCases()
                         .substitute(getTypeArguments()), 
                         unit); //argument substitution is unnecessary
@@ -1393,25 +1403,26 @@ public class ProducedType extends ProducedReference {
             it.setSatisfiedTypes(list);
             return it.canonicalize().getType();
         }
-        //if X is neither a union, intersection, or enumerated
-        //type then its cases are simply X
-        else if (sdt.getCaseTypes()==null) {
-            return this;
-        }
-        //otherwise, if X is a union A|B, or an enumerated 
-        //type, with cases A and B, and A is an enumerated 
-        //type with cases U and V, then the cases of X are
-        //the union U|V|B
         else {
-            //build a union of all the cases
-            List<ProducedType> list = new ArrayList<ProducedType>();
-            for (ProducedType ct: sdt.getCaseTypes()) {
-                addToUnion(list, ct.substitute(getTypeArguments())
-                        .getUnionOfCases()); //note recursion
+            List<ProducedType> cts = sdt.getCaseTypes();
+            if (cts==null) {
+                return this;
             }
-            UnionType ut = new UnionType(unit);
-            ut.setCaseTypes(list);
-            return ut.getType();
+            //otherwise, if X is a union A|B, or an enumerated 
+            //type, with cases A and B, and A is an enumerated 
+            //type with cases U and V, then the cases of X are
+            //the union U|V|B
+            else {
+                //build a union of all the cases
+                List<ProducedType> list = new ArrayList<ProducedType>(cts.size());
+                for (ProducedType ct: cts) {
+                    addToUnion(list, ct.substitute(getTypeArguments())
+                            .getUnionOfCases()); //note recursion
+                }
+                UnionType ut = new UnionType(unit);
+                ut.setCaseTypes(list);
+                return ut.getType();
+            }
         }
     }
     
@@ -1562,8 +1573,9 @@ public class ProducedType extends ProducedReference {
     private ProducedType curriedResolveAliases() {
     	TypeDeclaration d = getDeclaration();
     	if (d instanceof UnionType) {
-    		List<ProducedType> list = new ArrayList<ProducedType>();
-    		for (ProducedType pt: d.getCaseTypes()) {
+    		List<ProducedType> caseTypes = d.getCaseTypes();
+            List<ProducedType> list = new ArrayList<ProducedType>(caseTypes.size());
+    		for (ProducedType pt: caseTypes) {
     			addToUnion(list, pt.resolveAliases());
     		}
     		UnionType ut = new UnionType(d.getUnit());
@@ -1571,8 +1583,9 @@ public class ProducedType extends ProducedReference {
     		return ut.getType();
     	}
     	if (d instanceof IntersectionType) {
-    		List<ProducedType> list = new ArrayList<ProducedType>();
-    		for (ProducedType pt: d.getSatisfiedTypes()) {
+    		List<ProducedType> satisfiedTypes = d.getSatisfiedTypes();
+            List<ProducedType> list = new ArrayList<ProducedType>(satisfiedTypes.size());
+    		for (ProducedType pt: satisfiedTypes) {
     			addToIntersection(list, pt.resolveAliases(), d.getUnit());
     		}
     		IntersectionType ut = new IntersectionType(d.getUnit());

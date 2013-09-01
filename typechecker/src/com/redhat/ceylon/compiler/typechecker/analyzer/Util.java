@@ -82,7 +82,7 @@ public class Util {
     
     static List<ProducedType> getTypeArguments(Tree.TypeArguments tal,
     		List<TypeParameter> typeParameters, ProducedType qt) {
-        List<ProducedType> typeArguments = new ArrayList<ProducedType>();
+        List<ProducedType> typeArguments = new ArrayList<ProducedType>(typeParameters.size());
         if (tal instanceof Tree.TypeArgumentList) {
             Map<TypeParameter, ProducedType> typeArgMap = new HashMap<TypeParameter, ProducedType>();
             if (qt!=null) {

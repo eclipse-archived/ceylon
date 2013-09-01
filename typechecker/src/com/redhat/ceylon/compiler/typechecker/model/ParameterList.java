@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ParameterList {
     
-    private List<Parameter> parameters = new ArrayList<Parameter>();
+    private List<Parameter> parameters = new ArrayList<Parameter>(2);
     private boolean supportsNamedParameters = true;
     private boolean first;
     

@@ -1547,7 +1547,7 @@ public class ExpressionVisitor extends Visitor {
             else {
                 if (!at.isSubtypeOf(et)) {
                     UnionType ut = new UnionType(unit);
-                    List<ProducedType> list = new ArrayList<ProducedType>();
+                    List<ProducedType> list = new ArrayList<ProducedType>(2);
                     addToUnion(list, et);
                     addToUnion(list, at);
                     ut.setCaseTypes(list);
@@ -1643,8 +1643,8 @@ public class ExpressionVisitor extends Visitor {
             //set up the "signature" on the primary
             //so that we can resolve the correct 
             //overloaded declaration
-            List<ProducedType> sig = new ArrayList<ProducedType>();
             List<Tree.PositionalArgument> args = pal.getPositionalArguments();
+            List<ProducedType> sig = new ArrayList<ProducedType>(args.size());
             for (Tree.PositionalArgument pa: args) {
                 sig.add(pa.getTypeModel());
             }
@@ -3331,7 +3331,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
             checkOptional(lhst, that.getLeftTerm(), that.getLeftTerm());
-            List<ProducedType> list = new ArrayList<ProducedType>();
+            List<ProducedType> list = new ArrayList<ProducedType>(2);
             addToUnion(list, unit.denotableType(rhst));
             addToUnion(list, unit.getDefiniteType(unit.denotableType(lhst)));
             UnionType ut = new UnionType(unit);
@@ -4740,8 +4740,9 @@ public class ExpressionVisitor extends Visitor {
         ProducedType st = switchExpression.getTypeModel();
         if (!isTypeUnknown(st)) {
             //form the union of all the case types
-            List<ProducedType> list = new ArrayList<ProducedType>();
-            for (Tree.CaseClause cc: switchCaseList.getCaseClauses()) {
+            List<Tree.CaseClause> caseClauses = switchCaseList.getCaseClauses();
+            List<ProducedType> list = new ArrayList<ProducedType>(caseClauses.size());
+            for (Tree.CaseClause cc: caseClauses) {
                 ProducedType ct = getTypeIgnoringLiterals(cc);
                 if (isTypeUnknown(ct)) {
                     return; //Note: early exit!
@@ -4842,8 +4843,9 @@ public class ExpressionVisitor extends Visitor {
             return getType(ci);
         }
         else if (ci instanceof Tree.MatchCase) {
-            List<ProducedType> list = new ArrayList<ProducedType>();
-            for (Tree.Expression e: ((Tree.MatchCase) ci).getExpressionList().getExpressions()) {
+            List<Tree.Expression> es = ((Tree.MatchCase) ci).getExpressionList().getExpressions();
+            List<ProducedType> list = new ArrayList<ProducedType>(es.size());
+            for (Tree.Expression e: es) {
                 if (e.getTypeModel()!=null) {
                     addToUnion(list, e.getTypeModel());
                 }
@@ -4861,8 +4863,9 @@ public class ExpressionVisitor extends Visitor {
             return getType(ci);
         }
         else if (ci instanceof Tree.MatchCase) {
-            List<ProducedType> list = new ArrayList<ProducedType>();
-            for (Tree.Expression e: ((Tree.MatchCase) ci).getExpressionList().getExpressions()) {
+            List<Tree.Expression> es = ((Tree.MatchCase) ci).getExpressionList().getExpressions();
+            List<ProducedType> list = new ArrayList<ProducedType>(es.size());
+            for (Tree.Expression e: es) {
                 if (e.getTypeModel()!=null && 
                         !(e.getTerm() instanceof Tree.Literal)) {
                     addToUnion(list, e.getTypeModel());
@@ -5378,7 +5381,7 @@ public class ExpressionVisitor extends Visitor {
                             std.getCaseTypeDeclarations().get(0).isSelfType()) {
                         continue;
                     }
-                    List<ProducedType> types=new ArrayList<ProducedType>();
+                    List<ProducedType> types=new ArrayList<ProducedType>(std.getCaseTypes().size());
                     for (ProducedType ct: std.getCaseTypes()) {
                         ProducedType cst = type.getSupertype(ct.getDeclaration());
                         if (cst!=null) {

@@ -19,7 +19,7 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     //private boolean formal;
 
     private List<TypeParameter> typeParameters = emptyList();
-    private List<ParameterList> parameterLists = new ArrayList<ParameterList>();
+    private List<ParameterList> parameterLists = new ArrayList<ParameterList>(1);
     private boolean overloaded;
     private boolean abstraction;
     private List<Declaration> overloads;
