@@ -14,7 +14,7 @@ public abstract class Element {
 	private Scope container;
 	private Scope scope;
 	protected Unit unit;
-	private List<Declaration> members = new ArrayList<Declaration>();
+	private List<Declaration> members = new ArrayList<Declaration>(3);
 
     public Unit getUnit() {
         return unit;

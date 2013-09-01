@@ -48,7 +48,7 @@ public class PhasedUnit {
     private Unit unit;
     //must be the non qualified file name
     private String fileName;
-    private final ModuleManager moduleManager;
+    private ModuleManager moduleManager;
     private final String pathRelativeToSrcDir;
     private VirtualFile unitFile;
     private List<CommonToken> tokens;
@@ -119,6 +119,7 @@ public class PhasedUnit {
                 ModuleManager.PACKAGE_FILE.equals(fileName) ) {
             processLiterals();
             moduleVisitor = new ModuleVisitor(moduleManager, pkg);
+            moduleManager = null;
             compilationUnit.visit(moduleVisitor);
             return moduleVisitor.getMainModule();
         }
@@ -133,6 +134,7 @@ public class PhasedUnit {
         if ( moduleVisitor != null ) {
             moduleVisitor.setPhase(ModuleVisitor.Phase.REMAINING);
             compilationUnit.visit(moduleVisitor);
+            moduleVisitor = null;
         }
     }
     
