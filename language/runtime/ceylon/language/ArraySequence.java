@@ -60,7 +60,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     final int length;
     
     @Ignore
-    private TypeDescriptor $reifiedElement;
+    protected TypeDescriptor $reifiedElement;
 
     /**
      * The public (Ceylon) initializer. Note that if elements is an 
@@ -117,23 +117,10 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         return USE_ARRAY_SIZE;
     }
 
-    @Ignore
-    // TODO Review callers of this. All the ones in the language module can 
-    // probably be converted to backedBy, or we can make it non-copying 
-    private ArraySequence(@Ignore TypeDescriptor $reifiedElement, Object[] array) {
-        this($reifiedElement, array, 0, array.length, true);
-    }
-    
     public static <Element> ArraySequence<Element> instance(@Ignore TypeDescriptor $reifiedElement, java.lang.Object[] array) {
         return new ArraySequence($reifiedElement, array, 0, array.length, true);
     }
 
-    @Ignore
-    // TODO If this used any more?
-    private ArraySequence(@Ignore TypeDescriptor $reifiedElement, java.lang.Object[] array, long first) {
-        this($reifiedElement, array, first, array.length-first, true);
-    }
-    
     @Ignore
     ArraySequence(@Ignore TypeDescriptor $reifiedElement, java.lang.Object[] array, long first, long length, boolean copy) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
@@ -184,12 +171,11 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         return new ArraySequence<Element>($reifiedElement, array, first, length, false);
     }
     
-    // TODO Is this used any more?
     @Ignore
-    public ArraySequence(@Ignore TypeDescriptor $reifiedElement, java.util.List<Element> list) {
-        this($reifiedElement, (Element[]) list.toArray(), 0);
+    protected ArraySequence<Element> backedBy$hidden(Element[] array, long first, long length) {
+        return new ArraySequence<Element>($reifiedElement, array, first, length, false);
     }
-
+    
     @Ignore
     @Override
     public Category$impl $ceylon$language$Category$impl(){
@@ -261,7 +247,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
             return (Sequential)empty_.$get();
         }
         else {
-            return backedBy$hidden($reifiedElement, (Element[])array, first + 1, length - 1);
+            return backedBy$hidden((Element[])array, first + 1, length - 1);
         }
     }
 
@@ -302,11 +288,9 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     	toIndex = Math.min(toIndex, lastIndex);        
     	if (reverse) {
             Element[] sub = reversedCopy$priv((Element[])array, (int)(first+fromIndex), (int)(toIndex-fromIndex+1));
-            return backedBy$hidden($reifiedElement, sub, 
-                    0, 
-                    sub.length);
+            return backedBy$hidden(sub, 0, sub.length);
         } else {
-            return backedBy$hidden($reifiedElement, (Element[])array, 
+            return backedBy$hidden((Element[])array, 
                     first+fromIndex, 
                     toIndex-fromIndex+1);
         }
@@ -330,7 +314,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         } else {
             l = length;
         }
-        return backedBy$hidden($reifiedElement, (Element[])array, 
+        return backedBy$hidden((Element[])array, 
                 fromIndex+first, l);
     }
 
@@ -358,9 +342,9 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     }
     
     @Override
-    public ArraySequence<? extends Element> getReversed() {
+    public Sequence<? extends Element> getReversed() {
     	Element[] reversed = reversedCopy$priv((Element[])array, first, length);
-		return backedBy$hidden($reifiedElement, reversed, 0, length);
+		return backedBy$hidden(reversed, 0, length);
     }
 
     @Override
