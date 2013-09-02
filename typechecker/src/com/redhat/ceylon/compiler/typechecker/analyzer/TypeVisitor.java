@@ -67,12 +67,12 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public class TypeVisitor extends Visitor {
     
     private Unit unit;
-            
+    
     @Override public void visit(Tree.CompilationUnit that) {
         unit = that.getUnit();
         super.visit(that);
     }
-        
+    
     @Override
     public void visit(Tree.Import that) {
         Package importedPackage = getPackage(that.getImportPath());
@@ -95,7 +95,7 @@ public class TypeVisitor extends Visitor {
             }
         }
     }
-
+    
     private void importAllMembers(Package importedPackage, 
             Set<String> ignoredMembers, ImportList il) {
         for (Declaration dec: importedPackage.getMembers()) {
@@ -106,7 +106,7 @@ public class TypeVisitor extends Visitor {
             }
         }
     }
-
+    
     private void importAllMembers(TypeDeclaration importedType, 
             Set<String> ignoredMembers, ImportList til) {
         for (Declaration dec: importedType.getMembers()) {
@@ -117,7 +117,7 @@ public class TypeVisitor extends Visitor {
             }
         }
     }
-
+    
     private void addWildcardImport(ImportList il, Declaration dec) {
         if (!hidesToplevel(dec)) {
             Import i = new Import();
@@ -127,7 +127,7 @@ public class TypeVisitor extends Visitor {
             addWildcardImport(il, dec, i);
         }
     }
-
+    
     private void addWildcardImport(ImportList il, Declaration dec, Import i) {
     	String alias = i.getAlias();
 		if (alias!=null) {
@@ -146,7 +146,7 @@ public class TypeVisitor extends Visitor {
     		il.getImports().add(i);
     	}
     }
-
+    
     public static Module getModule(Tree.ImportPath path) {
         if (path!=null && !path.getIdentifiers().isEmpty()) {
             String nameToImport = formatPath(path.getIdentifiers());
@@ -178,7 +178,7 @@ public class TypeVisitor extends Visitor {
         }
         return null;
     }
-
+    
     public static Package getPackage(Tree.ImportPath path) {
         if (path!=null && !path.getIdentifiers().isEmpty()) {
             String nameToImport = formatPath(path.getIdentifiers());
@@ -209,7 +209,7 @@ public class TypeVisitor extends Visitor {
         }
         return null;
     }
-
+    
 //    private boolean hasName(List<Tree.Identifier> importPath, Package mp) {
 //        if (mp.getName().size()==importPath.size()) {
 //            for (int i=0; i<mp.getName().size(); i++) {
@@ -239,7 +239,7 @@ public class TypeVisitor extends Visitor {
         }
         return false;
     }
-
+    
     private boolean hidesToplevel(Declaration dec) {
         for (Declaration d: unit.getDeclarations()) {
             String n = d.getName();
@@ -250,7 +250,7 @@ public class TypeVisitor extends Visitor {
         }
         return false;
     }
-
+    
     private boolean checkForHiddenToplevel(Tree.Identifier id, Import i, Tree.Alias alias) {
         for (Declaration d: unit.getDeclarations()) {
             String n = d.getName();
@@ -267,7 +267,7 @@ public class TypeVisitor extends Visitor {
         }
         return false;
     }
-
+    
     private void importMembers(Tree.ImportMemberOrType member, Declaration d) {
         Tree.ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
         if (imtl!=null) {
@@ -291,7 +291,7 @@ public class TypeVisitor extends Visitor {
         	}
         }
     }
-
+    
     private void checkAliasCase(Tree.Alias alias, Declaration d) {
         if (alias!=null) {
             Tree.Identifier id = alias.getIdentifier();
@@ -307,7 +307,7 @@ public class TypeVisitor extends Visitor {
             }
         }
     }
-
+    
     private String importMember(Tree.ImportMemberOrType member,
             Package importedPackage, ImportList il) {
         Tree.Identifier id = member.getIdentifier();
@@ -363,7 +363,7 @@ public class TypeVisitor extends Visitor {
         importMembers(member, d);
         return name;
     }
-
+    
     private String importMember(Tree.ImportMemberOrType member, 
             TypeDeclaration td, ImportList il) {
     	Tree.Identifier id = member.getIdentifier();
@@ -427,7 +427,7 @@ public class TypeVisitor extends Visitor {
         //imtl.addError("member aliases may not have member aliases");
         return name;
     }
-
+    
     private void addImport(Tree.ImportMemberOrType member, ImportList il,
             Import i) {
         String alias = i.getAlias();
@@ -458,7 +458,7 @@ public class TypeVisitor extends Visitor {
             }
         }
     }
-        
+    
     private void addMemberImport(Tree.ImportMemberOrType member, ImportList il,
             Import i) {
     	String alias = i.getAlias();
@@ -479,7 +479,7 @@ public class TypeVisitor extends Visitor {
                  "Throwable".equals(name) /*||
                  "Exception".equals(name)*/);
     }
-
+    
     @Override 
     public void visit(Tree.UnionType that) {
         super.visit(that);
@@ -494,7 +494,7 @@ public class TypeVisitor extends Visitor {
         that.setTypeModel(ut.getType());
         //that.setTarget(pt);
     }
-
+    
     @Override 
     public void visit(Tree.IntersectionType that) {
         super.visit(that);
@@ -509,7 +509,7 @@ public class TypeVisitor extends Visitor {
         that.setTypeModel(it.getType());
         //that.setTarget(pt);
     }
-
+    
     @Override 
     public void visit(Tree.SequenceType that) {
         super.visit(that);

@@ -366,7 +366,7 @@ public class TypeHierarchyVisitor extends Visitor {
         if (type == null) {
             type = new Type();
             type.declaration = declaration;
-            for (Declaration member : declaration.getMembers()) {
+            for (Declaration member: declaration.getMembers()) {
                 if (!(member instanceof MethodOrValue || 
                       member instanceof Class) || 
                         member.isStaticallyImportable()) {

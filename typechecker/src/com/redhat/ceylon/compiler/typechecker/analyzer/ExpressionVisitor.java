@@ -845,7 +845,7 @@ public class ExpressionVisitor extends Visitor {
         v.setScope(c);
         v.setShortcutRefinement(true);
         DeclarationVisitor.setVisibleScope(v);
-        c.getMembers().add(v);
+        c.addMember(v);
         bme.setDeclaration(v);
         //bme.setTypeModel(v.getType());
         that.setRefinement(true);
@@ -932,7 +932,7 @@ public class ExpressionVisitor extends Visitor {
         m.setShortcutRefinement(true);
         m.setDeclaredAnything(sm.isDeclaredVoid());
         DeclarationVisitor.setVisibleScope(m);
-        c.getMembers().add(m);
+        c.addMember(m);
         bme.setDeclaration(m);
         //bme.setTypeModel(v.getType());
         that.setRefinement(true);
