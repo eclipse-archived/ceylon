@@ -15,10 +15,22 @@ public interface Scope {
     public String getQualifiedNameString();
 
     public ProducedType getDeclaringType(Declaration d);
-
-    public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis);
-    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature, boolean ellipsis);
+    
+    /**
+     * Get a member declared directly in this scope.
+     */
     public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis);
+    
+    /**
+     * Resolve a qualified reference.
+     */
+    public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis);
+    
+    /**
+     * Resolve an unqualified reference.
+     */
+    //TODO: should be renamed getBase() since it also looks in containing scopes
+    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature, boolean ellipsis);
 
     public boolean isInherited(Declaration d);
     public TypeDeclaration getInheritingDeclaration(Declaration d);

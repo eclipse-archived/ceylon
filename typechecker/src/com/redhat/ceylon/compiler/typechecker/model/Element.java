@@ -50,38 +50,28 @@ public abstract class Element {
     }
     
     /**
-     * Search only directly inside the given scope,
-     * without considering containing scopes or
-     * imports.
+     * Search only directly inside this scope.
      */
-    protected Declaration getMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
-        return getDirectMember(name, signature, ellipsis);
+    public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis) {
+        return lookupMember(getMembers(), name, signature, ellipsis);
     }
     
     /**
-     * Search only directly inside the given scope,
-     * without considering containing scopes.
+     * Search only this scope, including members inherited 
+     * by the scope, without considering containing scopes 
+     * or imports. We're not looking for un-shared direct 
+     * members, but return them anyway, to let the caller 
+     * produce a nicer error.
      */
     public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis) {
         return getDirectMember(name, signature, ellipsis);
     }
-
-    public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis) {
-        return lookupMember(getMembers(), name, signature, ellipsis);
-    }
-
-    public ProducedType getDeclaringType(Declaration d) {
-    	if (d.isMember()) {
-    		return getContainer().getDeclaringType(d);
-    	}
-    	else {
-    		return null;
-    	}
-    }
-
+    
     /**
-     * Search in the given scope, taking into account
-     * containing scopes and imports
+     * Search in this scope, taking into account containing 
+     * scopes, imports, and members inherited by this scope
+     * and containing scopes, returning even un-shared 
+     * declarations of this scope and containing scopes.
      */
     public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature, boolean ellipsis) {
         Declaration d = getMemberOrParameter(name, signature, ellipsis);
@@ -95,6 +85,16 @@ public abstract class Element {
             //union type or bottom type 
             return null;
         }
+    }
+    
+    /**
+     * Search only this scope, including members inherited 
+     * by this scope, without considering containing scopes 
+     * or imports. We are even interested in un-shared 
+     * direct members.
+     */
+    protected Declaration getMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
+        return getDirectMember(name, signature, ellipsis);
     }
     
     public boolean isInherited(Declaration d) {
@@ -115,6 +115,15 @@ public abstract class Element {
         }
         else if (getContainer()!=null) {
             return getContainer().getInheritingDeclaration(d);
+        }
+        else {
+            return null;
+        }
+    }
+    
+    public ProducedType getDeclaringType(Declaration d) {
+        if (d.isMember()) {
+            return getContainer().getDeclaringType(d);
         }
         else {
             return null;

@@ -376,6 +376,7 @@ public abstract class TypeDeclaration extends Declaration
     /**
      * Get the most-refined member with the given name,
      * searching this type first, followed by supertypes.
+     * We're looking for shared members.
      */
     @Override
     public Declaration getMember(String name, 
@@ -419,10 +420,11 @@ public abstract class TypeDeclaration extends Declaration
     /**
      * Get the parameter or most-refined member with the 
      * given name, searching this type first, followed by 
-     * supertypes.
+     * supertypes. Return un-shared members declared by
+     * this type.
      */
     @Override
-    public Declaration getMemberOrParameter(String name, 
+    protected Declaration getMemberOrParameter(String name, 
             List<ProducedType> signature, boolean variadic) {
         //first search for the member or parameter 
         //in the local scope, including non-shared 
