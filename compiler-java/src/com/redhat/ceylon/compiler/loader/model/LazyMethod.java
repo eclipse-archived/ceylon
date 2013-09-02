@@ -306,12 +306,6 @@ public class LazyMethod extends Method implements LazyElement {
     }
 
     @Override
-    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
-        load();
-        return super.getDirectMemberOrParameter(name, signature, ellipsis);
-    }
-
-    @Override
     public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis) {
         load();
         return super.getMember(name, signature, ellipsis);

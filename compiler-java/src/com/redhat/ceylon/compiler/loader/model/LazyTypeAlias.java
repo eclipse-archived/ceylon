@@ -298,13 +298,6 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
     }
 
     @Override
-    @Deprecated
-    public List<String> getQualifiedName() {
-        load();
-        return super.getQualifiedName();
-    }
-
-    @Override
     public String getQualifiedNameString() {
         load();
         return super.getQualifiedNameString();
@@ -434,12 +427,6 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
     public List<Declaration> getMembers() {
         load();
         return super.getMembers();
-    }
-
-    @Override
-    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
-        load();
-        return super.getDirectMemberOrParameter(name, signature, ellipsis);
     }
 
     @Override

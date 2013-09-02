@@ -71,12 +71,6 @@ public class LazyPackage extends Package {
         return getDirectMember(name, signature, ellipsis);
     }
     
-    @Override
-    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
-        // FIXME: what's the difference?
-        return getDirectMember(name, signature, ellipsis);
-    }
-    
     // FIXME: redo this method better: https://github.com/ceylon/ceylon-spec/issues/90
     @Override
     public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis) {

@@ -204,12 +204,6 @@ public class LazyValue extends Value implements LazyElement {
     }
 
     @Override
-    public List<String> getQualifiedName() {
-        load();
-        return super.getQualifiedName();
-    }
-
-    @Override
     public String getQualifiedNameString() {
         load();
         return super.getQualifiedNameString();
@@ -327,12 +321,6 @@ public class LazyValue extends Value implements LazyElement {
     protected Declaration getMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
         load();
         return super.getMemberOrParameter(name, signature, ellipsis);
-    }
-
-    @Override
-    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
-        load();
-        return super.getDirectMemberOrParameter(name, signature, ellipsis);
     }
 
     @Override

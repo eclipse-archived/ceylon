@@ -299,12 +299,6 @@ public class LazyInterfaceAlias extends InterfaceAlias implements LazyContainer 
     }
 
     @Override
-    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
-        load();
-        return super.getDirectMemberOrParameter(name, signature, ellipsis);
-    }
-
-    @Override
     public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis) {
         load();
         return super.getDirectMember(name, signature, ellipsis);
