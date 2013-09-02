@@ -173,8 +173,8 @@ public class TypeVisitor extends Visitor {
                     }
                 }
             }
-            path.addError("module not found in dependent modules: " + 
-                    nameToImport);
+            path.addError("module not found in imported modules: " + 
+                    nameToImport, 7000);
         }
         return null;
     }
@@ -204,8 +204,8 @@ public class TypeVisitor extends Visitor {
                     }
                 }
             }
-            path.addError("package not found in dependent modules: " + 
-            		nameToImport);
+            path.addError("package not found in imported modules: " + 
+            		nameToImport, 7000);
         }
         return null;
     }
@@ -295,15 +295,16 @@ public class TypeVisitor extends Visitor {
     private void checkAliasCase(Tree.Alias alias, Declaration d) {
         if (alias!=null) {
             Tree.Identifier id = alias.getIdentifier();
-			if (d instanceof TypeDeclaration &&
-                    id.getToken().getType()!=CeylonLexer.UIDENTIFIER) {
+			int tt = id.getToken().getType();
+            if (d instanceof TypeDeclaration &&
+                    tt!=CeylonLexer.UIDENTIFIER) {
                 id.addError("imported type should have uppercase alias: " +
-                    d.getName());
+                        d.getName());
             }
-            if (d instanceof TypedDeclaration &&
-                    id.getToken().getType()!=CeylonLexer.LIDENTIFIER) {
+            else if (d instanceof TypedDeclaration &&
+                    tt!=CeylonLexer.LIDENTIFIER) {
                 id.addError("imported member should have lowercase alias: " +
-                    d.getName());
+                        d.getName());
             }
         }
     }
