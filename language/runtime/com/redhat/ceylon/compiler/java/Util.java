@@ -662,21 +662,36 @@ public class Util {
      * @return A Sequential
      */
     public static <T> Sequential<? extends T> sequentialInstance(TypeDescriptor $reifiedT, Sequential<? extends T> rest, T... elements) {
-        if (elements.length == 0){
+        return sequentialInstance($reifiedT, 0, elements.length, elements, true, rest);
+    }
+        
+    /**
+     * Returns a Sequential made by concatenating the {@code length} elements 
+     * of {@code elements} starting from {@code state} with the elements of
+     * {@code rest}: <code> {*elements[start:length], *rest}</code>. 
+     * 
+     * <strong>This method does not copy {@code elements}</strong>
+     */
+    public static <T> Sequential<? extends T> sequentialInstance(
+            TypeDescriptor $reifiedT,  
+            int start, int length, T[] elements, boolean copy,
+            Sequential<? extends T> rest) {
+        if (length == 0){
             if(rest.getEmpty()) {
                 return (Sequential)empty_.$get();
             }
             return rest;
         }
         // elements is not empty
-        if(rest.getEmpty())
-            return ArraySequence.<T>instance($reifiedT, elements);
+        if(rest.getEmpty()) {
+            return langAccess.newArraySequence($reifiedT, elements, start, length, copy);
+        }
         // we have both, let's find the total size
-        int total = (int) (rest.getSize() + elements.length);
+        int total = (int) (rest.getSize() + length);
         java.lang.Object[] newArray = new java.lang.Object[total];
-        System.arraycopy(elements, 0, newArray, 0, elements.length);
+        System.arraycopy(elements, start, newArray, 0, length);
         Iterator<? extends T> iterator = rest.iterator();
-        int i = elements.length;
+        int i = length;
         for(Object elem; (elem = iterator.next()) != finished_.$get(); i++){
             newArray[i] = elem;
         }
