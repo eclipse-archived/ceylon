@@ -248,7 +248,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 System.out.println("WTF!!!!! this should never NEVER NEVER HAPPEN!!! " + container +"->" + tp.get(MetamodelGenerator.KEY_METATYPE));
                 continue;
             }
-            Declaration maybe = container.getDirectMemberOrParameter((String)tp.get(MetamodelGenerator.KEY_NAME), null, false);
+            Declaration maybe = container.getDirectMember((String)tp.get(MetamodelGenerator.KEY_NAME), null, false);
             if (maybe instanceof TypeParameter) {
                 //we already had it (from partial loading elsewhere)
                 allparms.add((TypeParameter)maybe);
