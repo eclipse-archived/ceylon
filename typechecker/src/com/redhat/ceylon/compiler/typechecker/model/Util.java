@@ -325,9 +325,10 @@ public class Util {
         //map from type parameter to argument
         if (declaration instanceof Generic) {
             Generic g = (Generic) declaration;
-            for (int i=0; i<g.getTypeParameters().size(); i++) {
+            List<TypeParameter> params = g.getTypeParameters();
+            for (int i=0; i<params.size(); i++) {
                 if (typeArguments.size()>i) {
-                    map.put(g.getTypeParameters().get(i), typeArguments.get(i));
+                    map.put(params.get(i), typeArguments.get(i));
                 }
             }
         }

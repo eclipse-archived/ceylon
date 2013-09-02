@@ -621,15 +621,6 @@ public class TypeVisitor extends Visitor {
             unit.getUnresolvedReferences().add(that.getIdentifier());
         }
         else {
-            if (!type.isVisible(that.getScope())) {
-                that.addError("type is not visible: " + name, 400);
-            }
-            else {
-                if (type.isPackageVisibility() && 
-                        !declaredInPackage(type, unit)) {
-                    that.addError("package private type is not visible: " + name);
-                }
-            }
             ProducedType outerType = that.getScope().getDeclaringType(type);
             visitSimpleType(that, outerType, type);
         }
@@ -691,22 +682,6 @@ public class TypeVisitor extends Visitor {
                 }
             }
             else {
-                if (!type.isVisible(that.getScope())) {
-                    that.addError("member type is not visible: " +
-                            name + " of type " + d.getName(), 400);
-                }
-                else {
-                    if (type.isProtectedVisibility() && 
-                            !declaredInPackage(type, unit)) {
-                        that.addError("protected member type is not visible: " +
-                                name + " of type " + d.getName());
-                    }
-                    else if (type.isPackageVisibility() && 
-                            !declaredInPackage(type, unit)) {
-                        that.addError("package private member type is not visible: " +
-                                name + " of type " + d.getName());
-                    }
-                }
                 visitSimpleType(that, pt, type);
             }
         }

@@ -3662,7 +3662,58 @@ public class ExpressionVisitor extends Visitor {
         visitInOperator(that);
     }
     
-    //Atoms:
+    @Override
+    public void visit(Tree.BaseType that) {
+        super.visit(that);
+        TypeDeclaration type = that.getDeclarationModel();
+        if (type!=null) {
+            if (!type.isVisible(that.getScope())) {
+                that.addError("type is not visible: " + 
+                        baseDescription(that), 400);
+            }
+            else {
+                if (type.isPackageVisibility() && 
+                        !declaredInPackage(type, unit)) {
+                    that.addError("package private type is not visible: " + 
+                        baseDescription(that));
+                }
+            }
+        }
+    }
+
+    private static String baseDescription(Tree.BaseType that) {
+        return name(that.getIdentifier());
+    }
+    
+    @Override
+    public void visit(Tree.QualifiedType that) {
+        super.visit(that);
+        TypeDeclaration type = that.getDeclarationModel();
+        if (type!=null) {
+            if (!type.isVisible(that.getScope())) {
+                that.addError("member type is not visible: " + 
+                        qualifiedDescription(that), 400);
+            }
+            else {
+                if (type.isProtectedVisibility() && 
+                        !declaredInPackage(type, unit)) {
+                    that.addError("protected member type is not visible: " + 
+                        qualifiedDescription(that));
+                }
+                else if (type.isPackageVisibility() && 
+                        !declaredInPackage(type, unit)) {
+                    that.addError("package private member type is not visible: " + 
+                        qualifiedDescription(that));
+                }
+            }
+        }
+    }
+
+    private static String qualifiedDescription(Tree.QualifiedType that) {
+        String name = name(that.getIdentifier());
+        Declaration d = that.getOuterType().getTypeModel().getDeclaration();
+        return name + " of type " + d.getName();
+    }
     
     private void checkOverloadedReference(Tree.MemberOrTypeExpression that) {
         if (isAbstraction(that.getDeclaration())) {
