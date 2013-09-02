@@ -710,9 +710,12 @@ public class Util {
                         //declaration, or the "abstraction" 
                         //which of all the overloaded forms 
                         //of the declaration
-                        if (!isAbstraction(d)) {
+                        //Note: I could not do this optimization
+                        //      because then it could not distinguish
+                        //      between Java open() and isOpen()
+                        /*if (!isAbstraction(d)) {
                             return d;
-                        }
+                        }*/
                         inexactMatch = d;
                     }
                     if (hasMatchingSignature(signature, ellipsis, d)) {
