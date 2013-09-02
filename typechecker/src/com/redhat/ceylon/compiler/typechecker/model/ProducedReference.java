@@ -35,25 +35,31 @@ public abstract class ProducedReference {
     }
     
     public Map<TypeParameter, ProducedType> getTypeArguments() {
-        return typeArguments;
-    }
-    
-    void setTypeArguments(Map<TypeParameter, ProducedType> typeArguments) {
-        if (declaration==null) throw new IllegalStateException("set the Declaration first");
-        this.typeArguments = new HashMap<TypeParameter,ProducedType>(typeArguments.size());
-        this.typeArguments.putAll(typeArguments);
+        //convoluted implementation here is because we
+        //can't cache the result due to the lifecyle
+        //of defaulted type arguments
         if (declaration instanceof Generic) {
-            for (TypeParameter pt: ((Generic)declaration).getTypeParameters()) {
-                if (!typeArguments.containsKey(pt)) {
-                    ProducedType dta = pt.getDefaultTypeArgument();
-                    if (dta!=null) {
-                        this.typeArguments.put(pt, dta.substitute(typeArguments));
+            Map<TypeParameter, ProducedType> result = typeArguments;
+            for (TypeParameter pt: ((Generic) declaration).getTypeParameters()) {
+                ProducedType dta = pt.getDefaultTypeArgument();
+                if (dta!=null) {
+                    if (!typeArguments.containsKey(pt)) {
+                        result = new HashMap<TypeParameter,ProducedType>(result);
+                        result.put(pt, dta.substitute(result));
                     }
                 }
             }
+            return result;
+        }
+        else {
+            return typeArguments;
         }
     }
     
+    void setTypeArguments(Map<TypeParameter, ProducedType> typeArguments) {
+        this.typeArguments = typeArguments;
+    }
+        
     public abstract ProducedType getType();
     
     public ProducedType getFullType() {
