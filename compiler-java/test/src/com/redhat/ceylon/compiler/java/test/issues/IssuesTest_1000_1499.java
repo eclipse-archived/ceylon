@@ -266,6 +266,12 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     }
     
     @Test
+    public void testBug1155_D() {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1155_D", 
+                "bug11xx/Bug1155_D.ceylon");
+    }
+    
+    @Test
     public void testBug1156() {
         compile("bug11xx/Bug1156.java", "bug11xx/Bug1156.ceylon");
     }
