@@ -351,4 +351,10 @@ public class LazyMethod extends Method implements LazyElement {
     public boolean isLoaded() {
         return isLoaded;
     }
+    
+    @Override
+    public void addMember(Declaration declaration) {
+        // do this without lazy-loading
+        super.addMember(declaration);
+    }
 }

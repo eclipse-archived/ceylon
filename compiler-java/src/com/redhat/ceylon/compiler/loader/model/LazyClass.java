@@ -390,7 +390,7 @@ public class LazyClass extends Class implements LazyContainer {
     @Override
     public void addMember(Declaration decl) {
         // do this without lazy-loading
-        super.getMembers().add(decl);
+        super.addMember(decl);
     }
 
     @Override

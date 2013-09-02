@@ -359,5 +359,9 @@ public class LazyValue extends Value implements LazyElement {
         return super.getInheritingDeclaration(d);
     }
     
-    
+    @Override
+    public void addMember(Declaration declaration) {
+        // do this without lazy-loading
+        super.addMember(declaration);
+    }
 }
