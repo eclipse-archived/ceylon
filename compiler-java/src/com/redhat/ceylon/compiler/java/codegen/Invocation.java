@@ -215,7 +215,11 @@ abstract class Invocation {
                         gen.naming.makeQualIdent(primaryExpr, selector), 
                         List.<JCExpression>nil());
                 actualPrimExpr = unboxCallableIfNecessary(actualPrimExpr, getPrimary());
-                selector = Naming.getCallableMethodName();
+                if (gen.isVariadicCallable(getPrimary().getTypeModel())) {
+                    selector = Naming.getCallableVariadicMethodName();
+                } else {
+                    selector = Naming.getCallableMethodName();
+                }
             } else if ((getPrimaryDeclaration() instanceof Method
                     && ((Method)getPrimaryDeclaration()).isParameter()
                         && !Strategy.createMethod((Method)getPrimaryDeclaration()))

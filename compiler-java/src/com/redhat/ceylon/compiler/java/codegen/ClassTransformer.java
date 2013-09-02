@@ -744,10 +744,11 @@ public class ClassTransformer extends AbstractTransformer {
             makeFieldForParameter(classBuilder, paramModel);
             Method method = (Method)paramModel.getModel();
 
+            java.util.List<Parameter> parameters = method.getParameterLists().get(0).getParameters();
             CallBuilder callBuilder = CallBuilder.instance(this).invoke(
                     naming.makeQualIdent(naming.makeName(method, Naming.NA_IDENT), 
-                            Naming.getCallableMethodName()));
-            for (Parameter parameter : method.getParameterLists().get(0).getParameters()) {
+                            Naming.getCallableMethodName(method)));
+            for (Parameter parameter : parameters) {
                 JCExpression parameterExpr = naming.makeName(parameter.getModel(), Naming.NA_IDENT);
                 parameterExpr = expressionGen().applyErasureAndBoxing(parameterExpr, parameter.getType(), 
                         !CodegenUtil.isUnBoxed(parameter.getModel()), BoxingStrategy.BOXED, 

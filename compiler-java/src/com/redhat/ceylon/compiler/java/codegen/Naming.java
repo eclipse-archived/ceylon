@@ -1644,6 +1644,12 @@ public class Naming implements LocalId {
         return "$call$variadic";
     }
     
+    public static String getCallableMethodName(Method method) {
+        java.util.List<Parameter> parameters = method.getParameterLists().get(0).getParameters();
+        boolean variadic = !parameters.isEmpty() && parameters.get(parameters.size()-1).isSequenced();
+        return variadic ? getCallableVariadicMethodName() : getCallableMethodName();
+    }
+    
     public static String getCallableTempVarName(Parameter param){
         return "$$" + param.getName();
     }

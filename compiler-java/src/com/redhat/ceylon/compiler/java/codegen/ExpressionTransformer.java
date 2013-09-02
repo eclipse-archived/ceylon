@@ -2631,7 +2631,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transformCallableSpecifierInvocation(CallBuilder callBuilder, CallableSpecifierInvocation invocation) {
         at(invocation.getNode());
         JCExpression result = callBuilder
-            .invoke(naming.makeQuotedQualIdent(invocation.getCallable(), Naming.getCallableMethodName()))
+            .invoke(naming.makeQuotedQualIdent(invocation.getCallable(), Naming.getCallableMethodName(invocation.getMethod())))
             .argumentsAndTypes(transformArgumentList(invocation, null, callBuilder))
             .build();
         if(invocation.handleBoxing)
