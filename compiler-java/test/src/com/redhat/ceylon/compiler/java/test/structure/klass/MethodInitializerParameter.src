@@ -28,7 +28,7 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     private void m2$priv$(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
-        m2.$call(.ceylon.language.Integer.instance(i), seq);
+        m2.$call$variadic(.ceylon.language.Integer.instance(i), seq);
     }
     
     private final void m2$priv(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
