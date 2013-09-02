@@ -116,16 +116,11 @@ public final class variadicMethod_ {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ints$3 = .com.redhat.ceylon.compiler.java.test.structure.reified.variadicMethod_.variadicMethod$ints();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ints$3 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 variadicMethod($ceylontmp$ints$3);
             }
             returning null;
         );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .ceylon.language.Sequential<? extends .ceylon.language.Integer> variadicMethod$ints() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     @.ceylon.language.Shared$annotation

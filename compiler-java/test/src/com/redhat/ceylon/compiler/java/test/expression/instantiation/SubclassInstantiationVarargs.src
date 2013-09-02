@@ -6,7 +6,7 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType 
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$name$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo.$init$name();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$name$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 this($ceylontmp$name$0);
             }
             returning null;
@@ -14,10 +14,6 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType 
     }
     
     Foo(final .ceylon.language.Sequential<? extends .ceylon.language.String> name) {
-    }
-    
-    static .ceylon.language.Sequential<? extends .ceylon.language.String> $init$name() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     @.java.lang.Override

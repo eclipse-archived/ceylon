@@ -11,15 +11,11 @@ class NamedArgumentSequencedTypeParamInvocation<T> implements .com.redhat.ceylon
         (
             let
             {
-                .ceylon.language.Sequential<? extends T> $ceylontmp$strings$0 = algo$strings();
+                .ceylon.language.Sequential<? extends T> $ceylontmp$strings$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 algo$($ceylontmp$strings$0);
             }
             returning null;
         );
-    }
-    
-    public final .ceylon.language.Sequential<? extends T> algo$strings() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     private void algo$(final .ceylon.language.Sequential<? extends T> strings) {

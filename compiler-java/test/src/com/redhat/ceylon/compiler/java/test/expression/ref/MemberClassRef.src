@@ -745,15 +745,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new NullarySequenced(s);
     }
     
-    public final .ceylon.language.Sequential<? extends .ceylon.language.String> $NullarySequenced$init$s() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
-    }
-    
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NullarySequenced NullarySequenced$new() {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$39 = $NullarySequenced$init$s();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$39 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
             returning new NullarySequenced($ceylontmp$s$39);
         );
@@ -785,15 +781,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new UnarySequenced(s1, s);
     }
     
-    public final .ceylon.language.Sequential<? extends .ceylon.language.String> $UnarySequenced$init$s(final .java.lang.String s1) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
-    }
-    
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.UnarySequenced UnarySequenced$new(final .java.lang.String s1) {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$40 = $UnarySequenced$init$s(s1);
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$40 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
             returning new UnarySequenced(s1, $ceylontmp$s$40);
         );
@@ -831,15 +823,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new BinarySequenced(s1, s2, s);
     }
     
-    public final .ceylon.language.Sequential<? extends .ceylon.language.String> $BinarySequenced$init$s(final .java.lang.String s1, final .java.lang.String s2) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
-    }
-    
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.BinarySequenced BinarySequenced$new(final .java.lang.String s1, final .java.lang.String s2) {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$41 = $BinarySequenced$init$s(s1, s2);
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$41 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
             returning new BinarySequenced(s1, s2, $ceylontmp$s$41);
         );
@@ -883,15 +871,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new TernarySequenced(s1, s2, s3, s);
     }
     
-    public final .ceylon.language.Sequential<? extends .ceylon.language.String> $TernarySequenced$init$s(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
-    }
-    
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.TernarySequenced TernarySequenced$new(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$42 = $TernarySequenced$init$s(s1, s2, s3);
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$42 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
             returning new TernarySequenced(s1, s2, s3, $ceylontmp$s$42);
         );
@@ -941,15 +925,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new NarySequenced(s1, s2, s3, s4, s);
     }
     
-    public final .ceylon.language.Sequential<? extends .ceylon.language.String> $NarySequenced$init$s(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
-    }
-    
     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NarySequenced NarySequenced$new(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$43 = $NarySequenced$init$s(s1, s2, s3, s4);
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$43 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
             returning new NarySequenced(s1, s2, s3, s4, $ceylontmp$s$43);
         );
@@ -1011,7 +991,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NullarySequenced $call() {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s = $instance.$NullarySequenced$init$s();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                         return $call$typed(s);
                     }
                     
@@ -1045,7 +1025,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.UnarySequenced $call(final .java.lang.Object $param$0) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s = $instance.$UnarySequenced$init$s(s1);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                         return $call$typed(s1, s);
                     }
                     
@@ -1081,7 +1061,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.BinarySequenced $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s = $instance.$BinarySequenced$init$s(s1, s2);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                         return $call$typed(s1, s2, s);
                     }
                     
@@ -1119,7 +1099,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
                         final .java.lang.String s3 = ((.ceylon.language.String)$param$2).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s = $instance.$TernarySequenced$init$s(s1, s2, s3);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                         return $call$typed(s1, s2, s3, s);
                     }
                     
@@ -1128,7 +1108,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0[0]).toString();
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$0[1]).toString();
                         final .java.lang.String s3 = ((.ceylon.language.String)$param$0[2]).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s = $param$0.length > 3 ? (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0[3] : $instance.$TernarySequenced$init$s(s1, s2, s3);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s = $param$0.length > 3 ? (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0[3] : (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                         return $call$typed(s1, s2, s3, s);
                     }
                     
@@ -1159,7 +1139,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$0[1]).toString();
                         final .java.lang.String s3 = ((.ceylon.language.String)$param$0[2]).toString();
                         final .java.lang.String s4 = ((.ceylon.language.String)$param$0[3]).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s = $param$0.length > 4 ? (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0[4] : $instance.$NarySequenced$init$s(s1, s2, s3, s4);
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s = $param$0.length > 4 ? (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0[4] : (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                         return $call$typed(s1, s2, s3, s4, s);
                     }
                     

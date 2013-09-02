@@ -6,7 +6,7 @@ class NamedArgumentInvocationInitWithSequence implements .com.redhat.ceylon.comp
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$0 = .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithSequence.$init$b(a);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 this(a, $ceylontmp$b$0);
             }
             returning null;
@@ -16,21 +16,13 @@ class NamedArgumentInvocationInitWithSequence implements .com.redhat.ceylon.comp
     NamedArgumentInvocationInitWithSequence(final .java.lang.String a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
     }
     
-    static .ceylon.language.Sequential<? extends .ceylon.language.Integer> $init$b(final .java.lang.String a) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
-    }
-    
-    private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $Inner$init$z(final boolean x, final .java.lang.String y) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
-    }
-    
     class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         Inner(final boolean x, final .java.lang.String y) {
             (
                 let
                 {
-                    .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$z$1 = $Inner$init$z(x, y);
+                    .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$z$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                     this(x, y, $ceylontmp$z$1);
                 }
                 returning null;

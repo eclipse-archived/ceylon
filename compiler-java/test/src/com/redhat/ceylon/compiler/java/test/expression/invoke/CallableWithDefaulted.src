@@ -12,15 +12,11 @@ final class callableWithDefaulted_ {
                 return "b";
             }
             
-            private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $$args(final long a, final .java.lang.String b) {
-                return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
-            }
-            
             @.java.lang.Override
             public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
                 final .java.lang.String b = $$b(a);
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args = $$args(a, b);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 return $call$typed(a, b, args);
             }
             
@@ -28,7 +24,7 @@ final class callableWithDefaulted_ {
             public .ceylon.language.Integer $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
                 final .java.lang.String b = ((.ceylon.language.String)$param$1).toString();
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args = $$args(a, b);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 return $call$typed(a, b, args);
             }
             
@@ -310,13 +306,9 @@ final class callableWithDefaulted_ {
         final .ceylon.language.Callable<? extends .java.lang.Object> one = oneOrTwo;
         final .ceylon.language.Callable<? extends .java.lang.Object> oneOrPlenty = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Integer.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Integer.$TypeDescriptor), "Integer[](Integer*)", (short)0){
             
-            private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $$a() {
-                return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
-            }
-            
             @.java.lang.Override
             public .ceylon.language.Sequential<? extends .ceylon.language.Integer> $call() {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> a = $$a();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> a = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 return $call$typed(a);
             }
             
@@ -348,7 +340,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
             let
             {
                 .java.lang.String $ceylontmp$b$3 = defaultedVariadic$b(a);
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$args$4 = defaultedVariadic$args(a, $ceylontmp$b$3);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$args$4 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 defaultedVariadic$priv$(a, $ceylontmp$b$3, $ceylontmp$args$4);
             }
             returning null;
@@ -363,15 +355,11 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$args$5 = defaultedVariadic$args(a, b);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$args$5 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 defaultedVariadic$priv$(a, b, $ceylontmp$args$5);
             }
             returning null;
         );
-    }
-    
-    private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> defaultedVariadic$args(final long a, final .java.lang.String b) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     private void defaultedVariadic$priv$(final long a, final .java.lang.String b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {

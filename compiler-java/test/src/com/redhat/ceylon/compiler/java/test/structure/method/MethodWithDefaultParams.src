@@ -188,7 +188,7 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
             let
             {
                 long $ceylontmp$n$9 = f6$n();
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$10 = f6$seq($ceylontmp$n$9);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$10 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 f6$($ceylontmp$n$9, $ceylontmp$seq$10);
             }
             returning null;
@@ -203,15 +203,11 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$11 = f6$seq(n);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$11 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 f6$(n, $ceylontmp$seq$11);
             }
             returning null;
         );
-    }
-    
-    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> f6$seq(final long n) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     private void f6$(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
@@ -288,8 +284,6 @@ interface MethodWithDefaultParams2 {
     
     public abstract .java.lang.Object f6(final long n);
     
-    public abstract .ceylon.language.Sequential<? extends .ceylon.language.Integer> f6$seq(final long n);
-    
     public abstract .java.lang.Object f6(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2.class);
 }
@@ -330,9 +324,5 @@ final class MethodWithDefaultParams2$impl {
     
     public final long f6$n() {
         return $this.getProp();
-    }
-    
-    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> f6$seq(final long n) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
 }

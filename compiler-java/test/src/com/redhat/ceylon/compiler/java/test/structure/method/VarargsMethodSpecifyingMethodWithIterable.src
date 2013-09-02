@@ -12,14 +12,10 @@ class VarargsMethodSpecifyingMethodWithIterable implements .com.redhat.ceylon.co
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ints$0 = bar$ints();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ints$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
             returning bar$priv$($ceylontmp$ints$0);
         );
-    }
-    
-    private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> bar$ints() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     private .java.lang.Object bar$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {

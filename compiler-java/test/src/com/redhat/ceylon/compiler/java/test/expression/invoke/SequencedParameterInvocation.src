@@ -9,15 +9,11 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$0 = m$i(a);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 m$priv$(a, $ceylontmp$i$0);
             }
             returning null;
         );
-    }
-    
-    private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m$i(final .java.lang.String a) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     private void m$priv$(final .java.lang.String a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
@@ -37,15 +33,11 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
         (
             let
             {
-                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> $ceylontmp$i$1 = m2$i(a);
+                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> $ceylontmp$i$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 m2$priv$(a, $ceylontmp$i$1);
             }
             returning null;
         );
-    }
-    
-    private final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> m2$i(final .java.lang.String a) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     private void m2$priv$(final .java.lang.String a, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> i) {

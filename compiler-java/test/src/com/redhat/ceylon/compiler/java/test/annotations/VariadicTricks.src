@@ -20,7 +20,7 @@ final class VariadicTricks implements .com.redhat.ceylon.compiler.java.runtime.m
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$0 = .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks.$init$args();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 this($ceylontmp$args$0);
             }
             returning null;
@@ -35,10 +35,6 @@ final class VariadicTricks implements .com.redhat.ceylon.compiler.java.runtime.m
         this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
         this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
         this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks>(.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks.$TypeDescriptor, this);
-    }
-    
-    static .ceylon.language.Sequential<? extends .ceylon.language.String> $init$args() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$this;
     
@@ -117,14 +113,10 @@ final class variadicTricks_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$1 = .com.redhat.ceylon.compiler.java.test.annotations.variadicTricks_.variadicTricks$args();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
             returning variadicTricks($ceylontmp$args$1);
         );
-    }
-    
-    static final .ceylon.language.Sequential<? extends .ceylon.language.String> variadicTricks$args() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     @.ceylon.language.Annotation$annotation
@@ -144,14 +136,10 @@ final class variadicTricksIndirect_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$2 = .com.redhat.ceylon.compiler.java.test.annotations.variadicTricksIndirect_.variadicTricksIndirect$args();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$2 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
             returning variadicTricksIndirect($ceylontmp$args$2);
         );
-    }
-    
-    static final .ceylon.language.Sequential<? extends .ceylon.language.String> variadicTricksIndirect$args() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     @.ceylon.language.Annotation$annotation

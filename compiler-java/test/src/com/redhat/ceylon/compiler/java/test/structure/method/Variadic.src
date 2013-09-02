@@ -10,13 +10,23 @@ class Variadic implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
             let
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
-                possiblyEmpty$priv($ceylontmp$args$0);
+                possiblyEmpty$priv$($ceylontmp$args$0);
             }
             returning null;
         );
     }
     
+    private void possiblyEmpty$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
+    }
+    
     private final void possiblyEmpty$priv(final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
+        (
+            let
+            {
+                possiblyEmpty$priv$(args);
+            }
+            returning null;
+        );
     }
     
     private final void notEmpty$priv(final .ceylon.language.Sequence<? extends .ceylon.language.String> args) {

@@ -9,15 +9,11 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$0 = m$b(a);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 m$priv$(a, $ceylontmp$b$0);
             }
             returning null;
         );
-    }
-    
-    private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m$b(final long a) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     private void m$priv$(final long a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
@@ -37,15 +33,11 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
         (
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Throwable> $ceylontmp$b$1 = m2$b(a);
+                .ceylon.language.Sequential<? extends .java.lang.Throwable> $ceylontmp$b$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 m2$priv$(a, $ceylontmp$b$1);
             }
             returning null;
         );
-    }
-    
-    private final .ceylon.language.Sequential<? extends .java.lang.Throwable> m2$b(final .java.lang.Throwable a) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     private void m2$priv$(final .java.lang.Throwable a, final .ceylon.language.Sequential<? extends .java.lang.Throwable> b) {
@@ -65,15 +57,11 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
         (
             let
             {
-                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> $ceylontmp$b$2 = m3$b(a);
+                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> $ceylontmp$b$2 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 m3$priv$(a, $ceylontmp$b$2);
             }
             returning null;
         );
-    }
-    
-    private final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> m3$b(final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence a) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     private void m3$priv$(final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence a, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> b) {

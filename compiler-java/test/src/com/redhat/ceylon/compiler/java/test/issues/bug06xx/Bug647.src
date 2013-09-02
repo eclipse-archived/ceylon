@@ -17,14 +17,10 @@ final class arrayOfSome_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$0 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.arrayOfSome_.arrayOfSome$elements($reifiedElement);
+                .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
             returning arrayOfSome($reifiedElement, $ceylontmp$elements$0);
         );
-    }
-    
-    static final <Element>.ceylon.language.Sequential<? extends Element> arrayOfSome$elements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     static <Element>.ceylon.language.Array<Element> arrayOfSome(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .ceylon.language.Sequential<? extends Element> elements) {

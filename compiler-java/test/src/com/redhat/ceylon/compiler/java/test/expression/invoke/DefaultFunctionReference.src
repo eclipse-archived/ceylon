@@ -83,15 +83,10 @@ final class defaultFunctionReference2_ {
     static final .ceylon.language.Callable<? extends .java.lang.Object> defaultFunctionReference2$f(final .java.lang.String s) {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Object.$TypeDescriptor), "Anything(Object*)", (short)0){
             
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .ceylon.language.Sequential<? extends .java.lang.Object> $$o() {
-                return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
-            }
-            
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .java.lang.Object $call() {
-                final .ceylon.language.Sequential<? extends .java.lang.Object> o = $$o();
+                final .ceylon.language.Sequential<? extends .java.lang.Object> o = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 return $call$typed(o);
             }
             

@@ -149,7 +149,7 @@ public final class f5_ {
             let
             {
                 long $ceylontmp$n$8 = .com.redhat.ceylon.compiler.java.test.structure.toplevel.f5_.f5$n();
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$9 = .com.redhat.ceylon.compiler.java.test.structure.toplevel.f5_.f5$seq($ceylontmp$n$8);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$9 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 f5($ceylontmp$n$8, $ceylontmp$seq$9);
             }
             returning null;
@@ -164,15 +164,11 @@ public final class f5_ {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$10 = .com.redhat.ceylon.compiler.java.test.structure.toplevel.f5_.f5$seq(n);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$10 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 f5(n, $ceylontmp$seq$10);
             }
             returning null;
         );
-    }
-    
-    public static final .ceylon.language.Sequential<? extends .ceylon.language.Integer> f5$seq(final long n) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     public static void f5(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {

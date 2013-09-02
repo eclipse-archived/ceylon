@@ -76,14 +76,10 @@ class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$4 = oneSequencedParam$i();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$4 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
             returning oneSequencedParam$priv$($ceylontmp$i$4);
         );
-    }
-    
-    private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> oneSequencedParam$i() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     private .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {

@@ -9,14 +9,10 @@ public final class bug675_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$2 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug675_.bug675$elements($reifiedElement);
+                .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$2 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
             returning bug675($reifiedElement, $ceylontmp$elements$2);
         );
-    }
-    
-    public static final <Element>.ceylon.language.Sequential<? extends Element> bug675$elements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     public static <Element>.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>, ? extends .java.lang.Object> bug675(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .ceylon.language.Sequential<? extends Element> elements) {

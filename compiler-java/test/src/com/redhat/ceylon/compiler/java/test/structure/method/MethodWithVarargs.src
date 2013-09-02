@@ -9,15 +9,11 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$2 = f1$ns();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$2 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 f1$($ceylontmp$ns$2);
             }
             returning null;
         );
-    }
-    
-    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> f1$ns() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     private void f1$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
@@ -41,15 +37,11 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$5 = f2$ns(i);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$5 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 f2$(i, $ceylontmp$ns$5);
             }
             returning null;
         );
-    }
-    
-    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> f2$ns(final long i) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     private void f2$(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
@@ -73,15 +65,11 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$os$8 = f3$os();
+                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$os$8 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 f3$($ceylontmp$os$8);
             }
             returning null;
         );
-    }
-    
-    public final .ceylon.language.Sequential<? extends .java.lang.Object> f3$os() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     private void f3$(final .ceylon.language.Sequential<? extends .java.lang.Object> os) {

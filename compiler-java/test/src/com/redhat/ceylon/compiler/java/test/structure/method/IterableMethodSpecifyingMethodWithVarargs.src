@@ -9,15 +9,11 @@ class IterableMethodSpecifyingMethodWithVarargs implements .com.redhat.ceylon.co
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$0 = foo$seq();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 foo$priv$($ceylontmp$seq$0);
             }
             returning null;
         );
-    }
-    
-    private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> foo$seq() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     private void foo$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {

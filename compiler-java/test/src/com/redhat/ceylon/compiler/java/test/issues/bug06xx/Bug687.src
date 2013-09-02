@@ -12,15 +12,11 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                .ceylon.language.Sequential<? extends T> $ceylontmp$elements$0 = sort$elements($reifiedT);
+                .ceylon.language.Sequential<? extends T> $ceylontmp$elements$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 sort$($reifiedT, $ceylontmp$elements$0);
             }
             returning null;
         );
-    }
-    
-    public final <T extends .ceylon.language.Number>.ceylon.language.Sequential<? extends T> sort$elements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     private <T extends .ceylon.language.Number>void sort$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Sequential<? extends T> elements) {
@@ -43,15 +39,11 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                .ceylon.language.Sequential $ceylontmp$elements$1 = sort2$elements();
+                .ceylon.language.Sequential $ceylontmp$elements$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 sort2$($ceylontmp$elements$1);
             }
             returning null;
         );
-    }
-    
-    public final .ceylon.language.Sequential sort2$elements() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     private void sort2$(final .ceylon.language.Sequential elements) {

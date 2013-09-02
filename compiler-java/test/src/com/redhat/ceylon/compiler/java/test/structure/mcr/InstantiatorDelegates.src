@@ -26,8 +26,6 @@ interface InstantiatorDelegates<X> {
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new(final boolean b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i);
     
-    public abstract .ceylon.language.Sequential<? extends .ceylon.language.Integer> $Sequenced$init$i(final boolean b);
-    
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new(final boolean b);
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.TypeArg TypeArg$new(final X x);
@@ -152,15 +150,11 @@ final class InstantiatorDelegates$impl<X> {
         return new Sequenced(b, i);
     }
     
-    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $Sequenced$init$i(final boolean b) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
-    }
-    
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new(final boolean b) {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$4 = $Sequenced$init$i(b);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$4 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
             returning new Sequenced(b, $ceylontmp$i$4);
         );
@@ -254,11 +248,6 @@ class InstantiatorDelegatesImpl<X> implements .com.redhat.ceylon.compiler.java.r
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new(final boolean b, final long i) {
         return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this.Binary2$new(b, i);
-    }
-    
-    @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $Sequenced$init$i(final boolean b) {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this.$Sequenced$init$i(b);
     }
     
     @.java.lang.Override
@@ -359,7 +348,7 @@ final class instantiatorDelegates_ {
             {
                 .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$12$callable$ = a;
                 boolean $arg$12$0 = true;
-                .ceylon.language.Sequential $arg$12$1 = $arg$12$callable$.$Sequenced$init$i($arg$12$0);
+                .ceylon.language.Sequential $arg$12$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
             returning $arg$12$callable$.Sequenced$new($arg$12$0, $arg$12$1);
         );

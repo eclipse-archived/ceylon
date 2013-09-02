@@ -153,7 +153,7 @@ final class AnnotationClassMetamodelReferenceVariadic implements .com.redhat.cey
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.model.declaration.Declaration> $ceylontmp$mmrs$1 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic.$init$mmrs();
+                .ceylon.language.Sequential<? extends .ceylon.language.model.declaration.Declaration> $ceylontmp$mmrs$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 this($ceylontmp$mmrs$1);
             }
             returning null;
@@ -168,10 +168,6 @@ final class AnnotationClassMetamodelReferenceVariadic implements .com.redhat.cey
         this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
         this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
         this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic.$TypeDescriptor, this);
-    }
-    
-    static .ceylon.language.Sequential<? extends .ceylon.language.model.declaration.Declaration> $init$mmrs() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$this;
     
@@ -278,14 +274,10 @@ final class annotationClassMetamodelReferenceVariadic1_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.model.declaration.Declaration> $ceylontmp$mmr$2 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassMetamodelReferenceVariadic1_.annotationClassMetamodelReferenceVariadic1$mmr();
+                .ceylon.language.Sequential<? extends .ceylon.language.model.declaration.Declaration> $ceylontmp$mmr$2 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
             returning annotationClassMetamodelReferenceVariadic1($ceylontmp$mmr$2);
         );
-    }
-    
-    static final .ceylon.language.Sequential<? extends .ceylon.language.model.declaration.Declaration> annotationClassMetamodelReferenceVariadic1$mmr() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     @.ceylon.language.Annotation$annotation

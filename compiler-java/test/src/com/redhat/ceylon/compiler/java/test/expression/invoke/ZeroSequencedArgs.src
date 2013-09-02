@@ -16,15 +16,11 @@ final class zeroSequencedArgs_ {
                 (
                     let
                     {
-                        .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$0 = m$elements($reifiedElement);
+                        .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                         m($reifiedElement, $ceylontmp$elements$0);
                     }
                     returning null;
                 );
-            }
-            
-            private final <Element>.ceylon.language.Sequential<? extends Element> m$elements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
-                return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
             
             <Element>void m(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .ceylon.language.Sequential<? extends Element> elements) {
