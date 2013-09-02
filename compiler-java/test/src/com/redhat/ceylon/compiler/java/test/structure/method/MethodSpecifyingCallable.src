@@ -36,14 +36,67 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
             
             @.java.lang.Override
             public .java.lang.Object $call() {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                return $call$typed(i$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .ceylon.language.Sequential $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$0;
                 return $call$typed(i);
             }
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$0;
-                return $call$typed(i);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$ = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{$param$0});
+                return $call$typed(i$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
+                return $call$typed($spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 0, 1, new .java.lang.Object[]{(.ceylon.language.Integer)$param$0}, $param$1));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$ = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1});
+                return $call$typed(i$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
+                return $call$typed($spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 0, 2, new .java.lang.Object[]{
+                        (.ceylon.language.Integer)$param$0,
+                        (.ceylon.language.Integer)$param$1}, $param$2));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$ = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1,
+                        $param$2});
+                return $call$typed(i$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
+                return $call$typed($spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 0, 3, new .java.lang.Object[]{
+                        (.ceylon.language.Integer)$param$0,
+                        (.ceylon.language.Integer)$param$1,
+                        (.ceylon.language.Integer)$param$2}, $param$3));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object... $param$0) {
+                return $call$typed($spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.$get()));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object... $param$0) {
+                return $call$typed($spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 0, $param$0));
             }
             
             private .java.lang.Object $call$typed(.ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
@@ -53,17 +106,66 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
         this.secondSequencedParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Integer.$TypeDescriptor)), "Nothing(Integer, Integer*)", (short)1){
             
             @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .ceylon.language.Sequential $param$0) {
+                final long a = ((.ceylon.language.Integer)$param$0.get(.ceylon.language.Integer.instance(0))).longValue();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$0.spanFrom(.ceylon.language.Integer.instance(1));
+                return $call$typed(a, i);
+            }
+            
+            @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                return $call$typed(a, i$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
+                final long a = ((.ceylon.language.Integer)$param$0).longValue();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$1;
                 return $call$typed(a, i);
             }
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$1;
-                return $call$typed(a, i);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$ = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{$param$1});
+                return $call$typed(a, i$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
+                final long a = ((.ceylon.language.Integer)$param$0).longValue();
+                return $call$typed(a, $spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 0, 1, new .java.lang.Object[]{(.ceylon.language.Integer)$param$1}, $param$2));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final long a = ((.ceylon.language.Integer)$param$0).longValue();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$ = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                        $param$1,
+                        $param$2});
+                return $call$typed(a, i$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
+                final long a = ((.ceylon.language.Integer)$param$0).longValue();
+                return $call$typed(a, $spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 0, 2, new .java.lang.Object[]{
+                        (.ceylon.language.Integer)$param$1,
+                        (.ceylon.language.Integer)$param$2}, $param$3));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object... $param$0) {
+                final long a = ((.ceylon.language.Integer)$param$0[0]).longValue();
+                return $call$typed(a, $spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.$get()));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object... $param$0) {
+                final long a = ((.ceylon.language.Integer)$param$0[0]).longValue();
+                return $call$typed(a, $spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 1, $param$0));
             }
             
             private .java.lang.Object $call$typed(long a, .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
@@ -100,7 +202,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
     }
     
     private final .java.lang.Object oneSequencedParam0$priv() {
-        return getOneSequencedParam$priv().$call();
+        return getOneSequencedParam$priv().$call((.ceylon.language.Sequential).ceylon.language.empty_.$get());
     }
     
     private final .java.lang.Object oneSequencedParam1$priv() {
@@ -157,7 +259,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
     }
     
     private final .java.lang.Object secondSequencedParam0$priv() {
-        return getSecondSequencedParam$priv().$call(.ceylon.language.Integer.instance(1L));
+        return getSecondSequencedParam$priv().$call(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequential).ceylon.language.empty_.$get());
     }
     
     private final .java.lang.Object secondSequencedParam1$priv() {

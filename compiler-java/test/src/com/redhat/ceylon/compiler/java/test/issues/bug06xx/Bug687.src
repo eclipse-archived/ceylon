@@ -79,12 +79,12 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             }
             returning null;
         );
-        p.$call(.ceylon.language.empty_.$get());
+        p.$call$variadic(.ceylon.language.empty_.$get());
         (
             let
             {
                 .ceylon.language.Sequential<? extends .java.lang.Object> $arg$4$0 = .ceylon.language.empty_.$get();
-                p.$call($arg$4$0);
+                p.$call$variadic($arg$4$0);
             }
             returning null;
         );

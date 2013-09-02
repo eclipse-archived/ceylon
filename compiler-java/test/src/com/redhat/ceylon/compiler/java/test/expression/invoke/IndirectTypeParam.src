@@ -83,26 +83,142 @@ final class indirectTypeParam_ {
             
             @.java.lang.Override
             public .ceylon.language.Sequential<? extends .java.lang.Object> $call() {
-                return .ceylon.language.join_.<.java.lang.Object>join(.ceylon.language.Object.$TypeDescriptor);
+                final .ceylon.language.Sequential $$iterables$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                return $call$typed($$iterables$);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential<? extends .java.lang.Object> $call$variadic(final .ceylon.language.Sequential $param$0) {
+                final .ceylon.language.Sequential $$iterables = (.ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>>)(.ceylon.language.Sequential)$param$0;
+                return $call$typed($$iterables);
             }
             
             @.java.lang.Override
             public .ceylon.language.Sequential<? extends .java.lang.Object> $call(final .java.lang.Object $param$0) {
-                final .ceylon.language.Sequential $$iterables = (.ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>>)(.ceylon.language.Sequential)$param$0;
-                return .ceylon.language.join_.<.java.lang.Object>join(.ceylon.language.Object.$TypeDescriptor, $$iterables);
+                final .ceylon.language.Sequential $$iterables$ = .ceylon.language.ArraySequence.<.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), new .java.lang.Object[]{$param$0});
+                return $call$typed($$iterables$);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential<? extends .java.lang.Object> $call$variadic(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
+                return $call$typed($spreadVarargs(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), 0, 1, new .java.lang.Object[]{(.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0}, $param$1));
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential<? extends .java.lang.Object> $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Sequential $$iterables$ = .ceylon.language.ArraySequence.<.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), new .java.lang.Object[]{
+                        $param$0,
+                        $param$1});
+                return $call$typed($$iterables$);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential<? extends .java.lang.Object> $call$variadic(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
+                return $call$typed($spreadVarargs(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), 0, 2, new .java.lang.Object[]{
+                        (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0,
+                        (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$1}, $param$2));
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential<? extends .java.lang.Object> $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .ceylon.language.Sequential $$iterables$ = .ceylon.language.ArraySequence.<.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), new .java.lang.Object[]{
+                        $param$0,
+                        $param$1,
+                        $param$2});
+                return $call$typed($$iterables$);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential<? extends .java.lang.Object> $call$variadic(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
+                return $call$typed($spreadVarargs(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), 0, 3, new .java.lang.Object[]{
+                        (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0,
+                        (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$1,
+                        (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$2}, $param$3));
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential<? extends .java.lang.Object> $call(final .java.lang.Object... $param$0) {
+                return $call$typed($spreadVarargs(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.$get()));
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential<? extends .java.lang.Object> $call$variadic(final .java.lang.Object... $param$0) {
+                return $call$typed($spreadVarargs(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), 0, $param$0));
+            }
+            
+            private .ceylon.language.Sequential<? extends .java.lang.Object> $call$typed(.ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> iterables) {
+                return .ceylon.language.join_.<.java.lang.Object>join(.ceylon.language.Object.$TypeDescriptor, iterables);
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends X>> j2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends X>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, $reifiedX), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reifiedX, .ceylon.language.Null.$TypeDescriptor)), "X[]({X*}*)", (short)0){
             
             @.java.lang.Override
             public .ceylon.language.Sequential<? extends X> $call() {
-                return .ceylon.language.join_.<X>join($reifiedX);
+                final .ceylon.language.Sequential $$iterables$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                return $call$typed($$iterables$);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential<? extends X> $call$variadic(final .ceylon.language.Sequential $param$0) {
+                final .ceylon.language.Sequential $$iterables = (.ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>>)(.ceylon.language.Sequential)$param$0;
+                return $call$typed($$iterables);
             }
             
             @.java.lang.Override
             public .ceylon.language.Sequential<? extends X> $call(final .java.lang.Object $param$0) {
-                final .ceylon.language.Sequential $$iterables = (.ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>>)(.ceylon.language.Sequential)$param$0;
-                return .ceylon.language.join_.<X>join($reifiedX, $$iterables);
+                final .ceylon.language.Sequential $$iterables$ = .ceylon.language.ArraySequence.<.ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reifiedX, .ceylon.language.Null.$TypeDescriptor), new .java.lang.Object[]{$param$0});
+                return $call$typed($$iterables$);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential<? extends X> $call$variadic(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
+                return $call$typed($spreadVarargs(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reifiedX, .ceylon.language.Null.$TypeDescriptor), 0, 1, new .java.lang.Object[]{(.ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0}, $param$1));
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential<? extends X> $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Sequential $$iterables$ = .ceylon.language.ArraySequence.<.ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reifiedX, .ceylon.language.Null.$TypeDescriptor), new .java.lang.Object[]{
+                        $param$0,
+                        $param$1});
+                return $call$typed($$iterables$);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential<? extends X> $call$variadic(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
+                return $call$typed($spreadVarargs(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reifiedX, .ceylon.language.Null.$TypeDescriptor), 0, 2, new .java.lang.Object[]{
+                        (.ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0,
+                        (.ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$1}, $param$2));
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential<? extends X> $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .ceylon.language.Sequential $$iterables$ = .ceylon.language.ArraySequence.<.ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reifiedX, .ceylon.language.Null.$TypeDescriptor), new .java.lang.Object[]{
+                        $param$0,
+                        $param$1,
+                        $param$2});
+                return $call$typed($$iterables$);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential<? extends X> $call$variadic(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
+                return $call$typed($spreadVarargs(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reifiedX, .ceylon.language.Null.$TypeDescriptor), 0, 3, new .java.lang.Object[]{
+                        (.ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0,
+                        (.ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$1,
+                        (.ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$2}, $param$3));
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential<? extends X> $call(final .java.lang.Object... $param$0) {
+                return $call$typed($spreadVarargs(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reifiedX, .ceylon.language.Null.$TypeDescriptor), 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.$get()));
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential<? extends X> $call$variadic(final .java.lang.Object... $param$0) {
+                return $call$typed($spreadVarargs(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reifiedX, .ceylon.language.Null.$TypeDescriptor), 0, $param$0));
+            }
+            
+            private .ceylon.language.Sequential<? extends X> $call$typed(.ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>> iterables) {
+                return .ceylon.language.join_.<X>join($reifiedX, iterables);
             }
         };
     }
