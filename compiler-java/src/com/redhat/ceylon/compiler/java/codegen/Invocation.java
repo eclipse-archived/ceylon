@@ -182,7 +182,6 @@ abstract class Invocation {
             JCExpression callable = gen.expressionGen().transformMemberReference((Tree.QualifiedMemberOrTypeExpression)getPrimary(), (Tree.MemberOrTypeExpression)getQmePrimary());
             // The callable is a Callable we generate ourselves, it can never be erased to Object so there's no need to unerase
             selector = Naming.getCallableMethodName();
-            handleBoxing(true);
             return new TransformedInvocationPrimary(callable, selector);
         }
             
@@ -251,10 +250,7 @@ abstract class Invocation {
     }
 
     boolean isMemberRefInvocation() {
-        return isIndirect()
-                && getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression
-                && (getQmePrimary() instanceof Tree.BaseTypeExpression
-                  || getQmePrimary() instanceof Tree.QualifiedTypeExpression);
+        return false;
     }
     
     public boolean isIndirect() {
@@ -390,6 +386,11 @@ class IndirectInvocation extends SimpleInvocation {
     @Override
     public boolean isIndirect() {
         return true;
+    }
+    
+    @Override
+    boolean isMemberRefInvocation() {
+        return CodegenUtil.isMemberReferenceInvocation((Tree.InvocationExpression)getNode());
     }
     
     public int getNumParameters() {

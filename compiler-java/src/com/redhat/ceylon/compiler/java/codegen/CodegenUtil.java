@@ -366,4 +366,16 @@ class CodegenUtil {
         return containerDeclaration instanceof Method
                 && ((Method)containerDeclaration).isParameter();
     }
+    
+    public static boolean isMemberReferenceInvocation(Tree.InvocationExpression expr) {
+        if (com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInvocation(expr)
+                && expr.getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression) {
+            Tree.QualifiedMemberOrTypeExpression primary = (Tree.QualifiedMemberOrTypeExpression)expr.getPrimary();
+            if (primary.getPrimary() instanceof Tree.BaseTypeExpression
+                    || primary.getPrimary() instanceof Tree.QualifiedTypeExpression) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -139,10 +140,14 @@ public abstract class BoxingVisitor extends Visitor {
         }
         
     }
-
+    
     @Override
     public void visit(InvocationExpression that) {
         super.visit(that);
+        if (Util.isIndirectInvocation(that)) {
+            // These are always boxed
+            return;
+        }
         propagateFromTerm(that, that.getPrimary());
         
         // Specifically for method invocations we check if the return type is
