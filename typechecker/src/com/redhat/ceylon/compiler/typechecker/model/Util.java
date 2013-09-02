@@ -102,7 +102,7 @@ public class Util {
                 ((Functional) d).isAbstraction();
     }
 
-    static boolean notOverloaded(Declaration d) {
+    public static boolean notOverloaded(Declaration d) {
         return !(d instanceof Functional) || 
                 !((Functional) d).isOverloaded() ||
                 ((Functional) d).isAbstraction();

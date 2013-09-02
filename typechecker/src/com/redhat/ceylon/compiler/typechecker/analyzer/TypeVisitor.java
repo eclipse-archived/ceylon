@@ -8,6 +8,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDecla
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.notOverloaded;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
@@ -129,22 +130,26 @@ public class TypeVisitor extends Visitor {
     }
     
     private void addWildcardImport(ImportList il, Declaration dec, Import i) {
-    	String alias = i.getAlias();
-		if (alias!=null) {
-    		Import o = unit.getImport(dec.getName());
-    		if (o!=null && o.isWildcardImport()) {
-    			i.setAmbiguous(true);
-    			o.setAmbiguous(true);
-    			if (o.getDeclaration().equals(dec)) {
-    				//this case only happens in the IDE,
-    				//due to reuse of the Unit
-    				unit.getImports().remove(o);
-    				il.getImports().remove(o);
-    			}
-    		}
-    		unit.getImports().add(i);
-    		il.getImports().add(i);
-    	}
+        if (notOverloaded(dec)) {
+        	String alias = i.getAlias();
+    		if (alias!=null) {
+        		Import o = unit.getImport(dec.getName());
+        		if (o!=null && o.isWildcardImport()) {
+                    if (o.getDeclaration().equals(dec)) {
+        				//this case only happens in the IDE,
+        				//due to reuse of the Unit
+        				unit.getImports().remove(o);
+        				il.getImports().remove(o);
+        			}
+                    else {
+                        i.setAmbiguous(true);
+                        o.setAmbiguous(true);
+                    }
+        		}
+        		unit.getImports().add(i);
+        		il.getImports().add(i);
+        	}
+        }
     }
     
     public static Module getModule(Tree.ImportPath path) {
