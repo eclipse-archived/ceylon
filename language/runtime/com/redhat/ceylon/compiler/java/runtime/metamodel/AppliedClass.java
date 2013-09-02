@@ -304,41 +304,41 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     @Override
     @Ignore
     public Type $call$variadic() {
-        return $call$variadic(empty_.$get());
+        return $call(empty_.$get());
     }
 
     @Override
     @Ignore
     public Type $call$variadic(
             Sequential<?> varargs) {
-        throw new UnsupportedOperationException();
+        return $call(varargs);
     }
 
     @Override
     @Ignore
     public Type $call$variadic(
             Object arg0, Sequential<?> varargs) {
-        throw new UnsupportedOperationException();
+        return $call(arg0, varargs);
     }
 
     @Override
     @Ignore
     public Type $call$variadic(
             Object arg0, Object arg1, Sequential<?> varargs) {
-        throw new UnsupportedOperationException();
+        return $call(arg0, arg1, varargs);
     }
 
     @Override
     @Ignore
     public Type $call$variadic(
             Object arg0, Object arg1, Object arg2, Sequential<?> varargs) {
-        throw new UnsupportedOperationException();
+        return $call(arg0, arg1, arg2, varargs);
     }
 
     @Override
     @Ignore
     public Type $call$variadic(Object... argsAndVarargs) {
-        throw new UnsupportedOperationException();
+        return $call(argsAndVarargs);
     }
 
     @Ignore

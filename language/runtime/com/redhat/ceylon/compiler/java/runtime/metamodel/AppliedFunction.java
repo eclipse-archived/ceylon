@@ -296,57 +296,57 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     @Override
     @Ignore
     public Type $call$variadic() {
-        return $call$variadic(empty_.$get());
+        return $call();
     }
     
     @Override
     @Ignore
     public Type $call$variadic(Sequential<?> varargs) {
-        throw new UnsupportedOperationException();
+        return $call(varargs);
     }
 
     @Override
     @Ignore
     public Type $call$variadic(Object arg0,
             Sequential<?> varargs) {
-        throw new UnsupportedOperationException();
+        return $call(arg0, varargs);
     }
 
     @Override
     @Ignore
     public Type $call$variadic(Object arg0,
             Object arg1, Sequential<?> varargs) {
-        throw new UnsupportedOperationException();
+        return $call(arg0, arg1, varargs);
     }
 
     @Override
     @Ignore
     public Type $call$variadic(Object arg0,
             Object arg1, Object arg2, Sequential<?> varargs) {
-        throw new UnsupportedOperationException();
+        return $call(arg0, arg1, arg2, varargs);
     }
 
     @Override
     @Ignore
     public Type $call$variadic(Object... argsAndVarargs) {
-        throw new UnsupportedOperationException();
+        return $call((Object[])argsAndVarargs);
     }
 
     @Override
     @Ignore
     public Type $call$variadic(Object arg0) {
-        return $call$variadic(arg0, empty_.$get());
+        return $call(arg0, empty_.$get());
     }
 
     @Override
     @Ignore
     public Type $call$variadic(Object arg0, Object arg1) {
-        return $call$variadic(arg0, arg1, empty_.$get());
+        return $call(arg0, arg1, empty_.$get());
     }
 
     @Override
     @Ignore
     public Type $call$variadic(Object arg0, Object arg1, Object arg2) {
-        return $call$variadic(arg0, arg1, arg2, empty_.$get());
+        return $call(arg0, arg1, arg2, empty_.$get());
     }
 }
