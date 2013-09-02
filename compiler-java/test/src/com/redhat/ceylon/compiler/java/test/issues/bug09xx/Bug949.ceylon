@@ -21,15 +21,18 @@
 void bug949() {
     Anything tpl = [1, 2, 3];
     assert([1, 2, 3].first + [1, 2, 3].rest.first == 3);
-    if (!is [Integer, Integer, Integer] tpl) { assert(false); }
-    if (!is [Integer+] tpl) { assert(false); }
-    if (!is [Integer*] tpl) { assert(false); }
-    if (!is [Integer, Integer+] tpl) { assert(false); }
-    if (!is [Integer, Integer*] tpl) { assert(false); }
-    if (!is [Integer, Integer, Integer+] tpl) { assert(false); }
-    if (!is [Integer, Integer, Integer*] tpl) { assert(false); }
-    if (!is [Integer, Integer, Integer, Integer*] tpl) { assert(false); }
-    if (is [Integer, Integer] tpl) { assert(false); }
-    if (is [Integer, Integer, Integer, Integer] tpl) { assert(false); }
-    if (is [Integer, Integer, Integer, Integer+] tpl) { assert(false); }
+    assert(tpl is [Integer, Integer, Integer]);
+    assert(tpl is [Integer+]);
+    assert(tpl is [Integer*]);
+    assert(tpl is [Integer, Integer+]);
+    assert(tpl is [Integer, Integer*]);
+    assert(tpl is [Integer, Integer, Integer+]);
+    assert(tpl is [Integer, Integer, Integer*]);
+    assert(tpl is [Integer, Integer, Integer, Integer*]);
+    assert(!tpl is [Integer, Integer]);
+    assert(!tpl is [Integer, Integer, Integer, Integer]);
+    assert(!tpl is [Integer, Integer, Integer, Integer+]);
+    Anything nulls = [null, null, null];
+    assert(nulls is [Null, Null, Null]);
+    assert(nulls is [Null*]);
 }
