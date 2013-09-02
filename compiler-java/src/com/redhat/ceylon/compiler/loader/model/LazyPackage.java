@@ -163,7 +163,7 @@ public class LazyPackage extends Package {
         }
     }
 
-    public void addMember(Declaration d) {
+    public void addCompiledMember(Declaration d) {
         synchronized(modelLoader){
             compiledDeclarations.add(d);
             if (d instanceof LazyInterface
