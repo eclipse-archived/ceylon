@@ -48,25 +48,16 @@ public abstract class Element {
     public String getQualifiedNameString() {
         return getContainer().getQualifiedNameString();
     }
-
-    @Deprecated
-    public List<String> getQualifiedName() {
-        return getContainer().getQualifiedName();
-    }
-
+    
     /**
      * Search only directly inside the given scope,
      * without considering containing scopes or
      * imports.
      */
     protected Declaration getMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
-        return getDirectMemberOrParameter(name, signature, ellipsis);
+        return getDirectMember(name, signature, ellipsis);
     }
-
-    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
-        return lookupMember(getMembers(), name, signature, ellipsis);
-    }
-
+    
     /**
      * Search only directly inside the given scope,
      * without considering containing scopes.

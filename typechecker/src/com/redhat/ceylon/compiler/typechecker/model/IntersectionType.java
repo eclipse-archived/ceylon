@@ -13,6 +13,11 @@ public class IntersectionType extends TypeDeclaration {
     }
     
     @Override
+    public void addMember(Declaration declaration) {
+        throw new UnsupportedOperationException();
+    }
+    
+    @Override
     public String getName() {
         return getType().getProducedTypeName();
     }
@@ -30,11 +35,6 @@ public class IntersectionType extends TypeDeclaration {
     @Override
     public String toString() {
         return "IntersectionType[" + getName() + "]";
-    }
-    
-    @Override @Deprecated
-    public List<String> getQualifiedName() {
-        throw new UnsupportedOperationException("intersection types don't have names");
     }
     
     @Override

@@ -11,6 +11,11 @@ public class UnionType extends TypeDeclaration {
     }
     
     @Override
+    public void addMember(Declaration declaration) {
+        throw new UnsupportedOperationException();
+    }
+    
+    @Override
     public String getName() {
         return getType().getProducedTypeName();
     }
@@ -28,11 +33,6 @@ public class UnionType extends TypeDeclaration {
     @Override
     public String toString() {
         return "UnionType[" + getName() + "]";
-    }
-    
-    @Override @Deprecated
-    public List<String> getQualifiedName() {
-        throw new UnsupportedOperationException("union types don't have names");
     }
     
     @Override

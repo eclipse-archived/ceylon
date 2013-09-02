@@ -20,6 +20,11 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     }
     
     @Override
+    public void addMember(Declaration declaration) {
+        members.add(declaration);
+    }
+    
+    @Override
     public boolean isMember() {
         return getContainer() instanceof ClassOrInterface;
     }

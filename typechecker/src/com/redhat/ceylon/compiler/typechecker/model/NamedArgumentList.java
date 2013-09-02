@@ -16,6 +16,11 @@ public class NamedArgumentList extends Element implements Scope {
         return members;
     }
     
+    @Override
+    public void addMember(Declaration declaration) {
+        members.add(declaration);
+    }
+    
     public ParameterList getParameterList() {
         return parameterList;
     }

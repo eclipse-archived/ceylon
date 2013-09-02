@@ -20,7 +20,7 @@ public class Package
     private boolean shared = false;
     private List<Annotation> annotations = new ArrayList<Annotation>();
     private Unit unit;
-    private String nameAsStringCache;
+    private String nameAsString;
     
     public Module getModule() {
         return module;
@@ -47,12 +47,14 @@ public class Package
     public void addUnit(Unit unit) {
         synchronized (units) {
             units.add(unit);
+            members=null;
         }
     }
     
     public void removeUnit(Unit unit) {
         synchronized (units) {
             units.remove(unit);
+            members=null;
         }
     }
     
@@ -64,8 +66,25 @@ public class Package
         this.shared = shared;
     }
     
+    private List<Declaration> members;
+    
     @Override
     public List<Declaration> getMembers() {
+        synchronized (units) {
+            //return getMembersInternal();
+            if (members==null) {
+                members = getMembersInternal();
+            }
+            return members;
+        }
+    }
+    
+    @Override
+    public void addMember(Declaration declaration) {
+        members=null;
+    }
+    
+    private List<Declaration> getMembersInternal() {
         List<Declaration> result = new ArrayList<Declaration>();
         for (Unit unit: getUnits()) {
             for (Declaration d: unit.getDeclarations()) {
@@ -88,33 +107,22 @@ public class Package
     }
 
     public String getNameAsString() {
-        if(nameAsStringCache == null){
-            nameAsStringCache = formatPath(name);
+        if (nameAsString == null){
+            nameAsString = formatPath(name);
         }
-        return nameAsStringCache;
+        return nameAsString;
     }
 
     @Override
     public String toString() {
         return "Package[" + getNameAsString() + "]";
     }
-
-    @Override @Deprecated
-    public List<String> getQualifiedName() {
-        return getName();
-    }
-
+    
     @Override
     public String getQualifiedNameString() {
         return getNameAsString();
     }
-
-    @Override
-    public Declaration getDirectMemberOrParameter(String name, 
-            List<ProducedType> signature, boolean ellipsis) {
-        return getDirectMember(name, signature, ellipsis);
-    }
-
+    
     /**
      * Search only inside the package, ignoring imports
      */
@@ -148,7 +156,7 @@ public class Package
         if (d!=null) {
             return d;
         }
-        d = getDirectMemberOrParameter(name, signature, ellipsis);
+        d = getDirectMember(name, signature, ellipsis);
         if (d!=null) {
             return d;
         }
@@ -227,7 +235,8 @@ public class Package
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Package) {
-            return ((Package) obj).getName().equals(getName());
+            return ((Package) obj).getNameAsString()
+                    .equals(getNameAsString());
         }
         else {
             return false;

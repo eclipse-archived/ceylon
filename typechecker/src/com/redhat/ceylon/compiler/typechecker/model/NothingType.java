@@ -1,12 +1,15 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import java.util.Arrays;
-import java.util.List;
 
 public class NothingType extends TypeDeclaration {
     
     public NothingType(Unit unit) {
         this.unit = unit;
+    }
+    
+    @Override
+    public void addMember(Declaration declaration) {
+        throw new UnsupportedOperationException();
     }
     
     @Override
@@ -17,11 +20,6 @@ public class NothingType extends TypeDeclaration {
     @Override
     public Scope getContainer() {
     	return unit.getAnythingDeclaration().getContainer();
-    }
-    
-    @Override @Deprecated
-    public List<String> getQualifiedName() {
-        return Arrays.asList("ceylon","language","Nothing");
     }
     
     @Override

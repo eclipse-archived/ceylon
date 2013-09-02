@@ -19,8 +19,8 @@ public class ImportList implements Scope {
     }
     
     @Override
-    public List<String> getQualifiedName() {
-        return getContainer().getQualifiedName();
+    public void addMember(Declaration declaration) {
+        throw new UnsupportedOperationException();
     }
     
     @Override
@@ -41,11 +41,6 @@ public class ImportList implements Scope {
     @Override
     public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis) {
         return getContainer().getMember(name, signature, ellipsis);
-    }
-    
-    @Override
-    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
-        return getContainer().getDirectMemberOrParameter(name, signature, ellipsis);
     }
     
     @Override

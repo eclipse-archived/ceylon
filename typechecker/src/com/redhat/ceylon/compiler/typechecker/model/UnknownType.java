@@ -6,7 +6,12 @@ import java.util.List;
 public class UnknownType extends TypeDeclaration {
 
     private Runnable errorReporter;
-
+    
+    @Override
+    public void addMember(Declaration declaration) {
+        throw new UnsupportedOperationException();
+    }
+    
     public UnknownType(Unit unit) {
         this.unit = unit;
     }
@@ -20,12 +25,7 @@ public class UnknownType extends TypeDeclaration {
 	public DeclarationKind getDeclarationKind() {
 		return DeclarationKind.TYPE;
 	}
-
-    @Override @Deprecated
-    public List<String> getQualifiedName() {
-        return Arrays.asList(getQualifiedNameString());
-    }
-
+	
     @Override
     public String getQualifiedNameString() {
         return getName();

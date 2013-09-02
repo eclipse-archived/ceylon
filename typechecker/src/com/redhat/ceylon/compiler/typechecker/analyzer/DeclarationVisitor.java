@@ -112,9 +112,7 @@ public class DeclarationVisitor extends Visitor {
         //that.setDeclarationModel(model);
         unit.addDeclaration(model);
         Scope sc = getContainer(that);
-        if (!(sc instanceof Package)) {
-            sc.getMembers().add(model);
-        }
+        sc.addMember(model);
         
         handleDeclarationAnnotations(that, model);        
         
@@ -192,7 +190,7 @@ public class DeclarationVisitor extends Visitor {
                 Scope s = model.getContainer();
                 boolean isControl;
                 do {
-                    Declaration member = s.getDirectMemberOrParameter(model.getName(), null, false);
+                    Declaration member = s.getDirectMember(model.getName(), null, false);
                     if ( member !=null ) {
                         that.addError("duplicate declaration name: " + model.getName());
                         model.getUnit().getDuplicateDeclarations().add(member);
@@ -588,9 +586,7 @@ public class DeclarationVisitor extends Visitor {
         visitElement(that, v);
         unit.addDeclaration(v);
         Scope sc = getContainer(that);
-        if (!(sc instanceof Package)) {
-            sc.getMembers().add(v);
-        }
+        sc.addMember(v);
         
         s.setParameter(p);
         super.visit(that);
@@ -1034,8 +1030,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.TypeConstraint that) {
         String name = name(that.getIdentifier());
-        TypeParameter p = (TypeParameter) scope.getMemberOrParameter(unit, 
-        		name, null, false);
+        TypeParameter p = (TypeParameter) scope.getDirectMember(name, null, false);
         that.setDeclarationModel(p);
         if (p==null) {
             that.addError("no matching type parameter for constraint: " + 

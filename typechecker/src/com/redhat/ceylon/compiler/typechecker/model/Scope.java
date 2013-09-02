@@ -19,7 +19,6 @@ public interface Scope {
     public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis);
     public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature, boolean ellipsis);
     public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis);
-    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis);
 
     public boolean isInherited(Declaration d);
     public TypeDeclaration getInheritingDeclaration(Declaration d);
@@ -31,8 +30,7 @@ public interface Scope {
     
     @Deprecated 
     public List<Declaration> getMembers();
-
-    @Deprecated 
-    public List<String> getQualifiedName();
-
+    
+    public void addMember(Declaration declaration);
+    
 }

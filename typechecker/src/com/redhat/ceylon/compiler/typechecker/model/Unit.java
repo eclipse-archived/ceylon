@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
@@ -191,6 +192,9 @@ public class Unit {
     public int hashCode() {
         return getFilename().hashCode();
     }
+    
+    private Module languageModule;
+    private Package languagePackage;
 
     /**
      * Search for a declaration in the language module. 
@@ -198,14 +202,18 @@ public class Unit {
     public Declaration getLanguageModuleDeclaration(String name) {
         //all elements in ceylon.language are auto-imported
         //traverse all default module packages provided they have not been traversed yet
-        Module languageModule = getPackage().getModule().getLanguageModule();
-        if ( languageModule != null && languageModule.isAvailable() ) {
+        if (languageModule==null) {
+            languageModule = getPackage().getModule().getLanguageModule();
+        }
+        if (languageModule!=null && languageModule.isAvailable()) {
             if ("Nothing".equals(name)) {
                 return getNothingDeclaration();
             }
-            Package languageScope = languageModule.getPackage(Module.LANGUAGE_MODULE_NAME);
-            if (languageScope != null) {
-                Declaration d = languageScope.getMember(name, null, false);
+            if (languagePackage==null) {
+                languagePackage = languageModule.getPackage(LANGUAGE_MODULE_NAME);
+            }
+            if (languagePackage != null) {
+                Declaration d = languagePackage.getMember(name, null, false);
                 if (d != null && d.isShared()) {
                     return d;
                 }

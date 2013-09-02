@@ -14,6 +14,11 @@ public class Specification extends Element implements Scope {
         return members;
     }
     
+    @Override
+    public void addMember(Declaration declaration) {
+        members.add(declaration);
+    }
+    
     public void setId(int id) {
         this.id = id;
     }

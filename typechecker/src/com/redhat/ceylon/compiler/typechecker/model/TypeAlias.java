@@ -18,6 +18,11 @@ public class TypeAlias extends TypeDeclaration {
         return members;
     }
     
+    @Override
+    public void addMember(Declaration declaration) {
+        members.add(declaration);
+    }
+    
 	@Override
 	public DeclarationKind getDeclarationKind() {
 		return DeclarationKind.TYPE;

@@ -388,7 +388,6 @@ public abstract class TypeDeclaration extends Declaration
         //first search for the member in the local
         //scope, including non-shared declarations
         Declaration d = getDirectMember(name, signature, variadic);
-        if (d==null) d = getDirectMemberOrParameter(name, signature, variadic);
         if (d!=null && d.isShared()) {
             //if it's shared, it's what we're 
             //looking for, return it
@@ -428,7 +427,7 @@ public abstract class TypeDeclaration extends Declaration
         //first search for the member or parameter 
         //in the local scope, including non-shared 
         //declarations
-        Declaration d = getDirectMemberOrParameter(name, signature, variadic);
+        Declaration d = getDirectMember(name, signature, variadic);
         if (d!=null) {
             if (signature!=null && isAbstraction(d)){
                 // look for a supertype decl that matches the signature better

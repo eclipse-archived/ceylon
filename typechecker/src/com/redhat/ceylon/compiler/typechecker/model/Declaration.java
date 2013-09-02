@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.contains;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.list;
 import static java.util.Collections.emptyList;
 
 import java.util.List;
@@ -85,12 +84,7 @@ public abstract class Declaration
         return getClass().getSimpleName() + 
                 "[" + toStringName() + "]";
     }
-
-    @Override @Deprecated
-    public List<String> getQualifiedName() {
-        return list(getContainer().getQualifiedName(), getName());
-    }
-
+    
     @Override
     public String getQualifiedNameString() {
         if(qualifiedNameAsStringCache == null){

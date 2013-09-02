@@ -21,6 +21,11 @@ public class TypeParameter extends TypeDeclaration implements Functional {
         return members;
     }
     
+    @Override
+    public void addMember(Declaration declaration) {
+        members.add(declaration);
+    }
+    
     public boolean isInvariant() {
     	return !covariant && !contravariant;
     }

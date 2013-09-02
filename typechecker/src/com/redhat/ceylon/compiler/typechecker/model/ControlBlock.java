@@ -7,6 +7,7 @@ import java.util.Set;
 
 public class ControlBlock extends Element implements Scope {
     
+    private Set<Value> specifiedValues;
     private List<Declaration> members = new ArrayList<Declaration>(3);
     
     @Override
@@ -14,7 +15,11 @@ public class ControlBlock extends Element implements Scope {
         return members;
     }
     
-    private Set<Value> specifiedValues;
+    @Override
+    public void addMember(Declaration declaration) {
+        members.add(declaration);
+    }
+    
     
     private int id;
     

@@ -21,6 +21,10 @@ public abstract class MethodOrValue extends TypedDeclaration {
         return members;
     }
     
+    public void addMember(Declaration declaration) {
+        members.add(declaration);
+    }
+    
     public boolean isShortcutRefinement() {
         return shortcutRefinement;
     }
