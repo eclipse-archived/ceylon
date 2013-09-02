@@ -189,10 +189,11 @@
             <files>
                 <include name="**/*.ceylon"/>
                 <include name="com/redhat/**/*.java"/>
+                <include name="ceylon/language/$LanguageAccess.java"/>
                 <!-- We swap the nativily implemented files for their Java counter parts -->
                 <exclude name="ceylon/language/Array.ceylon"/>
                 <include name="ceylon/language/Array.java"/>
-            	<exclude name="ceylon/language/ArraySequence.ceylon"/>
+                <exclude name="ceylon/language/ArraySequence.ceylon"/>
                 <include name="ceylon/language/ArraySequence.java"/>
                 <include name="ceylon/language/array_.java"/>
                 <include name="ceylon/language/arrayOfSize_.java"/>
@@ -244,8 +245,8 @@
                 <exclude name="ceylon/language/model/metamodel.ceylon"/>
                 <include name="ceylon/language/model/type_.java"/>
                 <include name="ceylon/language/model/typeLiteral_.java"/>
-            	<exclude name="ceylon/language/model/annotations.ceylon"/>
-            	<include name="ceylon/language/model/annotations_.java"/>
+                <exclude name="ceylon/language/model/annotations.ceylon"/>
+                <include name="ceylon/language/model/annotations_.java"/>
                 <exclude name="ceylon/language/model/modules.ceylon"/>
                 <include name="ceylon/language/model/modules_.java"/>
             </files>
