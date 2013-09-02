@@ -507,7 +507,7 @@ public class ProducedType extends ProducedReference {
     private List<ProducedType> getSupertypes(List<ProducedType> list) {
         if ( isWellDefined() && (getDeclaration() instanceof UnionType || 
                                  getDeclaration() instanceof IntersectionType || 
-                                 Util.addToSupertypes(list, this)) ) {
+                                 addToSupertypes(list, this)) ) {
             ProducedType extendedType = getExtendedType();
             if (extendedType!=null) {
                 extendedType.getSupertypes(list);
@@ -904,17 +904,22 @@ public class ProducedType extends ProducedReference {
         return candidateResult;
     }
     
+    List<ProducedType> argList;
+    
     /**
      * Get the type arguments as a tuple. 
      */
     public List<ProducedType> getTypeArgumentList() {
-        List<TypeParameter> tps = getDeclaration().getTypeParameters();
-        List<ProducedType> lpt = new ArrayList<ProducedType>(tps.size());
-        Map<TypeParameter, ProducedType> args = getTypeArguments();
-        for (TypeParameter tp: tps) {
-            lpt.add(args.get(tp));
+        if (argList==null) {
+            List<TypeParameter> tps = getDeclaration().getTypeParameters();
+            List<ProducedType> argList = new ArrayList<ProducedType>(tps.size());
+            Map<TypeParameter, ProducedType> args = getTypeArguments();
+            for (TypeParameter tp: tps) {
+                argList.add(args.get(tp));
+            }
+            return argList;
         }
-        return lpt;
+        return argList;
     }
 
     /**

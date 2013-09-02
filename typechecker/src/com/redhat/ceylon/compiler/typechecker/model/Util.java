@@ -700,11 +700,6 @@ public class Util {
                     //forms of the declaration (instead
                     //return the "abstraction" of them)
                     if (notOverloaded(d)) {
-                        //by returning the first thing we
-                        //find, we implement the rule that
-                        //parameters hide attributes with
-                        //the same name in the body of a
-                        //class (a bit of a hack solution)
                         return d;
                     }
                 }
@@ -714,6 +709,9 @@ public class Util {
                         //declaration, or the "abstraction" 
                         //which of all the overloaded forms 
                         //of the declaration
+                        if (!isAbstraction(d)) {
+                            return d;
+                        }
                         inexactMatch = d;
                     }
                     if (hasMatchingSignature(signature, ellipsis, d)) {
