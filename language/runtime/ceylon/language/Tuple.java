@@ -241,18 +241,24 @@ public final class Tuple<Element, First extends Element, Rest extends ceylon.lan
     @com.redhat.ceylon.compiler.java.metadata.Ignore
     private TypeDescriptor $getType(int offset) {
         if (offset < getSize()) {
-            return TypeDescriptor.klass(Tuple.class, $getElementType(offset), ((ReifiedType)array[first + offset]).$getType(), $getType(offset + 1));
+            return TypeDescriptor.klass(Tuple.class, $getUnionOfAllType(offset), $getElementType(offset), $getType(offset + 1));
         } else {
-            return ceylon.language.empty_.$TypeDescriptor;
+            return empty_.$TypeDescriptor;
         }
     }
     
     @com.redhat.ceylon.compiler.java.metadata.Ignore
-    private TypeDescriptor $getElementType(int offset) {
+    private TypeDescriptor $getUnionOfAllType(int offset) {
         TypeDescriptor[] types = new TypeDescriptor[(int)getSize() - offset];
         for (int i = 0; i < getSize() - offset; i++) {
-            types[i] = ((ReifiedType)array[first + offset + i]).$getType();
+            types[i] = $getElementType(offset + i);
         }
         return TypeDescriptor.union(types);
+    }
+    
+    @com.redhat.ceylon.compiler.java.metadata.Ignore
+    private TypeDescriptor $getElementType(int index) {
+        ReifiedType element = (ReifiedType)array[first + index];
+        return (element != null) ? element.$getType() : Null.$TypeDescriptor;
     }
 }
