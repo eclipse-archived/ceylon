@@ -6,7 +6,9 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.model.Type;
 import ceylon.language.model.declaration.AliasDeclaration$impl;
+import ceylon.language.model.declaration.GenericDeclaration$impl;
 import ceylon.language.model.declaration.OpenType;
+import ceylon.language.model.declaration.TypeParameter;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -19,9 +21,35 @@ public class FreeAliasDeclaration extends FreeTopLevelOrMemberDeclaration
 
     @Ignore
     public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeAliasDeclaration.class);
+
+    private OpenType openType;
+
+    private boolean initialised = false;
+
+    private Sequential<? extends ceylon.language.model.declaration.TypeParameter> typeParameters;
     
     public FreeAliasDeclaration(com.redhat.ceylon.compiler.typechecker.model.TypeAlias declaration) {
         super(declaration);
+        
+        this.openType = Metamodel.getMetamodel(declaration.getType().resolveAliases());
+    }
+
+    protected final void checkInit(){
+        if(!initialised ){
+            // FIXME: lock on model loader?
+            synchronized(this){
+                if(!initialised){
+                    init();
+                    initialised = true;
+                }
+            }
+        }
+    }
+
+    private void init() {
+        com.redhat.ceylon.compiler.typechecker.model.TypeAlias declaration = (com.redhat.ceylon.compiler.typechecker.model.TypeAlias) this.declaration;
+        
+        this.typeParameters = Metamodel.getTypeParameters(declaration);
     }
 
     @Override
@@ -32,9 +60,27 @@ public class FreeAliasDeclaration extends FreeTopLevelOrMemberDeclaration
     }
 
     @Override
-    public OpenType getOpenType() {
+    @Ignore
+    public GenericDeclaration$impl $ceylon$language$model$declaration$GenericDeclaration$impl() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public OpenType getOpenType() {
+        return openType;
+    }
+
+    @Override
+    public TypeParameter getTypeParameterDeclaration(@Name("name") @TypeInfo("ceylon.language::String") String name) {
+        return Metamodel.findDeclarationByName(getTypeParameterDeclarations(), name);
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::TypeParameter>")
+    public Sequential<? extends TypeParameter> getTypeParameterDeclarations() {
+        checkInit();
+        return typeParameters;
     }
 
     @Ignore

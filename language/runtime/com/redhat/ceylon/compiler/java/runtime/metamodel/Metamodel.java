@@ -50,6 +50,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 
@@ -689,6 +690,28 @@ public class Metamodel {
             array[ii] = parseEnumerationReference(refs[ii]);
         }
         return ArraySequence.instance($reifiedElement, array);
+    }
+
+    public static Sequential<? extends ceylon.language.model.declaration.TypeParameter> getTypeParameters(com.redhat.ceylon.compiler.typechecker.model.Generic declaration) {
+        List<com.redhat.ceylon.compiler.typechecker.model.TypeParameter> typeParameters = declaration.getTypeParameters();
+        ceylon.language.model.declaration.TypeParameter[] typeParametersArray = new ceylon.language.model.declaration.TypeParameter[typeParameters.size()];
+        int i=0;
+        for(com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp : typeParameters){
+            typeParametersArray[i++] = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter(tp);
+        }
+        return (Sequential)Util.sequentialInstance(ceylon.language.model.declaration.TypeParameter.$TypeDescriptor, typeParametersArray);
+    }
+
+    public static <DeclarationType extends ceylon.language.model.declaration.Declaration>
+        DeclarationType findDeclarationByName(Sequential<? extends DeclarationType> declarations, String name) {
+        Iterator<? extends DeclarationType> iterator = declarations.iterator();
+        Object it;
+        while((it = iterator.next()) != finished_.$get()){
+            DeclarationType tp = (DeclarationType) it;
+            if(tp.getName().equals(name))
+                return tp;
+        }
+        return null;
     }
     
 }

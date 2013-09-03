@@ -48,7 +48,7 @@ public abstract class FreeClassOrInterface
     private volatile boolean initialised = false;
     private ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.ClassDeclaration> superclass;
     private Sequential<ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.InterfaceDeclaration>> interfaces;
-    private Sequential<ceylon.language.model.declaration.TypeParameter> typeParameters;
+    private Sequential<? extends ceylon.language.model.declaration.TypeParameter> typeParameters;
 
     private List<ceylon.language.model.declaration.TopLevelOrMemberDeclaration> declarations;
 
@@ -85,13 +85,7 @@ public abstract class FreeClassOrInterface
         }
         this.interfaces = (Sequential)Util.sequentialInstance($InterfacesTypeDescriptor, interfaces);
         
-        List<com.redhat.ceylon.compiler.typechecker.model.TypeParameter> typeParameters = declaration.getTypeParameters();
-        ceylon.language.model.declaration.TypeParameter[] typeParametersArray = new ceylon.language.model.declaration.TypeParameter[typeParameters.size()];
-        i=0;
-        for(com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp : typeParameters){
-            typeParametersArray[i++] = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter(tp);
-        }
-        this.typeParameters = (Sequential)Util.sequentialInstance(ceylon.language.model.declaration.TypeParameter.$TypeDescriptor, typeParametersArray);
+        this.typeParameters = Metamodel.getTypeParameters(declaration);
         
         List<com.redhat.ceylon.compiler.typechecker.model.Declaration> memberModelDeclarations = declaration.getMembers();
         i=0;
@@ -218,15 +212,7 @@ public abstract class FreeClassOrInterface
     @Override
     @TypeInfo("ceylon.language.model.declaration::TypeParameter|ceylon.language::Null")
     public ceylon.language.model.declaration.TypeParameter getTypeParameterDeclaration(@Name("name") String name) {
-        checkInit();
-        Iterator<? extends ceylon.language.model.declaration.TypeParameter> iterator = typeParameters.iterator();
-        Object it;
-        while((it = iterator.next()) != finished_.$get()){
-            ceylon.language.model.declaration.TypeParameter tp = (ceylon.language.model.declaration.TypeParameter) it;
-            if(tp.getName().equals(name))
-                return tp;
-        }
-        return null;
+        return Metamodel.findDeclarationByName(getTypeParameterDeclarations(), name);
     }
 
     @Ignore
