@@ -221,32 +221,40 @@ public class CeylonDocTool implements Tool {
         return links;
     }
     
-    @OptionArgument(longName="link", argumentName="url")
-    @Description("The URL of a module repository containing documentation for external dependencies." +
+    @OptionArgument(longName="link", argumentName="dir-or-url")
+    @Description("The URL or path of a module repository containing documentation for external dependencies." +
     		"\n\n" +
-    		"Parameter url must be one of supported protocols (http://, https:// or file://). " +
-            "Parameter url can be prefixed with module name pattern, separated by a '=' character, determine for which external modules will be use." +
+    		"Parameter must be one of supported protocols (http://, https:// or file://) or path to directory. " +
+            "Parameter can be prefixed with module name pattern, separated by a '=' character, determine for which external modules will be use." +
             "\n\n" +
             "Examples:\n" +
             "\n" +
             "    --link https://modules.ceylon-lang.org/\n" +
             "    --link ceylon.math=https://modules.ceylon-lang.org/\n")
-    public void setLinks(List<String> links) {
-        validateLinks(links);        
-        this.links = links;
-    }
-
-    private void validateLinks(List<String> links) {
-        if( links != null ) {
-            for(String link : links) {
-                String[] linkParts = LinkRenderer.divideToPatternAndUrl(link);
-                String moduleRepoUrl = linkParts[1];
-
-                if (!LinkRenderer.isHttpProtocol(moduleRepoUrl) && !LinkRenderer.isFileProtocol(moduleRepoUrl)) {
-                    throw new IllegalArgumentException(CeylondMessages.msg("error.unexpectedLinkProtocol", link));  
-                }
+    public void setLinks(List<String> linkArgs) {
+        this.links = new ArrayList<String>();
+        if( linkArgs != null ) {
+            for(String link : linkArgs) {
+                links.add(validateLink(link));
             }
         }
+    }
+
+    private String validateLink(String link) {
+        String[] linkParts = LinkRenderer.divideToPatternAndUrl(link);
+        String moduleNamePattern = linkParts[0];
+        String moduleRepoUrl = linkParts[1];
+
+        if (!LinkRenderer.isHttpProtocol(moduleRepoUrl) && !LinkRenderer.isFileProtocol(moduleRepoUrl)) {
+            File moduleRepoFile = new File(moduleRepoUrl);
+            if (moduleRepoFile.exists() && moduleRepoFile.isDirectory()) {
+                moduleRepoUrl = moduleRepoFile.toURI().toString();
+            } else if (moduleNamePattern == null) {
+                throw new IllegalArgumentException(CeylondMessages.msg("error.unexpectedLink", link));
+            }
+        }
+
+        return moduleNamePattern != null ? (moduleNamePattern + "=" + moduleRepoUrl) : moduleRepoUrl;
     }
 
     @Option(longName="offline")

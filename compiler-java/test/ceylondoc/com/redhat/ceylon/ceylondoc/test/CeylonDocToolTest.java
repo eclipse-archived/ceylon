@@ -226,8 +226,14 @@ public class CeylonDocToolTest {
     }
 
     @Test
-    public void externalLinksToLocalRepoWithModuleNamePattern() throws IOException {
+    public void externalLinksToLocalRepoUrlWithModuleNamePattern() throws IOException {
         String repoUrl = "file://" + new File("").getAbsolutePath() + "/build/CeylonDocToolTest/" + name.getMethodName();
+        externalLinks(repoUrl, "com.redhat=" + repoUrl);
+    }
+    
+    @Test
+    public void externalLinksToLocalRepoPathWithModuleNamePattern() throws IOException {
+        String repoUrl = new File("").getAbsolutePath() + "/build/CeylonDocToolTest/" + name.getMethodName();
         externalLinks(repoUrl, "com.redhat=" + repoUrl);
     }
 
@@ -238,7 +244,7 @@ public class CeylonDocToolTest {
     }
     
     @Test
-    public void externalLinksToLocalRepoWithoutModuleNamePattern() throws IOException {
+    public void externalLinksToLocalRepoUrlWithoutModuleNamePattern() throws IOException {
         String repoUrl = "file://" + new File("").getAbsolutePath() + "/build/CeylonDocToolTest/" + name.getMethodName();
         externalLinks(repoUrl, "file://not-existing-dir", "https://not-existing-url", repoUrl);
     }
