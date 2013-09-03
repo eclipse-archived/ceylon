@@ -58,5 +58,8 @@ shared interface Package
 
     "The function with the given name."
     shared formal FunctionDeclaration? getFunction(String name);
+
+    "The type alias with the given name."
+    shared formal AliasDeclaration? getAlias(String name);
 }
 
