@@ -53,9 +53,10 @@ public class FreeTypeParameterType
     private void init(){
         // we need to find where it came from to look up the proper wrapper
         Scope container = wrapped.getContainer();
-        // FIXME: support more container sources, such as methods and outer declarations
-        if(container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface){
-            com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface containerMetamodel = (FreeClassOrInterface) Metamodel.getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) container);
+        if(container instanceof com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration){
+            ceylon.language.model.declaration.GenericDeclaration containerMetamodel = 
+                    (ceylon.language.model.declaration.GenericDeclaration) 
+                    Metamodel.getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration) container);
             ceylon.language.model.declaration.TypeParameter typeParameter = containerMetamodel.getTypeParameterDeclaration(wrapped.getName());
             if(typeParameter != null)
                 this.declaration = typeParameter;
