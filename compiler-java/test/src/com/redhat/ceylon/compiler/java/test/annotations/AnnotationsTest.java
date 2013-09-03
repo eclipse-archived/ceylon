@@ -188,4 +188,10 @@ public class AnnotationsTest extends CompilerTest {
     public void testDeprecated(){
         compareWithJavaSource("Deprecated");
     }
+    
+    @Test
+    @Ignore("M6: #1246, pending decision about how to handle this case")
+    public void testRecursiveConstructors(){
+        compareWithJavaSource("RecursiveConstructors");
+    }
  }
