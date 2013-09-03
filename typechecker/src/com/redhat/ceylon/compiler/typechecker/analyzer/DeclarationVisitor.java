@@ -360,9 +360,13 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         setParameterLists(m, that.getParameterLists(), that);
-        m.setDeclaredAnything(that.getType() instanceof Tree.VoidModifier);
-        if (that.getType() instanceof Tree.ValueModifier) {
-            that.getType().addError("functions may not be declared using the keyword value");
+        Tree.Type type = that.getType();
+        m.setDeclaredAnything(type instanceof Tree.VoidModifier);
+        if (type instanceof Tree.ValueModifier) {
+            type.addError("functions may not be declared using the keyword value");
+        }
+        if (type instanceof Tree.DynamicModifier) {
+            m.setDynamicallyTyped(true);
         }
     }
 
@@ -384,8 +388,12 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.AnyAttribute that) {
         super.visit(that);
-        if (that.getType() instanceof Tree.FunctionModifier) {
-            that.getType().addError("values may not be declared using the keyword function");
+        Tree.Type type = that.getType();
+        if (type instanceof Tree.FunctionModifier) {
+            type.addError("values may not be declared using the keyword function");
+        }
+        if (type instanceof Tree.DynamicModifier) {
+            that.getDeclarationModel().setDynamicallyTyped(true);
         }
     }
 

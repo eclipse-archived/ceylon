@@ -17,9 +17,18 @@ public abstract class TypedDeclaration extends Declaration {
     private boolean uncheckedNullType = false;
     private Boolean unboxed;
     private boolean typeErased;
+    private boolean isDynamicallyTyped;
     
     private TypedDeclaration originalDeclaration;
     
+    public boolean isDynamicallyTyped() {
+        return isDynamicallyTyped;
+    }
+    
+    public void setDynamicallyTyped(boolean isDynamicallyTyped) {
+        this.isDynamicallyTyped = isDynamicallyTyped;
+    }
+        
     public TypeDeclaration getTypeDeclaration() {
     	if (type==null) {
     	    return null;
