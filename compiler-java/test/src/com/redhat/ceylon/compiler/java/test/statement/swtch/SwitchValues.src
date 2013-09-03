@@ -1,0 +1,71 @@
+package com.redhat.ceylon.compiler.java.test.statement.swtch;
+
+final class switchValues_ {
+    
+    private switchValues_() {
+    }
+    
+    static void switchValues(final .ceylon.language.String name, final long num, final int ch) {
+        .ceylon.language.String $name$1;
+        if (($name$1 = name) != null) {
+            final .java.lang.String $name$2 = $name$1.toString();
+            {
+                .java.lang.Object $sel$3 = .ceylon.language.String.instance($name$2);
+                if ($sel$3.equals(.ceylon.language.String.instance("Tako")) || $sel$3.equals(.ceylon.language.String.instance("Gavin"))) {
+                    .ceylon.language.print_.print(.ceylon.language.String.instance("Spain"));
+                } else if ($sel$3.equals(.ceylon.language.String.instance("Emmanuel")) || $sel$3.equals(.ceylon.language.String.instance("Stef")) || $sel$3.equals(.ceylon.language.String.instance("David"))) {
+                    .ceylon.language.print_.print(.ceylon.language.String.instance("France"));
+                } else {
+                    .ceylon.language.print_.print(.ceylon.language.String.instance("Somewhere else"));
+                }
+            }
+        }
+        {
+            .java.lang.Object $sel$4 = name;
+            if ($sel$4 != null && $sel$4.equals(.ceylon.language.String.instance("Tako")) || $sel$4 != null && $sel$4.equals(.ceylon.language.String.instance("Gavin"))) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("Spain"));
+            } else if ($sel$4 != null && $sel$4.equals(.ceylon.language.String.instance("Emmanuel")) || $sel$4 != null && $sel$4.equals(.ceylon.language.String.instance("Stef")) || $sel$4 != null && $sel$4.equals(.ceylon.language.String.instance("David"))) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("France"));
+            } else if ($sel$4 == null) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("Nowhere"));
+            } else {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("Somewhere else"));
+            }
+        }
+        {
+            .java.lang.Object $sel$5 = .ceylon.language.Integer.instance(num);
+            if ($sel$5.equals(.ceylon.language.Integer.instance(0L))) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("additive identity"));
+            } else if ($sel$5.equals(.ceylon.language.Integer.instance(1L))) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("multiplicative identity"));
+            } else {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("something else"));
+            }
+        }
+        {
+            .java.lang.Object $sel$6 = .ceylon.language.Character.instance(ch);
+            if ($sel$6.equals(.ceylon.language.Character.instance(43))) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("plus"));
+            } else if ($sel$6.equals(.ceylon.language.Character.instance(45))) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("minus"));
+            } else if ($sel$6.equals(.ceylon.language.Character.instance(48)) || $sel$6.equals(.ceylon.language.Character.instance(49)) || $sel$6.equals(.ceylon.language.Character.instance(50)) || $sel$6.equals(.ceylon.language.Character.instance(51)) || $sel$6.equals(.ceylon.language.Character.instance(52)) || $sel$6.equals(.ceylon.language.Character.instance(53)) || $sel$6.equals(.ceylon.language.Character.instance(54)) || $sel$6.equals(.ceylon.language.Character.instance(55)) || $sel$6.equals(.ceylon.language.Character.instance(56)) || $sel$6.equals(.ceylon.language.Character.instance(57))) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("digit"));
+            } else {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("invalid character"));
+            }
+        }
+        final .java.lang.Object val = .ceylon.language.Integer.instance(num);
+        {
+            .java.lang.Object $sel$7 = val;
+            if ($sel$7 != null && $sel$7.equals(.ceylon.language.Integer.instance(1L))) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("integer 1"));
+            } else if ($sel$7 != null && $sel$7.equals(.ceylon.language.String.instance("1"))) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("string 1"));
+            } else if ($sel$7 != null && $sel$7.equals(.ceylon.language.Character.instance(49))) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("character 1"));
+            } else {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("something else"));
+            }
+        }
+    }
+}

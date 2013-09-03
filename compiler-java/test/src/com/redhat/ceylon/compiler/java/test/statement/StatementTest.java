@@ -552,6 +552,11 @@ public class StatementTest extends CompilerTest {
         compareWithJavaSource("swtch/SwitchMatch");
     }
     
+    @Test
+    public void testSwitchValues(){
+        compareWithJavaSource("swtch/SwitchValues");
+    }
+    
     
     @Test
     public void testReturnAnonFunction(){
