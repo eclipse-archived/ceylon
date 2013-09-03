@@ -2125,7 +2125,8 @@ public class StatementTransformer extends AbstractTransformer {
     JCStatement transform(SwitchStatement stmt) {
 
         SwitchClause switchClause = stmt.getSwitchClause();
-        JCExpression selectorExpr = expressionGen().transformExpression(switchClause.getExpression(), BoxingStrategy.BOXED, switchClause.getExpression().getTypeModel());
+        ProducedType exprType = switchClause.getExpression().getTypeModel();
+        JCExpression selectorExpr = expressionGen().transformExpression(switchClause.getExpression(), BoxingStrategy.BOXED, exprType);
         Naming.SyntheticName selectorAlias = naming.alias("sel");
         JCVariableDecl selector = makeVar(selectorAlias, make().Type(syms().objectType), selectorExpr);
         SwitchCaseList caseList = stmt.getSwitchCaseList();
@@ -2158,7 +2159,7 @@ public class StatementTransformer extends AbstractTransformer {
                 // TODO Support for 'case (satisfies ...)' is not implemented yet
                 return make().Exec(makeErroneous(caseItem, "switch/satisfies not implemented yet"));
             } else if (caseItem instanceof MatchCase) {
-                last = transformCaseMatch(selectorAlias, caseClause, (MatchCase)caseItem, last);
+                last = transformCaseMatch(selectorAlias, caseClause, (MatchCase)caseItem, last, isOptional(exprType));
             } else {
                 return make().Exec(makeErroneous(caseItem, "unknown switch case clause: "+caseItem));
             }
@@ -2166,14 +2167,22 @@ public class StatementTransformer extends AbstractTransformer {
         return at(stmt).Block(0, List.of(selector, last));
     }
 
-    private JCStatement transformCaseMatch(Naming.SyntheticName selectorAlias, CaseClause caseClause, MatchCase matchCase, JCStatement last) {
+    private JCStatement transformCaseMatch(Naming.SyntheticName selectorAlias, CaseClause caseClause, MatchCase matchCase, JCStatement last, boolean optionalType) {
         at(matchCase);
         
         JCExpression tests = null;
         java.util.List<Tree.Expression> expressions = matchCase.getExpressionList().getExpressions();
         for(Tree.Expression expr : expressions){
             JCExpression transformedExpression = expressionGen().transformExpression(expr);
-            JCBinary test = make().Binary(JCTree.EQ, selectorAlias.makeIdent(), transformedExpression);
+            JCExpression test;
+            if (expr.getTerm() instanceof Tree.Literal) {
+                test = make().Apply(null, makeSelect(selectorAlias.makeIdent(), "equals"), List.<JCExpression>of(transformedExpression));
+                if (optionalType) {
+                    test = make().Binary(JCTree.AND, make().Binary(JCTree.NE, selectorAlias.makeIdent(), makeNull()), test);
+                }
+            } else {
+                test = make().Binary(JCTree.EQ, selectorAlias.makeIdent(), transformedExpression);
+            }
             if(tests == null)
                 tests = test;
             else
