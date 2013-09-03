@@ -205,3 +205,11 @@ shared interface ContainerInterface{
 }
 
 shared class ContainerInterfaceImpl() satisfies ContainerInterface {}
+
+shared alias TypeAliasToClass => NoParams;
+
+shared alias TypeAliasToClassTP<J>
+    given J satisfies Object
+    => TypeParams<J>;
+
+shared alias TypeAliasToUnion => Integer | String;

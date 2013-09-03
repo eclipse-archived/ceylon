@@ -3,9 +3,13 @@ import ceylon.language.model.declaration {
     ValueDeclaration,
     FunctionDeclaration,
     ClassDeclaration,
+    ClassOrInterfaceDeclaration,
     OpenParameterisedType,
+    OpenTypeVariable,
+    OpenUnion,
     Declaration,
-    TopLevelOrMemberDeclaration
+    TopLevelOrMemberDeclaration,
+    AliasDeclaration
 }
 
 void checkConstructors(){
@@ -491,6 +495,49 @@ void checkObjectDeclaration(){
     assert(!is Class<Anything, []> topLevelObjectClass);
 }
 
+void checkAliases(){
+    // get it via its package
+    value pkg = `package com.redhat.ceylon.compiler.java.test.metamodel`;
+    assert(exists aliasDeclaration = pkg.getAlias("TypeAliasToClass"));
+    // check it
+    assert(aliasDeclaration.name == "TypeAliasToClass");
+    assert(aliasDeclaration.typeParameterDeclarations.size == 0);
+    assert(is OpenParameterisedType<ClassDeclaration> aliasedType = aliasDeclaration.openType);
+    assert(aliasedType.declaration.name == "NoParams");
+    assert(aliasedType.typeArguments.size == 0);
+    // check that getMember also works
+    assert(exists aliasDeclaration2 = pkg.getMember<AliasDeclaration>("TypeAliasToClass"));
+    assert(aliasDeclaration2.name == "TypeAliasToClass");
+    // and members
+    assert(pkg.members<AliasDeclaration>().size == 3);
+    
+    // get one with type parameters
+    assert(exists aliasDeclarationTP = pkg.getAlias("TypeAliasToClassTP"));
+    // check it
+    assert(aliasDeclarationTP.name == "TypeAliasToClassTP");
+    assert(aliasDeclarationTP.typeParameterDeclarations.size == 1);
+    assert(aliasDeclarationTP.getTypeParameterDeclaration("J") exists);
+    // make sure it points to TypeParams<T=J>
+    assert(is OpenParameterisedType<ClassDeclaration> aliasedTypeTP = aliasDeclarationTP.openType);
+    assert(aliasedTypeTP.declaration.name == "TypeParams");
+    assert(aliasedTypeTP.typeArguments.size == 1);
+    assert(exists aliasedDeclarationTPTypeParam = aliasedTypeTP.declaration.getTypeParameterDeclaration("T"));
+    assert(is OpenTypeVariable aliasedTypeTPArg = aliasedTypeTP.typeArguments[aliasedDeclarationTPTypeParam]);
+    assert(aliasedTypeTPArg.declaration.name == "J");
+
+    // get one pointing to a union
+    assert(exists aliasDeclarationUnion = pkg.getAlias("TypeAliasToUnion"));
+    // check it
+    assert(aliasDeclarationUnion.name == "TypeAliasToUnion");
+    // make sure it points to Integer|String
+    assert(is OpenUnion aliasedTypeUnion = aliasDeclarationUnion.openType);
+    assert(aliasedTypeUnion.caseTypes.size == 2);
+    assert(is OpenParameterisedType<ClassOrInterfaceDeclaration> firstUnion = aliasedTypeUnion.caseTypes[0], 
+            firstUnion.declaration.name == "Integer");
+    assert(is OpenParameterisedType<ClassOrInterfaceDeclaration> secondUnion = aliasedTypeUnion.caseTypes[1], 
+            secondUnion.declaration.name == "String");
+}
+
 shared void runtime() {
     visitStringHierarchy();
 
@@ -515,6 +562,8 @@ shared void runtime() {
     checkModules();
 
     checkObjectDeclaration();
+
+    checkAliases();
     // FIXME: test members() wrt filtering
     // FIXME: test untyped class to applied class
 }
