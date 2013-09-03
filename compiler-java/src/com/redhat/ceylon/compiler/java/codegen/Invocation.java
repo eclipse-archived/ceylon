@@ -227,7 +227,11 @@ abstract class Invocation {
                     actualPrimExpr = gen.naming.makeQualifiedName(primaryExpr, (TypedDeclaration)getPrimaryDeclaration(), Naming.NA_MEMBER);
                 }
                 actualPrimExpr = unboxCallableIfNecessary(actualPrimExpr, getPrimary());
-                selector = Naming.getCallableMethodName();
+                if (gen.isVariadicCallable(getPrimary().getTypeModel())) {
+                    selector = Naming.getCallableVariadicMethodName();
+                } else {
+                    selector = Naming.getCallableMethodName();
+                }
             }
         }
         
@@ -386,6 +390,10 @@ class IndirectInvocation extends SimpleInvocation {
     @Override
     public boolean isIndirect() {
         return true;
+    }
+    
+    public int getNumParameters() {
+        return parameterTypes.size();
     }
     
     @Override
@@ -736,11 +744,13 @@ class CallableInvocation extends DirectInvocation {
     private final java.util.List<Parameter> functionalParameters;
 
     private final int parameterCount;
+    
+    private boolean tempVars;
 
     public CallableInvocation(
             AbstractTransformer gen, Tree.Term primary,
             Declaration primaryDeclaration, ProducedReference producedReference, ProducedType returnType,
-            Tree.Term expr, ParameterList parameterList, int parameterCount) {
+            Tree.Term expr, ParameterList parameterList, int parameterCount, boolean tempVars) {
         super(gen, primary, primaryDeclaration, producedReference, returnType, expr);
         Functional functional = null;
         if(primary instanceof Tree.MemberOrTypeExpression)
@@ -756,6 +766,7 @@ class CallableInvocation extends DirectInvocation {
         setUnboxed(expr.getUnboxed());
         setBoxingStrategy(BoxingStrategy.BOXED);// Must be boxed because non-primitive return type
         handleBoxing(true);
+        this.tempVars = tempVars;
     }
 
     @Override
@@ -773,7 +784,7 @@ class CallableInvocation extends DirectInvocation {
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
         Parameter param = callableParameters.get(argIndex);
-        return gen.makeUnquotedIdent(Naming.getCallableTempVarName(param));
+        return tempVars ? gen.makeUnquotedIdent(Naming.getCallableTempVarName(param)) : gen.makeUnquotedIdent(param.getName());
     }
     @Override
     protected Parameter getParameter(int index) {
