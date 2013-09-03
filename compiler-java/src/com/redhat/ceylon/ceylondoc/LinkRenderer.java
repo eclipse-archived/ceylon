@@ -38,7 +38,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
@@ -51,7 +50,16 @@ import com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter;
 
 public class LinkRenderer {
     
-    private static final Map<String, Boolean> checkModuleUrlCache = new HashMap<String, Boolean>();
+    private static final Map<String, Boolean> moduleUrlAvailabilityCache = new HashMap<String, Boolean>();
+    
+    public static void clearModuleUrlAvailabilityCache() {
+        String[] moduleUrls = moduleUrlAvailabilityCache.keySet().toArray(new String[] {});
+        for (String moduleUrl : moduleUrls) {
+            if (isFileProtocol(moduleUrl)) {
+                moduleUrlAvailabilityCache.remove(moduleUrl);
+            }
+        }
+    }
     
     private Object to;
     private Object from;
@@ -539,7 +547,7 @@ public class LinkRenderer {
     }
 
     private boolean checkHttpUrlExist(String moduleUrl) {
-        Boolean result = checkModuleUrlCache.get(moduleUrl);
+        Boolean result = moduleUrlAvailabilityCache.get(moduleUrl);
         if( result == null ) {
             try {
                 HttpURLConnection con = (HttpURLConnection) new URL(moduleUrl + "index.html").openConnection();
@@ -557,13 +565,13 @@ public class LinkRenderer {
                 ceylonDocTool.getLogger().info(msg("info.urlDoesNotExist", moduleUrl));
                 result = Boolean.FALSE;
             }
-            checkModuleUrlCache.put(moduleUrl, result);
+            moduleUrlAvailabilityCache.put(moduleUrl, result);
         }
         return result.booleanValue();
     }
     
     private boolean checkFileUrlExist(String moduleUrl) {
-        Boolean result = checkModuleUrlCache.get(moduleUrl);
+        Boolean result = moduleUrlAvailabilityCache.get(moduleUrl);
         if( result == null ) {
             File moduleDocDir = new File(moduleUrl.substring("file://".length()));
             if (moduleDocDir.isDirectory() && moduleDocDir.exists()) {
@@ -572,6 +580,7 @@ public class LinkRenderer {
                 ceylonDocTool.getLogger().info(msg("info.urlDoesNotExist", moduleUrl));
                 result = Boolean.FALSE;
             }
+            moduleUrlAvailabilityCache.put(moduleUrl, result);
         }
         return result.booleanValue();
     }

@@ -241,7 +241,7 @@ public class CeylonDocToolTest {
     public void externalLinksToLocalRepoWithoutModuleNamePattern() throws IOException {
         String repoUrl = "file://" + new File("").getAbsolutePath() + "/build/CeylonDocToolTest/" + name.getMethodName();
         externalLinks(repoUrl, "file://not-existing-dir", "https://not-existing-url", repoUrl);
-    }    
+    }
     
     @Test
     public void externalLinksToRemoteRepoWithoutModuleNamePattern() throws IOException {

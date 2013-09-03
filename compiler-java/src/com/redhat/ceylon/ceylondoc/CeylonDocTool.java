@@ -534,6 +534,7 @@ public class CeylonDocTool implements Tool {
     private void documentModule(Module module) throws IOException {
         try {
             currentModule = module;
+            LinkRenderer.clearModuleUrlAvailabilityCache();
             
             doc(module);
             makeIndex(module);
