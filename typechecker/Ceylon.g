@@ -138,7 +138,7 @@ importModule returns [ImportModule importModule]
         s2=STRING_LITERAL
         { $importModule.setVersion(new QuotedLiteral($s2)); 
           expecting=SEMICOLON; }
-      )
+      )?
       SEMICOLON
       { $importModule.setEndToken($SEMICOLON); 
         expecting=-1; }

@@ -129,6 +129,9 @@ public class ModuleVisitor extends Visitor {
     public void visit(Tree.ImportModule that) {
         super.visit(that);
         if (phase==Phase.REMAINING) {
+            if (that.getVersion()==null) {
+                that.addError("missing module version");
+            }
             String version = getVersionString(that.getVersion());
             List<String> name;
             Node node;
