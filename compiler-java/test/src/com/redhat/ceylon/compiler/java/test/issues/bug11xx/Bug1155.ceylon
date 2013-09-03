@@ -342,7 +342,7 @@ void bug1155_star(Bug1155 b) {
     eq("star(; [s1])", starRef2OptOpt(*["s1"]));
     eq("star(; {})", starRef2OptOpt(*[]));
     eq("star(; [s1, s2])", starRef2OptOpt("s1", *["s2"]));
-    // TODO ceylon-spec#752 eq("star(; [s1])", starRef2OptOpt("s1", *[]));
+    eq("star(; [s1])", starRef2OptOpt("s1", *[]));
     
     // A String(String*) is a String(String , String, String*) 
     String(String, String, String*) starRef2Star = b.star;
@@ -398,7 +398,7 @@ void bug1155_star(Bug1155 b) {
     eq("star(; {})", starRef2OptOptStar(*[]));
     eq("star(; [s1])", starRef2OptOptStar(*["s1"]));
     eq("star(; [s1, s2])", starRef2OptOptStar(*["s1", "s2"]));
-    // TODO ceylon-spec#752 eq("star(; [s1])", starRef2OptOptStar("s1", *[]));
+    eq("star(; [s1])", starRef2OptOptStar("s1", *[]));
     eq("star(; [s1, s2])", starRef2OptOptStar("s1", *["s2"]));
     eq("star(; [s1, s2])", starRef2OptOptStar("s1", "s2", *[]));
     eq("star(; [s1, s2, s3])", starRef2OptOptStar("s1", "s2", "s3"));
@@ -460,7 +460,7 @@ void bug1155_star(Bug1155 b) {
     eq("star(; [s1, s2])", starRef3OptOpt("s1", *["s2"]));
     eq("star(; [s1])", starRef3OptOpt("s1", *[]));
     eq("star(; [s1, s2, s3])", starRef3OptOpt("s1", "s2", *["s3"]));
-    // TODO ceylon-spec#752 eq("star(; [s1, s2])", starRef3OptOpt("s1", "s2", *[]));
+    eq("star(; [s1, s2])", starRef3OptOpt("s1", "s2", *[]));
     eq("star(; [s1])", starRef3OptOpt("s1", *[]));
     
     // A String(String*) is a String(String=, String=, String=)
@@ -475,11 +475,11 @@ void bug1155_star(Bug1155 b) {
     eq("star(; [s1])", starRef3OptOptOpt(*["s1"]));
     eq("star(; {})", starRef3OptOptOpt(*[]));
     eq("star(; [s1, s2, s3])", starRef3OptOptOpt("s1", *["s2", "s3"]));
-    // TODO ceylon-spec#752 eq("star(; [s1, s2])", starRef3OptOptOpt("s1", *["s2"]));
-    // TODO ceylon-spec#752 eq("star(; [s1])", starRef3OptOptOpt("s1", *[]));
+    eq("star(; [s1, s2])", starRef3OptOptOpt("s1", *["s2"]));
+    eq("star(; [s1])", starRef3OptOptOpt("s1", *[]));
     eq("star(; [s1, s2, s3])", starRef3OptOptOpt("s1", "s2", *["s3"]));
-    // TODO ceylon-spec#752 eq("star(; [s1, s2])", starRef3OptOptOpt("s1", "s2", *[]));
-    // TODO ceylon-spec#752 eq("star(; [s1])", starRef3OptOptOpt("s1", *[]));
+    eq("star(; [s1, s2])", starRef3OptOptOpt("s1", "s2", *[]));
+    eq("star(; [s1])", starRef3OptOptOpt("s1", *[]));
     
     // A String(String*) is a String(String, String, String, String*)
     String(String, String, String, String*) starRef3Star = b.star;
@@ -541,7 +541,7 @@ void bug1155_star(Bug1155 b) {
     eq("star(; [s1])", starRef3OptOptStar("s1", *[]));
     eq("star(; [s1, s2])", starRef3OptOptStar(*["s1", "s2"]));
     eq("star(; [s1, s2])", starRef3OptOptStar("s1", *["s2"]));
-    // TODO ceylon-spec#752 eq("star(; [s1, s2])", starRef3OptOptStar("s1", "s2", *[]));
+    eq("star(; [s1, s2])", starRef3OptOptStar("s1", "s2", *[]));
     eq("star(; [s1, s2, s3])", starRef3OptOptStar(*["s1", "s2", "s3"]));
     eq("star(; [s1, s2, s3])", starRef3OptOptStar("s1", *["s2", "s3"]));
     eq("star(; [s1, s2, s3])", starRef3OptOptStar("s1", "s2", *["s3"]));
@@ -569,10 +569,10 @@ void bug1155_star(Bug1155 b) {
     //spread
     eq("star(; {})", starRef3OptOptOptStar(*[]));
     eq("star(; [s1])", starRef3OptOptOptStar(*["s1"]));
-    // TODO ceylon-spec#752 eq("star(; [s1])", starRef3OptOptOptStar("s1", *[]));
+    eq("star(; [s1])", starRef3OptOptOptStar("s1", *[]));
     eq("star(; [s1, s2])", starRef3OptOptOptStar(*["s1", "s2"]));
-    // TODO ceylon-spec#752 eq("star(; [s1, s2])", starRef3OptOptOptStar("s1", *["s2"]));
-    // TODO ceylon-spec#752 eq("star(; [s1, s2])", starRef3OptOptOptStar("s1", "s2", *[]));
+    eq("star(; [s1, s2])", starRef3OptOptOptStar("s1", *["s2"]));
+    eq("star(; [s1, s2])", starRef3OptOptOptStar("s1", "s2", *[]));
     eq("star(; [s1, s2, s3])", starRef3OptOptOptStar(*["s1", "s2", "s3"]));
     eq("star(; [s1, s2, s3])", starRef3OptOptOptStar("s1", *["s2", "s3"]));
     eq("star(; [s1, s2, s3])", starRef3OptOptOptStar("s1", "s2", *["s3"]));
@@ -635,7 +635,7 @@ void bug1155_star(Bug1155 b) {
     eq("star(; [s1, s2, s3])", starRef4OptOpt(*["s1", "s2", "s3"]));
     eq("star(; [s1, s2, s3])", starRef4OptOpt("s1", *["s2", "s3"]));
     eq("star(; [s1, s2, s3])", starRef4OptOpt("s1", "s2", *["s3"]));
-    // TODO ceylon-spec#752 eq("star(; [s1, s2, s3])", starRef4OptOpt("s1", "s2", "s3", *[]));
+    eq("star(; [s1, s2, s3])", starRef4OptOpt("s1", "s2", "s3", *[]));
     eq("star(; [s1, s2, s3, s4])", starRef4OptOpt(*["s1", "s2", "s3", "s4"]));
     eq("star(; [s1, s2, s3, s4])", starRef4OptOpt("s1", *["s2", "s3", "s4"]));
     eq("star(; [s1, s2, s3, s4])", starRef4OptOpt("s1", "s2", *["s3", "s4"]));
@@ -652,11 +652,11 @@ void bug1155_star(Bug1155 b) {
     eq("star(; [s1])", starRef4OptOptOpt("s1", *[]));
     eq("star(; [s1, s2])", starRef4OptOptOpt(*["s1", "s2"]));
     eq("star(; [s1, s2])", starRef4OptOptOpt("s1", *["s2"]));
-    // TODO ceylon-spec#752 eq("star(; [s1, s2])", starRef4OptOptOpt("s1", "s2", *[]));
+    eq("star(; [s1, s2])", starRef4OptOptOpt("s1", "s2", *[]));
     eq("star(; [s1, s2, s3])", starRef4OptOptOpt(*["s1", "s2", "s3"]));
     eq("star(; [s1, s2, s3])", starRef4OptOptOpt("s1", *["s2", "s3"]));
-    // TODO ceylon-spec#752 eq("star(; [s1, s2, s3])", starRef4OptOptOpt("s1", "s2", *["s3"]));
-    // TODO ceylon-spec#752 eq("star(; [s1, s2, s3])", starRef4OptOptOpt("s1", "s2", "s3", *[]));
+    eq("star(; [s1, s2, s3])", starRef4OptOptOpt("s1", "s2", *["s3"]));
+    eq("star(; [s1, s2, s3])", starRef4OptOptOpt("s1", "s2", "s3", *[]));
     eq("star(; [s1, s2, s3, s4])", starRef4OptOptOpt(*["s1", "s2", "s3", "s4"]));
     eq("star(; [s1, s2, s3, s4])", starRef4OptOptOpt("s1", *["s2", "s3", "s4"]));
     eq("star(; [s1, s2, s3, s4])", starRef4OptOptOpt("s1", "s2", *["s3", "s4"]));
@@ -672,14 +672,14 @@ void bug1155_star(Bug1155 b) {
     // spread
     eq("star(; {})", starRef4OptOptOptOpt(*[]));
     eq("star(; [s1])", starRef4OptOptOptOpt(*["s1"]));
-    // TODO ceylon-spec#752 eq("star(; [s1])", starRef4OptOptOptOpt("s1", *[]));
+    eq("star(; [s1])", starRef4OptOptOptOpt("s1", *[]));
     eq("star(; [s1, s2])", starRef4OptOptOptOpt(*["s1", "s2"]));
-    // TODO ceylon-spec#752 eq("star(; [s1, s2])", starRef4OptOptOptOpt("s1", *["s2"]));
-    // TODO ceylon-spec#752 eq("star(; [s1, s2])", starRef4OptOptOptOpt("s1", "s2", *[]));
+    eq("star(; [s1, s2])", starRef4OptOptOptOpt("s1", *["s2"]));
+    eq("star(; [s1, s2])", starRef4OptOptOptOpt("s1", "s2", *[]));
     eq("star(; [s1, s2, s3])", starRef4OptOptOptOpt(*["s1", "s2", "s3"]));
-    // TODO ceylon-spec#752 eq("star(; [s1, s2, s3])", starRef4OptOptOptOpt("s1", *["s2", "s3"]));
-    // TODO ceylon-spec#752 eq("star(; [s1, s2, s3])", starRef4OptOptOptOpt("s1", "s2", *["s3"]));
-    // TODO ceylon-spec#752 eq("star(; [s1, s2, s3])", starRef4OptOptOptOpt("s1", "s2", "s3", *[]));
+    eq("star(; [s1, s2, s3])", starRef4OptOptOptOpt("s1", *["s2", "s3"]));
+    eq("star(; [s1, s2, s3])", starRef4OptOptOptOpt("s1", "s2", *["s3"]));
+    eq("star(; [s1, s2, s3])", starRef4OptOptOptOpt("s1", "s2", "s3", *[]));
     eq("star(; [s1, s2, s3, s4])", starRef4OptOptOptOpt(*["s1", "s2", "s3", "s4"]));
     eq("star(; [s1, s2, s3, s4])", starRef4OptOptOptOpt("s1", *["s2", "s3", "s4"]));
     eq("star(; [s1, s2, s3, s4])", starRef4OptOptOptOpt("s1", "s2", *["s3", "s4"]));
@@ -834,7 +834,7 @@ void bug1155_plus(Bug1155 b) {
     eq("plus(; [s1, s2])", plusRef3OptOpt("s1", *["s2"]));
     eq("plus(; [s1])", plusRef3OptOpt("s1", *[]));
     eq("plus(; [s1, s2, s3])", plusRef3OptOpt("s1", "s2", *["s3"]));
-    // TODO ceylon-spec#752 eq("plus(; [s1, s2])", plusRef3OptOpt("s1", "s2", *[]));
+    eq("plus(; [s1, s2])", plusRef3OptOpt("s1", "s2", *[]));
     eq("plus(; [s1])", plusRef3OptOpt("s1", *[]));
     
     
@@ -898,7 +898,7 @@ void bug1155_plus(Bug1155 b) {
     eq("plus(; [s1])", plusRef3OptOptStar("s1", *[]));
     eq("plus(; [s1, s2])", plusRef3OptOptStar(*["s1", "s2"]));
     eq("plus(; [s1, s2])", plusRef3OptOptStar("s1", *["s2"]));
-    // TODO ceylon-spec#752 eq("plus(; [s1, s2])", plusRef3OptOptStar("s1", "s2", *[]));
+    eq("plus(; [s1, s2])", plusRef3OptOptStar("s1", "s2", *[]));
     eq("plus(; [s1, s2, s3])", plusRef3OptOptStar(*["s1", "s2", "s3"]));
     eq("plus(; [s1, s2, s3])", plusRef3OptOptStar("s1", *["s2", "s3"]));
     eq("plus(; [s1, s2, s3])", plusRef3OptOptStar("s1", "s2", *["s3"]));
@@ -961,7 +961,7 @@ void bug1155_plus(Bug1155 b) {
     eq("plus(; [s1, s2, s3])", plusRef4OptOpt(*["s1", "s2", "s3"]));
     eq("plus(; [s1, s2, s3])", plusRef4OptOpt("s1", *["s2", "s3"]));
     eq("plus(; [s1, s2, s3])", plusRef4OptOpt("s1", "s2", *["s3"]));
-    // TODO ceylon-spec#752 eq("plus(; [s1, s2, s3])", plusRef4OptOpt("s1", "s2", "s3", *[]));
+    eq("plus(; [s1, s2, s3])", plusRef4OptOpt("s1", "s2", "s3", *[]));
     eq("plus(; [s1, s2, s3, s4])", plusRef4OptOpt(*["s1", "s2", "s3", "s4"]));
     eq("plus(; [s1, s2, s3, s4])", plusRef4OptOpt("s1", *["s2", "s3", "s4"]));
     eq("plus(; [s1, s2, s3, s4])", plusRef4OptOpt("s1", "s2", *["s3", "s4"]));
@@ -978,11 +978,11 @@ void bug1155_plus(Bug1155 b) {
     eq("plus(; [s1])", plusRef4OptOptOpt("s1", *[]));
     eq("plus(; [s1, s2])", plusRef4OptOptOpt(*["s1", "s2"]));
     eq("plus(; [s1, s2])", plusRef4OptOptOpt("s1", *["s2"]));
-    // TODO ceylon-spec#752 eq("plus(; [s1, s2])", plusRef4OptOptOpt("s1", "s2", *[]));
+    eq("plus(; [s1, s2])", plusRef4OptOptOpt("s1", "s2", *[]));
     eq("plus(; [s1, s2, s3])", plusRef4OptOptOpt(*["s1", "s2", "s3"]));
     eq("plus(; [s1, s2, s3])", plusRef4OptOptOpt("s1", *["s2", "s3"]));
-    // TODO ceylon-spec#752 eq("plus(; [s1, s2, s3])", plusRef4OptOptOpt("s1", "s2", *["s3"]));
-    // TODO ceylon-spec#752 eq("plus(; [s1, s2, s3])", plusRef4OptOptOpt("s1", "s2", "s3", *[]));
+    eq("plus(; [s1, s2, s3])", plusRef4OptOptOpt("s1", "s2", *["s3"]));
+    eq("plus(; [s1, s2, s3])", plusRef4OptOptOpt("s1", "s2", "s3", *[]));
     eq("plus(; [s1, s2, s3, s4])", plusRef4OptOptOpt(*["s1", "s2", "s3", "s4"]));
     eq("plus(; [s1, s2, s3, s4])", plusRef4OptOptOpt("s1", *["s2", "s3", "s4"]));
     eq("plus(; [s1, s2, s3, s4])", plusRef4OptOptOpt("s1", "s2", *["s3", "s4"]));
@@ -1000,7 +1000,7 @@ void bug1155_unaryStar(Bug1155 b) {
     }
     
     // A String(String, String*) is a String(String+)
-    /* TODO This should be allowed!
+    /* TODO This should be allowed! #765
     String(String+) starRef0Plus = b.unaryStar;
     eq("unaryStar(; [s1])", starRef0Plus("s1"));
     eq("unaryStar(; [s1, s2])", starRef0Plus("s1", "s2"));
@@ -1145,7 +1145,7 @@ void bug1155_unaryStar(Bug1155 b) {
     eq("unaryStar(s1; [s2])", starRef3OptOpt("s1", *["s2"]));
     eq("unaryStar(s1; {})", starRef3OptOpt("s1", *[]));
     eq("unaryStar(s1; [s2, s3])", starRef3OptOpt("s1", "s2", *["s3"]));
-    // TODO ceylon-spec#752 eq("unaryStar(; [s1, s2])", starRef3OptOpt("s1", "s2", *[]));
+    eq("unaryStar(s1; [s2])", starRef3OptOpt("s1", "s2", *[]));
     eq("unaryStar(s1; {})", starRef3OptOpt("s1", *[]));
     
     // A String(String, String*) is a String(String, String, String, String*)
@@ -1208,7 +1208,7 @@ void bug1155_unaryStar(Bug1155 b) {
     eq("unaryStar(s1; {})", starRef3OptOptStar("s1", *[]));
     eq("unaryStar(s1; [s2])", starRef3OptOptStar(*["s1", "s2"]));
     eq("unaryStar(s1; [s2])", starRef3OptOptStar("s1", *["s2"]));
-    // TODO ceylon-spec#752 eq("unaryStar(s1; [s2])", starRef3OptOptStar("s1", "s2", *[]));
+    eq("unaryStar(s1; [s2])", starRef3OptOptStar("s1", "s2", *[]));
     eq("unaryStar(s1; [s2, s3])", starRef3OptOptStar(*["s1", "s2", "s3"]));
     eq("unaryStar(s1; [s2, s3])", starRef3OptOptStar("s1", *["s2", "s3"]));
     eq("unaryStar(s1; [s2, s3])", starRef3OptOptStar("s1", "s2", *["s3"]));
@@ -1271,7 +1271,7 @@ void bug1155_unaryStar(Bug1155 b) {
     eq("unaryStar(s1; [s2, s3])", starRef4OptOpt(*["s1", "s2", "s3"]));
     eq("unaryStar(s1; [s2, s3])", starRef4OptOpt("s1", *["s2", "s3"]));
     eq("unaryStar(s1; [s2, s3])", starRef4OptOpt("s1", "s2", *["s3"]));
-    // TODO ceylon-spec#752 eq("unaryStar(s1; [s2, s3])", starRef4OptOpt("s1", "s2", "s3", *[]));
+    eq("unaryStar(s1; [s2, s3])", starRef4OptOpt("s1", "s2", "s3", *[]));
     eq("unaryStar(s1; [s2, s3, s4])", starRef4OptOpt(*["s1", "s2", "s3", "s4"]));
     eq("unaryStar(s1; [s2, s3, s4])", starRef4OptOpt("s1", *["s2", "s3", "s4"]));
     eq("unaryStar(s1; [s2, s3, s4])", starRef4OptOpt("s1", "s2", *["s3", "s4"]));
@@ -1288,11 +1288,11 @@ void bug1155_unaryStar(Bug1155 b) {
     eq("unaryStar(s1; {})", starRef4OptOptOpt("s1", *[]));
     eq("unaryStar(s1; [s2])", starRef4OptOptOpt(*["s1", "s2"]));
     eq("unaryStar(s1; [s2])", starRef4OptOptOpt("s1", *["s2"]));
-    // TODO ceylon-spec#752 eq("unaryStar(s1; [s2])", starRef4OptOptOpt("s1", "s2", *[]));
+    eq("unaryStar(s1; [s2])", starRef4OptOptOpt("s1", "s2", *[]));
     eq("unaryStar(s1; [s2, s3])", starRef4OptOptOpt(*["s1", "s2", "s3"]));
     eq("unaryStar(s1; [s2, s3])", starRef4OptOptOpt("s1", *["s2", "s3"]));
-    // TODO ceylon-spec#752 eq("unaryStar(s1; [s2, s3])", starRef4OptOptOpt("s1", "s2", *["s3"]));
-    // TODO ceylon-spec#752 eq("unaryStar(s1; [s2, s3])", starRef4OptOptOpt("s1", "s2", "s3", *[]));
+    eq("unaryStar(s1; [s2, s3])", starRef4OptOptOpt("s1", "s2", *["s3"]));
+    eq("unaryStar(s1; [s2, s3])", starRef4OptOptOpt("s1", "s2", "s3", *[]));
     eq("unaryStar(s1; [s2, s3, s4])", starRef4OptOptOpt(*["s1", "s2", "s3", "s4"]));
     eq("unaryStar(s1; [s2, s3, s4])", starRef4OptOptOpt("s1", *["s2", "s3", "s4"]));
     eq("unaryStar(s1; [s2, s3, s4])", starRef4OptOptOpt("s1", "s2", *["s3", "s4"]));
@@ -1475,7 +1475,7 @@ void bug1155_unaryPlus(Bug1155 b) {
     eq("unaryPlus(s1; [s2, s3])", starRef4OptOpt(*["s1", "s2", "s3"]));
     eq("unaryPlus(s1; [s2, s3])", starRef4OptOpt("s1", *["s2", "s3"]));
     eq("unaryPlus(s1; [s2, s3])", starRef4OptOpt("s1", "s2", *["s3"]));
-    // TODO ceylon-spec#752 eq("unaryPlus(s1; [s2, s3])", starRef4OptOpt("s1", "s2", "s3", *[]));
+    eq("unaryPlus(s1; [s2, s3])", starRef4OptOpt("s1", "s2", "s3", *[]));
     eq("unaryPlus(s1; [s2, s3, s4])", starRef4OptOpt(*["s1", "s2", "s3", "s4"]));
     eq("unaryPlus(s1; [s2, s3, s4])", starRef4OptOpt("s1", *["s2", "s3", "s4"]));
     eq("unaryPlus(s1; [s2, s3, s4])", starRef4OptOpt("s1", "s2", *["s3", "s4"]));
@@ -1492,7 +1492,7 @@ void bug1155_binaryStar(Bug1155 b) {
     }
     
     // A String(String, String, String*) is a String(String, String+)
-    /* TODO This should be true!
+    /* TODO This should be true! #765
     String(String, String+) starRef1Plus = b.binaryStar;
     eq("binaryStar(s1, s2; {})", starRef1Plus("s1", "s2"));
     eq("binaryStar(s1, s2; [s3])", starRef1Plus("s1", "s2", "s3"));
@@ -1659,7 +1659,7 @@ void bug1155_binaryStar(Bug1155 b) {
     eq("binaryStar(s1, s2; [s3])", starRef4OptOpt(*["s1", "s2", "s3"]));
     eq("binaryStar(s1, s2; [s3])", starRef4OptOpt("s1", *["s2", "s3"]));
     eq("binaryStar(s1, s2; [s3])", starRef4OptOpt("s1", "s2", *["s3"]));
-    // TODO ceylon-spec#752 eq("binaryStar(s1, s2; [s3])", starRef4OptOpt("s1", "s2", "s3", *[]));
+    eq("binaryStar(s1, s2; [s3])", starRef4OptOpt("s1", "s2", "s3", *[]));
     eq("binaryStar(s1, s2; [s3, s4])", starRef4OptOpt(*["s1", "s2", "s3", "s4"]));
     eq("binaryStar(s1, s2; [s3, s4])", starRef4OptOpt("s1", *["s2", "s3", "s4"]));
     eq("binaryStar(s1, s2; [s3, s4])", starRef4OptOpt("s1", "s2", *["s3", "s4"]));
