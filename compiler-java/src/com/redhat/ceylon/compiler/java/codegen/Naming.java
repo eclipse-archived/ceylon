@@ -1640,6 +1640,10 @@ public class Naming implements LocalId {
         return "$call$typed";
     }
     
+    public static String getCallableVariadicMethodName() {
+        return "$call$variadic";
+    }
+    
     public static String getCallableTempVarName(Parameter param){
         return "$$" + param.getName();
     }
