@@ -15,14 +15,6 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @ValueType
 public abstract class Boolean implements ReifiedType {
 
-    static {
-        Util.setLanguageAccess(new $LanguageAccess() {
-            public <Element> ArraySequence<Element> newArraySequence(@Ignore TypeDescriptor $reifiedElement, Element[] array, long first, long length, boolean copy) {
-                return new ArraySequence($reifiedElement, array, first, length, copy);
-            }
-        });
-    }
-    
     @Ignore
     public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Boolean.class);
 

@@ -189,7 +189,6 @@
             <files>
                 <include name="**/*.ceylon"/>
                 <include name="com/redhat/**/*.java"/>
-                <include name="ceylon/language/$LanguageAccess.java"/>
                 <!-- We swap the nativily implemented files for their Java counter parts -->
                 <exclude name="ceylon/language/Array.ceylon"/>
                 <include name="ceylon/language/Array.java"/>

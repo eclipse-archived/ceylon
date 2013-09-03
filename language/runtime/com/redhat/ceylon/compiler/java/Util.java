@@ -6,10 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ceylon.language.$LanguageAccess;
 import ceylon.language.ArraySequence;
 import ceylon.language.AssertionException;
-import ceylon.language.Boolean;
 import ceylon.language.Iterable;
 import ceylon.language.Iterator;
 import ceylon.language.Ranged;
@@ -30,16 +28,6 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 public class Util {
-    
-    static $LanguageAccess langAccess;
-    
-    public static void setLanguageAccess($LanguageAccess $LanguageAccess) {
-        langAccess = $LanguageAccess;
-    }
-    
-    static {
-        Boolean.instance(true);
-    }
     
     public static String declClassName(String name) {
         return name.replace("::", ".");
@@ -670,7 +658,7 @@ public class Util {
      * of {@code elements} starting from {@code state} with the elements of
      * {@code rest}: <code> {*elements[start:length], *rest}</code>. 
      * 
-     * <strong>This method does not copy {@code elements}</strong>
+     * <strong>This method does not copy {@code elements} unless it has to</strong>
      */
     public static <T> Sequential<? extends T> sequentialInstance(
             TypeDescriptor $reifiedT,  
@@ -684,7 +672,7 @@ public class Util {
         }
         // elements is not empty
         if(rest.getEmpty()) {
-            return langAccess.newArraySequence($reifiedT, elements, start, length, copy);
+            return new ArraySequence($reifiedT, elements, start, length, copy);
         }
         // we have both, let's find the total size
         int total = (int) (rest.getSize() + length);
