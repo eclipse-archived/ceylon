@@ -216,7 +216,11 @@ public class LinkRenderer {
 
     private String processModule(Module module) {
         String moduleUrl = getUrl(module, anchor);
-        return buildLinkElement(moduleUrl, module.getNameAsString(), "Go to module");
+        if (moduleUrl != null) {
+            return buildLinkElement(moduleUrl, module.getNameAsString(), "Go to module");
+        } else {
+            return module.getNameAsString();
+        }
     }
     
     private String processPackage(Package pkg) {

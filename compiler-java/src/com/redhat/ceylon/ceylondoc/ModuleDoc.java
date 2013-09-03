@@ -24,10 +24,15 @@ import static com.redhat.ceylon.ceylondoc.Util.getDoc;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
+import com.redhat.ceylon.ceylondoc.Util.ModuleImportComparatorByName;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 
 public class ModuleDoc extends CeylonDoc {
@@ -47,6 +52,7 @@ public class ModuleDoc extends CeylonDoc {
         open("div class='container-fluid'");
         writeDescription();
         writePackagesTable();
+        writeDependencies();
         close("div");
 
         for (Package pkg : module.getPackages()) {
@@ -121,6 +127,63 @@ public class ModuleDoc extends CeylonDoc {
         write(Util.getDocFirstLine(pkg, linkRenderer()));
         close("td");
 
+        close("tr");
+    }
+    
+    private void writeDependencies() throws IOException {
+        List<ModuleImport> moduleImports = new ArrayList<ModuleImport>(module.getImports());
+
+        Iterator<ModuleImport> moduleImportIterator = moduleImports.listIterator();
+        while (moduleImportIterator.hasNext()) {
+            ModuleImport moduleImport = moduleImportIterator.next();
+            if (moduleImport.getModule().getNameAsString().equals("ceylon.language")) {
+                moduleImportIterator.remove();
+            }
+        }
+
+        Collections.sort(moduleImports, ModuleImportComparatorByName.INSTANCE);
+
+        if (!moduleImports.isEmpty()) {
+            openTable("section-dependencies", "Dependencies", 3, false);
+            for (ModuleImport moduleImport : moduleImports) {
+                writeDependencyRow(moduleImport);
+            }
+            closeTable();
+        }
+    }
+
+    private void writeDependencyRow(ModuleImport moduleImport) throws IOException {
+        StringBuilder tooltip = new StringBuilder();
+        if (moduleImport.isExport()) {
+            tooltip.append("shared ");
+        }
+        if (moduleImport.isOptional()) {
+            tooltip.append("optional ");
+        }
+        tooltip.append("import of module ");
+        tooltip.append(moduleImport.getModule().getNameAsString());
+        tooltip.append(" ");
+        tooltip.append(moduleImport.getModule().getVersion());
+        
+        open("tr");
+        
+        open("td class='shrink'");
+        open("span title='" + tooltip + "'");
+        writeIcon(moduleImport);
+        close("span");
+        linkRenderer().to(moduleImport.getModule()).write();
+        close("td");
+        
+        open("td class='shrink'");
+        write(moduleImport.getModule().getVersion());
+        close("td");
+        
+        open("td");
+        open("div class='description import-description'");
+        write(getDoc(moduleImport, linkRenderer()));
+        close("div");
+        close("td");
+        
         close("tr");
     }
 

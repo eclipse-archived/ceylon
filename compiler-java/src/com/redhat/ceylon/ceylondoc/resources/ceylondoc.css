@@ -223,8 +223,17 @@ div .type-alias-specifier {
     margin-left: 0;
 }
 
+td.shrink {
+	width: 1px;
+    white-space: nowrap;
+}
+
 td .description {
     padding: 0 30px;
+}
+
+td .import-description {
+    padding: 0 6px;
 }
 
 .description-collapsed {
@@ -506,6 +515,18 @@ td [class^='icon-'] {
 
 .icon-type-alias {
     background-position: -512px 0px;
+}
+
+.icon-module {
+	background-position: -528px 0px;
+}
+
+.icon-module-exported-decoration {
+    background-position: -544px -4px;
+}
+
+.icon-module-optional-decoration {
+    background-position: -560px -1px;
 }
 
 a:HOVER .icon-expand-all,

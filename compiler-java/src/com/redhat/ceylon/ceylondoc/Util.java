@@ -81,6 +81,10 @@ public class Util {
     public static String getDoc(Module module, LinkRenderer linkRenderer) {
         return wikiToHTML(getRawDoc(module.getAnnotations()), linkRenderer.useScope(module));
     }
+    
+    public static String getDoc(ModuleImport moduleImport, LinkRenderer linkRenderer) {
+        return wikiToHTML(getRawDoc(moduleImport.getAnnotations()), linkRenderer);
+    }
 
     public static String getDoc(Package pkg, LinkRenderer linkRenderer) {
         return wikiToHTML(getRawDoc(pkg.getAnnotations()), linkRenderer.useScope(pkg));
@@ -417,5 +421,15 @@ public class Util {
             return a.getDeclaration().getName().compareTo(b.getDeclaration().getName());
         }
     };
+    
+    public static class ModuleImportComparatorByName implements Comparator<ModuleImport> {
+
+        public static final ModuleImportComparatorByName INSTANCE = new ModuleImportComparatorByName();
+
+        @Override
+        public int compare(ModuleImport a, ModuleImport b) {
+            return a.getModule().getNameAsString().compareTo(b.getModule().getNameAsString());
+        }
+    };    
    
 }

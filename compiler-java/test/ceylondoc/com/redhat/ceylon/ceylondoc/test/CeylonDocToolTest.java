@@ -273,7 +273,7 @@ public class CeylonDocToolTest {
         }
     }    
     
-    private void externalLinks(String repoUrl, String... linkArgs) throws IOException {
+    private File externalLinks(String repoUrl, String... linkArgs) throws IOException {
         compile("test/ceylondoc", "com.redhat.ceylon.ceylondoc.test.modules.dependency.b");
         compile("test/ceylondoc", "com.redhat.ceylon.ceylondoc.test.modules.dependency.c");
 
@@ -292,6 +292,14 @@ public class CeylonDocToolTest {
 
         File destDir = getOutputDir(tool, module);
         assertExternalLinks(destDir, repoUrl);
+        return destDir;
+    }
+    
+    @Test
+    public void moduleDependencies() throws IOException {
+        String repoUrl = "http://acme.com/repo";
+        File destDir = externalLinks(repoUrl, "com.redhat=" + repoUrl);
+        assertModuleDependencies(destDir);
     }
 
     @Test
@@ -920,6 +928,15 @@ public class CeylonDocToolTest {
                 Pattern.compile("Nested Aliases"));
         assertMatchInFile(destDir, "StubClassWithAlias.type.html",
                 Pattern.compile("<td id='InnerAliasNumber' nowrap><i class='icon-type-alias'></i>InnerAliasNumber</td><td>"));        
+    }
+    
+    private void assertModuleDependencies(File destDir) throws IOException {
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("<table id='section-dependencies'"));        
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("<tr><td class='shrink'><span title='shared import of module com.redhat.ceylon.ceylondoc.test.modules.dependency.b 1.0'><i class='icon-module'><i class='icon-module-exported-decoration'></i></i></span><a class='link' href='http://acme.com/repo/com/redhat/ceylon/ceylondoc/test/modules/dependency/b/1.0/module-doc/index.html' title='Go to module'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b</a></td><td class='shrink'>1.0</td><td><div class='description import-description'></div></td></tr>"));        
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("<tr><td class='shrink'><span title='import of module com.redhat.ceylon.ceylondoc.test.modules.dependency.c 1.0'><i class='icon-module'></i></span><a class='link' href='http://acme.com/repo/com/redhat/ceylon/ceylondoc/test/modules/dependency/c/1.0/module-doc/index.html' title='Go to module'>com.redhat.ceylon.ceylondoc.test.modules.dependency.c</a></td><td class='shrink'>1.0</td><td><div class='description import-description'></div></td></tr>"));        
     }
 
     private void assertBug659ShowInheritedMembers(File destDir) throws IOException {

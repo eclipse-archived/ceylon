@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -385,12 +386,24 @@ public abstract class CeylonDoc extends Markup {
             }
         }
 
-        if( obj instanceof Package ) {
+        if (obj instanceof Package) {
             Package pkg = (Package) obj;
 
             icons.add("icon-package");
             if (!pkg.isShared()) {
                 icons.add("icon-decoration-local");
+            }
+        }
+        
+        if (obj instanceof ModuleImport) {
+            ModuleImport moduleImport = (ModuleImport) obj;
+
+            icons.add("icon-module");
+            if (moduleImport.isExport()) {
+                icons.add("icon-module-exported-decoration");
+            }
+            if (moduleImport.isOptional()) {
+                icons.add("icon-module-optional-decoration");
             }
         }
 
