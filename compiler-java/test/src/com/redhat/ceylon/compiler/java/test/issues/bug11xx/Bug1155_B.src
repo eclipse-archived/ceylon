@@ -1,0 +1,295 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
+
+class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1155_B() {
+    }
+    
+    public final void binaryStar(final .java.lang.String s) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                binaryStar(s, $ceylontmp$seq$0);
+            }
+            returning null;
+        );
+    }
+    
+    public final void binaryStar(final .java.lang.String s, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq) {
+    }
+    
+    public final void unaryPlus(final .ceylon.language.Sequence<? extends .ceylon.language.String> seq) {
+    }
+    
+    public final void binaryOptStar() {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$s$1 = binaryOptStar$s();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq$2 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                binaryOptStar($ceylontmp$s$1, $ceylontmp$seq$2);
+            }
+            returning null;
+        );
+    }
+    
+    public final .java.lang.String binaryOptStar$s() {
+        return "";
+    }
+    
+    public final void binaryOptStar(final .java.lang.String s) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq$3 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                binaryOptStar(s, $ceylontmp$seq$3);
+            }
+            returning null;
+        );
+    }
+    
+    public final void binaryOptStar(final .java.lang.String s, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq) {
+    }
+    
+    public final void mva_callsite() {
+        final .ceylon.language.Callable<? extends .java.lang.Object> binaryStarRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor)), "Anything(String, String*)", (short)1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .ceylon.language.Sequential $param$0) {
+                final .java.lang.String $$s = ((.ceylon.language.String)$param$0.get(.ceylon.language.Integer.instance(0))).toString();
+                final .ceylon.language.Sequential $$seq = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0.spanFrom(.ceylon.language.Integer.instance(1));
+                return $call$typed($$s, $$seq);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final .java.lang.String $$s = ((.ceylon.language.String)$param$0).toString();
+                final .ceylon.language.Sequential $$seq$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                return $call$typed($$s, $$seq$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
+                final .java.lang.String $$s = ((.ceylon.language.String)$param$0).toString();
+                final .ceylon.language.Sequential $$seq = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$1;
+                return $call$typed($$s, $$seq);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .java.lang.String $$s = ((.ceylon.language.String)$param$0).toString();
+                final .ceylon.language.Sequential $$seq$ = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{$param$1});
+                return $call$typed($$s, $$seq$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
+                final .java.lang.String $$s = ((.ceylon.language.String)$param$0).toString();
+                return $call$typed($$s, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, 1, new .java.lang.Object[]{(.ceylon.language.String)$param$1}, $param$2));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .java.lang.String $$s = ((.ceylon.language.String)$param$0).toString();
+                final .ceylon.language.Sequential $$seq$ = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
+                        $param$1,
+                        $param$2});
+                return $call$typed($$s, $$seq$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
+                final .java.lang.String $$s = ((.ceylon.language.String)$param$0).toString();
+                return $call$typed($$s, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, 2, new .java.lang.Object[]{
+                        (.ceylon.language.String)$param$1,
+                        (.ceylon.language.String)$param$2}, $param$3));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object... $param$0) {
+                final .java.lang.String $$s = ((.ceylon.language.String)$param$0[0]).toString();
+                return $call$typed($$s, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.$get()));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object... $param$0) {
+                final .java.lang.String $$s = ((.ceylon.language.String)$param$0[0]).toString();
+                return $call$typed($$s, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 1, $param$0));
+            }
+            
+            private .java.lang.Object $call$typed(.java.lang.String s, .ceylon.language.Sequential<? extends .ceylon.language.String> seq) {
+                return (
+                    let
+                    {
+                        binaryStar(s, seq);
+                    }
+                    returning null;
+                );
+            }
+        };
+        final .ceylon.language.Callable<? extends .java.lang.Object> unaryPlusRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .ceylon.language.String.$TypeDescriptor), "Anything(String+)", (short)0){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .ceylon.language.Sequential $param$0) {
+                final .ceylon.language.Sequence $$seq = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)$param$0;
+                return $call$typed($$seq);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequence $$seq$ = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{$param$0});
+                return $call$typed($$seq$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
+                return $call$typed((.ceylon.language.Sequence)$spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, 1, new .java.lang.Object[]{(.ceylon.language.String)$param$0}, $param$1));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Sequence $$seq$ = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1});
+                return $call$typed($$seq$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
+                return $call$typed((.ceylon.language.Sequence)$spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, 2, new .java.lang.Object[]{
+                        (.ceylon.language.String)$param$0,
+                        (.ceylon.language.String)$param$1}, $param$2));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .ceylon.language.Sequence $$seq$ = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1,
+                        $param$2});
+                return $call$typed($$seq$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
+                return $call$typed((.ceylon.language.Sequence)$spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, 3, new .java.lang.Object[]{
+                        (.ceylon.language.String)$param$0,
+                        (.ceylon.language.String)$param$1,
+                        (.ceylon.language.String)$param$2}, $param$3));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object... $param$0) {
+                return $call$typed((.ceylon.language.Sequence)$spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.$get()));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object... $param$0) {
+                return $call$typed((.ceylon.language.Sequence)$spreadVarargs(.ceylon.language.String.$TypeDescriptor, 1, $param$0));
+            }
+            
+            private .java.lang.Object $call$typed(.ceylon.language.Sequence<? extends .ceylon.language.String> seq) {
+                return (
+                    let
+                    {
+                        unaryPlus(seq);
+                    }
+                    returning null;
+                );
+            }
+        };
+        final .ceylon.language.Callable<? extends .java.lang.Object> binaryOptStarRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor))), "Anything(String=, String*)", (short)1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                final .java.lang.String $$s = binaryOptStar$s();
+                final .ceylon.language.Sequential $$seq$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                return $call$typed($$s, $$seq$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .ceylon.language.Sequential $param$0) {
+                final .java.lang.String $$s = binaryOptStar$s();
+                return $call$typed($$s, (.ceylon.language.Sequential).ceylon.language.empty_.$get());
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final .java.lang.String $$s = ((.ceylon.language.String)$param$0).toString();
+                final .ceylon.language.Sequential $$seq$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                return $call$typed($$s, $$seq$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
+                final .java.lang.String $$s = ((.ceylon.language.String)$param$0).toString();
+                final .ceylon.language.Sequential $$seq = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$1;
+                return $call$typed($$s, $$seq);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .java.lang.String $$s = ((.ceylon.language.String)$param$0).toString();
+                final .ceylon.language.Sequential $$seq$ = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{$param$1});
+                return $call$typed($$s, $$seq$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
+                final .java.lang.String $$s = ((.ceylon.language.String)$param$0).toString();
+                return $call$typed($$s, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, 1, new .java.lang.Object[]{(.ceylon.language.String)$param$1}, $param$2));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .java.lang.String $$s = ((.ceylon.language.String)$param$0).toString();
+                final .ceylon.language.Sequential $$seq$ = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
+                        $param$1,
+                        $param$2});
+                return $call$typed($$s, $$seq$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
+                final .java.lang.String $$s = ((.ceylon.language.String)$param$0).toString();
+                return $call$typed($$s, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, 2, new .java.lang.Object[]{
+                        (.ceylon.language.String)$param$1,
+                        (.ceylon.language.String)$param$2}, $param$3));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object... $param$0) {
+                final .java.lang.String $$s = $param$0.length > 0 ? ((.ceylon.language.String)$param$0[0]).toString() : binaryOptStar$s();
+                return $call$typed($$s, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.$get()));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$variadic(final .java.lang.Object... $param$0) {
+                final .java.lang.String $$s = $param$0.length > 0 ? ((.ceylon.language.String)$param$0[0]).toString() : binaryOptStar$s();
+                return $call$typed($$s, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, $param$0));
+            }
+            
+            private .java.lang.Object $call$typed(.java.lang.String s, .ceylon.language.Sequential<? extends .ceylon.language.String> seq) {
+                return (
+                    let
+                    {
+                        binaryOptStar(s, seq);
+                    }
+                    returning null;
+                );
+            }
+        };
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1155_B();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1155_B.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1155_B.class);
+}
