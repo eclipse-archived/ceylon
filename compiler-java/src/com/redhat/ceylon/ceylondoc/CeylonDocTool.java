@@ -146,6 +146,7 @@ public class CeylonDocTool implements Tool {
     private TypeChecker typeChecker;
     private String encoding;
     private boolean offline;
+    private final Map<String, Boolean> moduleUrlAvailabilityCache = new HashMap<String, Boolean>();
 
     public CeylonDocTool() {
     }
@@ -542,7 +543,7 @@ public class CeylonDocTool implements Tool {
     private void documentModule(Module module) throws IOException {
         try {
             currentModule = module;
-            LinkRenderer.clearModuleUrlAvailabilityCache();
+            clearModuleUrlAvailabilityCache();
             
             doc(module);
             makeIndex(module);
@@ -568,6 +569,15 @@ public class CeylonDocTool implements Tool {
         }
         finally {
             currentModule = null;
+        }
+    }
+    
+    private void clearModuleUrlAvailabilityCache() {
+        String[] moduleUrls = moduleUrlAvailabilityCache.keySet().toArray(new String[] {});
+        for (String moduleUrl : moduleUrls) {
+            if (LinkRenderer.isFileProtocol(moduleUrl)) {
+                moduleUrlAvailabilityCache.remove(moduleUrl);
+            }
         }
     }
 
@@ -1004,6 +1014,10 @@ public class CeylonDocTool implements Tool {
     
     protected Logger getLogger() {
         return log;
+    }
+    
+    protected Map<String, Boolean> getModuleUrlAvailabilityCache() {
+        return moduleUrlAvailabilityCache;
     }
     
 }
