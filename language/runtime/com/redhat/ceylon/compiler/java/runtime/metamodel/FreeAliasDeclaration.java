@@ -86,7 +86,7 @@ public class FreeAliasDeclaration extends FreeTopLevelOrMemberDeclaration
     @Ignore
     @Override
     public Type<? extends Object> apply() {
-        return apply(apply$types());
+        return apply((Sequential)empty_.$get());
     }
 
     @Override
@@ -99,14 +99,8 @@ public class FreeAliasDeclaration extends FreeTopLevelOrMemberDeclaration
 
     @Override
     @Ignore
-    public Sequential<? extends Type<? extends Object>> apply$types() {
-        return (Sequential)empty_.$get();
-    }
-
-    @Override
-    @Ignore
     public Type<? extends Object> bindAndApply(Object instance) {
-        return bindAndApply(instance, bindAndApply$types(instance));
+        return bindAndApply(instance, (Sequential)empty_.$get());
     }
 
     @Override
@@ -120,12 +114,6 @@ public class FreeAliasDeclaration extends FreeTopLevelOrMemberDeclaration
         com.redhat.ceylon.compiler.typechecker.model.ProducedType appliedType = declaration.getProducedReference(null, producedTypes).getType();
         // FIXME: this is wrong because it does not bind the instance
         return Metamodel.getAppliedMetamodel(appliedType);
-    }
-
-    @Override
-    @Ignore
-    public Sequential<? extends Type<? extends Object>> bindAndApply$types(Object instance) {
-        return (Sequential)empty_.$get();
     }
 
     @Override
