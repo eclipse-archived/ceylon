@@ -1383,7 +1383,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (op.getTerm() instanceof Tree.NaturalLiteral) {
             // To cope with -9223372036854775808 we can't just parse the 
             // number separately from the sign
-            return integerLiteral(op.getTerm(), "-" + op.getTerm().getText());
+            String lit = op.getTerm().getText();
+            if (!lit.startsWith("#") && !lit.startsWith("$")) { 
+                return integerLiteral(op.getTerm(), "-" + lit);
+            }
         }
         return transformOverridableUnaryOperator(op, op.getUnit().getInvertableDeclaration());
     }
