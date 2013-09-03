@@ -140,6 +140,11 @@ public class AnnotationsTest extends CompilerTest {
         compareWithJavaSource("EnumeratedReference2");
     }
     @Test
+    @Ignore("M6")
+    public void testEnumeratedReferenceAsDefaulted(){
+        compareWithJavaSource("EnumeratedReferenceAsDefaulted");
+    }
+    @Test
     public void testAnnotationClassQuoting(){
         compareWithJavaSource("AnnotationClassQuoting");
     }
@@ -195,3 +200,21 @@ public class AnnotationsTest extends CompilerTest {
         compareWithJavaSource("RecursiveConstructors");
     }
  }
+/*
+class Bar {
+}
+class one extends Bar {}
+class two extends Bar {}
+    
+
+@interface Foo {
+    Class<? extends Bar> value();
+}
+
+class Baz {
+    final static Class<? extends Bar> BAR = one.class;
+}
+
+@Foo(Baz.BAR)
+class X {}
+*/

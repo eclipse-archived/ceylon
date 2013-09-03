@@ -1,0 +1,120 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+public @interface EnumeratedReference_X$annotation {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y$annotation b();
+}
+@.ceylon.language.Shared$annotation
+@.ceylon.language.Final$annotation
+@.ceylon.language.Annotation$annotation
+public final class EnumeratedReference_X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.Annotation<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X> {
+    
+    public EnumeratedReference_X(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X$annotation anno) {
+        this(new .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y(anno.b()));
+    }
+    
+    public EnumeratedReference_X(final .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y b) {
+        this.b = b;
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X.$TypeDescriptor, this);
+    }
+    private final .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y b;
+    
+    @.ceylon.language.Shared$annotation
+    public final .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y getB() {
+        return b;
+    }
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X> $ceylon$language$model$Annotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+public @interface EnumeratedReference_Y$annotation {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.EnumerationReference
+    public abstract .java.lang.Class<? extends .ceylon.language.Comparison> e();
+}
+@.ceylon.language.Shared$annotation
+@.ceylon.language.Final$annotation
+@.ceylon.language.Annotation$annotation
+public final class EnumeratedReference_Y implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.Annotation<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y> {
+    
+    public EnumeratedReference_Y(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y$annotation anno) {
+        this(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.parseEnumerationReference(anno.e()));
+    }
+    
+    public EnumeratedReference_Y(final .ceylon.language.Comparison e) {
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y.$TypeDescriptor, this);
+    }
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y> $ceylon$language$model$Annotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X.class)
+final class enumeratedReference_z_ {
+    
+    private enumeratedReference_z_() {
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X enumeratedReference_z() {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y $ceylontmp$b$0 = .com.redhat.ceylon.compiler.java.test.annotations.enumeratedReference_z_.enumeratedReference_z$b();
+            }
+            returning enumeratedReference_z($ceylontmp$b$0);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+            arguments = {-32768},
+            primary = .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y.class)
+    static final .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y enumeratedReference_z$b() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y(.ceylon.language.smaller_.$get());
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    static .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X enumeratedReference_z(final .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y b) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X(b);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.enumeratedReference_z_.enumeratedReference_z();
+    }
+}
+public final class enumeratedReference_callsite_ {
+    
+    private enumeratedReference_callsite_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X$annotation(b = @.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y$annotation(e = .com.redhat.ceylon.compiler.java.test.annotations.enumeratedReference_z_.default$b$arg$e))
+    @.ceylon.language.Shared$annotation
+    public static void enumeratedReference_callsite() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.enumeratedReference_callsite_.enumeratedReference_callsite();
+    }
+}
