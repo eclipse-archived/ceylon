@@ -185,8 +185,8 @@ public class ExpressionTest extends CompilerTest {
                 new CompilerError(28, "Literal so large it is indistinguishable from infinity"),
                 new CompilerError(29, "Literal so small it is indistinguishable from zero"),
                 new CompilerError(30, "Literal so small it is indistinguishable from zero"),
-                new CompilerError(34, "Invalid hexadecimal literal (must be unsigned and fit in 64 bits)"),
-                new CompilerError(36, "Invalid binary literal (must be unsigned and fit in 64 bits)")
+                new CompilerError(34, "Invalid hexadecimal literal: more than 64 bits"),
+                new CompilerError(36, "Invalid binary literal: more than 64 bits")
         );
         assertErrors("literal/NumericLiteralParserErrors",
                 new CompilerError(23, "incorrect syntax: no viable alternative at character '-'"),
