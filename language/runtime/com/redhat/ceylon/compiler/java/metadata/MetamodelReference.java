@@ -7,7 +7,14 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation for methods of annotation types which although encoded as a String
- * are actually a metamodel reference. 
+ * are actually a metamodel reference.
+ * <pre>
+ * @interface Foo$annotation {
+ *
+ *     @.com.redhat.ceylon.compiler.java.metadata.MetamodelReference
+ *     public abstract .java.lang.String mmr();
+ * }
+ * </pre>
  * @author tom
  */
 @Retention(RetentionPolicy.RUNTIME)
