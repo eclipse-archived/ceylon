@@ -311,7 +311,9 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
                     && isAnnotationConstructor(bme.getDeclaration())) {
                 Method ctor = (Method)bme.getDeclaration();
                 instantiation.setPrimary(ctor);
-                instantiation.getConstructorParameters().addAll(((AnnotationInvocation)ctor.getAnnotationConstructor()).getConstructorParameters());
+                if (ctor.getAnnotationConstructor() != null) {
+                    instantiation.getConstructorParameters().addAll(((AnnotationInvocation)ctor.getAnnotationConstructor()).getConstructorParameters());
+                }
             } else if (checkingArguments || checkingDefaults) {
                 if (declaration instanceof Value && ((Value)declaration).isParameter()) {
                     Value constructorParameter = (Value)declaration;
