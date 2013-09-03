@@ -2351,13 +2351,13 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private List<ExpressionAndType> transformSpreadTupleArgument(
             SimpleInvocation invocation, CallBuilder callBuilder,
-            List<ExpressionAndType> result, int argIndex) {
+            List<ExpressionAndType> result, final int argIndex) {
         BoxingStrategy boxingStrategy;
         // Spread tuple Argument
         // invoking f(*args), where declared f(A a, B a) (last param not sequenced)
         final Expression tupleArgument = invocation.getArgumentExpression(argIndex);
-        int minimumTupleArguments = typeFact().getTupleMinimumLength(tupleArgument.getTypeModel());
-        boolean tupleUnbounded = typeFact().isTupleLengthUnbounded(tupleArgument.getTypeModel());
+        final int minimumTupleArguments = typeFact().getTupleMinimumLength(tupleArgument.getTypeModel());
+        final boolean tupleUnbounded = typeFact().isTupleLengthUnbounded(tupleArgument.getTypeModel());
         final ProducedType callableType = invocation.getPrimary().getTypeModel().getFullType();
         
         // Only evaluate the tuple expr once
@@ -2392,11 +2392,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         */
         
         int spreadArgIndex = argIndex;
-        int maxParameters = getNumParametersOfCallable(callableType);
+        final int maxParameters = getNumParametersOfCallable(callableType);
         boolean variadic = maxParameters > 0 && invocation.isParameterSequenced(maxParameters-1);
         // we extract from the tuple not more than we have tuple members, but even less than that if we don't
         // have enough parameters to put them in
-        int argumentsToExtract = Math.min(argIndex + minimumTupleArguments, variadic ? maxParameters - 1 : maxParameters); 
+        final int argumentsToExtract = Math.min(argIndex + minimumTupleArguments, variadic ? maxParameters - 1 : maxParameters); 
         for (; spreadArgIndex < argumentsToExtract; spreadArgIndex++) {
             boxingStrategy = invocation.getParameterBoxingStrategy(spreadArgIndex);
             ProducedType paramType = getParameterTypeOfCallable(callableType, spreadArgIndex);
@@ -2435,7 +2435,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             result = result.append(new ExpressionAndType(tupleElement, argType));
         } else if (variadic
                 && invocation.isIndirect()
-                && argumentsToExtract == minimumTupleArguments
+                && argumentsToExtract >= minimumTupleArguments
                 && !tupleUnbounded) {
             result = result.append(new ExpressionAndType(makeEmptyAsSequential(true), makeJavaType(typeFact().getSequenceType(typeFact().getAnythingDeclaration().getType()), JT_RAW)));
         }
