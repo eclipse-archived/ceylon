@@ -31,6 +31,7 @@ shared void run() {
     callables();
     print("Miscellaneous");
     misc();
+    switches();
     testSort();
     print("Array/Collection");
     testArrays();
@@ -42,6 +43,7 @@ shared void run() {
     comprehensions();
     print("Process");
     testProcess();
+    print("Tuples");
     tuples();
     testCurries();
     print("Metamodel");
