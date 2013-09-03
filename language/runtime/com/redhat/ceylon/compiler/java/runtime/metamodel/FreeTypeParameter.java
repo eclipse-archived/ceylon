@@ -1,10 +1,14 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import ceylon.language.Sequential;
+import ceylon.language.empty_;
 import ceylon.language.model.declaration.Declaration$impl;
+import ceylon.language.model.declaration.OpenType;
 import ceylon.language.model.declaration.TypeParameter$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -18,6 +22,14 @@ public class FreeTypeParameter
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeTypeParameter.class);
     
     TypeParameter declaration;
+
+    private volatile boolean initialised = false;
+
+    private OpenType defaultValue;
+
+    private Sequential<? extends OpenType> enumeratedBounds;
+
+    private Sequential<? extends OpenType> upperBounds;
     
     @Override
     public String toString() {
@@ -27,6 +39,30 @@ public class FreeTypeParameter
     
     public FreeTypeParameter(com.redhat.ceylon.compiler.typechecker.model.TypeParameter declaration) {
         this.declaration = declaration;
+    }
+
+    protected final void checkInit(){
+        if(!initialised ){
+            // FIXME: lock on model loader?
+            synchronized(this){
+                if(!initialised){
+                    init();
+                    initialised = true;
+                }
+            }
+        }
+    }
+
+    private void init() {
+        if(declaration.isDefaulted())
+            defaultValue = Metamodel.getMetamodel(declaration.getDefaultTypeArgument());
+        else
+            defaultValue = null;
+        if(declaration.getCaseTypes() != null)
+            enumeratedBounds = Metamodel.getMetamodelSequential(declaration.getCaseTypes());
+        else
+            enumeratedBounds = (Sequential)empty_.$get();
+        upperBounds = Metamodel.getMetamodelSequential(declaration.getSatisfiedTypes());
     }
 
     @Override
@@ -52,5 +88,46 @@ public class FreeTypeParameter
     @Override
     public String getName() {
         return declaration.getName();
+    }
+    
+    @Override
+    public boolean getDefaulted(){
+        return declaration.isDefaulted();
+    }
+
+    @Override
+    public boolean getInvariant(){
+        return declaration.isInvariant();
+    }
+
+    @Override
+    public boolean getCovariant(){
+        return declaration.isCovariant();
+    }
+
+    @Override
+    public boolean getContravariant(){
+        return declaration.isContravariant();
+    }
+
+    @TypeInfo("ceylon.language::Null|ceylon.language.model.declaration::OpenType")
+    @Override
+    public ceylon.language.model.declaration.OpenType getDefaultValue(){
+        checkInit();
+        return defaultValue;
+    }
+
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::OpenType>")
+    @Override
+    public ceylon.language.Sequential<? extends ceylon.language.model.declaration.OpenType> getUpperBounds(){
+        checkInit();
+        return upperBounds;
+    }
+
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::OpenType>")
+    @Override
+    public ceylon.language.Sequential<? extends ceylon.language.model.declaration.OpenType> getEnumeratedBounds(){
+        checkInit();
+        return enumeratedBounds;
     }
 }

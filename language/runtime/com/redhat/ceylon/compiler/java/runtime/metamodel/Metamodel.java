@@ -14,6 +14,7 @@ import ceylon.language.Iterator;
 import ceylon.language.Null;
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
+import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.model.Annotated;
 import ceylon.language.model.ClassOrInterface;
@@ -230,6 +231,17 @@ public class Metamodel {
             return ceylon.language.model.declaration.nothingType_.$get();
         }
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
+    }
+
+    public static Sequential<? extends ceylon.language.model.declaration.OpenType> getMetamodelSequential(List<ProducedType> types) {
+        if(types.isEmpty())
+            return (Sequential)empty_.$get();
+        ceylon.language.model.declaration.OpenType[] ret = new ceylon.language.model.declaration.OpenType[types.size()];
+        int i=0;
+        for(ProducedType pt : types){
+            ret[i++] = Metamodel.getMetamodel(pt);
+        }
+        return (Sequential)Util.sequentialInstance(ceylon.language.model.declaration.OpenType.$TypeDescriptor, ret);
     }
 
     public static ceylon.language.model.Type getAppliedMetamodel(ProducedType pt) {
@@ -713,5 +725,4 @@ public class Metamodel {
         }
         return null;
     }
-    
 }
