@@ -1,0 +1,35 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
+
+final class bug1185_ {
+    
+    private bug1185_() {
+    }
+    
+    static void bug1185() {
+        if (-1L == -1L) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-$1 == -1"));
+        if (-1L == -1L) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-#1 == -1"));
+        if (-9223372036854775808L == 9223372036854775807L + 1L) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-9223372036854775808 == 9223372036854775807+1"));
+        if (-9223372036854775808L == -9223372036854775808L) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-9223372036854775808 ==  #80_00_00_00_00_00_00_00"));
+        if (-9223372036854775808L == -9223372036854775808L) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "#80_00_00_00_00_00_00_00 == $1000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000"));
+        if (-1L == -1L) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-1 == #ff_ff_ff_ff_ff_ff_ff_ff"));
+        if (-1L == -1L) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "#ff_ff_ff_ff_ff_ff_ff_ff == $1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111"));
+        if (--9223372036854775808L == -9223372036854775808L) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-(-9223372036854775808) == -9223372036854775808"));
+        if (--1L == 1L) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-#ff_ff_ff_ff_ff_ff_ff_ff == 1"));
+        if (--1L == 1L) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-#ff_ff_ff_ff_ff_ff_ff_ff == 1"));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1185_.bug1185();
+    }
+}

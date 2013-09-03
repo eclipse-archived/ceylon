@@ -316,6 +316,18 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     }
     
     @Test
+    public void testBug1185() {
+        compareWithJavaSource("bug11xx/Bug1185");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1185");
+        assertErrors("bug11xx/Bug1185_errors",
+                new CompilerError(3, "Literal outside representable range"),
+                new CompilerError(4, "Literal outside representable range"),
+                new CompilerError(5, "Invalid hexadecimal literal: more than 64 bits"),
+                new CompilerError(6, "Invalid hexadecimal literal: more than 64 bits")
+        );
+    }
+    
+    @Test
     public void testBug1188() {
         compareWithJavaSource("bug11xx/Bug1188");
     }
