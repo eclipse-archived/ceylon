@@ -21,9 +21,11 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -49,7 +51,11 @@ class AnnotationInvocationVisitor extends Visitor {
 
     public static Class annoClass(Tree.InvocationExpression invocation) {
         Declaration declaration = ((Tree.BaseMemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
+        Set<Declaration> ctors = new HashSet<Declaration>();
         while (declaration instanceof Method) {
+            if (!ctors.add(declaration)) {
+                throw Assert.fail("Recursive annotation constructor", invocation);
+            }
             declaration = ((AnnotationInvocation)((Method)declaration).getAnnotationConstructor()).getPrimary();
         } 
         
