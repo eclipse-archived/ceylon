@@ -538,6 +538,40 @@ void checkAliases(){
             secondUnion.declaration.name == "String");
 }
 
+void checkTypeParameters(){
+    value tpTest = `class TypeParameterTest`;
+    assert(tpTest.typeParameterDeclarations.size == 3);
+    
+    assert(exists tp1 = tpTest.typeParameterDeclarations[0]);
+    assert(tp1.name == "P");
+    assert(tp1.invariant, !tp1.covariant, !tp1.contravariant);
+    assert(!tp1.defaulted, !tp1.defaultValue exists);
+
+    assert(tp1.enumeratedBounds.size == 2);
+    assert(is OpenParameterisedType<ClassOrInterfaceDeclaration> enumB1 = tp1.enumeratedBounds[0], enumB1.declaration.name == "TP1");
+    assert(is OpenParameterisedType<ClassOrInterfaceDeclaration> enumB2 = tp1.enumeratedBounds[1], enumB2.declaration.name == "TP2");
+
+    assert(tp1.upperBounds.size == 2);
+    assert(is OpenParameterisedType<ClassOrInterfaceDeclaration> upperB1 = tp1.upperBounds[0], upperB1.declaration.name == "TPA");
+    assert(is OpenParameterisedType<ClassOrInterfaceDeclaration> upperB2 = tp1.upperBounds[1], upperB2.declaration.name == "TPB");
+
+    assert(exists tp2 = tpTest.typeParameterDeclarations[1]);
+    assert(tp2.name == "T");
+    assert(!tp2.invariant, !tp2.covariant, tp2.contravariant);
+    assert(tp2.defaulted, is OpenTypeVariable tv2 = tp2.defaultValue, tv2.declaration.name == "P");
+
+    assert(tp2.enumeratedBounds.size == 0);
+    assert(tp2.upperBounds.size == 0);
+
+    assert(exists tp3 = tpTest.typeParameterDeclarations[2]);
+    assert(tp3.name == "V");
+    assert(!tp3.invariant, tp3.covariant, !tp3.contravariant);
+    assert(tp3.defaulted, is OpenParameterisedType<ClassOrInterfaceDeclaration> tv3 = tp3.defaultValue, tv3.declaration.name == "Integer");
+
+    assert(tp3.enumeratedBounds.size == 0);
+    assert(tp3.upperBounds.size == 0);
+}
+
 shared void runtime() {
     visitStringHierarchy();
 
@@ -564,6 +598,8 @@ shared void runtime() {
     checkObjectDeclaration();
 
     checkAliases();
+
+    checkTypeParameters();
     // FIXME: test members() wrt filtering
     // FIXME: test untyped class to applied class
 }

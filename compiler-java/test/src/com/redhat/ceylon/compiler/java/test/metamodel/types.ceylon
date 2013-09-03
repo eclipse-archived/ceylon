@@ -213,3 +213,12 @@ shared alias TypeAliasToClassTP<J>
     => TypeParams<J>;
 
 shared alias TypeAliasToUnion => Integer | String;
+
+shared interface TPA {}
+shared interface TPB {}
+
+shared class TP1() satisfies TPA & TPB {}
+shared class TP2() satisfies TPA & TPB {}
+
+shared class TypeParameterTest<P, in T = P, out V = Integer>()
+    given P of TP1 | TP2 satisfies TPA & TPB {}
