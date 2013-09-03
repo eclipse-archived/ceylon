@@ -608,14 +608,18 @@ public class Metamodel {
         }
     }
     
-    public static ceylon.language.model.declaration.ClassOrInterfaceDeclaration getOrCreateMetamodel(java.lang.Class<?> klass){
+    /**
+     * This is also used by generated code in the JVM compiler, for type declaration literals.
+     * In theory this can only be used for ClassOrInterface or TypeAlias.
+     */
+    public static ceylon.language.model.declaration.TopLevelOrMemberDeclaration getOrCreateMetamodel(java.lang.Class<?> klass){
         // FIXME: is this really enough?
         String typeName = klass.getName();
         com.redhat.ceylon.compiler.typechecker.model.Module module = moduleManager.findModuleForClass(klass);
-        com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface decl = 
-                (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) 
+        com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration decl = 
+                (com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration) 
                     moduleManager.getModelLoader().getDeclaration(module, typeName, DeclarationType.TYPE);
-        return (ceylon.language.model.declaration.ClassOrInterfaceDeclaration) getOrCreateMetamodel(decl);
+        return (ceylon.language.model.declaration.TopLevelOrMemberDeclaration) getOrCreateMetamodel(decl);
     }
 
     public static TypeDescriptor getTypeDescriptorForFunction(ProducedReference appliedFunction) {
