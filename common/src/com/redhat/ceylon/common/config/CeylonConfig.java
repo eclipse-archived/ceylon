@@ -216,6 +216,11 @@ public class CeylonConfig {
      */
     public synchronized void setOptionValues(String key, String[] values) {
         if (values != null && values.length > 0) {
+            for (String val : values) {
+                if (val == null) {
+                    throw new IllegalArgumentException("Option value cannot be null");
+                }
+            }
             options.put(key, values);
             initLookupKey(key);
         } else {

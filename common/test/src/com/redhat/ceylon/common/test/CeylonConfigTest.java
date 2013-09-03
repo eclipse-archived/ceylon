@@ -160,6 +160,12 @@ public class CeylonConfigTest {
         Assert.assertEquals("hello", tmpConfig.getOption("test.string-hello"));
         tmpConfig.setOption("test.string-hello", "world");
         Assert.assertEquals("world", tmpConfig.getOption("test.string-hello"));
+        try {
+            tmpConfig.setOption("hello", null);
+            Assert.fail();
+        } catch (IllegalArgumentException ex) {
+            // Ok
+        }
     }
     
     @Test
