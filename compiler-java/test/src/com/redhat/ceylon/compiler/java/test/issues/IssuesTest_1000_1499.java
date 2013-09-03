@@ -467,4 +467,10 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     public void testBug1263() {
         compareWithJavaSource("bug12xx/Bug1263");
     }
+    
+    @Test
+    @Ignore("M6")
+    public void testBug1270() {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1270", "bug12xx/Bug1270.ceylon");
+    }
 }
