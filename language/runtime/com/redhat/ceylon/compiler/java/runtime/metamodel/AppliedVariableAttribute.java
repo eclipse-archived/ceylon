@@ -91,26 +91,31 @@ public class AppliedVariableAttribute<Container, Type>
     }
 
     @Override
+    @Ignore
     public ceylon.language.model.Variable<Type> $call() {
         return (ceylon.language.model.Variable<Type>)super.$call();
     }
 
     @Override
+    @Ignore
     public ceylon.language.model.Variable<Type> $call(Object arg0) {
         return (ceylon.language.model.Variable<Type>)super.$call(arg0);
     }
 
     @Override
+    @Ignore
     public ceylon.language.model.Variable<Type> $call(Object arg0, Object arg1) {
         return (ceylon.language.model.Variable<Type>)super.$call(arg0, arg1);
     }
 
     @Override
+    @Ignore
     public ceylon.language.model.Variable<Type> $call(Object arg0, Object arg1, Object arg2) {
         return (ceylon.language.model.Variable<Type>)super.$call(arg0, arg1, arg2);
     }
 
     @Override
+    @Ignore
     public ceylon.language.model.Variable<Type> $call(Object... args) {
         return (ceylon.language.model.Variable<Type>)super.$call(args);
     }
