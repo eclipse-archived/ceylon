@@ -168,10 +168,15 @@ void literals<T>(){
     //FunctionDeclaration parameterisedParamAndSharedMethod = `LitParameterisedClassWithParameters.parameterAndSharedMethod`;
     FunctionDeclaration parameterisedSharedMethodAndParam = `function LitParameterisedClassWithParameters.sharedMethodAndParameter`;
 
+    // Aliases
+    AliasDeclaration aliasDecl = `alias Alias`;
+
     // Modules and packages
     Module m = `module com.redhat.ceylon.compiler.java.test.metamodel`;
     Package p = `package com.redhat.ceylon.compiler.java.test.metamodel`;
 }
+
+alias Alias => LitClass;
 
 class RelativeLiterals(shared String str = "a") {
     shared Integer integer = 0;

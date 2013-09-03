@@ -1030,6 +1030,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             // use the generated class to get to the declaration literal
             JCExpression classLiteral = makeUnerasedClassLiteral(container);
             JCExpression metamodelCall = makeMetamodelInvocation("getOrCreateMetamodel", List.of(classLiteral), null);
+            JCExpression metamodelCast = makeJavaType(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("ClassOrInterfaceDeclaration")).getType(), JT_NO_PRIMITIVES);
+            metamodelCall = make().TypeCast(metamodelCast, metamodelCall);
+
             String memberClassName;
             if(declaration instanceof Class)
                 memberClassName = "ClassDeclaration";
@@ -1163,7 +1166,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression metamodelCall = makeMetamodelInvocation("getOrCreateMetamodel", List.of(classLiteral), null);
             ProducedType exprType = expr.getTypeModel().resolveAliases();
             // now cast if required
-            if(!exprType.isExactly(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("ClassOrInterfaceDeclaration")).getType())){
+            if(!exprType.isExactly(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("TopLevelOrMemberDeclaration")).getType())){
                 JCExpression type = makeJavaType(exprType, JT_NO_PRIMITIVES);
                 return make().TypeCast(type, metamodelCall);
             }

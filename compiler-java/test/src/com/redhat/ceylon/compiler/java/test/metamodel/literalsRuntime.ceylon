@@ -1,3 +1,5 @@
+import ceylon.language.model { Class }
+
 void literalsRuntime(){
     // make sure that literals work
     assert(`class LitClass`.name == "LitClass");
@@ -62,4 +64,7 @@ void literalsRuntime(){
     //assert(`LitClassWithParameters.attributeAndParameter`.declaration.name == "attributeAndParameter"); // on function
     //assert(`LitClassWithParameters.attributeAndParameter`.defaulted == false); // on param decl
     //assert(`LitClassWithParameters.attributeAndParameter`.parameterDeclarations.size == 0); // on function decl
+
+    assert(`alias Alias`.name == "Alias");
+    assert(is Class<LitClass,Nothing> aliasModel = `Alias`, aliasModel.declaration.name == "LitClass");
 }
