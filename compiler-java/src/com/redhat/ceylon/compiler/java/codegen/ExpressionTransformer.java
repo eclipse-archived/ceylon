@@ -953,10 +953,10 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.NaturalLiteral lit) {
         String text = lit.getText();
         if(text.startsWith("#")){
-            return transformRadixLiteral(lit, 16, "Invalid hexadecimal literal (must be unsigned and fit in 64 bits)");
+            return transformRadixLiteral(lit, 16, "Invalid hexadecimal literal: more than 64 bits");
         }
         if(text.startsWith("$")){
-            return transformRadixLiteral(lit, 2, "Invalid binary literal (must be unsigned and fit in 64 bits)");
+            return transformRadixLiteral(lit, 2, "Invalid binary literal: more than 64 bits");
         }
         return integerLiteral(lit, text);
     }
