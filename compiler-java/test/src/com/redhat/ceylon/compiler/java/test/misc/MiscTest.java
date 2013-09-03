@@ -112,7 +112,8 @@ public class MiscTest extends CompilerTest {
         };
         String[] extras = new String[]{
                 "array", "arrayOfSize", "false", "infinity",
-                "parseFloat", "true", "integerRangeByIterable", "unflatten"
+                "parseFloat", "true", "integerRangeByIterable", "unflatten",
+                "$LanguageAccess" 
         };
         String[] modelExtras = new String[]{
                 "annotations", "modules", "type", "typeLiteral"
@@ -189,7 +190,7 @@ public class MiscTest extends CompilerTest {
             else if(required)
                 Assert.fail("Required file not found: "+file);
         } else {
-            File file = new File(javaPkgDir, baseName + "_.java");
+            File file = new File(javaPkgDir, baseName + ".java");
             if(file.exists())
                 sourceFiles.add(file);
             else if(required)
