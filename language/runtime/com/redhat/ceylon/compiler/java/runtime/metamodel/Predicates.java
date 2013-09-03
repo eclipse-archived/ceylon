@@ -259,6 +259,18 @@ class Predicates {
         }
     };
     
+    /** Predicate on Declarations that accepts Alias */
+    private static final Predicate<Declaration> DECLARATION_IS_ALIAS = new Predicate<Declaration>() {  
+        @Override
+        public boolean accept(Declaration declaration) {
+            return declaration instanceof com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
+        }
+        @Override
+        public String toString() {
+            return "(kind = Alias)";
+        }
+    };
+
     /**
      * Returns a Predicate for Declarations being of the given kind 
      * (Class, Interface, Function, Value etc)
@@ -279,6 +291,8 @@ class Predicates {
                 return DECLARATION_IS_INTERFACE;
             } else if (declarationClass == ceylon.language.model.declaration.ClassOrInterfaceDeclaration.class) {
                 return DECLARATION_IS_CLASS_OR_INTERFACE;
+            } else if (declarationClass == ceylon.language.model.declaration.AliasDeclaration.class) {
+                return DECLARATION_IS_ALIAS;
             } else if (declarationClass == ceylon.language.model.declaration.TopLevelOrMemberDeclaration.class) {
                 return true_();
             }

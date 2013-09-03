@@ -149,6 +149,9 @@ public class Metamodel {
                 }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
                     com.redhat.ceylon.compiler.typechecker.model.Interface interf = (com.redhat.ceylon.compiler.typechecker.model.Interface)declaration;
                     ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeInterface(interf);
+                }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.TypeAlias){
+                    com.redhat.ceylon.compiler.typechecker.model.TypeAlias alias = (com.redhat.ceylon.compiler.typechecker.model.TypeAlias)declaration;
+                    ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeAliasDeclaration(alias);
                 }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method){
                     com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration method = (com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration)declaration;
                     ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunction(method);

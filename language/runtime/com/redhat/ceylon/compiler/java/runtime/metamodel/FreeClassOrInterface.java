@@ -99,6 +99,7 @@ public abstract class FreeClassOrInterface
         for(com.redhat.ceylon.compiler.typechecker.model.Declaration memberModelDeclaration : memberModelDeclarations){
             if(memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value
                     || memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method
+                    || memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.TypeAlias
                     || memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)
                 declarations.add(Metamodel.getOrCreateMetamodel(memberModelDeclaration));
         }
