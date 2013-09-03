@@ -1626,7 +1626,7 @@ Item item = comp of Item;</programlisting>
             
             <para>There may be at most one <literal>given</literal> clause per type parameter.</para>
             
-            <synopsis>TypeConstraint: "given" TypeName TypeParameters? TypeConstraintInheritance</synopsis>
+            <synopsis>TypeConstraint: "given" TypeName TypeConstraintInheritance</synopsis>
             
             <synopsis>TypeConstraintInheritance: CaseTypes? SatisfiedTypes?</synopsis>
             
