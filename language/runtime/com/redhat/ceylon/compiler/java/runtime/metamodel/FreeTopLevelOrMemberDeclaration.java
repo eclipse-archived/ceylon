@@ -122,6 +122,17 @@ public abstract class FreeTopLevelOrMemberDeclaration
     }
 
     @Override
+    public ceylon.language.model.declaration.AnnotatedDeclaration getContainer() {
+        Scope container = declaration.getContainer();
+        if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Declaration)
+            return Metamodel.getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.Declaration)container);
+        if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Package)
+            return Metamodel.getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.Package)container);
+        // FIXME: can that happen?
+        throw new RuntimeException("Illegal container type: "+container);
+    }
+
+    @Override
     @TypeInfo("ceylon.language::Sequential<Annotation>")
     @TypeParameters(@TypeParameter(value = "Annotation", satisfies = "ceylon.language.model::Annotation<Annotation>"))
     public <Annotation extends ceylon.language.model.Annotation<? extends Annotation>> Sequential<? extends Annotation> annotations(@Ignore TypeDescriptor $reifiedAnnotation) {
