@@ -6,10 +6,7 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
-import java.util.List;
-
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -33,7 +30,7 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
     public String toString() {
         return "/* literal */";
     }
-
+    
     public void setTerm(Tree.Term field) {
         this.term = field;
     }
@@ -41,7 +38,15 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
     public Tree.Term getTerm() {
         return term;
     }
-
+    
+    public ProducedType getLiteralObject() {
+        return literalObject;
+    }
+    
+    public void setLiteralObject(ProducedType literalObject) {
+        this.literalObject = literalObject;
+    }
+    
     @Override
     public int encode(AbstractTransformer gen, ListBuffer<JCExpression> instantiations) {
         return Short.MIN_VALUE;
@@ -106,13 +111,5 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
                 expr);
         staticArgs.append(field);
     
-    }
-
-    public ProducedType getLiteralObject() {
-        return literalObject;
-    }
-    
-    public void setLiteralObject(ProducedType literalObject) {
-        this.literalObject = literalObject;
     }
 }
