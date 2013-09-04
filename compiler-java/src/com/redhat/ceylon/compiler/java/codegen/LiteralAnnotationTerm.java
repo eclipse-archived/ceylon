@@ -25,7 +25,7 @@ import com.sun.tools.javac.util.ListBuffer;
  */
 public class LiteralAnnotationTerm extends AnnotationTerm {
 
-    private Tree.Term field;
+    private Tree.Term term;
     private ProducedType literalObject;
     
     public LiteralAnnotationTerm() {}
@@ -35,11 +35,11 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
     }
 
     public void setTerm(Tree.Term field) {
-        this.field = field;
+        this.term = field;
     }
     
-    public Tree.Term getField() {
-        return field;
+    public Tree.Term getTerm() {
+        return term;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
             AnnotationInvocation toplevel,
             com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath,
             ListBuffer<JCStatement> staticArgs, final ProducedType type) {
-        Tree.Term term = getField();
+        Tree.Term term = getTerm();
         JCExpression expr = null;
         JCExpression typeExpr = null;
         if (term instanceof Tree.Literal) {

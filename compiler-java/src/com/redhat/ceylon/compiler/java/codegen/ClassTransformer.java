@@ -3036,10 +3036,10 @@ public class ClassTransformer extends AbstractTransformer {
                         // Add @AnnotationInstantiation
                         methodBuilder.userAnnotations(List.of(makeAtAnnotationInstantiation(((InvocationAnnotationTerm)acp.getDefaultArgument()).getInstantiation())));
                     } else if (acp.getDefaultArgument() instanceof LiteralAnnotationTerm
-                            && ((LiteralAnnotationTerm)acp.getDefaultArgument()).getField() instanceof Tree.BaseMemberExpression
-                            && Decl.isAnonCaseOfEnumeratedType(((Tree.BaseMemberExpression)((LiteralAnnotationTerm)acp.getDefaultArgument()).getField()))) {
+                            && ((LiteralAnnotationTerm)acp.getDefaultArgument()).getTerm() instanceof Tree.BaseMemberExpression
+                            && Decl.isAnonCaseOfEnumeratedType(((Tree.BaseMemberExpression)((LiteralAnnotationTerm)acp.getDefaultArgument()).getTerm()))) {
                         // Add @DefaultedObject
-                        Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression)((LiteralAnnotationTerm)acp.getDefaultArgument()).getField();
+                        Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression)((LiteralAnnotationTerm)acp.getDefaultArgument()).getTerm();
                         methodBuilder.userAnnotations(makeAtDefaultedObject(bme.getTypeModel()));
                     }
                 }
