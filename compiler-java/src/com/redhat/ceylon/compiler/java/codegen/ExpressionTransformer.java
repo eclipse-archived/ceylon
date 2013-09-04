@@ -1258,27 +1258,26 @@ public class ExpressionTransformer extends AbstractTransformer {
             return makeEmpty();// A tuple terminated by empty
         }
         
-        boolean createTuple = false;
+        JCExpression tail = null;
         JCExpression reifiedTypeArg = makeReifiedTypeArgument(tupleType.getTypeArgumentList().get(0));
-        List<JCExpression> elems = List.<JCExpression>of(reifiedTypeArg);
+        List<JCExpression> elems = List.<JCExpression>nil();
         for (int i = 0; i < expressions.size(); i++) {
             Tree.PositionalArgument expr = expressions.get(i);
-            JCExpression elem;
             if (expr instanceof Tree.ListedArgument) {
-                elem = transformExpression(((Tree.ListedArgument) expr).getExpression());
-                createTuple = true;
+                JCExpression elem = transformExpression(((Tree.ListedArgument) expr).getExpression());
+                elems = elems.append(elem);
             } else if (expr instanceof Tree.SpreadArgument) {
                 SpreadArgument spreadExpr = (Tree.SpreadArgument) expr;
-                elem = transformExpression(spreadExpr.getExpression());
+                tail = transformExpression(spreadExpr.getExpression());
                 if (!typeFact().isSequentialType(spreadExpr.getTypeModel())) {
-                    elem = iterableToSequential(elem);
+                    tail = iterableToSequential(tail);
                     ProducedType elementType = typeFact().getIteratedType(spreadExpr.getTypeModel());
                     ProducedType sequentialType = typeFact().getSequentialType(elementType);
                     ProducedType expectedType = spreadExpr.getTypeModel();
                     if (typeFact().isNonemptyIterableType(spreadExpr.getTypeModel())) {
                         expectedType = typeFact().getSequenceType(elementType);
                     }
-                    elem = sequentialEmptiness(elem, expectedType, sequentialType);
+                    tail = sequentialEmptiness(tail, expectedType, sequentialType);
                 }
             } else if (expr instanceof Tree.Comprehension) {
                 Tree.Comprehension comp = (Tree.Comprehension) expr;
@@ -1286,17 +1285,22 @@ public class ExpressionTransformer extends AbstractTransformer {
                 ProducedType expectedType = comp.getForComprehensionClause().getPossiblyEmpty() 
                         ? typeFact().getSequentialType(elementType)
                         : typeFact().getSequenceType(elementType);
-                elem = comprehensionAsSequential(comp, expectedType);
+                tail = comprehensionAsSequential(comp, expectedType);
             } else {
                 return makeErroneous(expr, "Unexpected tuple argument");
             }
-            elems = elems.append(elem);
         }
-        if (createTuple) {
+        
+        if (!elems.isEmpty()) {
+            List<JCExpression> args = List.<JCExpression>of(reifiedTypeArg);
+            args = args.append(make().NewArray(make().Type(syms().objectType), List.<JCExpression>nil(), elems));
+            if (tail != null) {
+                args = args.append(tail);
+            }
             JCExpression typeExpr = makeJavaType(tupleType, CeylonTransformer.JT_CLASS_NEW);
-            return makeNewClass(typeExpr, elems);
+            return makeNewClass(typeExpr, args);
         } else {
-            return elems.last();
+            return tail;
         }
     }
     
