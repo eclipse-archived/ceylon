@@ -5,8 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/** 
+ * Applied to an annotation constructor, encodes the "literal" 
+ * tuple expressions in the invocation 
+ */
 @Retention(RetentionPolicy.CLASS)
 @Target({ElementType.TYPE, ElementType.METHOD})
-public @interface AnnotationInstantiationTree {
-    AnnotationInstantiation[] value();
+public @interface TupleExprs {
+    TupleValue[] value();
 }

@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
  * </pre>
  * @author tom
  */
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.CLASS)
 @Target(ElementType.METHOD)
 public @interface EnumerationReference {
 }

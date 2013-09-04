@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * (i.e. adjacent to {@link Method @Method}) 
  * or the default parameter value method of an annotation constructor method 
  */
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.CLASS)
 @Target({ElementType.TYPE, ElementType.METHOD})
 public @interface AnnotationInstantiation {
     /** 
