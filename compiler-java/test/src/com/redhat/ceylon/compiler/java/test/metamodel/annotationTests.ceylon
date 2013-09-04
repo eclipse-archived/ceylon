@@ -74,19 +74,19 @@ ClassOrInterface<T> annotationType<T>(T t) {
     return type(t);
 }
 
-ClassOrInterface<Shared> sharedAnnotation = `Shared`;
-ClassOrInterface<Abstract> abstractAnnotation = `Abstract`;
-ClassOrInterface<Formal> formalAnnotation = `Formal`;
-ClassOrInterface<Default> defaultAnnotation = `Default`;
-ClassOrInterface<Actual> actualAnnotation = `Actual`;
-ClassOrInterface<Variable> variableAnnotation = `Variable`;
-ClassOrInterface<Doc> docAnnotation = `Doc`;
-ClassOrInterface<See> seeAnnotation = `See`;
-ClassOrInterface<Seq> seqAnnotation = `Seq`;
-ClassOrInterface<Enumerated> enumeratedAnnotation = `Enumerated`;
-ClassOrInterface<EnumeratedVariadic> enumeratedVariadicAnnotation = `EnumeratedVariadic`;
-ClassOrInterface<Deprecation> deprecatedAnnotation = `Deprecation`;
-ClassOrInterface<Optional> optAnnotation = `Optional`;
+Class<Shared,[]> sharedAnnotation = `Shared`;
+Class<Abstract,[]> abstractAnnotation = `Abstract`;
+Class<Formal,[]> formalAnnotation = `Formal`;
+Class<Default,[]> defaultAnnotation = `Default`;
+Class<Actual,[]> actualAnnotation = `Actual`;
+Class<Variable,[]> variableAnnotation = `Variable`;
+Class<Doc,[String]> docAnnotation = `Doc`;
+Class<See,[]> seeAnnotation = `See`;
+Class<Seq,[String]> seqAnnotation = `Seq`;
+Class<Enumerated,[Comparison]> enumeratedAnnotation = `Enumerated`;
+Class<EnumeratedVariadic,[]> enumeratedVariadicAnnotation = `EnumeratedVariadic`;
+Class<Deprecation,[String]> deprecatedAnnotation = `Deprecation`;
+Class<Optional,[]> optAnnotation = `Optional`;
 
 void checkAToplevelAttributeAnnotations() {
     //shared
