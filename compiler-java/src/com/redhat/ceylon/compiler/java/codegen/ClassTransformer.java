@@ -347,11 +347,10 @@ public class ClassTransformer extends AbstractTransformer {
         Class klass = (Class)def.getDeclarationModel();
         String annotationName = klass.getName()+"$annotation";
         ClassDefinitionBuilder annoBuilder = ClassDefinitionBuilder.klass(this, annotationName, null);
-
-        // annotations are never explicitely final in Java
+        
+        // annotations are never explicitly final in Java
         annoBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | (transformClassDeclFlags(def) & ~FINAL));
         annoBuilder.annotations(makeAtRetention(RetentionPolicy.RUNTIME));
-        
         
         for (Tree.Parameter p : def.getParameterList().getParameters()) {
             Parameter parameterModel = p.getParameterModel();
@@ -436,6 +435,8 @@ public class ClassTransformer extends AbstractTransformer {
                 defaultLiteral = makeBoolean(true);
             } else if (isBooleanFalse(decl)) {
                 defaultLiteral = makeBoolean(false);
+            } else if (typeFact().isEmptyType(bme.getTypeModel())) {
+                defaultLiteral = make().NewArray(null, null, List.<JCExpression>nil());
             } else if (Decl.isAnonCaseOfEnumeratedType(bme)) {
                 defaultLiteral = makeClassLiteral(bme.getTypeModel());
             } else {
