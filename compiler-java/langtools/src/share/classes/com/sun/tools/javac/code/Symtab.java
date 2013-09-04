@@ -238,7 +238,22 @@ public class Symtab {
     public final Type ceylonAtAliasType;
     public final Type ceylonAtTypeAliasType;
     public final Type ceylonAtTransientType;
-
+    
+    public final Type ceylonAtBooleanValueType;
+    public final Type ceylonAtBooleanExprsType;
+    public final Type ceylonAtCharacterValueType;
+    public final Type ceylonAtCharacterExprsType;
+    public final Type ceylonAtDeclarationValueType;
+    public final Type ceylonAtDeclarationExprsType;
+    public final Type ceylonAtFloatValueType;
+    public final Type ceylonAtFloatExprsType;
+    public final Type ceylonAtIntegerValueType;
+    public final Type ceylonAtIntegerExprsType;
+    public final Type ceylonAtObjectValueType;
+    public final Type ceylonAtObjectExprsType;
+    public final Type ceylonAtStringValueType;
+    public final Type ceylonAtStringExprsType;
+    
     public final Type ceylonUtilType;
     public final Type ceylonMetamodelType;
     public final Type ceylonTypeDescriptorType;
@@ -618,6 +633,21 @@ public class Symtab {
         ceylonAtAliasType = enterClass("com.redhat.ceylon.compiler.java.metadata.Alias");
         ceylonAtTypeAliasType = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeAlias");
         ceylonAtTransientType = enterClass("com.redhat.ceylon.compiler.java.metadata.Transient");
+        
+        ceylonAtBooleanValueType = enterClass("com.redhat.ceylon.compiler.java.metadata.BooleanValue");
+        ceylonAtBooleanExprsType = enterClass("com.redhat.ceylon.compiler.java.metadata.BooleanExprs");
+        ceylonAtCharacterValueType = enterClass("com.redhat.ceylon.compiler.java.metadata.CharacterValue");
+        ceylonAtCharacterExprsType = enterClass("com.redhat.ceylon.compiler.java.metadata.CharacterExprs");
+        ceylonAtDeclarationValueType = enterClass("com.redhat.ceylon.compiler.java.metadata.DeclarationValue");
+        ceylonAtDeclarationExprsType = enterClass("com.redhat.ceylon.compiler.java.metadata.DeclarationExprs");
+        ceylonAtFloatValueType = enterClass("com.redhat.ceylon.compiler.java.metadata.FloatValue");
+        ceylonAtFloatExprsType = enterClass("com.redhat.ceylon.compiler.java.metadata.FloatExprs");
+        ceylonAtIntegerValueType = enterClass("com.redhat.ceylon.compiler.java.metadata.IntegerValue");
+        ceylonAtIntegerExprsType = enterClass("com.redhat.ceylon.compiler.java.metadata.IntegerExprs");
+        ceylonAtObjectValueType = enterClass("com.redhat.ceylon.compiler.java.metadata.ObjectValue");
+        ceylonAtObjectExprsType = enterClass("com.redhat.ceylon.compiler.java.metadata.ObjectExprs");
+        ceylonAtStringValueType = enterClass("com.redhat.ceylon.compiler.java.metadata.StringValue");
+        ceylonAtStringExprsType = enterClass("com.redhat.ceylon.compiler.java.metadata.StringExprs");
         
         ceylonUtilType = enterClass("com.redhat.ceylon.compiler.java.Util");
         ceylonMetamodelType = enterClass("com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel");

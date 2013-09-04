@@ -2169,6 +2169,34 @@ public abstract class AbstractTransformer implements Transformation {
     List<JCAnnotation> makeAtDefaultedObject(ProducedType type) {
         return makeModelAnnotation(syms().ceylonAtDefaultedObjectType, List.<JCExpression>of(makeClassLiteral(type)));
     }
+    
+    List<JCAnnotation> makeAtObjectValue(ProducedType type) {
+        return makeModelAnnotation(syms().ceylonAtObjectValueType, List.<JCExpression>of(makeClassLiteral(type)));
+    }
+    
+    List<JCAnnotation> makeAtStringValue(String value) {
+        return makeModelAnnotation(syms().ceylonAtStringValueType, List.<JCExpression>of(make().Literal(value)));
+    }
+    
+    List<JCAnnotation> makeAtCharacterValue(int value) {
+        return makeModelAnnotation(syms().ceylonAtCharacterValueType, List.<JCExpression>of(make().Literal(value)));
+    }
+    
+    List<JCAnnotation> makeAtBooleanValue(boolean value) {
+        return makeModelAnnotation(syms().ceylonAtBooleanValueType, List.<JCExpression>of(make().Literal(value)));
+    }
+    
+    List<JCAnnotation> makeAtFloatValue(double value) {
+        return makeModelAnnotation(syms().ceylonAtFloatValueType, List.<JCExpression>of(make().Literal(value)));
+    }
+    
+    List<JCAnnotation> makeAtIntegerValue(long value) {
+        return makeModelAnnotation(syms().ceylonAtIntegerValueType, List.<JCExpression>of(make().Literal(value)));
+    }
+    
+    List<JCAnnotation> makeAtDeclarationValue(String value) {
+        return makeModelAnnotation(syms().ceylonAtDeclarationValueType, List.<JCExpression>of(make().Literal(value)));
+    }
 
     /** Determine whether the given declaration requires a 
      * {@code @TypeInfo} annotation 
