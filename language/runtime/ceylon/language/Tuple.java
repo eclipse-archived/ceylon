@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import java.lang.ref.SoftReference;
+import java.util.Arrays;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
@@ -54,8 +55,13 @@ public final class Tuple<Element, First extends Element, Rest extends ceylon.lan
     }
     
     @Ignore
-    public Tuple(TypeDescriptor $reifiedElement, java.lang.Object... elements) {
+    public Tuple(TypeDescriptor $reifiedElement, java.lang.Object[] elements) {
         super($reifiedElement, elements, 0, elements.length, false);
+    }
+    
+    @Ignore
+    public Tuple(TypeDescriptor $reifiedElement, java.lang.Object[] elements, ceylon.language.Sequential tail) {
+        this($reifiedElement, makeArray(elements, tail));
     }
     
     @Ignore
@@ -66,12 +72,22 @@ public final class Tuple<Element, First extends Element, Rest extends ceylon.lan
     private static java.lang.Object[] makeArray(java.lang.Object first, ceylon.language.Sequential rest) {
         java.lang.Object[] elements = new java.lang.Object[(int)rest.getSize() + 1];
         elements[0] = first;
-        ceylon.language.Iterator iter = rest.iterator();
-        int i = 1;
-        for (java.lang.Object elem = iter.next(); elem != ceylon.language.finished_.$get(); elem = iter.next()) {
-            elements[i++] = elem;
-        }
+        copyToArray(rest, elements, 1);
         return elements;
+    }
+    
+    private static java.lang.Object[] makeArray(java.lang.Object[] array, ceylon.language.Sequential tail) {
+        java.lang.Object[] elements = Arrays.copyOf(array, array.length + (int)tail.getSize());
+        copyToArray(tail, elements, array.length);
+        return elements;
+    }
+    
+    private static void copyToArray(ceylon.language.Sequential seq, java.lang.Object[] array, int offset) {
+        ceylon.language.Iterator iter = seq.iterator();
+        int i = offset;
+        for (java.lang.Object elem = iter.next(); elem != ceylon.language.finished_.$get(); elem = iter.next()) {
+            array[i++] = elem;
+        }
     }
     
     @Ignore
