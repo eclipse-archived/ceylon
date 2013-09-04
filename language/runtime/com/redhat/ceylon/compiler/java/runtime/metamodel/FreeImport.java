@@ -75,7 +75,17 @@ public class FreeImport
     public String getVersion() {
         return moduleImport.getModule().getVersion();
     }
- 
+
+    @Override
+    public boolean getShared() {
+        return moduleImport.isExport();
+    }
+
+    @Override
+    public boolean getOptional() {
+        return moduleImport.isOptional();
+    }
+
     @Ignore
     @Override
     public TypeDescriptor $getType() {

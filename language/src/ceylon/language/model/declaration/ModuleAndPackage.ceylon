@@ -28,6 +28,10 @@ shared interface Import
     
     "The compile-time version of the imported module."
     shared formal String version;
+
+    shared formal Boolean shared;
+
+    shared formal Boolean optional;
 }
 
 "Model of a `package` declaration 
@@ -37,6 +41,8 @@ shared interface Package
     
     "The module this package belongs to."
     shared formal Module container;
+
+    shared formal Boolean shared;
     
     "The members of this package."
     shared formal Kind[] members<Kind>() 

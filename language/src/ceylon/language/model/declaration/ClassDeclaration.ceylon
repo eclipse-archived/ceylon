@@ -6,6 +6,8 @@ import ceylon.language.model {
 shared interface ClassDeclaration
         satisfies ClassOrInterfaceDeclaration & FunctionalDeclaration {
     
+    shared formal Boolean abstract;
+
     shared formal Boolean anonymous;
     
     shared formal actual AppliedClass<Anything, Nothing> apply(Type<Anything>* types);

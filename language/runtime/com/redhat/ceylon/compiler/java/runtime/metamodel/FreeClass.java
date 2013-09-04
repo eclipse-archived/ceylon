@@ -72,7 +72,12 @@ public class FreeClass
     public boolean getAnonymous(){
         return declaration.isAnonymous();
     }
-    
+
+    @Override
+    public boolean getAbstract() {
+        return ((com.redhat.ceylon.compiler.typechecker.model.Class)declaration).isAbstract();
+    }
+
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::FunctionOrValueDeclaration>")
     public Sequential<? extends ceylon.language.model.declaration.FunctionOrValueDeclaration> getParameterDeclarations(){

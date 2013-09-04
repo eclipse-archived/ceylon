@@ -102,6 +102,26 @@ public abstract class FreeTopLevelOrMemberDeclaration
     }
 
     @Override
+    public boolean getActual() {
+        return declaration.isActual();
+    }
+
+    @Override
+    public boolean getFormal() {
+        return declaration.isFormal();
+    }
+
+    @Override
+    public boolean getDefault() {
+        return declaration.isDefault();
+    }
+
+    @Override
+    public boolean getShared() {
+        return declaration.isShared();
+    }
+
+    @Override
     @TypeInfo("ceylon.language::Sequential<Annotation>")
     @TypeParameters(@TypeParameter(value = "Annotation", satisfies = "ceylon.language.model::Annotation<Annotation>"))
     public <Annotation extends ceylon.language.model.Annotation<? extends Annotation>> Sequential<? extends Annotation> annotations(@Ignore TypeDescriptor $reifiedAnnotation) {

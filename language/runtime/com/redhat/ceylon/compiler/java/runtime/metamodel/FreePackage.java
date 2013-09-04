@@ -214,6 +214,11 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
         return (FreeAliasDeclaration) Metamodel.getOrCreateMetamodel(decl);
     }
 
+    @Override
+    public boolean getShared() {
+        return declaration.isShared();
+    }
+
     @Ignore
     @Override
     public TypeDescriptor $getType() {
