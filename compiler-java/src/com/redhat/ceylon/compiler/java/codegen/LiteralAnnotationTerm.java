@@ -96,7 +96,12 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
                 // Javac can't inline java.lang.Class constant fields
                 // so we use the @DefaultedObject annotation on the DPM
                 return;
+            } else if (bme.getDeclaration().isParameter()) {
+                return;
             }
+        } else if (term instanceof Tree.Tuple
+                || term instanceof Tree.SequenceEnumeration) {
+            return;
         }
         
         if (expr == null) {

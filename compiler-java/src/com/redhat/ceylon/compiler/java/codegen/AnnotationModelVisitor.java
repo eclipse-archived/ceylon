@@ -188,7 +188,17 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
                     || (term instanceof Tree.BaseMemberExpression
                     && (((Tree.BaseMemberExpression)term).getDeclaration().equals(t)
                         || ((Tree.BaseMemberExpression)term).getDeclaration().equals(f)
+                        || ((Tree.BaseMemberExpression)term).getDeclaration().isParameter()
                         || Decl.isAnonCaseOfEnumeratedType((Tree.BaseMemberExpression)term)))) {
+                checkingDefaults = true;
+                
+                super.visit(d);
+                
+                annotationConstructorParameter.setDefaultArgument(this.term);
+                this.term = null;
+                checkingDefaults = false;
+            } else if (term instanceof Tree.Tuple) {
+                // TODO Tuples and SequenceEnumerations of the above cases should also be allowed
                 checkingDefaults = true;
                 
                 super.visit(d);
@@ -199,7 +209,6 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
             } else {
                 errorDefaultedParameter(d);
             }
-            
         }
     }
 
@@ -352,6 +361,8 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
                 this.elements = new ArrayList<AnnotationTerm>();
                 super.visit(literal);
                 this.term = new TupleLiteralAnnotationTerm(this.elements);
+                ((TupleLiteralAnnotationTerm)this.term).setTerm(literal);
+                appendLiteralArgument(literal, (TupleLiteralAnnotationTerm)term);
             }
         }
     }
@@ -363,6 +374,8 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
                 this.elements = new ArrayList<AnnotationTerm>();
                 super.visit(literal);
                 this.term = new TupleLiteralAnnotationTerm(this.elements);
+                ((TupleLiteralAnnotationTerm)this.term).setTerm(literal);
+                appendLiteralArgument(literal, (TupleLiteralAnnotationTerm)term);
             }
         }
     }
