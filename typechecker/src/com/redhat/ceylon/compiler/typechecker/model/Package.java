@@ -195,6 +195,10 @@ public class Package
         	}
     		if (!already) result.put(e.getKey(), e.getValue());
         }
+        if ("Nothing".startsWith(startingWith)) {
+            result.put("Nothing", 
+                    new DeclarationWithProximity(new NothingType(unit), proximity+100));
+        }
         return result;
     }
 
