@@ -227,6 +227,8 @@ shared interface InterfaceWithCaseTypes of iwcta | iwctb {}
 shared object iwcta satisfies InterfaceWithCaseTypes {}
 shared object iwctb satisfies InterfaceWithCaseTypes {}
 
+shared T typeParameterTest<T>() => nothing;
+
 shared interface InterfaceWithSelfType<T> of T given T satisfies InterfaceWithSelfType<T>{}
 
 shared abstract class Modifiers(){

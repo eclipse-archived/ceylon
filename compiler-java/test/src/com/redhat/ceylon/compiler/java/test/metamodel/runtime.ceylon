@@ -570,6 +570,11 @@ void checkTypeParameters(){
 
     assert(tp3.enumeratedBounds.size == 0);
     assert(tp3.upperBounds.size == 0);
+    
+    value tpToplevelMethod = `function typeParameterTest`;
+    assert(is OpenTypeVariable tpToplevelMethodTPType = tpToplevelMethod.openType);
+    // this used to NPE
+    assert(tpToplevelMethodTPType.declaration.name == "T");
 }
 
 void checkClassOrInterfaceCaseTypes(){
