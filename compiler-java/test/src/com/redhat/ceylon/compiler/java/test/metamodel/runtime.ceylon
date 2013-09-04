@@ -70,6 +70,8 @@ void checkMemberAttributes(){
     assert(is Class<NoParams, []> noParamsType);
     
     assert(exists string = noParamsType.getAttribute<NoParams, String>("str"));
+    assert(string.declaration.name == "str");
+    assert(string.declaration.qualifiedName == "com.redhat.ceylon.compiler.java.test.metamodel::NoParams.str");
     assert(string(noParamsInstance).get() == "a");
     
     assert(exists integer = noParamsType.getAttribute<NoParams, Integer>("integer"));
@@ -137,6 +139,8 @@ void checkMemberFunctions(){
     assert(is Class<String, [String]> stringType = type("foo"));
     
     assert(exists f1 = noParamsType.getMethod<NoParams, NoParams, []>("noParams"));
+    assert(f1.declaration.name == "noParams");
+    assert(f1.declaration.qualifiedName == "com.redhat.ceylon.compiler.java.test.metamodel::NoParams.noParams");
     Anything o1 = f1(noParamsInstance)();
     assert(is NoParams o1);
     
@@ -168,6 +172,8 @@ void checkMemberTypes(){
     assert(exists innerClassType = containerClassType.getClassOrInterface<ContainerClass, Class<ContainerClass.InnerClass, []>>("InnerClass"));
     Anything o1 = innerClassType(containerClassInstance)();
     assert(is ContainerClass.InnerClass o1);
+    assert(`class ContainerClass.InnerClass`.name == "InnerClass");
+    assert(`class ContainerClass.InnerClass`.qualifiedName == "com.redhat.ceylon.compiler.java.test.metamodel::ContainerClass.InnerClass");
 
     assert(exists innerDefaultedClassType = containerClassType.getClassOrInterface<ContainerClass, Class<ContainerClass.DefaultedParams, [Integer, Integer=]>>("DefaultedParams"));
     Anything o1_2 = innerDefaultedClassType(containerClassInstance)(0);
@@ -227,6 +233,7 @@ void checkHierarchy(){
     value noParamsDecl = noParamsAppliedType.declaration;
     
     assert(noParamsDecl.name == "NoParams");
+    assert(noParamsDecl.qualifiedName == "com.redhat.ceylon.compiler.java.test.metamodel::NoParams");
     
     value basicType = noParamsDecl.superclassDeclaration;
     
@@ -262,6 +269,7 @@ void checkPackageAndModule(){
     value pkg = noParamsDecl.packageContainer;
 
     assert(pkg.name == "com.redhat.ceylon.compiler.java.test.metamodel");
+    assert(pkg.qualifiedName == "com.redhat.ceylon.compiler.java.test.metamodel");
 
     print(pkg.members<TopLevelOrMemberDeclaration>().size);
     assert(pkg.members<TopLevelOrMemberDeclaration>().size > 0);
@@ -275,6 +283,7 @@ void checkPackageAndModule(){
     value mod = pkg.container;
 
     assert(mod.name == "com.redhat.ceylon.compiler.java.test.metamodel");
+    assert(mod.qualifiedName == "com.redhat.ceylon.compiler.java.test.metamodel");
     assert(mod.version == "123");
     
     assert(mod.members.size == 1);
@@ -431,6 +440,8 @@ void checkToplevelFunctions(){
     f11a(2, "b", false);
 
     assert(exists f12 = pkg.getFunction("defaultedParams2"));
+    assert(f12.name == "defaultedParams2");
+    assert(f12.qualifiedName == "com.redhat.ceylon.compiler.java.test.metamodel::defaultedParams2");
     assert(is Function<Anything,[Boolean, Integer=, Integer=, Integer=, Integer=]> f12a = f12.apply());
     f12a(false);
     f12a(true, -1, -2, -3, -4);
@@ -438,6 +449,7 @@ void checkToplevelFunctions(){
     // check its parameters metamodel
     assert(f12.parameterDeclarations.size == 5);
     assert(exists f12p0 = f12.parameterDeclarations[0], f12p0.name == "set", f12p0.defaulted == false);
+    assert(f12p0.qualifiedName == "com.redhat.ceylon.compiler.java.test.metamodel::defaultedParams2.set");
     assert(exists f12p1 = f12.parameterDeclarations[1], f12p1.name == "a", f12p1.defaulted == true);
     assert(exists f12p2 = f12.parameterDeclarations[2], f12p2.name == "b", f12p2.defaulted == true);
     assert(exists f12p3 = f12.parameterDeclarations[3], f12p3.name == "c", f12p3.defaulted == true);
@@ -544,6 +556,7 @@ void checkTypeParameters(){
     
     assert(exists tp1 = tpTest.typeParameterDeclarations[0]);
     assert(tp1.name == "P");
+    assert(tp1.qualifiedName == "com.redhat.ceylon.compiler.java.test.metamodel::TypeParameterTest.P");
     assert(tp1.invariant, !tp1.covariant, !tp1.contravariant);
     assert(!tp1.defaulted, !tp1.defaultValue exists);
 
