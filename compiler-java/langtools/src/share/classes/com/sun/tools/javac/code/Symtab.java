@@ -253,6 +253,7 @@ public class Symtab {
     public final Type ceylonAtObjectExprsType;
     public final Type ceylonAtStringValueType;
     public final Type ceylonAtStringExprsType;
+    public final Type ceylonAtParameterValueType;
     
     public final Type ceylonUtilType;
     public final Type ceylonMetamodelType;
@@ -648,6 +649,7 @@ public class Symtab {
         ceylonAtObjectExprsType = enterClass("com.redhat.ceylon.compiler.java.metadata.ObjectExprs");
         ceylonAtStringValueType = enterClass("com.redhat.ceylon.compiler.java.metadata.StringValue");
         ceylonAtStringExprsType = enterClass("com.redhat.ceylon.compiler.java.metadata.StringExprs");
+        ceylonAtParameterValueType = enterClass("com.redhat.ceylon.compiler.java.metadata.ParameterValue");
         
         ceylonUtilType = enterClass("com.redhat.ceylon.compiler.java.Util");
         ceylonMetamodelType = enterClass("com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel");

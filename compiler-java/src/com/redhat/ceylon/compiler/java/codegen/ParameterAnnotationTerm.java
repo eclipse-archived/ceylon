@@ -121,6 +121,7 @@ public class ParameterAnnotationTerm extends AnnotationTerm implements Annotatio
     public com.sun.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(
             ExpressionTransformer exprGen) {
         // TODO I suppose we can have a constructor like (X x, X y=x) so we do need to support this.
-        return null;
+        // Or even (X x1, X x2, X[] x3=[x1, x2])
+        return exprGen.makeAtParameterValue(getSourceParameter().getName());
     }
 }

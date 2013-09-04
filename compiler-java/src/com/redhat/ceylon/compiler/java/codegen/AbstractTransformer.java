@@ -2197,6 +2197,10 @@ public abstract class AbstractTransformer implements Transformation {
     List<JCAnnotation> makeAtDeclarationValue(String value) {
         return makeModelAnnotation(syms().ceylonAtDeclarationValueType, List.<JCExpression>of(make().Literal(value)));
     }
+    
+    List<JCAnnotation> makeAtParameterValue(String value) {
+        return makeModelAnnotation(syms().ceylonAtParameterValueType, List.<JCExpression>of(make().Literal(value)));
+    }
 
     /** Determine whether the given declaration requires a 
      * {@code @TypeInfo} annotation 
