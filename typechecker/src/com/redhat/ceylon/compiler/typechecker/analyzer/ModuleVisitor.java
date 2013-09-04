@@ -85,7 +85,8 @@ public class ModuleVisitor extends Visitor {
 				if ( !pkg.getNameAsString().equals(nameString) ) {
                     that.getImportPath()
                         .addError("module name does not match descriptor location: " + 
-                        		nameString + " should be " + pkg.getNameAsString());
+                        		nameString + " should be " + pkg.getNameAsString(), 
+                        		8000);
                 }
                 moduleManager.addLinkBetweenModuleAndNode(mainModule, unit);
                 mainModule.setAvailable(true);
@@ -112,7 +113,8 @@ public class ModuleVisitor extends Visitor {
 				if ( !pkg.getNameAsString().equals(nameString) ) {
                     that.getImportPath()
                         .addError("package name does not match descriptor location: " + 
-                        		nameString + " should be " + pkg.getNameAsString());
+                        		nameString + " should be " + pkg.getNameAsString(), 
+                                8000);
                 }
                 if (hasAnnotation(that.getAnnotationList(), "shared", unit.getUnit())) {
                     pkg.setShared(true);
