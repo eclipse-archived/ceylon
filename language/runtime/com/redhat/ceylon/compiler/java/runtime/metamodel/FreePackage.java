@@ -92,6 +92,11 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
     }
 
     @Override
+    public String getQualifiedName() {
+        return getName();
+    }
+
+    @Override
     public ceylon.language.model.declaration.Module getContainer() {
         // this does not need to be thread-safe as Metamodel.getOrCreateMetamodel is thread-safe so if we
         // assign module twice we get the same result

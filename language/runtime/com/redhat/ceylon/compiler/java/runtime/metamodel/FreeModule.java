@@ -128,6 +128,11 @@ public class FreeModule implements ceylon.language.model.declaration.Module,
     }
 
     @Override
+    public String getQualifiedName() {
+        return getName();
+    }
+
+    @Override
     @TypeInfo("ceylon.language::String")
     public String getVersion() {
         return declaration.getVersion();

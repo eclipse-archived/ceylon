@@ -87,6 +87,11 @@ public abstract class FreeTopLevelOrMemberDeclaration
     }
 
     @Override
+    public String getQualifiedName() {
+        return declaration.getQualifiedNameString();
+    }
+
+    @Override
     public Package getPackageContainer() {
         // this does not need to be thread-safe as Metamodel.getOrCreateMetamodel is thread-safe so if we
         // assign pkg twice we get the same result
@@ -123,13 +128,7 @@ public abstract class FreeTopLevelOrMemberDeclaration
 
     @Override
     public ceylon.language.model.declaration.AnnotatedDeclaration getContainer() {
-        Scope container = declaration.getContainer();
-        if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Declaration)
-            return Metamodel.getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.Declaration)container);
-        if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Package)
-            return Metamodel.getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.Package)container);
-        // FIXME: can that happen?
-        throw new RuntimeException("Illegal container type: "+container);
+        return Metamodel.getContainer(declaration);
     }
 
     @Override

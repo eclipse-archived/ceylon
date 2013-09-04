@@ -19,6 +19,7 @@ import ceylon.language.finished_;
 import ceylon.language.model.Annotated;
 import ceylon.language.model.ClassOrInterface;
 import ceylon.language.model.ConstrainedAnnotation;
+import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.FunctionDeclaration;
 import ceylon.language.model.declaration.Module;
 
@@ -43,6 +44,7 @@ import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -736,5 +738,15 @@ public class Metamodel {
                 return tp;
         }
         return null;
+    }
+
+    public static AnnotatedDeclaration getContainer(Declaration declaration) {
+        Scope container = declaration.getContainer();
+        if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Declaration)
+            return Metamodel.getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.Declaration)container);
+        if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Package)
+            return Metamodel.getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.Package)container);
+        // FIXME: can that happen?
+        throw new RuntimeException("Illegal container type: "+container);
     }
 }
