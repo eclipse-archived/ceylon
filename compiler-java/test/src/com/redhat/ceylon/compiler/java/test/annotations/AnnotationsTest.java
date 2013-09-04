@@ -140,8 +140,8 @@ public class AnnotationsTest extends CompilerTest {
         compareWithJavaSource("EnumeratedReference2");
     }
     @Test
-    @Ignore("M6")
     public void testEnumeratedReferenceAsDefaulted(){
+        // 1247
         compareWithJavaSource("EnumeratedReferenceAsDefaulted");
     }
     @Test
@@ -195,14 +195,22 @@ public class AnnotationsTest extends CompilerTest {
     }
     
     @Test
-    @Ignore("M6: #1246, pending decision about how to handle this case")
+    //@Ignore("M6: #1246, pending decision about how to handle this case")
     public void testRecursiveConstructors(){
+        // 1246
         compareWithJavaSource("RecursiveConstructors");
     }
     
     @Test
     public void testSequenceDefaults(){
+        // 1254
         compareWithJavaSource("SequenceDefaults1");
         compareWithJavaSource("SequenceDefaults2");
+    }
+    
+    @Test
+    public void testTuple(){
+        // spec 768
+        compareWithJavaSource("Tuple");
     }
  }
