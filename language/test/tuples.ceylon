@@ -51,4 +51,10 @@ void tuples() {
     check(t.count((Object x) => x is String) == 1, "tuple count");
     
     check(LazyList({123}).hash==[123].hash, "tuple hash");
+    
+    Sequence<String> strings = ["hello", "bye"];
+    [String, Integer, String*] threeTupleEllipsis = ["a", 1, *strings];
+    [String*] comprehensionTuple = ["a", "b", for (s in strings) s];
+    check(threeTupleEllipsis == {"a", 1, "hello", "bye"}, "threeTupleEllipsis");
+    check(comprehensionTuple == {"a", "b", "hello", "bye"}, "comprehensionTuple");
 }
