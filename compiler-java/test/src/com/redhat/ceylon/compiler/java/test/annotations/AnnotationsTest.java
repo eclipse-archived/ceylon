@@ -199,22 +199,10 @@ public class AnnotationsTest extends CompilerTest {
     public void testRecursiveConstructors(){
         compareWithJavaSource("RecursiveConstructors");
     }
- }
-/*
-class Bar {
-}
-class one extends Bar {}
-class two extends Bar {}
     
-
-@interface Foo {
-    Class<? extends Bar> value();
-}
-
-class Baz {
-    final static Class<? extends Bar> BAR = one.class;
-}
-
-@Foo(Baz.BAR)
-class X {}
-*/
+    @Test
+    public void testSequenceDefaults(){
+        compareWithJavaSource("SequenceDefaults1");
+        compareWithJavaSource("SequenceDefaults2");
+    }
+ }

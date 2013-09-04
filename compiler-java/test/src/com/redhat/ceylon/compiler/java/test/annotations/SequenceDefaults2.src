@@ -1,0 +1,29 @@
+@.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults$annotations({
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults$annotation(
+                seq = {},
+                seq2 = {},
+                seq3 = {}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults$annotation(
+                seq = {},
+                seq2 = {},
+                seq3 = {}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults$annotation(
+                seq = {},
+                seq2 = {},
+                seq3 = {})})
+class SequenceDefaults_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    SequenceDefaults_callsite() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_callsite();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_callsite.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_callsite.class);
+}
