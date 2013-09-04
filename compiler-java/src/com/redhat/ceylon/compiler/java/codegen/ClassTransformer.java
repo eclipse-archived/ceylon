@@ -1850,7 +1850,7 @@ public class ClassTransformer extends AbstractTransformer {
                 || 
                 (typeFact().isIterableType(parameterModel.getType())
                 && isMetamodelReference(typeFact().getIteratedType(parameterModel.getType())))) {
-            mdb.modelAnnotations(List.of(make().Annotation(make().Type(syms().ceylonAtMetamodelReferenceType), 
+            mdb.modelAnnotations(List.of(make().Annotation(make().Type(syms().ceylonAtDeclarationReferenceType), 
                     List.<JCExpression>nil())));
         } else if (Decl.isEnumeratedTypeWithAnonCases(parameterModel.getType())
                 || 
