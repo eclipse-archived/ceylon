@@ -222,3 +222,9 @@ shared class TP2() satisfies TPA & TPB {}
 
 shared class TypeParameterTest<P, in T = P, out V = Integer>()
     given P of TP1 | TP2 satisfies TPA & TPB {}
+
+shared interface InterfaceWithCaseTypes of iwcta | iwctb {}
+shared object iwcta satisfies InterfaceWithCaseTypes {}
+shared object iwctb satisfies InterfaceWithCaseTypes {}
+
+shared interface InterfaceWithSelfType<T> of T given T satisfies InterfaceWithSelfType<T>{}

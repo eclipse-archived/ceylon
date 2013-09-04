@@ -572,6 +572,22 @@ void checkTypeParameters(){
     assert(tp3.upperBounds.size == 0);
 }
 
+void checkClassOrInterfaceCaseTypes(){
+    value iwct = `interface InterfaceWithCaseTypes`;
+    assert(iwct.caseTypes.size == 2);
+    assert(is OpenParameterisedType<ClassDeclaration> iwcta = iwct.caseTypes[0],
+           iwcta.declaration.name == "iwcta",
+           iwcta.declaration.anonymous);
+    assert(is OpenParameterisedType<ClassDeclaration> iwctb = iwct.caseTypes[1],
+           iwctb.declaration.name == "iwctb",
+           iwctb.declaration.anonymous);
+    
+    value iwst = `interface InterfaceWithSelfType`;
+    assert(iwst.caseTypes.size == 1);
+    assert(is OpenTypeVariable iwsta = iwst.caseTypes[0]);
+    assert(iwsta.declaration.name == "T");
+}
+
 shared void runtime() {
     visitStringHierarchy();
 
@@ -600,6 +616,8 @@ shared void runtime() {
     checkAliases();
 
     checkTypeParameters();
+
+    checkClassOrInterfaceCaseTypes();
     // FIXME: test members() wrt filtering
     // FIXME: test untyped class to applied class
 }
