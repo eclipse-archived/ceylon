@@ -19,6 +19,7 @@ import ceylon.language.finished_;
 import ceylon.language.model.Annotated;
 import ceylon.language.model.ClassOrInterface;
 import ceylon.language.model.ConstrainedAnnotation;
+import ceylon.language.model.declaration.FunctionDeclaration;
 import ceylon.language.model.declaration.Module;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -372,13 +373,20 @@ public class Metamodel {
         return tdArgs;
     }
 
-    public static FreeFunction getMetamodel(Method method) {
+    public static ceylon.language.model.declaration.FunctionDeclaration getMetamodel(Method method) {
         // find its container
         Scope container = method.getContainer();
         if(container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface){
             com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface classOrInterface = (FreeClassOrInterface) getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) container);
             // now find the method
-            FreeFunction ret = classOrInterface.findMethod(method.getName());
+            ceylon.language.model.declaration.FunctionDeclaration ret = classOrInterface.findMethod(method.getName());
+            if(ret == null)
+                throw new RuntimeException("Failed to find method "+method.getName()+" in "+container);
+            return ret;
+        }
+        if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Package){
+            ceylon.language.model.declaration.Package pkg = getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.Package) container);
+            ceylon.language.model.declaration.FunctionDeclaration ret = pkg.getFunction(method.getName());
             if(ret == null)
                 throw new RuntimeException("Failed to find method "+method.getName()+" in "+container);
             return ret;
