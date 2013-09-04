@@ -604,6 +604,13 @@ shared void checkModifiers(){
     assert(v.shared, !v.formal, v.actual, v.default);
 }
 
+void checkContainers(){
+    assert(`class ContainerClass.InnerClass`.container.name == "ContainerClass");
+    assert(`class ContainerClass`.container.name == "com.redhat.ceylon.compiler.java.test.metamodel");
+    assert(`value NoParams.str`.container.name == "NoParams");
+    assert(`function NoParams.noParams`.container.name == "NoParams");
+}
+
 shared void runtime() {
     visitStringHierarchy();
 
@@ -636,6 +643,8 @@ shared void runtime() {
     checkClassOrInterfaceCaseTypes();
 
     checkModifiers();
+
+    checkContainers();
     // FIXME: test members() wrt filtering
     // FIXME: test untyped class to applied class
 }
