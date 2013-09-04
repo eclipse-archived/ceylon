@@ -588,6 +588,17 @@ void checkClassOrInterfaceCaseTypes(){
     assert(iwsta.declaration.name == "T");
 }
 
+shared void checkModifiers(){
+    value mods = `class Modifiers`;
+    assert(mods.abstract, mods.shared, !mods.formal, !mods.actual, !mods.default);
+    assert(exists inner = mods.getMemberDeclaration<ClassDeclaration>("NonShared"));
+    assert(!inner.abstract, !inner.shared, !inner.formal, !inner.actual, !inner.default);
+    assert(exists m = mods.getMemberDeclaration<FunctionDeclaration>("method"));
+    assert(m.shared, m.formal, !m.actual, !m.default);
+    assert(exists v = mods.getMemberDeclaration<ValueDeclaration>("string"));
+    assert(v.shared, !v.formal, v.actual, v.default);
+}
+
 shared void runtime() {
     visitStringHierarchy();
 
@@ -618,6 +629,8 @@ shared void runtime() {
     checkTypeParameters();
 
     checkClassOrInterfaceCaseTypes();
+
+    checkModifiers();
     // FIXME: test members() wrt filtering
     // FIXME: test untyped class to applied class
 }

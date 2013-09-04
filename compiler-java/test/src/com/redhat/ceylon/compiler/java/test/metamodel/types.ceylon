@@ -228,3 +228,9 @@ shared object iwcta satisfies InterfaceWithCaseTypes {}
 shared object iwctb satisfies InterfaceWithCaseTypes {}
 
 shared interface InterfaceWithSelfType<T> of T given T satisfies InterfaceWithSelfType<T>{}
+
+shared abstract class Modifiers(){
+    class NonShared(){}
+    shared formal Boolean method();
+    shared actual default String string = "yup";
+}
