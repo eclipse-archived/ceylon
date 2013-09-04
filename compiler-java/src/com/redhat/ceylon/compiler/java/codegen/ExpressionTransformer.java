@@ -892,17 +892,71 @@ public class ExpressionTransformer extends AbstractTransformer {
         return lit;
     }
 
-    private JCExpression transformRadixLiteral(NaturalLiteral literal, int radix, String error){
+    static String literalValue(Tree.StringLiteral string) {
+        return string.getText();
+    }
+    
+    static String literalValue(Tree.QuotedLiteral string) {
+        return string.getText().substring(1, string.getText().length()-1);
+    }
+    
+    static int literalValue(Tree.CharLiteral ch) {
+        // codePoint is at index 1 because the text is `X` (including quotation marks, so we skip them)
+        return ch.getText().codePointAt(1);
+    }
+    
+    static double literalValue(Tree.FloatLiteral literal) throws ErroneousException {
+        double value = Double.parseDouble(literal.getText());
+        // Don't need to handle the negative infinity and negative zero cases 
+        // because Ceylon Float literals have no sign
+        if (value == Double.POSITIVE_INFINITY) {
+            throw new ErroneousException(literal, "Literal so large it is indistinguishable from infinity");
+        } else if (value == 0.0 && !literal.getText().equals("0.0")) {
+            throw new ErroneousException(literal, "Literal so small it is indistinguishable from zero");
+        }
+        return value;
+    }
+    
+    static long literalValue(Tree.NaturalLiteral literal) throws ErroneousException {
+        return literalValue(literal, literal.getText());
+    }
+    
+    static private long literalValue(Tree.NaturalLiteral literal, String text) throws ErroneousException {
+        if(text.startsWith("#")){
+            return literalValue(literal, 16, "Invalid hexadecimal literal: more than 64 bits");
+        }
+        if(text.startsWith("$")){
+            return literalValue(literal, 2, "Invalid binary literal: more than 64 bits");
+        }
+        try {
+            return Long.parseLong(text);
+        } catch (NumberFormatException e) {
+            throw new ErroneousException(literal, "Literal outside representable range");
+        }
+        
+    }
+    
+    private static long literalValue(NaturalLiteral literal, int radix, String error) throws ErroneousException{
         String value = literal.getText().substring(1);
-        at(literal);
         try{
-            long l = Convert.string2long(value, radix);
-            return make().Literal(l);
+            return Convert.string2long(value, radix);
         }catch(NumberFormatException x){
-            return makeErroneous(literal, error);
+            throw new ErroneousException(literal, error);
         }
     }
-
+    
+    static Long literalValue(Tree.NegativeOp op) throws ErroneousException {
+        if (op.getTerm() instanceof Tree.NaturalLiteral) {
+            // To cope with -9223372036854775808 we can't just parse the 
+            // number separately from the sign
+            String lit = op.getTerm().getText();
+            if (!lit.startsWith("#") && !lit.startsWith("$")) { 
+                return literalValue((Tree.NaturalLiteral)op.getTerm(), "-" + lit);
+            }
+        }
+        return null;
+    }
+    
     public JCExpression transform(Tree.StringLiteral string) {
         at(string);
         return ceylonLiteral(string.getText());
@@ -910,55 +964,28 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transform(Tree.QuotedLiteral string) {
         at(string);
-        return ceylonLiteral(string.getText().substring(1, string.getText().length()-1));
+        return ceylonLiteral(literalValue(string));
     }
-
+    
     public JCExpression transform(Tree.CharLiteral lit) {
-        // codePoint is at index 1 because the text is `X` (including quotation marks, so we skip them)
-        String text = lit.getText();
-        return makeCharLiteral(text);
-    }
-
-    JCExpression makeCharLiteral(String text) {
-        int codePoint = text.codePointAt(1);
-        return make().Literal(TypeTags.INT, codePoint);
+        return make().Literal(TypeTags.INT, literalValue(lit));
     }
 
     public JCExpression transform(Tree.FloatLiteral lit) {
-        String text = lit.getText();
-        return makeDoubleLiteral(lit, text);
-    }
-
-    JCExpression makeDoubleLiteral(Node lit, String text) {
-        double value = Double.parseDouble(text);
-        // Don't need to handle the negative infinity and negative zero cases 
-        // because Ceylon Float literals have no sign
-        if (value == Double.POSITIVE_INFINITY) {
-            return makeErroneous(lit, "Literal so large it is indistinguishable from infinity");
-        } else if (value == 0.0 && !text.equals("0.0")) {
-            return makeErroneous(lit, "Literal so small it is indistinguishable from zero");
-        }
-        JCExpression expr = make().Literal(value);
-        return expr;
-    }
-
-    JCExpression integerLiteral(Node node, String num) {
         try {
-            return make().Literal(Long.parseLong(num));
-        } catch (NumberFormatException e) {
-            return makeErroneous(node, "Literal outside representable range");
+            return make().Literal(literalValue(lit));
+        } catch (ErroneousException e) {
+            return e.makeErroneous(this);
         }
     }
     
     public JCExpression transform(Tree.NaturalLiteral lit) {
-        String text = lit.getText();
-        if(text.startsWith("#")){
-            return transformRadixLiteral(lit, 16, "Invalid hexadecimal literal: more than 64 bits");
+        try {
+            at(lit);
+            return make().Literal(literalValue(lit));
+        } catch (ErroneousException e) {
+            return e.makeErroneous(this);
         }
-        if(text.startsWith("$")){
-            return transformRadixLiteral(lit, 2, "Invalid binary literal: more than 64 bits");
-        }
-        return integerLiteral(lit, text);
     }
     
     JCExpression transform(Tree.Literal literal) {
@@ -1387,12 +1414,15 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.NegativeOp op) {
+        at(op);
         if (op.getTerm() instanceof Tree.NaturalLiteral) {
-            // To cope with -9223372036854775808 we can't just parse the 
-            // number separately from the sign
-            String lit = op.getTerm().getText();
-            if (!lit.startsWith("#") && !lit.startsWith("$")) { 
-                return integerLiteral(op.getTerm(), "-" + lit);
+            try {
+                Long l = literalValue(op);
+                if (l != null) {
+                    return make().Literal(l);
+                }
+            } catch (ErroneousException e) {
+                return e.makeErroneous(this);
             }
         }
         return transformOverridableUnaryOperator(op, op.getUnit().getInvertableDeclaration());
