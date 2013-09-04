@@ -11,6 +11,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -116,6 +117,13 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
         staticArgs.append(field);
     
     }
+
+    @Override
+    // TODO Remove this once the class is abstract
+    public com.sun.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(
+            ExpressionTransformer exprGen) {
+        return com.sun.tools.javac.util.List.<JCAnnotation>nil();
+    }
 }
 class StringLiteralAnnotationTerm extends LiteralAnnotationTerm {
     final String[] value;
@@ -125,6 +133,12 @@ class StringLiteralAnnotationTerm extends LiteralAnnotationTerm {
     }
     public String[] getValue() {
         return value;
+    }
+    @Override
+    public com.sun.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(
+            ExpressionTransformer exprGen) {
+        // TODO Auto-generated method stub
+        return com.sun.tools.javac.util.List.<JCAnnotation>nil();
     }
 }
 class IntegerLiteralAnnotationTerm extends LiteralAnnotationTerm {
@@ -136,6 +150,12 @@ class IntegerLiteralAnnotationTerm extends LiteralAnnotationTerm {
     public long[] getValue() {
         return value;
     }
+    @Override
+    public com.sun.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(
+            ExpressionTransformer exprGen) {
+        // TODO Auto-generated method stub
+        return com.sun.tools.javac.util.List.<JCAnnotation>nil();
+    }
 }
 class FloatLiteralAnnotationTerm extends LiteralAnnotationTerm {
     final double[] value;
@@ -145,6 +165,12 @@ class FloatLiteralAnnotationTerm extends LiteralAnnotationTerm {
     }
     public double[] getValue() {
         return value;
+    }
+    @Override
+    public com.sun.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(
+            ExpressionTransformer exprGen) {
+        // TODO Auto-generated method stub
+        return com.sun.tools.javac.util.List.<JCAnnotation>nil();
     }
 }
 class BooleanLiteralAnnotationTerm extends LiteralAnnotationTerm {
@@ -156,6 +182,12 @@ class BooleanLiteralAnnotationTerm extends LiteralAnnotationTerm {
     public boolean[] getValue() {
         return value;
     }
+    @Override
+    public com.sun.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(
+            ExpressionTransformer exprGen) {
+        // TODO Auto-generated method stub
+        return com.sun.tools.javac.util.List.<JCAnnotation>nil();
+    }
 }
 class CharacterLiteralAnnotationTerm extends LiteralAnnotationTerm {
     final int[] value;
@@ -165,6 +197,12 @@ class CharacterLiteralAnnotationTerm extends LiteralAnnotationTerm {
     }
     public int[] getValue() {
         return value;
+    }
+    @Override
+    public com.sun.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(
+            ExpressionTransformer exprGen) {
+        // TODO Auto-generated method stub
+        return com.sun.tools.javac.util.List.<JCAnnotation>nil();
     }
 }
 class ObjectLiteralAnnotationTerm extends LiteralAnnotationTerm {
@@ -176,6 +214,12 @@ class ObjectLiteralAnnotationTerm extends LiteralAnnotationTerm {
     public ProducedType[] getValue() {
         return value;
     }
+    @Override
+    public com.sun.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(
+            ExpressionTransformer exprGen) {
+        // Add @DefaultedObject
+        return exprGen.makeAtObjectValue(value[0]);
+    }
 }
 class DeclarationLiteralAnnotationTerm extends LiteralAnnotationTerm {
     final String[] value;
@@ -185,6 +229,12 @@ class DeclarationLiteralAnnotationTerm extends LiteralAnnotationTerm {
     }
     public String[] getValue() {
         return value;
+    }
+    @Override
+    public com.sun.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(
+            ExpressionTransformer exprGen) {
+        // TODO Auto-generated method stub
+        return com.sun.tools.javac.util.List.<JCAnnotation>nil();
     }
 }
 class TupleLiteralAnnotationTerm extends LiteralAnnotationTerm {
@@ -199,5 +249,11 @@ class TupleLiteralAnnotationTerm extends LiteralAnnotationTerm {
     }
     public AnnotationTerm[] getValue() {
         return value;
+    }
+    @Override
+    public com.sun.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(
+            ExpressionTransformer exprGen) {
+        // TODO Auto-generated method stub
+        return com.sun.tools.javac.util.List.<JCAnnotation>nil();
     }
 }

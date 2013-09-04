@@ -7,6 +7,7 @@ import static com.sun.tools.javac.code.Flags.STATIC;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -50,5 +51,10 @@ public class InvocationAnnotationTerm extends AnnotationTerm {
             ListBuffer<JCStatement> staticArgs, ProducedType expectedType) {
         // Recurse to our instantiation, since it may have constants
         getInstantiation().makeLiteralAnnotationFields(exprGen, toplevel, fieldPath, staticArgs);
+    }
+
+    @Override
+    public List<JCAnnotation> makeDpmAnnotations(ExpressionTransformer exprGen) {
+        return List.of(exprGen.classGen().makeAtAnnotationInstantiation(getInstantiation()));
     }
 }

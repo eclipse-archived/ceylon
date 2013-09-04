@@ -5,6 +5,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.util.ListBuffer;
@@ -57,4 +58,6 @@ public abstract class AnnotationTerm {
             AnnotationInvocation toplevel,
             com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath,
             ListBuffer<JCStatement> staticArgs, ProducedType expectedType);
+
+    public abstract com.sun.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(ExpressionTransformer exprGen);
 }

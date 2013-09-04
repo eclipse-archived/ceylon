@@ -5,6 +5,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.util.ListBuffer;
@@ -114,5 +115,12 @@ public class ParameterAnnotationTerm extends AnnotationTerm implements Annotatio
             com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath,
             ListBuffer<JCStatement> staticArgs, ProducedType expectedType) {
         // Do nothing since we don't need to produced any constants for a parameter term
+    }
+
+    @Override
+    public com.sun.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(
+            ExpressionTransformer exprGen) {
+        // TODO I suppose we can have a constructor like (X x, X y=x) so we do need to support this.
+        return null;
     }
 }

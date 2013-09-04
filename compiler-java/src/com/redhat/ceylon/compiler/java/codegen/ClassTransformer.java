@@ -3032,10 +3032,9 @@ public class ClassTransformer extends AbstractTransformer {
             for (AnnotationConstructorParameter acp : ac.getConstructorParameters()) {
                 if (acp.getParameter().equals(parameter)
                         && acp.getDefaultArgument() != null) {
-                    if (acp.getDefaultArgument() instanceof InvocationAnnotationTerm) {
-                        // Add @AnnotationInstantiation
-                        methodBuilder.userAnnotations(List.of(makeAtAnnotationInstantiation(((InvocationAnnotationTerm)acp.getDefaultArgument()).getInstantiation())));
-                    } else if (acp.getDefaultArgument() instanceof LiteralAnnotationTerm
+                    methodBuilder.userAnnotations(acp.getDefaultArgument().makeDpmAnnotations(expressionGen()));
+                    // TODO Remove the following block
+                    if (acp.getDefaultArgument() instanceof LiteralAnnotationTerm
                             && ((LiteralAnnotationTerm)acp.getDefaultArgument()).getTerm() instanceof Tree.BaseMemberExpression
                             && Decl.isAnonCaseOfEnumeratedType(((Tree.BaseMemberExpression)((LiteralAnnotationTerm)acp.getDefaultArgument()).getTerm()))) {
                         // Add @DefaultedObject
