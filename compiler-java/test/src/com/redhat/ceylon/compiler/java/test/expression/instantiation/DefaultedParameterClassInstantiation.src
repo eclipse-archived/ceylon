@@ -89,7 +89,10 @@ class DefaultedParameterClassInstantiation implements .com.redhat.ceylon.compile
             {
                 long $arg$9$0 = 6L;
                 long $arg$9$1 = 9L;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$9$2 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$9$2 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                        .ceylon.language.Integer.instance(1L),
+                        .ceylon.language.Integer.instance(2L),
+                        .ceylon.language.Integer.instance(3L)});
             }
             returning new .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation($arg$9$0, $arg$9$1, $arg$9$2);
         );

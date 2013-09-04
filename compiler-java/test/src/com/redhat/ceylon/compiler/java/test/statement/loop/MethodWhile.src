@@ -26,7 +26,7 @@ class MethodWhile implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     public final void whileNonEmpty() {
-        .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L));
+        .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
         while (true) {
             .ceylon.language.Sequential<? extends .ceylon.language.Integer> $s$2;
             if (($s$2 = seq) instanceof .ceylon.language.Sequence) {

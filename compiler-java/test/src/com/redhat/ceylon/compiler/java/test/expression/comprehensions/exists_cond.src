@@ -6,7 +6,12 @@ final class existsCond_ {
     }
     
     static void existsCond() {
-        final .ceylon.language.Sequence<? extends .ceylon.language.String> seq = new .ceylon.language.Tuple<.ceylon.language.String, .java.lang.Object, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .java.lang.Object, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Empty>>>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), null, .ceylon.language.String.instance("a"), null, .ceylon.language.String.instance("b"), null);
+        final .ceylon.language.Sequence<? extends .ceylon.language.String> seq = new .ceylon.language.Tuple<.ceylon.language.String, .java.lang.Object, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .java.lang.Object, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Empty>>>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), new .java.lang.Object[]{
+                null,
+                .ceylon.language.String.instance("a"),
+                null,
+                .ceylon.language.String.instance("b"),
+                null});
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Character> iterator() {

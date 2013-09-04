@@ -703,7 +703,7 @@ final class bug708seq_ {
     }
     private static final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>[] value;
     static {
-        value = new .ceylon.language.Sequential[]{new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>, .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>, .ceylon.language.Empty>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708.class, .ceylon.language.String.$TypeDescriptor), new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor))};
+        value = new .ceylon.language.Sequential[]{new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>, .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>, .ceylon.language.Empty>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708.class, .ceylon.language.String.$TypeDescriptor), new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor)})};
     }
     
     public static .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> $get() {

@@ -82,7 +82,10 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 long $arg$3$0 = 1L;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$3$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L));
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$3$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                        .ceylon.language.Integer.instance(2L),
+                        .ceylon.language.Integer.instance(3L),
+                        .ceylon.language.Integer.instance(4L)});
                 m$priv($arg$3$0, $arg$3$1);
             }
             returning null;
@@ -92,7 +95,10 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 .java.lang.Throwable $arg$4$0 = e;
-                .ceylon.language.Sequential<? extends .java.lang.Throwable> $arg$4$1 = new .ceylon.language.Tuple<.java.lang.Throwable, .java.lang.Throwable, .ceylon.language.Tuple<.java.lang.Throwable, ? extends .java.lang.Throwable, ? extends .ceylon.language.Tuple<.java.lang.Throwable, ? extends .java.lang.Throwable, ? extends .ceylon.language.Empty>>>(.ceylon.language.Exception.$TypeDescriptor, e, e, e);
+                .ceylon.language.Sequential<? extends .java.lang.Throwable> $arg$4$1 = new .ceylon.language.Tuple<.java.lang.Throwable, .java.lang.Throwable, .ceylon.language.Tuple<.java.lang.Throwable, ? extends .java.lang.Throwable, ? extends .ceylon.language.Tuple<.java.lang.Throwable, ? extends .java.lang.Throwable, ? extends .ceylon.language.Empty>>>(.ceylon.language.Exception.$TypeDescriptor, new .java.lang.Object[]{
+                        e,
+                        e,
+                        e});
                 m2$priv($arg$4$0, $arg$4$1);
             }
             returning null;
@@ -101,7 +107,10 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence $arg$5$0 = this;
-                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> $arg$5$1 = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .ceylon.language.Empty>>>(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence.$TypeDescriptor, this, this, this);
+                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> $arg$5$1 = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .ceylon.language.Empty>>>(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence.$TypeDescriptor, new .java.lang.Object[]{
+                        this,
+                        this,
+                        this});
                 m3$priv($arg$5$0, $arg$5$1);
             }
             returning null;
