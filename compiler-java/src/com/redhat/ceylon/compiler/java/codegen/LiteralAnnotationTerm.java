@@ -6,6 +6,8 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
+import java.util.List;
+
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -31,10 +33,12 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
         return "/* literal */";
     }
     
+    @Deprecated
     public void setTerm(Tree.Term field) {
         this.term = field;
     }
     
+    @Deprecated
     public Tree.Term getTerm() {
         return term;
     }
@@ -111,5 +115,89 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
                 expr);
         staticArgs.append(field);
     
+    }
+}
+class StringLiteralAnnotationTerm extends LiteralAnnotationTerm {
+    final String[] value;
+    public StringLiteralAnnotationTerm(String[] value) {
+        super();
+        this.value = value;
+    }
+    public String[] getValue() {
+        return value;
+    }
+}
+class IntegerLiteralAnnotationTerm extends LiteralAnnotationTerm {
+    final long[] value;
+    public IntegerLiteralAnnotationTerm(long[] value) {
+        super();
+        this.value = value;
+    }
+    public long[] getValue() {
+        return value;
+    }
+}
+class FloatLiteralAnnotationTerm extends LiteralAnnotationTerm {
+    final double[] value;
+    public FloatLiteralAnnotationTerm(double[] value) {
+        super();
+        this.value = value;
+    }
+    public double[] getValue() {
+        return value;
+    }
+}
+class BooleanLiteralAnnotationTerm extends LiteralAnnotationTerm {
+    final boolean[] value;
+    public BooleanLiteralAnnotationTerm(boolean[] value) {
+        super();
+        this.value = value;
+    }
+    public boolean[] getValue() {
+        return value;
+    }
+}
+class CharacterLiteralAnnotationTerm extends LiteralAnnotationTerm {
+    final int[] value;
+    public CharacterLiteralAnnotationTerm(int[] value) {
+        super();
+        this.value = value;
+    }
+    public int[] getValue() {
+        return value;
+    }
+}
+class ObjectLiteralAnnotationTerm extends LiteralAnnotationTerm {
+    final ProducedType[] value;
+    public ObjectLiteralAnnotationTerm(ProducedType[] value) {
+        super();
+        this.value = value;
+    }
+    public ProducedType[] getValue() {
+        return value;
+    }
+}
+class DeclarationLiteralAnnotationTerm extends LiteralAnnotationTerm {
+    final String[] value;
+    public DeclarationLiteralAnnotationTerm(String[] value) {
+        super();
+        this.value = value;
+    }
+    public String[] getValue() {
+        return value;
+    }
+}
+class TupleLiteralAnnotationTerm extends LiteralAnnotationTerm {
+    final AnnotationTerm[] value;
+    public TupleLiteralAnnotationTerm(List<AnnotationTerm> value) {
+        super();
+        this.value = value.toArray(new AnnotationTerm[value.size()]);
+    }
+    public TupleLiteralAnnotationTerm(AnnotationTerm[] value) {
+        super();
+        this.value = value;
+    }
+    public AnnotationTerm[] getValue() {
+        return value;
     }
 }

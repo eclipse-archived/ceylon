@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -35,6 +36,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
     private boolean checkingDefaults;
     private AnnotationTerm term;
     private boolean checkingInvocationPrimary;
+    private List<AnnotationTerm> elements;
     
     public AnnotationModelVisitor() {
         
@@ -255,26 +257,50 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
         this.checkingArguments = prevCheckingArguments;
     }
     
-    public void visit(Tree.Literal literal) {
+    public void visit(Tree.StringLiteral literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
-                appendLiteralArgument(literal, literal);
+                LiteralAnnotationTerm argument = new StringLiteralAnnotationTerm(new String[]{ExpressionTransformer.literalValue(literal)});
+                argument.setTerm(literal);
+                appendLiteralArgument(literal, argument);
             }
         }
     }
     
-    public void visit(Tree.TypeLiteral literal) {
+    public void visit(Tree.CharLiteral literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
-                appendLiteralArgument(literal, literal);
+                LiteralAnnotationTerm argument = new CharacterLiteralAnnotationTerm(new int[]{ExpressionTransformer.literalValue(literal)});
+                argument.setTerm(literal);
+                appendLiteralArgument(literal, argument);
             }
         }
     }
     
-    public void visit(Tree.MemberLiteral literal) {
+    public void visit(Tree.FloatLiteral literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
-                appendLiteralArgument(literal, literal);
+                try {
+                    LiteralAnnotationTerm argument = new FloatLiteralAnnotationTerm(new double[]{ExpressionTransformer.literalValue(literal)});
+                    argument.setTerm(literal);
+                    appendLiteralArgument(literal, argument);
+                } catch (ErroneousException e) {
+                    // Ignore it: The ExpressionTransformer will produce an error later in codegen
+                }
+            }
+        }
+    }
+    
+    public void visit(Tree.NaturalLiteral literal) {
+        if (annotationConstructor != null) {
+            if (checkingArguments || checkingDefaults){
+                try {
+                    LiteralAnnotationTerm argument = new IntegerLiteralAnnotationTerm(new long[]{ExpressionTransformer.literalValue(literal)});
+                    argument.setTerm(literal);
+                    appendLiteralArgument(literal, argument);
+                } catch (ErroneousException e) {
+                    // Ignore it: The ExpressionTransformer will produce an error later in codegen
+                }
             }
         }
     }
@@ -282,9 +308,61 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.NegativeOp op) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
-                if (op.getTerm() instanceof Tree.Literal) {
-                    appendLiteralArgument(op, op);
+                try {
+                    if (op.getTerm() instanceof Tree.NaturalLiteral) {
+                        LiteralAnnotationTerm argument = new IntegerLiteralAnnotationTerm(new long[]{ExpressionTransformer.literalValue(op)});
+                        argument.setTerm(op);
+                        appendLiteralArgument(op, argument);
+                    } else if (op.getTerm() instanceof Tree.FloatLiteral) {
+                        LiteralAnnotationTerm argument = new FloatLiteralAnnotationTerm(new double[]{-ExpressionTransformer.literalValue((Tree.FloatLiteral)op.getTerm())});
+                        argument.setTerm(op);
+                        appendLiteralArgument(op, argument);
+                    }
+                } catch (ErroneousException e) {
+                    // Ignore it: The ExpressionTransformer will produce an error later in codegen
                 }
+            }
+        }
+    }
+    
+    public void visit(Tree.TypeLiteral literal) {
+        if (annotationConstructor != null) {
+            if (checkingArguments || checkingDefaults){
+                LiteralAnnotationTerm argument = new DeclarationLiteralAnnotationTerm(new String[]{literal.getText()});
+                argument.setTerm(literal);
+                appendLiteralArgument(literal, argument);
+            }
+        }
+    }
+    
+    public void visit(Tree.MemberLiteral literal) {
+        if (annotationConstructor != null) {
+            if (checkingArguments || checkingDefaults){
+                LiteralAnnotationTerm argument = new DeclarationLiteralAnnotationTerm(new String[]{literal.getText()});
+                argument.setTerm(literal);
+                appendLiteralArgument(literal, argument);
+            }
+        }
+    }
+    
+    public void visit(Tree.Tuple literal) {
+        if (annotationConstructor != null) {
+            if (checkingArguments || checkingDefaults){
+                // Continue the visit to collect the elements
+                this.elements = new ArrayList<AnnotationTerm>();
+                super.visit(literal);
+                this.term = new TupleLiteralAnnotationTerm(this.elements);
+            }
+        }
+    }
+    
+    public void visit(Tree.SequenceEnumeration literal) {
+        if (annotationConstructor != null) {
+            if (checkingArguments || checkingDefaults){
+                // Continue the visit to collect the elements
+                this.elements = new ArrayList<AnnotationTerm>();
+                super.visit(literal);
+                this.term = new TupleLiteralAnnotationTerm(this.elements);
             }
         }
     }
@@ -323,11 +401,17 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
                     a.setSourceParameter(constructorParameter.getInitializerParameter());
                     this.term = a;
                 } else if (isBooleanTrue(declaration)) {
-                    appendLiteralArgument(bme, bme);
+                    LiteralAnnotationTerm argument = new BooleanLiteralAnnotationTerm(new boolean[]{true});
+                    argument.setTerm(bme);
+                    appendLiteralArgument(bme, argument);
                 } else if (isBooleanFalse(declaration)) {
-                    appendLiteralArgument(bme, bme);
+                    LiteralAnnotationTerm argument = new BooleanLiteralAnnotationTerm(new boolean[]{false});
+                    argument.setTerm(bme);
+                    appendLiteralArgument(bme, argument);
                 } else if (Decl.isAnonCaseOfEnumeratedType(bme)) {
-                    appendLiteralArgument(bme, bme).setLiteralObject(bme.getTypeModel());
+                    LiteralAnnotationTerm argument = new ObjectLiteralAnnotationTerm(new ProducedType[]{bme.getTypeModel()});
+                    argument.setTerm(bme);
+                    appendLiteralArgument(bme, argument);
                 } else {
                     bme.addError("Unsupported base member expression in annotation constructor");
                 }
@@ -351,13 +435,15 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
      * </pre>
      * Literal is in the Javac sense.
      */
-    private LiteralAnnotationTerm appendLiteralArgument(Node bme, Tree.Term literal) {
+    private LiteralAnnotationTerm appendLiteralArgument(Node bme, LiteralAnnotationTerm argument) {
         if (spread) {
             bme.addError("Spread static arguments not supported");
         }
-        LiteralAnnotationTerm argument = new LiteralAnnotationTerm();
-        argument.setTerm(literal);
-        this.term = argument;
+        if (this.elements != null) {
+           this.elements.add(argument);
+        } else {
+            this.term = argument;
+        }
         return argument;
     }
     
