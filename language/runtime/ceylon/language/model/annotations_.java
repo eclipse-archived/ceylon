@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
@@ -27,9 +28,11 @@ public final class annotations_ {
     @TypeParameters({
         @TypeParameter(value = "Value", satisfies = {"ceylon.language.model::ConstrainedAnnotation<Value,Values,ProgramElement>"}), 
         @TypeParameter(value = "Values"), 
-        @TypeParameter(value = "ProgramElement", satisfies = {"ceylon.language.model::Annotated"})
+        @TypeParameter(value = "ProgramElement", satisfies = {"ceylon.language.model::Annotated"}, variance=Variance.IN)
     })
-    public static <Value extends ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>, Values, ProgramElement extends ceylon.language.model.Annotated>
+    public static <Value extends ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>, 
+                   Values, 
+                   ProgramElement extends ceylon.language.model.Annotated>
     Values annotations(
             @Ignore
             final TypeDescriptor $reifiedValue, 

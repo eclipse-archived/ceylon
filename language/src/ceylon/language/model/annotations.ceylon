@@ -7,7 +7,7 @@
  * 
  */
 
-shared native Values annotations<Value,Values,ProgramElement>(
+shared native Values annotations<Value,Values, in ProgramElement>(
               Class<ConstrainedAnnotation<Value,Values,ProgramElement>> annotationType,
               ProgramElement programElement)
            given Value satisfies ConstrainedAnnotation<Value,Values,ProgramElement>

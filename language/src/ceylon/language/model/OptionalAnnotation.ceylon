@@ -7,7 +7,7 @@ shared interface OptionalAnnotation<out Value, in ProgramElement=Annotated>
         given ProgramElement satisfies Annotated {}
 
 
-shared Value? optionalAnnotation<Value,ProgramElement>(
+shared Value? optionalAnnotation<Value, in ProgramElement>(
             Class<OptionalAnnotation<Value,ProgramElement>> annotationType,
             ProgramElement programElement)
         given Value satisfies OptionalAnnotation<Value,ProgramElement>

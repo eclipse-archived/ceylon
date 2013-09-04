@@ -7,7 +7,7 @@ shared interface SequencedAnnotation<out Value, in ProgramElement=Annotated>
         given ProgramElement satisfies Annotated {}
 
 
-shared Value[] sequencedAnnotations<Value,ProgramElement>(
+shared Value[] sequencedAnnotations<Value, in ProgramElement>(
             Class<SequencedAnnotation<Value,ProgramElement>> annotationType,
             ProgramElement programElement)
         given Value satisfies SequencedAnnotation<Value,ProgramElement>
