@@ -14,6 +14,8 @@ shared interface ClassOrInterfaceDeclaration
     
     shared formal OpenParameterisedType<InterfaceDeclaration>[] interfaceDeclarations;
     
+    shared formal OpenType[] caseTypes;
+    
     // FIXME: should Kind default to TopLevelOrMemberDeclaration?
     shared formal Kind[] memberDeclarations<Kind>() 
             given Kind satisfies TopLevelOrMemberDeclaration;

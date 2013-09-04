@@ -5,11 +5,9 @@ import java.util.List;
 
 import ceylon.language.Anything;
 import ceylon.language.Empty;
-import ceylon.language.Iterator;
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.finished_;
 import ceylon.language.model.declaration.ClassOrInterfaceDeclaration$impl;
 import ceylon.language.model.declaration.GenericDeclaration$impl;
 import ceylon.language.model.declaration.OpenType;
@@ -52,6 +50,8 @@ public abstract class FreeClassOrInterface
 
     private List<ceylon.language.model.declaration.TopLevelOrMemberDeclaration> declarations;
 
+    private Sequential<? extends ceylon.language.model.declaration.OpenType> caseTypes;
+
     public FreeClassOrInterface(com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration) {
         super(declaration);
     }
@@ -84,7 +84,12 @@ public abstract class FreeClassOrInterface
             interfaces[i++] = (ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.InterfaceDeclaration>) Metamodel.getMetamodel(pt);
         }
         this.interfaces = (Sequential)Util.sequentialInstance($InterfacesTypeDescriptor, interfaces);
-        
+
+        if(declaration.getCaseTypes() != null)
+            this.caseTypes = Metamodel.getMetamodelSequential(declaration.getCaseTypes());
+        else
+            this.caseTypes = (Sequential)empty_.$get();
+
         this.typeParameters = Metamodel.getTypeParameters(declaration);
         
         List<com.redhat.ceylon.compiler.typechecker.model.Declaration> memberModelDeclarations = declaration.getMembers();
@@ -195,6 +200,14 @@ public abstract class FreeClassOrInterface
     public ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.ClassDeclaration> getSuperclassDeclaration() {
         checkInit();
         return superclass;
+    }
+
+
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::OpenType>")
+    @Override
+    public ceylon.language.Sequential<? extends ceylon.language.model.declaration.OpenType> getCaseTypes(){
+        checkInit();
+        return caseTypes;
     }
 
     @Override
