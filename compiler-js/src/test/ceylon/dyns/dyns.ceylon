@@ -4,7 +4,7 @@ class Carrier() {}
 
 Object leakTest(Boolean flag) {
   dynamic {
-    value x = value{x=1;};
+    dynamic x = value{x=1;};
     return flag then Carrier() else x;
   }
 }
@@ -15,7 +15,7 @@ shared void test() {
     String zzz;
     value carrier = Carrier();
     dynamic {
-        variable value n = value { x=3; y="hello"; };
+        variable dynamic n = value { x=3; y="hello"; };
         n.a={1};
         check(n.x==3, "n.x==");
         check(n.x!=9, "n.x!=");
@@ -25,10 +25,10 @@ shared void test() {
         check(n.x<=3, "n.x<=");
         check(!n.z exists, "n.z exists");
         check(n.a is {Integer*}, "n.a is {Integer*}");
-        value n2 = value {3, "hello"};
+        dynamic n2 = value {3, "hello"};
         check(n2.length==2, "n2.length");
         check(n2[0]==3, "n2[0]");
-        value n3 = value{a=1; b='b'; "a","b","c"};
+        dynamic n3 = value{a=1; b='b'; "a","b","c"};
         check(n3.a==1, "n3.a");
         check(n3[0]=="a", "n3[0]");
         check(n3["b"]=='b', "n3[b]");
@@ -43,7 +43,7 @@ shared void test() {
             print("iterating, ``uu``");
         }
         check(n3 is Iterable<Anything>, "array is Iterable<Anything>");
-        function f(value z) => z else n;
+        dynamic f(dynamic z) => z else n;
         check(f(1)==1, "f(1)");
         check(f(null)==n, "f(null)");
         check(f{z="z";}=="z", "f(z)");
@@ -114,10 +114,10 @@ shared void test() {
             check("somethingThatDoesntExist" in e.message,
                 "Undefined/unknown dynamic exception message should mention somethingThatDoesntExist");
         }
-        value buf = Buffer(1);
+        dynamic buf = Buffer(1);
         check(buf.length==1, "Buffer length");
         try {
-          value buf2 = MadeUpType(5);
+          dynamic buf2 = MadeUpType(5);
           check(buf2.length==666, "TuMama length");
           fail("Can't instantiate this");
         } catch (Exception e) {
@@ -137,7 +137,7 @@ shared void test() {
     }
     print("carrier object ``carrier``");
     dynamic {
-        value n = value {x=carrier;};
+        dynamic n = value {x=carrier;};
         check(n.x.test.a == 3, "carrier 1");
         check(n.x.test.b == "hello", "carrier 2");
         try {
@@ -160,20 +160,20 @@ shared void test() {
 
 void nogo() {
     dynamic {
-        value d = require("util");
+        dynamic d = require("util");
         d.name = "Gavin";
         Integer res = d.add(1, 3);
-        value first = d.children[0];
+        dynamic first = d.children[0];
         if (exists first) {
             Integer o = first;
         }
         d.children.set(1, 4);
         String name = d.name;
-        value x = d + d + 10;
+        dynamic x = d + d + 10;
         d.count++;
         d.count--;
         Boolean b = d.adult && d.male;
-        value range = d.start..d.end;
+        dynamic range = d.start..d.end;
         Boolean lt = d.age<10 || d.age>5 || d.age<=100 || d.age>=500;
         if (d.something == 5 || d.other != 10) {}
         d.name = null;

@@ -1,5 +1,3 @@
 "Basic assertion functions"
-by("Gavin King")
-by("Enrique Zamudio")
-by("Ivo Kasiuk")
+by("Gavin King","Enrique Zamudio","Ivo Kasiuk")
 shared package check;

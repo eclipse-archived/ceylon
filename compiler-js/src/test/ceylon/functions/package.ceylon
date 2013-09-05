@@ -1,3 +1,2 @@
-by("Enrique Zamudio")
-by("Ivo Kasiuk")
+by("Enrique Zamudio","Ivo Kasiuk")
 shared package functions;
