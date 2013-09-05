@@ -157,6 +157,7 @@ final class annotationClassCharacter_ {
         );
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.CharacterValue(122)
     static final int annotationClassCharacter$c() {
         return 122;
     }

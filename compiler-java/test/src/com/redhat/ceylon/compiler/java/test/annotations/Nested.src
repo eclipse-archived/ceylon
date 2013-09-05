@@ -130,6 +130,7 @@ final class nestedLeafDefaultedParameter_ {
         );
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.IntegerValue(2L)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     static final long nestedLeafDefaultedParameter$i2() {
         return 2L;

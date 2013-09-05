@@ -130,3 +130,37 @@ final class AnnotationClassFloatDefaulted implements .com.redhat.ceylon.compiler
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted.class);
 }
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat.class)
+final class annotationClassFloat_ {
+    
+    private annotationClassFloat_() {
+    }
+    static final double default$f = 1.0;
+    
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat annotationClassFloat() {
+        return (
+            let
+            {
+                double $ceylontmp$f$1 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassFloat_.annotationClassFloat$f();
+            }
+            returning annotationClassFloat($ceylontmp$f$1);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.FloatValue(1.0)
+    static final double annotationClassFloat$f() {
+        return 1.0;
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat annotationClassFloat(final double f) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat(f);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.annotationClassFloat_.annotationClassFloat();
+    }
+}

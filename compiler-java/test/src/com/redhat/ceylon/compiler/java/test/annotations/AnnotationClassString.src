@@ -322,10 +322,31 @@ final class annotationClassString_ {
     
     private annotationClassString_() {
     }
+    static final .java.lang.String default$s = "s";
+    
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString annotationClassString() {
+        return (
+            let
+            {
+                .java.lang.String $ceylontmp$s$3 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassString_.annotationClassString$s();
+            }
+            returning annotationClassString($ceylontmp$s$3);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.StringValue("s")
+    static final .java.lang.String annotationClassString$s() {
+        return "s";
+    }
     
     @.ceylon.language.Annotation$annotation
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString annotationClassString(final .java.lang.String s) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString(s);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.annotationClassString_.annotationClassString();
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(

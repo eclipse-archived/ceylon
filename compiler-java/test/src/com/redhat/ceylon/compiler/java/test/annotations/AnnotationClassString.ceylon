@@ -16,7 +16,7 @@ annotation final class AnnotationClassStringIterableDefaulted({String*} s={"foo"
 @nomodel
 annotation final class AnnotationClassStringVariadic({String*} s) satisfies Annotation<AnnotationClassStringVariadic> {}
 @nomodel
-annotation AnnotationClassString annotationClassString(String s) { return AnnotationClassString(s); }
+annotation AnnotationClassString annotationClassString(String s="s") { return AnnotationClassString(s); }
 @nomodel
 annotation AnnotationClassString annotationClassStringStatic() => AnnotationClassString("bar");
 @nomodel

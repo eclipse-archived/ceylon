@@ -74,6 +74,7 @@ final class annotationClassBoolean_ {
         );
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.BooleanValue(true)
     static final boolean annotationClassBoolean$x() {
         return true;
     }
