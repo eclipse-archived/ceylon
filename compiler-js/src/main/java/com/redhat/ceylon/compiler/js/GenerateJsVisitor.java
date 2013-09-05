@@ -4369,26 +4369,62 @@ public class GenerateJsVisitor extends Visitor
         return qn.contains("ceylon.language.model.declaration::");
     }
 
+    private void generateOpenType(Tree.MetaLiteral that) {
+        final Declaration d = that.getDeclaration();
+        final Module m = d.getUnit().getPackage().getModule();
+        out(clAlias, "$init$Open");
+        if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
+            out("Interface()('");
+        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+            out("Class()('");
+        } else if (d instanceof Method) {
+            out("Function()('");
+        } else if (d instanceof Value) {
+            out("Value()('");
+        }
+        out(d.getName(), "',", clAlias, "getModules$model().find('", m.getNameAsString(),
+                "','", m.getVersion(), "'),"+ d.isToplevel(),",");
+        if (d instanceof Value) {
+            if (d.isToplevel()) {
+                qualify(that, d);
+                out("$prop$");
+            } else {
+                qualify(that, (Declaration)d.getContainer());
+                out(names.name((Declaration)d.getContainer()));
+                out(".$$.prototype.$prop$");
+            }
+        } else {
+            qualify(that, d);
+        }
+        out(names.name(d), ")");
+    }
+
     @Override
     public void visit(TypeLiteral that) {
-        out(clAlias, "typeLiteral$model({Type:");
-        final ProducedType ltype = that.getType().getTypeModel();
-        if (isTypeLiteralModelOpen(that.getTypeModel()) && !ltype.containsTypeParameters()) {
-            TypeDeclaration d = ltype.getDeclaration();
-            qualify(that,d);
-            out(names.name(d));
+        if (that.getWantsDeclaration()) {
+            generateOpenType(that);
         } else {
-            TypeUtils.typeNameOrList(that, ltype, this);
+            out(clAlias, "/*TODO closed type literal*/typeLiteral$model({Type:");
+            final ProducedType ltype = that.getType().getTypeModel();
+            if (isTypeLiteralModelOpen(that.getTypeModel()) && !ltype.containsTypeParameters()) {
+                TypeDeclaration d = ltype.getDeclaration();
+                qualify(that,d);
+                out(names.name(d));
+            } else {
+                TypeUtils.typeNameOrList(that, ltype, this);
+            }
+            out("})");
         }
-        out("})");
     }
 
     @Override
     public void visit(MemberLiteral that) {
-        com.redhat.ceylon.compiler.typechecker.model.ProducedReference ref = that.getTarget();
-        if (ref == null) {
-            that.addUnexpectedError("Member literal with no valid target");
+        if (!that.getErrors().isEmpty())return;
+        if (that.getWantsDeclaration()) {
+            generateOpenType(that);
         } else {
+            final com.redhat.ceylon.compiler.typechecker.model.ProducedReference ref = that.getTarget();
+            System.out.println("no want decl " + that.getTarget());
             final Declaration d = ref.getDeclaration();
             final ProducedType ltype = that.getType() == null ? null : that.getType().getTypeModel();
             final boolean open = isTypeLiteralModelOpen(that.getTypeModel())
