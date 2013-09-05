@@ -1103,11 +1103,11 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean isCeylonMetamodelDeclaration(ProducedType type) {
-        return type.isExactly(typeFact().getMetamodelDeclarationDeclaration().getType());
+        return type.isSubtypeOf(typeFact().getMetamodelDeclarationDeclaration().getType());
     }
 
     boolean isCeylonSequentialMetamodelDeclaration(ProducedType type) {
-        return type.isExactly(typeFact().getSequentialType(typeFact().getMetamodelDeclarationDeclaration().getType()));
+        return type.isSubtypeOf(typeFact().getSequentialType(typeFact().getMetamodelDeclarationDeclaration().getType()));
     }
 
     /*
