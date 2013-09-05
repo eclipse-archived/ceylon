@@ -88,7 +88,7 @@ public class MiscTest extends CompilerTest {
         String ceylonSourcePath = "../ceylon.language/src";
         String javaSourcePath = "../ceylon.language/runtime";
         
-        String[] ceylonPackages = {"ceylon.language", "ceylon.language.model", "ceylon.language.model.declaration"};
+        String[] ceylonPackages = {"ceylon.language", "ceylon.language.model", "ceylon.language.impl", "ceylon.language.model.declaration"};
         // Native files
         FileFilter exceptions = new FileFilter() {
             @Override
