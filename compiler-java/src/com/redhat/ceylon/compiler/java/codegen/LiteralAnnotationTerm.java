@@ -65,10 +65,7 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
     public JCExpression makeAnnotationArgumentValue(
             ExpressionTransformer exprGen, AnnotationInvocation ai,
             com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath) {
-        return exprGen.naming.makeQuotedQualIdent(
-                exprGen.naming.makeName(ai.getConstructorDeclaration(), 
-                        Naming.NA_FQ | Naming.NA_WRAPPER ),
-                Naming.getAnnotationFieldName(fieldPath));
+        return makeLiteral(exprGen);
     }
 
     @Override
