@@ -4544,15 +4544,24 @@ public class ExpressionTransformer extends AbstractTransformer {
         putAnnotation(annos, docAnnotation, (Class)docType.getDeclaration());
     }
     
-    public JCExpression makeDeclarationLiteralForAnnotation(Tree.MemberLiteral literal) {
-        return makeDeclarationLiteralForAnnotation(literal.getDeclaration());
-    }
-    
-    public JCExpression makeDeclarationLiteralForAnnotation(Tree.TypeLiteral tl) {
-        if(tl.getType() != null && tl.getType().getTypeModel() != null) {
-            return makeDeclarationLiteralForAnnotation(tl.getType().getTypeModel().resolveAliases().getDeclaration());
+    public JCExpression makeDeclarationLiteralForAnnotation(Tree.MetaLiteral literal) {
+        Declaration decl = getMetaLiteralDeclaration(literal);
+        if (decl != null) {
+            return makeDeclarationLiteralForAnnotation(decl);
         }
-        return makeErroneous(tl);
+        return makeErroneous(literal);
+    }
+
+    public static Declaration getMetaLiteralDeclaration(Tree.MetaLiteral ml) {
+        if (ml instanceof Tree.TypeLiteral) {
+            Tree.TypeLiteral tl = (Tree.TypeLiteral)ml;
+            if (tl.getType() != null && tl.getType().getTypeModel() != null) {
+                return tl.getType().getTypeModel().resolveAliases().getDeclaration();
+            }
+        } else if (ml instanceof Tree.MetaLiteral) {
+            return ml.getDeclaration();
+        } 
+        return null;
     }
     
     public JCExpression makeDeclarationLiteralForAnnotation(Declaration decl) {
