@@ -399,7 +399,7 @@
         </copy>
         <copy todir="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations">
             <fileset dir="${test.src}/com/redhat/ceylon/compiler/java/test/model" includes="*.java" excludes="?ogus*.java,*Test.java" />
-            <filterset><filter token="com.redhat.ceylon.compiler.java.test.model" value="declarations" /></filterset>
+            <filterset beginToken=" " endToken=";"><filter token="com.redhat.ceylon.compiler.java.test.model" value=" declarations;" /></filterset>
         </copy>
     </target>
 </project>
