@@ -13,6 +13,7 @@ import ceylon.language.empty_;
 import ceylon.language.model.Class$impl;
 import ceylon.language.model.ClassModel$impl;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -232,7 +233,8 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             // FIXME: proper checks
             return (Type)dispatch[0].invokeExact();
         } catch (Throwable e) {
-            throw new RuntimeException("Failed to invoke constructor for "+declaration.getName(), e);
+            Util.rethrow(e);
+            return null;
         }
     }
 
@@ -248,7 +250,8 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             // FIXME: proper checks
             return (Type)dispatch[1-firstDefaulted].invokeExact(arg0);
         } catch (Throwable e) {
-            throw new RuntimeException("Failed to invoke constructor for "+declaration.getName(), e);
+            Util.rethrow(e);
+            return null;
         }
     }
 
@@ -264,7 +267,8 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             // FIXME: proper checks
             return (Type)dispatch[2-firstDefaulted].invokeExact(arg0, arg1);
         } catch (Throwable e) {
-            throw new RuntimeException("Failed to invoke constructor for "+declaration.getName(), e);
+            Util.rethrow(e);
+            return null;
         }
     }
 
@@ -280,7 +284,8 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             // FIXME: proper checks
             return (Type)dispatch[3-firstDefaulted].invokeExact(arg0, arg1, arg2);
         } catch (Throwable e) {
-            throw new RuntimeException("Failed to invoke constructor for "+declaration.getName(), e);
+            Util.rethrow(e);
+            return null;
         }
     }
 
@@ -297,7 +302,8 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             // FIXME: proper checks
             return (Type)dispatch[args.length-firstDefaulted].invokeWithArguments(args);
         } catch (Throwable e) {
-            throw new RuntimeException("Failed to invoke constructor for "+declaration.getName(), e);
+            Util.rethrow(e);
+            return null;
         }
     }
     

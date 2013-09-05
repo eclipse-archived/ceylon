@@ -15,6 +15,7 @@ import ceylon.language.model.Function$impl;
 import ceylon.language.model.FunctionModel$impl;
 import ceylon.language.model.Model$impl;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -209,7 +210,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             // FIXME: proper checks
             return (Type)dispatch[0].invokeExact();
         } catch (Throwable e) {
-            throw new RuntimeException("Failed to invoke method for "+declaration.getName(), e);
+            Util.rethrow(e);
+            return null;
         }
     }
 
@@ -224,7 +226,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             // FIXME: proper checks
             return (Type)dispatch[1-firstDefaulted].invokeExact(arg0);
         } catch (Throwable e) {
-            throw new RuntimeException("Failed to invoke method for "+declaration.getName(), e);
+            Util.rethrow(e);
+            return null;
         }
     }
 
@@ -239,7 +242,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             // FIXME: proper checks
             return (Type)dispatch[2-firstDefaulted].invokeExact(arg0, arg1);
         } catch (Throwable e) {
-            throw new RuntimeException("Failed to invoke method for "+declaration.getName(), e);
+            Util.rethrow(e);
+            return null;
         }
     }
 
@@ -254,7 +258,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             // FIXME: proper checks
             return (Type)dispatch[3-firstDefaulted].invokeExact(arg0, arg1, arg2);
         } catch (Throwable e) {
-            throw new RuntimeException("Failed to invoke method for "+declaration.getName(), e);
+            Util.rethrow(e);
+            return null;
         }
     }
 
@@ -270,7 +275,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             // FIXME: proper checks
             return (Type)dispatch[args.length-firstDefaulted].invokeWithArguments(args);
         } catch (Throwable e) {
-            throw new RuntimeException("Failed to invoke method for "+declaration.getName(), e);
+            Util.rethrow(e);
+            return null;
         }
     }
 

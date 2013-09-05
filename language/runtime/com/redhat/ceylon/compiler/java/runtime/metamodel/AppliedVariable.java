@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 import ceylon.language.model.Variable$impl;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -105,7 +106,8 @@ public class AppliedVariable<Type>
             setter.invokeExact(value);
             return null;
         } catch (Throwable e) {
-            throw new RuntimeException("Failed to invoke setter for "+declaration.getName(), e);
+            Util.rethrow(e);
+            return null;
         }
     }
 

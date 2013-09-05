@@ -787,4 +787,16 @@ public class Util {
     public static RuntimeException makeJavaArrayWrapperException() {
         return new RuntimeException("Internal error: should never be called");
     }
+
+    /**
+     * Throws an exception without having to declare it. This uses a Ceylon helper that does
+     * this because Ceylon does not have checked exceptions. This is merely to avoid a javac
+     * check wrt. checked exceptions.
+     * Stef tried using Unsafe.throwException() but Unsafe.getUnsafe() throws if we have a
+     * ClassLoader, and the only other way is using reflection to get to it, which starts
+     * to smell real bad when we can just use a Ceylon helper.
+     */
+    public static void rethrow(final Throwable t){
+        ceylon.language.impl.rethrow_.rethrow(t);
+    }
 }

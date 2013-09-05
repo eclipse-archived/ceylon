@@ -10,6 +10,7 @@ import ceylon.language.model.Model$impl;
 import ceylon.language.model.Value$impl;
 import ceylon.language.model.ValueModel$impl;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -170,7 +171,8 @@ public class AppliedValue<Type>
         try {
             return (Type) getter.invokeExact();
         } catch (Throwable e) {
-            throw new RuntimeException("Failed to invoke getter for "+declaration.getName(), e);
+            Util.rethrow(e);
+            return null;
         }
     }
 
