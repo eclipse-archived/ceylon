@@ -54,7 +54,7 @@ function $init$AppliedClass(){
     }
     return AppliedClass;
 }
-exports.AppliedClass$model=$init$AppliedClass;
+exports.$init$AppliedClass$model=$init$AppliedClass;
 $init$AppliedClass();
 
 function AppliedInterface(tipo,$$targs$$,$$interfaz){
@@ -118,13 +118,14 @@ function $init$AppliedInterface(){
 exports.$init$AppliedInterface$model=$init$AppliedInterface;
 $init$AppliedInterface();
 
-function AppliedUnionType(tipo,types$2, $$appliedUnionType){
+function AppliedUnionType(tipo,types$2, $$targs$$, that) {
     $init$AppliedUnionType();
-    if ($$appliedUnionType===undefined)$$appliedUnionType=new AppliedUnionType.$$;
-    $$appliedUnionType.types$2=types$2;
-    UnionType$model($$appliedUnionType);
-    $$appliedUnionType.tipo=tipo;
-    return $$appliedUnionType;
+    if (that===undefined)that=new AppliedUnionType.$$;
+    set_type_args(that,$$targs$$);
+    that.types$2=types$2;
+    UnionType$model($$targs$$, that);
+    that.tipo=tipo;
+    return that;
 }
 AppliedUnionType.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:UnionType$model}],d:['ceylon.language.model','AppliedUnionType']};
 function $init$AppliedUnionType(){
@@ -143,13 +144,14 @@ function $init$AppliedUnionType(){
 exports.$init$AppliedUnionType$model=$init$AppliedUnionType;
 $init$AppliedUnionType();
 
-function AppliedIntersectionType(tipo,types$3, $$appliedIntersectionType){
+function AppliedIntersectionType(tipo,types$3, $$targs$$, that) {
     $init$AppliedIntersectionType();
-    if ($$appliedIntersectionType===undefined)$$appliedIntersectionType=new AppliedIntersectionType.$$;
-    $$appliedIntersectionType.types$3=types$3;
-    IntersectionType$model($$appliedIntersectionType);
-    $$appliedIntersectionType.tipo=tipo;
-    return $$appliedIntersectionType;
+    if (that===undefined)that=new AppliedIntersectionType.$$;
+    set_type_args(that,$$targs$$);
+    that.types$3=types$3;
+    IntersectionType$model($$targs$$, that);
+    that.tipo=tipo;
+    return that;
 }
 AppliedIntersectionType.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:IntersectionType$model}],d:['ceylon.language.model','AppliedIntersectionType']};
 function $init$AppliedIntersectionType(){

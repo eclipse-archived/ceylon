@@ -50,8 +50,7 @@ function typeLiteral$model($$targs$$) {
     if (t === undefined) {
       throw Exception("'Type' argument should be an open or closed type");
     } else if (t === 'u' || t === 'i') {
-      return t === 'u' ? applyUnionType($$targs$$.Type) :
-      applyIntersectionType($$targs$$.Type);
+      return t === 'u' ? applyUnionType($$targs$$.Type) : applyIntersectionType($$targs$$.Type);
     } else if (t.$$metamodel$$ === undefined) {
       throw Exception("JS Interop not supported / incomplete metamodel for " + require('util').inspect(t));
     } else {
@@ -115,13 +114,10 @@ function pushTypes(list, types) {
 function applyUnionType(ut) { //return AppliedUnionType
   var cases = [];
   pushTypes(cases, ut.l);
-  return AppliedUnionType(ut, cases.reifyCeylonType({Absent:{t:Null},Element:{t:Type$model}}));
+  return AppliedUnionType(ut, cases.reifyCeylonType({Absent:{t:Null},Element:{t:Type$model}}), {Union:{t:Anything}});
 }
 function applyIntersectionType(it) { //return AppliedIntersectionType
   var sats = [];
   pushTypes(sats, it.l);
-  return AppliedIntersectionType(it, sats.reifyCeylonType({Absent:{t:Null},Element:{t:Type$model}}));
-}
-function applyType(t) { //return AppliedType
-  return typeLiteral$model({Type:t});
+  return AppliedIntersectionType(it, sats.reifyCeylonType({Absent:{t:Null},Element:{t:Type$model}}), {Union:{t:Anything}});
 }
