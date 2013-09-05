@@ -307,7 +307,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
                 try {
-                    LiteralAnnotationTerm argument = new IntegerLiteralAnnotationTerm(ExpressionTransformer.literalValue(literal));
+                    LiteralAnnotationTerm argument = new IntegerLiteralAnnotationTerm(ExpressionTransformer.literalValue(literal), parameter().getModel().getType());
                     argument.setTerm(literal);
                     appendLiteralArgument(literal, argument);
                 } catch (ErroneousException e) {
@@ -322,7 +322,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
             if (checkingArguments || checkingDefaults){
                 try {
                     if (op.getTerm() instanceof Tree.NaturalLiteral) {
-                        LiteralAnnotationTerm argument = new IntegerLiteralAnnotationTerm(ExpressionTransformer.literalValue(op));
+                        LiteralAnnotationTerm argument = new IntegerLiteralAnnotationTerm(ExpressionTransformer.literalValue(op), parameter().getModel().getType());
                         argument.setTerm(op);
                         appendLiteralArgument(op, argument);
                     } else if (op.getTerm() instanceof Tree.FloatLiteral) {
@@ -372,7 +372,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
                 if (unit.getStringDeclaration().equals(declaration)) {
                     factory = new StringLiteralAnnotationTerm(null);
                 } else if (unit.getIntegerDeclaration().equals(declaration)) {
-                    factory = new IntegerLiteralAnnotationTerm(0);
+                    factory = new IntegerLiteralAnnotationTerm(0, null);
                 } else if (unit.getCharacterDeclaration().equals(declaration)) {
                     factory = new CharacterLiteralAnnotationTerm(0);
                 } else if (unit.getBooleanDeclaration().equals(declaration)) {

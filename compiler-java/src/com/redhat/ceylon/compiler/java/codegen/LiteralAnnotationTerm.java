@@ -179,9 +179,11 @@ class StringLiteralAnnotationTerm extends LiteralAnnotationTerm {
 }
 class IntegerLiteralAnnotationTerm extends LiteralAnnotationTerm {
     final long value;
-    public IntegerLiteralAnnotationTerm(long value) {
+    final ProducedType producedType;
+    public IntegerLiteralAnnotationTerm(long value, ProducedType producedType) {
         super();
         this.value = value;
+        this.producedType = producedType;
     }
     public long getValue() {
         return value;
@@ -193,7 +195,7 @@ class IntegerLiteralAnnotationTerm extends LiteralAnnotationTerm {
     }
     @Override
     public JCExpression makeLiteral(ExpressionTransformer exprGen) {
-        return exprGen.make().Literal(value);
+        return producedType != null && "int".equals(producedType.getUnderlyingType()) ? exprGen.make().Literal((int)value) : exprGen.make().Literal(value);
     }
     @Override
     public com.sun.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.sun.tools.javac.util.List<JCAnnotation> value) {
