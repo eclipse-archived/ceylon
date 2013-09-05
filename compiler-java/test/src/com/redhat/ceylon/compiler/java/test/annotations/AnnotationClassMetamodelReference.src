@@ -161,7 +161,7 @@ final class AnnotationClassMetamodelReferenceVariadic implements .com.redhat.cey
     }
     
     AnnotationClassMetamodelReferenceVariadic(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation anno) {
-        this(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.parseMetamodelReferences(.ceylon.language.model.declaration.Declaration.$TypeDescriptor, anno.mmrs()));
+        this(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.<.ceylon.language.model.declaration.Declaration>parseMetamodelReferences(.ceylon.language.model.declaration.Declaration.$TypeDescriptor, anno.mmrs()));
     }
     
     AnnotationClassMetamodelReferenceVariadic(final .ceylon.language.Sequential<? extends .ceylon.language.model.declaration.Declaration> mmrs) {
