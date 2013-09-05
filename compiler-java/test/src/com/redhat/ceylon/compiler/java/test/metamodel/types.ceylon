@@ -236,3 +236,20 @@ shared abstract class Modifiers(){
     shared formal Boolean method();
     shared actual default String string = "yup";
 }
+
+shared class MyException() extends Exception("Hello!"){}
+
+shared class Throws(Boolean t){
+    if(t){
+        throw MyException();
+    }
+    shared Integer getter {
+        throw MyException();
+    }
+    assign getter {
+        throw MyException();
+    }
+    shared Integer method() {
+        throw MyException();
+    }
+}

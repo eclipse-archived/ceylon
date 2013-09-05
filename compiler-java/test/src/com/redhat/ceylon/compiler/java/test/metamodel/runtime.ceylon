@@ -62,6 +62,14 @@ void checkConstructors(){
     value privateClassType = `PrivateClass`;
     value privateClassInstance = privateClassType();
     assert(privateClassInstance.string == "d");
+    
+    // constructor that throws
+    try {
+        `Throws`(true);
+        assert(false);
+    }catch(Exception x){
+        assert(x.cause is MyException);
+    }
 }
 
 void checkMemberAttributes(){
@@ -130,6 +138,21 @@ void checkMemberAttributes(){
     obj2Bound.set(3);
     assert(obj2Bound.get() == 3);
     assert(noParamsInstance.obj2 == 3);
+
+    // getter that throws
+    Throws t = Throws(false);
+    try {
+        `Throws.getter`(t).get();
+        assert(false);
+    }catch(Exception x){
+        assert(x.cause is MyException);
+    }
+    try {
+        `Throws.getter`(t).set(1);
+        assert(false);
+    }catch(Exception x){
+        assert(x.cause is MyException);
+    }
 }
 
 void checkMemberFunctions(){
@@ -162,6 +185,16 @@ void checkMemberFunctions(){
     assert(f7(noParamsInstance)() == 'a');
     assert(exists f8 = noParamsType.getMethod<NoParams, Boolean, []>("getBoolean"));
     assert(f8(noParamsInstance)() == true);
+    
+    // method that throws
+    Throws t = Throws(false);
+    try {
+        `Throws.method`(t)();
+        assert(false);
+    }catch(Exception x){
+        assert(x.cause is MyException);
+    }
+
 }
 
 void checkMemberTypes(){
