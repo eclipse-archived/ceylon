@@ -10,8 +10,8 @@
      if (nonempty nums) {
          Integer first = nums.first;
          Integer max = max(nums);
-         [Integer+] squares = nums.collect((Integer i) i**2));
-         [Integer+] sorted = nums.sort(byIncreasing((Integer i) i));
+         [Integer+] squares = nums.collect((Integer i) => i**2));
+         [Integer+] sorted = nums.sort(byIncreasing((Integer i) => i));
      }
  
  Operations like `first`, `max()`, `collect()`, and 
