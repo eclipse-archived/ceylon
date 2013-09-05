@@ -8,30 +8,12 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 public class JsonModule extends Module {
 
     private Map<String,Object> model;
-    private final JsModuleManager modman;
 
-    JsonModule(JsModuleManager manager) {
-        modman = manager;
-    }
-
-    @SuppressWarnings("unchecked")
     public void setModel(Map<String, Object> value) {
         if (model != null) {
             throw new IllegalStateException("JsonModule should only receive model once");
         }
         model = value;
-        for (Map.Entry<String, Object> e : model.entrySet()) {
-            String k = e.getKey();
-            if (!k.startsWith("$mod-")) {
-                com.redhat.ceylon.compiler.typechecker.model.Package pkg = getDirectPackage(k);
-                if (pkg == null) {
-                    pkg = modman.createPackage(k, this);
-                }
-                if (pkg instanceof JsonPackage && ((JsonPackage)pkg).getModel() == null) {
-                    ((JsonPackage) pkg).setModel((Map<String,Object>)e.getValue());
-                }
-            }
-        }
     }
     public Map<String, Object> getModel() {
         return model;

@@ -96,12 +96,12 @@ public class JsModuleManager extends ModuleManager {
 
     @Override
     protected Module createModule(List<String> moduleName, String version) {
-        Module module = new JsonModule(this);
+        Module module = new JsonModule();
         module.setName(moduleName);
         module.setVersion(version);
         JsonModule dep = (JsonModule)findLoadedModule("ceylon.language", null);
         //This can only happen during initCoreModules()
-        if (dep == null && !(module.getNameAsString().equals(Module.DEFAULT_MODULE_NAME) || module.getNameAsString().equals("ceylon.language"))) {
+        if (!(module.getNameAsString().equals(Module.DEFAULT_MODULE_NAME) || module.getNameAsString().equals("ceylon.language")) && dep == null) {
             //Load the language module if we're not inside initCoreModules()
             dep = (JsonModule)getContext().getModules().getLanguageModule();
             //Add language module as a dependency
@@ -114,17 +114,13 @@ public class JsModuleManager extends ModuleManager {
     }
 
     @Override
-    protected JsonPackage createPackage(String pkgName, Module module) {
+    protected com.redhat.ceylon.compiler.typechecker.model.Package createPackage(String pkgName, Module module) {
+        if (module == null) return super.createPackage(pkgName, module);
         final JsonPackage pkg = new JsonPackage(pkgName);
         List<String> name = pkgName.isEmpty() ? Collections.<String>emptyList() : splitModuleName(pkgName); 
         pkg.setName(name);
-        if (module != null) {
-            module.getPackages().add(pkg);
-            pkg.setModule(module);
-            if (module instanceof JsonModule) {
-                pkg.setModel(((JsonModule)module).getModelForPackage(pkgName));
-            }
-        }
+        module.getPackages().add(pkg);
+        pkg.setModule(module);
         return pkg;
     }
 
@@ -166,7 +162,6 @@ public class JsModuleManager extends ModuleManager {
             }
         }
         ((JsonModule)module).loadDeclarations();
-        //module.setAvailable(true);
         return;
     }
 

@@ -12,16 +12,13 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import net.minidev.json.JSONObject;
-import net.minidev.json.JSONValue;
 
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.compiler.Options;
-import com.redhat.ceylon.compiler.loader.JsModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -75,9 +72,6 @@ public class Stitcher {
                 .addSrcDirectory(new File(clSrcDir.getParentFile().getParentFile().getParentFile(), "runtime-js"));
         tcb.setRepositoryManager(CeylonUtils.repoManager().systemRepo(opts.getSystemRepo())
                 .userRepos(opts.getRepos()).outRepo(opts.getOutDir()).buildManager());
-        //This is to use the JSON metamodel
-        JsModuleManagerFactory.setVerbose(true);
-        tcb.moduleManagerFactory(new JsModuleManagerFactory((Map<String,Object>)JSONValue.parse(clmod)));
         TypeChecker tc = tcb.getTypeChecker();
         tc.process();
         if (tc.getErrors() > 0) {
