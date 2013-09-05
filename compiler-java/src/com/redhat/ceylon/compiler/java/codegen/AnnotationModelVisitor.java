@@ -11,6 +11,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -36,7 +38,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
     private boolean checkingDefaults;
     private AnnotationTerm term;
     private boolean checkingInvocationPrimary;
-    private List<AnnotationTerm> elements;
+    private CollectionLiteralAnnotationTerm elements;
     
     public AnnotationModelVisitor() {
         
@@ -197,7 +199,8 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
                 annotationConstructorParameter.setDefaultArgument(this.term);
                 this.term = null;
                 checkingDefaults = false;
-            } else if (term instanceof Tree.Tuple) {
+            } else if (term instanceof Tree.Tuple
+                    || term instanceof Tree.SequenceEnumeration) {
                 // TODO Tuples and SequenceEnumerations of the above cases should also be allowed
                 checkingDefaults = true;
                 
@@ -334,20 +337,10 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
         }
     }
     
-    public void visit(Tree.TypeLiteral literal) {
+    public void visit(Tree.MetaLiteral literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
-                LiteralAnnotationTerm argument = new DeclarationLiteralAnnotationTerm(literal.getText());
-                argument.setTerm(literal);
-                appendLiteralArgument(literal, argument);
-            }
-        }
-    }
-    
-    public void visit(Tree.MemberLiteral literal) {
-        if (annotationConstructor != null) {
-            if (checkingArguments || checkingDefaults){
-                LiteralAnnotationTerm argument = new DeclarationLiteralAnnotationTerm(literal.getText());
+                LiteralAnnotationTerm argument = new DeclarationLiteralAnnotationTerm(ExpressionTransformer.getMetaLiteralDeclaration(literal));
                 argument.setTerm(literal);
                 appendLiteralArgument(literal, argument);
             }
@@ -358,11 +351,12 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
                 // Continue the visit to collect the elements
-                this.elements = new ArrayList<AnnotationTerm>();
-                super.visit(literal);
-                this.term = new TupleLiteralAnnotationTerm(this.elements);
-                ((TupleLiteralAnnotationTerm)this.term).setTerm(literal);
-                appendLiteralArgument(literal, (TupleLiteralAnnotationTerm)term);
+                this.elements = new CollectionLiteralAnnotationTerm(null);
+                literal.visitChildren(this);
+                this.term = this.elements;
+                this.elements = null;
+                ((CollectionLiteralAnnotationTerm)this.term).setTerm(literal);
+                appendLiteralArgument(literal, (CollectionLiteralAnnotationTerm)term);
             }
         }
     }
@@ -371,11 +365,33 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
                 // Continue the visit to collect the elements
-                this.elements = new ArrayList<AnnotationTerm>();
-                super.visit(literal);
-                this.term = new TupleLiteralAnnotationTerm(this.elements);
-                ((TupleLiteralAnnotationTerm)this.term).setTerm(literal);
-                appendLiteralArgument(literal, (TupleLiteralAnnotationTerm)term);
+                Unit unit = literal.getUnit();
+                ProducedType iteratedType = unit.getIteratedType(literal.getTypeModel());
+                TypeDeclaration declaration = iteratedType.getDeclaration();
+                LiteralAnnotationTerm factory;
+                if (unit.getStringDeclaration().equals(declaration)) {
+                    factory = new StringLiteralAnnotationTerm(null);
+                } else if (unit.getIntegerDeclaration().equals(declaration)) {
+                    factory = new IntegerLiteralAnnotationTerm(0);
+                } else if (unit.getCharacterDeclaration().equals(declaration)) {
+                    factory = new CharacterLiteralAnnotationTerm(0);
+                } else if (unit.getBooleanDeclaration().equals(declaration)) {
+                    factory = new BooleanLiteralAnnotationTerm(false);
+                } else if (unit.getFloatDeclaration().equals(declaration)) {
+                    factory = new FloatLiteralAnnotationTerm(0.0);
+                } else if (Decl.isEnumeratedTypeWithAnonCases(iteratedType)) {
+                    factory = new ObjectLiteralAnnotationTerm(null);
+                } else {//if (iteratedType.isExactly(unit.getMetamodelDeclarationDeclaration().getType())) {
+                    factory = new DeclarationLiteralAnnotationTerm(null);
+                } /*else {
+                    throw new RuntimeException();
+                }*/
+                this.elements = new CollectionLiteralAnnotationTerm(factory);
+                literal.visitChildren(this);
+                this.term = this.elements;
+                this.elements = null;
+                ((CollectionLiteralAnnotationTerm)this.term).setTerm(literal);
+                appendLiteralArgument(literal, (CollectionLiteralAnnotationTerm)term);
             }
         }
     }
@@ -453,7 +469,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
             bme.addError("Spread static arguments not supported");
         }
         if (this.elements != null) {
-           this.elements.add(argument);
+           this.elements.addElement(argument);
         } else {
             this.term = argument;
         }
@@ -473,14 +489,17 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
     
     @Override
     public void visit(Tree.PositionalArgument argument) {
-        if (annotationConstructor != null) {
+        if (annotationConstructor != null
+                && this.elements == null) {
             argument.addError("Unsupported positional argument");
         }
+        super.visit(argument);
     }
     
     @Override
     public void visit(Tree.SpreadArgument argument) {
-        if (annotationConstructor != null) {
+        if (annotationConstructor != null
+                && this.elements == null) {
             spread = true;
             argument.getExpression().visit(this);
             AnnotationArgument aa = new AnnotationArgument();
@@ -489,12 +508,15 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
             instantiation.getAnnotationArguments().add(aa);
             this.term = null;
             spread = false;
+        } else {
+            super.visit(argument);
         }
     }
     
     @Override
     public void visit(Tree.ListedArgument argument) {
-        if (annotationConstructor != null) {
+        if (annotationConstructor != null
+                && this.elements == null) {
             AnnotationArgument aa = new AnnotationArgument();
             aa.setParameter(argument.getParameter());
             push(aa);
@@ -503,19 +525,24 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
             instantiation.getAnnotationArguments().add(aa);
             this.term = null;
             pop();
+        } else {
+            super.visit(argument);
         }
     }
     
     @Override
     public void visit(Tree.NamedArgument argument) {
-        if (annotationConstructor != null) {
+        if (annotationConstructor != null
+                && this.elements == null) {
             argument.addError("Unsupported named argument");
         }
+        super.visit(argument);
     }
     
     @Override
     public void visit(Tree.SpecifiedArgument argument) {
-        if (annotationConstructor != null) {
+        if (annotationConstructor != null
+                && this.elements == null) {
             AnnotationArgument aa = new AnnotationArgument();
             aa.setParameter(argument.getParameter());
             push(aa);
@@ -525,6 +552,8 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
             instantiation.getAnnotationArguments().add(aa);
             this.term = null;
             pop();
+        } else {
+            super.visit(argument);
         }
     }   
 }

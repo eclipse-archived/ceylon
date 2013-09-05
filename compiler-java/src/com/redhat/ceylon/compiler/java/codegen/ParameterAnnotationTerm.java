@@ -122,6 +122,10 @@ public class ParameterAnnotationTerm extends AnnotationTerm implements Annotatio
             ExpressionTransformer exprGen) {
         // TODO I suppose we can have a constructor like (X x, X y=x) so we do need to support this.
         // Or even (X x1, X x2, X[] x3=[x1, x2])
-        return exprGen.makeAtParameterValue(getSourceParameter().getName());
+        return exprGen.makeAtParameterValue(makeLiteral(exprGen));
+    }
+    
+    public JCExpression makeLiteral(ExpressionTransformer exprGen) {
+        return exprGen.make().Literal(getSourceParameter().getName());
     }
 }
