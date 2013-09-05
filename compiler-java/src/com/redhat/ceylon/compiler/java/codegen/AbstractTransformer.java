@@ -1837,6 +1837,10 @@ public abstract class AbstractTransformer implements Transformation {
             return List.nil();
         return List.of(make().Annotation(makeIdent(annotationType), annotationArgs));
     }
+    
+    private List<JCAnnotation> makeAnnoAnnotation(Type annotationType, List<JCExpression> annotationArgs) {
+        return List.of(make().Annotation(makeIdent(annotationType), annotationArgs));
+    }
 
     private List<JCAnnotation> makeModelAnnotation(Type annotationType) {
         return makeModelAnnotation(annotationType, List.<JCExpression>nil());
@@ -2171,35 +2175,35 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     List<JCAnnotation> makeAtObjectValue(ProducedType type) {
-        return makeModelAnnotation(syms().ceylonAtObjectValueType, List.<JCExpression>of(makeClassLiteral(type)));
+        return makeAnnoAnnotation(syms().ceylonAtObjectValueType, List.<JCExpression>of(makeClassLiteral(type)));
     }
     
     List<JCAnnotation> makeAtStringValue(String value) {
-        return makeModelAnnotation(syms().ceylonAtStringValueType, List.<JCExpression>of(make().Literal(value)));
+        return makeAnnoAnnotation(syms().ceylonAtStringValueType, List.<JCExpression>of(make().Literal(value)));
     }
     
     List<JCAnnotation> makeAtCharacterValue(int value) {
-        return makeModelAnnotation(syms().ceylonAtCharacterValueType, List.<JCExpression>of(make().Literal(value)));
+        return makeAnnoAnnotation(syms().ceylonAtCharacterValueType, List.<JCExpression>of(make().Literal(value)));
     }
     
     List<JCAnnotation> makeAtBooleanValue(boolean value) {
-        return makeModelAnnotation(syms().ceylonAtBooleanValueType, List.<JCExpression>of(make().Literal(value)));
+        return makeAnnoAnnotation(syms().ceylonAtBooleanValueType, List.<JCExpression>of(make().Literal(value)));
     }
     
     List<JCAnnotation> makeAtFloatValue(double value) {
-        return makeModelAnnotation(syms().ceylonAtFloatValueType, List.<JCExpression>of(make().Literal(value)));
+        return makeAnnoAnnotation(syms().ceylonAtFloatValueType, List.<JCExpression>of(make().Literal(value)));
     }
     
     List<JCAnnotation> makeAtIntegerValue(long value) {
-        return makeModelAnnotation(syms().ceylonAtIntegerValueType, List.<JCExpression>of(make().Literal(value)));
+        return makeAnnoAnnotation(syms().ceylonAtIntegerValueType, List.<JCExpression>of(make().Literal(value)));
     }
     
     List<JCAnnotation> makeAtDeclarationValue(String value) {
-        return makeModelAnnotation(syms().ceylonAtDeclarationValueType, List.<JCExpression>of(make().Literal(value)));
+        return makeAnnoAnnotation(syms().ceylonAtDeclarationValueType, List.<JCExpression>of(make().Literal(value)));
     }
     
     List<JCAnnotation> makeAtParameterValue(String value) {
-        return makeModelAnnotation(syms().ceylonAtParameterValueType, List.<JCExpression>of(make().Literal(value)));
+        return makeAnnoAnnotation(syms().ceylonAtParameterValueType, List.<JCExpression>of(make().Literal(value)));
     }
 
     /** Determine whether the given declaration requires a 

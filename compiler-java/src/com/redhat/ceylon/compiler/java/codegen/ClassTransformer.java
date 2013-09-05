@@ -3027,7 +3027,6 @@ public class ClassTransformer extends AbstractTransformer {
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.systemMethod(this, name);
         methodBuilder.ignoreModelAnnotations();
         if (container != null && Decl.isAnnotationConstructor(container)) {
-            //builder.defs(makeLiteralArguments(def));
             AnnotationInvocation ac = (AnnotationInvocation)((Method)container).getAnnotationConstructor();
             for (AnnotationConstructorParameter acp : ac.getConstructorParameters()) {
                 if (acp.getParameter().equals(parameter)
