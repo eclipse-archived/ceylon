@@ -67,27 +67,27 @@ issue235_2 void testIssue235_2() {
 //annotest1("should be two")
 annotest2{count=5;}
 shared void test() {
-  value a1 = annotations(`AnnoTest1`, `Example1`);
+  value a1 = annotations(`AnnoTest1`, `class Example1`);
   check(a1 exists, "Annotations 1 (opt on class)");
-  value a2 = annotations(`AnnoTest3`, `Example2`);
+  value a2 = annotations(`AnnoTest3`, `class Example2`);
   check(a2.size == 2, "Annotations 2 (seq on class)");
-  value a3 = annotations(`AnnoTest1`, `test`);
+  value a3 = annotations(`AnnoTest1`, `function test`);
   if (exists a3) {
     check(a3.count == 5, "Annotations 3 count");
     check(a3.text == "With Count", "Annotations 3 text");
   } else {
     fail("Annotations 3 (on toplevel method)");
   }
-  check(annotations(`AnnoTest1`, `Example3`) exists, "Annotation on interface");
+  check(annotations(`AnnoTest1`, `interface Example3`) exists, "Annotation on interface");
   
-  value a4 = annotations(`AnnoTest3`, `testSingleton`);
+  value a4 = annotations(`AnnoTest3`, `value testSingleton`);
   if (nonempty a4) {
     check(a4.size==3, "Annotations 4 size");
   } else {
     fail("Annotations 4 (top-level attribute)");
   }
-  check(!annotations(`AnnoTest1`, `testSingleton`) exists, "testSingleton shouldn't have AnnoTest1");
-  value a5 = annotations(`AnnoTest1`, `Example2.string`);
+  check(!annotations(`AnnoTest1`, `value testSingleton`) exists, "testSingleton shouldn't have AnnoTest1");
+  value a5 = annotations(`AnnoTest1`, `value Example2.string`);
   if (exists a5) {
     check(a5.text=="named call", "Annotations 5 text");
   } else {
@@ -101,8 +101,8 @@ shared void test() {
   } else {
     fail("Annotations 6 (on member method)");
   }*/
-  value tiss235_1 = `testIssue235_1`.annotations<Issue235_1>();
-  value tiss235_2 = `testIssue235_2`.annotations<Issue235_1>();
+  value tiss235_1 = `function testIssue235_1`.annotations<Issue235_1>();
+  value tiss235_2 = `function testIssue235_2`.annotations<Issue235_1>();
   if (nonempty tiss235_1) {
     check(tiss235_1.first.string == ":1", "Issue235_1 description - expected :1 got ``tiss235_1.first``");
   } else {

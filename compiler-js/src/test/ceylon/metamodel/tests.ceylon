@@ -22,7 +22,7 @@ void literals<T>() {
     check(ftimes(2.0,2.0)==4.0, "metamodel function w/type params 2");
     Method<String,String,[Integer]> finitial = `String.initial`;
     Method<Iterable<String>,Iterable<String>,[Integer]> ftaking = `Iterable<String>.taking`;
-    FunctionDeclaration fdecl = `Iterable.taking`;
+    FunctionDeclaration fdecl = `function Iterable.taking`;
     value taking1 = fdecl.bindAndApply({1,2,3,4,5});
     check(!taking1 is Function<String,[String]>, "taking1 is NOT String(String)");
     check(!taking1 is Function<{Integer*},[String]>, "taking1 is NOT {Integer*}(String)");
@@ -31,7 +31,7 @@ void literals<T>() {
     } else {
       fail("taking1 should be Function<Iterable<Integer>,[Integer]>");
     }
-    InterfaceDeclaration idecl = `Iterable`;
+    InterfaceDeclaration idecl = `interface Iterable`;
     check(!idecl.getMemberDeclaration<InterfaceDeclaration>("cycled") exists, "Iterable.cycled is not an interface");
     check(!idecl.getMemberDeclaration<FunctionDeclaration>("cycled") exists, "Iterable.cycled is not a method");
     check(!idecl.getMemberDeclaration<ClassDeclaration>("cycled") exists, "Iterable.cycled is not a class");
