@@ -127,6 +127,13 @@ final class annotationClassIntegerNames_ {
                 -32768,
                 -32768},
         primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.class)
+@.com.redhat.ceylon.compiler.java.metadata.IntegerExprs({
+        @.com.redhat.ceylon.compiler.java.metadata.IntegerValue(
+                name = "arg$i",
+                value = 40L),
+        @.com.redhat.ceylon.compiler.java.metadata.IntegerValue(
+                name = "arg$j",
+                value = 41L)})
 final class annotationClassIntegerStatic_ {
     
     private annotationClassIntegerStatic_() {

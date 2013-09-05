@@ -76,6 +76,9 @@ final class CollidingLiteralDefaults implements .com.redhat.ceylon.compiler.java
                 -32768,
                 0},
         primary = .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults.class)
+@.com.redhat.ceylon.compiler.java.metadata.IntegerExprs({@.com.redhat.ceylon.compiler.java.metadata.IntegerValue(
+        name = "arg$i1",
+        value = 1L)})
 final class collidingLiteralDefaults_ {
     
     private collidingLiteralDefaults_() {

@@ -114,6 +114,20 @@ final class AnnotationClassQuoting implements .com.redhat.ceylon.compiler.java.r
                 -32768,
                 -32768},
         primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassQuoting.class)
+@.com.redhat.ceylon.compiler.java.metadata.StringExprs({
+        @.com.redhat.ceylon.compiler.java.metadata.StringValue(
+                name = "arg$string",
+                value = ""),
+        @.com.redhat.ceylon.compiler.java.metadata.StringValue(
+                name = "arg$toString",
+                value = "")})
+@.com.redhat.ceylon.compiler.java.metadata.IntegerExprs({
+        @.com.redhat.ceylon.compiler.java.metadata.IntegerValue(
+                name = "arg$hash",
+                value = -1L),
+        @.com.redhat.ceylon.compiler.java.metadata.IntegerValue(
+                name = "arg$hashCode",
+                value = 0L)})
 final class annotationClassQuoting_ {
     
     private annotationClassQuoting_() {

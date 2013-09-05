@@ -215,6 +215,9 @@ final class annotationClassMetamodelReference_ {
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {-32768},
         primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference.class)
+@.com.redhat.ceylon.compiler.java.metadata.DeclarationExprs({@.com.redhat.ceylon.compiler.java.metadata.DeclarationValue(
+        name = "arg$mmr",
+        value = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CAnnotationClassMetamodelReference")})
 final class annotationClassMetamodelReferenceLiteral_ {
     
     private annotationClassMetamodelReferenceLiteral_() {

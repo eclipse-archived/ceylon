@@ -352,6 +352,9 @@ final class annotationClassString_ {
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {-32768},
         primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.class)
+@.com.redhat.ceylon.compiler.java.metadata.StringExprs({@.com.redhat.ceylon.compiler.java.metadata.StringValue(
+        name = "arg$s",
+        value = "bar")})
 final class annotationClassStringStatic_ {
     
     private annotationClassStringStatic_() {
