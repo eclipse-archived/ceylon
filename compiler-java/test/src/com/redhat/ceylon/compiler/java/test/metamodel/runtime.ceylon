@@ -68,7 +68,7 @@ void checkConstructors(){
         `Throws`(true);
         assert(false);
     }catch(Exception x){
-        assert(x.cause is MyException);
+        assert(x is MyException);
     }
 }
 
@@ -145,13 +145,13 @@ void checkMemberAttributes(){
         `Throws.getter`(t).get();
         assert(false);
     }catch(Exception x){
-        assert(x.cause is MyException);
+        assert(x is MyException);
     }
     try {
         `Throws.getter`(t).set(1);
         assert(false);
     }catch(Exception x){
-        assert(x.cause is MyException);
+        assert(x is MyException);
     }
 }
 
@@ -192,9 +192,8 @@ void checkMemberFunctions(){
         `Throws.method`(t)();
         assert(false);
     }catch(Exception x){
-        assert(x.cause is MyException);
+        assert(x is MyException);
     }
-
 }
 
 void checkMemberTypes(){
