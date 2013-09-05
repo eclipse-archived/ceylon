@@ -4,7 +4,8 @@
     PACKAGE_DESCRIPTOR?
     COMPILER_ANNOTATION*
     IMPORT_LIST?
-    DECLARATION*)
+    DECLARATION*
+    boolean literalsProcessed;)
 
 "A module descriptor."
 ^(MODULE_DESCRIPTOR:STATEMENT_OR_ARGUMENT
