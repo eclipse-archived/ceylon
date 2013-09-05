@@ -60,4 +60,10 @@ public abstract class AnnotationTerm {
             ListBuffer<JCStatement> staticArgs, ProducedType expectedType);
 
     public abstract com.sun.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(ExpressionTransformer exprGen);
+    
+    public abstract com.sun.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.sun.tools.javac.util.List<JCAnnotation> value);
+
+    public abstract com.sun.tools.javac.util.List<JCAnnotation> makeExprAnnotations(
+            ExpressionTransformer exprGen, AnnotationInvocation toplevel,
+            com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath);
 }

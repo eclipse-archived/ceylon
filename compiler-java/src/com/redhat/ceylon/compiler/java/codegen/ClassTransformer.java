@@ -1795,9 +1795,12 @@ public class ClassTransformer extends AbstractTransformer {
         ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def));
         
         if (Decl.isAnnotationConstructor(def)) {
-            AnnotationInvocation inlineInfo = ((AnnotationInvocation)def.getDeclarationModel().getAnnotationConstructor());
-            builder.defs(makeLiteralAnnotationFields(def));
-            builder.annotations(List.of(makeAtAnnotationInstantiation(inlineInfo)));
+            AnnotationInvocation ai = ((AnnotationInvocation)def.getDeclarationModel().getAnnotationConstructor());
+            builder.defs(makeLiteralAnnotationFields(def)); // TODO Get rid of this
+            builder.annotations(List.of(makeAtAnnotationInstantiation(ai)));
+            // TODO encapsulate this into it's own method
+            AnnotationInvocation ctor = (AnnotationInvocation)def.getDeclarationModel().getAnnotationConstructor();
+            builder.annotations(ai.makeExprAnnotations(expressionGen(), ctor, List.<AnnotationFieldName>nil()));
         }
         
         builder.methods(classGen().transform(def, builder));

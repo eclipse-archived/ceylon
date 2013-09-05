@@ -128,4 +128,21 @@ public class ParameterAnnotationTerm extends AnnotationTerm implements Annotatio
     public JCExpression makeLiteral(ExpressionTransformer exprGen) {
         return exprGen.make().Literal(getSourceParameter().getName());
     }
+
+    @Override
+    public com.sun.tools.javac.util.List<JCAnnotation> makeExprs(
+            ExpressionTransformer exprGen,
+            com.sun.tools.javac.util.List<JCAnnotation> value) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public com.sun.tools.javac.util.List<JCAnnotation> makeExprAnnotations(
+            ExpressionTransformer exprGen, AnnotationInvocation toplevel,
+            com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

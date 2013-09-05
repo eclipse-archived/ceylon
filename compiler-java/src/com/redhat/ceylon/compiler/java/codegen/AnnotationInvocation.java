@@ -1,7 +1,9 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -284,6 +286,46 @@ public class AnnotationInvocation {
             }
         }
         return result;
+    }
+
+    public com.sun.tools.javac.util.List<JCAnnotation> makeExprAnnotations(ExpressionTransformer exprGen,
+            AnnotationInvocation toplevel,
+            com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath) {
+        // Collect into groups according to their type
+        Map<java.lang.Class<?>, List<AnnotationArgument>> groups = new LinkedHashMap<java.lang.Class<?>, List<AnnotationArgument>>(); 
+        for (AnnotationArgument aa : getAnnotationArguments()) {
+            AnnotationTerm term = aa.getTerm();
+            List<AnnotationArgument> group = groups.get(term.getClass());
+            if (group == null) {
+                group = new ArrayList<AnnotationArgument>(1);
+                groups.put(term.getClass(), group);
+            }
+            group.add(aa);
+        }
+        // Make a @*Exprs annotation for each type
+        ListBuffer<JCAnnotation> exprsAnnos = ListBuffer.<JCAnnotation>lb();
+        for (List<AnnotationArgument> group : groups.values()) {
+            AnnotationTerm factory = null;
+            ListBuffer<JCAnnotation> valueAnnos = ListBuffer.<JCAnnotation>lb();
+            for (AnnotationArgument aa : group) {
+                AnnotationTerm term = aa.getTerm();
+                com.sun.tools.javac.util.List<JCAnnotation> annos = term.makeExprAnnotations(exprGen, this, fieldPath.append(aa));
+                if (annos != null) {
+                    factory = group.get(0).getTerm();
+                    valueAnnos.appendList(annos);
+                }
+            }
+            if (!valueAnnos.isEmpty()) {
+                com.sun.tools.javac.util.List<JCAnnotation> exprs = factory.makeExprs(exprGen, valueAnnos.toList());
+                if (exprs != null) {
+                    exprsAnnos.appendList(exprs);
+                } else {
+                    exprs = factory.makeExprs(exprGen, valueAnnos.toList());
+                }
+            }
+        }
+        
+        return exprsAnnos.toList();
     }
     
 }

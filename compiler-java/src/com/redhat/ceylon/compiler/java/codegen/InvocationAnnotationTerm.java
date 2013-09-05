@@ -55,6 +55,26 @@ public class InvocationAnnotationTerm extends AnnotationTerm {
 
     @Override
     public List<JCAnnotation> makeDpmAnnotations(ExpressionTransformer exprGen) {
-        return List.of(exprGen.classGen().makeAtAnnotationInstantiation(getInstantiation()));
+        List<JCAnnotation> statics = getInstantiation().makeExprAnnotations(exprGen, null, List.<AnnotationFieldName>nil());
+        if (statics == null) {
+            statics = List.<JCAnnotation>nil();
+        }
+        return statics.prepend(exprGen.classGen().makeAtAnnotationInstantiation(getInstantiation()));
     }
+
+    @Override
+    public List<JCAnnotation> makeExprs(ExpressionTransformer exprGen,
+            List<JCAnnotation> value) {
+        // TODO Auto-generated method stub
+        return value;
+    }
+
+    @Override
+    public com.sun.tools.javac.util.List<JCAnnotation> makeExprAnnotations(
+            ExpressionTransformer exprGen, AnnotationInvocation toplevel,
+            com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath) {
+        // Recurse to our instantiation, since it may have constants
+        return getInstantiation().makeExprAnnotations(exprGen, toplevel, fieldPath);
+    }
+
 }

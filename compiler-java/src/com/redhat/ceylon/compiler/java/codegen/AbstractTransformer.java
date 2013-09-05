@@ -2174,32 +2174,67 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtDefaultedObjectType, List.<JCExpression>of(makeClassLiteral(type)));
     }
     
-    List<JCAnnotation> makeAtObjectValue(JCExpression values) {
-        return makeAnnoAnnotation(syms().ceylonAtObjectValueType, List.<JCExpression>of(values));
+    private List<JCAnnotation> makeAtAnnotationValue(Type annotationType, String name, JCExpression values) {
+        if (name == null) {
+            return makeAnnoAnnotation(annotationType, List.<JCExpression>of(values));
+        } else {
+            return makeAnnoAnnotation(annotationType, List.<JCExpression>of(
+                    make().Assign(naming.makeUnquotedIdent("name"), make().Literal(name)),
+                    make().Assign(naming.makeUnquotedIdent("value"), values)));
+        }
     }
     
-    List<JCAnnotation> makeAtStringValue(JCExpression values) {
-        return makeAnnoAnnotation(syms().ceylonAtStringValueType, List.<JCExpression>of(values));
+    private List<JCAnnotation> makeAtAnnotationExprs(Type annotationType, List<JCExpression> value) {
+        return makeAnnoAnnotation(annotationType, value);
     }
     
-    List<JCAnnotation> makeAtCharacterValue(JCExpression values) {
-        return makeAnnoAnnotation(syms().ceylonAtCharacterValueType, List.<JCExpression>of(values));
+    List<JCAnnotation> makeAtObjectValue(String name, JCExpression values) {
+        return makeAtAnnotationValue(syms().ceylonAtObjectValueType, name, values);
+    }
+    List<JCAnnotation> makeAtObjectExprs(JCExpression values) {
+        return makeAtAnnotationExprs(syms().ceylonAtObjectExprsType, List.<JCExpression>of(values));
     }
     
-    List<JCAnnotation> makeAtBooleanValue(JCExpression value) {
-        return makeAnnoAnnotation(syms().ceylonAtBooleanValueType, List.<JCExpression>of(value));
+    List<JCAnnotation> makeAtStringValue(String name, JCExpression values) {
+        return makeAtAnnotationValue(syms().ceylonAtStringValueType, name, values);
+    }
+    List<JCAnnotation> makeAtStringExprs(JCExpression values) {
+        return makeAtAnnotationExprs(syms().ceylonAtStringExprsType, List.<JCExpression>of(values));
     }
     
-    List<JCAnnotation> makeAtFloatValue(JCExpression value) {
-        return makeAnnoAnnotation(syms().ceylonAtFloatValueType, List.<JCExpression>of(value));
+    List<JCAnnotation> makeAtCharacterValue(String name, JCExpression values) {
+        return makeAtAnnotationValue(syms().ceylonAtCharacterValueType, name, values);
+    }
+    List<JCAnnotation> makeAtCharacterExprs(JCExpression values) {
+        return makeAtAnnotationExprs(syms().ceylonAtCharacterExprsType, List.<JCExpression>of(values));
     }
     
-    List<JCAnnotation> makeAtIntegerValue(JCExpression value) {
-        return makeAnnoAnnotation(syms().ceylonAtIntegerValueType, List.<JCExpression>of(value));
+    List<JCAnnotation> makeAtBooleanValue(String name, JCExpression value) {
+        return makeAtAnnotationValue(syms().ceylonAtBooleanValueType, name, value);
+    }
+    List<JCAnnotation> makeAtBooleanExprs(JCExpression value) {
+        return makeAtAnnotationExprs(syms().ceylonAtBooleanExprsType, List.<JCExpression>of(value));
     }
     
-    List<JCAnnotation> makeAtDeclarationValue(JCExpression value) {
-        return makeAnnoAnnotation(syms().ceylonAtDeclarationValueType, List.<JCExpression>of(value));
+    List<JCAnnotation> makeAtFloatValue(String name, JCExpression value) {
+        return makeAtAnnotationValue(syms().ceylonAtFloatValueType, name, value);
+    }
+    List<JCAnnotation> makeAtFloatExprs(JCExpression value) {
+        return makeAtAnnotationExprs(syms().ceylonAtFloatExprsType, List.<JCExpression>of(value));
+    }
+    
+    List<JCAnnotation> makeAtIntegerValue(String name, JCExpression value) {
+        return makeAtAnnotationValue(syms().ceylonAtIntegerValueType, name, value);
+    }
+    List<JCAnnotation> makeAtIntegerExprs(JCExpression value) {
+        return makeAtAnnotationExprs(syms().ceylonAtIntegerExprsType, List.<JCExpression>of(value));
+    }
+    
+    List<JCAnnotation> makeAtDeclarationValue(String name, JCExpression value) {
+        return makeAtAnnotationValue(syms().ceylonAtDeclarationValueType, name, value);
+    }
+    List<JCAnnotation> makeAtDeclarationExprs(JCExpression value) {
+        return makeAtAnnotationExprs(syms().ceylonAtDeclarationExprsType, List.<JCExpression>of(value));
     }
     
     List<JCAnnotation> makeAtParameterValue(JCExpression value) {
