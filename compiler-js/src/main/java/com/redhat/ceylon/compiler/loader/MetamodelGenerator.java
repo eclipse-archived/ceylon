@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
+import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 /** Generates the metamodel for all objects in a module.
@@ -131,6 +132,9 @@ public class MetamodelGenerator {
      * type, in which case it contains a "comp" key with an "i" or "u" and a key "types" with
      * the list of types that compose it. */
     private Map<String, Object> typeMap(ProducedType pt) {
+        if (pt==null) {
+            pt = new UnknownType(module.getUnit()).getType();
+        }
         TypeDeclaration d = pt.getDeclaration();
         Map<String, Object> m = new HashMap<String, Object>();
         if (d instanceof UnionType || d instanceof IntersectionType) {
