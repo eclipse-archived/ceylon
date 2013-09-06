@@ -2,7 +2,7 @@ import ceylon.language.model.declaration {
   FunctionDeclaration, ValueDeclaration, ClassDeclaration, InterfaceDeclaration,
   Package, FunctionOrValueDeclaration,
   TopLevelOrMemberDeclaration, OpenType, TypeParameter,
-  OpenParameterisedType
+  OpenParameterisedType, AnnotatedDeclaration
 }
 import ceylon.language.model {
     AppliedInterface = Interface,
@@ -33,6 +33,13 @@ class OpenFunction(shared actual String name, shared actual Package packageConta
   shared actual OpenType openType { throw; }
   shared actual TypeParameter[] typeParameterDeclarations => [];
   shared actual TypeParameter? getTypeParameterDeclaration(String name) => null;
+
+  shared actual Boolean actual { return false; }
+  shared actual Boolean formal { return false; }
+  shared actual Boolean default { return false; }
+  shared actual Boolean shared { return false; }
+  shared actual String qualifiedName { return name; }
+  shared actual AnnotatedDeclaration container { return packageContainer; }
 }
 
 class OpenValue(shared actual String name, shared actual Package packageContainer, shared actual Boolean toplevel) satisfies ValueDeclaration {
@@ -42,6 +49,13 @@ class OpenValue(shared actual String name, shared actual Package packageContaine
   shared actual Annotation[] annotations<out Annotation>()
         given Annotation satisfies MetamodelAnnotation<Annotation> => [];
   shared actual OpenType openType { throw; }
+
+  shared actual Boolean actual { return false; }
+  shared actual Boolean formal { return false; }
+  shared actual Boolean default { return false; }
+  shared actual Boolean shared { return false; }
+  shared actual String qualifiedName { return name; }
+  shared actual AnnotatedDeclaration container { return packageContainer; }
 }
 
 class OpenClass(shared actual String name, shared actual Package packageContainer, shared actual Boolean toplevel) satisfies ClassDeclaration {
@@ -67,6 +81,16 @@ class OpenClass(shared actual String name, shared actual Package packageContaine
 
   shared actual OpenParameterisedType<ClassDeclaration>? superclassDeclaration => null;
   shared actual OpenParameterisedType<InterfaceDeclaration>[] interfaceDeclarations => [];
+
+  shared actual Boolean actual { return false; }
+  shared actual Boolean formal { return false; }
+  shared actual Boolean default { return false; }
+  shared actual Boolean shared { return false; }
+  shared actual String qualifiedName { return name; }
+  shared actual AnnotatedDeclaration container { return packageContainer; }
+
+  shared actual Boolean abstract { return false; }
+  shared actual OpenType[] caseTypes { return []; }
 }
 
 class OpenInterface(shared actual String name, shared actual Package packageContainer, shared actual Boolean toplevel) satisfies InterfaceDeclaration {
@@ -89,4 +113,13 @@ class OpenInterface(shared actual String name, shared actual Package packageCont
 
   shared actual OpenParameterisedType<ClassDeclaration>? superclassDeclaration => null;
   shared actual OpenParameterisedType<InterfaceDeclaration>[] interfaceDeclarations => [];
+
+  shared actual Boolean actual { return false; }
+  shared actual Boolean formal { return false; }
+  shared actual Boolean default { return false; }
+  shared actual Boolean shared { return false; }
+  shared actual String qualifiedName { return name; }
+  shared actual AnnotatedDeclaration container { return packageContainer; }
+
+  shared actual OpenType[] caseTypes { return []; }
 }
