@@ -32,6 +32,8 @@ public abstract class RepoUsingTool implements Tool {
     
     private ResourceBundle bundle;
     
+    private static final List<String> EMPTY = new ArrayList<String>(0);
+    
     public RepoUsingTool(ResourceBundle bundle) {
         this.bundle = bundle;
     }
@@ -44,7 +46,7 @@ public abstract class RepoUsingTool implements Tool {
             }
             return result;
         } else {
-            return null;
+            return EMPTY;
         }
     }
     
