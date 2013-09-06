@@ -64,23 +64,7 @@ public class ReflectionType implements TypeMirror {
         if(type instanceof TypeVariable)
             return ((TypeVariable<?>)type).getName();
         Class<?> klass = (Class<?>)type;
-        StringBuilder sb = new StringBuilder();
-        if (klass.getEnclosingClass() == null) {
-            sb.append(unquoteLastPart(klass.getName()));
-        } else {
-            LinkedList<Class<?>> outers = new LinkedList<>();
-            Class<?> outer = klass.getEnclosingClass();
-            while (outer != null) {
-                outers.push(outer);
-                outer = outer.getEnclosingClass();
-            }
-            sb.append(unquoteLastPart(outers.pop().getName()));
-            for (Class<?> o : outers) {
-                sb.append('$').append(unquote(o.getSimpleName()));
-            }
-            sb.append('$').append(unquote(klass.getSimpleName()));
-        }
-        return sb.toString();
+        return klass.getName();
     }
     
     private String unquote(String s) {
