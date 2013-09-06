@@ -32,6 +32,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
@@ -222,6 +223,14 @@ public class AbstractTest {
     protected SortedSet<String> set(String... values) {
         SortedSet<String> ret = new TreeSet<String>();
         Collections.addAll(ret, values);
+        return ret;
+    }
+
+    protected SortedSet<ModuleInfo> deps(String... values) {
+        SortedSet<ModuleInfo> ret = new TreeSet<ModuleInfo>();
+        for (String name : values) {
+            ret.add(new ModuleInfo(name, "1.0", false, false));
+        }
         return ret;
     }
 
