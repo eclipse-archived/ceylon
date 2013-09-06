@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 
 class CeylonSrcMessages extends com.redhat.ceylon.common.Messages {
 
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(CeylonSrcMessages.class.getPackage().getName() + ".resources.messages");
+    public static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(CeylonSrcMessages.class.getPackage().getName() + ".resources.messages");
 
     public static String msg(String msgKey, Object... msgArgs) {
         return msg(RESOURCE_BUNDLE, msgKey, msgArgs);

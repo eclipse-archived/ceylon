@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -94,7 +95,7 @@ import com.sun.tools.javac.util.Options;
 "**Important note**: There is no guarantee that any particular `javac` " +
 "option or combination of options will work, or continue to work in " +
 "future releases.")
-public class CeylonCompileTool implements Tool{
+public class CeylonCompileTool extends RepoUsingTool {
 
     private static final class Helper implements OptionHelper {
         String lastError;
@@ -142,8 +143,6 @@ public class CeylonCompileTool implements Tool{
 
     private List<File> source = Collections.singletonList(new File("source"));
     private String out;
-    private List<URI> repo = Collections.emptyList();
-    private String systemRepo;
     private List<String> module = Collections.emptyList();
     private boolean d;
     private List<String> javac = Collections.emptyList();
@@ -152,9 +151,9 @@ public class CeylonCompileTool implements Tool{
     private String encoding;
     private boolean verbose = false;
     private String verboseFlags = "";
-    private boolean offline;
 
     public CeylonCompileTool() {
+        super(CeylonCompileMessages.RESOURCE_BUNDLE);
     }
     
     @OptionArgument(longName="src", argumentName="dirs")
@@ -164,20 +163,6 @@ public class CeylonCompileTool implements Tool{
             " (default: `./source`)")
     public void setSource(List<File> source) {
         this.source = source;
-    }
-    
-    @OptionArgument(longName="rep", argumentName="url")
-    @Description("Specifies a module repository containing dependencies. Can be specified multiple times. " +
-    		"(default: `modules`, `~/.ceylon/repo`, http://modules.ceylon-lang.org)")
-    public void setRepository(List<URI> repo) {
-        this.repo = repo;
-    }
-    
-    @OptionArgument(longName="sysrep", argumentName="url")
-    @Description("Specifies the system repository containing essential modules. " +
-            "(default: `$CEYLON_HOME/repo`)")
-    public void setSystemRepository(String systemRepo) {
-        this.systemRepo = systemRepo;
     }
     
     @Option(longName="d")
@@ -236,12 +221,6 @@ public class CeylonCompileTool implements Tool{
     @Description("Passes an option to the underlying java compiler.")
     public void setJavac(List<String> javac) {
         this.javac = javac;
-    }
-
-    @Option(longName="offline")
-    @Description("Enables offline mode that will prevent the module loader from connecting to remote repositories.")
-    public void setOffline(boolean offline) {
-        this.offline = offline;
     }
 
     private List<String> arguments;
@@ -330,9 +309,11 @@ public class CeylonCompileTool implements Tool{
             arguments.add(systemRepo);
         }
         
-        for (URI uri : this.repo) {
-            arguments.add("-rep");
-            arguments.add(uri.toString());
+        if (repo != null) {
+            for (URI uri : this.repo) {
+                arguments.add("-rep");
+                arguments.add(uri.toString());
+            }
         }
         
         addJavacArguments(arguments);
