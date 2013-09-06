@@ -20,8 +20,6 @@ import com.sun.tools.javac.util.ListBuffer;
  */
 public class AnnotationInvocation {
     
-    public final RuntimeException init = new RuntimeException();
-    
     private Method constructorDeclaration;
     
     private List<AnnotationConstructorParameter> constructorParameters = new ArrayList<AnnotationConstructorParameter>();
