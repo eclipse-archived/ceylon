@@ -10,18 +10,8 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Member {
     
-    /** 
-     * Name of the inner type
-     */
-    String name();
-    
     /**
-     * FQN of the java class we generated for the member type 
+     * The member class
      */
-    String javaClass();
-    
-    /**
-     * Package part of the javaClass
-     */
-    String packageName();
+    java.lang.Class<?> klass();
 }

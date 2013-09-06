@@ -9,18 +9,8 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Container {
     
-    /** 
-     * Name of the container type
-     */
-    String name();
-    
     /**
-     * FQN of the java class we generated for the container type 
+     * The container class.
      */
-    String javaClass();
-    
-    /**
-     * Package part of the javaClass
-     */
-    String packageName();
+    java.lang.Class<?> klass();
 }
