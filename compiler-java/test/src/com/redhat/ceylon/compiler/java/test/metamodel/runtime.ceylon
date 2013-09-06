@@ -3,6 +3,7 @@ import ceylon.language.model.declaration {
     ValueDeclaration,
     FunctionDeclaration,
     ClassDeclaration,
+    InterfaceDeclaration,
     ClassOrInterfaceDeclaration,
     OpenParameterisedType,
     OpenTypeVariable,
@@ -666,6 +667,219 @@ void checkLocalTypes(){
     value innerType = `Foo.Bar`;
 }
 
+void checkEqualityAndHash(){
+    // declarations
+    
+    value noParamsDecl = `class NoParams`;
+    value fixedParamsDecl = `class FixedParams`;
+    assert(noParamsDecl == noParamsDecl);
+    assert(noParamsDecl.hash == noParamsDecl.hash);
+    assert(noParamsDecl != fixedParamsDecl);
+    assert(noParamsDecl.hash != fixedParamsDecl.hash);
+    
+    value tpaDecl = `interface TPA`;
+    value tpbDecl = `interface TPB`;
+    assert(tpaDecl == tpaDecl);
+    assert(tpaDecl.hash == tpaDecl.hash);
+    assert(tpaDecl != tpbDecl);
+    assert(tpaDecl.hash != tpbDecl.hash);
+    
+    value alias1Decl = `alias TypeAliasToClass`;
+    value alias2Decl = `alias TypeAliasToUnion`;
+    assert(alias1Decl == alias1Decl);
+    assert(alias1Decl.hash == alias1Decl.hash);
+    assert(alias1Decl != alias2Decl);
+    assert(alias1Decl.hash != alias2Decl.hash);
+
+    value attr1Decl = `value NoParams.str`;
+    value attr2Decl = `value NoParams.integer`;
+    assert(attr1Decl == attr1Decl);
+    assert(attr1Decl.hash == attr1Decl.hash);
+    assert(attr1Decl != attr2Decl);
+    assert(attr1Decl.hash != attr2Decl.hash);
+
+    value f1Decl = `function NoParams.noParams`;
+    value f2Decl = `function NoParams.fixedParams`;
+    assert(f1Decl == f1Decl);
+    assert(f1Decl.hash == f1Decl.hash);
+    assert(f1Decl != f2Decl);
+    assert(f1Decl.hash != f2Decl.hash);
+
+    value p1Decl = `package ceylon.language.model`;
+    value p2Decl = `package ceylon.language`;
+    assert(p1Decl == p1Decl);
+    assert(p1Decl.hash == p1Decl.hash);
+    assert(p1Decl != p2Decl);
+    assert(p1Decl.hash != p2Decl.hash);
+
+    value m1Decl = `module ceylon.language`;
+    value m2Decl = `module com.redhat.ceylon.compiler.java.test.metamodel`;
+    assert(m1Decl == m1Decl);
+    assert(m1Decl.hash == m1Decl.hash);
+    assert(m1Decl != m2Decl);
+    assert(m1Decl.hash != m2Decl.hash);
+    
+    assert(exists tp1Decl = `class TypeParams`.getTypeParameterDeclaration("T"));
+    assert(exists tp2Decl = `class ParameterisedContainerClass`.getTypeParameterDeclaration("Outer"));
+    assert(tp1Decl == tp1Decl);
+    assert(tp1Decl.hash == tp1Decl.hash);
+    assert(tp1Decl != tp2Decl);
+    assert(tp1Decl.hash != tp2Decl.hash);
+    
+    // FIXME: add SetterDeclaration tests
+    
+    // open types
+    
+    assert(exists pt1OpenType = `class Sub1`.superclassDeclaration);
+    assert(exists pt2OpenType = `class Sub2`.superclassDeclaration);
+    assert(pt1OpenType == pt1OpenType);
+    assert(pt1OpenType.hash == pt1OpenType.hash);
+    assert(pt1OpenType != pt2OpenType);
+    assert(pt1OpenType.hash != pt2OpenType.hash);
+
+    value u1OpenType = `value NoParams.union1`.openType;
+    value u2OpenType = `value NoParams.union2`.openType;
+    value u3OpenType = `value NoParams.union3`.openType;
+    assert(u1OpenType == u1OpenType);
+    assert(u1OpenType.hash == u1OpenType.hash);
+    assert(u1OpenType == u2OpenType);
+    assert(u1OpenType.hash == u2OpenType.hash);
+    assert(u1OpenType != u3OpenType);
+    assert(u1OpenType.hash != u3OpenType.hash);
+
+    value i1OpenType = `value NoParams.intersection1`.openType;
+    value i2OpenType = `value NoParams.intersection2`.openType;
+    value i3OpenType = `value NoParams.intersection3`.openType;
+    assert(i1OpenType == i1OpenType);
+    assert(i1OpenType.hash == i1OpenType.hash);
+    assert(i1OpenType == i2OpenType);
+    assert(i1OpenType.hash == i2OpenType.hash);
+    assert(i1OpenType != i3OpenType);
+    assert(i1OpenType.hash != i3OpenType.hash);
+
+    value tp1OpenType = `value TypeParams.t1`.openType;
+    value tp2OpenType = `value TypeParams.t2`.openType;
+    value tp3OpenType = `value TypeParams2.t1`.openType;
+    assert(tp1OpenType == tp1OpenType);
+    assert(tp1OpenType.hash == tp1OpenType.hash);
+    assert(tp1OpenType == tp2OpenType);
+    assert(tp1OpenType.hash == tp2OpenType.hash);
+    assert(tp1OpenType != tp3OpenType);
+    assert(tp1OpenType.hash != tp3OpenType.hash);
+
+    // models
+    
+    value pt1Type = `TypeParams<Integer>`;
+    value pt2Type = `TypeParams<String>`;
+    assert(pt1Type == pt1Type);
+    assert(pt1Type.hash == pt1Type.hash);
+    assert(pt1Type != pt2Type);
+    assert(pt1Type.hash != pt2Type.hash);
+
+    value ipt1Type = `TPA`;
+    value ipt2Type = `TPB`;
+    assert(ipt1Type == ipt1Type);
+    assert(ipt1Type.hash == ipt1Type.hash);
+    assert(ipt1Type != ipt2Type);
+    assert(ipt1Type.hash != ipt2Type.hash);
+
+    value pt1Function = `typeParams<Integer>`;
+    value pt2Function = `typeParams<String>`;
+    assert(pt1Function == pt1Function);
+    assert(pt1Function.hash == pt1Function.hash);
+    assert(pt1Function != pt2Function);
+    assert(pt1Function.hash != pt2Function.hash);
+
+    value value1 = `toplevelString`;
+    value value2 = `toplevelInteger`;
+    assert(value1 == value1);
+    assert(value1.hash == value1.hash);
+    assert(value1 != value2);
+    assert(value1.hash != value2.hash);
+
+    // members
+    
+    value ic1Type = `ContainerClass.InnerClass`;
+    value ic2Type = `ContainerClass.DefaultedParams`;
+    assert(ic1Type == ic1Type);
+    assert(ic1Type.hash == ic1Type.hash);
+    assert(ic1Type != ic2Type);
+    assert(ic1Type.hash != ic2Type.hash);
+
+    // bound
+    value bic1Type = `ContainerClass.InnerClass`(ContainerClass());
+    value bic2Type = `ContainerClass.InnerClass`(ContainerClass());
+    assert(bic1Type == bic1Type);
+    assert(bic1Type.hash == bic1Type.hash);
+    assert(bic1Type != bic2Type);
+    assert(bic1Type.hash != bic2Type.hash);
+
+    value ii1Type = `ContainerClass.InnerInterface`;
+    value ii2Type = `ContainerClass.InnerInterface2`;
+    assert(ii1Type == ii1Type);
+    assert(ii1Type.hash == ii1Type.hash);
+    assert(ii1Type != ii2Type);
+    assert(ii1Type.hash != ii2Type.hash);
+
+    // bound
+    value bii1Type = `ContainerClass.InnerInterface`(ContainerClass());
+    value bii2Type = `ContainerClass.InnerInterface`(ContainerClass());
+    assert(bii1Type == bii1Type);
+    assert(bii1Type.hash == bii1Type.hash);
+    assert(bii1Type != bii2Type);
+    assert(bii1Type.hash != bii2Type.hash);
+    
+    value method1 = `NoParams.tp1<String>`;
+    value method2 = `NoParams.tp1<Integer>`;
+    assert(method1 == method1);
+    assert(method1.hash == method1.hash);
+    assert(method1 != method2);
+    assert(method1.hash != method2.hash);
+
+    // bound
+    value bmethod1 = `NoParams.tp1<String>`(NoParams());
+    value bmethod2 = `NoParams.tp1<String>`(NoParams());
+    assert(bmethod1 == bmethod1);
+    assert(bmethod1.hash == bmethod1.hash);
+    assert(bmethod1 != bmethod2);
+    assert(bmethod1.hash != bmethod2.hash);
+
+    value attr1 = `NoParams.str`;
+    value attr2 = `NoParams.integer`;
+    assert(attr1 == attr1);
+    assert(attr1.hash == attr1.hash);
+    assert(attr1 != attr2);
+    assert(attr1.hash != attr2.hash);
+
+    // bound
+    value battr1 = `NoParams.str`(NoParams());
+    value battr2 = `NoParams.str`(NoParams());
+    assert(battr1 == battr1);
+    assert(battr1.hash == battr1.hash);
+    assert(battr1 != battr2);
+    assert(battr1.hash != battr2.hash);
+
+    value u1Type = `TypeParams<Integer|String>`;
+    value u2Type = `TypeParams<String|Integer>`;
+    value u3Type = `TypeParams<String|Integer|Float>`;
+    assert(u1Type == u1Type);
+    assert(u1Type.hash == u1Type.hash);
+    assert(u1Type == u2Type);
+    assert(u1Type.hash == u2Type.hash);
+    assert(u1Type != u3Type);
+    assert(u1Type.hash != u3Type.hash);
+
+    value i1Type = `TypeParams<TPA&TPB>`;
+    value i2Type = `TypeParams<TPB&TPA>`;
+    value i3Type = `TypeParams<TPA&TPB&Number>`;
+    assert(i1Type == i1Type);
+    assert(i1Type.hash == i1Type.hash);
+    assert(i1Type == i2Type);
+    assert(i1Type.hash == i2Type.hash);
+    assert(i1Type != i3Type);
+    assert(i1Type.hash != i3Type.hash);
+}
+
 shared void runtime() {
     visitStringHierarchy();
 
@@ -702,6 +916,8 @@ shared void runtime() {
     checkContainers();
 
     checkLocalTypes();
+
+    checkEqualityAndHash();
     // FIXME: test members() wrt filtering
     // FIXME: test untyped class to applied class
 }

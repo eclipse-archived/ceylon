@@ -78,6 +78,15 @@ shared class NoParams(){
     shared Float getFloat() => 1.2;
     shared Character getCharacter() => 'a';
     shared Boolean getBoolean() => true;
+    
+    shared TPA & TPB intersection1 => nothing;
+    shared TPB & TPA intersection2 => nothing;
+    shared TPA & TPB & NoParams intersection3 => nothing;
+    shared TPA | TPB union1 => nothing;
+    shared TPB | TPA union2 => nothing;
+    shared TPB | TPA | NoParams union3 => nothing;
+    
+    shared void tp1<T>(){}
 }
 
 shared class FixedParams(String s, Integer i, Float f, Character c, Boolean b, Object o){
@@ -121,7 +130,17 @@ shared class TypeParams<T>(T s, Integer i)
     
     assert(s == "a");
     assert(i == 1);
+    
+    shared T t1 = s;
+    shared T t2 = s;
 }
+
+shared class TypeParams2<T>() {
+    shared T t1 => nothing;
+}
+
+shared class Sub1() extends TypeParams<Integer>(1, 1){}
+shared class Sub2() extends TypeParams<String>("A", 1){}
 
 shared void fixedParams(String s, Integer i, Float f, Character c, Boolean b, Object o, NoParams oTyped){
     assert(s == "a");
@@ -194,6 +213,8 @@ shared class ContainerClass(){
     shared class DefaultedParams(Integer expected, Integer toCheck = 0){
         assert(expected == toCheck);
     }
+    shared interface InnerInterface {}
+    shared interface InnerInterface2 {}
 }
 
 shared class ParameterisedContainerClass<Outer>(){
