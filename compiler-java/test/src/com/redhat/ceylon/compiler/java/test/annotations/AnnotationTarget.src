@@ -3,14 +3,22 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface AnnotationTarget$annotation {
 }
+@.ceylon.language.Final$annotation
 @.ceylon.language.Annotation$annotation
-class AnnotationTarget implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+final class AnnotationTarget implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.Annotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget> {
     
     AnnotationTarget(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation anno) {
         this();
     }
     
     AnnotationTarget() {
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget.$TypeDescriptor, this);
+    }
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget> $ceylon$language$model$Annotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -26,7 +34,7 @@ class AnnotationTarget implements .com.redhat.ceylon.compiler.java.runtime.model
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget.class)
 final class annotationTarget_ {
     
     private annotationTarget_() {
@@ -45,14 +53,22 @@ final class annotationTarget_ {
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface AnnotationTarget2$annotation {
 }
+@.ceylon.language.Final$annotation
 @.ceylon.language.Annotation$annotation
-class AnnotationTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+final class AnnotationTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.Annotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2> {
     
     AnnotationTarget2(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2$annotation anno) {
         this();
     }
     
     AnnotationTarget2() {
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2.$TypeDescriptor, this);
+    }
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2> $ceylon$language$model$Annotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -68,7 +84,7 @@ class AnnotationTarget2 implements .com.redhat.ceylon.compiler.java.runtime.mode
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {},
-        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2.class)
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2.class)
 final class annotationTarget2_ {
     
     private annotationTarget2_() {
@@ -330,7 +346,7 @@ final class annotationTargetObject_ implements .com.redhat.ceylon.compiler.java.
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+            throw new .ceylon.language.InitializationException("Cyclic initialization");
         }
     }
     
@@ -353,7 +369,7 @@ final class annotationTargetValue_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+            throw new .ceylon.language.InitializationException("Cyclic initialization");
         }
     }
 }

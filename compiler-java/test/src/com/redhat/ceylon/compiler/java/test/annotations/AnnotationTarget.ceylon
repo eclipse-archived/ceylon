@@ -1,9 +1,11 @@
+import ceylon.language.model { Annotation }
+
 @nomodel
-annotation class AnnotationTarget(){}
+final annotation class AnnotationTarget() satisfies Annotation<AnnotationTarget> {}
 @nomodel
 annotation AnnotationTarget annotationTarget() => AnnotationTarget();
 @nomodel
-annotation class AnnotationTarget2(){}
+final annotation class AnnotationTarget2() satisfies Annotation<AnnotationTarget2> {}
 @nomodel
 annotation AnnotationTarget2 annotationTarget2() => AnnotationTarget2();
 
