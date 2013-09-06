@@ -656,6 +656,16 @@ void checkContainers(){
     assert(`function NoParams.noParams`.container.name == "NoParams");
 }
 
+void checkLocalTypes(){
+    class Foo(shared String str) {
+        shared class Bar() {}
+    }
+    // at this point we're only making sure that we don't have exceptions here, because local
+    // types are not fully implemented yet
+    Object methodType = `Foo.str`.type;
+    value innerType = `Foo.Bar`;
+}
+
 shared void runtime() {
     visitStringHierarchy();
 
@@ -690,6 +700,8 @@ shared void runtime() {
     checkModifiers();
 
     checkContainers();
+
+    checkLocalTypes();
     // FIXME: test members() wrt filtering
     // FIXME: test untyped class to applied class
 }
