@@ -16,6 +16,8 @@ shared interface ClassOrInterfaceDeclaration
     
     shared formal OpenType[] caseTypes;
     
+    shared formal Boolean isAlias;
+    
     // FIXME: should Kind default to TopLevelOrMemberDeclaration?
     shared formal Kind[] memberDeclarations<Kind>() 
             given Kind satisfies TopLevelOrMemberDeclaration;
