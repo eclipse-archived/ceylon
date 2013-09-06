@@ -2170,10 +2170,6 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtMembersType, List.of(attr));
     }
     
-    List<JCAnnotation> makeAtDefaultedObject(ProducedType type) {
-        return makeModelAnnotation(syms().ceylonAtDefaultedObjectType, List.<JCExpression>of(makeClassLiteral(type)));
-    }
-    
     private List<JCAnnotation> makeAtAnnotationValue(Type annotationType, String name, JCExpression values) {
         if (name == null) {
             return makeAnnoAnnotation(annotationType, List.<JCExpression>of(values));

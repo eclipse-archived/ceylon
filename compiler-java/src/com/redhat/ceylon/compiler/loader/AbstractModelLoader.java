@@ -151,8 +151,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_ANNOTATION_INSTANTIATION_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation";
     private static final String CEYLON_ANNOTATION_INSTANTIATION_ARGUMENTS_MEMBER = "arguments";
     private static final String CEYLON_ANNOTATION_INSTANTIATION_ANNOTATION_MEMBER = "primary";
-    @Deprecated
-    private static final String CEYLON_DEFAULTED_OBJECT_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.DefaultedObject";
+    
     private static final String CEYLON_ANNOTATION_INSTANTIATION_TREE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiationTree";
     private static final String CEYLON_STRING_VALUE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.StringValue";
     private static final String CEYLON_STRING_EXPRS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.StringExprs";
