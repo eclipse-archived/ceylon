@@ -17,7 +17,7 @@ void modulesTests() {
         check(funmod.dependencies.find((Import imp) => imp.name=="check") exists,
             "functions/0.1 should depend on ceylon.language");
         check(funmod.members.size == 1, "functions/0.1 has 1 package");
-        check(funmod.annotations<Authors>().size == 2, "functions/0.1 has 2 annotations");
+        check(funmod.annotations<Authors>().size == 1, "functions/0.1 has 1 annotations");
         if (exists pk = funmod.findPackage("functions")) {
             check(pk.name=="functions", "Package name should be functions");
             check(pk.annotations<Shared>() nonempty, "Package should have annotations");
