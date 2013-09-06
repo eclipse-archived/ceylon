@@ -21,18 +21,17 @@ package com.redhat.ceylon.cmr.api;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public final class ModuleInfo {
+public final class ModuleInfo implements Comparable<ModuleInfo> {
     private String name;
     private String version;
     private boolean optional;
-    @SuppressWarnings("UnusedDeclaration")
-    private boolean export;
+    private boolean shared;
 
-    public ModuleInfo(String name, String version, boolean optional, boolean export) {
+    public ModuleInfo(String name, String version, boolean optional, boolean shared) {
         this.name = name;
         this.version = version;
         this.optional = optional;
-        this.export = export;
+        this.shared = shared;
     }
 
     public String getName() {
@@ -48,7 +47,7 @@ public final class ModuleInfo {
     }
 
     public boolean isExport() {
-        return export;
+        return shared;
     }
 
     @Override
@@ -57,22 +56,39 @@ public final class ModuleInfo {
         if (o == null || getClass() != o.getClass()) return false;
 
         ModuleInfo that = (ModuleInfo) o;
-
-        if (!name.equals(that.name)) return false;
-        if (!version.equals(that.version)) return false;
-
-        return true;
+        return that.name.equals(name)
+                && that.version.equals(version)
+                && that.shared == shared
+                && that.optional == optional;
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + version.hashCode();
-        return result;
+        return toString().hashCode();
+    }
+
+    @Override
+    public int compareTo(ModuleInfo obj) {
+        ModuleInfo that = (ModuleInfo)obj;
+        int res = name.compareTo(that.name);
+        if (res == 0) {
+            res = version.compareTo(that.version);
+            if (res == 0) {
+                res = Boolean.compare(shared, that.shared);
+                if (res == 0) {
+                    res = Boolean.compare(optional, that.optional);
+                }
+            }
+        }
+        return res;
     }
 
     @Override
     public String toString() {
-        return "ModuleInfo=" + name + ":" + version;
+        return ((shared) ? "shared " : "") + ((optional) ? "optional " : "") + getModuleName();
+    }
+
+    public String getModuleName() {
+        return name + "/" + version;
     }
 }
