@@ -28,6 +28,7 @@ import java.util.TreeSet;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ContentFinder;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
@@ -442,11 +443,13 @@ public abstract class AbstractRepository implements Repository {
                         if (file != null)
                             BytecodeUtils.readModuleInfo(name, file, new ModuleInfoCallback() {
                                 @Override
-                                public void storeInfo(String doc, String license, String[] authors) {
+                                public void storeInfo(String doc, String license, String[] authors, ModuleInfo[] dependencies) {
                                     newVersion.setDoc(doc);
                                     newVersion.setLicense(license);
                                     if (authors != null)
                                         newVersion.getAuthors().addAll(Arrays.asList(authors));
+                                    if (dependencies != null)
+                                        newVersion.getDependencies().addAll(Arrays.asList(dependencies));
                                 }
                             });
                     } catch (Exception e) {
@@ -567,6 +570,7 @@ public abstract class AbstractRepository implements Repository {
         final String[] doc = new String[1];
         final String[] license = new String[1];
         final SortedSet<String> authors = new TreeSet<String>();
+        final SortedSet<ModuleInfo> dependencies = new TreeSet<ModuleInfo>();
 
         if (artifact != null) {
             try {
@@ -574,11 +578,13 @@ public abstract class AbstractRepository implements Repository {
                 if (file != null) {
                     BytecodeUtils.readModuleInfo(moduleName, file, new ModuleInfoCallback() {
                         @Override
-                        public void storeInfo(String doc2, String license2, String[] authors2) {
+                        public void storeInfo(String doc2, String license2, String[] authors2, ModuleInfo[] dependencies2) {
                             doc[0] = doc2;
                             license[0] = license2;
                             if (authors2 != null)
                                 authors.addAll(Arrays.asList(authors2));
+                            if (dependencies2 != null)
+                                dependencies.addAll(Arrays.asList(dependencies2));
                         }
                     });
                 }
@@ -587,6 +593,6 @@ public abstract class AbstractRepository implements Repository {
             }
         }
 
-        result.addResult(moduleName, doc[0], license[0], authors, versions);
+        result.addResult(moduleName, doc[0], license[0], authors, versions, dependencies);
     }
 }

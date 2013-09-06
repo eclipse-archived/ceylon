@@ -9,6 +9,7 @@ public class ModuleVersionDetails {
     private String version;
     private String license;
     private NavigableSet<String> authors = new TreeSet<String>();
+    private NavigableSet<ModuleInfo> dependencies = new TreeSet<ModuleInfo>();
     private String doc;
 
     public ModuleVersionDetails(String version) {
@@ -39,6 +40,10 @@ public class ModuleVersionDetails {
         return version;
     }
 
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
     public String getLicense() {
         return license;
     }
@@ -51,7 +56,7 @@ public class ModuleVersionDetails {
         return doc;
     }
 
-    public void setVersion(String version) {
-        this.version = version;
+    public NavigableSet<ModuleInfo> getDependencies() {
+        return dependencies;
     }
 }

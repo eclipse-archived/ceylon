@@ -1,10 +1,8 @@
 package com.redhat.ceylon.cmr.api;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.NavigableMap;
 import java.util.NavigableSet;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -15,13 +13,15 @@ public class ModuleSearchResult {
         private String name, license, doc;
         private NavigableSet<String> authors = new TreeSet<String>();
         private NavigableSet<String> versions = new TreeSet<String>(VersionComparator.INSTANCE);
+        private NavigableSet<ModuleInfo> dependencies = new TreeSet<ModuleInfo>();
 
-        public ModuleDetails(String name, String doc, String license, SortedSet<String> authors, SortedSet<String> versions) {
+        public ModuleDetails(String name, String doc, String license, SortedSet<String> authors, SortedSet<String> versions, SortedSet<ModuleInfo> dependencies) {
             this.name = name;
             this.doc = toNull(doc);
             this.license = toNull(license);
             this.authors.addAll(authors);
             this.versions.addAll(versions);
+            this.dependencies.addAll(dependencies);
         }
 
         private String toNull(String str) {
@@ -53,6 +53,10 @@ public class ModuleSearchResult {
         public NavigableSet<String> getVersions() {
             return versions;
         }
+
+        public NavigableSet<ModuleInfo> getDependencies() {
+            return dependencies;
+        }
         
         @Override
         public String toString() {
@@ -71,7 +75,7 @@ public class ModuleSearchResult {
     private long start;
     private boolean hasMoreResults;
 
-    public void addResult(String moduleName, String doc, String license, SortedSet<String> authors, SortedSet<String> versions) {
+    public void addResult(String moduleName, String doc, String license, SortedSet<String> authors, SortedSet<String> versions, SortedSet<ModuleInfo> dependencies) {
         if(versions.isEmpty())
             throw new RuntimeException("Empty versions");
         if(results.containsKey(moduleName)){
@@ -86,9 +90,10 @@ public class ModuleSearchResult {
             }
             details.authors.addAll(authors);
             details.versions.addAll(versions);
+            details.dependencies.addAll(dependencies);
         }else{
             // new module
-            results.put(moduleName, new ModuleDetails(moduleName, doc, license, authors, versions));
+            results.put(moduleName, new ModuleDetails(moduleName, doc, license, authors, versions, dependencies));
         }
     }
 

@@ -32,6 +32,7 @@ import java.util.TreeSet;
 import javax.xml.bind.DatatypeConverter;
 
 import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
@@ -385,6 +386,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     protected void parseSearchModulesResponse(Parser p, ModuleSearchResult result, Long start) {
         SortedSet<String> authors = new TreeSet<String>();
         SortedSet<String> versions = new TreeSet<String>();
+        SortedSet<ModuleInfo> dependencies = new TreeSet<ModuleInfo>();
 
         p.moveToOpenTag("results");
         String total = p.getAttribute("total");
@@ -414,6 +416,9 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     license = p.contents();
                 }else if(p.isOpenTag("authors")){
                     authors.add(p.contents());
+                }else if(p.isOpenTag("dependencies")){
+                    // TODO Implement retrieval of dependencies from Herd
+                    // dependencies.add(...);
                 }else{
                     throw new RuntimeException("Unknown tag: "+p.tagName());
                 }
@@ -423,7 +428,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             if(versions.isEmpty()){
                 log.debug("Ignoring result for " + module + " because it doesn't have a single version");
             }else{
-                result.addResult(module, doc, license, authors, versions);
+                result.addResult(module, doc, license, authors, versions, dependencies);
             }
             p.checkCloseTag();
         }

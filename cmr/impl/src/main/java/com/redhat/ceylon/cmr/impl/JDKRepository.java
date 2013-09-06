@@ -24,6 +24,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ContentFinder;
 import com.redhat.ceylon.cmr.api.JDKUtils;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
@@ -46,6 +47,7 @@ public class JDKRepository extends AbstractRepository {
         add(JDK_VERSION);
     }};
     private static final SortedSet<String> EmptySet = new TreeSet<String>();
+    private static final SortedSet<ModuleInfo> EmptyDependencySet = new TreeSet<ModuleInfo>();
 
     public static final Set<String> JDK_MODULES = new TreeSet<String>();
 
@@ -86,7 +88,7 @@ public class JDKRepository extends AbstractRepository {
                 name = "";
             for (String module : JDK_MODULES) {
                 if (module.startsWith(name))
-                    result.addResult(module, doc(module), null, EmptySet, FixedVersionSet);
+                    result.addResult(module, doc(module), null, EmptySet, FixedVersionSet, EmptyDependencySet);
             }
         }
 
@@ -132,7 +134,7 @@ public class JDKRepository extends AbstractRepository {
                     }
                     if (query.getStart() == null || found++ >= query.getStart()) {
                         // are we interested in this result or did we need to skip it?
-                        result.addResult(module, doc(module), null, EmptySet, FixedVersionSet);
+                        result.addResult(module, doc(module), null, EmptySet, FixedVersionSet, EmptyDependencySet);
                         // stop if we're done searching
                         if (query.getStart() != null
                                 && query.getCount() != null
