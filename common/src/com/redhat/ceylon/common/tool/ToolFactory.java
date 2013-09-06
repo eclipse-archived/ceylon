@@ -205,12 +205,20 @@ public class ToolFactory {
                         processArgument(new Binding(String.valueOf(shortName), option, argument));
                     }
                 } else {// an argument
+                    if (toolModel.getRest() != null) {
+                        eoo = true;
+                    }
                     option = null;
                     argument = arg;
                     if (isArgument(arg)) {
                         final List<ArgumentModel<?>> argumentModels = toolModel.getArgumentsAndSubtool();
                         if (argumentModelIndex >= argumentModels.size()) {
-                            throw new OptionArgumentException.UnexpectedArgumentException(arg, toolModel);
+                            if (toolModel.getRest() != null) {
+                                rest.add(arg);
+                                continue;
+                            } else {
+                                throw new OptionArgumentException.UnexpectedArgumentException(arg, toolModel);
+                            }
                         }
                         final ArgumentModel<?> argumentModel = argumentModels.get(argumentModelIndex);
                         processArgument(new Binding(argumentModel, argument));
