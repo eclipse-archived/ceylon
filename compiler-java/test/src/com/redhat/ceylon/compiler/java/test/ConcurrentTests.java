@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_0000_0499;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_0500_0999;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_1000_1499;
 import com.redhat.ceylon.compiler.java.test.issues.PackageIssuesTest;
+import com.redhat.ceylon.compiler.java.test.language.LanguageMetamodelSuite;
 import com.redhat.ceylon.compiler.java.test.language.LanguageSuite;
 import com.redhat.ceylon.compiler.java.test.languagesatisfaction.LanguageSatisfactionSuite;
 import com.redhat.ceylon.compiler.java.test.misc.MiscTest;
@@ -80,7 +81,10 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     CMRTest.class,
     RuntimeSuite.class,
     LanguageSatisfactionSuite.class,
+    // FIXME: this compiles the metamodel tests for nothing
     LanguageSuite.class,
+    // FIXME: this compiles the other language tests for nothing
+    LanguageMetamodelSuite.class,
     BcTests.class,
     ExpressionTest3.class,
     CompilerToolsTests.class,
