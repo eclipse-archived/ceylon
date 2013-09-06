@@ -2386,7 +2386,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             AnnotatedMirror dpm, List<AnnotationFieldName> path, int code) {
         AnnotationTerm result;
         if (code == Short.MIN_VALUE) {
-            return loadLiteralAnnotationTerm2(path, parameter, dpm);
+            return findLiteralAnnotationTerm(path, parameter, dpm);
         } else if (code < 0) {
             InvocationAnnotationTerm invocation = new InvocationAnnotationTerm();
             result = invocation;
@@ -2514,63 +2514,80 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         return null;
     }
-    private LiteralAnnotationTerm loadLiteralAnnotationTerm2(List<AnnotationFieldName> namePath, Parameter parameter, AnnotatedMirror mm) {
+    /**
+     * Searches the {@code @*Exprs} for one containing a {@code @*Value} 
+     * whose {@code name} matches the given namePath returning the first 
+     * match, or null.
+     */
+    private LiteralAnnotationTerm findLiteralAnnotationTerm(List<AnnotationFieldName> namePath, Parameter parameter, AnnotatedMirror mm) {
         boolean singeValue = !typeFactory.isIterableType(parameter.getType())
             || typeFactory.getStringDeclaration().equals(parameter.getType().getDeclaration());
-        Map<String, LiteralAnnotationTerm> exprsMap = new HashMap<String, LiteralAnnotationTerm>();
+        final String name = Naming.getAnnotationFieldName(namePath);
         AnnotationMirror exprsAnnotation = mm.getAnnotation(CEYLON_STRING_EXPRS_ANNOTATION);
         if (exprsAnnotation != null) {
             for (AnnotationMirror valueAnnotation : getAnnotationAnnoValues(exprsAnnotation, "value")) {
                 String path = (String)valueAnnotation.getValue("name");
-                exprsMap.put(path, readStringValuesAnnotation(valueAnnotation, singeValue));
+                if (name.equals(path)) {
+                    return readStringValuesAnnotation(valueAnnotation, singeValue);
+                }
             }
         }
         exprsAnnotation = mm.getAnnotation(CEYLON_INTEGER_EXPRS_ANNOTATION);
         if (exprsAnnotation != null) {
             for (AnnotationMirror valueAnnotation : getAnnotationAnnoValues(exprsAnnotation, "value")) {
                 String path = (String)valueAnnotation.getValue("name");
-                exprsMap.put(path, readIntegerValuesAnnotation(valueAnnotation, singeValue));
+                if (name.equals(path)) {
+                    return readIntegerValuesAnnotation(valueAnnotation, singeValue);
+                }
             }
         }
         exprsAnnotation = mm.getAnnotation(CEYLON_BOOLEAN_EXPRS_ANNOTATION);
         if (exprsAnnotation != null) {
             for (AnnotationMirror valueAnnotation : getAnnotationAnnoValues(exprsAnnotation, "value")) {
                 String path = (String)valueAnnotation.getValue("name");
-                exprsMap.put(path, readBooleanValuesAnnotation(valueAnnotation, singeValue));
+                if (name.equals(path)) {
+                    return readBooleanValuesAnnotation(valueAnnotation, singeValue);
+                }
             }
         }
         exprsAnnotation = mm.getAnnotation(CEYLON_DECLARATION_EXPRS_ANNOTATION);
         if (exprsAnnotation != null) {
             for (AnnotationMirror valueAnnotation : getAnnotationAnnoValues(exprsAnnotation, "value")) {
                 String path = (String)valueAnnotation.getValue("name");
-                exprsMap.put(path, readDeclarationValuesAnnotation(valueAnnotation, singeValue));
+                if (name.equals(path)) {
+                    return readDeclarationValuesAnnotation(valueAnnotation, singeValue);
+                }
             }
         }
         exprsAnnotation = mm.getAnnotation(CEYLON_OBJECT_EXPRS_ANNOTATION);
         if (exprsAnnotation != null) {
             for (AnnotationMirror valueAnnotation : getAnnotationAnnoValues(exprsAnnotation, "value")) {
                 String path = (String)valueAnnotation.getValue("name");
-                exprsMap.put(path, readObjectValuesAnnotation(valueAnnotation, singeValue));
+                if (name.equals(path)) {
+                    return readObjectValuesAnnotation(valueAnnotation, singeValue);
+                }
             }
         }
         exprsAnnotation = mm.getAnnotation(CEYLON_CHARACTER_EXPRS_ANNOTATION);
         if (exprsAnnotation != null) {
             for (AnnotationMirror valueAnnotation : getAnnotationAnnoValues(exprsAnnotation, "value")) {
                 String path = (String)valueAnnotation.getValue("name");
-                exprsMap.put(path, readCharacterValuesAnnotation(valueAnnotation, singeValue));
+                if (name.equals(path)) {
+                    return readCharacterValuesAnnotation(valueAnnotation, singeValue);
+                }
             }
         }
         exprsAnnotation = mm.getAnnotation(CEYLON_FLOAT_EXPRS_ANNOTATION);
         if (exprsAnnotation != null) {
             for (AnnotationMirror valueAnnotation : getAnnotationAnnoValues(exprsAnnotation, "value")) {
                 String path = (String)valueAnnotation.getValue("name");
-                exprsMap.put(path, readFloatValuesAnnotation(valueAnnotation, singeValue));
+                if (name.equals(path)) {
+                    return readFloatValuesAnnotation(valueAnnotation, singeValue);
+                }
             }
         }
-        // TODO Don't build the map each time, either do a search, or build it once
-        String name = Naming.getAnnotationFieldName(namePath);
-        LiteralAnnotationTerm term = exprsMap.get(name);
-        return term;
+        
+        return null;
     }
     private LiteralAnnotationTerm readObjectValuesAnnotation(
             AnnotationMirror valueAnnotation, boolean singleValue) {
@@ -2606,7 +2623,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             AnnotationMirror valueAnnotation, boolean singleValue) {
         if (singleValue) {
             Long value = getAnnotationLongValues(valueAnnotation, "value").get(0);
-            // TODO We lose the underlying type info!!
             IntegerLiteralAnnotationTerm term = new IntegerLiteralAnnotationTerm(value);
             return term;
         } else {
