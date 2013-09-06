@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 
 public class Messages {
 
-    protected static String msg(ResourceBundle bundle, String msgKey, Object... msgArgs) {
+    public static String msg(ResourceBundle bundle, String msgKey, Object... msgArgs) {
         String msg = bundle.getString(msgKey);
         if (msgArgs != null) {
             msg = MessageFormat.format(msg, msgArgs);
