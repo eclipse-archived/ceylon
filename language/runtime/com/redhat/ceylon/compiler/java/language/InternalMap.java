@@ -520,4 +520,16 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     public String toString() {
         return $ceylon$language$Collection$this.toString();
     }
+    
+    @Ignore
+    @Override
+    public int hashCode() {
+        return $ceylon$language$Map$this.hashCode();
+    }
+
+    @Ignore
+    @Override
+    public boolean equals(Object obj) {
+        return $ceylon$language$Map$this.equals(obj);
+    }
 }
