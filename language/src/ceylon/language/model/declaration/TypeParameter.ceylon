@@ -1,4 +1,7 @@
 shared interface TypeParameter satisfies Declaration {
+    
+    shared formal TopLevelOrMemberDeclaration container;
+    
     shared formal Boolean defaulted;
     // FIXME: rename to 'default'?
     shared formal OpenType? defaultValue;

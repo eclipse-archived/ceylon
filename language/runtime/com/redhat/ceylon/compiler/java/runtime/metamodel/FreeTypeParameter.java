@@ -30,6 +30,8 @@ public class FreeTypeParameter
     private Sequential<? extends OpenType> enumeratedBounds;
 
     private Sequential<? extends OpenType> upperBounds;
+
+    private FreeTopLevelOrMemberDeclaration container;
     
     @Override
     public String toString() {
@@ -63,6 +65,7 @@ public class FreeTypeParameter
         else
             enumeratedBounds = (Sequential)empty_.$get();
         upperBounds = Metamodel.getMetamodelSequential(declaration.getSatisfiedTypes());
+        container = Metamodel.getOrCreateMetamodel(declaration.getDeclaration());
     }
 
     @Override
@@ -135,5 +138,11 @@ public class FreeTypeParameter
     public ceylon.language.Sequential<? extends ceylon.language.model.declaration.OpenType> getEnumeratedBounds(){
         checkInit();
         return enumeratedBounds;
+    }
+
+    @Override
+    public ceylon.language.model.declaration.TopLevelOrMemberDeclaration getContainer(){
+        checkInit();
+        return container;
     }
 }
