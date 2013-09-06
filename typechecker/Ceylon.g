@@ -2596,8 +2596,10 @@ unionType returns [StaticType type]
           { ut.setEndToken($u); }
           (
             it2=intersectionType
-            { ut.addStaticType($it2.type);
-              ut.setEndToken(null); }
+            { if ($it2.type!=null) {
+                  ut.addStaticType($it2.type);
+                  ut.setEndToken(null); 
+              } }
 //          | { displayRecognitionError(getTokenNames(), 
 //                new MismatchedTokenException(UIDENTIFIER, input)); }
           )
@@ -2618,8 +2620,10 @@ intersectionType returns [StaticType type]
           { it.setEndToken($i); }
           (
             at2=abbreviatedType
-            { it.addStaticType($at2.type);
-              it.setEndToken(null); }
+            { if ($at2.type!=null) {
+                  it.addStaticType($at2.type);
+                  it.setEndToken(null); 
+              } }
 //          | { displayRecognitionError(getTokenNames(), 
 //                new MismatchedTokenException(UIDENTIFIER, input)); }
           )
