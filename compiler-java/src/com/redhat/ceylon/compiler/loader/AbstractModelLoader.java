@@ -2580,7 +2580,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             ObjectLiteralAnnotationTerm term = new ObjectLiteralAnnotationTerm(type);
             return term;
         } else {
-            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(new ObjectLiteralAnnotationTerm(null));
+            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(ObjectLiteralAnnotationTerm.FACTORY);
             for (TypeMirror klass : getAnnotationClassValues(valueAnnotation, "value")) {
                 ProducedType type = obtainType(klass, null, null, null);
                 result.addElement(new ObjectLiteralAnnotationTerm(type));
@@ -2595,7 +2595,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             StringLiteralAnnotationTerm term = new StringLiteralAnnotationTerm(value);
             return term;
         } else {
-            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(new StringLiteralAnnotationTerm(null));
+            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(StringLiteralAnnotationTerm.FACTORY);
             for (String value : getAnnotationStringValues(valueAnnotation, "value")) {
                 result.addElement(new StringLiteralAnnotationTerm(value));
             }
@@ -2610,7 +2610,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             IntegerLiteralAnnotationTerm term = new IntegerLiteralAnnotationTerm(value);
             return term;
         } else {
-            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(new IntegerLiteralAnnotationTerm(0));
+            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(IntegerLiteralAnnotationTerm.FACTORY);
             for (Long value : getAnnotationLongValues(valueAnnotation, "value")) {
                 result.addElement(new IntegerLiteralAnnotationTerm(value));
             }
@@ -2624,7 +2624,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             CharacterLiteralAnnotationTerm term = new CharacterLiteralAnnotationTerm(value);
             return term;
         } else {
-            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(new CharacterLiteralAnnotationTerm(0));
+            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(CharacterLiteralAnnotationTerm.FACTORY);
             for (Integer value : getAnnotationIntegerValues(valueAnnotation, "value")) {
                 result.addElement(new CharacterLiteralAnnotationTerm(value));
             }
@@ -2638,7 +2638,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             FloatLiteralAnnotationTerm term = new FloatLiteralAnnotationTerm(value);
             return term;
         } else {
-            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(new FloatLiteralAnnotationTerm(0.0));
+            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(FloatLiteralAnnotationTerm.FACTORY);
             for (Double value : getAnnotationDoubleValues(valueAnnotation, "value")) {
                 result.addElement(new FloatLiteralAnnotationTerm(value));
             }
@@ -2652,7 +2652,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             BooleanLiteralAnnotationTerm term = new BooleanLiteralAnnotationTerm(value);
             return term;
         } else {
-            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(new BooleanLiteralAnnotationTerm(false));
+            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(BooleanLiteralAnnotationTerm.FACTORY);
             for (Boolean value : getAnnotationBooleanValues(valueAnnotation, "value")) {
                 result.addElement(new BooleanLiteralAnnotationTerm(value));
             }
@@ -2666,7 +2666,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             DeclarationLiteralAnnotationTerm term = new DeclarationLiteralAnnotationTerm(value);
             return term;
         } else {
-            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(new DeclarationLiteralAnnotationTerm(null));
+            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(DeclarationLiteralAnnotationTerm.FACTORY);
             for (String value : getAnnotationStringValues(valueAnnotation, "value")) {
                 result.addElement(new DeclarationLiteralAnnotationTerm(value));
             }

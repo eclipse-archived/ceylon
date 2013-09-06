@@ -4,6 +4,13 @@ import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 
 public class StringLiteralAnnotationTerm extends LiteralAnnotationTerm {
+    
+    /** 
+     * Sometimes we need an instance just for calling 
+     * {@link #makeAtValue(ExpressionTransformer, String, JCExpression)} on.
+     */
+    public static final LiteralAnnotationTerm FACTORY = new StringLiteralAnnotationTerm(null);
+    
     final String value;
     public StringLiteralAnnotationTerm(String value) {
         super();

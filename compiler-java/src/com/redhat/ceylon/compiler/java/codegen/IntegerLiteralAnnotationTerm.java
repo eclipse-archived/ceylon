@@ -1,10 +1,16 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 
 public class IntegerLiteralAnnotationTerm extends LiteralAnnotationTerm {
+    
+    /** 
+     * Sometimes we need an instance just for calling 
+     * {@link #makeAtValue(ExpressionTransformer, String, JCExpression)} on.
+     */
+    public static final LiteralAnnotationTerm FACTORY = new IntegerLiteralAnnotationTerm(0);
+    
     final long value;
     public IntegerLiteralAnnotationTerm(long value) {
         super();

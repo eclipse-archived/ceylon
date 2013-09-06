@@ -362,19 +362,19 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
                 TypeDeclaration declaration = iteratedType.getDeclaration();
                 LiteralAnnotationTerm factory;
                 if (unit.getStringDeclaration().equals(declaration)) {
-                    factory = new StringLiteralAnnotationTerm(null);
+                    factory = StringLiteralAnnotationTerm.FACTORY;
                 } else if (unit.getIntegerDeclaration().equals(declaration)) {
-                    factory = new IntegerLiteralAnnotationTerm(0);
+                    factory = IntegerLiteralAnnotationTerm.FACTORY;
                 } else if (unit.getCharacterDeclaration().equals(declaration)) {
-                    factory = new CharacterLiteralAnnotationTerm(0);
+                    factory = CharacterLiteralAnnotationTerm.FACTORY;
                 } else if (unit.getBooleanDeclaration().equals(declaration)) {
-                    factory = new BooleanLiteralAnnotationTerm(false);
+                    factory = BooleanLiteralAnnotationTerm.FACTORY;
                 } else if (unit.getFloatDeclaration().equals(declaration)) {
-                    factory = new FloatLiteralAnnotationTerm(0.0);
+                    factory = FloatLiteralAnnotationTerm.FACTORY;
                 } else if (Decl.isEnumeratedTypeWithAnonCases(iteratedType)) {
-                    factory = new ObjectLiteralAnnotationTerm(null);
+                    factory = ObjectLiteralAnnotationTerm.FACTORY;
                 } else {//if (iteratedType.isExactly(unit.getMetamodelDeclarationDeclaration().getType())) {
-                    factory = new DeclarationLiteralAnnotationTerm(null);
+                    factory = DeclarationLiteralAnnotationTerm.FACTORY;
                 } /*else {
                     throw new RuntimeException();
                 }*/
