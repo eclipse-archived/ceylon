@@ -340,7 +340,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.MetaLiteral literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
-                LiteralAnnotationTerm argument = new DeclarationLiteralAnnotationTerm(ExpressionTransformer.getMetaLiteralDeclaration(literal));
+                LiteralAnnotationTerm argument = new DeclarationLiteralAnnotationTerm(ExpressionTransformer.getSerializedMetaLiteral(literal));
                 argument.setTerm(literal);
                 appendLiteralArgument(literal, argument);
             }

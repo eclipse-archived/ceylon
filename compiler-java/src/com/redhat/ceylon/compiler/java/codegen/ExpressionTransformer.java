@@ -4564,10 +4564,18 @@ public class ExpressionTransformer extends AbstractTransformer {
         return null;
     }
     
-    public JCExpression makeDeclarationLiteralForAnnotation(Declaration decl) {
+    public static String getSerializedMetaLiteral(Tree.MetaLiteral ml) {
+        return serialiseDeclarationLiteral(getMetaLiteralDeclaration(ml));
+    }
+    
+    public static String serialiseDeclarationLiteral(Declaration decl) {
         StringBuilder sb = new StringBuilder();
         appendDeclarationLiteralForAnnotation(decl, sb);
-        return make().Literal(sb.toString());
+        return sb.toString();
+    }
+    
+    public JCExpression makeDeclarationLiteralForAnnotation(Declaration decl) {
+        return make().Literal(serialiseDeclarationLiteral(decl));
     }
     
     public JCExpression makeDeclarationLiteralForAnnotation(Package decl) {
@@ -4608,7 +4616,7 @@ public class ExpressionTransformer extends AbstractTransformer {
      * Appends into the given builder a String representation of the given 
      * module, suitable for parsing my the DeclarationParser.
      */
-    private void appendDeclarationLiteralForAnnotation(Module module,
+    private static void appendDeclarationLiteralForAnnotation(Module module,
             StringBuilder sb) {
         char sentinel = findSentinel(module);
         sb.append(":").append(sentinel).append(module.getVersion()).append(sentinel).append(module.getNameAsString());
@@ -4617,7 +4625,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     /**
      * Computes a sentinel for the verion number
      */
-    private char findSentinel(Module module) {
+    private static char findSentinel(Module module) {
         for (char ch : ":\"\'/#!$%\\@~+=*".toCharArray()) {
             if (module.getVersion().indexOf(ch) == -1) {
                 return ch;
@@ -4637,7 +4645,7 @@ public class ExpressionTransformer extends AbstractTransformer {
      * Appends into the given builder a String representation of the given 
      * package, suitable for parsing my the DeclarationParser.
      */
-    private void appendDeclarationLiteralForAnnotation(Package pkg,
+    private static void appendDeclarationLiteralForAnnotation(Package pkg,
             StringBuilder sb) {
         appendDeclarationLiteralForAnnotation(pkg.getModule(), sb);
         sb.append(':');
@@ -4655,7 +4663,7 @@ public class ExpressionTransformer extends AbstractTransformer {
      * Appends into the given builder a String representation of the given 
      * declaration, suitable for parsing my the DeclarationParser.
      */
-    private void appendDeclarationLiteralForAnnotation(Declaration decl, StringBuilder sb) {
+    private static void appendDeclarationLiteralForAnnotation(Declaration decl, StringBuilder sb) {
         Scope container = decl.getContainer();
         while (true) {
             if (container instanceof Declaration) {
