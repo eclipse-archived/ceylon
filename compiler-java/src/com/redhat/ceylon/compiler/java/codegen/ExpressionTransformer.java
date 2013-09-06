@@ -1123,6 +1123,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             }else{
                 return makeErroneous(expr, "Unsupported member type: "+declaration);
             }
+            // cast the member call because we invoke it with no Java generics
+            memberCall = make().TypeCast(makeJavaType(expr.getTypeModel(), JT_RAW | JT_NO_PRIMITIVES), memberCall);
+            memberCall = make().TypeCast(makeJavaType(expr.getTypeModel(), JT_NO_PRIMITIVES), memberCall);
             return memberCall;
         }
     }
