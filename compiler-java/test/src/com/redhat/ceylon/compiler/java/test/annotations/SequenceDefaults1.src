@@ -3,32 +3,16 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
-@interface SequenceDefaults$annotation {
+@interface SequenceDefaults_String$annotation {
     
-    public abstract .java.lang.String[] seq() default {};
-    
-    public abstract .java.lang.String[] seq2() default {};
-    
-    public abstract .java.lang.String[] seq3() default {};
-    
-    public abstract .java.lang.String[] iter() default {};
-    
-    public abstract .java.lang.String[] iter2() default {};
-    
-    public abstract .java.lang.String[] iter3() default {};
-    
-    public abstract .java.lang.String[] tup() default {};
-    
-    public abstract .java.lang.String[] tup2() default {};
-    
-    public abstract .java.lang.String[] tup3() default {};
+    public abstract .java.lang.String[] seq();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
-@interface SequenceDefaults$annotations {
+@interface SequenceDefaults_String$annotations {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults$annotation[] value();
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.Final$annotation
@@ -36,249 +20,35 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language.model::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults,ceylon.language.model.declaration::ClassOrInterfaceDeclaration>"})
-final class SequenceDefaults implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language.model::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_String,ceylon.language.model.declaration::ClassOrInterfaceDeclaration>"})
+final class SequenceDefaults_String implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    SequenceDefaults() {
-        (
-            let
-            {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq$0 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$seq();
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq2$1 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$seq2($ceylontmp$seq$0);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq3$2 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$seq3($ceylontmp$seq$0, $ceylontmp$seq2$1);
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter$3 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$iter($ceylontmp$seq$0, $ceylontmp$seq2$1, $ceylontmp$seq3$2);
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter2$4 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$iter2($ceylontmp$seq$0, $ceylontmp$seq2$1, $ceylontmp$seq3$2, $ceylontmp$iter$3);
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter3$5 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$iter3($ceylontmp$seq$0, $ceylontmp$seq2$1, $ceylontmp$seq3$2, $ceylontmp$iter$3, $ceylontmp$iter2$4);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup$6 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup($ceylontmp$seq$0, $ceylontmp$seq2$1, $ceylontmp$seq3$2, $ceylontmp$iter$3, $ceylontmp$iter2$4, $ceylontmp$iter3$5);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup2$7 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup2($ceylontmp$seq$0, $ceylontmp$seq2$1, $ceylontmp$seq3$2, $ceylontmp$iter$3, $ceylontmp$iter2$4, $ceylontmp$iter3$5, $ceylontmp$tup$6);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup3$8 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup3($ceylontmp$seq$0, $ceylontmp$seq2$1, $ceylontmp$seq3$2, $ceylontmp$iter$3, $ceylontmp$iter2$4, $ceylontmp$iter3$5, $ceylontmp$tup$6, $ceylontmp$tup2$7);
-                this($ceylontmp$seq$0, $ceylontmp$seq2$1, $ceylontmp$seq3$2, $ceylontmp$iter$3, $ceylontmp$iter2$4, $ceylontmp$iter3$5, $ceylontmp$tup$6, $ceylontmp$tup2$7, $ceylontmp$tup3$8);
-            }
-            returning null;
-        );
+    SequenceDefaults_String(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation anno) {
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.seq()));
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    SequenceDefaults(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq) {
-        (
-            let
-            {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq2$9 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$seq2(seq);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq3$10 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$seq3(seq, $ceylontmp$seq2$9);
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter$11 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$iter(seq, $ceylontmp$seq2$9, $ceylontmp$seq3$10);
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter2$12 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$iter2(seq, $ceylontmp$seq2$9, $ceylontmp$seq3$10, $ceylontmp$iter$11);
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter3$13 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$iter3(seq, $ceylontmp$seq2$9, $ceylontmp$seq3$10, $ceylontmp$iter$11, $ceylontmp$iter2$12);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup$14 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup(seq, $ceylontmp$seq2$9, $ceylontmp$seq3$10, $ceylontmp$iter$11, $ceylontmp$iter2$12, $ceylontmp$iter3$13);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup2$15 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup2(seq, $ceylontmp$seq2$9, $ceylontmp$seq3$10, $ceylontmp$iter$11, $ceylontmp$iter2$12, $ceylontmp$iter3$13, $ceylontmp$tup$14);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup3$16 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup3(seq, $ceylontmp$seq2$9, $ceylontmp$seq3$10, $ceylontmp$iter$11, $ceylontmp$iter2$12, $ceylontmp$iter3$13, $ceylontmp$tup$14, $ceylontmp$tup2$15);
-                this(seq, $ceylontmp$seq2$9, $ceylontmp$seq3$10, $ceylontmp$iter$11, $ceylontmp$iter2$12, $ceylontmp$iter3$13, $ceylontmp$tup$14, $ceylontmp$tup2$15, $ceylontmp$tup3$16);
-            }
-            returning null;
-        );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    SequenceDefaults(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq2) {
-        (
-            let
-            {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq3$17 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$seq3(seq, seq2);
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter$18 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$iter(seq, seq2, $ceylontmp$seq3$17);
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter2$19 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$iter2(seq, seq2, $ceylontmp$seq3$17, $ceylontmp$iter$18);
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter3$20 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$iter3(seq, seq2, $ceylontmp$seq3$17, $ceylontmp$iter$18, $ceylontmp$iter2$19);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup$21 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup(seq, seq2, $ceylontmp$seq3$17, $ceylontmp$iter$18, $ceylontmp$iter2$19, $ceylontmp$iter3$20);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup2$22 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup2(seq, seq2, $ceylontmp$seq3$17, $ceylontmp$iter$18, $ceylontmp$iter2$19, $ceylontmp$iter3$20, $ceylontmp$tup$21);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup3$23 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup3(seq, seq2, $ceylontmp$seq3$17, $ceylontmp$iter$18, $ceylontmp$iter2$19, $ceylontmp$iter3$20, $ceylontmp$tup$21, $ceylontmp$tup2$22);
-                this(seq, seq2, $ceylontmp$seq3$17, $ceylontmp$iter$18, $ceylontmp$iter2$19, $ceylontmp$iter3$20, $ceylontmp$tup$21, $ceylontmp$tup2$22, $ceylontmp$tup3$23);
-            }
-            returning null;
-        );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    SequenceDefaults(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq2, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq3) {
-        (
-            let
-            {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter$24 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$iter(seq, seq2, seq3);
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter2$25 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$iter2(seq, seq2, seq3, $ceylontmp$iter$24);
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter3$26 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$iter3(seq, seq2, seq3, $ceylontmp$iter$24, $ceylontmp$iter2$25);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup$27 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup(seq, seq2, seq3, $ceylontmp$iter$24, $ceylontmp$iter2$25, $ceylontmp$iter3$26);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup2$28 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup2(seq, seq2, seq3, $ceylontmp$iter$24, $ceylontmp$iter2$25, $ceylontmp$iter3$26, $ceylontmp$tup$27);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup3$29 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup3(seq, seq2, seq3, $ceylontmp$iter$24, $ceylontmp$iter2$25, $ceylontmp$iter3$26, $ceylontmp$tup$27, $ceylontmp$tup2$28);
-                this(seq, seq2, seq3, $ceylontmp$iter$24, $ceylontmp$iter2$25, $ceylontmp$iter3$26, $ceylontmp$tup$27, $ceylontmp$tup2$28, $ceylontmp$tup3$29);
-            }
-            returning null;
-        );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    SequenceDefaults(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq2, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq3, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter) {
-        (
-            let
-            {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter2$30 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$iter2(seq, seq2, seq3, iter);
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter3$31 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$iter3(seq, seq2, seq3, iter, $ceylontmp$iter2$30);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup$32 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup(seq, seq2, seq3, iter, $ceylontmp$iter2$30, $ceylontmp$iter3$31);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup2$33 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup2(seq, seq2, seq3, iter, $ceylontmp$iter2$30, $ceylontmp$iter3$31, $ceylontmp$tup$32);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup3$34 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup3(seq, seq2, seq3, iter, $ceylontmp$iter2$30, $ceylontmp$iter3$31, $ceylontmp$tup$32, $ceylontmp$tup2$33);
-                this(seq, seq2, seq3, iter, $ceylontmp$iter2$30, $ceylontmp$iter3$31, $ceylontmp$tup$32, $ceylontmp$tup2$33, $ceylontmp$tup3$34);
-            }
-            returning null;
-        );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    SequenceDefaults(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq2, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq3, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter2) {
-        (
-            let
-            {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter3$35 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$iter3(seq, seq2, seq3, iter, iter2);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup$36 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup(seq, seq2, seq3, iter, iter2, $ceylontmp$iter3$35);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup2$37 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup2(seq, seq2, seq3, iter, iter2, $ceylontmp$iter3$35, $ceylontmp$tup$36);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup3$38 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup3(seq, seq2, seq3, iter, iter2, $ceylontmp$iter3$35, $ceylontmp$tup$36, $ceylontmp$tup2$37);
-                this(seq, seq2, seq3, iter, iter2, $ceylontmp$iter3$35, $ceylontmp$tup$36, $ceylontmp$tup2$37, $ceylontmp$tup3$38);
-            }
-            returning null;
-        );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    SequenceDefaults(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq2, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq3, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter2, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter3) {
-        (
-            let
-            {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup$39 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup(seq, seq2, seq3, iter, iter2, iter3);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup2$40 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup2(seq, seq2, seq3, iter, iter2, iter3, $ceylontmp$tup$39);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup3$41 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup3(seq, seq2, seq3, iter, iter2, iter3, $ceylontmp$tup$39, $ceylontmp$tup2$40);
-                this(seq, seq2, seq3, iter, iter2, iter3, $ceylontmp$tup$39, $ceylontmp$tup2$40, $ceylontmp$tup3$41);
-            }
-            returning null;
-        );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    SequenceDefaults(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq2, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq3, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter2, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter3, final .ceylon.language.Sequential<? extends .ceylon.language.String> tup) {
-        (
-            let
-            {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup2$42 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup2(seq, seq2, seq3, iter, iter2, iter3, tup);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup3$43 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup3(seq, seq2, seq3, iter, iter2, iter3, tup, $ceylontmp$tup2$42);
-                this(seq, seq2, seq3, iter, iter2, iter3, tup, $ceylontmp$tup2$42, $ceylontmp$tup3$43);
-            }
-            returning null;
-        );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    SequenceDefaults(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq2, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq3, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter2, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter3, final .ceylon.language.Sequential<? extends .ceylon.language.String> tup, final .ceylon.language.Sequential<? extends .ceylon.language.String> tup2) {
-        (
-            let
-            {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup3$44 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$init$tup3(seq, seq2, seq3, iter, iter2, iter3, tup, tup2);
-                this(seq, seq2, seq3, iter, iter2, iter3, tup, tup2, $ceylontmp$tup3$44);
-            }
-            returning null;
-        );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    SequenceDefaults(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults$annotation anno) {
-        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.seq()), .com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.seq2()), .com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.seq3()), .com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.iter()), .com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.iter2()), .com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.iter3()), .com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.tup()), .com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.tup2()), .com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.tup3()));
-    }
-    
-    SequenceDefaults(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
-    final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, @.com.redhat.ceylon.compiler.java.metadata.Name("seq2")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
-    final .ceylon.language.Sequential<? extends .ceylon.language.String> seq2, @.com.redhat.ceylon.compiler.java.metadata.Name("seq3")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
-    final .ceylon.language.Sequential<? extends .ceylon.language.String> seq3, @.com.redhat.ceylon.compiler.java.metadata.Name("iter")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    SequenceDefaults_String(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<ceylon.language::String,ceylon.language::Null>")
-    final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter, @.com.redhat.ceylon.compiler.java.metadata.Name("iter2")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<ceylon.language::String,ceylon.language::Null>")
-    final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter2, @.com.redhat.ceylon.compiler.java.metadata.Name("iter3")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<ceylon.language::String,ceylon.language::Null>")
-    final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter3, @.com.redhat.ceylon.compiler.java.metadata.Name("tup")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
-    final .ceylon.language.Sequential<? extends .ceylon.language.String> tup, @.com.redhat.ceylon.compiler.java.metadata.Name("tup2")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
-    final .ceylon.language.Sequential<? extends .ceylon.language.String> tup2, @.com.redhat.ceylon.compiler.java.metadata.Name("tup3")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
-    final .ceylon.language.Sequential<? extends .ceylon.language.String> tup3) {
-        this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$TypeDescriptor, this);
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .ceylon.language.Sequential<? extends .ceylon.language.String> $init$seq() {
-        return (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .ceylon.language.Sequential<? extends .ceylon.language.String> $init$seq2(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq) {
-        return (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .ceylon.language.Sequential<? extends .ceylon.language.String> $init$seq3(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq2) {
-        return (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $init$iter(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq2, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq3) {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.$get();
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $init$iter2(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq2, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq3, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter) {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.$get();
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $init$iter3(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq2, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq3, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter2) {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.$get();
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .ceylon.language.Sequential<? extends .ceylon.language.String> $init$tup(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq2, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq3, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter2, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter3) {
-        return (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .ceylon.language.Sequential<? extends .ceylon.language.String> $init$tup2(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq2, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq3, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter2, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter3, final .ceylon.language.Sequential<? extends .ceylon.language.String> tup) {
-        return (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .ceylon.language.Sequential<? extends .ceylon.language.String> $init$tup3(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq2, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq3, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter2, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter3, final .ceylon.language.Sequential<? extends .ceylon.language.String> tup, final .ceylon.language.Sequential<? extends .ceylon.language.String> tup2) {
-        return (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
+    final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> seq) {
+        this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String.$TypeDescriptor, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$this;
+    protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$impl() {
+    public .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$impl() {
         return $ceylon$language$model$SequencedAnnotation$this;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$this;
+    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$impl() {
+    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$impl() {
         return $ceylon$language$model$ConstrainedAnnotation$this;
     }
     
@@ -288,240 +58,1497 @@ final class SequenceDefaults implements .com.redhat.ceylon.compiler.java.runtime
         return $ceylon$language$model$ConstrainedAnnotation$this.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults> $ceylon$language$model$Annotation$this;
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String> $ceylon$language$model$Annotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults> $ceylon$language$model$Annotation$impl() {
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String> $ceylon$language$model$Annotation$impl() {
         return $ceylon$language$model$Annotation$this;
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults();
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.$TypeDescriptor;
+        return .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String.$TypeDescriptor;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.class);
-}
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@.java.lang.annotation.Target({})
-@interface SequenceDefaultsNonempty$annotation {
-    
-    public abstract .java.lang.String[] seq() default {"a"};
-    
-    public abstract .java.lang.String[] iter() default {"a"};
-    
-    public abstract .java.lang.String[] iter2() default {"a"};
-    
-    public abstract .java.lang.String[] tup() default {"a"};
-}
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
-@interface SequenceDefaultsNonempty$annotations {
-    
-    public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty$annotation[] value();
-}
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Final$annotation
-@.ceylon.language.Annotation$annotation
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
-        @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language.model::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaultsNonempty,ceylon.language.model.declaration::ClassOrInterfaceDeclaration>"})
-final class SequenceDefaultsNonempty implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    SequenceDefaultsNonempty() {
-        (
-            let
-            {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq$45 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty.$init$seq();
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter$46 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty.$init$iter($ceylontmp$seq$45);
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter2$47 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty.$init$iter2($ceylontmp$seq$45, $ceylontmp$iter$46);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup$48 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty.$init$tup($ceylontmp$seq$45, $ceylontmp$iter$46, $ceylontmp$iter2$47);
-                this($ceylontmp$seq$45, $ceylontmp$iter$46, $ceylontmp$iter2$47, $ceylontmp$tup$48);
-            }
-            returning null;
-        );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    SequenceDefaultsNonempty(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq) {
-        (
-            let
-            {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter$49 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty.$init$iter(seq);
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter2$50 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty.$init$iter2(seq, $ceylontmp$iter$49);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup$51 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty.$init$tup(seq, $ceylontmp$iter$49, $ceylontmp$iter2$50);
-                this(seq, $ceylontmp$iter$49, $ceylontmp$iter2$50, $ceylontmp$tup$51);
-            }
-            returning null;
-        );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    SequenceDefaultsNonempty(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter) {
-        (
-            let
-            {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$iter2$52 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty.$init$iter2(seq, iter);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup$53 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty.$init$tup(seq, iter, $ceylontmp$iter2$52);
-                this(seq, iter, $ceylontmp$iter2$52, $ceylontmp$tup$53);
-            }
-            returning null;
-        );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    SequenceDefaultsNonempty(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter2) {
-        (
-            let
-            {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$tup$54 = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty.$init$tup(seq, iter, iter2);
-                this(seq, iter, iter2, $ceylontmp$tup$54);
-            }
-            returning null;
-        );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    SequenceDefaultsNonempty(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty$annotation anno) {
-        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.seq()), .com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.iter()), .com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.iter2()), .com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.tup()));
-    }
-    
-    SequenceDefaultsNonempty(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
-    final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, @.com.redhat.ceylon.compiler.java.metadata.Name("iter")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<ceylon.language::String,ceylon.language::Null>")
-    final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter, @.com.redhat.ceylon.compiler.java.metadata.Name("iter2")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<ceylon.language::String,ceylon.language::Null>")
-    final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter2, @.com.redhat.ceylon.compiler.java.metadata.Name("tup")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
-    final .ceylon.language.Sequential<? extends .ceylon.language.String> tup) {
-        this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty.$TypeDescriptor, this);
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .ceylon.language.Sequential<? extends .ceylon.language.String> $init$seq() {
-        return new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("a"));
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $init$iter(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq) {
-        return new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("a"));
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $init$iter2(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter) {
-        return .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("a")});
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .ceylon.language.Sequential<? extends .ceylon.language.String> $init$tup(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter2) {
-        return new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("a"));
-    }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$this;
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$impl() {
-        return $ceylon$language$model$SequencedAnnotation$this;
-    }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$this;
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$impl() {
-        return $ceylon$language$model$ConstrainedAnnotation$this;
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final boolean occurs(final .ceylon.language.model.Annotated programElement) {
-        return $ceylon$language$model$ConstrainedAnnotation$this.occurs(programElement);
-    }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty> $ceylon$language$model$Annotation$this;
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty> $ceylon$language$model$Annotation$impl() {
-        return $ceylon$language$model$Annotation$this;
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty();
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty.$TypeDescriptor;
-    }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaultsNonempty.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
-        arguments = {
-                0,
-                -32768,
-                -32768},
-        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults.class)
-final class sequenceDefaults_ {
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String.class)
+final class sequenceDefaults_String_ {
     
-    private sequenceDefaults_() {
+    private sequenceDefaults_String_() {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults sequenceDefaults() {
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String sequenceDefaults_String() {
         return (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$seq$6 = .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_.sequenceDefaults$seq();
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$seq$0 = .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_String_.sequenceDefaults_String$seq();
             }
-            returning sequenceDefaults($ceylontmp$seq$6);
+            returning sequenceDefaults_String($ceylontmp$seq$0);
         );
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.StringValue({
+            "a",
+            "b",
+            "c"})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> sequenceDefaults$seq() {
+    static final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> sequenceDefaults_String$seq() {
+        return .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.String.instance("a"),
+                .ceylon.language.String.instance("b"),
+                .ceylon.language.String.instance("c")});
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_String")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String sequenceDefaults_String(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<ceylon.language::String,ceylon.language::Null>")
+    final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> seq) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String(seq);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_String_.sequenceDefaults_String();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String.class)
+final class sequenceDefaults_String_Empty_ {
+    
+    private sequenceDefaults_String_Empty_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String sequenceDefaults_String_Empty() {
+        return (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$seq$1 = .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_String_Empty_.sequenceDefaults_String_Empty$seq();
+            }
+            returning sequenceDefaults_String_Empty($ceylontmp$seq$1);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.StringValue({})
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> sequenceDefaults_String_Empty$seq() {
         return (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.$get();
     }
     
     @.ceylon.language.Annotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults")
-    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults sequenceDefaults(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_String")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String sequenceDefaults_String_Empty(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<ceylon.language::String,ceylon.language::Null>")
     final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> seq) {
-        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults(seq, (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.$get(), (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.$get());
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String(seq);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.$get().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_.sequenceDefaults();
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_String_Empty_.sequenceDefaults_String_Empty();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String.class)
+@.com.redhat.ceylon.compiler.java.metadata.StringExprs({@.com.redhat.ceylon.compiler.java.metadata.StringValue(
+        name = "arg$seq",
+        value = {
+                "A",
+                "B",
+                "C"})})
+final class sequenceArguments_String_ {
+    
+    private sequenceArguments_String_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_String")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String sequenceArguments_String() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String(.ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.String.instance("A"),
+                .ceylon.language.String.instance("B"),
+                .ceylon.language.String.instance("C")}));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceArguments_String_.sequenceArguments_String();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String.class)
+@.com.redhat.ceylon.compiler.java.metadata.StringExprs({@.com.redhat.ceylon.compiler.java.metadata.StringValue(
+        name = "arg$seq",
+        value = {})})
+final class sequenceArguments_String_Empty_ {
+    
+    private sequenceArguments_String_Empty_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_String")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String sequenceArguments_String_Empty() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String((.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.$get());
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceArguments_String_Empty_.sequenceArguments_String_Empty();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+@interface SequenceDefaults_Boolean$annotation {
+    
+    public abstract boolean[] seq();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface SequenceDefaults_Boolean$annotations {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation[] value();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Final$annotation
+@.ceylon.language.Annotation$annotation
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language.model::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Boolean,ceylon.language.model.declaration::ClassOrInterfaceDeclaration>"})
+final class SequenceDefaults_Boolean implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    SequenceDefaults_Boolean(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation anno) {
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.seq()));
+    }
+    
+    SequenceDefaults_Boolean(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<ceylon.language::Boolean,ceylon.language::Null>")
+    final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> seq) {
+        this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean.$TypeDescriptor, this);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$impl() {
+        return $ceylon$language$model$SequencedAnnotation$this;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$impl() {
+        return $ceylon$language$model$ConstrainedAnnotation$this;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final boolean occurs(final .ceylon.language.model.Annotated programElement) {
+        return $ceylon$language$model$ConstrainedAnnotation$this.occurs(programElement);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean> $ceylon$language$model$Annotation$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean.class)
+final class sequenceDefaults_Boolean_ {
+    
+    private sequenceDefaults_Boolean_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean sequenceDefaults_Boolean() {
+        return (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> $ceylontmp$seq$2 = .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Boolean_.sequenceDefaults_Boolean$seq();
+            }
+            returning sequenceDefaults_Boolean($ceylontmp$seq$2);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.BooleanValue({
+            true,
+            false})
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> sequenceDefaults_Boolean$seq() {
+        return new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty>>(.ceylon.language.Boolean.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.Boolean.instance(true),
+                .ceylon.language.Boolean.instance(false)});
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Boolean")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean sequenceDefaults_Boolean(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<ceylon.language::Boolean,ceylon.language::Null>")
+    final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> seq) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean(seq);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Boolean_.sequenceDefaults_Boolean();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean.class)
+final class sequenceDefaults_Boolean_Empty_ {
+    
+    private sequenceDefaults_Boolean_Empty_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean sequenceDefaults_Boolean_Empty() {
+        return (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> $ceylontmp$seq$3 = .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Boolean_Empty_.sequenceDefaults_Boolean_Empty$seq();
+            }
+            returning sequenceDefaults_Boolean_Empty($ceylontmp$seq$3);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.BooleanValue({})
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> sequenceDefaults_Boolean_Empty$seq() {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.$get();
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Boolean")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean sequenceDefaults_Boolean_Empty(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<ceylon.language::Boolean,ceylon.language::Null>")
+    final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> seq) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean(seq);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Boolean_Empty_.sequenceDefaults_Boolean_Empty();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean.class)
+@.com.redhat.ceylon.compiler.java.metadata.BooleanExprs({@.com.redhat.ceylon.compiler.java.metadata.BooleanValue(
+        name = "arg$seq",
+        value = {
+                false,
+                true})})
+final class sequenceArguments_Boolean_ {
+    
+    private sequenceArguments_Boolean_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Boolean")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean sequenceArguments_Boolean() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean(new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty>>(.ceylon.language.Boolean.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.Boolean.instance(false),
+                .ceylon.language.Boolean.instance(true)}));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceArguments_Boolean_.sequenceArguments_Boolean();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean.class)
+@.com.redhat.ceylon.compiler.java.metadata.BooleanExprs({@.com.redhat.ceylon.compiler.java.metadata.BooleanValue(
+        name = "arg$seq",
+        value = {})})
+final class sequenceArguments_Boolean_Empty_ {
+    
+    private sequenceArguments_Boolean_Empty_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Boolean")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean sequenceArguments_Boolean_Empty() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean((.ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.$get());
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceArguments_Boolean_Empty_.sequenceArguments_Boolean_Empty();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+@interface SequenceDefaults_Character$annotation {
+    
+    public abstract int[] seq();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface SequenceDefaults_Character$annotations {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation[] value();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Final$annotation
+@.ceylon.language.Annotation$annotation
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language.model::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Character,ceylon.language.model.declaration::ClassOrInterfaceDeclaration>"})
+final class SequenceDefaults_Character implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    SequenceDefaults_Character(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation anno) {
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.seq()));
+    }
+    
+    SequenceDefaults_Character(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Character>")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Character> seq) {
+        this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character.$TypeDescriptor, this);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$impl() {
+        return $ceylon$language$model$SequencedAnnotation$this;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$impl() {
+        return $ceylon$language$model$ConstrainedAnnotation$this;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final boolean occurs(final .ceylon.language.model.Annotated programElement) {
+        return $ceylon$language$model$ConstrainedAnnotation$this.occurs(programElement);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character> $ceylon$language$model$Annotation$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character.class)
+final class sequenceDefaults_Character_ {
+    
+    private sequenceDefaults_Character_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character sequenceDefaults_Character() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Character> $ceylontmp$seq$4 = .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Character_.sequenceDefaults_Character$seq();
+            }
+            returning sequenceDefaults_Character($ceylontmp$seq$4);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.CharacterValue({
+            97,
+            98,
+            99})
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static final .ceylon.language.Sequential<? extends .ceylon.language.Character> sequenceDefaults_Character$seq() {
+        return new .ceylon.language.Tuple<.ceylon.language.Character, .ceylon.language.Character, .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Empty>>>(.ceylon.language.Character.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.Character.instance(97),
+                .ceylon.language.Character.instance(98),
+                .ceylon.language.Character.instance(99)});
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Character")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character sequenceDefaults_Character(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Character>")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Character> seq) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character(seq);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Character_.sequenceDefaults_Character();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character.class)
+final class sequenceDefaults_Character_Empty_ {
+    
+    private sequenceDefaults_Character_Empty_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character sequenceDefaults_Character_Empty() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Character> $ceylontmp$seq$5 = .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Character_Empty_.sequenceDefaults_Character_Empty$seq();
+            }
+            returning sequenceDefaults_Character_Empty($ceylontmp$seq$5);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.CharacterValue({})
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static final .ceylon.language.Sequential<? extends .ceylon.language.Character> sequenceDefaults_Character_Empty$seq() {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Character")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character sequenceDefaults_Character_Empty(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Character>")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Character> seq) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character(seq);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Character_Empty_.sequenceDefaults_Character_Empty();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character.class)
+@.com.redhat.ceylon.compiler.java.metadata.CharacterExprs({@.com.redhat.ceylon.compiler.java.metadata.CharacterValue(
+        name = "arg$seq",
+        value = {
+                65,
+                66,
+                67})})
+final class sequenceArguments_Character_ {
+    
+    private sequenceArguments_Character_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Character")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character sequenceArguments_Character() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character(new .ceylon.language.Tuple<.ceylon.language.Character, .ceylon.language.Character, .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Empty>>>(.ceylon.language.Character.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.Character.instance(65),
+                .ceylon.language.Character.instance(66),
+                .ceylon.language.Character.instance(67)}));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceArguments_Character_.sequenceArguments_Character();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character.class)
+@.com.redhat.ceylon.compiler.java.metadata.CharacterExprs({@.com.redhat.ceylon.compiler.java.metadata.CharacterValue(
+        name = "arg$seq",
+        value = {})})
+final class sequenceArguments_Character_Empty_ {
+    
+    private sequenceArguments_Character_Empty_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Character")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character sequenceArguments_Character_Empty() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character((.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential).ceylon.language.empty_.$get());
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceArguments_Character_Empty_.sequenceArguments_Character_Empty();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+@interface SequenceDefaults_Float$annotation {
+    
+    public abstract double[] seq();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface SequenceDefaults_Float$annotations {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation[] value();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Final$annotation
+@.ceylon.language.Annotation$annotation
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language.model::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Float,ceylon.language.model.declaration::ClassOrInterfaceDeclaration>"})
+final class SequenceDefaults_Float implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    SequenceDefaults_Float(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation anno) {
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.seq()));
+    }
+    
+    SequenceDefaults_Float(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Float>")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Float> seq) {
+        this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float.$TypeDescriptor, this);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$impl() {
+        return $ceylon$language$model$SequencedAnnotation$this;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$impl() {
+        return $ceylon$language$model$ConstrainedAnnotation$this;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final boolean occurs(final .ceylon.language.model.Annotated programElement) {
+        return $ceylon$language$model$ConstrainedAnnotation$this.occurs(programElement);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float> $ceylon$language$model$Annotation$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float.class)
+final class sequenceDefaults_Float_ {
+    
+    private sequenceDefaults_Float_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float sequenceDefaults_Float() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Float> $ceylontmp$seq$6 = .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Float_.sequenceDefaults_Float$seq();
+            }
+            returning sequenceDefaults_Float($ceylontmp$seq$6);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.FloatValue({
+            1.0,
+            2.0,
+            3.0})
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static final .ceylon.language.Sequential<? extends .ceylon.language.Float> sequenceDefaults_Float$seq() {
+        return new .ceylon.language.Tuple<.ceylon.language.Float, .ceylon.language.Float, .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>>>(.ceylon.language.Float.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.Float.instance(1.0),
+                .ceylon.language.Float.instance(2.0),
+                .ceylon.language.Float.instance(3.0)});
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Float")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float sequenceDefaults_Float(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Float>")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Float> seq) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float(seq);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Float_.sequenceDefaults_Float();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float.class)
+final class sequenceDefaults_Float_Empty_ {
+    
+    private sequenceDefaults_Float_Empty_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float sequenceDefaults_Float_Empty() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Float> $ceylontmp$seq$7 = .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Float_Empty_.sequenceDefaults_Float_Empty$seq();
+            }
+            returning sequenceDefaults_Float_Empty($ceylontmp$seq$7);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.FloatValue({})
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static final .ceylon.language.Sequential<? extends .ceylon.language.Float> sequenceDefaults_Float_Empty$seq() {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.Float>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Float")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float sequenceDefaults_Float_Empty(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Float>")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Float> seq) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float(seq);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Float_Empty_.sequenceDefaults_Float_Empty();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float.class)
+@.com.redhat.ceylon.compiler.java.metadata.FloatExprs({@.com.redhat.ceylon.compiler.java.metadata.FloatValue(
+        name = "arg$seq",
+        value = {
+                4.0,
+                5.0,
+                6.0})})
+final class sequenceArguments_Float_ {
+    
+    private sequenceArguments_Float_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Float")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float sequenceArguments_Float() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float(new .ceylon.language.Tuple<.ceylon.language.Float, .ceylon.language.Float, .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>>>(.ceylon.language.Float.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.Float.instance(4.0),
+                .ceylon.language.Float.instance(5.0),
+                .ceylon.language.Float.instance(6.0)}));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceArguments_Float_.sequenceArguments_Float();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float.class)
+@.com.redhat.ceylon.compiler.java.metadata.FloatExprs({@.com.redhat.ceylon.compiler.java.metadata.FloatValue(
+        name = "arg$seq",
+        value = {})})
+final class sequenceArguments_Float_Empty_ {
+    
+    private sequenceArguments_Float_Empty_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Float")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float sequenceArguments_Float_Empty() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float((.ceylon.language.Sequential<? extends .ceylon.language.Float>)(.ceylon.language.Sequential).ceylon.language.empty_.$get());
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceArguments_Float_Empty_.sequenceArguments_Float_Empty();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+@interface SequenceDefaults_Integer$annotation {
+    
+    public abstract long[] seq();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface SequenceDefaults_Integer$annotations {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation[] value();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Final$annotation
+@.ceylon.language.Annotation$annotation
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language.model::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Integer,ceylon.language.model.declaration::ClassOrInterfaceDeclaration>"})
+final class SequenceDefaults_Integer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    SequenceDefaults_Integer(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation anno) {
+        this(.com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.seq()));
+    }
+    
+    SequenceDefaults_Integer(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
+    final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> seq) {
+        this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer.$TypeDescriptor, this);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$impl() {
+        return $ceylon$language$model$SequencedAnnotation$this;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$impl() {
+        return $ceylon$language$model$ConstrainedAnnotation$this;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final boolean occurs(final .ceylon.language.model.Annotated programElement) {
+        return $ceylon$language$model$ConstrainedAnnotation$this.occurs(programElement);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer> $ceylon$language$model$Annotation$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer.class)
+final class sequenceDefaults_Integer_ {
+    
+    private sequenceDefaults_Integer_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer sequenceDefaults_Integer() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$8 = .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Integer_.sequenceDefaults_Integer$seq();
+            }
+            returning sequenceDefaults_Integer($ceylontmp$seq$8);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.IntegerValue({
+            1L,
+            2L,
+            3L})
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static final .ceylon.language.Sequential<? extends .ceylon.language.Integer> sequenceDefaults_Integer$seq() {
+        return new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.Integer.instance(2L),
+                .ceylon.language.Integer.instance(3L)});
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Integer")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer sequenceDefaults_Integer(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer(seq);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Integer_.sequenceDefaults_Integer();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer.class)
+final class sequenceDefaults_Integer_Empty_ {
+    
+    private sequenceDefaults_Integer_Empty_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer sequenceDefaults_Integer_Empty() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$9 = .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Integer_Empty_.sequenceDefaults_Integer_Empty$seq();
+            }
+            returning sequenceDefaults_Integer_Empty($ceylontmp$seq$9);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.IntegerValue({})
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static final .ceylon.language.Sequential<? extends .ceylon.language.Integer> sequenceDefaults_Integer_Empty$seq() {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Integer")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer sequenceDefaults_Integer_Empty(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer(seq);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Integer_Empty_.sequenceDefaults_Integer_Empty();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer.class)
+@.com.redhat.ceylon.compiler.java.metadata.IntegerExprs({@.com.redhat.ceylon.compiler.java.metadata.IntegerValue(
+        name = "arg$seq",
+        value = {
+                4L,
+                5L,
+                6L})})
+final class sequenceArguments_Integer_ {
+    
+    private sequenceArguments_Integer_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Integer")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer sequenceArguments_Integer() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer(new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(4L),
+                .ceylon.language.Integer.instance(5L),
+                .ceylon.language.Integer.instance(6L)}));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceArguments_Integer_.sequenceArguments_Integer();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer.class)
+@.com.redhat.ceylon.compiler.java.metadata.IntegerExprs({@.com.redhat.ceylon.compiler.java.metadata.IntegerValue(
+        name = "arg$seq",
+        value = {})})
+final class sequenceArguments_Integer_Empty_ {
+    
+    private sequenceArguments_Integer_Empty_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Integer")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer sequenceArguments_Integer_Empty() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.$get());
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceArguments_Integer_Empty_.sequenceArguments_Integer_Empty();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+@interface SequenceDefaults_Object$annotation {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.EnumerationReference
+    public abstract .java.lang.Class<? extends .ceylon.language.Empty>[] seq();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface SequenceDefaults_Object$annotations {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation[] value();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Final$annotation
+@.ceylon.language.Annotation$annotation
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language.model::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Object,ceylon.language.model.declaration::ClassOrInterfaceDeclaration>"})
+final class SequenceDefaults_Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    SequenceDefaults_Object(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation anno) {
+        this(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.<.ceylon.language.Empty>parseEnumerationReferences(.ceylon.language.Empty.$TypeDescriptor, anno.seq()));
+    }
+    
+    SequenceDefaults_Object(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<ceylon.language::Empty,ceylon.language::Null>")
+    final .ceylon.language.Iterable<? extends .ceylon.language.Empty, ? extends .java.lang.Object> seq) {
+        this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object.$TypeDescriptor, this);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$impl() {
+        return $ceylon$language$model$SequencedAnnotation$this;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$impl() {
+        return $ceylon$language$model$ConstrainedAnnotation$this;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final boolean occurs(final .ceylon.language.model.Annotated programElement) {
+        return $ceylon$language$model$ConstrainedAnnotation$this.occurs(programElement);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object> $ceylon$language$model$Annotation$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object.class)
+final class sequenceDefaults_Object_ {
+    
+    private sequenceDefaults_Object_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object sequenceDefaults_Object() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Empty> $ceylontmp$seq$10 = .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Object_.sequenceDefaults_Object$seq();
+            }
+            returning sequenceDefaults_Object($ceylontmp$seq$10);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.ObjectValue({
+            .ceylon.language.empty_.class,
+            .ceylon.language.empty_.class})
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static final .ceylon.language.Sequential<? extends .ceylon.language.Empty> sequenceDefaults_Object$seq() {
+        return new .ceylon.language.Tuple<.ceylon.language.Empty, .ceylon.language.Empty, .ceylon.language.Tuple<.ceylon.language.Empty, ? extends .ceylon.language.Empty, ? extends .ceylon.language.Empty>>(.ceylon.language.Empty.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.empty_.$get(),
+                .ceylon.language.empty_.$get()});
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Object")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object sequenceDefaults_Object(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Empty>")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Empty> seq) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object(seq);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Object_.sequenceDefaults_Object();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object.class)
+final class sequenceDefaults_Object_Empty_ {
+    
+    private sequenceDefaults_Object_Empty_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object sequenceDefaults_Object_Empty() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Empty> $ceylontmp$seq$11 = .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Object_Empty_.sequenceDefaults_Object_Empty$seq();
+            }
+            returning sequenceDefaults_Object_Empty($ceylontmp$seq$11);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.ObjectValue({})
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static final .ceylon.language.Sequential<? extends .ceylon.language.Empty> sequenceDefaults_Object_Empty$seq() {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.Empty>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Object")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object sequenceDefaults_Object_Empty(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Empty>")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Empty> seq) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object(seq);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Object_Empty_.sequenceDefaults_Object_Empty();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object.class)
+@.com.redhat.ceylon.compiler.java.metadata.ObjectExprs({@.com.redhat.ceylon.compiler.java.metadata.ObjectValue(
+        name = "arg$seq",
+        value = {
+                .ceylon.language.empty_.class,
+                .ceylon.language.empty_.class,
+                .ceylon.language.empty_.class})})
+final class sequenceArguments_Object_ {
+    
+    private sequenceArguments_Object_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Object")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object sequenceArguments_Object() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object(new .ceylon.language.Tuple<.ceylon.language.Empty, .ceylon.language.Empty, .ceylon.language.Tuple<.ceylon.language.Empty, ? extends .ceylon.language.Empty, ? extends .ceylon.language.Tuple<.ceylon.language.Empty, ? extends .ceylon.language.Empty, ? extends .ceylon.language.Empty>>>(.ceylon.language.Empty.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.empty_.$get(),
+                .ceylon.language.empty_.$get(),
+                .ceylon.language.empty_.$get()}));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceArguments_Object_.sequenceArguments_Object();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object.class)
+@.com.redhat.ceylon.compiler.java.metadata.ObjectExprs({@.com.redhat.ceylon.compiler.java.metadata.ObjectValue(
+        name = "arg$seq",
+        value = {})})
+final class sequenceArguments_Object_Empty_ {
+    
+    private sequenceArguments_Object_Empty_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Object")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object sequenceArguments_Object_Empty() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object((.ceylon.language.Iterable<? extends .ceylon.language.Empty, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.$get());
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceArguments_Object_Empty_.sequenceArguments_Object_Empty();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+@interface SequenceDefaults_Declaration$annotation {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.DeclarationReference
+    public abstract .java.lang.String[] seq();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface SequenceDefaults_Declaration$annotations {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation[] value();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Final$annotation
+@.ceylon.language.Annotation$annotation
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language.model::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Declaration,ceylon.language.model.declaration::ClassOrInterfaceDeclaration>"})
+final class SequenceDefaults_Declaration implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    SequenceDefaults_Declaration(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation anno) {
+        this(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.<.ceylon.language.model.declaration.Declaration>parseMetamodelReferences(.ceylon.language.model.declaration.Declaration.$TypeDescriptor, anno.seq()));
+    }
+    
+    SequenceDefaults_Declaration(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<ceylon.language.model.declaration::Declaration,ceylon.language::Null>")
+    final .ceylon.language.Iterable<? extends .ceylon.language.model.declaration.Declaration, ? extends .java.lang.Object> seq) {
+        this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration>(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration.$TypeDescriptor, this);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$impl() {
+        return $ceylon$language$model$SequencedAnnotation$this;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$impl() {
+        return $ceylon$language$model$ConstrainedAnnotation$this;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final boolean occurs(final .ceylon.language.model.Annotated programElement) {
+        return $ceylon$language$model$ConstrainedAnnotation$this.occurs(programElement);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration> $ceylon$language$model$Annotation$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration.class)
+final class sequenceDefaults_Declaration_ {
+    
+    private sequenceDefaults_Declaration_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration sequenceDefaults_Declaration() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.model.declaration.ValueDeclaration> $ceylontmp$seq$12 = .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Declaration_.sequenceDefaults_Declaration$seq();
+            }
+            returning sequenceDefaults_Declaration($ceylontmp$seq$12);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.DeclarationValue({"::0.6:ceylon.language::Vempty"})
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static final .ceylon.language.Sequential<? extends .ceylon.language.model.declaration.ValueDeclaration> sequenceDefaults_Declaration$seq() {
+        return new .ceylon.language.Tuple<.ceylon.language.model.declaration.ValueDeclaration, .ceylon.language.model.declaration.ValueDeclaration, .ceylon.language.Empty>(.ceylon.language.model.declaration.ValueDeclaration.$TypeDescriptor, new .java.lang.Object[]{(.ceylon.language.model.declaration.ValueDeclaration).ceylon.language.model.modules_.$get().find("ceylon.language", "0.6").findPackage("ceylon.language").getValue("empty")});
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Declaration")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration sequenceDefaults_Declaration(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::ValueDeclaration>")
+    final .ceylon.language.Sequential<? extends .ceylon.language.model.declaration.ValueDeclaration> seq) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration(seq);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Declaration_.sequenceDefaults_Declaration();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration.class)
+final class sequenceDefaults_Declaration_Empty_ {
+    
+    private sequenceDefaults_Declaration_Empty_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration sequenceDefaults_Declaration_Empty() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.model.declaration.ValueDeclaration> $ceylontmp$seq$13 = .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Declaration_Empty_.sequenceDefaults_Declaration_Empty$seq();
+            }
+            returning sequenceDefaults_Declaration_Empty($ceylontmp$seq$13);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.DeclarationValue({})
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static final .ceylon.language.Sequential<? extends .ceylon.language.model.declaration.ValueDeclaration> sequenceDefaults_Declaration_Empty$seq() {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.model.declaration.ValueDeclaration>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Declaration")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration sequenceDefaults_Declaration_Empty(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::ValueDeclaration>")
+    final .ceylon.language.Sequential<? extends .ceylon.language.model.declaration.ValueDeclaration> seq) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration(seq);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceDefaults_Declaration_Empty_.sequenceDefaults_Declaration_Empty();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration.class)
+@.com.redhat.ceylon.compiler.java.metadata.DeclarationExprs({@.com.redhat.ceylon.compiler.java.metadata.DeclarationValue(
+        name = "arg$seq",
+        value = {"::0.6:ceylon.language::Vempty"})})
+final class sequenceArguments_Declaration_ {
+    
+    private sequenceArguments_Declaration_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Declaration")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration sequenceArguments_Declaration() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration(new .ceylon.language.Tuple<.ceylon.language.model.declaration.ValueDeclaration, .ceylon.language.model.declaration.ValueDeclaration, .ceylon.language.Empty>(.ceylon.language.model.declaration.ValueDeclaration.$TypeDescriptor, new .java.lang.Object[]{(.ceylon.language.model.declaration.ValueDeclaration).ceylon.language.model.modules_.$get().find("ceylon.language", "0.6").findPackage("ceylon.language").getValue("empty")}));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceArguments_Declaration_.sequenceArguments_Declaration();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration.class)
+@.com.redhat.ceylon.compiler.java.metadata.DeclarationExprs({@.com.redhat.ceylon.compiler.java.metadata.DeclarationValue(
+        name = "arg$seq",
+        value = {})})
+final class sequenceArguments_Declaration_Empty_ {
+    
+    private sequenceArguments_Declaration_Empty_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Declaration")
+    static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration sequenceArguments_Declaration_Empty() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration((.ceylon.language.Iterable<? extends .ceylon.language.model.declaration.Declaration, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.$get());
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.sequenceArguments_Declaration_Empty_.sequenceArguments_Declaration_Empty();
     }
 }
