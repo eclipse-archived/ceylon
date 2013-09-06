@@ -196,7 +196,7 @@ public class AnnotationsTest extends CompilerTest {
     }
     
     @Test
-    //@Ignore("M6: #1246, pending decision about how to handle this case")
+    @Ignore("M6: #1246, pending decision about how to handle this case")
     public void testRecursiveConstructors(){
         // 1246
         compareWithJavaSource("RecursiveConstructors");
@@ -210,8 +210,15 @@ public class AnnotationsTest extends CompilerTest {
     }
     
     @Test
+    @Ignore("1.0?")
     public void testTuple(){
         // spec 768
         compareWithJavaSource("Tuple");
+    }
+    
+    @Test
+    @Ignore("1.0?")
+    public void testParameterDefaults(){
+        compareWithJavaSource("ParameterDefaults");
     }
  }

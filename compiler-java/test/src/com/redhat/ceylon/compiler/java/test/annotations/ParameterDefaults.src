@@ -1,0 +1,105 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+@interface ParameterDefaults$annotation {
+    
+    public abstract .java.lang.String s1();
+    
+    @.com.redhat.ceylon.compiler.java.metadata.ParameterValue("s1")
+    public abstract .java.lang.String s2();
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface ParameterDefaults$annotations {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults$annotation[] value();
+}
+@.ceylon.language.Final$annotation
+@.ceylon.language.Annotation$annotation
+final class ParameterDefaults implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
+    
+    ParameterDefaults(final .java.lang.String s1) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$s2$0 = .com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults.$init$s2(s1);
+                this(s1, $ceylontmp$s2$0);
+            }
+            returning null;
+        );
+    }
+    
+    ParameterDefaults(.com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults$annotation anno) {
+        this(anno.s1(), anno.s2());
+    }
+    
+    ParameterDefaults(final .java.lang.String s1, final .java.lang.String s2) {
+        this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults>(.com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults.$TypeDescriptor, this);
+    }
+    
+    static .java.lang.String $init$s2(final .java.lang.String s1) {
+        return s1;
+    }
+    protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$impl() {
+        return $ceylon$language$model$SequencedAnnotation$this;
+    }
+    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$impl() {
+        return $ceylon$language$model$ConstrainedAnnotation$this;
+    }
+    
+    @.java.lang.Override
+    public final boolean occurs(final .ceylon.language.model.Annotated programElement) {
+        return $ceylon$language$model$ConstrainedAnnotation$this.occurs(programElement);
+    }
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults> $ceylon$language$model$Annotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {
+                0,
+                1},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults.class)
+final class parameterDefaults_ {
+    
+    private parameterDefaults_() {
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults parameterDefaults(final .java.lang.String p1) {
+        return (
+            let
+            {
+                .java.lang.String $ceylontmp$p2$1 = .com.redhat.ceylon.compiler.java.test.annotations.parameterDefaults_.parameterDefaults$p2(p1);
+            }
+            returning parameterDefaults(p1, $ceylontmp$p2$1);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.ParameterValue("p1")
+    static final .java.lang.String parameterDefaults$p2(final .java.lang.String p1) {
+        return p1;
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    static .com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults parameterDefaults(final .java.lang.String p1, final .java.lang.String p2) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.ParameterDefaults(p1, p2);
+    }
+}
