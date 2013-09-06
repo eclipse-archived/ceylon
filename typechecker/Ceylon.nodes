@@ -140,7 +140,7 @@
 
 "A class alias."
 ^(CLASS_DECLARATION:ANY_CLASS
-    CLASS_SPECIFIER)
+    CLASS_SPECIFIER?)
 
 "An interface declaration or alias."
 ^(ANY_INTERFACE:CLASS_OR_INTERFACE
