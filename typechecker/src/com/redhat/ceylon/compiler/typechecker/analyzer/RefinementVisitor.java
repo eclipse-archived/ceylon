@@ -362,13 +362,13 @@ public class RefinementVisitor extends Visitor {
             if (!isCompletelyVisible(td, type)) {
                 that.addError("type of " + typeName + 
                         " is not visible everywhere declaration is visible: " + 
-                        td.getName());
+                        td.getName(), 711);
             }
             if (!checkModuleVisibility(td, type)) {
                 that.addError("type occurs in a " + typeName + 
                         " that is visible outside this module," +
                         " but comes from an imported module that is not re-exported: "+ 
-                        td.getName());
+                        td.getName(), 712);
             }
         }
     }

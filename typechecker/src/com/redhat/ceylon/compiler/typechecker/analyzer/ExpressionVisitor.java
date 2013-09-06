@@ -215,7 +215,7 @@ public class ExpressionVisitor extends Visitor {
                     if (p.getType()!=null && !isCompletelyVisible(td, p.getType())) {
                         ((Tree.ParameterDeclaration) tp).getTypedDeclaration().getType()
                                 .addError("type of parameter is not visible everywhere declaration is visible: " 
-                                        + p.getName());
+                                        + p.getName(), 710);
                     }
                 }
             }
@@ -233,7 +233,7 @@ public class ExpressionVisitor extends Visitor {
                     if (p.getType()!=null && !isCompletelyVisible(td, p.getType())) {
                         ((Tree.ParameterDeclaration)tp).getTypedDeclaration().getType()
                                 .addError("type of parameter is not visible everywhere declaration is visible: " 
-                                        + p.getName());
+                                        + p.getName(), 710);
                     }
                 }
             }
