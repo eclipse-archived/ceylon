@@ -304,7 +304,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
                 try {
-                    LiteralAnnotationTerm argument = new IntegerLiteralAnnotationTerm(ExpressionTransformer.literalValue(literal), parameter().getModel().getType());
+                    LiteralAnnotationTerm argument = new IntegerLiteralAnnotationTerm(ExpressionTransformer.literalValue(literal));
                     appendLiteralArgument(literal, argument);
                 } catch (ErroneousException e) {
                     // Ignore it: The ExpressionTransformer will produce an error later in codegen
@@ -318,7 +318,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
             if (checkingArguments || checkingDefaults){
                 try {
                     if (op.getTerm() instanceof Tree.NaturalLiteral) {
-                        LiteralAnnotationTerm argument = new IntegerLiteralAnnotationTerm(ExpressionTransformer.literalValue(op), parameter().getModel().getType());
+                        LiteralAnnotationTerm argument = new IntegerLiteralAnnotationTerm(ExpressionTransformer.literalValue(op));
                         appendLiteralArgument(op, argument);
                     } else if (op.getTerm() instanceof Tree.FloatLiteral) {
                         LiteralAnnotationTerm argument = new FloatLiteralAnnotationTerm(-ExpressionTransformer.literalValue((Tree.FloatLiteral)op.getTerm()));
@@ -364,7 +364,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
                 if (unit.getStringDeclaration().equals(declaration)) {
                     factory = new StringLiteralAnnotationTerm(null);
                 } else if (unit.getIntegerDeclaration().equals(declaration)) {
-                    factory = new IntegerLiteralAnnotationTerm(0, null);
+                    factory = new IntegerLiteralAnnotationTerm(0);
                 } else if (unit.getCharacterDeclaration().equals(declaration)) {
                     factory = new CharacterLiteralAnnotationTerm(0);
                 } else if (unit.getBooleanDeclaration().equals(declaration)) {

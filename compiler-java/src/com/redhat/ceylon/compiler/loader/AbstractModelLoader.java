@@ -2568,7 +2568,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
         // TODO Don't build the map each time, either do a search, or build it once
-        // TODO This is wrong
         String name = Naming.getAnnotationFieldName(namePath);
         LiteralAnnotationTerm term = exprsMap.get(name);
         return term;
@@ -2608,12 +2607,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (singleValue) {
             Long value = getAnnotationLongValues(valueAnnotation, "value").get(0);
             // TODO We lose the underlying type info!!
-            IntegerLiteralAnnotationTerm term = new IntegerLiteralAnnotationTerm(value, null);
+            IntegerLiteralAnnotationTerm term = new IntegerLiteralAnnotationTerm(value);
             return term;
         } else {
-            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(new IntegerLiteralAnnotationTerm(0, null));
+            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(new IntegerLiteralAnnotationTerm(0));
             for (Long value : getAnnotationLongValues(valueAnnotation, "value")) {
-                result.addElement(new IntegerLiteralAnnotationTerm(value, null));
+                result.addElement(new IntegerLiteralAnnotationTerm(value));
             }
             return result;
         }

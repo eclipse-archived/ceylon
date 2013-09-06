@@ -307,6 +307,7 @@ public class ClassTransformer extends AbstractTransformer {
                         null);
             } else {
                 argExpr = annoAttr;
+                argExpr = expressionGen().applyErasureAndBoxing(annoAttr, parameterType.withoutUnderlyingType(), false, BoxingStrategy.UNBOXED, parameterType);
             }
             args.add(argExpr);
         }
@@ -473,7 +474,7 @@ public class ClassTransformer extends AbstractTransformer {
         ProducedType parameterType = parameter.getParameterModel().getType();
         JCExpression type = null;
         if (isScalarAnnotationParameter(parameterType)) {
-            type = makeJavaType(parameterType, JT_ANNOTATION);
+            type = makeJavaType(parameterType.withoutUnderlyingType(), JT_ANNOTATION);
         } else if (isMetamodelReference(parameterType)) {
             type = make().Type(syms().stringType);
         } else if (Decl.isEnumeratedTypeWithAnonCases(parameterType)) {
