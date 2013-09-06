@@ -13,7 +13,7 @@ shared interface ClassOrInterface<out Type=Anything>
     
     shared formal actual ClassOrInterfaceDeclaration declaration;
     
-    // FIXME: turn that into an interface and add to Function too
+    // FIXME: turn that into an interface
     shared formal Map<TypeParameter, ClosedType<Anything>> typeArguments;
     
     // FIXME: ClassModel probably?

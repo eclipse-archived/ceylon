@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.model.Function;
@@ -35,6 +36,8 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     private TypeDescriptor $reifiedType;
     @Ignore
     private TypeDescriptor $reifiedArguments;
+    
+    private Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> typeArguments;
 
     @Override
     public String toString() {
@@ -52,6 +55,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
         this.$reifiedArguments = $reifiedArguments;
         this.appliedFunction = appliedFunction;
         this.declaration = declaration;
+        this.typeArguments = Metamodel.getTypeArguments(declaration, appliedFunction);
         this.closedType = Metamodel.getAppliedMetamodel(Metamodel.getFunctionReturnType(appliedFunction));
     }
 
@@ -74,6 +78,12 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     public FunctionModel$impl<Type, Arguments> $ceylon$language$model$FunctionModel$impl() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Map<ceylon.language.model.declaration::TypeParameter,ceylon.language.model::Type<ceylon.language::Anything>")
+    public ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> getTypeArguments() {
+        return typeArguments;
     }
 
     @Override

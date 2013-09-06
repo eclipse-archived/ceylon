@@ -47,6 +47,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     private MethodHandle method;
     private MethodHandle[] dispatch;
     private int firstDefaulted = -1;
+    private ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> typeArguments;
 
     public AppliedFunction(@Ignore TypeDescriptor $reifiedType, 
                            @Ignore TypeDescriptor $reifiedArguments,
@@ -70,6 +71,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         this.type = Metamodel.getAppliedMetamodel(Metamodel.getFunctionReturnType(appliedFunction));
         
         this.declaration = function;
+        
+        this.typeArguments = Metamodel.getTypeArguments(declaration, appliedFunction);
 
         // FIXME: delay method setup for when we actually use it?
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(function.declaration);
@@ -178,6 +181,12 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         return declaration;
     }
     
+    @Override
+    @TypeInfo("ceylon.language::Map<ceylon.language.model.declaration::TypeParameter,ceylon.language.model::Type<ceylon.language::Anything>")
+    public ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> getTypeArguments() {
+        return typeArguments;
+    }
+
     @Override
     @Ignore
     public Model$impl $ceylon$language$model$Model$impl() {

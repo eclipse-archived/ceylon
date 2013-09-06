@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
+import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
@@ -751,5 +753,27 @@ public class Metamodel {
 
     public static boolean isLocalType(com.redhat.ceylon.compiler.typechecker.model.Class decl) {
         return ((LazyElement)decl).isLocal();
+    }
+
+    public static ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> 
+        getTypeArguments(ceylon.language.model.declaration.GenericDeclaration declaration, ProducedReference appliedFunction) {
+        
+        java.util.Map<ceylon.language.model.declaration.TypeParameter, ceylon.language.model.Type<?>> typeArguments 
+            = new LinkedHashMap<ceylon.language.model.declaration.TypeParameter, ceylon.language.model.Type<?>>();
+        Iterator<? extends ceylon.language.model.declaration.TypeParameter> typeParameters = declaration.getTypeParameterDeclarations().iterator();
+        Object it;
+        java.util.Map<com.redhat.ceylon.compiler.typechecker.model.TypeParameter, com.redhat.ceylon.compiler.typechecker.model.ProducedType> ptArguments 
+        = appliedFunction.getTypeArguments();
+        while((it = typeParameters.next()) != finished_.$get()){
+            com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter tp = (com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter) it;
+            com.redhat.ceylon.compiler.typechecker.model.TypeParameter tpDecl = (com.redhat.ceylon.compiler.typechecker.model.TypeParameter) tp.declaration;
+            com.redhat.ceylon.compiler.typechecker.model.ProducedType ptArg = ptArguments.get(tpDecl);
+            ceylon.language.model.Type ptArgWrapped = Metamodel.getAppliedMetamodel(ptArg);
+            typeArguments.put(tp, ptArgWrapped);
+        }
+        return new InternalMap<ceylon.language.model.declaration.TypeParameter, 
+                               ceylon.language.model.Type<?>>(ceylon.language.model.declaration.TypeParameter.$TypeDescriptor, 
+                                                              TypeDescriptor.klass(ceylon.language.model.Type.class, ceylon.language.Anything.$TypeDescriptor), 
+                                                              typeArguments);
     }
 }

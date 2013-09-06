@@ -90,23 +90,7 @@ public class AppliedClassOrInterface<Type>
     protected void init() {
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface decl = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) producedType.getDeclaration();
         this.declaration = (FreeClassOrInterface) Metamodel.getOrCreateMetamodel(decl);
-        java.util.Map<ceylon.language.model.declaration.TypeParameter, ceylon.language.model.Type<?>> typeArguments 
-            = new LinkedHashMap<ceylon.language.model.declaration.TypeParameter, ceylon.language.model.Type<?>>();
-        Iterator<? extends ceylon.language.model.declaration.TypeParameter> typeParameters = declaration.getTypeParameterDeclarations().iterator();
-        Object it;
-        java.util.Map<com.redhat.ceylon.compiler.typechecker.model.TypeParameter, com.redhat.ceylon.compiler.typechecker.model.ProducedType> ptArguments 
-            = producedType.getTypeArguments();
-        while((it = typeParameters.next()) != finished_.$get()){
-            com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter tp = (com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter) it;
-            com.redhat.ceylon.compiler.typechecker.model.TypeParameter tpDecl = (com.redhat.ceylon.compiler.typechecker.model.TypeParameter) tp.declaration;
-            com.redhat.ceylon.compiler.typechecker.model.ProducedType ptArg = ptArguments.get(tpDecl);
-            ceylon.language.model.Type ptArgWrapped = Metamodel.getAppliedMetamodel(ptArg);
-            typeArguments.put(tp, ptArgWrapped);
-        }
-        this.typeArguments = new InternalMap<ceylon.language.model.declaration.TypeParameter, 
-                                             ceylon.language.model.Type<?>>(ceylon.language.model.declaration.TypeParameter.$TypeDescriptor, 
-                                                     TypeDescriptor.klass(ceylon.language.model.Type.class, ceylon.language.Anything.$TypeDescriptor), 
-                                                                                    typeArguments);
+        this.typeArguments = Metamodel.getTypeArguments(declaration, producedType);
         
         com.redhat.ceylon.compiler.typechecker.model.ProducedType superType = decl.getExtendedType();
         if(superType != null){
