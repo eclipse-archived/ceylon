@@ -6,17 +6,11 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.ListBuffer;
@@ -27,7 +21,7 @@ import com.sun.tools.javac.util.ListBuffer;
  * and {@code false} as well as Number, Float, Character and 
  * String literals.
  */
-public class LiteralAnnotationTerm extends AnnotationTerm {
+public abstract class LiteralAnnotationTerm extends AnnotationTerm {
 
     private Tree.Term term;
     private ProducedType literalObject;
@@ -48,10 +42,12 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
         return term;
     }
     
+    @Deprecated
     public ProducedType getLiteralObject() {
         return literalObject;
     }
     
+    @Deprecated
     public void setLiteralObject(ProducedType literalObject) {
         this.literalObject = literalObject;
     }
@@ -72,7 +68,7 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
     public void makeLiteralAnnotationFields(
             ExpressionTransformer exprGen,
             AnnotationInvocation toplevel,
-            com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath,
+            final com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath,
             ListBuffer<JCStatement> staticArgs, final ProducedType type) {
         Tree.Term term = getTerm();
         JCExpression expr = null;
@@ -130,13 +126,9 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
         return makeAtValue(exprGen, null, makeLiteral(exprGen));
     }
     
-    protected JCExpression makeLiteral(ExpressionTransformer exprGen) {
-        return exprGen.makeErroneous(getTerm(), "Oops");
-    }
+    protected abstract JCExpression makeLiteral(ExpressionTransformer exprGen);
     
-    protected com.sun.tools.javac.util.List<JCAnnotation> makeAtValue(ExpressionTransformer exprGen, String name, JCExpression value) {
-        return com.sun.tools.javac.util.List.<JCAnnotation>nil();
-    }
+    protected abstract com.sun.tools.javac.util.List<JCAnnotation> makeAtValue(ExpressionTransformer exprGen, String name, JCExpression value);
     
     public final com.sun.tools.javac.util.List<JCAnnotation> makeExprAnnotations(
             ExpressionTransformer exprGen, AnnotationInvocation toplevel,
@@ -147,232 +139,4 @@ public class LiteralAnnotationTerm extends AnnotationTerm {
         throw new RuntimeException();
     }
 }
-class StringLiteralAnnotationTerm extends LiteralAnnotationTerm {
-    final String value;
-    public StringLiteralAnnotationTerm(String value) {
-        super();
-        this.value = value;
-    }
-    public String getValue() {
-        return value;
-    }
-    
-    @Override
-    protected com.sun.tools.javac.util.List<JCAnnotation> makeAtValue(ExpressionTransformer exprGen, String name, JCExpression value) {
-        return exprGen.makeAtStringValue(name, value);
-    }
-    @Override
-    public JCExpression makeLiteral(ExpressionTransformer exprGen) {
-        return exprGen.make().Literal(value);
-    }
-    @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.sun.tools.javac.util.List<JCAnnotation> value) {
-        return exprGen.makeAtStringExprs(exprGen.make().NewArray(null,  null,  (com.sun.tools.javac.util.List)value));
-    }
-    @Override
-    public String toString() {
-        return "\"" + value + "\"";
-    }
-}
-class IntegerLiteralAnnotationTerm extends LiteralAnnotationTerm {
-    final long value;
-    final ProducedType producedType;
-    public IntegerLiteralAnnotationTerm(long value, ProducedType producedType) {
-        super();
-        this.value = value;
-        this.producedType = producedType;
-    }
-    public long getValue() {
-        return value;
-    }
-    @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeAtValue(
-            ExpressionTransformer exprGen, String name, JCExpression value) {
-        return exprGen.makeAtIntegerValue(name, value);
-    }
-    @Override
-    public JCExpression makeLiteral(ExpressionTransformer exprGen) {
-        return producedType != null && "int".equals(producedType.getUnderlyingType()) ? exprGen.make().Literal((int)value) : exprGen.make().Literal(value);
-    }
-    @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.sun.tools.javac.util.List<JCAnnotation> value) {
-        return exprGen.makeAtIntegerExprs(exprGen.make().NewArray(null,  null,  (com.sun.tools.javac.util.List)value));
-    }
-    @Override
-    public String toString() {
-        return Long.toString(value);
-    }
-}
-class FloatLiteralAnnotationTerm extends LiteralAnnotationTerm {
-    final double value;
-    public FloatLiteralAnnotationTerm(double value) {
-        super();
-        this.value = value;
-    }
-    public double getValue() {
-        return value;
-    }
-    @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeAtValue(
-            ExpressionTransformer exprGen, String name, JCExpression value) {
-        return exprGen.makeAtFloatValue(name, value);
-    }
-    @Override
-    public JCExpression makeLiteral(ExpressionTransformer exprGen) {
-        return exprGen.make().Literal(value);
-    }
-    @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.sun.tools.javac.util.List<JCAnnotation> value) {
-        return exprGen.makeAtFloatExprs(exprGen.make().NewArray(null,  null,  (com.sun.tools.javac.util.List)value));
-    }
-    @Override
-    public String toString() {
-        return Double.toString(value);
-    }
-}
-class BooleanLiteralAnnotationTerm extends LiteralAnnotationTerm {
-    final boolean value;
-    public BooleanLiteralAnnotationTerm(boolean value) {
-        super();
-        this.value = value;
-    }
-    public boolean getValue() {
-        return value;
-    }
-    @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeAtValue(
-            ExpressionTransformer exprGen, String name, JCExpression value) {
-        return exprGen.makeAtBooleanValue(name, value);
-    }
-    @Override
-    public JCExpression makeLiteral(ExpressionTransformer exprGen) {
-        return exprGen.make().Literal(value);
-    }
-    @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.sun.tools.javac.util.List<JCAnnotation> value) {
-        return exprGen.makeAtBooleanExprs(exprGen.make().NewArray(null,  null,  (com.sun.tools.javac.util.List)value));
-    }
-    @Override
-    public String toString() {
-        return Boolean.toString(value);
-    }
-}
-class CharacterLiteralAnnotationTerm extends LiteralAnnotationTerm {
-    final int value;
-    public CharacterLiteralAnnotationTerm(int value) {
-        super();
-        this.value = value;
-    }
-    public int getValue() {
-        return value;
-    }
-    @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeAtValue(
-            ExpressionTransformer exprGen, String name, JCExpression value) {
-        return exprGen.makeAtCharacterValue(name, value);
-    }
-    @Override
-    public JCExpression makeLiteral(ExpressionTransformer exprGen) {
-        return exprGen.make().Literal(value);
-    }
-    @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.sun.tools.javac.util.List<JCAnnotation> value) {
-        return exprGen.makeAtCharacterExprs(exprGen.make().NewArray(null,  null,  (com.sun.tools.javac.util.List)value));
-    }
-    @Override
-    public String toString() {
-        return "'" + new String(Character.toChars(value)) + "'";
-    }
-}
-class ObjectLiteralAnnotationTerm extends LiteralAnnotationTerm {
-    final ProducedType value;
-    public ObjectLiteralAnnotationTerm(ProducedType value) {
-        super();
-        this.value = value;
-    }
-    public ProducedType getValue() {
-        return value;
-    }
-    @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeAtValue(
-            ExpressionTransformer exprGen, String name, JCExpression value) {
-        return exprGen.makeAtObjectValue(name, value);
-    }
-    @Override
-    public JCExpression makeLiteral(ExpressionTransformer exprGen) {
-        return exprGen.makeClassLiteral(value);
-    }
-    @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.sun.tools.javac.util.List<JCAnnotation> value) {
-        return exprGen.makeAtObjectExprs(exprGen.make().NewArray(null,  null,  (com.sun.tools.javac.util.List)value));
-    }
-    public String toString() {
-        return value.toString();
-    }
-}
-class DeclarationLiteralAnnotationTerm extends LiteralAnnotationTerm {
-    final Declaration value;
-    public DeclarationLiteralAnnotationTerm(Declaration value) {
-        super();
-        this.value = value;
-    }
-    public Declaration getValue() {
-        return value;
-    }
-    @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeAtValue(
-            ExpressionTransformer exprGen, String name, JCExpression value) {
-        return exprGen.makeAtDeclarationValue(name, value);
-    }
-    @Override
-    public JCExpression makeLiteral(ExpressionTransformer exprGen) {
-        return exprGen.makeDeclarationLiteralForAnnotation(this.value);
-    }
-    @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.sun.tools.javac.util.List<JCAnnotation> value) {
-        return exprGen.makeAtDeclarationExprs(exprGen.make().NewArray(null,  null,  (com.sun.tools.javac.util.List)value));
-    }
-    @Override
-    public String toString() {
-        return value.toString();
-    }
-}
-class CollectionLiteralAnnotationTerm extends LiteralAnnotationTerm {
-    final List<AnnotationTerm> elements;
-    final LiteralAnnotationTerm factory;
-    public CollectionLiteralAnnotationTerm(LiteralAnnotationTerm factory) {
-        super();
-        this.factory = factory;
-        this.elements = new ArrayList<AnnotationTerm>(); 
-    }
-    public boolean isTuple() {
-        return factory == null;
-    }
-    public void addElement(AnnotationTerm element) {
-        if (factory != null && !factory.getClass().isInstance(element)) {
-            throw new RuntimeException("Different types in sequence " + factory.getClass() + " vs " + element.getClass());
-        }
-        elements.add(element);
-    }
-    public List<AnnotationTerm> getValue() {
-        return elements;
-    }
-    @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(
-            ExpressionTransformer exprGen) {
-        if (factory == null) {// A tuple
-            // TODO @TupleValue({elements...})
-        } else {// A sequence
-            ListBuffer<JCExpression> lb = ListBuffer.lb();
-            for (LiteralAnnotationTerm term : (List<LiteralAnnotationTerm>)(List)elements) {
-                lb.add(term.makeLiteral(exprGen));
-            }
-            return factory.makeAtValue(exprGen, null, exprGen.make().NewArray(null,  null,  lb.toList()));
-            
-        }
-        return com.sun.tools.javac.util.List.<JCAnnotation>nil();
-    }
-    public String toString() {
-        return elements.toString();
-    }
-}
+

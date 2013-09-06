@@ -1,10 +1,6 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
-import java.util.List;
-
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
@@ -27,32 +23,6 @@ public abstract class AnnotationTerm {
             ExpressionTransformer exprGen, AnnotationInvocation ai,
             com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath);
     
-    public static AnnotationTerm decode(List<Parameter> sourceParameters, AnnotationInvocation info, int code) {
-        AnnotationTerm result;
-        if (code == Short.MIN_VALUE) {
-            result = new LiteralAnnotationTerm();
-        } else if (code < 0) {
-            InvocationAnnotationTerm invocation = new InvocationAnnotationTerm();
-            result = invocation;
-        } else if (code >= 0 && code < 512) {
-            ParameterAnnotationTerm parameterArgument = new ParameterAnnotationTerm();
-            boolean spread = false;
-            if (code >= 256) {
-                spread = true;
-                code-=256;
-            }
-            
-            parameterArgument.setSpread(spread);
-            Parameter sourceParameter = sourceParameters.get(code);
-            parameterArgument.setSourceParameter(sourceParameter);
-            //result.setTargetParameter(sourceParameter);
-            result = parameterArgument;
-        } else {
-            throw Assert.fail();
-        }
-        return result;
-    }
-
     public abstract void makeLiteralAnnotationFields(
             ExpressionTransformer exprGen, 
             AnnotationInvocation toplevel,

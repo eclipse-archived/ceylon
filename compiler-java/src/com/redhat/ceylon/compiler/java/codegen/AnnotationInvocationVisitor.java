@@ -347,34 +347,29 @@ class AnnotationInvocationVisitor extends Visitor {
     
     private void makeDefaultExpr(Tree.InvocationExpression invocation,
             ParameterAnnotationTerm parameterArgument, Parameter sp) {
+        AnnotationConstructorParameter defaultedCtorParam = null;
+        for (AnnotationConstructorParameter ctorParam : anno.getConstructorParameters()) {
+            if (ctorParam.getParameter().equals(parameterArgument.getSourceParameter())) {
+                defaultedCtorParam = ctorParam;
+                break;
+            }
+        }
+        if (defaultedCtorParam == null) {
+            append(exprGen.makeErroneous(invocation, "Couldn't find defaulted parameter for " + anno.getConstructorDeclaration().getName()));
+            return;
+        }
+        
         // Use the default parameter from the constructor
-        if (exprGen.isCeylonBasicType(sp.getType())) {
-            JCExpression expr = parameterArgument.makePrimitiveDefaultExpr(exprGen, anno,
-                    Collections.singletonList((AnnotationFieldName)parameterArgument));
-            if (expr != null) {
-                append(expr);
-            }
-        } else if (Decl.isAnnotationClass(sp.getType().getDeclaration())
-                || Decl.isEnumeratedTypeWithAnonCases(sp.getType())) {
-            AnnotationConstructorParameter defaultedCtorParam = null;
-            for (AnnotationConstructorParameter ctorParam : anno.getConstructorParameters()) {
-                if (ctorParam.getParameter().equals(parameterArgument.getSourceParameter())) {
-                    defaultedCtorParam = ctorParam;
-                    break;
-                }
-            }
-            if (defaultedCtorParam != null) {
-                if (Decl.isAnnotationClass(sp.getType().getDeclaration())) {
-                    InvocationAnnotationTerm defaultedInvocation = (InvocationAnnotationTerm)defaultedCtorParam.getDefaultArgument();
-                    append(transformConstructor(exprGen, invocation, defaultedInvocation.getInstantiation(), 
-                            com.sun.tools.javac.util.List.<AnnotationFieldName>of(defaultedCtorParam)));
-                } else {
-                    LiteralAnnotationTerm defaultedEnum = (LiteralAnnotationTerm)defaultedCtorParam.getDefaultArgument();
-                    append(exprGen.makeClassLiteral(defaultedEnum.getLiteralObject()));
-                }
-            } else {
-                append(exprGen.makeErroneous(invocation, "Couldn't find defaulted parameter for " + anno.getConstructorDeclaration().getName()));
-            }
+        if (defaultedCtorParam.getDefaultArgument() instanceof LiteralAnnotationTerm) {
+            JCExpression expr = ((LiteralAnnotationTerm)defaultedCtorParam.getDefaultArgument()).makeLiteral(exprGen);
+            append(expr);
+        } else if (Decl.isAnnotationClass(sp.getType().getDeclaration())) {
+                InvocationAnnotationTerm defaultedInvocation = (InvocationAnnotationTerm)defaultedCtorParam.getDefaultArgument();
+                append(transformConstructor(exprGen, invocation, defaultedInvocation.getInstantiation(), 
+                        com.sun.tools.javac.util.List.<AnnotationFieldName>of(defaultedCtorParam)));
+        } else if (Decl.isEnumeratedTypeWithAnonCases(sp.getType())) {
+            LiteralAnnotationTerm defaultedEnum = (LiteralAnnotationTerm)defaultedCtorParam.getDefaultArgument();
+            append(exprGen.makeClassLiteral(defaultedEnum.getLiteralObject()));
         }
     }
     

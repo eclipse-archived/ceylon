@@ -40,12 +40,22 @@ import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationArgument;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationConstructorParameter;
+import com.redhat.ceylon.compiler.java.codegen.AnnotationFieldName;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationInvocation;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationTerm;
+import com.redhat.ceylon.compiler.java.codegen.BooleanLiteralAnnotationTerm;
+import com.redhat.ceylon.compiler.java.codegen.CharacterLiteralAnnotationTerm;
+import com.redhat.ceylon.compiler.java.codegen.CollectionLiteralAnnotationTerm;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
+import com.redhat.ceylon.compiler.java.codegen.DeclarationLiteralAnnotationTerm;
+import com.redhat.ceylon.compiler.java.codegen.FloatLiteralAnnotationTerm;
+import com.redhat.ceylon.compiler.java.codegen.IntegerLiteralAnnotationTerm;
 import com.redhat.ceylon.compiler.java.codegen.InvocationAnnotationTerm;
 import com.redhat.ceylon.compiler.java.codegen.LiteralAnnotationTerm;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
+import com.redhat.ceylon.compiler.java.codegen.ObjectLiteralAnnotationTerm;
+import com.redhat.ceylon.compiler.java.codegen.ParameterAnnotationTerm;
+import com.redhat.ceylon.compiler.java.codegen.StringLiteralAnnotationTerm;
 import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.mirror.AccessibleMirror;
@@ -141,8 +151,24 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_ANNOTATION_INSTANTIATION_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation";
     private static final String CEYLON_ANNOTATION_INSTANTIATION_ARGUMENTS_MEMBER = "arguments";
     private static final String CEYLON_ANNOTATION_INSTANTIATION_ANNOTATION_MEMBER = "primary";
+    @Deprecated
     private static final String CEYLON_DEFAULTED_OBJECT_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.DefaultedObject";
     private static final String CEYLON_ANNOTATION_INSTANTIATION_TREE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiationTree";
+    private static final String CEYLON_STRING_VALUE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.StringValue";
+    private static final String CEYLON_STRING_EXPRS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.StringExprs";
+    private static final String CEYLON_BOOLEAN_VALUE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.BooleanValue";
+    private static final String CEYLON_BOOLEAN_EXPRS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.BooleanExprs";
+    private static final String CEYLON_INTEGER_VALUE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.IntegerValue";
+    private static final String CEYLON_INTEGER_EXPRS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.IntegerExprs";
+    private static final String CEYLON_CHARACTER_VALUE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.CharacterValue";
+    private static final String CEYLON_CHARACTER_EXPRS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.CharacterExprs";
+    private static final String CEYLON_FLOAT_VALUE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.FloatValue";
+    private static final String CEYLON_FLOAT_EXPRS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.FloatExprs";
+    private static final String CEYLON_OBJECT_VALUE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.ObjectValue";
+    private static final String CEYLON_OBJECT_EXPRS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.ObjectExprs";
+    private static final String CEYLON_DECLARATION_VALUE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.DeclarationValue";
+    private static final String CEYLON_DECLARATION_EXPRS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.DeclarationExprs";
+    private static final String CEYLON_PARAMETER_VALUE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.ParameterValue";
     private static final String CEYLON_TRANSIENT_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Transient";
     private static final String JAVA_DEPRECATED_ANNOTATION = "java.lang.Deprecated";
     
@@ -1224,6 +1250,33 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Integer val = (Integer) getAnnotationValue(mirror, type, field);
         return val != null ? val : defaultValue;
     }
+    
+    private List<TypeMirror> getAnnotationClassValues(AnnotationMirror annotation, String field) {
+        return (List<TypeMirror>)annotation.getValue(field);
+    }
+    
+    private List<String> getAnnotationStringValues(AnnotationMirror annotation, String field) {
+        return (List<String>)annotation.getValue(field);
+    }
+    
+    private List<Integer> getAnnotationIntegerValues(AnnotationMirror annotation, String field) {
+        return (List<Integer>)annotation.getValue(field);
+    }
+    
+    private List<Boolean> getAnnotationBooleanValues(AnnotationMirror annotation, String field) {
+        return (List<Boolean>)annotation.getValue(field);
+    }
+    
+    private List<Long> getAnnotationLongValues(AnnotationMirror annotation, String field) {
+        return (List<Long>)annotation.getValue(field);
+    }
+    
+    private List<Double> getAnnotationDoubleValues(AnnotationMirror annotation, String field) {
+        return (List<Double>)annotation.getValue(field);
+    }
+    private List<AnnotationMirror> getAnnotationAnnoValues(AnnotationMirror annotation, String field) {
+        return (List<AnnotationMirror>)annotation.getValue(field);
+    }
 
     private Object getAnnotationValue(AnnotatedMirror mirror, String type) {
         return getAnnotationValue(mirror, type, "value");
@@ -2301,43 +2354,79 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         } else {
             annotationInvocationAnnotation = annoInstMirror.getAnnotation(CEYLON_ANNOTATION_INSTANTIATION_ANNOTATION);
         }
+        //stringValueAnnotation = annoInstMirror.getAnnotation(CEYLON_STRING_VALUE_ANNOTATION);
         if (annotationInvocationAnnotation != null) {
             ai = new AnnotationInvocation();
             setPrimaryFromAnnotationInvocationAnnotation(annotationInvocationAnnotation, ai);
-            loadAnnotationInvocationArguments(method, ai, annotationInvocationAnnotation, annotationTree);
+            loadAnnotationInvocationArguments(new ArrayList(2), method, ai, annotationInvocationAnnotation, annotationTree, annoInstMirror);
         }
         return ai;
     }
     
-    private void loadAnnotationInvocationArguments(LazyMethod method,
+    private void loadAnnotationInvocationArguments(
+            List<AnnotationFieldName> path,
+            LazyMethod method,
             AnnotationInvocation ai, AnnotationMirror annotationInvocationAnnotation,
-            List<AnnotationMirror> annotationTree) {
+            List<AnnotationMirror> annotationTree, 
+            AnnotatedMirror dpm) {
         List<Short> argumentCodes = (List<Short>)annotationInvocationAnnotation.getValue(CEYLON_ANNOTATION_INSTANTIATION_ARGUMENTS_MEMBER);
         for (int ii = 0; ii < argumentCodes.size(); ii++) {
             short code = argumentCodes.get(ii);
             AnnotationArgument argument = new AnnotationArgument();
             Parameter classParameter = ai.getParameters().get(ii);
             argument.setParameter(classParameter);
-            argument.setTerm(loadAnnotationArgumentTerm(method, ai, annotationTree, code));
+            path.add(argument);
+            argument.setTerm(loadAnnotationArgumentTerm(path, method, ai, classParameter, annotationTree, dpm, code));
+            path.remove(path.size()-1);
             ai.getAnnotationArguments().add(argument);
         }
     }
     
+    public AnnotationTerm decode(List<Parameter> sourceParameters, AnnotationInvocation info, 
+            Parameter parameter, 
+            AnnotatedMirror dpm, List<AnnotationFieldName> path, int code) {
+        AnnotationTerm result;
+        if (code == Short.MIN_VALUE) {
+            return loadLiteralAnnotationTerm2(path, parameter, dpm);
+        } else if (code < 0) {
+            InvocationAnnotationTerm invocation = new InvocationAnnotationTerm();
+            result = invocation;
+        } else if (code >= 0 && code < 512) {
+            ParameterAnnotationTerm parameterArgument = new ParameterAnnotationTerm();
+            boolean spread = false;
+            if (code >= 256) {
+                spread = true;
+                code-=256;
+            }
+            
+            parameterArgument.setSpread(spread);
+            Parameter sourceParameter = sourceParameters.get(code);
+            parameterArgument.setSourceParameter(sourceParameter);
+            //result.setTargetParameter(sourceParameter);
+            result = parameterArgument;
+        } else {
+            throw new RuntimeException();
+        }
+        return result;
+    }
+    
     private AnnotationTerm loadAnnotationArgumentTerm(
+            List<AnnotationFieldName> path,
             LazyMethod method,
-            AnnotationInvocation ai,
+            AnnotationInvocation ai, Parameter parameter,
             List<AnnotationMirror> annotationTree,
+            AnnotatedMirror dpm,
             short code) {
         if (code < 0 && code != Short.MIN_VALUE) {
             AnnotationMirror i = annotationTree.get(-code);
             AnnotationInvocation nested = new AnnotationInvocation();
             setPrimaryFromAnnotationInvocationAnnotation(i, nested);
-            loadAnnotationInvocationArguments(method, nested, i, annotationTree);
+            loadAnnotationInvocationArguments(path, method, nested, i, annotationTree, dpm);
             InvocationAnnotationTerm term = new InvocationAnnotationTerm();
             term.setInstantiation(nested);
             return term;
         } else {
-            AnnotationTerm term = AnnotationTerm.decode(method.getParameterLists().get(0).getParameters(), ai, code);
+            AnnotationTerm term = decode(method.getParameterLists().get(0).getParameters(), ai, parameter, dpm, path, code);
             return term;
         }
     }
@@ -2378,19 +2467,213 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     InvocationAnnotationTerm invocationTerm = new InvocationAnnotationTerm();
                     invocationTerm.setInstantiation(loadAnnotationInvocation(method, mm, meth));
                     return invocationTerm;
-                } else if (mm.getAnnotation(CEYLON_DEFAULTED_OBJECT_ANNOTATION) != null) {
-                    // If the DPM has a @DefaultedObject 
-                    LiteralAnnotationTerm term = new LiteralAnnotationTerm();
-                    TypeMirror klass = getAnnotationClassValue(mm, CEYLON_DEFAULTED_OBJECT_ANNOTATION, "value");
-                    term.setLiteralObject(obtainType(klass, null, null, null));
-                    return term;
                 } else {
-                    // Otherwise the term must be a literal term
-                    return  new LiteralAnnotationTerm();
+                    return loadLiteralAnnotationTerm(ctorParam, mm);
                 }
             }
         }
         return null;
+    }
+    /** 
+     * Loads a LiteralAnnotationTerm according to the presence of 
+     * <ul>
+     * <li>{@code @StringValue} <li>{@code @IntegerValue} <li>etc
+     * </ul>
+     * @param ctorParam 
+     *  
+     */
+    private LiteralAnnotationTerm loadLiteralAnnotationTerm(Parameter parameter, AnnotatedMirror mm) {
+        boolean singleValue = !typeFactory.isIterableType(parameter.getType())
+            || typeFactory.getStringDeclaration().equals(parameter.getType().getDeclaration());
+        AnnotationMirror valueAnnotation = mm.getAnnotation(CEYLON_STRING_VALUE_ANNOTATION);
+        if (valueAnnotation != null) {
+            return readStringValuesAnnotation(valueAnnotation, singleValue);
+        }
+        valueAnnotation = mm.getAnnotation(CEYLON_INTEGER_VALUE_ANNOTATION);
+        if (valueAnnotation != null) {
+            return readIntegerValuesAnnotation(valueAnnotation, singleValue);
+        }
+        valueAnnotation = mm.getAnnotation(CEYLON_BOOLEAN_VALUE_ANNOTATION);
+        if (valueAnnotation != null) { 
+            return readBooleanValuesAnnotation(valueAnnotation, singleValue);
+        }
+        valueAnnotation = mm.getAnnotation(CEYLON_DECLARATION_VALUE_ANNOTATION);
+        if (valueAnnotation != null) {
+            return readDeclarationValuesAnnotation(valueAnnotation, singleValue);
+        }
+        valueAnnotation = mm.getAnnotation(CEYLON_OBJECT_VALUE_ANNOTATION);
+        if (valueAnnotation != null) {
+            return readObjectValuesAnnotation(valueAnnotation, singleValue);
+        }
+        valueAnnotation = mm.getAnnotation(CEYLON_CHARACTER_VALUE_ANNOTATION);
+        if (valueAnnotation != null) {
+            return readCharacterValuesAnnotation(valueAnnotation, singleValue);
+        } 
+        valueAnnotation = mm.getAnnotation(CEYLON_FLOAT_VALUE_ANNOTATION);
+        if (valueAnnotation != null) {
+            return readFloatValuesAnnotation(valueAnnotation, singleValue);
+        }
+        return null;
+    }
+    private LiteralAnnotationTerm loadLiteralAnnotationTerm2(List<AnnotationFieldName> namePath, Parameter parameter, AnnotatedMirror mm) {
+        boolean singeValue = !typeFactory.isIterableType(parameter.getType())
+            || typeFactory.getStringDeclaration().equals(parameter.getType().getDeclaration());
+        Map<String, LiteralAnnotationTerm> exprsMap = new HashMap<String, LiteralAnnotationTerm>();
+        AnnotationMirror exprsAnnotation = mm.getAnnotation(CEYLON_STRING_EXPRS_ANNOTATION);
+        if (exprsAnnotation != null) {
+            for (AnnotationMirror valueAnnotation : getAnnotationAnnoValues(exprsAnnotation, "value")) {
+                String path = (String)valueAnnotation.getValue("name");
+                exprsMap.put(path, readStringValuesAnnotation(valueAnnotation, singeValue));
+            }
+        }
+        exprsAnnotation = mm.getAnnotation(CEYLON_INTEGER_EXPRS_ANNOTATION);
+        if (exprsAnnotation != null) {
+            for (AnnotationMirror valueAnnotation : getAnnotationAnnoValues(exprsAnnotation, "value")) {
+                String path = (String)valueAnnotation.getValue("name");
+                exprsMap.put(path, readIntegerValuesAnnotation(valueAnnotation, singeValue));
+            }
+        }
+        exprsAnnotation = mm.getAnnotation(CEYLON_BOOLEAN_EXPRS_ANNOTATION);
+        if (exprsAnnotation != null) {
+            for (AnnotationMirror valueAnnotation : getAnnotationAnnoValues(exprsAnnotation, "value")) {
+                String path = (String)valueAnnotation.getValue("name");
+                exprsMap.put(path, readBooleanValuesAnnotation(valueAnnotation, singeValue));
+            }
+        }
+        exprsAnnotation = mm.getAnnotation(CEYLON_DECLARATION_EXPRS_ANNOTATION);
+        if (exprsAnnotation != null) {
+            for (AnnotationMirror valueAnnotation : getAnnotationAnnoValues(exprsAnnotation, "value")) {
+                String path = (String)valueAnnotation.getValue("name");
+                exprsMap.put(path, readDeclarationValuesAnnotation(valueAnnotation, singeValue));
+            }
+        }
+        exprsAnnotation = mm.getAnnotation(CEYLON_OBJECT_EXPRS_ANNOTATION);
+        if (exprsAnnotation != null) {
+            for (AnnotationMirror valueAnnotation : getAnnotationAnnoValues(exprsAnnotation, "value")) {
+                String path = (String)valueAnnotation.getValue("name");
+                exprsMap.put(path, readObjectValuesAnnotation(valueAnnotation, singeValue));
+            }
+        }
+        exprsAnnotation = mm.getAnnotation(CEYLON_CHARACTER_EXPRS_ANNOTATION);
+        if (exprsAnnotation != null) {
+            for (AnnotationMirror valueAnnotation : getAnnotationAnnoValues(exprsAnnotation, "value")) {
+                String path = (String)valueAnnotation.getValue("name");
+                exprsMap.put(path, readCharacterValuesAnnotation(valueAnnotation, singeValue));
+            }
+        }
+        exprsAnnotation = mm.getAnnotation(CEYLON_FLOAT_EXPRS_ANNOTATION);
+        if (exprsAnnotation != null) {
+            for (AnnotationMirror valueAnnotation : getAnnotationAnnoValues(exprsAnnotation, "value")) {
+                String path = (String)valueAnnotation.getValue("name");
+                exprsMap.put(path, readFloatValuesAnnotation(valueAnnotation, singeValue));
+            }
+        }
+        // TODO Don't build the map each time, either do a search, or build it once
+        // TODO This is wrong
+        String name = Naming.getAnnotationFieldName(namePath);
+        LiteralAnnotationTerm term = exprsMap.get(name);
+        return term;
+    }
+    private LiteralAnnotationTerm readObjectValuesAnnotation(
+            AnnotationMirror valueAnnotation, boolean singleValue) {
+        if (singleValue) {
+            TypeMirror klass = getAnnotationClassValues(valueAnnotation, "value").get(0);
+            ProducedType type = obtainType(klass, null, null, null);
+            ObjectLiteralAnnotationTerm term = new ObjectLiteralAnnotationTerm(type);
+            return term;
+        } else {
+            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(new ObjectLiteralAnnotationTerm(null));
+            for (TypeMirror klass : getAnnotationClassValues(valueAnnotation, "value")) {
+                ProducedType type = obtainType(klass, null, null, null);
+                result.addElement(new ObjectLiteralAnnotationTerm(type));
+            }
+            return result;
+        }
+    }
+    private LiteralAnnotationTerm readStringValuesAnnotation(
+            AnnotationMirror valueAnnotation, boolean singleValue) {
+        if (singleValue) {
+            String value = getAnnotationStringValues(valueAnnotation, "value").get(0);
+            StringLiteralAnnotationTerm term = new StringLiteralAnnotationTerm(value);
+            return term;
+        } else {
+            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(new StringLiteralAnnotationTerm(null));
+            for (String value : getAnnotationStringValues(valueAnnotation, "value")) {
+                result.addElement(new StringLiteralAnnotationTerm(value));
+            }
+            return result;
+        }
+    }
+    private LiteralAnnotationTerm readIntegerValuesAnnotation(
+            AnnotationMirror valueAnnotation, boolean singleValue) {
+        if (singleValue) {
+            Long value = getAnnotationLongValues(valueAnnotation, "value").get(0);
+            // TODO We lose the underlying type info!!
+            IntegerLiteralAnnotationTerm term = new IntegerLiteralAnnotationTerm(value, null);
+            return term;
+        } else {
+            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(new IntegerLiteralAnnotationTerm(0, null));
+            for (Long value : getAnnotationLongValues(valueAnnotation, "value")) {
+                result.addElement(new IntegerLiteralAnnotationTerm(value, null));
+            }
+            return result;
+        }
+    }
+    private LiteralAnnotationTerm readCharacterValuesAnnotation(
+            AnnotationMirror valueAnnotation, boolean singleValue) {
+        if (singleValue) {
+            Integer value = getAnnotationIntegerValues(valueAnnotation, "value").get(0);
+            CharacterLiteralAnnotationTerm term = new CharacterLiteralAnnotationTerm(value);
+            return term;
+        } else {
+            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(new CharacterLiteralAnnotationTerm(0));
+            for (Integer value : getAnnotationIntegerValues(valueAnnotation, "value")) {
+                result.addElement(new CharacterLiteralAnnotationTerm(value));
+            }
+            return result;
+        }
+    }
+    private LiteralAnnotationTerm readFloatValuesAnnotation(
+            AnnotationMirror valueAnnotation, boolean singleValue) {
+        if (singleValue) {
+            Double value = getAnnotationDoubleValues(valueAnnotation, "value").get(0);
+            FloatLiteralAnnotationTerm term = new FloatLiteralAnnotationTerm(value);
+            return term;
+        } else {
+            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(new FloatLiteralAnnotationTerm(0.0));
+            for (Double value : getAnnotationDoubleValues(valueAnnotation, "value")) {
+                result.addElement(new FloatLiteralAnnotationTerm(value));
+            }
+            return result;
+        }
+    }
+    private LiteralAnnotationTerm readBooleanValuesAnnotation(
+            AnnotationMirror valueAnnotation, boolean singleValue) {
+        if (singleValue) {
+            boolean value = getAnnotationBooleanValues(valueAnnotation, "value").get(0);
+            BooleanLiteralAnnotationTerm term = new BooleanLiteralAnnotationTerm(value);
+            return term;
+        } else {
+            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(new BooleanLiteralAnnotationTerm(false));
+            for (Boolean value : getAnnotationBooleanValues(valueAnnotation, "value")) {
+                result.addElement(new BooleanLiteralAnnotationTerm(value));
+            }
+            return result;
+        }
+    }
+    private LiteralAnnotationTerm readDeclarationValuesAnnotation(
+            AnnotationMirror valueAnnotation, boolean singleValue) {
+        if (singleValue) {
+            String value = getAnnotationStringValues(valueAnnotation, "value").get(0);
+            DeclarationLiteralAnnotationTerm term = new DeclarationLiteralAnnotationTerm(value);
+            return term;
+        } else {
+            CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(new DeclarationLiteralAnnotationTerm(null));
+            for (String value : getAnnotationStringValues(valueAnnotation, "value")) {
+                result.addElement(new DeclarationLiteralAnnotationTerm(value));
+            }
+            return result;
+        }
     }
     
     //

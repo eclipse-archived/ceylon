@@ -45,21 +45,6 @@ public class ParameterAnnotationTerm extends AnnotationTerm implements Annotatio
         return (isSpread() ? "*" : "") + getSourceParameter().getName();
     }
     
-    
-    public JCExpression makePrimitiveDefaultExpr(
-            ExpressionTransformer exprGen, 
-            AnnotationInvocation anno,
-            List<AnnotationFieldName> parameterPath) {
-        String constructorParameterName = Naming.getAnnotationFieldName(parameterPath);
-        if (anno.isInterop()) {
-            return null;
-        }
-        return exprGen.naming.makeQuotedQualIdent(
-                exprGen.naming.makeName(anno.getConstructorDeclaration(), 
-                        Naming.NA_FQ | Naming.NA_WRAPPER ),
-                constructorParameterName);
-    }
-
     @Override
     public String getFieldNamePart() {
         return "default$" + sourceParameter.getName();
