@@ -20,7 +20,6 @@ import ceylon.language.model.Annotated;
 import ceylon.language.model.ClassOrInterface;
 import ceylon.language.model.ConstrainedAnnotation;
 import ceylon.language.model.declaration.AnnotatedDeclaration;
-import ceylon.language.model.declaration.FunctionDeclaration;
 import ceylon.language.model.declaration.Module;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -38,6 +37,7 @@ import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionClass;
 import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionMethod;
 import com.redhat.ceylon.compiler.loader.model.JavaMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
+import com.redhat.ceylon.compiler.loader.model.LazyElement;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyPackage;
@@ -54,7 +54,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 
@@ -252,7 +251,7 @@ public class Metamodel {
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
             // anonymous classes don't have parameter lists
             TypeDescriptor reifiedArguments;
-            if(!declaration.isAnonymous())
+            if(!declaration.isAnonymous() && !isLocalType((com.redhat.ceylon.compiler.typechecker.model.Class)declaration))
                 reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional)declaration, pt);
             else
                 reifiedArguments = TypeDescriptor.NothingType;
@@ -748,5 +747,9 @@ public class Metamodel {
             return Metamodel.getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.Package)container);
         // FIXME: can that happen?
         throw new RuntimeException("Illegal container type: "+container);
+    }
+
+    public static boolean isLocalType(com.redhat.ceylon.compiler.typechecker.model.Class decl) {
+        return ((LazyElement)decl).isLocal();
     }
 }

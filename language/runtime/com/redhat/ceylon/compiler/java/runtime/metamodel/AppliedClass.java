@@ -76,8 +76,9 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         com.redhat.ceylon.compiler.typechecker.model.Class decl = (com.redhat.ceylon.compiler.typechecker.model.Class) producedType.getDeclaration();
 
         // anonymous classes don't have constructors
+        // local classes have constructors but if they capture anything it will get extra parameters that nobody knows about
         // FIXME: so we really want to disallow that in the metamodel?
-        if(!decl.isAnonymous()){
+        if(!decl.isAnonymous() && !Metamodel.isLocalType(decl)){
             initConstructor(decl);
         }
     }
