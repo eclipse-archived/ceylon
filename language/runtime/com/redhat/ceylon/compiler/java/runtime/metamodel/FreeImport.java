@@ -77,6 +77,11 @@ public class FreeImport
     }
 
     @Override
+    public ceylon.language.model.declaration.Module getContainer(){
+        return module;
+    }
+    
+    @Override
     public boolean getShared() {
         return moduleImport.isExport();
     }

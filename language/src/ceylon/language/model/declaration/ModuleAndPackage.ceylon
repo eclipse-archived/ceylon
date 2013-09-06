@@ -32,6 +32,8 @@ shared interface Import
     shared formal Boolean shared;
 
     shared formal Boolean optional;
+
+    shared formal Module container;
 }
 
 "Model of a `package` declaration 
