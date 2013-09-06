@@ -6,10 +6,12 @@ import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.model.Annotated$impl;
+import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.AnnotatedDeclaration$impl;
 import ceylon.language.model.declaration.Declaration$impl;
 import ceylon.language.model.declaration.Package$impl;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -222,6 +224,29 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
     @Override
     public boolean getShared() {
         return declaration.isShared();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        AnnotatedDeclaration container = getContainer();
+        result = 37 * result + (container == null ? 0 : container.hashCode());
+        result = 37 * result + getName().hashCode();
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof ceylon.language.model.declaration.Package == false)
+            return false;
+        ceylon.language.model.declaration.Package other = (ceylon.language.model.declaration.Package) obj;
+        if(!Util.eq(other.getContainer(), getContainer()))
+            return false;
+        return getName().equals(other.getName());
     }
 
     @Ignore

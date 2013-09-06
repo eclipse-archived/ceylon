@@ -5,6 +5,8 @@ import java.util.List;
 import ceylon.language.Finished;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
+import ceylon.language.finished_;
+import ceylon.language.model.declaration.OpenType;
 import ceylon.language.model.declaration.OpenType$impl;
 import ceylon.language.model.declaration.OpenUnion$impl;
 
@@ -24,6 +26,9 @@ public class FreeUnionType
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeUnionType.class);
     
     protected Sequential<ceylon.language.model.declaration.OpenType> caseTypes;
+
+    // this is only used for equals
+    private com.redhat.ceylon.compiler.typechecker.model.ProducedType model;
     
     @Override
     public String toString() {
@@ -37,7 +42,9 @@ public class FreeUnionType
         return sb.toString();
     }
 
-    FreeUnionType(List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> caseTypes){
+    FreeUnionType(com.redhat.ceylon.compiler.typechecker.model.UnionType union){
+        this.model = union.getType();
+        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> caseTypes = union.getCaseTypes();
         ceylon.language.model.declaration.OpenType[] types = new ceylon.language.model.declaration.OpenType[caseTypes.size()];
         int i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : caseTypes){
@@ -64,6 +71,30 @@ public class FreeUnionType
     @TypeInfo("ceylon.language.Sequential<ceylon.language.model.declaration::OpenType>")
     public ceylon.language.Sequential<? extends ceylon.language.model.declaration.OpenType> getCaseTypes() {
         return caseTypes;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        // do not use caseTypes.hashCode because order is not significant
+        Iterator<? extends OpenType> iterator = caseTypes.iterator();
+        Object obj;
+        while((obj = iterator.next()) != finished_.$get()){
+            result = result + obj.hashCode();
+        }
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof FreeUnionType == false)
+            return false;
+        FreeUnionType other = (FreeUnionType) obj;
+        return other.model.isExactly(model);
     }
 
     @Override

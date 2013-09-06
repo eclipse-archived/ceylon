@@ -170,4 +170,27 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
             Object arg0, Object arg1, Object arg2) {
         return $call$variadic(arg0, arg1, arg2, empty_.$get());
     }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        result = 37 * result + getDeclaringClassOrInterface().hashCode();
+        result = 37 * result + getDeclaration().hashCode();
+        result = 37 * result + getTypeArguments().hashCode();
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof ceylon.language.model.Method == false)
+            return false;
+        ceylon.language.model.Method other = (ceylon.language.model.Method) obj;
+        return getDeclaration().equals(other.getDeclaration())
+                && getDeclaringClassOrInterface().equals(other.getDeclaringClassOrInterface())
+                && getTypeArguments().equals(other.getTypeArguments());
+    }
 }

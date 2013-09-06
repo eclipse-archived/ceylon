@@ -3,8 +3,10 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.reflect.Field;
 
 import ceylon.language.model.Annotated$impl;
+import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.Import$impl;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -89,6 +91,33 @@ public class FreeImport
     @Override
     public boolean getOptional() {
         return moduleImport.isOptional();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        result = 37 * result + getContainer().hashCode();
+        result = 37 * result + getName().hashCode();
+        result = 37 * result + getVersion().hashCode();
+        result = 37 * result + (getShared() ? 1 : 0);
+        result = 37 * result + (getOptional() ? 1 : 0);
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof ceylon.language.model.declaration.Import == false)
+            return false;
+        ceylon.language.model.declaration.Import other = (ceylon.language.model.declaration.Import) obj;
+        return getContainer().equals(other.getContainer())
+                && getName().equals(other.getName())
+                && getVersion().equals(other.getVersion())
+                && getShared() == other.getShared()
+                && getOptional() == other.getOptional();
     }
 
     @Ignore

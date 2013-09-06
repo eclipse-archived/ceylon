@@ -4,8 +4,10 @@ import java.util.List;
 
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
+import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.InterfaceDeclaration$impl;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -64,6 +66,29 @@ public class FreeInterface
         // FIXME: this is wrong because it does not include the container type
         com.redhat.ceylon.compiler.typechecker.model.ProducedType appliedInterfaceType = declaration.getProducedReference(null, producedTypes).getType();
         return (AppliedInterface)Metamodel.getAppliedMetamodel(appliedInterfaceType);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        AnnotatedDeclaration container = getContainer();
+        result = 37 * result + (container == null ? 0 : container.hashCode());
+        result = 37 * result + getName().hashCode();
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof ceylon.language.model.declaration.InterfaceDeclaration == false)
+            return false;
+        ceylon.language.model.declaration.InterfaceDeclaration other = (ceylon.language.model.declaration.InterfaceDeclaration) obj;
+        if(!Util.eq(other.getContainer(), getContainer()))
+            return false;
+        return getName().equals(other.getName());
     }
 
     @Override

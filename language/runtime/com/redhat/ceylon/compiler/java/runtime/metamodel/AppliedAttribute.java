@@ -161,4 +161,25 @@ public class AppliedAttribute<Container, Type>
             Object arg2) {
         return $call$variadic(arg0, arg1, arg2, empty_.$get());
     }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        result = 37 * result + getDeclaringClassOrInterface().hashCode();
+        result = 37 * result + getDeclaration().hashCode();
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof ceylon.language.model.Attribute == false)
+            return false;
+        ceylon.language.model.Attribute other = (ceylon.language.model.Attribute) obj;
+        return getDeclaration().equals(other.getDeclaration())
+                && getDeclaringClassOrInterface().equals(other.getDeclaringClassOrInterface());
+    }
 }

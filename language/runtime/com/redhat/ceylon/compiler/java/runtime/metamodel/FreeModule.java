@@ -5,6 +5,7 @@ import java.util.List;
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.model.Annotated$impl;
+import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.AnnotatedDeclaration$impl;
 import ceylon.language.model.declaration.Declaration$impl;
 import ceylon.language.model.declaration.Module$impl;
@@ -136,6 +137,29 @@ public class FreeModule implements ceylon.language.model.declaration.Module,
     @TypeInfo("ceylon.language::String")
     public String getVersion() {
         return declaration.getVersion();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        result = 37 * result + getName().hashCode();
+        String version = getVersion();
+        result = 37 * result + (version == null ? 0 : version.hashCode());
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof ceylon.language.model.declaration.Module == false)
+            return false;
+        ceylon.language.model.declaration.Module other = (ceylon.language.model.declaration.Module) obj;
+        if(!Util.eq(other.getVersion(), getVersion()))
+            return false;
+        return getName().equals(other.getName());
     }
 
     @Ignore

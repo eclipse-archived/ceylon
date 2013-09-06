@@ -48,12 +48,14 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     private MethodHandle[] dispatch;
     private int firstDefaulted = -1;
     private ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> typeArguments;
+    private Object instance;
 
     public AppliedFunction(@Ignore TypeDescriptor $reifiedType, 
                            @Ignore TypeDescriptor $reifiedArguments,
                            ProducedReference appliedFunction, FreeFunction function, Object instance) {
         this.$reifiedType = $reifiedType;
         this.$reifiedArguments = $reifiedArguments;
+        this.instance = instance;
         
         com.redhat.ceylon.compiler.typechecker.model.Method decl = (com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration;
         List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
@@ -363,5 +365,32 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     @Ignore
     public Type $call$variadic(Object arg0, Object arg1, Object arg2) {
         return $call(arg0, arg1, arg2, empty_.$get());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        // in theory, if our instance is the same, our containing type should be the same
+        // and if we don't have an instance we're a toplevel and have no containing type
+        result = 37 * result + (instance == null ? 0 : instance.hashCode());
+        result = 37 * result + getDeclaration().hashCode();
+        result = 37 * result + getTypeArguments().hashCode();
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof AppliedFunction == false)
+            return false;
+        AppliedFunction other = (AppliedFunction) obj;
+        // in theory, if our instance is the same, our containing type should be the same
+        // and if we don't have an instance we're a toplevel and have no containing type
+        return getDeclaration().equals(other.getDeclaration())
+                && Util.eq(instance, other.instance)
+                && getTypeArguments().equals(other.getTypeArguments());
     }
 }

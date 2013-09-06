@@ -5,10 +5,12 @@ import java.lang.reflect.Method;
 
 import ceylon.language.model.Annotated;
 import ceylon.language.model.Annotated$impl;
+import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.SetterDeclaration;
 import ceylon.language.model.declaration.SetterDeclaration$impl;
 import ceylon.language.model.declaration.VariableDeclaration;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -59,6 +61,25 @@ public class FreeSetter
     @Override
     public VariableDeclaration getVariable() {
         return variable;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        result = 37 * result + getVariable().hashCode();
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof ceylon.language.model.declaration.SetterDeclaration == false)
+            return false;
+        ceylon.language.model.declaration.SetterDeclaration other = (ceylon.language.model.declaration.SetterDeclaration) obj;
+        return getVariable().equals(other.getVariable());
     }
 
     @Ignore

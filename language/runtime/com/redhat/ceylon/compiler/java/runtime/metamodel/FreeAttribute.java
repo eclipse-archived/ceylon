@@ -4,9 +4,11 @@ import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.List;
 
+import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.OpenType;
 import ceylon.language.model.declaration.ValueDeclaration$impl;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -69,6 +71,29 @@ public class FreeAttribute
     @TypeInfo("ceylon.language.model.declaration::OpenType")
     public OpenType getOpenType() {
         return type;
+    }
+    
+    @Override
+    public int hashCode() {
+        int result = 1;
+        AnnotatedDeclaration container = getContainer();
+        result = 37 * result + (container == null ? 0 : container.hashCode());
+        result = 37 * result + getName().hashCode();
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof ceylon.language.model.declaration.ValueDeclaration == false)
+            return false;
+        ceylon.language.model.declaration.ValueDeclaration other = (ceylon.language.model.declaration.ValueDeclaration) obj;
+        if(!Util.eq(other.getContainer(), getContainer()))
+            return false;
+        return getName().equals(other.getName());
     }
 
     @Ignore

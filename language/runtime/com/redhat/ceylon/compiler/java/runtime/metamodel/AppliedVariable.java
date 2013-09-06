@@ -112,6 +112,18 @@ public class AppliedVariable<Type>
     }
 
     @Override
+    public int hashCode() {
+        // this one's fine
+        return super.hashCode();
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        // this one's fine
+        return super.equals(obj);
+    }
+    
+    @Override
     @Ignore
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(AppliedVariable.class, $reifiedType);

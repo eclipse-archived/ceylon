@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import ceylon.language.Iterable;
 import ceylon.language.Iterator;
 import ceylon.language.Map;
 import ceylon.language.Sequential;
@@ -135,6 +136,28 @@ public class FreeParameterisedType<DeclarationType extends ceylon.language.model
     public ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.ClassDeclaration> getSuperclass() {
         checkInit();
         return superclass;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        result = 37 * result + getDeclaration().hashCode();
+        result = 37 * result + getTypeArguments().hashCode();
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof ceylon.language.model.declaration.OpenParameterisedType == false)
+            return false;
+        ceylon.language.model.declaration.OpenParameterisedType<?> other = (ceylon.language.model.declaration.OpenParameterisedType<?>) obj;
+        if(!getDeclaration().equals(other.getDeclaration()))
+            return false;
+        return getTypeArguments().equals(other.getTypeArguments());
     }
 
     @Override

@@ -124,6 +124,18 @@ public class AppliedVariableAttribute<Container, Type>
     protected ceylon.language.model.Variable<Type> bindTo(Object instance) {
         return new AppliedVariable(null, declaration, typedReference, instance);
     }
+
+    @Override
+    public int hashCode() {
+        // this one's fine
+        return super.hashCode();
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        // this one's fine
+        return super.equals(obj);
+    }
     
     @Override
     @Ignore

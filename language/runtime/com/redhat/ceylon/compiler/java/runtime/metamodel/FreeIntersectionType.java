@@ -5,7 +5,9 @@ import java.util.List;
 import ceylon.language.Finished;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
+import ceylon.language.finished_;
 import ceylon.language.model.declaration.OpenIntersection$impl;
+import ceylon.language.model.declaration.OpenType;
 import ceylon.language.model.declaration.OpenType$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -25,6 +27,9 @@ public class FreeIntersectionType
     
     protected Sequential<ceylon.language.model.declaration.OpenType> satisfiedTypes;
     
+    // this is only used for equals
+    private com.redhat.ceylon.compiler.typechecker.model.ProducedType model;
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -37,7 +42,9 @@ public class FreeIntersectionType
         return sb.toString();
     }
 
-    FreeIntersectionType(List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes){
+    FreeIntersectionType(com.redhat.ceylon.compiler.typechecker.model.IntersectionType intersection){
+        this.model = intersection.getType();
+        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes = intersection.getSatisfiedTypes();
         ceylon.language.model.declaration.OpenType[] types = new ceylon.language.model.declaration.OpenType[satisfiedTypes.size()];
         int i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : satisfiedTypes){
@@ -64,6 +71,30 @@ public class FreeIntersectionType
     @TypeInfo("ceylon.language.Sequential<ceylon.language.model.declaration::OpenType>")
     public ceylon.language.Sequential<? extends ceylon.language.model.declaration.OpenType> getSatisfiedTypes() {
         return satisfiedTypes;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        // do not use satisfiedTypes.hashCode because order is not significant
+        Iterator<? extends OpenType> iterator = satisfiedTypes.iterator();
+        Object obj;
+        while((obj = iterator.next()) != finished_.$get()){
+            result = result + obj.hashCode();
+        }
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof FreeIntersectionType == false)
+            return false;
+        FreeIntersectionType other = (FreeIntersectionType) obj;
+        return other.model.isExactly(model);
     }
 
     @Override

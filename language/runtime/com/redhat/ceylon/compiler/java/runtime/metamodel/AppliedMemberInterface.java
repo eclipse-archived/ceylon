@@ -58,7 +58,7 @@ public class AppliedMemberInterface<Container, Type>
     @Override
     @Ignore
     public Interface<? extends Type> $call(Object arg0) {
-        return new AppliedInterface($reifiedType, super.producedType);
+        return new AppliedInterface($reifiedType, super.producedType, arg0);
     }
 
     @Override
@@ -160,5 +160,28 @@ public class AppliedMemberInterface<Container, Type>
     public Interface<? extends Type> $call$variadic(Object arg0, Object arg1,
             Object arg2) {
         return $call$variadic(arg0, arg1, arg2, empty_.$get());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        result = 37 * result + getDeclaringClassOrInterface().hashCode();
+        result = 37 * result + getDeclaration().hashCode();
+        result = 37 * result + getTypeArguments().hashCode();
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof ceylon.language.model.MemberInterface == false)
+            return false;
+        ceylon.language.model.MemberInterface other = (ceylon.language.model.MemberInterface) obj;
+        return getDeclaration().equals(other.getDeclaration())
+                && getDeclaringClassOrInterface().equals(other.getDeclaringClassOrInterface())
+                && getTypeArguments().equals(other.getTypeArguments());
     }
 }

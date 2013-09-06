@@ -226,10 +226,10 @@ public class Metamodel {
             return new FreeTypeParameterType(tp);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType){
-            return new FreeUnionType(declaration.getCaseTypes());
+            return new FreeUnionType((com.redhat.ceylon.compiler.typechecker.model.UnionType)declaration);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType){
-            return new FreeIntersectionType(declaration.getSatisfiedTypes());
+            return new FreeIntersectionType((com.redhat.ceylon.compiler.typechecker.model.IntersectionType)declaration);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType){
             return ceylon.language.model.declaration.nothingType_.$get();
@@ -268,18 +268,18 @@ public class Metamodel {
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
             if(declaration.isToplevel())
-                return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedInterface(reifiedType, pt);
+                return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedInterface(reifiedType, pt, null);
 
             TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(pt.getQualifyingType());
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedMemberInterface(reifiedContainer, reifiedType, pt);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType){
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
-            return new AppliedUnionType(reifiedType, declaration.getCaseTypes());
+            return new AppliedUnionType(reifiedType, (com.redhat.ceylon.compiler.typechecker.model.UnionType)declaration);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType){
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
-            return new AppliedIntersectionType(reifiedType, declaration.getSatisfiedTypes());
+            return new AppliedIntersectionType(reifiedType, (com.redhat.ceylon.compiler.typechecker.model.IntersectionType)declaration);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType){
             return ceylon.language.model.nothingType_.$get();

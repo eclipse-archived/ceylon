@@ -5,9 +5,11 @@ import java.util.List;
 import ceylon.language.Finished;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
+import ceylon.language.finished_;
 import ceylon.language.model.Type;
 import ceylon.language.model.Type$impl;
 import ceylon.language.model.IntersectionType$impl;
+import ceylon.language.model.declaration.OpenType;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -36,6 +38,8 @@ public class AppliedIntersectionType<Intersection>
     @Ignore
     protected TypeDescriptor $reifiedIntersection;
 
+    private com.redhat.ceylon.compiler.typechecker.model.ProducedType model;
+
     protected Sequential<ceylon.language.model.Type<?>> satisfiedTypes;
     
     @Override
@@ -50,7 +54,9 @@ public class AppliedIntersectionType<Intersection>
         return sb.toString();
     }
 
-    AppliedIntersectionType(@Ignore TypeDescriptor $reifiedType, List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes){
+    AppliedIntersectionType(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.compiler.typechecker.model.IntersectionType intersection){
+        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes = intersection.getSatisfiedTypes();
+        this.model = intersection.getType();
         this.$reifiedIntersection = $reifiedType;
         ceylon.language.model.Type<?>[] types = new ceylon.language.model.Type<?>[satisfiedTypes.size()];
         int i=0;
@@ -80,4 +86,27 @@ public class AppliedIntersectionType<Intersection>
         return satisfiedTypes;
     }
 
+    @Override
+    public int hashCode() {
+        int result = 1;
+        // do not use caseTypes.hashCode because order is not significant
+        Iterator<? extends Type> iterator = satisfiedTypes.iterator();
+        Object obj;
+        while((obj = iterator.next()) != finished_.$get()){
+            result = result + obj.hashCode();
+        }
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof AppliedIntersectionType == false)
+            return false;
+        AppliedIntersectionType other = (AppliedIntersectionType) obj;
+        return other.model.isExactly(model);
+    }
 }

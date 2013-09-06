@@ -5,6 +5,7 @@ import java.util.List;
 import ceylon.language.Finished;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
+import ceylon.language.finished_;
 import ceylon.language.model.Type;
 import ceylon.language.model.Type$impl;
 import ceylon.language.model.UnionType$impl;
@@ -36,6 +37,8 @@ public class AppliedUnionType<Union>
     @Ignore
     protected TypeDescriptor $reifiedUnion;
     
+    private com.redhat.ceylon.compiler.typechecker.model.ProducedType model;
+    
     protected Sequential<ceylon.language.model.Type<Union>> caseTypes;
     
     @Override
@@ -50,7 +53,9 @@ public class AppliedUnionType<Union>
         return sb.toString();
     }
 
-    AppliedUnionType(@Ignore TypeDescriptor $reifiedType, List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> caseTypes){
+    AppliedUnionType(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.compiler.typechecker.model.UnionType union){
+        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> caseTypes = union.getCaseTypes();
+        this.model = union.getType();
         this.$reifiedUnion = $reifiedType;
         ceylon.language.model.Type<?>[] types = new ceylon.language.model.Type<?>[caseTypes.size()];
         int i=0;
@@ -80,4 +85,27 @@ public class AppliedUnionType<Union>
         return caseTypes;
     }
 
+    @Override
+    public int hashCode() {
+        int result = 1;
+        // do not use caseTypes.hashCode because order is not significant
+        Iterator<? extends Type> iterator = caseTypes.iterator();
+        Object obj;
+        while((obj = iterator.next()) != finished_.$get()){
+            result = result + obj.hashCode();
+        }
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof AppliedUnionType == false)
+            return false;
+        AppliedUnionType other = (AppliedUnionType) obj;
+        return other.model.isExactly(model);
+    }
 }

@@ -6,10 +6,12 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.model.Type;
 import ceylon.language.model.declaration.AliasDeclaration$impl;
+import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.GenericDeclaration$impl;
 import ceylon.language.model.declaration.OpenType;
 import ceylon.language.model.declaration.TypeParameter;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
@@ -114,6 +116,29 @@ public class FreeAliasDeclaration extends FreeTopLevelOrMemberDeclaration
         com.redhat.ceylon.compiler.typechecker.model.ProducedType appliedType = declaration.getProducedReference(null, producedTypes).getType();
         // FIXME: this is wrong because it does not bind the instance
         return Metamodel.getAppliedMetamodel(appliedType);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        AnnotatedDeclaration container = getContainer();
+        result = 37 * result + (container == null ? 0 : container.hashCode());
+        result = 37 * result + getName().hashCode();
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof ceylon.language.model.declaration.AliasDeclaration == false)
+            return false;
+        ceylon.language.model.declaration.AliasDeclaration other = (ceylon.language.model.declaration.AliasDeclaration) obj;
+        if(!Util.eq(other.getContainer(), getContainer()))
+            return false;
+        return getName().equals(other.getName());
     }
 
     @Override

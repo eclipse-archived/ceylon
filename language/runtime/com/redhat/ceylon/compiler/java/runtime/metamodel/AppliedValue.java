@@ -40,12 +40,14 @@ public class AppliedValue<Type>
     protected TypeDescriptor $reifiedType;
     protected FreeAttribute declaration;
     private MethodHandle getter;
+    private Object instance;
 
     public AppliedValue(@Ignore TypeDescriptor $reifiedType, FreeAttribute value, ProducedTypedReference valueTypedReference, Object instance) {
         ProducedType producedType = valueTypedReference.getType();
         this.type = Metamodel.getAppliedMetamodel(producedType);
         this.$reifiedType = $reifiedType;
         this.declaration = value;
+        this.instance = instance;
         
         initField(instance, producedType);
     }
@@ -180,6 +182,31 @@ public class AppliedValue<Type>
     @TypeInfo("ceylon.language.model::Type<Type>")
     public ceylon.language.model.Type<? extends Type> getType() {
         return type;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        // in theory, if our instance is the same, our containing type should be the same
+        // and if we don't have an instance we're a toplevel and have no containing type
+        result = 37 * result + (instance == null ? 0 : instance.hashCode());
+        result = 37 * result + getDeclaration().hashCode();
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof AppliedValue == false)
+            return false;
+        AppliedValue other = (AppliedValue) obj;
+        // in theory, if our instance is the same, our containing type should be the same
+        // and if we don't have an instance we're a toplevel and have no containing type
+        return Util.eq(instance, other.instance)
+                && getDeclaration().equals(other.getDeclaration());
     }
 
     @Override

@@ -7,6 +7,7 @@ import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
+import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.FunctionDeclaration$impl;
 import ceylon.language.model.declaration.FunctionalDeclaration$impl;
 import ceylon.language.model.declaration.GenericDeclaration$impl;
@@ -204,6 +205,29 @@ public class FreeFunction
     @TypeInfo("ceylon.language.model.declaration::OpenType")
     public OpenType getOpenType() {
         return type;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        AnnotatedDeclaration container = getContainer();
+        result = 37 * result + (container == null ? 0 : container.hashCode());
+        result = 37 * result + getName().hashCode();
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof ceylon.language.model.declaration.FunctionDeclaration == false)
+            return false;
+        ceylon.language.model.declaration.FunctionDeclaration other = (ceylon.language.model.declaration.FunctionDeclaration) obj;
+        if(!Util.eq(other.getContainer(), getContainer()))
+            return false;
+        return getName().equals(other.getName());
     }
 
     @Ignore

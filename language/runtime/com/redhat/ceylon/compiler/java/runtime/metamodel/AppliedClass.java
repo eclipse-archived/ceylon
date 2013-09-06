@@ -379,4 +379,30 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         return $call$variadic(arg0, arg1, arg2, empty_.$get());
     }
 
+    @Override
+    public int hashCode() {
+        int result = 1;
+        // in theory, if our instance is the same, our containing type should be the same
+        // and if we don't have an instance we're a toplevel and have no containing type
+        result = 37 * result + (instance == null ? 0 : instance.hashCode());
+        result = 37 * result + getDeclaration().hashCode();
+        result = 37 * result + getTypeArguments().hashCode();
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(obj instanceof AppliedClass == false)
+            return false;
+        AppliedClass other = (AppliedClass) obj;
+        // in theory, if our instance is the same, our containing type should be the same
+        // and if we don't have an instance we're a toplevel and have no containing type
+        return getDeclaration().equals(other.getDeclaration())
+                && Util.eq(instance, other.instance)
+                && getTypeArguments().equals(other.getTypeArguments());
+    }
 }

@@ -14,6 +14,7 @@ import ceylon.language.Ranged;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
+import ceylon.language.model.declaration.AnnotatedDeclaration;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -798,5 +799,16 @@ public class Util {
      */
     public static void rethrow(final Throwable t){
         ceylon.language.impl.rethrow_.rethrow(t);
+    }
+
+    /**
+     * Null-safe equals.
+     */
+    public static boolean eq(Object a, Object b) {
+        if(a == null)
+            return b == null;
+        if(b == null)
+            return false;
+        return a.equals(b);
     }
 }
