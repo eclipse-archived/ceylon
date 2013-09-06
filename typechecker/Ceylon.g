@@ -2833,8 +2833,10 @@ existsCondition returns [ExistsCondition condition]
         specifiedVariable 
         { $condition.setVariable($specifiedVariable.variable); }
       | //(EXISTS LIDENTIFIER (RPAREN|COMMA)) =>
-        impliedVariable
+        (LIDENTIFIER)=> impliedVariable
         { $condition.setVariable($impliedVariable.variable); }
+      | expression
+        { $condition.setBrokenExpression($expression.expression); }
     )
     ;
     
@@ -2845,8 +2847,10 @@ nonemptyCondition returns [NonemptyCondition condition]
       specifiedVariable 
       { $condition.setVariable($specifiedVariable.variable); }
     | //(NONEMPTY LIDENTIFIER (RPAREN|COMMA)) =>
-      impliedVariable 
+      (LIDENTIFIER)=> impliedVariable 
       { $condition.setVariable($impliedVariable.variable); }
+    | expression
+      { $condition.setBrokenExpression($expression.expression); }
     )
     ;
 

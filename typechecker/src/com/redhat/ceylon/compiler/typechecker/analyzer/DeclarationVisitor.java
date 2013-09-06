@@ -723,6 +723,22 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.ExistsOrNonemptyCondition that) {
+        super.visit(that);
+        String op = that instanceof Tree.ExistsCondition ? "exists" : "nonempty";
+        if (that.getBrokenExpression()!=null) {
+            that.getBrokenExpression()
+                .addError("syntax error: " + op + 
+                        " conditions do not apply to arbitrary expressions, try using postfix " + 
+                        op + " operator");
+        }
+        else if (that.getVariable()==null) {
+            that.addError("missing variable or immutable value reference: " + op + 
+                    " condition requires an operand");
+        }
+    }
+    
+    @Override
     public void visit(Tree.Body that) {
         int oid=id;
         id=0;
