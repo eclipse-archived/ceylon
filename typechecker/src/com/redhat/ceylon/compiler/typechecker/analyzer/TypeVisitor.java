@@ -875,6 +875,9 @@ public class TypeVisitor extends Visitor {
             if (that.getSatisfiedTypes()!=null) {
                 that.getSatisfiedTypes().addError("class alias may not satisfy a type");
             }
+            if (that.getCaseTypes()!=null) {
+                that.addError("class alias may not have cases or a self type");
+            }
             Tree.SimpleType ct = cs.getType();
             if (ct==null) {
                 that.addError("malformed aliased class");
@@ -919,6 +922,9 @@ public class TypeVisitor extends Visitor {
         else {
             if (that.getSatisfiedTypes()!=null) {
                 that.getSatisfiedTypes().addError("interface alias may not satisfy a type");
+            }
+            if (that.getCaseTypes()!=null) {
+                that.addError("class alias may not have cases or a self type");
             }
             Tree.StaticType et = that.getTypeSpecifier().getType();
             if (et==null) {
@@ -1155,10 +1161,6 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.CaseTypes that) {
         super.visit(that);
         TypeDeclaration td = (TypeDeclaration) that.getScope();
-        if (td.isAlias()) {
-            that.addError("alias may not have cases or a self type");
-            return;
-        }
         List<BaseMemberExpression> bmes = that.getBaseMemberExpressions();
         List<Tree.StaticType> cts = that.getTypes();
         List<ProducedType> list = new ArrayList<ProducedType>(bmes.size()+cts.size());
