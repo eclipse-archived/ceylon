@@ -24,9 +24,6 @@ public class CollectionLiteralAnnotationTerm extends LiteralAnnotationTerm {
         }
         elements.add(element);
     }
-    public List<AnnotationTerm> getValue() {
-        return elements;
-    }
     @Override
     public com.sun.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(
             ExpressionTransformer exprGen) {
@@ -42,6 +39,7 @@ public class CollectionLiteralAnnotationTerm extends LiteralAnnotationTerm {
         }
         return com.sun.tools.javac.util.List.<JCAnnotation>nil();
     }
+    @Override
     public String toString() {
         return elements.toString();
     }

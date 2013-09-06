@@ -9,10 +9,6 @@ public class StringLiteralAnnotationTerm extends LiteralAnnotationTerm {
         super();
         this.value = value;
     }
-    public String getValue() {
-        return value;
-    }
-    
     @Override
     protected com.sun.tools.javac.util.List<JCAnnotation> makeAtValue(ExpressionTransformer exprGen, String name, JCExpression value) {
         return exprGen.makeAtStringValue(name, value);

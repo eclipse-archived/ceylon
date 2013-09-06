@@ -273,7 +273,6 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
                 LiteralAnnotationTerm argument = new StringLiteralAnnotationTerm(ExpressionTransformer.literalValue(literal));
-                argument.setTerm(literal);
                 appendLiteralArgument(literal, argument);
             }
         }
@@ -283,7 +282,6 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
                 LiteralAnnotationTerm argument = new CharacterLiteralAnnotationTerm(ExpressionTransformer.literalValue(literal));
-                argument.setTerm(literal);
                 appendLiteralArgument(literal, argument);
             }
         }
@@ -294,7 +292,6 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
             if (checkingArguments || checkingDefaults){
                 try {
                     LiteralAnnotationTerm argument = new FloatLiteralAnnotationTerm(ExpressionTransformer.literalValue(literal));
-                    argument.setTerm(literal);
                     appendLiteralArgument(literal, argument);
                 } catch (ErroneousException e) {
                     // Ignore it: The ExpressionTransformer will produce an error later in codegen
@@ -308,7 +305,6 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
             if (checkingArguments || checkingDefaults){
                 try {
                     LiteralAnnotationTerm argument = new IntegerLiteralAnnotationTerm(ExpressionTransformer.literalValue(literal), parameter().getModel().getType());
-                    argument.setTerm(literal);
                     appendLiteralArgument(literal, argument);
                 } catch (ErroneousException e) {
                     // Ignore it: The ExpressionTransformer will produce an error later in codegen
@@ -323,11 +319,9 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
                 try {
                     if (op.getTerm() instanceof Tree.NaturalLiteral) {
                         LiteralAnnotationTerm argument = new IntegerLiteralAnnotationTerm(ExpressionTransformer.literalValue(op), parameter().getModel().getType());
-                        argument.setTerm(op);
                         appendLiteralArgument(op, argument);
                     } else if (op.getTerm() instanceof Tree.FloatLiteral) {
                         LiteralAnnotationTerm argument = new FloatLiteralAnnotationTerm(-ExpressionTransformer.literalValue((Tree.FloatLiteral)op.getTerm()));
-                        argument.setTerm(op);
                         appendLiteralArgument(op, argument);
                     }
                 } catch (ErroneousException e) {
@@ -341,7 +335,6 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
                 LiteralAnnotationTerm argument = new DeclarationLiteralAnnotationTerm(ExpressionTransformer.getSerializedMetaLiteral(literal));
-                argument.setTerm(literal);
                 appendLiteralArgument(literal, argument);
             }
         }
@@ -355,7 +348,6 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
                 literal.visitChildren(this);
                 this.term = this.elements;
                 this.elements = null;
-                ((CollectionLiteralAnnotationTerm)this.term).setTerm(literal);
                 appendLiteralArgument(literal, (CollectionLiteralAnnotationTerm)term);
             }
         }
@@ -390,7 +382,6 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
                 literal.visitChildren(this);
                 this.term = this.elements;
                 this.elements = null;
-                ((CollectionLiteralAnnotationTerm)this.term).setTerm(literal);
                 appendLiteralArgument(literal, (CollectionLiteralAnnotationTerm)term);
             }
         }
@@ -431,15 +422,12 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
                     this.term = a;
                 } else if (isBooleanTrue(declaration)) {
                     LiteralAnnotationTerm argument = new BooleanLiteralAnnotationTerm(true);
-                    argument.setTerm(bme);
                     appendLiteralArgument(bme, argument);
                 } else if (isBooleanFalse(declaration)) {
                     LiteralAnnotationTerm argument = new BooleanLiteralAnnotationTerm(false);
-                    argument.setTerm(bme);
                     appendLiteralArgument(bme, argument);
                 } else if (Decl.isAnonCaseOfEnumeratedType(bme)) {
                     LiteralAnnotationTerm argument = new ObjectLiteralAnnotationTerm(bme.getTypeModel());
-                    argument.setTerm(bme);
                     appendLiteralArgument(bme, argument);
                 } else {
                     bme.addError("Unsupported base member expression in annotation constructor");

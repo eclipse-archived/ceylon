@@ -12,9 +12,6 @@ public class IntegerLiteralAnnotationTerm extends LiteralAnnotationTerm {
         this.value = value;
         this.producedType = producedType;
     }
-    public long getValue() {
-        return value;
-    }
     @Override
     public com.sun.tools.javac.util.List<JCAnnotation> makeAtValue(
             ExpressionTransformer exprGen, String name, JCExpression value) {

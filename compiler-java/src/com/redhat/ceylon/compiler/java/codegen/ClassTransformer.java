@@ -1836,15 +1836,6 @@ public class ClassTransformer extends AbstractTransformer {
         return ai.makeExprAnnotations(expressionGen(), ctor, List.<AnnotationFieldName>nil());
     }
     
-    public List<JCTree> makeLiteralAnnotationFields(Tree.AnyMethod node) {
-        AnnotationInvocation ctor = (AnnotationInvocation)node.getDeclarationModel().getAnnotationConstructor();
-        ListBuffer<JCStatement> staticArgs = ListBuffer.<JCStatement>lb();
-        ctor.makeLiteralAnnotationFields(expressionGen(), ctor, List.<AnnotationFieldName>nil(), staticArgs);
-        
-        return (List)staticArgs.toList();
-    }
-    
-    
     public JCAnnotation makeAtAnnotationInstantiation(AnnotationInvocation invocation) {
         return invocation.encode(this, ListBuffer.<JCExpression>lb());
     }

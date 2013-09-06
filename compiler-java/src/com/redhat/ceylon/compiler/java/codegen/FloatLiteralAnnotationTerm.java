@@ -9,9 +9,6 @@ public class FloatLiteralAnnotationTerm extends LiteralAnnotationTerm {
         super();
         this.value = value;
     }
-    public double getValue() {
-        return value;
-    }
     @Override
     public com.sun.tools.javac.util.List<JCAnnotation> makeAtValue(
             ExpressionTransformer exprGen, String name, JCExpression value) {

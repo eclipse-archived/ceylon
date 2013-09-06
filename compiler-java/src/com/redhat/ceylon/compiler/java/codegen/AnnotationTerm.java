@@ -1,9 +1,7 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.util.ListBuffer;
 
 /**
@@ -23,12 +21,6 @@ public abstract class AnnotationTerm {
             ExpressionTransformer exprGen, AnnotationInvocation ai,
             com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath);
     
-    public abstract void makeLiteralAnnotationFields(
-            ExpressionTransformer exprGen, 
-            AnnotationInvocation toplevel,
-            com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath,
-            ListBuffer<JCStatement> staticArgs, ProducedType expectedType);
-
     public abstract com.sun.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(ExpressionTransformer exprGen);
     
     public abstract com.sun.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.sun.tools.javac.util.List<JCAnnotation> value);

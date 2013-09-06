@@ -13,7 +13,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.util.ListBuffer;
 
 /**
@@ -242,23 +241,6 @@ public class AnnotationInvocation {
                     gen.make().Type(gen.syms().ceylonAtAnnotationInstantiationTreeType),
                     com.sun.tools.javac.util.List.<JCExpression>of(
                             gen.make().NewArray(null, null, instantiations.prepend(atInstantiation).toList())));
-        }
-    }
-
-    public void makeLiteralAnnotationFields(
-            ExpressionTransformer exprGen,
-            AnnotationInvocation toplevel,
-            com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath,
-            ListBuffer<JCStatement> staticArgs) {
-        for (AnnotationConstructorParameter acp : getConstructorParameters()) {
-            AnnotationTerm defaultTerm = acp.getDefaultArgument();
-            if (defaultTerm != null && 
-                    this.equals(toplevel)) {
-                defaultTerm.makeLiteralAnnotationFields(exprGen, toplevel, fieldPath.append(acp), staticArgs, acp.getParameter().getType());
-            }
-        }
-        for (AnnotationArgument aa : getAnnotationArguments()) {
-            aa.getTerm().makeLiteralAnnotationFields(exprGen, toplevel, fieldPath.append(aa), staticArgs, aa.getParameter().getType());
         }
     }
 

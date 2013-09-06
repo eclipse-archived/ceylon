@@ -367,9 +367,6 @@ class AnnotationInvocationVisitor extends Visitor {
                 InvocationAnnotationTerm defaultedInvocation = (InvocationAnnotationTerm)defaultedCtorParam.getDefaultArgument();
                 append(transformConstructor(exprGen, invocation, defaultedInvocation.getInstantiation(), 
                         com.sun.tools.javac.util.List.<AnnotationFieldName>of(defaultedCtorParam)));
-        } else if (Decl.isEnumeratedTypeWithAnonCases(sp.getType())) {
-            LiteralAnnotationTerm defaultedEnum = (LiteralAnnotationTerm)defaultedCtorParam.getDefaultArgument();
-            append(exprGen.makeClassLiteral(defaultedEnum.getLiteralObject()));
         }
     }
     

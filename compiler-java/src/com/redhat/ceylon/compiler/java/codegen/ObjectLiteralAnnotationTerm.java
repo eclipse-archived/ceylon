@@ -10,9 +10,6 @@ public class ObjectLiteralAnnotationTerm extends LiteralAnnotationTerm {
         super();
         this.value = value;
     }
-    public ProducedType getValue() {
-        return value;
-    }
     @Override
     public com.sun.tools.javac.util.List<JCAnnotation> makeAtValue(
             ExpressionTransformer exprGen, String name, JCExpression value) {
@@ -26,6 +23,7 @@ public class ObjectLiteralAnnotationTerm extends LiteralAnnotationTerm {
     public com.sun.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.sun.tools.javac.util.List<JCAnnotation> value) {
         return exprGen.makeAtObjectExprs(exprGen.make().NewArray(null,  null,  (com.sun.tools.javac.util.List)value));
     }
+    @Override
     public String toString() {
         return value.toString();
     }
