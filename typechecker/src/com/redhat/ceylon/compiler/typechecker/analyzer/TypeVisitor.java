@@ -869,6 +869,12 @@ public class TypeVisitor extends Visitor {
             that.addError("missing class body or aliased class reference");
         }
         else {
+            if (that.getExtendedType()!=null) {
+                that.getExtendedType().addError("class alias may not extend a type");
+            }
+            if (that.getSatisfiedTypes()!=null) {
+                that.getSatisfiedTypes().addError("class alias may not satisfy a type");
+            }
             Tree.SimpleType ct = cs.getType();
             if (ct==null) {
                 that.addError("malformed aliased class");
@@ -911,6 +917,9 @@ public class TypeVisitor extends Visitor {
             that.addError("missing interface body or aliased interface reference");
         }
         else {
+            if (that.getSatisfiedTypes()!=null) {
+                that.getSatisfiedTypes().addError("interface alias may not satisfy a type");
+            }
             Tree.StaticType et = that.getTypeSpecifier().getType();
             if (et==null) {
                 that.addError("malformed aliased interface");
@@ -941,6 +950,9 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.TypeAliasDeclaration that) {
         super.visit(that);
+        if (that.getSatisfiedTypes()!=null) {
+            that.getSatisfiedTypes().addError("type alias may not satisfy a type");
+        }
         if (that.getTypeSpecifier()==null) {
             that.addError("missing aliased type");
         }
@@ -1002,7 +1014,6 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         TypeDeclaration td = (TypeDeclaration) that.getScope();
         if (td.isAlias()) {
-            that.addError("alias may not extend a type");
             return;
         }
         Tree.SimpleType et = that.getType();
@@ -1055,7 +1066,6 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         TypeDeclaration td = (TypeDeclaration) that.getScope();
         if (td.isAlias()) {
-            that.addError("alias may not satisfy a type");
             return;
         }
         List<ProducedType> list = new ArrayList<ProducedType>(that.getTypes().size());
