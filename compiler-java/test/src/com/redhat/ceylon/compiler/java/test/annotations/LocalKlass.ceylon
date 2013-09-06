@@ -18,6 +18,13 @@
  * MA  02110-1301, USA.
  */
 shared class LocalKlass() {
+    if(true){
+        class Local(){
+            class Inner(){}
+        }
+    }else{
+        class Local(){}
+    }
     void m() {
         class Local<T>() satisfies Summable<Local<T>> {
             shared Integer i1 = 1;
@@ -32,5 +39,12 @@ shared class LocalKlass() {
                 return nothing;
             }
         }
+    }
+    String getter {
+        class Local(){}
+        return "";
+    }
+    assign getter {
+        class Local(){}
     }
 }
