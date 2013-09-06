@@ -748,8 +748,9 @@ satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
         { $satisfiedTypes.setEndToken($i); }
         (
           t2=abbreviatedType
-          { if ($t2.type!=null) $satisfiedTypes.addType($t2.type); 
-            $satisfiedTypes.setEndToken(null); }
+          { if ($t2.type!=null) {
+                $satisfiedTypes.addType($t2.type); 
+                $satisfiedTypes.setEndToken(null); } }
         )
       )*
     ;
@@ -792,7 +793,7 @@ caseTypes returns [CaseTypes caseTypes]
           ct2=caseType
           { if ($ct2.type!=null) $caseTypes.addType($ct2.type); 
             if ($ct2.instance!=null) $caseTypes.addBaseMemberExpression($ct2.instance); 
-            $caseTypes.setEndToken(null); }
+            if ($ct2.type!=null||$ct2.instance!=null) $caseTypes.setEndToken(null); }
         )
       )*
     ;
