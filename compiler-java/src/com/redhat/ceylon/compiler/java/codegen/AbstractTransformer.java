@@ -2126,26 +2126,18 @@ public abstract class AbstractTransformer implements Transformation {
         return make().Annotation(makeIdent(syms().ceylonAtAnnotationType), attributes);
     }
 
-    List<JCAnnotation> makeAtContainer(String ceylonName, String javaClass, String pkg) {
-        JCExpression nameAttribute = make().Assign(naming.makeUnquotedIdent("name"), 
-                                                   make().Literal(ceylonName));
-        JCExpression javaClassAttribute = make().Assign(naming.makeUnquotedIdent("javaClass"), 
-                                                        make().Literal(javaClass));
-        JCExpression packageAttribute = make().Assign(naming.makeUnquotedIdent("packageName"), 
-                                                      make().Literal(pkg));
-        List<JCExpression> attributes = List.of(nameAttribute, javaClassAttribute, packageAttribute);
+    List<JCAnnotation> makeAtContainer(ProducedType type) {
+        JCExpression classAttribute = make().Assign(naming.makeUnquotedIdent("klass"), 
+                                                    makeClassLiteral(type));
+        List<JCExpression> attributes = List.of(classAttribute);
 
         return makeModelAnnotation(syms().ceylonAtContainerType, attributes);
     }
 
-    JCAnnotation makeAtMember(String ceylonName, String javaClass, String pkg) {
-        JCExpression nameAttribute = make().Assign(naming.makeUnquotedIdent("name"), 
-                                                   make().Literal(ceylonName));
-        JCExpression javaClassAttribute = make().Assign(naming.makeUnquotedIdent("javaClass"), 
-                                                        make().Literal(javaClass));
-        JCExpression packageAttribute = make().Assign(naming.makeUnquotedIdent("packageName"), 
-                                                      make().Literal(pkg));
-        List<JCExpression> attributes = List.of(nameAttribute, javaClassAttribute, packageAttribute);
+    JCAnnotation makeAtMember(ProducedType type) {
+        JCExpression classAttribute = make().Assign(naming.makeUnquotedIdent("klass"), 
+                                                    makeClassLiteral(type));
+        List<JCExpression> attributes = List.of(classAttribute);
 
         return make().Annotation(makeIdent(syms().ceylonAtMemberType), attributes);
     }

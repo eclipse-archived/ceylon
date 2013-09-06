@@ -37,7 +37,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.DeferredSpecification;
@@ -828,10 +827,7 @@ public class ClassTransformer extends AbstractTransformer {
                 continue;
             }
             TypeDeclaration innerType = (TypeDeclaration) member;
-            // figure out its java name (strip the leading dot)
-            String javaClass = naming.declName(innerType, DeclNameFlag.QUALIFIED).substring(1);
-            String ceylonName = member.getName();
-            JCAnnotation atMember = makeAtMember(ceylonName, javaClass, pkg.getQualifiedNameString());
+            JCAnnotation atMember = makeAtMember(innerType.getType());
             members = members.prepend(atMember);
         }
         classBuilder.annotations(makeAtMembers(members));
@@ -840,14 +836,14 @@ public class ClassTransformer extends AbstractTransformer {
     private void addAtContainer(ClassDefinitionBuilder classBuilder, TypeDeclaration model) {
         Package pkg = Decl.getPackageContainer(model);
         Scope scope = model.getContainer();
-        if(scope == null || scope instanceof ClassOrInterface == false)
+        if(scope == null || scope instanceof Package)
             return;
-        ClassOrInterface container = (ClassOrInterface) scope; 
-        // figure out its java name (strip the leading dot)
-        String javaClass = naming.declName(container, DeclNameFlag.QUALIFIED).substring(1);
-        String ceylonName = container.getName();
-        List<JCAnnotation> atContainer = makeAtContainer(ceylonName, javaClass, pkg.getQualifiedNameString());
-        classBuilder.annotations(atContainer);
+        if(scope instanceof ClassOrInterface){
+            ClassOrInterface container = (ClassOrInterface) scope;
+            List<JCAnnotation> atContainer = makeAtContainer(container.getType());
+            classBuilder.annotations(atContainer);
+        }
+        
     }
 
     private void satisfaction(final Class model, ClassDefinitionBuilder classBuilder) {

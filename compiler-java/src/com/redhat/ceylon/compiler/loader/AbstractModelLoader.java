@@ -537,16 +537,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private ClassOrInterface getContainer(Module module, ClassMirror classMirror) {
         AnnotationMirror containerAnnotation = classMirror.getAnnotation(CEYLON_CONTAINER_ANNOTATION);
         if(containerAnnotation != null){
-            String name = (String) containerAnnotation.getValue("name");
-            String javaClass = (String) containerAnnotation.getValue("javaClass");
-            String packageName = (String) containerAnnotation.getValue("packageName");
-            String javaClassName = assembleJavaClass(javaClass, packageName);
-            Declaration containerDecl = convertToDeclaration(module, javaClassName, DeclarationType.TYPE);
+            TypeMirror javaClassMirror = (TypeMirror)containerAnnotation.getValue("klass");
+            String javaClassName = javaClassMirror.getQualifiedName();
+            ClassOrInterface containerDecl = (ClassOrInterface) convertToDeclaration(module, javaClassName, DeclarationType.TYPE);
             if(containerDecl == null)
-                throw new ModelResolutionException("Failed to load outer type " + name 
-                        + " for inner type " + classMirror.getQualifiedName().toString()
-                        + ", java class: " + javaClass);
-            return (ClassOrInterface) containerDecl;
+                throw new ModelResolutionException("Failed to load outer type " + javaClassName 
+                        + " for inner type " + classMirror.getQualifiedName().toString());
+            return containerDecl;
         }else{
             return (ClassOrInterface) convertToDeclaration(classMirror.getEnclosingClass(), DeclarationType.TYPE);
         }
@@ -1595,15 +1592,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void addInnerClassesFromAnnotation(ClassOrInterface klass, AnnotationMirror membersAnnotation) {
         List<AnnotationMirror> members = (List<AnnotationMirror>) membersAnnotation.getValue();
         for(AnnotationMirror member : members){
-            String name = (String) member.getValue("name");
-            String javaClass = (String) member.getValue("javaClass");
-            String packageName = (String) member.getValue("packageName");
-            String javaClassName = assembleJavaClass(javaClass, packageName);
+            TypeMirror javaClassMirror = (TypeMirror)member.getValue("klass");
+            String javaClassName = javaClassMirror.getQualifiedName();
             Declaration innerDecl = convertToDeclaration(Decl.getModuleContainer(klass), javaClassName, DeclarationType.TYPE);
             if(innerDecl == null)
-                throw new ModelResolutionException("Failed to load inner type " + name 
-                        + " for outer type " + klass.getQualifiedNameString() 
-                        + ", java class: " + javaClass);
+                throw new ModelResolutionException("Failed to load inner type " + javaClassName 
+                        + " for outer type " + klass.getQualifiedNameString());
         }
     }
 
