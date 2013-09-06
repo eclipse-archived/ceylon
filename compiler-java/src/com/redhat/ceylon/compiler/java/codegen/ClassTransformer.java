@@ -1796,11 +1796,8 @@ public class ClassTransformer extends AbstractTransformer {
         
         if (Decl.isAnnotationConstructor(def)) {
             AnnotationInvocation ai = ((AnnotationInvocation)def.getDeclarationModel().getAnnotationConstructor());
-            builder.defs(makeLiteralAnnotationFields(def)); // TODO Get rid of this
             builder.annotations(List.of(makeAtAnnotationInstantiation(ai)));
-            // TODO encapsulate this into it's own method
-            AnnotationInvocation ctor = (AnnotationInvocation)def.getDeclarationModel().getAnnotationConstructor();
-            builder.annotations(ai.makeExprAnnotations(expressionGen(), ctor, List.<AnnotationFieldName>nil()));
+            builder.annotations(makeExprAnnotations(def, ai));
         }
         
         builder.methods(classGen().transform(def, builder));
@@ -1827,6 +1824,16 @@ public class ClassTransformer extends AbstractTransformer {
             //result = result.prependList(transformAnnotationConstructorType(def));
         //}
         return result;
+    }
+
+    /**
+     * Make the {@code @*Exprs} annotations to hold the literal arguments 
+     * to the invocation.
+     */
+    private List<JCAnnotation> makeExprAnnotations(Tree.AnyMethod def,
+            AnnotationInvocation ai) {
+        AnnotationInvocation ctor = (AnnotationInvocation)def.getDeclarationModel().getAnnotationConstructor();
+        return ai.makeExprAnnotations(expressionGen(), ctor, List.<AnnotationFieldName>nil());
     }
     
     public List<JCTree> makeLiteralAnnotationFields(Tree.AnyMethod node) {
@@ -3035,14 +3042,6 @@ public class ClassTransformer extends AbstractTransformer {
                 if (acp.getParameter().equals(parameter)
                         && acp.getDefaultArgument() != null) {
                     methodBuilder.userAnnotations(acp.getDefaultArgument().makeDpmAnnotations(expressionGen()));
-                    // TODO Remove the following block
-                    if (acp.getDefaultArgument() instanceof LiteralAnnotationTerm
-                            && ((LiteralAnnotationTerm)acp.getDefaultArgument()).getTerm() instanceof Tree.BaseMemberExpression
-                            && Decl.isAnonCaseOfEnumeratedType(((Tree.BaseMemberExpression)((LiteralAnnotationTerm)acp.getDefaultArgument()).getTerm()))) {
-                        // Add @DefaultedObject
-                        Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression)((LiteralAnnotationTerm)acp.getDefaultArgument()).getTerm();
-                        methodBuilder.userAnnotations(makeAtDefaultedObject(bme.getTypeModel()));
-                    }
                 }
             }
         }
