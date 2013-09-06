@@ -4361,14 +4361,7 @@ public class GenerateJsVisitor extends Visitor
         return dynblock > 0;
     }
 
-    /** Tells whether the typeModel of a TypeLiteral or MemberLiteral node is open or closed.
-     * Some things are open and closed; we should prefer the open version since we can get the applied one
-     * from it, but this might cause problems when the closed version is expected... */
-    private boolean isTypeLiteralModelOpen(ProducedType t) {
-        final String qn = t.getProducedTypeQualifiedName();
-        return qn.contains("ceylon.language.model.declaration::");
-    }
-
+    /** Generate the call to the corresponding open type for the specified literal. */
     private void generateOpenType(Tree.MetaLiteral that) {
         final Declaration d = that.getDeclaration();
         final Module m = d.getUnit().getPackage().getModule();
@@ -4381,39 +4374,61 @@ public class GenerateJsVisitor extends Visitor
             out("Function()('");
         } else if (d instanceof Value) {
             out("Value()('");
+        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType) {
+            out("Intersection()(");
+        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType) {
+            out("Union()(");
+        } else if (d instanceof TypeParameter) {
+            out("TypeParam()(");
+        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType) {
+            out("NothingType()(");
+        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.TypeAlias) {
+            out("Alias()(");
         }
         out(d.getName(), "',", clAlias, "getModules$model().find('", m.getNameAsString(),
-                "','", m.getVersion(), "'),"+ d.isToplevel(),",");
-        if (d instanceof Value) {
-            if (d.isToplevel()) {
-                qualify(that, d);
-                out("$prop$");
-            } else {
-                qualify(that, (Declaration)d.getContainer());
-                out(names.name((Declaration)d.getContainer()));
-                out(".$$.prototype.$prop$");
-            }
+                "','", m.getVersion(), "').findPackage('", d.getUnit().getPackage().getNameAsString(),
+                "'),"+ d.isToplevel(),",");
+        if (d.isMember()) {
+            qualify(that, (Declaration)d.getContainer());
+            out(names.name((Declaration)d.getContainer()), ".$$.prototype.");
         } else {
             qualify(that, d);
+        }
+        if (d instanceof Value) {
+            out("$prop$");
         }
         out(names.name(d), ")");
     }
 
     @Override
     public void visit(TypeLiteral that) {
+        //Can be an alias, class, interface or type parameter
         if (that.getWantsDeclaration()) {
             generateOpenType(that);
         } else {
-            out(clAlias, "/*TODO closed type literal*/typeLiteral$model({Type:");
             final ProducedType ltype = that.getType().getTypeModel();
-            if (isTypeLiteralModelOpen(that.getTypeModel()) && !ltype.containsTypeParameters()) {
-                TypeDeclaration d = ltype.getDeclaration();
-                qualify(that,d);
-                out(names.name(d));
+            final TypeDeclaration td = ltype.getDeclaration();
+            if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+                out(clAlias, "$init$AppliedClass$model()(");
+                qualify(that, td);
+                out(names.name(td),",");
+                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
+                out(")");
+            } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
+                out(clAlias, "$init$AppliedInterface$model()(");
+                qualify(that, td);
+                out(names.name(td),",");
+                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
+                out(")");
+            } else if (that instanceof Tree.AliasLiteral) {
+                out("/*TODO: applied alias*/");
+            } else if (that instanceof Tree.TypeParameterLiteral) {
+                out("/*TODO: applied type parameter*/");
             } else {
+                out(clAlias, "/*TODO closed type literal", that.getClass().getName(),"*/typeLiteral$model({Type:");
                 TypeUtils.typeNameOrList(that, ltype, this);
+                out("})");
             }
-            out("})");
         }
     }
 
@@ -4424,32 +4439,57 @@ public class GenerateJsVisitor extends Visitor
             generateOpenType(that);
         } else {
             final com.redhat.ceylon.compiler.typechecker.model.ProducedReference ref = that.getTarget();
-            System.out.println("no want decl " + that.getTarget());
-            final Declaration d = ref.getDeclaration();
             final ProducedType ltype = that.getType() == null ? null : that.getType().getTypeModel();
-            final boolean open = isTypeLiteralModelOpen(that.getTypeModel())
-                    && (ltype == null || !ltype.containsTypeParameters());
-            out(clAlias, "typeLiteral$model({Type:");
-            if (!open)out("{t:");
-            if (ltype == null) {
-                qualify(that, d);
+            final Declaration d = ref.getDeclaration();
+            if (that instanceof FunctionLiteral || d instanceof Method) {
+                out(clAlias, "AppliedFunction$model(");
+                if (ltype == null) {
+                    qualify(that, d);
+                } else {
+                    qualify(that, ltype.getDeclaration());
+                    out(names.name(ltype.getDeclaration()));
+                    out(".$$.prototype.");
+                }
+                if (d instanceof Value) {
+                    out("$prop$");
+                }
+                out(names.name(d),",");
+                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
+                out(")");
+            } else if (that instanceof ValueLiteral || d instanceof Value) {
+                out(clAlias, "$init$AppliedValue()(");
+                if (ltype == null) {
+                    qualify(that, d);
+                } else {
+                    qualify(that, ltype.getDeclaration());
+                    out(names.name(ltype.getDeclaration()));
+                    out(".$$.prototype.");
+                }
+                if (d instanceof Value) {
+                    out("$prop$");
+                }
+                out(names.name(d));
+                out(")");
             } else {
-                qualify(that, ltype.getDeclaration());
-                out(names.name(ltype.getDeclaration()));
-                out(".$$.prototype.");
-            }
-            if (d instanceof Value) {
-                out("$prop$");
-            }
-            out(names.name(d));
-            if (!open) {
+                out(clAlias, "/*TODO:closed member literal*/typeLiteral$model({Type:");
+                out("{t:");
+                if (ltype == null) {
+                    qualify(that, d);
+                } else {
+                    qualify(that, ltype.getDeclaration());
+                    out(names.name(ltype.getDeclaration()));
+                    out(".$$.prototype.");
+                }
+                if (d instanceof Value) {
+                    out("$prop$");
+                }
+                out(names.name(d));
                 if (ltype != null && ltype.getTypeArguments() != null && !ltype.getTypeArguments().isEmpty()) {
                     out(",a:");
                     TypeUtils.printTypeArguments(that, ltype.getTypeArguments(), this);
                 }
-                out("}");
+                out("}})");
             }
-            out("})");
         }
     }
 
