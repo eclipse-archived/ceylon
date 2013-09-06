@@ -145,8 +145,9 @@ public class AnnotationsTest extends CompilerTest {
         compareWithJavaSource("EnumeratedReferenceAsDefaulted");
     }
     @Test
-    public void testAnnotationClassQuoting(){
-        compareWithJavaSource("AnnotationClassQuoting");
+    public void testQuoting(){
+        compareWithJavaSource("Quoting_1");
+        compareWithJavaSource("Quoting_2");
     }
     
     @Test
