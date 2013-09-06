@@ -142,6 +142,37 @@ public class CeylonRunTool extends RepoUsingTool {
             }
         }
 
+        Collection<ModuleVersionDetails> versions = getModuleVersions(moduleNameOptVersion, true, offline);
+        if (versions.isEmpty()) {
+            errorMsg("module.not.found", moduleNameOptVersion, getRepositoryManager().getRepositoriesDisplayString());
+            return;
+        }
+        if (versions.size() > 1) {
+            errorMsg("missing.version", moduleNameOptVersion, getRepositoryManager().getRepositoriesDisplayString());
+            msg("try.versions");
+            boolean first = true;
+            for (ModuleVersionDetails version : versions) {
+                if (!first) {
+                    append(", ");
+                }
+                append(version.getVersion());
+                first = false;
+            }
+            newline();
+            return;
+        } else {
+            // If we got only one result and no version was originally given
+            // we append the version number to the module name
+            ModuleVersionDetails version = versions.iterator().next();
+            int p = moduleNameOptVersion.indexOf('/');
+            if (p == -1) {
+                moduleNameOptVersion = moduleNameOptVersion + "/" + version.getVersion();
+            }
+            if (p == (moduleNameOptVersion.length() - 1)) {
+                moduleNameOptVersion = moduleNameOptVersion + version.getVersion();
+            }
+        }
+        
         argList.add(moduleNameOptVersion);
         argList.addAll(args);
 
