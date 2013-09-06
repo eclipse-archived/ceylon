@@ -469,8 +469,8 @@ final class annotationClassIterableIterable_ {
     }
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean$annotations({
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean$annotation(b = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassBoolean_.default$x),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean$annotation(b = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassBoolean_.default$x)})
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean$annotation(b = true),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean$annotation(b = true)})
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotations({
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = {}),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = true),

@@ -9,7 +9,7 @@ shared final annotation class EnumeratedReference_X(shared EnumeratedReference_Y
 shared final annotation class EnumeratedReference_Y(Comparison c)
         satisfies SequencedAnnotation<EnumeratedReference_Y, FunctionDeclaration> {} 
 
-
+@nomodel
 annotation EnumeratedReference_X enumeratedReference_z(EnumeratedReference_Y y=EnumeratedReference_Y(smaller)) => EnumeratedReference_X(y);
 annotation EnumeratedReference_X enumeratedReference_zz() => EnumeratedReference_X(EnumeratedReference_Y(smaller));
 

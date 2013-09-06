@@ -172,7 +172,7 @@ final class annotationClassCharacter_ {
         .com.redhat.ceylon.compiler.java.test.annotations.annotationClassCharacter_.annotationClassCharacter();
     }
 }
-@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotation(c = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassCharacter_.default$c)})
+@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotation(c = 122)})
 class AnnotationClassCharacter_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnotationClassCharacter_callsite() {

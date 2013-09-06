@@ -117,8 +117,8 @@ final class collidingLiteralDefaults_callsite_ {
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults$annotation(
-            i1 = .com.redhat.ceylon.compiler.java.test.annotations.collidingLiteralDefaults_.arg$i1,
-            i2 = .com.redhat.ceylon.compiler.java.test.annotations.collidingLiteralDefaults_.default$i1)})
+            i1 = 1L,
+            i2 = 2L)})
     static void collidingLiteralDefaults_callsite() {
     }
     

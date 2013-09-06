@@ -124,7 +124,7 @@ final class AnnotationClassQuoting implements .com.redhat.ceylon.compiler.java.r
 @.com.redhat.ceylon.compiler.java.metadata.IntegerExprs({
         @.com.redhat.ceylon.compiler.java.metadata.IntegerValue(
                 name = "arg$hash",
-                value = -1L),
+                value = -1),
         @.com.redhat.ceylon.compiler.java.metadata.IntegerValue(
                 name = "arg$hashCode",
                 value = 0L)})
@@ -166,10 +166,10 @@ final class annotationClassQuoting2_ {
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassQuoting$annotations({
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassQuoting$annotation(
-                string = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassQuoting_.arg$string,
-                $toString = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassQuoting_.arg$toString,
-                hash = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassQuoting_.arg$hash,
-                $hashCode = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassQuoting_.arg$hashCode),
+                string = "",
+                $toString = "",
+                hash = -1,
+                $hashCode = 0L),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassQuoting$annotation(
                 string = "",
                 $toString = "",

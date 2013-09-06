@@ -6,7 +6,7 @@ final annotation class NestedLeaf(shared Integer i1 = 1)
 }
 
 annotation NestedLeaf nestedLeafDefaultedParameter(Integer i2=2) => NestedLeaf(i2);
-annotation NestedLeaf nestedLeafLiteralArgument() => NestedLeaf(2);
+annotation NestedLeaf nestedLeafLiteralArgument() => NestedLeaf(3);
 
 final annotation class NestedBranch(shared String s, shared NestedLeaf b) 
     satisfies SequencedAnnotation<NestedBranch, FunctionDeclaration>{
@@ -16,39 +16,39 @@ final annotation class NestedBranch(shared String s, shared NestedLeaf b)
 
 annotation NestedBranch nestedBranchDPClassWithLiteralArgument(
         NestedLeaf b = NestedLeaf(100)) 
-    => NestedBranch("", b);
+    => NestedBranch("nestedBranchDPClassWithLiteralArgument", b);
 
 annotation NestedBranch nestedBranchDPClassDefaultedArgument(
         NestedLeaf b = NestedLeaf()) 
-    => NestedBranch("", b);
+    => NestedBranch("nestedBranchDPClassDefaultedArgument", b);
 
 annotation NestedBranch nestedBranchDPCtorWithLiteralArgument(
         NestedLeaf b = nestedLeafDefaultedParameter(101)) 
-    => NestedBranch("", b);
+    => NestedBranch("nestedBranchDPCtorWithLiteralArgument", b);
 
 annotation NestedBranch nestedBranchDPCtorNullary(
         NestedLeaf b = nestedLeafLiteralArgument()) 
-    => NestedBranch("", b);
+    => NestedBranch("nestedBranchDPCtorNullary", b);
 
 annotation NestedBranch nestedBranchDPCtorWithDefaultedArgument(
         NestedLeaf b = nestedLeafDefaultedParameter()) 
-    => NestedBranch("", b);
+    => NestedBranch("nestedBranchDPCtorWithDefaultedArgument", b);
 
 annotation NestedBranch nestedBranchClassNullary() 
-    => NestedBranch("", NestedLeaf());
+    => NestedBranch("nestedBranchClassNullary", NestedLeaf());
 annotation NestedBranch nestedBranchClassLiteral() 
-    => NestedBranch("", NestedLeaf(110));
+    => NestedBranch("nestedBranchClassLiteral", NestedLeaf(110));
 // Illegal annotation NestedBranch nestedBranchCtorNullary(Integer a6) 
 //    => NestedBranch("", NestedLeaf(a6));
 
 annotation NestedBranch nestedBranchCtorNullary() 
-    => NestedBranch("", nestedLeafLiteralArgument());
+    => NestedBranch("nestedBranchCtorNullary", nestedLeafLiteralArgument());
 
 annotation NestedBranch nestedBranchCtorDefaultedArgument() 
-    => NestedBranch("", nestedLeafDefaultedParameter());
+    => NestedBranch("nestedBranchCtorDefaultedArgument", nestedLeafDefaultedParameter());
 
 annotation NestedBranch nestedBranchCtorLiteral() 
-    => NestedBranch("", nestedLeafDefaultedParameter{i2=512;});
+    => NestedBranch("nestedBranchCtorLiteral", nestedLeafDefaultedParameter{i2=512;});
 
 // Illegal annotation NestedBranch nestedBranchCtorParamArg(Integer x) 
 //    => NestedBranch("", nestedLeafDefaultedParameter{i2=x;});

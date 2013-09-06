@@ -417,7 +417,7 @@ final class annotationClassStringDefaulted_ {
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotations({
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation(s = "baz"),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation(s = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassStringStatic_.arg$s),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation(s = "bar"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation(s = "yes"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation(s = "yes")})
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted$annotation})
