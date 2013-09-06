@@ -113,7 +113,7 @@ public abstract class ToolLoader {
         // We use this Map because Java doesn't define the order that the 
         // declared methods will be returned in, but the order matters 
         TreeMap<Integer, ArgumentModel<?>> orderedArgumentModels = new TreeMap<Integer, ArgumentModel<?>>();
-        for (Method method : cls.getDeclaredMethods()) {
+        for (Method method : cls.getMethods()) {
             addMethod(cls, model, method, orderedArgumentModels);
         }
         
