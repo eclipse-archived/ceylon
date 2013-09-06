@@ -728,7 +728,7 @@ public class DeclarationVisitor extends Visitor {
         String op = that instanceof Tree.ExistsCondition ? "exists" : "nonempty";
         if (that.getBrokenExpression()!=null) {
             that.getBrokenExpression()
-                .addError("syntax error: " + op + 
+                .addError("incorrect syntax: " + op + 
                         " conditions do not apply to arbitrary expressions, try using postfix " + 
                         op + " operator");
         }
