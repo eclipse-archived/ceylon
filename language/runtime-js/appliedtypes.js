@@ -170,7 +170,7 @@ function $init$AppliedIntersectionType(){
 exports.$init$AppliedIntersectionType$model=$init$AppliedIntersectionType;
 $init$AppliedIntersectionType();
 
-function AppliedFunction(m,o) {
+function AppliedFunction(m,$$targs$$,o) {
   var f = o===undefined?function(){return m.apply(this,arguments);}:function(){return m.apply(o,arguments);}
   var mm=m.$$metamodel$$;
   if (typeof(mm)==='function') {mm=mm();m.$$metamodel$$=mm;}
@@ -178,27 +178,34 @@ function AppliedFunction(m,o) {
   var T$all={'ceylon.language.model::Function':Function$model};
   for (x in f.getT$all()) { T$all[x]=f.getT$all()[x]; }
   f.getT$all=function() {return T$all; };
-  //TODO add type arguments
-  var types = {t:Empty};
-  var t2s = [];
-  for (var i=mm.$ps.length-1; i>=0; i--) {
-    var e;
-    t2s.push(mm.$ps[i].$t);
-    if (t2s.length == 1) {
-      e = mm.$ps[i].$t;
-    } else {
-      var lt=[];
-      for (var j=0;j<t2s.legth;j++)lt.push(t2s[j]);
-      e = {t:'u', l:lt};
+  if ($$targs$$===undefined) {
+    //TODO add type arguments
+    var types = {t:Empty};
+    var t2s = [];
+    for (var i=mm.$ps.length-1; i>=0; i--) {
+      var e;
+      t2s.push(mm.$ps[i].$t);
+      if (t2s.length == 1) {
+        e = mm.$ps[i].$t;
+      } else {
+        var lt=[];
+        for (var j=0;j<t2s.legth;j++)lt.push(t2s[j]);
+        e = {t:'u', l:lt};
+      }
+      types = {t:Tuple,a:{Rest:types,First:mm.$ps[i].$t,Element:e}};
     }
-    types = {t:Tuple,a:{Rest:types,First:mm.$ps[i].$t,Element:e}};
+    f.$$targs$$={Type:mm.$t,Arguments:types};
+  } else {
+    f.$$targs$$=$$targs$$;
   }
-  f.$$targs$$={Type:mm.$t,Arguments:types};
   return f;
 }
+exports.AppliedFunction$model=AppliedFunction;
 
-
-function AppliedValue(attr,$$targs$$,$$appliedAttribute){
+function AppliedValue(attr,$$appliedAttribute){
+    var mm = attr.$$metamodel$$;
+    if (typeof(mm)==='function')mm=mm();
+    var $$targs$$ = {Container:{t:mm.$cont},Type:mm.$t};
     $init$AppliedValue();
     if ($$appliedAttribute===undefined)$$appliedAttribute=new AppliedValue.$$;
     set_type_args($$appliedAttribute,$$targs$$);
