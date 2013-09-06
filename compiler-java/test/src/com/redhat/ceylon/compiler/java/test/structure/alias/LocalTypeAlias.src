@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.alias;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Name("TypeAliasInterface")
+@.com.redhat.ceylon.compiler.java.metadata.LocalContainer
 interface localTypeAliasMethod$0$TypeAliasInterface_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -18,6 +19,7 @@ final class localTypeAliasMethod_ {
     static void localTypeAliasMethod() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+        @.com.redhat.ceylon.compiler.java.metadata.LocalContainer
         class TypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             TypeAliasClass() {

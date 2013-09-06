@@ -18,6 +18,7 @@ final class LocalInterfaceAlias_Toplevel$impl {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Name("InterfaceAlias_Foo")
+@.com.redhat.ceylon.compiler.java.metadata.LocalContainer
 interface localInterfaceAliasMethod$0$InterfaceAlias_Foo_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -43,6 +44,7 @@ final class localInterfaceAliasMethod_ {
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+        @.com.redhat.ceylon.compiler.java.metadata.LocalContainer
         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.alias::localInterfaceAliasMethod.InterfaceAlias_Foo"})
         class Class1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod$0$InterfaceAlias_Foo_ {
             
@@ -66,6 +68,7 @@ final class localInterfaceAliasMethod_ {
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+        @.com.redhat.ceylon.compiler.java.metadata.LocalContainer
         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.alias::LocalInterfaceAlias_Toplevel"})
         class Class2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel {
             

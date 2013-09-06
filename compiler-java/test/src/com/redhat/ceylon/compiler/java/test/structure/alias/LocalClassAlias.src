@@ -31,6 +31,7 @@ final class localClassAliasMethod_ {
     static void localClassAliasMethod() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+        @.com.redhat.ceylon.compiler.java.metadata.LocalContainer
         class ClassAlias_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             ClassAlias_Foo() {

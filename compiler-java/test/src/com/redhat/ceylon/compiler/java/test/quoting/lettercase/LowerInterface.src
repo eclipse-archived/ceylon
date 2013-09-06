@@ -3,10 +3,7 @@ package com.redhat.ceylon.compiler.java.test.quoting.lettercase;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Name("ii")
 @.ceylon.language.Shared$annotation
-@.com.redhat.ceylon.compiler.java.metadata.Container(
-        name = "i",
-        javaClass = "com.redhat.ceylon.compiler.java.test.quoting.lettercase.i_",
-        packageName = "com.redhat.ceylon.compiler.java.test.quoting.lettercase")
+@.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i_.class)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public interface i$ii_ {
     
@@ -15,6 +12,7 @@ public interface i$ii_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Name("mi")
+@.com.redhat.ceylon.compiler.java.metadata.LocalContainer
 interface i$m$0$mi_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -23,10 +21,7 @@ interface i$m$0$mi_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Name("i")
 @.ceylon.language.Shared$annotation
-@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
-        name = "ii",
-        javaClass = "com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$ii_",
-        packageName = "com.redhat.ceylon.compiler.java.test.quoting.lettercase")})
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$ii_.class)})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public interface i_ {
     

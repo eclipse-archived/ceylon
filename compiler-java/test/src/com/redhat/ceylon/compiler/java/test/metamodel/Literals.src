@@ -1,10 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.metamodel;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
-        name = "Member",
-        javaClass = "com.redhat.ceylon.compiler.java.test.metamodel.LitClass.Member",
-        packageName = "com.redhat.ceylon.compiler.java.test.metamodel")})
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitClass.Member.class)})
 class LitClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     LitClass(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
@@ -72,10 +69,7 @@ class LitClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
     @.ceylon.language.Shared$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Container(
-            name = "LitClass",
-            javaClass = "com.redhat.ceylon.compiler.java.test.metamodel.LitClass",
-            packageName = "com.redhat.ceylon.compiler.java.test.metamodel")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitClass.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
@@ -223,10 +217,7 @@ class LitParameterisedClassWithParameters<T> implements .com.redhat.ceylon.compi
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
-        name = "Member",
-        javaClass = "com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass.Member",
-        packageName = "com.redhat.ceylon.compiler.java.test.metamodel")})
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass.Member.class)})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "T",
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -303,10 +294,7 @@ class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runti
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
     @.ceylon.language.Shared$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Container(
-            name = "LitParameterisedClass",
-            javaClass = "com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass",
-            packageName = "com.redhat.ceylon.compiler.java.test.metamodel")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "X",
@@ -340,10 +328,7 @@ class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runti
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Name("Member")
 @.ceylon.language.Shared$annotation
-@.com.redhat.ceylon.compiler.java.metadata.Container(
-        name = "LitInterface",
-        javaClass = "com.redhat.ceylon.compiler.java.test.metamodel.LitInterface",
-        packageName = "com.redhat.ceylon.compiler.java.test.metamodel")
+@.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitInterface.class)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public interface LitInterface$Member {
     
@@ -351,10 +336,7 @@ public interface LitInterface$Member {
     public .com.redhat.ceylon.compiler.java.test.metamodel.LitInterface$impl.Member$impl $com$redhat$ceylon$compiler$java$test$metamodel$LitInterface$impl$Member$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
-        name = "Member",
-        javaClass = "com.redhat.ceylon.compiler.java.test.metamodel.LitInterface$Member",
-        packageName = "com.redhat.ceylon.compiler.java.test.metamodel")})
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitInterface$Member.class)})
 interface LitInterface {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -382,10 +364,7 @@ final class LitInterface$impl {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Name("Member")
 @.ceylon.language.Shared$annotation
-@.com.redhat.ceylon.compiler.java.metadata.Container(
-        name = "LitParameterisedInterface",
-        javaClass = "com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface",
-        packageName = "com.redhat.ceylon.compiler.java.test.metamodel")
+@.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface.class)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -404,10 +383,7 @@ public interface LitParameterisedInterface$Member<T, X> {
     public .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface$impl<T>.Member$impl<X> $com$redhat$ceylon$compiler$java$test$metamodel$LitParameterisedInterface$impl$Member$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
-        name = "Member",
-        javaClass = "com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface$Member",
-        packageName = "com.redhat.ceylon.compiler.java.test.metamodel")})
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface$Member.class)})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "T",
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -566,10 +542,7 @@ final class Alias {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
-        name = "Inner",
-        javaClass = "com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.Inner",
-        packageName = "com.redhat.ceylon.compiler.java.test.metamodel")})
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.Inner.class)})
 class RelativeLiterals implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -622,10 +595,7 @@ class RelativeLiterals implements .com.redhat.ceylon.compiler.java.runtime.model
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
     @.ceylon.language.Shared$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Container(
-            name = "RelativeLiterals",
-            javaClass = "com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals",
-            packageName = "com.redhat.ceylon.compiler.java.test.metamodel")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         

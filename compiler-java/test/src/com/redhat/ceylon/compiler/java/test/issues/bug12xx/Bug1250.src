@@ -11,10 +11,8 @@ final class bug1250_ {
     static void bug1250() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-        @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
-                name = "Bar",
-                javaClass = "oo.Bar",
-                packageName = "com.redhat.ceylon.compiler.java.test.issues.bug12xx")})
+        @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = Foo.Bar.class)})
+        @.com.redhat.ceylon.compiler.java.metadata.LocalContainer
         class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             Foo() {
@@ -27,10 +25,7 @@ final class bug1250_ {
             
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
             @.ceylon.language.Shared$annotation
-            @.com.redhat.ceylon.compiler.java.metadata.Container(
-                    name = "Foo",
-                    javaClass = "oo",
-                    packageName = "com.redhat.ceylon.compiler.java.test.issues.bug12xx")
+            @.com.redhat.ceylon.compiler.java.metadata.Container(klass = Foo.class)
             @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
             class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
