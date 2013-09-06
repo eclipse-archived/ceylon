@@ -32,15 +32,11 @@ public class MetamodelTest extends CompilerTest {
     }
 
     @Test
-    public void testRuntime() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.runtime", "runtime.ceylon", "types.ceylon", "visitor.ceylon");
-    }
-
-    @Test
     public void testInteropRuntime() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.interopRuntime", "interopRuntime.ceylon", "JavaType.java");
     }
 
+    // FIXME: I guess this one should also move to the language module
     @Test
     public void testAnnotations() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.annotationTests", "annotationTypes.ceylon", "annotationTests.ceylon");
@@ -51,59 +47,10 @@ public class MetamodelTest extends CompilerTest {
         compareWithJavaSource("Literals");
     }
 
+    // FIXME: I guess this one should also move to the language module
     @Test
     public void testTypeLiteralRuntime() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.literalsRuntime", "Literals.ceylon", "literalsRuntime.ceylon");
-    }
-
-    @Test
-    public void testBugCL238() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.bug238", "bug238.ceylon");
-    }
-
-    @Test
-    public void testBugCL245() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.bug245", "bug245.ceylon");
-    }
-
-    @Test
-    public void testBugCL257() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.bug257", "bug257.ceylon");
-    }
-
-    @Test
-    public void testBugCL258() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.bug258", "bug258.ceylon");
-    }
-
-    @Test
-    public void testBugCL263() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.bug263", "bug263.ceylon");
-    }
-
-    @Test
-    public void testBug1196() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.bug1196test", "bug1196.ceylon");
-    }
-
-    @Test
-    public void testBug1197() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.bug1197", "bug1197.ceylon");
-    }
-
-    @Test
-    public void testBug1198() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.bug1198", "bug1198.ceylon");
-    }
-
-    @Test
-    public void testBug1199() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.bug1199", "bug1199.ceylon");
-    }
-
-    @Test
-    public void testBug1201() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.bug1201", "bug1201.ceylon");
     }
 
     @Test
@@ -116,16 +63,6 @@ public class MetamodelTest extends CompilerTest {
     @Test
     public void testBug1205() {
         compareWithJavaSource("bug1205");
-    }
-
-    @Test
-    public void testBug1210() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.bug1210", "bug1210.ceylon");
-    }
-
-    @Test
-    public void testBug1244() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.bug1244", "bug1244.ceylon");
     }
 }
 
