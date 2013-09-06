@@ -1156,6 +1156,9 @@ public abstract class AbstractTransformer implements Transformation {
     /** Generates the Java type of the companion class of the given class */
     static final int JT_ANNOTATIONS = 1 << 13;
 
+    /** Do not resolve aliases, useful if we want a class literal pointing to the alias class itself. */
+    static final int JT_CLASS_LITERAL = 1 << 14;
+
     /**
      * This function is used solely for method return types and parameters 
      */
@@ -1188,7 +1191,8 @@ public abstract class AbstractTransformer implements Transformation {
             return make().Erroneous();
         
         // resolve aliases
-        type = type.resolveAliases();
+        if((flags & JT_CLASS_LITERAL) == 0)
+            type = type.resolveAliases();
         
         if ((flags & __JT_RAW_TP_BOUND) != 0
                 && type.getDeclaration() instanceof TypeParameter) {
@@ -1196,7 +1200,10 @@ public abstract class AbstractTransformer implements Transformation {
         }
         
         // ERASURE
-        if (willEraseToObject(type)) {
+        if ((flags & JT_CLASS_LITERAL) == 0
+                // don't consider erasure for class literals since it would resolve aliases and we want class
+                // literals to the alias class
+                && willEraseToObject(type)) {
             // For an erased type:
             // - Any of the Ceylon types Anything, Object, Null,
             //   Basic, and Nothing result in the Java type Object
@@ -1258,7 +1265,11 @@ public abstract class AbstractTransformer implements Transformation {
         
         JCExpression jt = null;
         
-        ProducedType simpleType = simplifyType(type);
+        ProducedType simpleType;
+        if((flags & JT_CLASS_LITERAL) == 0)
+            simpleType = simplifyType(type);
+        else
+            simpleType = type;
         
         java.util.List<ProducedType> qualifyingTypes = new java.util.ArrayList<ProducedType>();
         ProducedType qType = simpleType;
@@ -3008,7 +3019,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     public JCExpression makeClassLiteral(ProducedType type) {
-        return makeSelect(makeJavaType(type, JT_NO_PRIMITIVES | JT_RAW), "class");
+        return makeSelect(makeJavaType(type, JT_NO_PRIMITIVES | JT_RAW | JT_CLASS_LITERAL), "class");
     }
 
     /**
