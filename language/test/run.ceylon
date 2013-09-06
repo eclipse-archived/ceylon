@@ -46,8 +46,6 @@ shared void run() {
     print("Tuples");
     tuples();
     testCurries();
-    print("Metamodel");
-    testMetamodel();
 
     results();
 }
