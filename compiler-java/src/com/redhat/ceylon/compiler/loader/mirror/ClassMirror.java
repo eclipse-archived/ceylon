@@ -54,6 +54,11 @@ public interface ClassMirror extends AnnotatedMirror, AccessibleMirror {
     boolean isInnerClass();
 
     /**
+     * Returns true if this class is a local class
+     */
+    boolean isLocalClass();
+
+    /**
      * Returns true if this class is an anonymous class
      */
     boolean isAnonymous();
@@ -141,5 +146,4 @@ public interface ClassMirror extends AnnotatedMirror, AccessibleMirror {
      * Returns true if this class is final
      */
     boolean isFinal();
-
 }

@@ -357,4 +357,13 @@ public class LazyMethod extends Method implements LazyElement {
         // do this without lazy-loading
         super.addMember(declaration);
     }
+
+    @Override
+    public boolean isLocal() {
+        return false;
+    }
+
+    @Override
+    public void setLocal(boolean local) {
+    }
 }

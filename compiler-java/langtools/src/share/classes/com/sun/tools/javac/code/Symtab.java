@@ -230,6 +230,7 @@ public class Symtab {
     public final Type ceylonAtEnumerationReferenceType;
     public final Type ceylonAtDefaultedObjectType;
     public final Type ceylonAtContainerType;
+    public final Type ceylonAtLocalContainerType;
     public final Type ceylonAtMemberType;
     public final Type ceylonAtMembersType;
     public final Type ceylonAtNamedArgumentType;
@@ -609,6 +610,7 @@ public class Symtab {
         ceylonAtEnumerationReferenceType  = enterClass("com.redhat.ceylon.compiler.java.metadata.EnumerationReference");
         ceylonAtDefaultedObjectType  = enterClass("com.redhat.ceylon.compiler.java.metadata.DefaultedObject");
         ceylonAtContainerType = enterClass("com.redhat.ceylon.compiler.java.metadata.Container");
+        ceylonAtLocalContainerType = enterClass("com.redhat.ceylon.compiler.java.metadata.LocalContainer");
         ceylonAtMemberType = enterClass("com.redhat.ceylon.compiler.java.metadata.Member");
         ceylonAtMembersType = enterClass("com.redhat.ceylon.compiler.java.metadata.Members");
         ceylonAtNamedArgumentType = enterClass("com.redhat.ceylon.compiler.java.metadata.NamedArgument");

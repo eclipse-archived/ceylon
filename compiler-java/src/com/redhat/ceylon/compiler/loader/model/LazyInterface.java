@@ -55,6 +55,7 @@ public class LazyInterface extends Interface implements LazyContainer {
     private boolean isTypeParamsLoaded = false;
     private boolean isTypeParamsLoaded2 = false;
     private boolean isAnnotationType = false;
+    private boolean local;
 
     public LazyInterface(ClassMirror classMirror, ModelCompleter completer) {
         this.classMirror = classMirror;
@@ -346,5 +347,15 @@ public class LazyInterface extends Interface implements LazyContainer {
     @Override
     public boolean isLoaded() {
         return isLoaded;
+    }
+
+    @Override
+    public void setLocal(boolean local) {
+        this.local = local;
+    }
+    
+    @Override
+    public boolean isLocal(){
+        return this.local ;
     }
 }

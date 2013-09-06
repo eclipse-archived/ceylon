@@ -211,6 +211,11 @@ public class ReflectionClass implements ClassMirror {
     }
 
     @Override
+    public boolean isLocalClass() {
+        return klass.isLocalClass() || klass.isAnnotationPresent(ReflectionUtils.getClass("com.redhat.ceylon.compiler.java.metadata.LocalContainer"));
+    }
+
+    @Override
     public List<ClassMirror> getDirectInnerClasses() {
         if(innerClasses == null){
             innerClasses = new LinkedList<ClassMirror>();

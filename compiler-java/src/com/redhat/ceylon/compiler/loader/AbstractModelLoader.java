@@ -132,6 +132,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public static final String CEYLON_OBJECT_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Object";
     public static final String CEYLON_METHOD_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Method";
     public static final String CEYLON_CONTAINER_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Container";
+    public static final String CEYLON_LOCAL_CONTAINER_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.LocalContainer";
     private static final String CEYLON_MEMBERS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Members";
     private static final String CEYLON_ANNOTATIONS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Annotations";
     public static final String CEYLON_VALUETYPE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.ValueType";
@@ -511,9 +512,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     private void setContainer(ClassMirror classMirror, Declaration d, LazyPackage pkg) {
         // add it to its package if it's not an inner class
-        if(!classMirror.isInnerClass()){
+        if(!classMirror.isInnerClass() && !classMirror.isLocalClass()){
             d.setContainer(pkg);
             pkg.addCompiledMember(d);
+        }else if(classMirror.isLocalClass()){
+            // set its container to the package for now, but don't add it to the package as a member because it's not
+            d.setContainer(pkg);
+            ((LazyElement)d).setLocal(true);
         }else if(d instanceof ClassOrInterface || d instanceof TypeAlias){
             // do overloads later, since their container is their abstract superclass's container and
             // we have to set that one first

@@ -29,4 +29,8 @@ package com.redhat.ceylon.compiler.loader.model;
 public interface LazyElement {
 
     public boolean isLoaded();
+    
+    public boolean isLocal();
+    
+    public void setLocal(boolean local);
 }

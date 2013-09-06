@@ -2134,6 +2134,10 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtContainerType, attributes);
     }
 
+    List<JCAnnotation> makeAtLocalContainer() {
+        return makeModelAnnotation(syms().ceylonAtLocalContainerType);
+    }
+
     JCAnnotation makeAtMember(ProducedType type) {
         JCExpression classAttribute = make().Assign(naming.makeUnquotedIdent("klass"), 
                                                     makeClassLiteral(type));

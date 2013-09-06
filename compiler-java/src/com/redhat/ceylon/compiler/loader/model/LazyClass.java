@@ -29,7 +29,9 @@ import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
@@ -60,6 +62,7 @@ public class LazyClass extends Class implements LazyContainer {
     private boolean isLoaded2 = false;
     private boolean isTypeParamsLoaded = false;
     private boolean isTypeParamsLoaded2 = false;
+    private boolean local = false;
 
     public LazyClass(ClassMirror classMirror, ModelCompleter completer, Class superClass, MethodMirror constructor, boolean forTopLevelObject) {
         this.classMirror = classMirror;
@@ -396,5 +399,15 @@ public class LazyClass extends Class implements LazyContainer {
     @Override
     public boolean isLoaded() {
         return isLoaded;
+    }
+
+    @Override
+    public void setLocal(boolean local) {
+        this.local = local;
+    }
+    
+    @Override
+    public boolean isLocal(){
+        return this.local ;
     }
 }

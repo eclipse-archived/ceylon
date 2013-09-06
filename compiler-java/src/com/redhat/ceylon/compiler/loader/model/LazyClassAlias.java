@@ -51,6 +51,7 @@ public class LazyClassAlias extends ClassAlias implements LazyContainer {
     private boolean isLoaded2 = false;
     private boolean isTypeParamsLoaded = false;
     private boolean isTypeParamsLoaded2 = false;
+    private boolean local;
 
     public LazyClassAlias(ClassMirror classMirror, ModelCompleter completer) {
         this.classMirror = classMirror;
@@ -346,5 +347,15 @@ public class LazyClassAlias extends ClassAlias implements LazyContainer {
     @Override
     public boolean isLoaded() {
         return isLoaded;
+    }
+
+    @Override
+    public void setLocal(boolean local) {
+        this.local = local;
+    }
+    
+    @Override
+    public boolean isLocal(){
+        return this.local ;
     }
 }

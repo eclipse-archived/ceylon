@@ -53,6 +53,7 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
     private boolean isLoaded2 = false;
     private boolean isTypeParamsLoaded = false;
     private boolean isTypeParamsLoaded2 = false;
+    private boolean local;
 
     public LazyTypeAlias(ClassMirror classMirror, ModelCompleter completer) {
         this.classMirror = classMirror;
@@ -445,5 +446,15 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
     public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature, boolean ellipsis) {
         load();
         return super.getMemberOrParameter(unit, name, signature, ellipsis);
+    }
+
+    @Override
+    public void setLocal(boolean local) {
+        this.local = local;
+    }
+    
+    @Override
+    public boolean isLocal(){
+        return this.local ;
     }
 }

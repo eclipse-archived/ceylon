@@ -842,6 +842,8 @@ public class ClassTransformer extends AbstractTransformer {
             ClassOrInterface container = (ClassOrInterface) scope;
             List<JCAnnotation> atContainer = makeAtContainer(container.getType());
             classBuilder.annotations(atContainer);
+        }else{
+            classBuilder.annotations(makeAtLocalContainer());
         }
         
     }
