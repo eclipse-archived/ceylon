@@ -16,21 +16,26 @@
 
 package ceylon.modules.bootstrap;
 
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.jboss.modules.Module;
+import org.jboss.modules.ModuleIdentifier;
+import org.jboss.modules.ModuleLoader;
+
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
+import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
-import com.redhat.ceylon.common.tool.Tool;
-import org.jboss.modules.Module;
-import org.jboss.modules.ModuleIdentifier;
-import org.jboss.modules.ModuleLoader;
 
 @Summary("Executes a Ceylon program")
 @Description(
@@ -44,21 +49,22 @@ import org.jboss.modules.ModuleLoader;
                 "\n" +
                 "    ceylon run com.example.foobar/1.0.0"
 )
-public class CeylonRunTool implements Tool {
+public class CeylonRunTool extends RepoUsingTool {
     private static final String CEYLON_RUNTIME = "ceylon.runtime";
     
     private static volatile Module runtimeModule;
 
     private String moduleNameOptVersion;
     private String run;
-    private List<String> repo = new ArrayList<String>(1);
-    private String systemRepo;
     private boolean disableDefault;
     private boolean verbose = false;
     private String verboseFlags = "";
-    private boolean offline;
     private List<String> args = Collections.emptyList();
 
+    public CeylonRunTool() {
+        super(CeylonRunMessages.RESOURCE_BUNDLE);
+    }
+    
     @Argument(argumentName = "module", multiplicity = "1", order = 1)
     public void setModule(String moduleNameOptVersion) {
         this.moduleNameOptVersion = moduleNameOptVersion;
@@ -73,18 +79,6 @@ public class CeylonRunTool implements Tool {
     @Description("Specifies the fully qualified name of a toplevel method or class with no parameters.")
     public void setRun(String run) {
         this.run = run;
-    }
-
-    @OptionArgument(longName = "rep", argumentName = "url")
-    @Description("Specifies a module repository.")
-    public void setRepo(List<String> repo) {
-        this.repo = repo;
-    }
-
-    @OptionArgument(longName = "sysrep", argumentName = "url")
-    @Description("Specifies the system repository.")
-    public void setSytemRepo(String systemRepo) {
-        this.systemRepo = systemRepo;
     }
 
     @Option(longName = "d")
@@ -104,14 +98,8 @@ public class CeylonRunTool implements Tool {
         this.verboseFlags = verboseFlags;
     }
 
-    @Option(longName="offline")
-    @Description("Enables offline mode that will prevent the module loader from connecting to remote repositories.")
-    public void setOffline(boolean offline) {
-        this.offline = offline;
-    }
-
     @Override
-    public void run() {
+    public void run() throws IOException {
         ArrayList<String> argList = new ArrayList<String>();
 
         String ceylonVersion = System.getProperty("ceylon.system.version");
@@ -147,9 +135,11 @@ public class CeylonRunTool implements Tool {
         argList.add("-sysrep");
         argList.add(sysRep);
 
-        for (String repo : this.repo) {
-            argList.add("-rep");
-            argList.add(repo);
+        if (repo != null) {
+            for (URI repo : this.repo) {
+                argList.add("-rep");
+                argList.add(repo.toString());
+            }
         }
 
         argList.add(moduleNameOptVersion);
