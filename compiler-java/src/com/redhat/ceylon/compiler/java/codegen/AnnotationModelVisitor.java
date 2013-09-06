@@ -344,11 +344,9 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
                 // Continue the visit to collect the elements
-                this.elements = new CollectionLiteralAnnotationTerm(null);
+                CollectionLiteralAnnotationTerm prevElements = startCollection(literal);
                 literal.visitChildren(this);
-                this.term = this.elements;
-                this.elements = null;
-                appendLiteralArgument(literal, (CollectionLiteralAnnotationTerm)term);
+                endCollection(prevElements, literal);
             }
         }
     }
@@ -356,35 +354,48 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.SequenceEnumeration literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
-                // Continue the visit to collect the elements
-                Unit unit = literal.getUnit();
-                ProducedType iteratedType = unit.getIteratedType(literal.getTypeModel());
-                TypeDeclaration declaration = iteratedType.getDeclaration();
-                LiteralAnnotationTerm factory;
-                if (unit.getStringDeclaration().equals(declaration)) {
-                    factory = StringLiteralAnnotationTerm.FACTORY;
-                } else if (unit.getIntegerDeclaration().equals(declaration)) {
-                    factory = IntegerLiteralAnnotationTerm.FACTORY;
-                } else if (unit.getCharacterDeclaration().equals(declaration)) {
-                    factory = CharacterLiteralAnnotationTerm.FACTORY;
-                } else if (unit.getBooleanDeclaration().equals(declaration)) {
-                    factory = BooleanLiteralAnnotationTerm.FACTORY;
-                } else if (unit.getFloatDeclaration().equals(declaration)) {
-                    factory = FloatLiteralAnnotationTerm.FACTORY;
-                } else if (Decl.isEnumeratedTypeWithAnonCases(iteratedType)) {
-                    factory = ObjectLiteralAnnotationTerm.FACTORY;
-                } else {//if (iteratedType.isExactly(unit.getMetamodelDeclarationDeclaration().getType())) {
-                    factory = DeclarationLiteralAnnotationTerm.FACTORY;
-                } /*else {
-                    throw new RuntimeException();
-                }*/
-                this.elements = new CollectionLiteralAnnotationTerm(factory);
+                CollectionLiteralAnnotationTerm prevElements = startCollection(literal);
                 literal.visitChildren(this);
-                this.term = this.elements;
-                this.elements = null;
-                appendLiteralArgument(literal, (CollectionLiteralAnnotationTerm)term);
+                endCollection(prevElements, literal);
             }
         }
+    }
+
+    private void endCollection(CollectionLiteralAnnotationTerm prevElements, Tree.Term t) {
+        this.term = this.elements;
+        this.elements = prevElements;
+        appendLiteralArgument(t, (CollectionLiteralAnnotationTerm)this.term);
+    }
+
+    private CollectionLiteralAnnotationTerm startCollection(Tree.Term t) {
+        Unit unit = t.getUnit();
+        // Continue the visit to collect the elements
+        ProducedType iteratedType = unit.getIteratedType(parameter().getType());
+        TypeDeclaration declaration = iteratedType.getDeclaration();
+        LiteralAnnotationTerm factory;
+        if (unit.getStringDeclaration().equals(declaration)) {
+            factory = StringLiteralAnnotationTerm.FACTORY;
+        } else if (unit.getIntegerDeclaration().equals(declaration)) {
+            factory = IntegerLiteralAnnotationTerm.FACTORY;
+        } else if (unit.getCharacterDeclaration().equals(declaration)) {
+            factory = CharacterLiteralAnnotationTerm.FACTORY;
+        } else if (unit.getBooleanDeclaration().equals(declaration)) {
+            factory = BooleanLiteralAnnotationTerm.FACTORY;
+        } else if (unit.getFloatDeclaration().equals(declaration)) {
+            factory = FloatLiteralAnnotationTerm.FACTORY;
+        } else if (Decl.isEnumeratedTypeWithAnonCases(iteratedType)) {
+            factory = ObjectLiteralAnnotationTerm.FACTORY;
+        } else if (Decl.isAnnotationClass(declaration)) {
+            t.addError("Iterables of annotation classes or annotation constructors not supported as literal " + (checkingDefaults ? "defaulted parameters" : "arguments"));
+            return null;
+        } else if (iteratedType.isSubtypeOf(((TypeDeclaration)unit.getLanguageModuleDeclarationDeclaration("Declaration")).getType())) {
+            factory = DeclarationLiteralAnnotationTerm.FACTORY;
+        } else {
+            throw new RuntimeException();
+        }
+        CollectionLiteralAnnotationTerm result = this.elements;
+        this.elements = new CollectionLiteralAnnotationTerm(factory);
+        return result;
     }
     
     @Override
@@ -426,6 +437,11 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
                 } else if (isBooleanFalse(declaration)) {
                     LiteralAnnotationTerm argument = new BooleanLiteralAnnotationTerm(false);
                     appendLiteralArgument(bme, argument);
+                } else if (bme.getUnit().isEmptyType(bme.getTypeModel())
+                        && bme.getUnit().isIterableType(bme.getTypeModel())
+                        && elements == null) {
+                    // If we're dealing with an iterable, empty means empty collection, not object
+                    endCollection(startCollection(bme), bme);
                 } else if (Decl.isAnonCaseOfEnumeratedType(bme)) {
                     LiteralAnnotationTerm argument = new ObjectLiteralAnnotationTerm(bme.getTypeModel());
                     appendLiteralArgument(bme, argument);

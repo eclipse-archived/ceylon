@@ -5,11 +5,12 @@ import java.util.List;
 
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCNewArray;
 import com.sun.tools.javac.util.ListBuffer;
 
 public class CollectionLiteralAnnotationTerm extends LiteralAnnotationTerm {
-    final List<AnnotationTerm> elements;
-    final LiteralAnnotationTerm factory;
+    private final List<AnnotationTerm> elements;
+    private final LiteralAnnotationTerm factory;
     public CollectionLiteralAnnotationTerm(LiteralAnnotationTerm factory) {
         super();
         this.factory = factory;
@@ -34,7 +35,8 @@ public class CollectionLiteralAnnotationTerm extends LiteralAnnotationTerm {
             for (LiteralAnnotationTerm term : (List<LiteralAnnotationTerm>)(List)elements) {
                 lb.add(term.makeLiteral(exprGen));
             }
-            return factory.makeAtValue(exprGen, null, exprGen.make().NewArray(null,  null,  lb.toList()));
+            JCNewArray array = exprGen.make().NewArray(null,  null,  lb.toList());
+            return factory.makeAtValue(exprGen, null, array);
             
         }
         return com.sun.tools.javac.util.List.<JCAnnotation>nil();
@@ -45,13 +47,20 @@ public class CollectionLiteralAnnotationTerm extends LiteralAnnotationTerm {
     }
     @Override
     protected JCExpression makeLiteral(ExpressionTransformer exprGen) {
-        // TODO Auto-generated method stub
-        return null;
+        ListBuffer<JCExpression> lb = ListBuffer.lb();
+        for (LiteralAnnotationTerm term : (List<LiteralAnnotationTerm>)(List)elements) {
+            lb.add(term.makeLiteral(exprGen));
+        }
+        JCNewArray array = exprGen.make().NewArray(null,  null,  lb.toList());
+        return array;
     }
     @Override
     protected com.sun.tools.javac.util.List<JCAnnotation> makeAtValue(
             ExpressionTransformer exprGen, String name, JCExpression value) {
-        // TODO Auto-generated method stub
-        return null;
+        return factory.makeAtValue(exprGen, name, value);
+    }
+    @Override
+    public com.sun.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.sun.tools.javac.util.List<JCAnnotation> value) {
+        return factory.makeExprs(exprGen, value);
     }
 }

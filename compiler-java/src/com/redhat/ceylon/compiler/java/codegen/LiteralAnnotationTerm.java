@@ -46,8 +46,6 @@ public abstract class LiteralAnnotationTerm extends AnnotationTerm {
     }
     
     @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.sun.tools.javac.util.List<JCAnnotation> value) {
-        throw new RuntimeException();
-    }
+    public abstract com.sun.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.sun.tools.javac.util.List<JCAnnotation> value);
 }
 
