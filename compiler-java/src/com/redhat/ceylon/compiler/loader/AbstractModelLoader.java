@@ -3294,7 +3294,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // keep in sync with getOrCreateDeclaration
         for (Declaration decl : declarations) {
             String prefix = null, otherPrefix = null;
-            String fqn = decl.getQualifiedNameString();
+            String fqn = decl.getQualifiedNameString().replace("::", ".");
             Module module = Decl.getModuleContainer(decl.getContainer());
             if(Decl.isToplevel(decl)){
                 if(Decl.isValue(decl)){
@@ -3318,7 +3318,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         for (Declaration decl : declarations) {
             if (decl instanceof LazyClass || decl instanceof LazyInterface) {
                 Module module = Decl.getModuleContainer(decl.getContainer());
-                classMirrorCache.remove(cacheKeyByModule(module, decl.getQualifiedNameString()));
+                classMirrorCache.remove(cacheKeyByModule(module, decl.getQualifiedNameString().replace("::", ".")));
             }
         }
     }
