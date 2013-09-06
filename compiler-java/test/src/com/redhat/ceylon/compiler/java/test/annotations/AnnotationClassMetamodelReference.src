@@ -222,7 +222,6 @@ final class annotationClassMetamodelReferenceLiteral_ {
     
     private annotationClassMetamodelReferenceLiteral_() {
     }
-    static final .java.lang.String arg$mmr = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CAnnotationClassMetamodelReference";
     
     @.ceylon.language.Annotation$annotation
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference annotationClassMetamodelReferenceLiteral() {

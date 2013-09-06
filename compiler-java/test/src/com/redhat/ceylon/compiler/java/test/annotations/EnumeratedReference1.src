@@ -364,7 +364,6 @@ final class enumeratedReferenceDefaulted_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.ObjectValue(.ceylon.language.smaller_.class)
-    @.com.redhat.ceylon.compiler.java.metadata.DefaultedObject(.ceylon.language.smaller_.class)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     static final .ceylon.language.Comparison enumeratedReferenceDefaulted$comparison() {
         return .ceylon.language.smaller_.$get();

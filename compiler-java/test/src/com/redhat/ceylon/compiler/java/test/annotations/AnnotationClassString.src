@@ -322,7 +322,6 @@ final class annotationClassString_ {
     
     private annotationClassString_() {
     }
-    static final .java.lang.String default$s = "s";
     
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString annotationClassString() {
         return (
@@ -359,7 +358,6 @@ final class annotationClassStringStatic_ {
     
     private annotationClassStringStatic_() {
     }
-    static final .java.lang.String arg$s = "bar";
     
     @.ceylon.language.Annotation$annotation
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString annotationClassStringStatic() {

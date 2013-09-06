@@ -145,7 +145,6 @@ final class annotationClassCharacter_ {
     
     private annotationClassCharacter_() {
     }
-    static final int default$c = 122;
     
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter annotationClassCharacter() {
         return (

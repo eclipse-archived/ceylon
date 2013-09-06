@@ -83,8 +83,6 @@ final class collidingLiteralDefaults_ {
     
     private collidingLiteralDefaults_() {
     }
-    static final long default$i1 = 2L;
-    static final long arg$i1 = 1L;
     
     static .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults collidingLiteralDefaults() {
         return (

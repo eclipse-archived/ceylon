@@ -62,7 +62,6 @@ final class annotationClassBoolean_ {
     
     private annotationClassBoolean_() {
     }
-    static final boolean default$x = true;
     
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean annotationClassBoolean() {
         return (

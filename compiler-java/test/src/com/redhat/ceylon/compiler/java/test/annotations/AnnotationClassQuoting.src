@@ -132,10 +132,6 @@ final class annotationClassQuoting_ {
     
     private annotationClassQuoting_() {
     }
-    static final .java.lang.String arg$string = "";
-    static final .java.lang.String arg$toString = "";
-    static final int arg$hash = (int)-1L;
-    static final long arg$hashCode = 0L;
     
     @.ceylon.language.Annotation$annotation
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassQuoting annotationClassQuoting() {
