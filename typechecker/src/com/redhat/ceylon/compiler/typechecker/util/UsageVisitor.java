@@ -6,6 +6,7 @@ package com.redhat.ceylon.compiler.typechecker.util;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrTypeList;
@@ -72,4 +73,15 @@ public class UsageVisitor extends Visitor {
         }
     }
 
+    @Override
+    public void visit(Tree.BaseMemberExpression that) {
+        super.visit(that);
+        Declaration d = that.getDeclaration();
+        if (d!=null &&
+                d.getName().equals("nothing") && 
+                d.getUnit().getPackage().getNameAsString()
+                        .equals(Module.LANGUAGE_MODULE_NAME)) {
+            that.addUsageWarning("evaluates nothing");
+        }
+    }
 }
