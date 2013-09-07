@@ -94,12 +94,15 @@ public class ModuleVisitor extends Visitor {
                 buildAnnotations(that.getAnnotationList(), mainModule.getAnnotations());
             }
             HashSet<String> set = new HashSet<String>();
-            for (Tree.ImportModule im: that.getImportModuleList().getImportModules()) {
-                Tree.ImportPath ip = im.getImportPath();
-                if (ip!=null) {
-                    String mp = formatPath(ip.getIdentifiers());
-                    if (!set.add(mp)) {
-                        ip.addError("duplicate module import: " + mp);
+            Tree.ImportModuleList iml = that.getImportModuleList();
+            if (iml!=null) {
+                for (Tree.ImportModule im: iml.getImportModules()) {
+                    Tree.ImportPath ip = im.getImportPath();
+                    if (ip!=null) {
+                        String mp = formatPath(ip.getIdentifiers());
+                        if (!set.add(mp)) {
+                            ip.addError("duplicate module import: " + mp);
+                        }
                     }
                 }
             }
