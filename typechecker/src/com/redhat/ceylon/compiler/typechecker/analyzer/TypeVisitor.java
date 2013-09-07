@@ -72,6 +72,16 @@ public class TypeVisitor extends Visitor {
     @Override public void visit(Tree.CompilationUnit that) {
         unit = that.getUnit();
         super.visit(that);
+        HashSet<String> set = new HashSet<String>();
+        for (Tree.Import im: that.getImportList().getImports()) {
+            Tree.ImportPath ip = im.getImportPath();
+            if (ip!=null) {
+                String mp = formatPath(ip.getIdentifiers());
+                if (!set.add(mp)) {
+                    ip.addError("duplicate import: " + mp);
+                }
+            }
+        }
     }
     
     @Override

@@ -8,6 +8,7 @@ import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -91,6 +92,16 @@ public class ModuleVisitor extends Visitor {
                 moduleManager.addLinkBetweenModuleAndNode(mainModule, unit);
                 mainModule.setAvailable(true);
                 buildAnnotations(that.getAnnotationList(), mainModule.getAnnotations());
+            }
+            HashSet<String> set = new HashSet<String>();
+            for (Tree.ImportModule im: that.getImportModuleList().getImportModules()) {
+                Tree.ImportPath ip = im.getImportPath();
+                if (ip!=null) {
+                    String mp = formatPath(ip.getIdentifiers());
+                    if (!set.add(mp)) {
+                        ip.addError("duplicate module import: " + mp);
+                    }
+                }
             }
         }
     }
