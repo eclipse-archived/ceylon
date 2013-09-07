@@ -266,12 +266,12 @@ public class RefinementVisitor extends Visitor {
                 if (that instanceof Tree.Declaration) {
                     if (!isCompletelyVisible(td, st)) {
                         that.addError("supertype of type is not visible everywhere type is visible: " + 
-                                st.getProducedTypeName(unit));
+                                st.getProducedTypeName(unit), 713);
                     }
                     if(!checkModuleVisibility(td, st) ) {
                         that.addError("supertype occurs in a type that is visible outside this module,"
                                 +" but comes from an imported module that is not re-exported: " +
-                                st.getProducedTypeName(unit));
+                                st.getProducedTypeName(unit), 714);
                     }
 
                 }
