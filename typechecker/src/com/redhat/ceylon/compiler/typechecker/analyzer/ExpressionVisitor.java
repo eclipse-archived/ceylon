@@ -1085,7 +1085,8 @@ public class ExpressionVisitor extends Visitor {
         }
         if (type instanceof Tree.LocalModifier) {
             if (isTypeUnknown(type.getTypeModel())) {
-                type.addError("argument type could not be inferred");
+                Node node = type.getToken()==null ? that : type;
+                node.addError("argument type could not be inferred");
             }
         }
     }
@@ -1179,7 +1180,8 @@ public class ExpressionVisitor extends Visitor {
         }
         if (type instanceof Tree.LocalModifier) {
             if (isTypeUnknown(type.getTypeModel())) {
-                type.addError("argument type could not be inferred");
+                Node node = type.getToken()==null ? that : type;
+                node.addError("argument type could not be inferred");
             }
         }
     }
