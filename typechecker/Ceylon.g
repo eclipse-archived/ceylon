@@ -3023,14 +3023,21 @@ cases returns [SwitchCaseList switchCaseList]
 caseBlock returns [CaseClause clause]
     : CASE_CLAUSE 
       { $clause = new CaseClause($CASE_CLAUSE); }
-      LPAREN 
-      (
-      caseItem
-      { $clause.setCaseItem($caseItem.item); }
-      )?
-      RPAREN 
+      caseItemList
+      { $clause.setCaseItem($caseItemList.item); }
       block
       { $clause.setBlock($block.block); }
+    ;
+
+caseItemList returns [CaseItem item]
+    : LPAREN //TODO: we really should not throw away this token!
+      (
+        ci=caseItem
+        { $item = $ci.item; }
+      )?
+      RPAREN 
+      { if ($item!=null) 
+            $item.setEndToken($RPAREN); }
     ;
 
 defaultCaseBlock returns [ElseClause clause]
