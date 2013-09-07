@@ -35,6 +35,7 @@ import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
+import com.redhat.ceylon.common.tool.Rest;
 import com.redhat.ceylon.common.tool.Summary;
 
 @Summary("Executes a Ceylon program")
@@ -70,7 +71,7 @@ public class CeylonRunTool extends RepoUsingTool {
         this.moduleNameOptVersion = moduleNameOptVersion;
     }
 
-    @Argument(argumentName = "args", multiplicity = "*", order = 2)
+    @Rest
     public void setArgs(List<String> args) {
         this.args = args;
     }
