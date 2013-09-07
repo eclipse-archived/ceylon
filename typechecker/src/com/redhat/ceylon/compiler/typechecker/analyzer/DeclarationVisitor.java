@@ -730,7 +730,7 @@ public class DeclarationVisitor extends Visitor {
             that.getBrokenExpression()
                 .addError("incorrect syntax: " + op + 
                         " conditions do not apply to arbitrary expressions, try using postfix " + 
-                        op + " operator");
+                        op + " operator", 3100);
         }
         else if (that.getVariable()==null) {
             that.addError("missing variable or immutable value reference: " + op + 
