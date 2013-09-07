@@ -197,6 +197,13 @@ public class TypeVisitor extends Visitor {
                     path.addError("imported package is not shared: " + 
                             nameToImport);
                 }
+//                if (module.isDefault() && 
+//                        !pkg.getModule().isDefault() &&
+//                        !pkg.getModule().getNameAsString()
+//                            .equals("ceylon.language")) {
+//                    path.addError("package belongs to a module and may not be imported by default module: " +
+//                            nameToImport);
+//                }
                 //check that the package really does belong to
                 //an imported module, to work around bug where
                 //default package thinks it can see stuff in
