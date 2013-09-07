@@ -5586,7 +5586,7 @@ public class ExpressionVisitor extends Visitor {
                         that.getType().addError("not a class");
                     }
                     else {
-                        checkNonlocal(that, d);
+//                        checkNonlocal(that, d);
                     }
                     that.setTypeModel(unit.getClassDeclarationType());
                 }
@@ -5613,7 +5613,7 @@ public class ExpressionVisitor extends Visitor {
                     t = t.resolveAliases();
                     //checkNonlocalType(that.getType(), t.getDeclaration());
                     if (d instanceof Class) {
-                        checkNonlocal(that, t.getDeclaration());
+//                        checkNonlocal(that, t.getDeclaration());
                         that.setTypeModel(unit.getClassMetatype(t));
                     }
                     else if (d instanceof Interface) {
