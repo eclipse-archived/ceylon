@@ -5685,6 +5685,10 @@ public class ExpressionVisitor extends Visitor {
             else {
                 that.getIdentifier().addError("not a value");
             }
+            if (that.getBroken()) {
+                that.addError("keyword object may not appear here: " +
+                              "use the value keyword to refer to anonymous class declarations");
+            }
             that.setWantsDeclaration(true);
             that.setTypeModel(unit.getValueDeclarationType(result));
         }

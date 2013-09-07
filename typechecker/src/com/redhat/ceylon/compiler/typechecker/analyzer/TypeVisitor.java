@@ -210,7 +210,7 @@ public class TypeVisitor extends Visitor {
 //                if (module.isDefault() && 
 //                        !pkg.getModule().isDefault() &&
 //                        !pkg.getModule().getNameAsString()
-//                            .equals("ceylon.language")) {
+//                            .equals(Module.LANGUAGE_MODULE_NAME)) {
 //                    path.addError("package belongs to a module and may not be imported by default module: " +
 //                            nameToImport);
 //                }

@@ -295,6 +295,7 @@
 
 ^(abstract META_LITERAL:PRIMARY
     boolean wantsDeclaration;
+    boolean broken;
     Declaration declaration;)
 
 ^(TYPE_LITERAL:META_LITERAL

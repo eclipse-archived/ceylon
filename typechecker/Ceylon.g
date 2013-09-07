@@ -2490,10 +2490,18 @@ metaLiteral returns [MetaLiteral meta]
       { tp.setType($tt.type); 
         tp.setEndToken(null); }
     |
-      VALUE_MODIFIER
-      { v = new ValueLiteral($d1);
-        v.setEndToken($VALUE_MODIFIER); 
-        $meta=v; }
+      (
+        VALUE_MODIFIER
+        { v = new ValueLiteral($d1);
+          v.setEndToken($VALUE_MODIFIER); 
+          $meta=v; }
+      |
+        OBJECT_DEFINITION
+        { v = new ValueLiteral($d1);
+          v.setEndToken($OBJECT_DEFINITION);
+          v.setBroken(true); 
+          $meta=v; }
+      )
       (
         vt=type
         { v.setType($vt.type); 
