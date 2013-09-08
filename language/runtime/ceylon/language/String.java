@@ -1026,7 +1026,7 @@ public final class String
     @TypeInfo("ceylon.language::String")
     public java.lang.String join(@Name("strings") 
     @TypeInfo("ceylon.language::Iterable<ceylon.language::String,ceylon.language::Null>")
-    Iterable<? extends String,? extends Object> strings) {
+    Iterable<? extends String,? extends java.lang.Object> strings) {
         return join(value, strings);
     }
 
