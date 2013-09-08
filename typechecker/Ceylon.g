@@ -1363,8 +1363,9 @@ expressions returns [ExpressionList expressionList]
         { $expressionList.setEndToken($c); }
         (
           e2=expression 
-          { $expressionList.addExpression($e2.expression);
-            $expressionList.setEndToken(null); }
+          { if ($e2.expression!=null) {
+                $expressionList.addExpression($e2.expression);
+                $expressionList.setEndToken(null); } }
         | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LIDENTIFIER, input)); } //TODO: sometimes it should be RPAREN!
         )
@@ -1503,19 +1504,19 @@ sequencedArgument returns [SequencedArgument sequencedArgument]
           { $sequencedArgument.setEndToken($c); }
           (
             pa2=positionalArgument
-            { if ($pa2.positionalArgument!=null)
+            { if ($pa2.positionalArgument!=null) {
                   $sequencedArgument.addPositionalArgument($pa2.positionalArgument); 
-              sequencedArgument.setEndToken(null); }
+                  sequencedArgument.setEndToken(null); } }
           |
             sa2=spreadArgument
-            { if ($sa2.positionalArgument!=null)
+            { if ($sa2.positionalArgument!=null) {
                   $sequencedArgument.addPositionalArgument($sa2.positionalArgument); 
-              sequencedArgument.setEndToken(null); }
+                  sequencedArgument.setEndToken(null); } }
           |
             c2=comprehension
-            { if ($c2.comprehension!=null)
-                $sequencedArgument.addPositionalArgument($c2.comprehension);
-              sequencedArgument.setEndToken(null); }
+            { if ($c2.comprehension!=null) {
+                  $sequencedArgument.addPositionalArgument($c2.comprehension);
+                  sequencedArgument.setEndToken(null); } }
           |
             { displayRecognitionError(getTokenNames(), 
                 new MismatchedTokenException(LIDENTIFIER, input)); }
@@ -1743,9 +1744,10 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
       { $positionalArgumentList = new PositionalArgumentList($LPAREN); }
       (
         sa=sequencedArgument
-        { if ($sa.sequencedArgument!=null) 
+        { if ($sa.sequencedArgument!=null) {
               for (PositionalArgument pa: $sa.sequencedArgument.getPositionalArguments())
-                  $positionalArgumentList.addPositionalArgument(pa); }
+                  $positionalArgumentList.addPositionalArgument(pa); 
+              $positionalArgumentList.setEndToken($sa.sequencedArgument.getEndToken()); } }
       )?
       RPAREN
       { $positionalArgumentList.setEndToken($RPAREN); }
@@ -2345,9 +2347,9 @@ typeArguments returns [TypeArgumentList typeArgumentList]
         { $typeArgumentList.setEndToken($c); }
         (
           ta2=type
-          { if ($ta2.type!=null)
+          { if ($ta2.type!=null) {
                 $typeArgumentList.addType($ta2.type); 
-            $typeArgumentList.setEndToken(null); }
+                $typeArgumentList.setEndToken(null); } }
           | { displayRecognitionError(getTokenNames(), 
                 new MismatchedTokenException(UIDENTIFIER, input)); }
         )
