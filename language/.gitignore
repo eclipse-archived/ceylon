@@ -17,3 +17,7 @@ ide-dist
 
 # Documentation
 Project Ceylon *.pdf
+
+# Eclipse
+.settings
+.ceylon
