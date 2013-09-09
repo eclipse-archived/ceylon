@@ -21,10 +21,12 @@ package com.redhat.ceylon.compiler.java.test;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -32,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.annotation.PostConstruct;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.DiagnosticListener;
 
@@ -110,54 +113,65 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             this.errorIfNoTests = testModule.errorIfNoTests();
             this.testLoader = testModule.testLoader().newInstance();
             File srcDir = new File(testModule.srcDirectory());
+            outRepo = Files.createTempDirectory("ceylon-module-runner").toFile();
+            
+            for (String dependency : testModule.dependencies()) {
+                compile(srcDir, outRepo, dependency, false);
+            }
             String moduleName = !testModule.module().isEmpty() ? testModule.module() : moduleSuiteClass.getPackage().getName();
-            outRepo = File.createTempFile("ceylon-module-runner", ".out.d");
-            outRepo.delete();
-            outRepo.mkdirs();
-            
-            // Compile all the .ceylon files into a .car
-            Context context = new Context();
-            final ErrorCollector listener = new ErrorCollector();
-            CeyloncFileManager.preRegister(context); // can't create it until Log
-            // has been set up
-            CeylonLog.preRegister(context);
-            context.put(DiagnosticListener.class, listener);
-            
-            com.redhat.ceylon.compiler.java.launcher.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylonc");
-            List<String> args = new ArrayList<>();
-//            args.add("-verbose:code");
-            args.add("-src"); 
-            args.add(srcDir.getCanonicalPath());
-            args.add("-out");
-            args.add(outRepo.getAbsolutePath());
-            if (moduleName.equals("default")) {
-                scan(srcDir.getCanonicalFile(), args, srcDir.getCanonicalFile());
-            } else {
-                args.add(moduleName);
-            }
-            
-            int sc = compiler.compile(args.toArray(new String[args.size()]), 
-                    context);
-            
-            // now fetch stuff from the context
-            PhasedUnits phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
-            
-            this.children = new LinkedHashMap<Runner, Description>();
-            
-            for (final CompilerError compileError : listener.get(Kind.ERROR)) {
-                createFailingTest(compileError.filename, new CompilationException(compileError.toString()));
-            }
-
-            // Get a class loader for the car
-            // XXX Need to use CMR if the module has dependencies
-            URLClassLoader cl = classLoaderForModule(moduleName, outRepo);
-            if (cl != null) {
-                loadCompiledTests(srcDir, cl, phasedUnits);
-            }
+            compile(srcDir, outRepo, moduleName, true);
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void compile(File srcDir, File outRepo, String moduleName, boolean runTests) throws Exception {
+        // Compile all the .ceylon files into a .car
+        Context context = new Context();
+        final ErrorCollector listener = new ErrorCollector();
+        CeyloncFileManager.preRegister(context); // can't create it until Log
+        // has been set up
+        CeylonLog.preRegister(context);
+        context.put(DiagnosticListener.class, listener);
+        
+        com.redhat.ceylon.compiler.java.launcher.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylonc");
+        List<String> args = new ArrayList<>();
+//            args.add("-verbose:code");
+        args.add("-src"); 
+        args.add(srcDir.getCanonicalPath());
+        args.add("-out");
+        args.add(outRepo.getAbsolutePath());
+        if (moduleName.equals("default")) {
+            scan(srcDir.getCanonicalFile(), args, srcDir.getCanonicalFile());
+        } else {
+            args.add(moduleName);
+        }
+        
+        int sc = compiler.compile(args.toArray(new String[args.size()]), 
+                context);
+        
+        if (runTests) {
+            postCompile(context, listener, moduleName, srcDir);
+        }
+    }
+    
+    private void postCompile(Context context, ErrorCollector listener, String moduleName, File srcDir) throws Exception {
+        // now fetch stuff from the context
+        PhasedUnits phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
+        
+        this.children = new LinkedHashMap<Runner, Description>();
+        
+        for (final CompilerError compileError : listener.get(Kind.ERROR)) {
+            createFailingTest(compileError.filename, new CompilationException(compileError.toString()));
+        }
+
+        // Get a class loader for the car
+        // XXX Need to use CMR if the module has dependencies
+        URLClassLoader cl = classLoaderForModule(moduleName, outRepo);
+        if (cl != null) {
+            loadCompiledTests(srcDir, cl, phasedUnits);
         }
     }
 

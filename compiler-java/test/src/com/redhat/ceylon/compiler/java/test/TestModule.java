@@ -39,6 +39,8 @@ public @interface TestModule {
     /** The name of the module to compile */
     String module() default "";
     
+    String[] dependencies() default {};
+    
     Class<? extends CeylonModuleRunner.TestLoader> testLoader() default CeylonModuleRunner.StandardLoader.class;
     
 }
