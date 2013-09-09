@@ -385,10 +385,17 @@
 
     <target name="gavin" depends="ide">
     </target>
-    <target name="ide" depends="dist,test.classes">
-        <copy overwrite="true" file="${build.dist}/${ceylon.compiler.jar}" tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}-ide.jar" />
-        <copy overwrite="true" file="${build.dist}/${ceylon.compiler.jar}" tofile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}-ide.jar" />
 
+    <target name="ide" depends="dist">
+        <copy 
+            overwrite="true"
+            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository/${ceylon.compiler.dir}">
+            <fileset dir="${ceylon.compiler.dist}">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+
+        <copy overwrite="true" file="${build.dist}/${ceylon.compiler.jar}" tofile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}-ide.jar" />
         <jar destfile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/compiler-tests-${module.com.redhat.ceylon.compiler.version}.jar">
             <fileset dir="${build.classes}">
                 <include name="com/redhat/ceylon/compiler/java/test/**" />
