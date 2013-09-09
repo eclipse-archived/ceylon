@@ -340,9 +340,13 @@ public class Main extends com.sun.tools.javac.main.Main {
             }
             return new ExitState(EXIT_ABNORMAL, CeylonState.ERROR, comp.errorCount(), null, null);
         }
-
-        public static ExitState systemError(Throwable ex) {
+        
+        public static ExitState systemError(JavaCompiler comp, Throwable ex) {
             // Note: ex can be null
+            if (comp instanceof LanguageCompiler && 
+                    ((LanguageCompiler)comp).getTreatLikelyBugsAsErrors()) {
+                return new ExitState(EXIT_ERROR, CeylonState.ERROR, 0, ex, null);
+            }
             return new ExitState(EXIT_SYSERR, CeylonState.SYS, 0, ex, null);
         }
 
@@ -577,7 +581,7 @@ public class Main extends com.sun.tools.javac.main.Main {
                 }
             } catch (java.io.FileNotFoundException e) {
                 Log.printLines(out, ownName + ": " + getLocalizedString("err.file.not.found", e.getMessage()));
-                this.exitState = ExitState.systemError(e);
+                this.exitState = ExitState.systemError(null, e);
                 return EXIT_SYSERR;
             }
 
@@ -598,7 +602,7 @@ public class Main extends com.sun.tools.javac.main.Main {
 
             comp = LanguageCompiler.instance(context);
             if (comp == null) {
-                this.exitState = ExitState.systemError(null);
+                this.exitState = ExitState.systemError(null, null);
                 return EXIT_SYSERR;
             }
 
@@ -630,23 +634,23 @@ public class Main extends com.sun.tools.javac.main.Main {
             }
         } catch (IOException ex) {
             ioMessage(ex);
-            this.exitState = ExitState.systemError(ex);
+            this.exitState = ExitState.systemError(null, ex);
             return EXIT_SYSERR;
         } catch (OutOfMemoryError ex) {
             resourceMessage(ex);
-            this.exitState = ExitState.systemError(ex);
+            this.exitState = ExitState.systemError(null, ex);
             return EXIT_SYSERR;
         } catch (StackOverflowError ex) {
             resourceMessage(ex);
-            this.exitState = ExitState.systemError(ex);
+            this.exitState = ExitState.systemError(null, ex);
             return EXIT_SYSERR;
         } catch (FatalError ex) {
             feMessage(ex);
-            this.exitState = ExitState.systemError(ex);
-            return EXIT_SYSERR;
+            this.exitState = ExitState.systemError(comp, ex);
+            return this.exitState.javacExitCode;
         } catch (AnnotationProcessingError ex) {
             apMessage(ex);
-            this.exitState = ExitState.systemError(ex);
+            this.exitState = ExitState.systemError(null, ex);
             return EXIT_SYSERR;
         } catch (ClientCodeException ex) {
             // as specified by javax.tools.JavaCompiler#getTask

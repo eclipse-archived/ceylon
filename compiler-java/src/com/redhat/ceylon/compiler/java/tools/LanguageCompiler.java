@@ -116,6 +116,7 @@ public class LanguageCompiler extends JavaCompiler {
     private Timer timer;
     private boolean isBootstrap;
     private boolean addedDefaultModuleToClassPath;
+    private boolean treatLikelyBugsAsErrors = false;
 
     /** Get the PhasedUnits instance for this context. */
     public static PhasedUnits getPhasedUnitsInstance(final Context context) {
@@ -578,12 +579,21 @@ public class LanguageCompiler extends JavaCompiler {
     protected boolean shouldStop(CompileState cs) {
         // we override this to make sure we don't stop because of errors, because we want to generate
         // code for classes with no errors
+        boolean result;
         if (shouldStopPolicy == null)
-            return false;
+            result = false;
         else
-            return cs.ordinal() > shouldStopPolicy.ordinal();
+            result = cs.ordinal() > shouldStopPolicy.ordinal();
+        if (!result && super.shouldStop(cs)) {
+            treatLikelyBugsAsErrors = true;
+        }
+        return result;
     }
-
+    
+    public boolean getTreatLikelyBugsAsErrors() {
+        return treatLikelyBugsAsErrors;
+    }
+    
     private JavaFileObject genCodeUnlessError(Env<AttrContext> env, JCClassDecl cdef) throws IOException {
         CeylonFileObject sourcefile = (CeylonFileObject) env.toplevel.sourcefile;
         try {
