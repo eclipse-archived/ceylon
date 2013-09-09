@@ -1,8 +1,7 @@
-import ceylon.language.model { modules }
+import ceylon.language.model { modules, annotations }
 import ceylon.language.model.declaration {
   Import, FunctionDeclaration, ClassOrInterfaceDeclaration
 }
-import ceylon.language.model { annotations }
 import check { check,fail }
 
 void modulesTests() {
