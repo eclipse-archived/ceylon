@@ -20,7 +20,9 @@ shared annotation EnumeratedVariadic enumeratedVariadic(Comparison* c) => Enumer
 "aToplevelAttribute"
 seq("aToplevelAttribute 1")
 seq("aToplevelAttribute 2")
-see(`value aToplevelGetterSetter`)
+see(`value aToplevelGetterSetter`,
+    `module ceylon.language`,
+    `package ceylon.language.model.declaration`)
 enumerated(larger)
 enumeratedVariadic(larger, equal, smaller)
 shared String aToplevelAttribute = "";

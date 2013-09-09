@@ -130,7 +130,11 @@ void checkAToplevelAttributeAnnotations() {
     
     assert(nonempty see = annotations(seeAnnotation, aToplevelAttributeDecl));
     assert(see.size == 1);
+    assert(see.first.programElements.size == 3);
     assert(see.first.programElements.contains(`value aToplevelGetterSetter`));
+    assert(see.first.programElements.contains(`module ceylon.language`));
+    assert(see.first.programElements.contains(`package ceylon.language.model.declaration`));
+    
     
     assert(exists enumed = annotations(enumeratedAnnotation, aToplevelAttributeDecl));
     assert(enumed.c == larger);
