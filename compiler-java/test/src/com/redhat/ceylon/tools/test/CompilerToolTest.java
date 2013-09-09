@@ -318,4 +318,19 @@ public class CompilerToolTest {
             Assert.fail("Unexpected exception");
         }
     }
+    
+    @Test
+    public void testBug1183()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                Arrays.asList("--src=test/src", "com.redhat.ceylon.tools.test.bug1183"));
+        try {
+            tool.run();
+            Assert.fail("Tool should have thrown an exception");
+        } catch (CompilerErrorException e) {
+            // We expect this, not a FatalToolError
+        }
+        
+    }
 }

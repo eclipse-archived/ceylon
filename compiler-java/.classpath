@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry excluding="**/*.ceylon|com/redhat/ceylon/compiler/java/test/interop/mixed/" kind="src" path="test/src"/>
+	<classpathentry excluding="**/*.ceylon|com/redhat/ceylon/compiler/java/test/interop/mixed/|com/redhat/ceylon/tools/test/bug1183/" kind="src" path="test/src"/>
 	<classpathentry kind="src" path="test/satisfaction"/>
 	<classpathentry excluding="**/*.ceylon" kind="src" path="test/runtime"/>
 	<classpathentry kind="src" path="langtools/src/share/classes"/>
