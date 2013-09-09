@@ -416,8 +416,11 @@
     <target name="ide" depends="dist">
         <copy 
             overwrite="true"
-            file="${build.dist}/${ceylon.typechecker.jar}"
-            tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}-ide.jar"/>
+            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository/${ceylon.typechecker.dir}">
+            <fileset dir="${ceylon.typechecker.dist}">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
         <copy 
             overwrite="true"
             file="${build.dist}/${ceylon.typechecker.jar}"
