@@ -2003,8 +2003,11 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(BaseMemberExpression that) {
+    public void visit(Tree.BaseMemberExpression that) {
         if (that.getErrors() != null && !that.getErrors().isEmpty()) {
+            if (that.getErrors().size() == 1 && "evaluates nothing".equals(that.getErrors().get(0).getMessage())) {
+                out(clAlias, "getNothing()");
+            }
             //Don't even bother processing a node with errors
             return;
         }
