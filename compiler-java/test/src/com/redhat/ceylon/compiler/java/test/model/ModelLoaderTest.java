@@ -496,6 +496,14 @@ public class ModelLoaderTest extends CompilerTest {
     public void loadClassWithMethods(){
         verifyClassLoading("KlassWithMethods.ceylon");
     }
+    
+    @Test
+    public void loadVariadic(){
+        compile("Variadic.ceylon");
+        assertErrors("variadictest",
+                new CompilerError(7, "missing argument to required parameter seq of VariadicPlus")
+        );
+    }
 
     @Test
     public void loadInnerClass(){
