@@ -78,9 +78,14 @@
 
 
     <target name="ide" depends="dist">
-        <copy overwrite="true"
-            file="${build.dist}/${ceylon.common.jar}"
-            tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}-ide.jar" />
+        <copy 
+            overwrite="true"
+            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository/${ceylon.common.dir}">
+            <fileset dir="${ceylon.common.dist}">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+        
         <copy overwrite="true"
             file="${build.dist}/${ceylon.common.jar}"
             tofile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}-ide.jar" />
