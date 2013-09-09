@@ -703,7 +703,8 @@ public class CMRTest extends CompilerTest {
         compareErrors(collector.get(Diagnostic.Kind.ERROR), 
                 new CompilerError(20, "Module (transitively) imports conflicting versions of a. Version 2 and version 1 found and visible at the same time."),
                 new CompilerError(20, "Trying to import or compile two different versions of the same module: a (1 and 2)"),
-                new CompilerError(20, "Trying to import or compile two different versions of the same module: a (2 and 1)")
+                new CompilerError(20, "Trying to import or compile two different versions of the same module: a (2 and 1)"),
+                new CompilerError(22, "duplicate module import: a")
         );
     }
 
