@@ -2339,21 +2339,23 @@ stringExpression returns [Atom atom]
 typeArguments returns [TypeArgumentList typeArgumentList]
     : SMALLER_OP
       { $typeArgumentList = new TypeArgumentList($SMALLER_OP); }
-      ta1=type
-      { if ($ta1.type!=null)
-            $typeArgumentList.addType($ta1.type); }
       (
-        c=COMMA
-        { $typeArgumentList.setEndToken($c); }
+        ta1=type
+        { if ($ta1.type!=null)
+              $typeArgumentList.addType($ta1.type); }
         (
-          ta2=type
-          { if ($ta2.type!=null) {
-                $typeArgumentList.addType($ta2.type); 
-                $typeArgumentList.setEndToken(null); } }
-          | { displayRecognitionError(getTokenNames(), 
-                new MismatchedTokenException(UIDENTIFIER, input)); }
-        )
-      )* 
+          c=COMMA
+          { $typeArgumentList.setEndToken($c); }
+          (
+            ta2=type
+            { if ($ta2.type!=null) {
+                  $typeArgumentList.addType($ta2.type); 
+                  $typeArgumentList.setEndToken(null); } }
+            | { displayRecognitionError(getTokenNames(), 
+                  new MismatchedTokenException(UIDENTIFIER, input)); }
+          )
+        )*
+      )?
       LARGER_OP
       { $typeArgumentList.setEndToken($LARGER_OP); }
     ;
