@@ -122,13 +122,10 @@
     <target name="ide" depends="dist">
         <copy 
             overwrite="true"
-            file="${build.dist}/${ceylon.language.car}"
-            tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/ceylon.language-${module.ceylon.language.version}-ide.jar"/>
-        <copy 
-            overwrite="true"
-            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository/">
-            <fileset dir="${build.dist}">
+            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository/${ceylon.language.dir}">
+            <fileset dir="${ceylon.language.dist}">
                 <include name="**/*"/>
+                <exclude name="**/module-doc/**/*"/>
             </fileset>
         </copy>
     </target>
