@@ -288,16 +288,19 @@ public abstract class FreeClassOrInterface
     }
 
     FreeFunction findMethod(String name) {
-        return this.<FreeFunction>findDeclaration(null, name);
+        FreeTopLevelOrMemberDeclaration decl = this.findDeclaration(null, name);
+        return decl instanceof FreeFunction ? (FreeFunction)decl : null;
     }
 
     FreeAttribute findValue(String name) {
-        return this.<FreeAttribute>findDeclaration(null, name);
+        FreeTopLevelOrMemberDeclaration decl = this.findDeclaration(null, name);
+        return decl instanceof FreeAttribute ? (FreeAttribute)decl : null;
     }
 
 
     FreeClassOrInterface findType(String name) {
-        return this.<FreeClassOrInterface>findDeclaration(null, name);
+        FreeTopLevelOrMemberDeclaration decl = this.findDeclaration(null, name);
+        return decl instanceof FreeClassOrInterface ? (FreeClassOrInterface)decl : null;
     }
 
     <T extends FreeTopLevelOrMemberDeclaration> T findDeclaration(@Ignore TypeDescriptor $reifiedT, String name) {
