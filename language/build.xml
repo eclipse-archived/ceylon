@@ -337,14 +337,14 @@
         <ceylon-run
             executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
-            module="metamodel/123"
+            module="metamodel/0.1"
             resultproperty="test.ceylon.result">
             <rep url="${build.test}"/>
         </ceylon-run>
     	<ceylon-run
             executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
-            module="annotations/123"
+            module="annotations/0.1"
             resultproperty="test.ceylon.result">
             <rep url="${build.test}"/>
         </ceylon-run>
