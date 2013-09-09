@@ -292,6 +292,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                 // set up the runtime module system
                 Metamodel.resetModuleManager();
                 Metamodel.loadModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTest.makeArtifactResult(new File("../ceylon.language/ide-dist/ceylon.language-"+TypeChecker.LANGUAGE_MODULE_VERSION+".car")), cl);
+                Metamodel.loadModule("com.redhat.ceylon.typechecker", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTest.makeArtifactResult(new File("../ceylon-dist/dist/repo/com/redhat/ceylon/typechecker/"+TypeChecker.LANGUAGE_MODULE_VERSION+"/com.redhat.ceylon.typechecker-"+TypeChecker.LANGUAGE_MODULE_VERSION+".jar")), cl);
                 Metamodel.loadModule(moduleName, moduleVersion, CompilerTest.makeArtifactResult(carFile), cl);
             }
         };
