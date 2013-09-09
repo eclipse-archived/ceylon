@@ -91,6 +91,8 @@ class OpenClass(shared actual String name, shared actual Package packageContaine
 
   shared actual Boolean abstract { return false; }
   shared actual OpenType[] caseTypes { return []; }
+
+  shared actual Boolean isAlias => false;
 }
 
 class OpenInterface(shared actual String name, shared actual Package packageContainer, shared actual Boolean toplevel) satisfies InterfaceDeclaration {
@@ -122,4 +124,6 @@ class OpenInterface(shared actual String name, shared actual Package packageCont
   shared actual AnnotatedDeclaration container { return packageContainer; }
 
   shared actual OpenType[] caseTypes { return []; }
+
+  shared actual Boolean isAlias => false;
 }
