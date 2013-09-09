@@ -341,6 +341,13 @@
             resultproperty="test.ceylon.result">
             <rep url="${build.test}"/>
         </ceylon-run>
+    	<ceylon-run
+            executable="${ceylon.compiler.loc}"
+            sysrep="${build.test.repo}"
+            module="annotations/123"
+            resultproperty="test.ceylon.result">
+            <rep url="${build.test}"/>
+        </ceylon-run>
         
         <condition property="test.fail.ceylon">
             <not><equals arg1="${test.ceylon.result}" arg2="0"/></not>
