@@ -181,15 +181,13 @@
     </target>
 
     <target name="ide" depends="dist">
-        <copy overwrite="true"
-            file="${build.dist.repo}/${ceylon.runtime.jar}"
-            tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/ceylon.runtime-${module.ceylon.runtime.version}-ide.jar" />
-
         <copy 
             overwrite="true"
-            file="${jboss-logmanager.lib}"
-            tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository/org/jboss/logmanager/${jboss-logmanager.version}/${jboss-logmanager.module}" />
-
+            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository">
+            <fileset dir="${build.dist.repo}">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
     </target>
 
     <!-- Tasks related to building the runtime -->
