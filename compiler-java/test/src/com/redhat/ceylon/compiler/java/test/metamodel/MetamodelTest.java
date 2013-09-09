@@ -36,12 +36,6 @@ public class MetamodelTest extends CompilerTest {
         compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.interopRuntime", "interopRuntime.ceylon", "JavaType.java");
     }
 
-    // FIXME: I guess this one should also move to the language module
-    @Test
-    public void testAnnotations() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.annotationTests", "annotationTypes.ceylon", "annotationTests.ceylon");
-    }
-
     @Test
     public void testTypeLiterals() {
         compareWithJavaSource("Literals");
