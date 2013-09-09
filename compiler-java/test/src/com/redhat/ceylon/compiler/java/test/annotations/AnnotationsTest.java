@@ -179,6 +179,11 @@ public class AnnotationsTest extends CompilerTest {
     }
     
     @Test
+    public void testBug1277(){
+        compareWithJavaSource("Bug1277");
+    }
+    
+    @Test
     public void testAnnotationModule() throws NoSuchFieldException, SecurityException{
         // TODO Add a package.ceylon, so we can check that too.
         compareWithJavaSource("modules/a/module");
