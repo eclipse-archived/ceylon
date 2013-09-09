@@ -305,11 +305,8 @@ public class LanguageCompiler extends JavaCompiler {
                     printError(pe, pe.getMessage(), "ceylon.parser", map);
                 }
 
-                if (lexer.getNumberOfSyntaxErrors() != 0) {
-                    log.printErrLines("ceylon.lexer.failed");
-                } else if (parser.getNumberOfSyntaxErrors() != 0) {
-                    log.printErrLines("ceylon.parser.failed");
-                } else {
+                if (lexerErrors.size() == 0 
+                        && parserErrors.size() == 0) {
                     // FIXME: this is bad in many ways
                     String pkgName = getPackage(filename);
                     // make a Package with no module yet, we will resolve them later
