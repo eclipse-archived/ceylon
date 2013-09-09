@@ -460,9 +460,9 @@ public class ClassTransformer extends AbstractTransformer {
             Tree.InvocationExpression invocation = (Tree.InvocationExpression)term;
             defaultLiteral = AnnotationInvocationVisitor.transform(expressionGen(), invocation);
         } else if (term instanceof Tree.MemberLiteral) {
-            defaultLiteral = expressionGen().makeDeclarationLiteralForAnnotation((Tree.MemberLiteral) term);
+            defaultLiteral = expressionGen().makeMetaLiteralStringLiteralForAnnotation((Tree.MemberLiteral) term);
         } else if (term instanceof Tree.TypeLiteral) {
-            defaultLiteral = expressionGen().makeDeclarationLiteralForAnnotation((Tree.TypeLiteral) term);
+            defaultLiteral = expressionGen().makeMetaLiteralStringLiteralForAnnotation((Tree.TypeLiteral) term);
         }
         if (defaultLiteral == null) {
             defaultLiteral = makeErroneous(p, "Unsupported defaulted parameter expression");

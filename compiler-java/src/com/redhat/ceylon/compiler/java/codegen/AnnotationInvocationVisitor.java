@@ -509,14 +509,14 @@ class AnnotationInvocationVisitor extends Visitor {
                         exprGen.makeJavaType(tl.getType().getTypeModel()),
                         "class"));
             } else {
-                append(exprGen.makeDeclarationLiteralForAnnotation(tl));
+                append(exprGen.makeMetaLiteralStringLiteralForAnnotation(tl));
             }
         }
     }
     
     @Override
-    public void visit(Tree.MemberLiteral tl){
-        append(exprGen.makeDeclarationLiteralForAnnotation(tl));
+    public void visit(Tree.MetaLiteral tl){
+        append(exprGen.makeMetaLiteralStringLiteralForAnnotation(tl));
     }
     
     private ListBuffer<JCExpression> startArray() {

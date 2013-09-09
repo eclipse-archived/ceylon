@@ -55,6 +55,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.compiler.typechecker.model.Referenceable;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -4547,38 +4548,44 @@ public class ExpressionTransformer extends AbstractTransformer {
         putAnnotation(annos, docAnnotation, (Class)docType.getDeclaration());
     }
     
-    public JCExpression makeDeclarationLiteralForAnnotation(Tree.MetaLiteral literal) {
-        Declaration decl = getMetaLiteralDeclaration(literal);
-        if (decl != null) {
-            return makeDeclarationLiteralForAnnotation(decl);
+    public JCExpression makeMetaLiteralStringLiteralForAnnotation(Tree.MetaLiteral literal) {
+        String ref = getSerializedMetaLiteral(literal);
+        if (ref != null) {
+            return make().Literal(ref);
         }
         return makeErroneous(literal);
     }
 
-    public static Declaration getMetaLiteralDeclaration(Tree.MetaLiteral ml) {
+    public static Referenceable getMetaLiteralReferenceable(Tree.MetaLiteral ml) {
         if (ml instanceof Tree.TypeLiteral) {
             Tree.TypeLiteral tl = (Tree.TypeLiteral)ml;
             if (tl.getType() != null && tl.getType().getTypeModel() != null) {
                 return tl.getType().getTypeModel().resolveAliases().getDeclaration();
             }
-        } else if (ml instanceof Tree.MetaLiteral) {
+        } else if (ml instanceof Tree.MemberLiteral) {
             return ml.getDeclaration();
+        } else if (ml instanceof Tree.PackageLiteral) {
+            return ((Tree.PackageLiteral)ml).getImportPath().getModel();
+        } else if (ml instanceof Tree.ModuleLiteral) {
+            return ((Tree.ModuleLiteral)ml).getImportPath().getModel();
         } 
         return null;
     }
     
     public static String getSerializedMetaLiteral(Tree.MetaLiteral ml) {
-        return serialiseDeclarationLiteral(getMetaLiteralDeclaration(ml));
+        return serializeReferenceable(getMetaLiteralReferenceable(ml));
     }
     
-    public static String serialiseDeclarationLiteral(Declaration decl) {
+    public static String serializeReferenceable(Referenceable ref) {
         StringBuilder sb = new StringBuilder();
-        appendDeclarationLiteralForAnnotation(decl, sb);
+        if (ref instanceof Declaration) {
+            appendDeclarationLiteralForAnnotation((Declaration)ref, sb);
+        } else if (ref instanceof Package) {
+            appendDeclarationLiteralForAnnotation((Package)ref, sb);
+        } else if (ref instanceof Module) {
+            appendDeclarationLiteralForAnnotation((Module)ref, sb);
+        }
         return sb.toString();
-    }
-    
-    public JCExpression makeDeclarationLiteralForAnnotation(Declaration decl) {
-        return make().Literal(serialiseDeclarationLiteral(decl));
     }
     
     public JCExpression makeDeclarationLiteralForAnnotation(Package decl) {
