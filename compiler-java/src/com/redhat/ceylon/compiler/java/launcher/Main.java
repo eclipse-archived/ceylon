@@ -645,8 +645,10 @@ public class Main extends com.sun.tools.javac.main.Main {
             this.exitState = ExitState.systemError(null, ex);
             return EXIT_SYSERR;
         } catch (FatalError ex) {
-            feMessage(ex);
             this.exitState = ExitState.systemError(comp, ex);
+            if (this.exitState.javacExitCode == EXIT_SYSERR) {
+                feMessage(ex);
+            }
             return this.exitState.javacExitCode;
         } catch (AnnotationProcessingError ex) {
             apMessage(ex);
