@@ -165,7 +165,7 @@ public class AppliedClassOrInterface<Type>
         final FreeFunction method = declaration.findMethod(name);
         if(method == null)
             return null;
-        return method.<SubType, Type, Arguments>getAppliedMethod($reifiedSubType, $reifiedType, $reifiedArguments, types, this);
+        return method.<SubType, Type, Arguments>getAppliedMethod(this.$reifiedType, $reifiedType, $reifiedArguments, types, this);
     }
 
     @Ignore
@@ -194,7 +194,7 @@ public class AppliedClassOrInterface<Type>
         final FreeClassOrInterface type = declaration.findType(name);
         if(type == null)
             return null;
-        return type.getAppliedClassOrInterface($reifiedSubType, $reifiedKind, types, (AppliedClassOrInterface<SubType>)this);
+        return type.getAppliedClassOrInterface(this.$reifiedType, $reifiedKind, types, (AppliedClassOrInterface<SubType>)this);
     }
 
     @Override
@@ -215,7 +215,7 @@ public class AppliedClassOrInterface<Type>
         com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration decl = (com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration) value.declaration;
         ProducedTypedReference typedReference = decl.getProducedTypedReference(producedType, Collections.<ProducedType>emptyList());
         TypeDescriptor reifiedValueType = Metamodel.getTypeDescriptorForProducedType(typedReference.getType());
-        return AppliedAttribute.instance($reifiedSubType, reifiedValueType, value, typedReference, decl, this);
+        return AppliedAttribute.instance(this.$reifiedType, reifiedValueType, value, typedReference, decl, this);
     }
 
     @Override

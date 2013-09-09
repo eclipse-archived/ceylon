@@ -198,7 +198,10 @@ public class FreeFunction
             containerType = Metamodel.getModel(container);
         }
         final ProducedTypedReference appliedFunction = ((com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration)declaration).getProducedTypedReference(containerType, producedTypes);
-        return new AppliedMethod($reifiedContainer, $reifiedType, $reifiedArguments, appliedFunction, this, container);
+        TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForFunction(appliedFunction);
+        TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedFunction);
+
+        return new AppliedMethod($reifiedContainer, reifiedType, reifiedArguments, appliedFunction, this, container);
     }
     
     @Override
