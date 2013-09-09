@@ -18,5 +18,5 @@
  * MA  02110-1301, USA.
  */
 "Some module doc"
-module metamodel '123' {
+module metamodel '0.1' {
 }

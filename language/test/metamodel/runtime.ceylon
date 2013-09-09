@@ -317,7 +317,7 @@ void checkPackageAndModule(){
 
     assert(mod.name == "metamodel");
     assert(mod.qualifiedName == "metamodel");
-    assert(mod.version == "123");
+    assert(mod.version == "0.1");
     
     assert(mod.members.size == 1);
     assert(exists modPackage = mod.members[0], modPackage === pkg);
@@ -516,8 +516,8 @@ void checkModules(){
     assert(modules.list.size >= 2);
     assert(exists languageModule = modules.find("ceylon.language", language.version));
     assert(languageModule.name == "ceylon.language", languageModule.version == language.version);
-    assert(exists thisModule = modules.find("metamodel", "123"));
-    assert(thisModule.name == "metamodel", thisModule.version == "123");
+    assert(exists thisModule = modules.find("metamodel", "0.1"));
+    assert(thisModule.name == "metamodel", thisModule.version == "0.1");
     assert(!modules.find("nonexistant", "123") exists);
     assert(!modules.find("ceylon.language", "0.1.1235") exists);
     assert(!modules.find("metamodel", "54321") exists);

@@ -549,7 +549,7 @@ void checkModuleAndImports() {
     assert(1 == deps.size);
     assert(exists dep = deps[0]);
     assert("metamodel" == dep.name);
-    assert("123" == dep.version);
+    assert("0.1" == dep.version);
     assert(exists depdoc = annotations(docAnnotation, dep));
     assert(depdoc.description == "Not actually needed, but we want to test ModuleImports");
     assert(annotations(optAnnotation, dep) exists);
