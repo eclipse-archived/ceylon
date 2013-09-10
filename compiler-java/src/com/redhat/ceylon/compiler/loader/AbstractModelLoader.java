@@ -133,6 +133,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_CLASS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Class";
     public static final String CEYLON_NAME_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Name";
     private static final String CEYLON_SEQUENCED_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Sequenced";
+    private static final String CEYLON_FUNCTIONAL_PARAMETER_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.FunctionalParameter";
     private static final String CEYLON_DEFAULTED_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Defaulted";
     private static final String CEYLON_SATISFIED_TYPES_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes";
     private static final String CEYLON_CASE_TYPES_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.CaseTypes";
@@ -2151,19 +2152,28 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 value = (MethodOrValue)((Class)decl).getDirectMember(paramName, null, false);
             } 
             if (value == null) {
-                // TODO This is wrong, because you can have a Callable Value parameter
-                // so we need a @Function annotation -- we could reuse the existing @Method
-                // (which we should rename)
-                //if (typeFactory.isCallableType(type)) {
-                //    // A functional parameter to a method
-                //    value = new Method();
-                //    //value.setType(typeFactory.getCallableReturnType(type));
-                //    value.setType(type);
-                //} else {
+                // So either decl is not a Class, 
+                // or the method or value member of decl is not shared
+                if (paramMirror.getAnnotation(CEYLON_FUNCTIONAL_PARAMETER_ANNOTATION) != null) {
+                    // A functional parameter to a method
+                    Method method = new Method();
+                    method.setType(typeFactory.getCallableReturnType(type));
+                    // We need to set enough of a parameter list so that the method's full type is correct 
+                    ParameterList pl = new ParameterList();
+                    for (ProducedType pt : typeFactory.getCallableArgumentTypes(type)) {
+                        Parameter p = new Parameter();
+                        Value v = new Value();
+                        v.setType(pt);
+                        p.setModel(v);
+                        pl.getParameters().add(p);
+                    }
+                    method.addParameterList(pl);
+                    value = method;
+                } else {
                     // A value parameter to a method
                     value = new Value();
                     value.setType(type);
-                //}
+                }
                 
                 value.setContainer((Scope) decl);
                 DeclarationVisitor.setVisibleScope(value);
