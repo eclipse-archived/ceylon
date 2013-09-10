@@ -1367,18 +1367,26 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         for(Parameter p : declaration.getParameterList().getParameters()){
             // FIXME: functionalparams?
             Parameter newParam = new Parameter();
-            Value value = new Value();
-            newParam.setModel(value);
+            MethodOrValue mov;
+            if (p.getModel() instanceof Value) {
+                Value value = new Value();
+                mov = value;
+            } else {
+                Method method = new Method();
+                mov = method;
+            }
+            mov.setContainer(alias);
+            mov.setUnboxed(p.getModel().getUnboxed());
+            mov.setUncheckedNullType(p.getModel().hasUncheckedNullType());
+            mov.setUnit(p.getModel().getUnit());
+            mov.setType(p.getModel().getProducedTypedReference(alias.getExtendedType(), Collections.<ProducedType>emptyList()).getType());
+
+            newParam.setModel(mov);
             newParam.setName(p.getName());
-            value.setContainer(alias);
-            DeclarationVisitor.setVisibleScope(value);
+            DeclarationVisitor.setVisibleScope(mov);
             newParam.setDeclaration(alias);
             newParam.setSequenced(p.isSequenced());
-            value.setUnboxed(p.getModel().getUnboxed());
-            value.setUncheckedNullType(p.getModel().hasUncheckedNullType());
-            value.setUnit(p.getModel().getUnit());
-            value.setType(p.getModel().getProducedTypedReference(alias.getExtendedType(), Collections.<ProducedType>emptyList()).getType());
-            alias.addMember(value);
+            alias.addMember(mov);
             newList.getParameters().add(newParam);
         }
         return newList;
