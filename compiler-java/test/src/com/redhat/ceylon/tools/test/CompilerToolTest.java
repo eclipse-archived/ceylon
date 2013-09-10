@@ -190,9 +190,6 @@ public class CompilerToolTest {
             Assert.fail("Tool should have thrown an exception");
         }catch(CompilerBugException x){
             Assert.assertEquals("Codegen Assertion", x.getMessage());
-        }catch(Throwable t){
-            t.printStackTrace();
-            Assert.fail("Unexpected exception");
         }
     }
     
@@ -207,9 +204,6 @@ public class CompilerToolTest {
             Assert.fail("Tool should have thrown an exception");
         }catch(CompilerBugException x){
             Assert.assertEquals("Codegen Bug", x.getMessage());
-        }catch(Throwable t){
-            t.printStackTrace();
-            Assert.fail("Unexpected exception");
         }
     }
     
@@ -224,9 +218,6 @@ public class CompilerToolTest {
             Assert.fail("Tool should have thrown an exception");
         }catch(SystemErrorException x){
             Assert.assertEquals("java.lang.OutOfMemoryError", x.getMessage());
-        }catch(Throwable t){
-            t.printStackTrace();
-            Assert.fail("Unexpected exception");
         }
     }
     
@@ -241,9 +232,6 @@ public class CompilerToolTest {
             Assert.fail("Tool should have thrown an exception");
         }catch(SystemErrorException x){
             Assert.assertEquals("java.lang.StackOverflowError", x.getMessage());
-        }catch(Throwable t){
-            t.printStackTrace();
-            Assert.fail("Unexpected exception");
         }
     }
     
@@ -257,9 +245,6 @@ public class CompilerToolTest {
             Assert.fail("Tool should have thrown an exception");
         }catch(OptionArgumentException x){
             Assert.assertEquals("Invalid module name or source file: 3", x.getMessage());
-        }catch(Throwable t){
-            t.printStackTrace();
-            Assert.fail("Unexpected exception");
         }
     }
     
@@ -273,9 +258,6 @@ public class CompilerToolTest {
             Assert.fail("Tool should have thrown an exception");
         }catch(OptionArgumentException x){
             Assert.assertEquals("Invalid --javac option: -target: invalid target release: foo", x.getMessage());
-        }catch(Throwable t){
-            t.printStackTrace();
-            Assert.fail("Unexpected exception");
         }
         
         try{
@@ -284,9 +266,6 @@ public class CompilerToolTest {
             Assert.fail("Tool should have thrown an exception");
         }catch(OptionArgumentException x){
             Assert.assertEquals("Invalid --javac option: -source: invalid source release: foo", x.getMessage());
-        }catch(Throwable t){
-            t.printStackTrace();
-            Assert.fail("Unexpected exception");
         }
         
         try{
@@ -295,9 +274,6 @@ public class CompilerToolTest {
             Assert.fail("Tool should have thrown an exception");
         }catch(OptionArgumentException x){
             Assert.assertEquals("Unknown --javac option: -monkey", x.getMessage());
-        }catch(Throwable t){
-            t.printStackTrace();
-            Assert.fail("Unexpected exception");
         }
         
         {
@@ -313,9 +289,6 @@ public class CompilerToolTest {
             Assert.fail("Tool should have thrown an exception");
         }catch(OptionArgumentException x){
             Assert.assertEquals("Unknown --javac option: -Xlint:monkey", x.getMessage());
-        }catch(Throwable t){
-            t.printStackTrace();
-            Assert.fail("Unexpected exception");
         }
     }
     
@@ -325,6 +298,21 @@ public class CompilerToolTest {
         Assert.assertNotNull(model);
         CeylonCompileTool tool = pluginFactory.bindArguments(model, 
                 Arrays.asList("--src=test/src", "com.redhat.ceylon.tools.test.bug1183"));
+        try {
+            tool.run();
+            Assert.fail("Tool should have thrown an exception");
+        } catch (CompilerErrorException e) {
+            // We expect this, not a FatalToolError
+        }
+        
+    }
+    
+    @Test
+    public void testBadIntegerLiteral()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                Arrays.asList("--src=test/src", "com.redhat.ceylon.tools.test.badintegerliteral"));
         try {
             tool.run();
             Assert.fail("Tool should have thrown an exception");
