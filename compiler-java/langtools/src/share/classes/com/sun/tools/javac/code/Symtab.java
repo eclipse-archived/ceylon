@@ -214,6 +214,7 @@ public class Symtab {
     public final Type ceylonAtTypeInfoType;
     public final Type ceylonAtAttributeType;
     public final Type ceylonAtMethodType;
+    public final Type ceylonAtFunctionalParameterType;
     public final Type ceylonAtObjectType;
     public final Type ceylonAtClassType;
     public final Type ceylonAtSatisfiedTypes;
@@ -609,6 +610,7 @@ public class Symtab {
         ceylonAtTypeInfoType = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeInfo");
         ceylonAtAttributeType = enterClass("com.redhat.ceylon.compiler.java.metadata.Attribute");
         ceylonAtMethodType = enterClass("com.redhat.ceylon.compiler.java.metadata.Method");
+        ceylonAtFunctionalParameterType = enterClass("com.redhat.ceylon.compiler.java.metadata.FunctionalParameter");
         ceylonAtObjectType = enterClass("com.redhat.ceylon.compiler.java.metadata.Object");
         ceylonAtClassType = enterClass("com.redhat.ceylon.compiler.java.metadata.Class");
         ceylonAtSatisfiedTypes = enterClass("com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes");
