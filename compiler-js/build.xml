@@ -80,6 +80,8 @@
         <copy todir="${build.classes}">
             <fileset dir="${src}">
                 <include name="META-INF/**/*"/>
+                <include name="com/redhat/**/resources/**" />
+                <include name="com/redhat/**/*.properties" />
             </fileset>
         </copy>
         <!-- 
