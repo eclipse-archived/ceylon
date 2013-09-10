@@ -222,11 +222,13 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         Node parent = getFromCacheNode(context, false);
         log.debug("Remove artifact " + context + " to repository " + cache.getDisplayString());
         if (parent != null) {
-            final String label = cache.getArtifactName(context);
-            try {
-                removeNode(parent, label);
-            } catch (IOException e) {
-                throw new RepositoryException(e);
+            final String[] labels = cache.getArtifactNames(context);
+            for (String label : labels) {
+                try {
+                    removeNode(parent, label);
+                } catch (IOException e) {
+                    throw new RepositoryException(e);
+                }
             }
             log.debug(" -> [done]");
         } else {
@@ -362,10 +364,16 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             if (addLeaf) {
                 Node parent = node;
                 context.toNode(parent);
-                try {
-                    node = node.getChild(repository.getArtifactName(context));
-                } finally {
-                    ArtifactContext.removeNode(parent);
+                String[] names = repository.getArtifactNames(context);
+                for (String name : names) {
+                    try {
+                        node = parent.getChild(name);
+                        if (node != null) {
+                            break;
+                        }
+                    } finally {
+                        ArtifactContext.removeNode(parent);
+                    }
                 }
             }
 
