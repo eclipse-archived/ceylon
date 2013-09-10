@@ -361,13 +361,8 @@ public class CeylonEnter extends Enter {
         RepositoryManager repositoryManager = fileManager.getOutputRepositoryManager();
         ArtifactResult artifact = null;
         try {
-            ArtifactContext ctx = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
+            ArtifactContext ctx = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.CAR, ArtifactContext.JAR);
             artifact = repositoryManager.getArtifactResult(ctx);
-            if(artifact == null){
-                // try again for a jar
-                ctx.setSuffix(ArtifactContext.JAR);
-                artifact = repositoryManager.getArtifactResult(ctx);
-            }
         } catch (InvalidArchiveException e) {
             log.error("ceylon", "Module car " + e.getPath()
                     +" obtained from repository " + e.getRepository()
