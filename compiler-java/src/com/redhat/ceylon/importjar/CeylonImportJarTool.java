@@ -66,7 +66,7 @@ public class CeylonImportJarTool implements Tool {
         this.pass = pass;
         this.jarFile = jarFile;
         this.verbose = verbose;
-        checkJarFile();
+        init();
     }
 
     @OptionArgument(argumentName="name")
@@ -131,18 +131,29 @@ public class CeylonImportJarTool implements Tool {
     }
     
     @PostConstruct
-    public void checkJarFile() {
+    public void init() {
         if(jarFile == null || jarFile.isEmpty())
             throw new ImportJarException("error.jarFile.empty");
         File f = new File(jarFile);
-        if(!f.exists())
-            throw new ImportJarException("error.jarFile.doesNotExist");
-        if(f.isDirectory())
-            throw new ImportJarException("error.jarFile.isDirectory");
-        if(!f.canRead())
-            throw new ImportJarException("error.jarFile.notReadable");
+        checkReadableFile(f, "error.jarFile");
         if(!f.getName().toLowerCase().endsWith(".jar"))
-            throw new ImportJarException("error.jarFile.notJar");
+            throw new ImportJarException("error.jarFile.notJar", new Object[]{f.toString()}, null);
+        
+        if (descriptor != null) {
+            checkReadableFile(new File(descriptor), "error.descriptorFile");
+            if(!(descriptor.toLowerCase().endsWith(".xml") ||
+                    descriptor.toLowerCase().endsWith(".properties")))
+                throw new ImportJarException("error.descriptorFile.badSuffix", new Object[]{descriptor}, null);
+        }
+    }
+
+    private void checkReadableFile(File f, String keyPrefix) {
+        if(!f.exists())
+            throw new ImportJarException(keyPrefix + ".doesNotExist", new Object[]{f.toString()}, null);
+        if(f.isDirectory())
+            throw new ImportJarException(keyPrefix + ".isDirectory", new Object[]{f.toString()}, null);
+        if(!f.canRead())
+            throw new ImportJarException(keyPrefix + ".notReadable", new Object[]{f.toString()}, null);
     }
     
     public void publish() {
@@ -155,6 +166,15 @@ public class CeylonImportJarTool implements Tool {
 
         ArtifactContext context = new ArtifactContext(module.getName(), module.getVersion(), ArtifactContext.JAR);
         context.setForceOperation(true);
+        ArtifactContext descriptorContext = null;
+        if (descriptor != null) {
+            if (descriptor.toLowerCase().endsWith(".xml")) {
+                descriptorContext = new ArtifactContext(module.getName(), module.getVersion(), ArtifactContext.MODULE_XML);
+            } else if (descriptor.toLowerCase().endsWith(".properties")) {
+                descriptorContext = new ArtifactContext(module.getName(), module.getVersion(), ArtifactContext.MODULE_PROPERTIES);
+            }
+            descriptorContext.setForceOperation(true);
+        }
         try{
             outputRepository.putArtifact(context, new File(jarFile));
             String sha1 = ShaSigner.sha1(jarFile, log);
@@ -168,6 +188,10 @@ public class CeylonImportJarTool implements Tool {
                         shaFile.delete();
                     }
                 }
+            }
+            
+            if (descriptorContext != null) {
+                outputRepository.putArtifact(descriptorContext, new File(descriptor));
             }
         }catch(CMRException x){
             throw new ImportJarException("error.failedWriteArtifact", new Object[]{context, x.getLocalizedMessage()}, x);
