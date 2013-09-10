@@ -54,6 +54,7 @@ public class CeylonImportJarTool implements Tool {
     private String jarFile;
     private boolean verbose;
     private Logger log = new CMRLogger();
+    private String descriptor;
 
     public CeylonImportJarTool() {
     }
@@ -104,6 +105,13 @@ public class CeylonImportJarTool implements Tool {
             "(default: `./modules`)")
     public void setOut(String out) {
         this.out = out;
+    }
+    
+    @OptionArgument(argumentName="file")
+    @Description("Specify a module.xml or module.properties file to be used "
+            + "as the module descriptor")
+    public void setDescriptor(String descriptor) {
+        this.descriptor = descriptor;
     }
     
     @Argument(argumentName="module", multiplicity="1", order=0)
