@@ -12,7 +12,8 @@ public class ModuleQuery {
     public enum Type {
         SRC(ArtifactContext.SRC), 
         JVM(ArtifactContext.CAR, ArtifactContext.JAR), 
-        JS(ArtifactContext.JS);
+        JS(ArtifactContext.JS),
+        ALL(ArtifactContext.SRC, ArtifactContext.CAR, ArtifactContext.JAR, ArtifactContext.JS);
         
         private String[] suffixes;
 
