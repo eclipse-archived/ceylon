@@ -11,11 +11,11 @@ import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
-import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.loader.JsModuleManagerFactory;
@@ -25,7 +25,7 @@ import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 
 @Summary("Compiles Ceylon source code to JavaScript and directly produces " +
         "module and source archives in a module repository")
-public class CeylonCompileJsTool implements Tool {
+public class CeylonCompileJsTool extends RepoUsingTool {
 
     private boolean profile = false;
     private boolean optimize = false;
@@ -38,13 +38,14 @@ public class CeylonCompileJsTool implements Tool {
     private String user = null;
     private String pass = null;
     private String out = "modules";
-    private String sysrep = null;
     private String encoding;
-    private boolean offline;
 
-    private List<String> repos = Collections.emptyList();
     private List<String> src = Collections.singletonList("source");
     private List<String> files = Collections.emptyList();
+
+    public CeylonCompileJsTool() {
+        super(CeylonCompileJsMessages.RESOURCE_BUNDLE);
+    }
 
     @OptionArgument(argumentName="encoding")
     @Description("Sets the encoding used for reading source files (default: platform-specific)")
@@ -54,12 +55,6 @@ public class CeylonCompileJsTool implements Tool {
 
     public String getEncoding(){
         return encoding;
-    }
-
-    @Option(longName="offline")
-    @Description("Enables offline mode that will prevent the module loader from connecting to remote repositories.")
-    public void setOffline(boolean offline) {
-        this.offline = offline;
     }
 
     public boolean isProfile() {
@@ -123,11 +118,6 @@ public class CeylonCompileJsTool implements Tool {
         return verbose;
     }
 
-    @OptionArgument
-    @Description("Specifies the system repository containing essential modules. (default: '$CEYLON_HOME/repo')")
-    public void setSysrep(String value) {
-        sysrep = value;
-    }
     @Option
     @Description("Print messages while compiling")
     public void setVerbose(boolean verbose) {
@@ -157,14 +147,7 @@ public class CeylonCompileJsTool implements Tool {
     }
 
     public List<String> getRepos() {
-        return repos;
-    }
-
-    @OptionArgument(longName="rep", argumentName="url")
-    @Description("Specifies a module repository containing dependencies. Can be specified multiple times. " +
-            "(default: `modules`, `~/.ceylon/repo`, http://modules.ceylon-lang.org)")
-    public void setRepos(List<String> repos) {
-        this.repos = repos;
+        return getRepositoryAsStrings();
     }
 
     public List<String> getSrc() {
@@ -207,7 +190,7 @@ public class CeylonCompileJsTool implements Tool {
 
     @Override
     public void run() throws Exception {
-        final Options opts = new Options(getRepos(), getSrc(), sysrep, getOut(), getUser(), getPass(), isOptimize(),
+        final Options opts = new Options(getRepos(), getSrc(), systemRepo, getOut(), getUser(), getPass(), isOptimize(),
                 isModulify(), isIndent(), isComments(), isVerbose(), isProfile(), false, !skipSrc, encoding, offline);
         run(opts, files);
     }

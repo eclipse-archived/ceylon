@@ -8,19 +8,22 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
-import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
+import com.redhat.ceylon.common.tool.Rest;
 import com.redhat.ceylon.common.tool.Summary;
-import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.Tools;
 import com.redhat.ceylon.compiler.loader.JsModuleManager;
 
@@ -36,7 +39,7 @@ import com.redhat.ceylon.compiler.loader.JsModuleManager;
 "\n" +
 "    ceylon run-js com.example.foobar/1.0.0"
 )
-public class CeylonRunJsTool implements Tool {
+public class CeylonRunJsTool extends RepoUsingTool {
 
     /** A thread dedicated to reading from a stream and storing the result to return it as a String. */
     public static class ReadStream extends Thread {
@@ -127,17 +130,18 @@ public class CeylonRunJsTool implements Tool {
         return f.exists() && f.canExecute();
     }
 
-    private List<String> repos = Collections.singletonList("modules");
     private String func = "run";
     private String module;
     private String exepath;
-    private String sysrep;
     private List<String> args;
     private PrintStream output;
-    private boolean offline;
     private boolean debug;
     private File cwd;
     
+    public CeylonRunJsTool() {
+        super(CeylonRunJsMessages.RESOURCE_BUNDLE);
+    }
+
     public void setCwd(File cwd) {
         this.cwd = cwd;
     }
@@ -145,12 +149,6 @@ public class CeylonRunJsTool implements Tool {
     /** Sets the PrintStream to use for output. Default is System.out. */
     public void setOutput(PrintStream value) {
         output = value;
-    }
-
-    @Option(longName="offline")
-    @Description("Enables offline mode that will prevent the module loader from connecting to remote repositories.")
-    public void setOffline(boolean offline) {
-        this.offline = offline;
     }
 
     @OptionArgument(argumentName="debug")
@@ -166,24 +164,12 @@ public class CeylonRunJsTool implements Tool {
         this.func = func;
     }
 
-    @OptionArgument(longName="rep", argumentName="url")
-    @Description("A module repository. (default: `./modules`).")
-    public void setRepositories(List<String> repos) {
-        this.repos = repos;
-    }
-    @OptionArgument
-    @Description("Specifies the system repository containing essential modules. "
-            +"(default is the environment variable CEYLON_REPO)")
-    public void setSysrep(String value) {
-        sysrep = value;
-    }
-
     @Argument(argumentName="module", multiplicity="1", order=1)
     public void setModuleVersion(String moduleVersion) {
         this.module= moduleVersion;
     }
 
-    @Argument(argumentName="args", multiplicity="*", order=2)
+    @Rest
     public void setArgs(List<String> args) {
         this.args = args;
     }
@@ -222,7 +208,7 @@ public class CeylonRunJsTool implements Tool {
      * @param repos The list of repository paths (used as module paths for node.js)
      * @param output An optional PrintStream to write the output of the node.js process to. */
     static ProcessBuilder buildProcess(final String module, final String version, String func, List<String> args,
-            String exepath, List<String> repos, String systemRepo, PrintStream output) {
+            String exepath, Set<File> repos, PrintStream output) {
         final String node = exepath == null ? findNode() : exepath;
         if (exepath != null) {
             File _f = new File(exepath);
@@ -258,10 +244,9 @@ public class CeylonRunJsTool implements Tool {
         }
         StringBuilder nodePath = new StringBuilder();
         appendToNodePath(nodePath, getNodePath());
-        appendToNodePath(nodePath, systemRepo);
         //Now append repositories
-        for (String repo : repos) {
-            appendToNodePath(nodePath, repo);
+        for (File repo : repos) {
+            appendToNodePath(nodePath, repo.getPath());
         }
         proc.environment().put("NODE_PATH", nodePath.toString());
         if (output != null) {
@@ -289,7 +274,7 @@ public class CeylonRunJsTool implements Tool {
         return deps;
     }
 
-    private void loadDependencies(RepositoryManager repoman, File jsmod) throws IOException {
+    private void loadDependencies(Set<File> repos, RepositoryManager repoman, File jsmod) throws IOException {
         final List<String> deps = getDependencies(jsmod);
         if (deps == null) {
             return;
@@ -301,36 +286,44 @@ public class CeylonRunJsTool implements Tool {
             ac.setFetchSingleArtifact(true);
             ac.setThrowErrorIfMissing(true);
             File other = repoman.getArtifact(ac);
-            loadDependencies(repoman, other);
+            repos.add(getRepoDir(ac.getName(), other));
+            loadDependencies(repos, repoman, other);
         }
     }
 
     @Override
     public void run() throws Exception {
         //The timeout is to have enough time to start reading on the process streams
-        if (sysrep == null) {
-            sysrep = getCeylonRepo();
+        if (systemRepo == null) {
+            systemRepo = getCeylonRepo();
         }
         final boolean isDefault = "default".equals(module);
-        String version = "";
-        if (!isDefault && !module.contains("/")) {
-            throw new CeylonRunJsException("Specified module is not default and is missing version.");
-        }
+        String version;
         final String modname;
         if (isDefault) {
             modname = module;
+            version = "";
         } else {
-            version = module.substring(module.indexOf('/')+1);
-            modname = module.substring(0, module.indexOf('/'));
+            version = moduleVersion(module);
+            modname = moduleName(module);
         }
 
         //Create a repository manager to load the js module we're going to run
         final RepositoryManager repoman = CeylonUtils.repoManager()
-                .systemRepo(sysrep)
-                .userRepos(repos)
+                .systemRepo(systemRepo)
+                .userRepos(getRepositoryAsStrings())
                 .offline(offline)
                 .cwd(cwd)
                 .buildManager();
+        
+        if (!isDefault && version == null) {
+            // TODO fill in the proper "binary" JS version below instead of "null"
+            version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), modname, version, ModuleQuery.Type.JS, null);
+            if (version == null) {
+                return;
+            }
+        }
+        
         ArtifactContext ac = new ArtifactContext(modname, version, ".js");
         ac.setFetchSingleArtifact(true);
         ac.setThrowErrorIfMissing(true);
@@ -338,19 +331,13 @@ public class CeylonRunJsTool implements Tool {
         if (jsmod == null) {
             throw new CeylonRunJsException("Cannot find module " + module + " in specified modules");
         }
-        loadDependencies(repoman, jsmod);
-        //Filter out remote repos; any stuff needed from there's already been downloaded
-        //by the CMR into local repo.
-        //BTW all this shit would be one line in Ceylon:
-        //repos.filter((String s) => !":" in s)
-        //or, [for (r in repos) if (!":" in r) r]
-        final ArrayList<String> localRepos = new ArrayList<String>(repos.size());
-        for (String r : repos) {
-            if (!r.contains(":")) {
-                localRepos.add(r);
-            }
-        }
-        final ProcessBuilder proc = buildProcess(modname, version, func, args, exepath, localRepos, sysrep, output);
+        // NB localRepos will contain a set of files pointing to the module repositories
+        // where all the needed modules can be found
+        Set<File> localRepos = new HashSet<File>();
+        localRepos.add(getRepoDir(modname, jsmod));
+        loadDependencies(localRepos, repoman, jsmod);
+        
+        final ProcessBuilder proc = buildProcess(modname, version, func, args, exepath, localRepos, output);
         Process nodeProcess = proc.start();
         //All this shit because inheritIO doesn't work on fucking Windows
         new ReadStream(nodeProcess.getInputStream(), output == null ? System.out : output).start();
@@ -361,6 +348,15 @@ public class CeylonRunJsTool implements Tool {
         if (exitCode != 0) {
             throw new RuntimeException(Tools.progName() + " node exit code: "+exitCode);
         }
+    }
+
+    private File getRepoDir(String modname, File file) {
+        // A trippy way to get to the repo folder, but it works
+        int count = modname.split("\\.").length + 2;
+        for (int i=0; i < count; i++) {
+            file = file.getParentFile();
+        }
+        return file;
     }
 
 }
