@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.tool.Argument;
@@ -61,7 +62,8 @@ public class CeylonInfoTool extends RepoUsingTool {
     @Override
     public void run() throws Exception {
         for (ModuleSpec module : modules) {
-            Collection<ModuleVersionDetails> versions = getModuleVersions(module.getName(), module.getVersion(), false, false);
+            // TODO Figure out how to use Type.ALL instead of Type.JVM
+            Collection<ModuleVersionDetails> versions = getModuleVersions(module.getName(), module.getVersion(), ModuleQuery.Type.JVM, null);
             if (versions.isEmpty()) {
                 errorMsg("module.not.found", module, getRepositoryManager().getRepositoriesDisplayString());
                 continue;
@@ -108,7 +110,7 @@ public class CeylonInfoTool extends RepoUsingTool {
         newline();
         
         if (depth < this.depth) {
-            Collection<ModuleVersionDetails> versions = getModuleVersions(dep.getName(), dep.getVersion(), false, false);
+            Collection<ModuleVersionDetails> versions = getModuleVersions(dep.getName(), dep.getVersion(), ModuleQuery.Type.ALL, null);
             if (!versions.isEmpty()) {
                 recurseDependencies(versions.iterator().next(), depth + 1);
             }
