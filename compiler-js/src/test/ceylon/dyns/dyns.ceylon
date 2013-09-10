@@ -1,11 +1,9 @@
 import check { ... }
 
-class Carrier() {}
-
 Object leakTest(Boolean flag) {
   dynamic {
     dynamic x = value{x=1;};
-    return flag then Carrier() else x;
+    return flag then Singleton(1) else x;
   }
 }
 
@@ -13,7 +11,7 @@ Object leakTest(Boolean flag) {
 shared void test() {
     variable Singleton<Object> testSingleton = Singleton(1);
     String zzz;
-    value carrier = Carrier();
+    dynamic carrier;
     dynamic {
         variable dynamic n = value { x=3; y="hello"; };
         n.a={1};
@@ -132,14 +130,12 @@ shared void test() {
         check(0<=\iMath.random()<=1,  "dynamic a<=b<=c");
         check(0<\iMath.random()+1<=2, "dynamic a< b<=c");
         check(0<=\iMath.random()<1.1, "dynamic a<=b< c");
-        n = carrier;
-        n.test=value {a=3; b="hello";};
+        carrier = value {a=3; b="hello";};
     }
-    print("carrier object ``carrier``");
+    //print("carrier object ``carrier``");
     dynamic {
-        dynamic n = value {x=carrier;};
-        check(n.x.test.a == 3, "carrier 1");
-        check(n.x.test.b == "hello", "carrier 2");
+        check(carrier.a == 3, "carrier 1");
+        check(carrier.b == "hello", "carrier 2");
         try {
             switch(n)
             case (is String) { fail("n is not a string"); }
@@ -148,7 +144,7 @@ shared void test() {
             check(true, "OK incomplete switch fails at runtime");
         }
     }
-    check(leakTest(true) is Carrier, "leak test 1");
+    check(leakTest(true) is Category, "leak test 1");
     try {
         leakTest(false);
         fail("leaking objects outside dynamic blocks...");
