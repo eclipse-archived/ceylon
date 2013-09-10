@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,8 +27,9 @@ import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 
-import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
+import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
@@ -143,35 +143,13 @@ public class CeylonRunTool extends RepoUsingTool {
             }
         }
 
-        Collection<ModuleVersionDetails> versions = getModuleVersions(moduleNameOptVersion, true, offline);
-        if (versions.isEmpty()) {
-            errorMsg("module.not.found", moduleNameOptVersion, getRepositoryManager().getRepositoriesDisplayString());
+        String module = moduleName(moduleNameOptVersion);
+        String version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module, moduleVersion(moduleNameOptVersion), ModuleQuery.Type.JVM, Versions.JVM_BINARY_MAJOR_VERSION);
+        if (version == null) {
             return;
         }
-        if (versions.size() > 1) {
-            errorMsg("missing.version", moduleNameOptVersion, getRepositoryManager().getRepositoriesDisplayString());
-            msg("try.versions");
-            boolean first = true;
-            for (ModuleVersionDetails version : versions) {
-                if (!first) {
-                    append(", ");
-                }
-                append(version.getVersion());
-                first = false;
-            }
-            newline();
-            return;
-        } else {
-            // If we got only one result and no version was originally given
-            // we append the version number to the module name
-            ModuleVersionDetails version = versions.iterator().next();
-            int p = moduleNameOptVersion.indexOf('/');
-            if (p == -1) {
-                moduleNameOptVersion = moduleNameOptVersion + "/" + version.getVersion();
-            }
-            if (p == (moduleNameOptVersion.length() - 1)) {
-                moduleNameOptVersion = moduleNameOptVersion + version.getVersion();
-            }
+        if (!version.isEmpty()) {
+            moduleNameOptVersion = module + "/" + version;
         }
         
         argList.add(moduleNameOptVersion);
