@@ -212,46 +212,46 @@ public class CeylonUtils {
             // The first two we add in reverse order because they get PREpended to the root
 
             if (outRepo == null) {
-                addRepo(config, builder, repositories.getOutputRepository(), true);
+                addRepo(builder, repositories.getOutputRepository(), true);
             } else {
-                addRepo(config, builder, repositories, outRepo, true);
+                addRepo(builder, repositories, outRepo, true);
             }
 
             if (systemRepo == null) {
-                addRepo(config, builder, repositories.getSystemRepository(), true);
+                addRepo(builder, repositories.getSystemRepository(), true);
             } else {
-                addRepo(config, builder, repositories, systemRepo, true);
+                addRepo(builder, repositories, systemRepo, true);
             }
 
             // The rest we add in the normal order becuase they get APpended to the root
 
             if (jdkIncluded)
-                addRepo(config, builder, repositories, "jdk", false);
+                addRepo(builder, repositories, "jdk", false);
 
             if (userRepos != null && !userRepos.isEmpty()) {
                 // Add user defined repos
                 for (String repo : userRepos) {
-                    addRepo(config, builder, repositories, repo, false);
+                    addRepo(builder, repositories, repo, false);
                 }
             } else {
                 // We add the configured local lookup repos only when no user defined repos have been passed
                 Repositories.Repository[] repos = repositories.getLocalLookupRepositories();
                 for (Repositories.Repository lookup : repos) {
-                    addRepo(config, builder, lookup, false);
+                    addRepo(builder, lookup, false);
                 }
             }
 
             // Add the extra user defined repos
             if (extraUserRepos != null && !extraUserRepos.isEmpty()) {
                 for (String repo : extraUserRepos) {
-                    addRepo(config, builder, repositories, repo, false);
+                    addRepo(builder, repositories, repo, false);
                 }
             }
                 
             // Add default non-remote repos (like the user repo)
             Repositories.Repository[] globals = repositories.getGlobalLookupRepositories();
             for (Repositories.Repository lookup : globals) {
-                addRepo(config, builder, lookup, false);
+                addRepo(builder, lookup, false);
             }
 
             // Add the "remote" repos (not necessarily remote but it's at the point in the
@@ -259,13 +259,13 @@ public class CeylonUtils {
             if (remoteRepos != null && !remoteRepos.isEmpty()) {
                 // Add remote repos
                 for (String repo : remoteRepos) {
-                    addRepo(config, builder, repositories, repo, false);
+                    addRepo(builder, repositories, repo, false);
                 }
             } else {
                 // We add the configured remote lookup repos only when no user defined repos have been passed
                 Repositories.Repository[] repos = repositories.getRemoteLookupRepositories();
                 for (Repositories.Repository lookup : repos) {
-                    addRepo(config, builder, lookup, false);
+                    addRepo(builder, lookup, false);
                 }
             }
 
@@ -273,7 +273,7 @@ public class CeylonUtils {
             // these will always come last
             Repositories.Repository[] others = repositories.getOtherLookupRepositories();
             for (Repositories.Repository lookup : others) {
-                addRepo(config, builder, lookup, false);
+                addRepo(builder, lookup, false);
             }
 
             log.debug("Repository lookup order:");
@@ -353,7 +353,7 @@ public class CeylonUtils {
             }
         }
 
-        private void addRepo(CeylonConfig config, RepositoryManagerBuilder builder, Repositories.Repository repoInfo, boolean prepend) {
+        private void addRepo(RepositoryManagerBuilder builder, Repositories.Repository repoInfo, boolean prepend) {
             if (repoInfo != null) {
                 try {
                     String path = absolute(repoInfo.getUrl());
@@ -369,14 +369,14 @@ public class CeylonUtils {
             }
         }
 
-        private void addRepo(CeylonConfig config, RepositoryManagerBuilder builder, Repositories repositories, String repoUrl, boolean prepend) {
+        private void addRepo(RepositoryManagerBuilder builder, Repositories repositories, String repoUrl, boolean prepend) {
             try {
                 if (repoUrl.startsWith("+")) {
                     // The token is the name of a repository defined in the Ceylon configuration file
                     String path = absolute(repoUrl.substring(1));
                     Repositories.Repository repo = repositories.getRepository(path);
                     if (repo != null) {
-                        addRepo(config, builder, repo, prepend);
+                        addRepo(builder, repo, prepend);
                         return;
                     }
                 }
