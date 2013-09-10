@@ -18,6 +18,7 @@ package com.redhat.ceylon.cmr.maven;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -88,10 +89,14 @@ public class AetherUtils {
         final String artifactId = name.substring(p + 1);
         final String version = ac.getVersion();
 
-        if (ac.getSuffix().equals(ArtifactContext.MAVEN_SRC)) {
+        if (arrayContains(ac.getSuffixes(), ArtifactContext.MAVEN_SRC)) {
             return fetchWithClassifier(groupId, artifactId, version, "sources", offline);
         }
         return fetchDependencies(groupId, artifactId, version, fetchSingleArtifact != null ? fetchSingleArtifact : ac.isFetchSingleArtifact(), offline);
+    }
+    
+    public static <T> boolean arrayContains(T[] array, T item) {
+        return Arrays.asList(array).contains(item);
     }
 
     private ArtifactResult fetchDependencies(String groupId, String artifactId, String version, boolean fetchSingleArtifact, final boolean offline) {
