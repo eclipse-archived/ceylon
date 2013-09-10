@@ -389,7 +389,7 @@ class AnnotationInvocationVisitor extends Visitor {
             memberName = exprGen.naming.makeUnquotedIdent(
             Naming.selector(parameter.getModel(), Naming.NA_ANNOTATION_MEMBER));
         } else {
-            memberName = exprGen.makeErroneous(errorNode);
+            memberName = exprGen.makeErroneous(errorNode, "null parameter in makeArgument");
         }
         return exprGen.make().Assign(memberName, expr);
     }

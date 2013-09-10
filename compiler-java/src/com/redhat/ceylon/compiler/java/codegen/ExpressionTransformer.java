@@ -1447,7 +1447,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         OperatorTranslation operator = Operators.getOperator(op.getClass());
         if (operator == null) {
-            return makeErroneous(op);
+            return makeErroneous(op, "unhandled operator: " + op.getClass());
         }
 
         if(operator.getOptimisationStrategy(op, this).useJavaOperator()){
@@ -1691,7 +1691,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, ProducedType leftType, ProducedType rightType) {
         OperatorTranslation operator = Operators.getOperator(op.getClass());
         if (operator == null) {
-            return makeErroneous(op);
+            return makeErroneous(op, "unhandled operator: " + op.getClass());
         }
         OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(op, this);
 
@@ -2283,7 +2283,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                             boxingStrategy);
                     exprAndType = new ExpressionAndType(iterableToSequential(exprAndType.expression), exprAndType.type);
                 } else {
-                    exprAndType = new ExpressionAndType(makeErroneous(invocation.getNode(), "Unexpected spread argument"), makeErroneous(invocation.getNode()));
+                    exprAndType = new ExpressionAndType(makeErroneous(invocation.getNode(), "Unexpected spread argument"), makeErroneous(invocation.getNode(), "Unexpected spread argument"));
                 }
             } else if (!invocation.isParameterSequenced(argIndex)
                     // if it's sequenced, Java and there's no spread at all, pass it along
@@ -2314,7 +2314,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && ((IndirectInvocation)invocation).getNumParameters() > numArguments) {
             // Calling convention for indirect variadic invocation's requires
             // explicit variadic argument (can't use the overloading trick)
-            result = result.append(new ExpressionAndType(makeEmptyAsSequential(true), makeErroneous(invocation.getNode())));
+            result = result.append(new ExpressionAndType(makeEmptyAsSequential(true), make().Erroneous()));
         }
         if(wrapIntoArray){
             // must have at least one arg, so take the last one
@@ -3158,7 +3158,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberOrTypeExpression expr) {
         if(expr.getTarget() == null)
-            return makeErroneous(expr);
+            return makeErroneous(expr, "null target");
         // consider package qualifiers as non-prefixed, we always qualify them anyways, this is
         // only useful for the typechecker resolving
         Primary primary = expr.getPrimary();
@@ -3250,7 +3250,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 result = naming.makeCompanionFieldName(iface);
             }
         } else {
-            result = makeErroneous(superOfQualifiedExpr);
+            result = makeErroneous(superOfQualifiedExpr, "Unhandled case in widen(): " + (inheritedFrom == null ? "null" : inheritedFrom.getClass().getName()));
         }
         return result;
     }
@@ -4553,7 +4553,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (ref != null) {
             return make().Literal(ref);
         }
-        return makeErroneous(literal);
+        return makeErroneous(literal, "unhandled meta literal: " + (literal == null ? "null" : literal.getClass().getName()));
     }
 
     public static Referenceable getMetaLiteralReferenceable(Tree.MetaLiteral ml) {

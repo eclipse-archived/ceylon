@@ -1350,7 +1350,7 @@ public abstract class AbstractTransformer implements Transformation {
                 jt = makeQuotedFQIdent(simpleType.getUnderlyingType());
         }
         
-        return (jt != null) ? jt : makeErroneous();
+        return (jt != null) ? jt : makeErroneous(null, "Null result from makeJavaType()");
     }
 
     public boolean isJavaArray(ProducedType type) {

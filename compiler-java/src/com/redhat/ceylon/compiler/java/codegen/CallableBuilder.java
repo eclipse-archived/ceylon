@@ -461,7 +461,7 @@ public class CallableBuilder {
                 return null;
             }
             if (usedBody) {
-                body = List.<JCStatement>of(gen.make().Exec(gen.makeErroneous()));
+                body = List.<JCStatement>of(gen.make().Exec(gen.makeErroneous(null, "AST reuse")));
             }
             usedBody = true;
             ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
