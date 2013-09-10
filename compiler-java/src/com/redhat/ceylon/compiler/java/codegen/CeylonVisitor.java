@@ -577,7 +577,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.Dynamic that) {
-        append(gen.makeErroneous(that, "Dynamic not yet supported on the JVM"));
+        append(gen.makeError(that, "Dynamic not yet supported on the JVM"));
     }
 
     public void visit(Tree.DynamicClause that) {

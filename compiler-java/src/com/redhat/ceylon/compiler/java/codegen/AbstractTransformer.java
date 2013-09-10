@@ -2849,24 +2849,8 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     /**
-     * @deprecated 
-     * This should be avoided because it means the IDE can't the location of 
-     * the error.
-     */
-    @Deprecated
-    JCExpression makeErroneous() {
-        return makeErroneous(null);
-    }
-    
-    /**
-     * Makes an 'erroneous' AST node with no message
-     */
-    JCExpression makeErroneous(Node node) {
-        return makeErroneous(node, null, List.<JCTree>nil());
-    }
-    
-    /**
      * Makes an 'erroneous' AST node with a message to be logged as an error
+     * and (eventually) treated as a compiler bug
      */
     JCExpression makeErroneous(Node node, String message) {
         return makeErroneous(node, message, List.<JCTree>nil());
@@ -2874,16 +2858,31 @@ public abstract class AbstractTransformer implements Transformation {
     
     /**
      * Makes an 'erroneous' AST node with a message to be logged as an error
+     * and (eventually) treated as a compiler bug
      */
     JCExpression makeErroneous(Node node, String message, List<? extends JCTree> errs) {
+        return makeErr(node, "ceylon.codegen.erroneous", message, errs);
+    }
+    
+    /**
+     * Makes an 'erroneous' AST node with a message to be logged as an error
+     * but which is <strong>not</strong> treated as a compiler bug
+     */
+    JCExpression makeError(Node node, String message) {
+        return makeError(node, message, List.<JCTree>nil());
+    }
+    JCExpression makeError(Node node, String message, List<? extends JCTree> errs) {
+        return makeErr(node, "ceylon.codegen.error", message, errs);
+    }
+    private JCExpression makeErr(Node node, String key, String message, List<? extends JCTree> errs) {
         if (node != null) {
             at(node);
         }
         if (message != null) {
             if (node != null) {
-                log.error(getPosition(node), "ceylon.codegen.erroneous", message);
+                log.error(getPosition(node), key, message);
             } else {
-                log.error("ceylon.codegen.erroneous", message);
+                log.error(key, message);
             }
         }
         return make().Erroneous(errs);

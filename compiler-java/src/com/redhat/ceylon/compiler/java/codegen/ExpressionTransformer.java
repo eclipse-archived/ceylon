@@ -976,7 +976,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         try {
             return make().Literal(literalValue(lit));
         } catch (ErroneousException e) {
-            return e.makeErroneous(this);
+            return e.makeError(this);
         }
     }
     
@@ -985,7 +985,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             at(lit);
             return make().Literal(literalValue(lit));
         } catch (ErroneousException e) {
-            return e.makeErroneous(this);
+            return e.makeError(this);
         }
     }
     
@@ -1426,7 +1426,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     return make().Literal(l);
                 }
             } catch (ErroneousException e) {
-                return e.makeErroneous(this);
+                return e.makeError(this);
             }
         }
         return transformOverridableUnaryOperator(op, op.getUnit().getInvertableDeclaration());
