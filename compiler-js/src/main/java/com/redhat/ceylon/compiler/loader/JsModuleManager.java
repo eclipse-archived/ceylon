@@ -152,8 +152,7 @@ public class JsModuleManager extends ModuleManager {
         for (ModuleImport imp : module.getImports()) {
             if (!imp.getModule().getNameAsString().equals("ceylon.language")) {
                 ArtifactContext ac = new ArtifactContext(imp.getModule().getNameAsString(),
-                        imp.getModule().getVersion());
-                ac.setSuffix(".js");
+                        imp.getModule().getVersion(), ArtifactContext.JS);
                 artifact = getContext().getRepositoryManager().getArtifactResult(ac);
                 if (artifact != null) {
                     resolveModule(artifact, imp.getModule(), imp, dependencyTree,
