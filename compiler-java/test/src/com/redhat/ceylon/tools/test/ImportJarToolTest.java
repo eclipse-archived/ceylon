@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.junit.Test;
+import org.junit.Assert;
 
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
@@ -31,9 +32,8 @@ import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.importjar.CeylonImportJarTool;
+import com.redhat.ceylon.importjar.ImportJarException;
 import com.redhat.ceylon.tools.CeylonToolLoader;
-
-import junit.framework.Assert;
 
 public class ImportJarToolTest {
 
@@ -48,7 +48,7 @@ public class ImportJarToolTest {
             CeylonImportJarTool tool = pluginFactory.bindArguments(model, Collections.<String>emptyList());
             Assert.fail();
         } catch (OptionArgumentException e) {
-            // asserting this is thrown
+            Assert.assertEquals("Argument 'module' to command 'import-jar' should appear at least 1 time(s)", e.getMessage());
         }
     }
     
@@ -60,7 +60,7 @@ public class ImportJarToolTest {
             CeylonImportJarTool tool = pluginFactory.bindArguments(model, Collections.<String>singletonList("my.jar"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            // asserting this is thrown
+            Assert.assertEquals("Invalid value 'my.jar' given for argument 'module' to command 'import-jar'", e.getMessage());
         }
     }
     
@@ -72,7 +72,34 @@ public class ImportJarToolTest {
             CeylonImportJarTool tool = pluginFactory.bindArguments(model, Arrays.asList("test", "my.jar"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            // asserting this is thrown
+            Assert.assertEquals("Invalid value 'test' given for argument 'module' to command 'import-jar'", e.getMessage());
+        }
+    }
+    
+    @Test
+    public void testNonexistentJar() {
+        ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
+        Assert.assertNotNull(model);
+        try {
+            CeylonImportJarTool tool = pluginFactory.bindArguments(model, Arrays.asList(
+                    "test/1.0", "test/src/com/redhat/ceylon/tools/test/nonexistent.jar"));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertEquals("Jar file test/src/com/redhat/ceylon/tools/test/nonexistent.jar does not exist", e.getMessage());
+        }
+    }
+    
+    @Test
+    public void testDescriptorSuffix() {
+        ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
+        Assert.assertNotNull(model);
+        try {
+            CeylonImportJarTool tool = pluginFactory.bindArguments(model, Arrays.asList(
+                    "--descriptor", "test/src/com/redhat/ceylon/tools/test/ImportJarToolTest.java",
+                    "test/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertEquals("Descriptor file test/src/com/redhat/ceylon/tools/test/ImportJarToolTest.java does not end with '.xml' or '.properties' extension", e.getMessage());
         }
     }
     
@@ -81,15 +108,11 @@ public class ImportJarToolTest {
         FileUtil.delete(new File("modules/importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
-        try {
-            CeylonImportJarTool tool = pluginFactory.bindArguments(model, Arrays.asList("importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
-            tool.run();
-            File f1 = new File("modules/importtest/1.0/importtest-1.0.jar");
-            File f2 = new File("modules/importtest/1.0/importtest-1.0.jar.sha1");
-            Assert.assertTrue(f1.exists() && f2.exists());
-        } catch (OptionArgumentException e) {
-            // asserting this is thrown
-        }
+        CeylonImportJarTool tool = pluginFactory.bindArguments(model, Arrays.asList("importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
+        tool.run();
+        File f1 = new File("modules/importtest/1.0/importtest-1.0.jar");
+        File f2 = new File("modules/importtest/1.0/importtest-1.0.jar.sha1");
+        Assert.assertTrue(f1.exists() && f2.exists());
     }
     
     @Test
@@ -97,15 +120,61 @@ public class ImportJarToolTest {
         FileUtil.delete(new File("modules/importtest/imptest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
+        CeylonImportJarTool tool = pluginFactory.bindArguments(model, Arrays.asList("--verbose", "importtest.imptest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
+        tool.run();
+        File f1 = new File("modules/importtest/imptest/1.0/importtest.imptest-1.0.jar");
+        File f2 = new File("modules/importtest/imptest/1.0/importtest.imptest-1.0.jar.sha1");
+        Assert.assertTrue(f1.exists() && f2.exists());
+    }
+    
+    @Test
+    public void testWithMissingXmlDescriptor() {
+        FileUtil.delete(new File("modules/importtest"));
+        ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
+        Assert.assertNotNull(model);
+        
         try {
-            CeylonImportJarTool tool = pluginFactory.bindArguments(model, Arrays.asList("--verbose", "importtest.imptest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
+            CeylonImportJarTool tool = pluginFactory.bindArguments(model, Arrays.asList(
+                    "--descriptor", "test/src/com/redhat/ceylon/tools/test/test-nonexistent-descriptor.xml", 
+                    "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
             tool.run();
-            File f1 = new File("modules/importtest/imptest/1.0/importtest.imptest-1.0.jar");
-            File f2 = new File("modules/importtest/imptest/1.0/importtest.imptest-1.0.jar.sha1");
-            Assert.assertTrue(f1.exists() && f2.exists());
+            Assert.fail();
         } catch (OptionArgumentException e) {
-            // asserting this is thrown
+            Assert.assertTrue(e.getCause() instanceof ImportJarException);
+            Assert.assertEquals("Descriptor file test/src/com/redhat/ceylon/tools/test/test-nonexistent-descriptor.xml does not exist", e.getCause().getMessage());
         }
+    }
+    
+    @Test
+    public void testWithXmlDescriptor() {
+        FileUtil.delete(new File("modules/importtest"));
+        ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
+        Assert.assertNotNull(model);
+        CeylonImportJarTool tool = pluginFactory.bindArguments(model, Arrays.asList(
+                "--descriptor", "test/src/com/redhat/ceylon/tools/test/test-descriptor.xml", 
+                "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
+        tool.run();
+        File f1 = new File("modules/importtest/1.0/importtest-1.0.jar");
+        File f2 = new File("modules/importtest/1.0/importtest-1.0.jar.sha1");
+        File f3 = new File("modules/importtest/1.0/module.xml");
+        Assert.assertTrue(f1.exists() && f2.exists());
+        Assert.assertTrue(f3.exists());
+    }
+    
+    @Test
+    public void testWithPropertiesDescriptor() {
+        FileUtil.delete(new File("modules/importtest"));
+        ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
+        Assert.assertNotNull(model);
+        CeylonImportJarTool tool = pluginFactory.bindArguments(model, Arrays.asList(
+                "--descriptor", "test/src/com/redhat/ceylon/tools/test/test-descriptor.properties", 
+                "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
+        tool.run();
+        File f1 = new File("modules/importtest/1.0/importtest-1.0.jar");
+        File f2 = new File("modules/importtest/1.0/importtest-1.0.jar.sha1");
+        File f3 = new File("modules/importtest/1.0/module.properties");
+        Assert.assertTrue(f1.exists() && f2.exists());
+        Assert.assertTrue(f3.exists());
     }
 
 }
