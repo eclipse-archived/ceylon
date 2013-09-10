@@ -824,3 +824,4 @@ shared void run() {
     checkMetamodelRefs();
     print("Annotation tests OK");
 }
+shared void test() { run(); }

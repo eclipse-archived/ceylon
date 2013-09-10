@@ -939,3 +939,4 @@ shared void run() {
     bugC1244();
     print("Metamodel tests OK");
 }
+shared void test() { run(); }
