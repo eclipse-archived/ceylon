@@ -4370,25 +4370,25 @@ public class GenerateJsVisitor extends Visitor
         final Module m = d.getUnit().getPackage().getModule();
         out(clAlias, "$init$Open");
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
-            out("Interface()('");
+            out("Interface");
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-            out("Class()('");
+            out("Class");
         } else if (d instanceof Method) {
-            out("Function()('");
+            out("Function");
         } else if (d instanceof Value) {
-            out("Value()('");
+            out("Value");
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType) {
-            out("Intersection()(");
+            out("Intersection");
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType) {
-            out("Union()(");
+            out("Union");
         } else if (d instanceof TypeParameter) {
-            out("TypeParam()(");
+            out("TypeParam");
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType) {
-            out("NothingType()(");
+            out("NothingType");
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.TypeAlias) {
-            out("Alias()(");
+            out("Alias");
         }
-        out(d.getName(), "',", clAlias, "getModules$model().find('", m.getNameAsString(),
+        out("()('", d.getName(), "',", clAlias, "getModules$model().find('", m.getNameAsString(),
                 "','", m.getVersion(), "').findPackage('", d.getUnit().getPackage().getNameAsString(),
                 "'),"+ d.isToplevel(),",");
         if (d.isMember()) {
@@ -4494,6 +4494,22 @@ public class GenerateJsVisitor extends Visitor
                 out("}})");
             }
         }
+    }
+
+    @Override
+    public void visit(Tree.PackageLiteral that) {
+        com.redhat.ceylon.compiler.typechecker.model.Package pkg = (com.redhat.ceylon.compiler.typechecker.model.Package)that.getImportPath().getModel();
+        
+        out(clAlias, "getModules$model().find('", pkg.getModule().getNameAsString(),
+                "','", pkg.getModule().getVersion(), "').findPackage('", pkg.getNameAsString(),
+                "')");
+    }
+
+    @Override
+    public void visit(Tree.ModuleLiteral that) {
+        Module m = (Module)that.getImportPath().getModel();
+        out(clAlias, "getModules$model().find('", m.getNameAsString(),
+                "','", m.getVersion(), "')");
     }
 
     /** Call internal function "throwexc" with the specified message and source location. */
