@@ -305,6 +305,7 @@
             executable="${ceylon.compiler.loc}"
             src="${test.src}"
             sysrep="${build.test.repo}"
+        	encoding="UTF-8"
             out="${build.test}">
             <files>
                 <include name="**/*.ceylon"/>
