@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.js;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Arrays;
 
 import org.junit.AfterClass;
@@ -31,7 +32,7 @@ public class RunJsTest {
         CeylonRunJsTool runner = new CeylonRunJsTool();
         runner.setModuleVersion("misc/0.1");
         runner.setRun("test");
-        runner.setRepositories(Arrays.asList(tmpModules.getAbsolutePath(), "build/runtime", "build/test/modules"));
+        runner.setRepository(Arrays.asList(new URI(tmpModules.getAbsolutePath()), new URI("build/runtime"), new URI("build/test/modules")));
         runner.run();
     }
 
