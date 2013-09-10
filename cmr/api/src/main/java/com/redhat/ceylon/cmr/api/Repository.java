@@ -43,12 +43,12 @@ public interface Repository extends ContentFinder {
     Node findParent(ArtifactContext context);
 
     /**
-     * Get artifact name.
+     * Get artifact names.
      *
      * @param context the context
-     * @return artifact's name
+     * @return the array of possible artifact names
      */
-    String getArtifactName(ArtifactContext context);
+    String[] getArtifactNames(ArtifactContext context);
 
     /**
      * Create parent.
