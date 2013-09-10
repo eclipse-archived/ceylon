@@ -80,7 +80,7 @@ class SetTest<Element>(Element* element) extends Object()
 
 void testSets() {
     value s1 = SetTest<Integer>(1, 2, 3);
-    value emptySet = SetTest<Nothing>();
+    value es = SetTest<Nothing>();
     check(s1.count((Integer x) => x==2)==1, "Set.count 1");
     check(s1.count((Integer x) => x==100)==0, "Set.count 2");
     check(2 in s1, "Set.contains 1");
@@ -89,14 +89,14 @@ void testSets() {
     check(s1.clone == s1, "Set.clone/equals");
     check(s1 != 5, "Set.equals");
     check(!s1.iterator().next() is Finished, "Set.iterator");
-    check(emptySet.subset(s1), "Set.subset 1");
-    check(!s1.subset(emptySet), "Set.subset 2");
-    check(!emptySet.superset(s1), "Set.superset 1");
-    check(s1.superset(emptySet), "Set.superset 2");
-    check(s1.union(emptySet)==s1, "Set.union 1");
-    check(emptySet.union(s1)==s1, "Set.union 2");
-    check(s1.complement(emptySet)==s1, "Set.complement 1");
-    check(emptySet.complement(s1)==emptySet, "Set.complement 2");
+    check(es.subset(s1), "Set.subset 1");
+    check(!s1.subset(es), "Set.subset 2");
+    check(!es.superset(s1), "Set.superset 1");
+    check(s1.superset(es), "Set.superset 2");
+    check(s1.union(es)==s1, "Set.union 1");
+    check(es.union(s1)==s1, "Set.union 2");
+    check(s1.complement(es)==s1, "Set.complement 1");
+    check(es.complement(s1)==es, "Set.complement 2");
     //LazySet
     check(LazySet({}).size==0, "empty LazySet()");
     value s2 = LazySet({3,4,5,"a"});
@@ -112,4 +112,21 @@ void testSets() {
     check(s2.superset(s4), "LazySet.superset 1");
     check(s3.superset(s4), "LazySet.superset 2");
     check(s2.subset(LazySet({"a","b","c",3,4,5,"d","e",1,2,3})), "LazySet.subset");
+    
+    // emptySet
+    check(0 == emptySet.size, "emptySet.size");
+    check(emptySet.empty, "emptySet.empty");
+    check(!emptySet.contains(1), "emptySet.contains");
+    check(!emptySet.containsAny({1, 2}), "emptySet.containsAny");
+    check(!emptySet.containsEvery({1, 2}), "emptySet.containsEvery");
+    check(!emptySet.superset(s2), "emptySet.superset");
+    check(emptySet.superset(emptySet), "emptySet.superset 2");
+    check(emptySet.subset(s2), "emptySet.subset");
+    check(emptySet.union(s2) == s2, "emptySet.union");
+    check(emptySet.exclusiveUnion(s2) == s2, "emptySet.exclusiveUnion");
+    check(emptySet.intersection(s2) == emptySet, "emptySet.intersection");
+    check(emptySet.complement(s2) == emptySet, "emptySet.complement");
+    check(0 == emptySet.count{function selecting(Nothing nowt) => true;}, "emptySet.selecting");
+    check(emptySet.filter{function selecting(Nothing nowt) => true;} == emptySet, "emptySet.filter");
+
 }

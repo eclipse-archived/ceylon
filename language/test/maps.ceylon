@@ -65,4 +65,13 @@ void testMaps() {
     check(m.fold(0, (Integer x, String->Integer e) => x+e.item)==6, "LazyMap fold");
     check(m.every((String->Integer e) => e.key in "abc"), "LazyMap every");
     check("b"->2 in m, "LazyMap contains");
+    
+    // emptyMap
+    check(0 == emptyMap.size, "emptyMap.size");
+    check(emptyMap.empty, "emptyMap.empty");
+    check(!emptyMap.contains(1->1), "emptyMap.contains");
+    check(!emptyMap.containsAny({1->1, 2->2}), "emptyMap.containsAny");
+    check(!emptyMap.containsEvery({1->1, 2->2}), "emptyMap.containsEvery");
+    check(0 == emptyMap.count{function selecting(Nothing->Nothing nowt) => true;}, "emptyMap.selecting");
+    check(emptyMap.filter{function selecting(Nothing->Nothing nowt) => true;} == emptyMap, "emptyMap.filter");
 }
