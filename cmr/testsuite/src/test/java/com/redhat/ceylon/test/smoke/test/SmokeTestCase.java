@@ -233,7 +233,7 @@ public class SmokeTestCase extends AbstractTest {
             Assert.assertEquals("jboss-vfs-3.0.1.GA.jar", file.getName());
         } finally {
             // delete the jar, not the car
-            ac.setSuffix(ArtifactContext.JAR);
+            ac.setSuffixes(ArtifactContext.JAR);
             manager.removeArtifact(ac);
             // temporary workaround, because the jar is not stored at the right place
             if (file != null)
@@ -307,7 +307,7 @@ public class SmokeTestCase extends AbstractTest {
         ArtifactContext ac = new ArtifactContext("test-jar", "0.1");
         ArtifactResult result = manager.getArtifactResult(ac);
         Assert.assertNull(result);
-        ac.setSuffix(ArtifactContext.JAR);
+        ac.setSuffixes(ArtifactContext.JAR);
         result = manager.getArtifactResult(ac);
         Assert.assertNotNull(result);
     }
