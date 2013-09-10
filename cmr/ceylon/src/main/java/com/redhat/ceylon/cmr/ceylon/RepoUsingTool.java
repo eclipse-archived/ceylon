@@ -14,7 +14,6 @@ import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.Messages;
-import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
@@ -86,30 +85,64 @@ public abstract class RepoUsingTool implements Tool {
         return rm;
     }
 
-    protected Collection<ModuleVersionDetails> getModuleVersions(String nameAndOptionalVersion, boolean compatible, boolean offline) {
-        String name;
-        String version;
-        int p = nameAndOptionalVersion.indexOf('/');
+    protected String moduleName(String moduleNameOptVersion) {
+        int p = moduleNameOptVersion.indexOf('/');
         if (p == -1) {
-            name = nameAndOptionalVersion;
-            version = null;
+            return moduleNameOptVersion;
         } else {
-            name = nameAndOptionalVersion.substring(0, p);
-            version = nameAndOptionalVersion.substring(p + 1);
+            return moduleNameOptVersion.substring(0, p);
         }
-        return getModuleVersions(name, version, compatible, offline);
+    }
+    
+    protected String moduleVersion(String moduleNameOptVersion) {
+        int p = moduleNameOptVersion.indexOf('/');
+        if (p == -1 || (p == (moduleNameOptVersion.length() - 1))) {
+            return null;
+        } else {
+            return moduleNameOptVersion.substring(p + 1);
+        }
+    }
+    
+    protected Collection<ModuleVersionDetails> getModuleVersions(String name, String version, ModuleQuery.Type type, Integer binaryVersion) {
+        return getModuleVersions(getRepositoryManager(), name, version, type, binaryVersion);
     }
 
-    protected Collection<ModuleVersionDetails> getModuleVersions(String name, String version, boolean compatible, boolean offline) {
-        ModuleVersionQuery query = new ModuleVersionQuery(name, version, ModuleQuery.Type.JVM);
-        if (compatible) {
-            query.setBinaryMajor(Versions.JVM_BINARY_MAJOR_VERSION);
+    protected Collection<ModuleVersionDetails> getModuleVersions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryVersion) {
+        ModuleVersionQuery query = new ModuleVersionQuery(name, version, type);
+        if (binaryVersion != null) {
+            query.setBinaryMajor(binaryVersion);
         }
-        ModuleVersionResult result = getRepositoryManager().completeVersions(query);
+        ModuleVersionResult result = repoMgr.completeVersions(query);
         NavigableMap<String, ModuleVersionDetails> versionMap = result.getVersions();
         return versionMap.values();
     }
 
+    protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryVersion) throws IOException {
+        if ("default".equals(name)) {
+            return "";
+        }
+        Collection<ModuleVersionDetails> versions = getModuleVersions(repoMgr, name, version, type, binaryVersion);
+        if (versions.isEmpty()) {
+            errorMsg("module.not.found", name, repoMgr.getRepositoriesDisplayString());
+            return null;
+        }
+        if (versions.size() > 1) {
+            errorMsg("missing.version", name, repoMgr.getRepositoriesDisplayString());
+            msg("try.versions");
+            boolean first = true;
+            for (ModuleVersionDetails mvd : versions) {
+                if (!first) {
+                    append(", ");
+                }
+                append(mvd.getVersion());
+                first = false;
+            }
+            newline();
+            return null;
+        }
+        return versions.iterator().next().getVersion();
+    }
+    
     public RepoUsingTool msg(String msgKey, Object...msgArgs) throws IOException {
         out.append(Messages.msg(bundle, msgKey, msgArgs));
         return this;
