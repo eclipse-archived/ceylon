@@ -55,11 +55,11 @@ public class AetherRepository extends MavenRepository {
     }
 
     @Override
-    public String getArtifactName(ArtifactContext context) {
+    public String[] getArtifactNames(ArtifactContext context) {
         String name = context.getName();
         final int p = name.contains(":") ? name.lastIndexOf(":") : name.lastIndexOf(".");
 
-        return getArtifactName(p >= 0 ? name.substring(p + 1) : name, context.getVersion(), context.getSuffix());
+        return getArtifactNames(p >= 0 ? name.substring(p + 1) : name, context.getVersion(), context.getSuffixes());
     }
 
     @Override

@@ -82,7 +82,15 @@ public abstract class AbstractRepository implements Repository {
         return tokens;
     }
 
-    protected static String getArtifactName(String name, String version, String suffix) {
+    protected static String[] getArtifactNames(String name, String version, String[] suffixes) {
+        String[] names = new String[suffixes.length];
+        for (int i = 0; i < suffixes.length; i++) {
+            names[i] = getArtifactName(name, version, suffixes[i]);
+        }
+        return names;
+    }
+
+    private static String getArtifactName(String name, String version, String suffix) {
         if (ArtifactContext.DOCS.equals(suffix))
             return ArtifactContext.DOCS;
         else if (ArtifactContext.DOCS_ZIPPED.equals(suffix))
@@ -94,10 +102,10 @@ public abstract class AbstractRepository implements Repository {
         else if (RepositoryManager.DEFAULT_MODULE.equals(name))
             return name + suffix;
         else
-            return buildArtifactName(name, version, suffix);
+            return buildArtifactNames(name, version, suffix);
     }
 
-    protected static String buildArtifactName(String name, String version, String suffix) {
+    protected static String buildArtifactNames(String name, String version, String suffix) {
         return name + "-" + version + suffix;
     }
 
@@ -110,8 +118,8 @@ public abstract class AbstractRepository implements Repository {
         return NodeUtils.getNode(root, tokens);
     }
 
-    public String getArtifactName(ArtifactContext context) {
-        return getArtifactName(context.getName(), context.getVersion(), context.getSuffix());
+    public String[] getArtifactNames(ArtifactContext context) {
+        return getArtifactNames(context.getName(), context.getVersion(), context.getSuffixes());
     }
 
     public OpenNode createParent(ArtifactContext context) {

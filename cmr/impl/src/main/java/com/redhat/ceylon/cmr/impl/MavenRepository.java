@@ -39,12 +39,14 @@ public class MavenRepository extends AbstractRepository {
         super(root);
     }
 
-    public String getArtifactName(ArtifactContext context) {
+    @Override
+    public String[] getArtifactNames(ArtifactContext context) {
         String name = context.getName();
         final int p = name.lastIndexOf(".");
-        return getArtifactName(p >= 0 ? name.substring(p + 1) : name, context.getVersion(), context.getSuffix());
+        return getArtifactNames(p >= 0 ? name.substring(p + 1) : name, context.getVersion(), context.getSuffixes());
     }
 
+    @Override
     protected ArtifactResult getArtifactResultInternal(RepositoryManager manager, final Node node) {
         ArtifactContext context = ArtifactContext.fromNode(node);
         return new MavenArtifactResult(manager, context.getName(), context.getVersion(), node);
@@ -63,10 +65,12 @@ public class MavenRepository extends AbstractRepository {
             this.node = node;
         }
 
+        @Override
         public ArtifactResultType type() {
             return ArtifactResultType.MAVEN;
         }
 
+        @Override
         protected File artifactInternal() throws RepositoryException {
             try {
                 return node.getContent(File.class);
@@ -75,6 +79,7 @@ public class MavenRepository extends AbstractRepository {
             }
         }
 
+        @Override
         public List<ArtifactResult> dependencies() throws RepositoryException {
             return Collections.emptyList(); // dunno how to grab deps
         }
