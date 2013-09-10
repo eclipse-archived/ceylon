@@ -416,7 +416,7 @@ public class TypeUtils {
                                 boolean farg = true;
                                 for (String s : a.getPositionalArguments()) {
                                     if (farg)farg=false; else gen.out(",");
-                                    gen.out(s);
+                                    gen.out("\"", gen.escapeStringLiteral(s), "\"");
                                 }
                             }
                             gen.out(")");
@@ -682,6 +682,11 @@ public class TypeUtils {
         } else {
             gen.out("function(){return[");
             boolean first = true;
+            //Leave the annotation but remove the doc from runtime for brevity
+            if (annotations.getAnonymousAnnotation() != null) {
+                first = false;
+                gen.out(GenerateJsVisitor.getClAlias(), "doc('')");
+            }
             for (Tree.Annotation a : annotations.getAnnotations()) {
                 if (first) first=false; else gen.out(",");
                 gen.getInvoker().generateInvocation(a);
