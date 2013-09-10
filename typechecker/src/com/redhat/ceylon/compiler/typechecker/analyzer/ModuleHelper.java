@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.maven.AetherUtils;
 import com.redhat.ceylon.compiler.typechecker.exceptions.LanguageModuleNotFoundException;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
@@ -21,7 +22,7 @@ public class ModuleHelper {
             Exception exceptionOnGetArtifact,
             ModuleManager moduleManager) {
         StringBuilder error = new StringBuilder("cannot find module ");
-        if ( ArtifactContext.SRC.equals( artifactContext.getSuffix() ) ) {
+        if (AetherUtils.arrayContains(artifactContext.getSuffixes(), ArtifactContext.SRC)) {
             error.append("source ");
         }
         error.append("artifact ");
