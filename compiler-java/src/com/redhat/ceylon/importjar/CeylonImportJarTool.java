@@ -38,13 +38,13 @@ import com.redhat.ceylon.tools.ModuleSpec;
 
 @Summary("Imports a jar file into a Ceylon module repository")
 @Description("Imports the given `<jar-file>` using the module name and version " +
-		"given by `<module>` into the repository named by the " +
-		"`--out` option.\n" +
-		"\n" +
-		"`<module>` is a module name and version separated with a slash, for example " +
-		"`com.example.foobar/1.2.0`.\n" +
-		"\n" +
-		"`<jar-file>` is the name of the Jar file to import.")
+        "given by `<module>` into the repository named by the " +
+        "`--out` option.\n" +
+        "\n" +
+        "`<module>` is a module name and version separated with a slash, for example " +
+        "`com.example.foobar/1.2.0`.\n" +
+        "\n" +
+        "`<jar-file>` is the name of the Jar file to import.")
 public class CeylonImportJarTool implements Tool {
 
     private ModuleSpec module;
@@ -101,7 +101,7 @@ public class CeylonImportJarTool implements Tool {
 
     @OptionArgument(argumentName="dir-or-url")
     @Description("Specifies the module repository (which must be publishable) " +
-    		"into which the jar file should be imported. " +
+            "into which the jar file should be imported. " +
             "(default: `./modules`)")
     public void setOut(String out) {
         this.out = out;
