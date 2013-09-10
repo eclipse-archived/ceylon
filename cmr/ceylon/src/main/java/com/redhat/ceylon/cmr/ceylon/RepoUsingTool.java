@@ -2,6 +2,7 @@ package com.redhat.ceylon.cmr.ceylon;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -31,7 +32,8 @@ public abstract class RepoUsingTool implements Tool {
     
     private ResourceBundle bundle;
     
-    private static final List<String> EMPTY = new ArrayList<String>(0);
+    private static final List<String> EMPTY_STRINGS = new ArrayList<String>(0);
+    private static final List<URI> EMPTY_URIS = new ArrayList<URI>(0);
     
     public RepoUsingTool(ResourceBundle bundle) {
         this.bundle = bundle;
@@ -45,7 +47,19 @@ public abstract class RepoUsingTool implements Tool {
             }
             return result;
         } else {
-            return EMPTY;
+            return EMPTY_STRINGS;
+        }
+    }
+    
+    public void setRepositoryAsStrings(List<String> repo) throws URISyntaxException {
+        if (repo != null) {
+            List<URI> result = new ArrayList<URI>(repo.size());
+            for (String r : repo) {
+                result.add(new URI(r));
+            }
+            setRepository(result);
+        } else {
+            setRepository(EMPTY_URIS);
         }
     }
     
