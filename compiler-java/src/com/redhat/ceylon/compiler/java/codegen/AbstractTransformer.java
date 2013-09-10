@@ -2004,6 +2004,10 @@ public abstract class AbstractTransformer implements Transformation {
     List<JCAnnotation> makeAtSequenced() {
         return makeModelAnnotation(syms().ceylonAtSequencedType);
     }
+    
+    List<JCAnnotation> makeAtFunctionalParameter() {
+        return makeModelAnnotation(syms().ceylonAtFunctionalParameterType);
+    }
 
     List<JCAnnotation> makeAtDefaulted() {
         return makeModelAnnotation(syms().ceylonAtDefaultedType);

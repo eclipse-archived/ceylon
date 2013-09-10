@@ -53,6 +53,8 @@ public class ParameterDefinitionBuilder {
     private ListBuffer<JCAnnotation> userAnnotations;
     private ListBuffer<JCAnnotation> modelAnnotations;
 
+    private boolean functional;
+
     private ParameterDefinitionBuilder(AbstractTransformer gen, String name) {
         this.gen = gen;
         this.name = name;
@@ -98,6 +100,14 @@ public class ParameterDefinitionBuilder {
         return this;
     }
     
+    /**
+     * Makes the parameter a functional parameter
+     */
+    public ParameterDefinitionBuilder functional(boolean functional) {
+        this.functional = functional;
+        return this;
+    }
+    
     public ParameterDefinitionBuilder aliasName(String aliasedName) {
         this.aliasedName = aliasedName;
         return this;
@@ -139,6 +149,9 @@ public class ParameterDefinitionBuilder {
         ListBuffer<JCAnnotation> annots = ListBuffer.lb();
         if (Annotations.includeModel(annotationFlags)) {
             annots.appendList(gen.makeAtName(name));
+            if (functional) {
+                annots.appendList(gen.makeAtFunctionalParameter());
+            }
             if (sequenced) {
                 annots.appendList(gen.makeAtSequenced());
             }

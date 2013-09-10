@@ -299,6 +299,7 @@ public class MethodDefinitionBuilder {
         pdb.aliasName(aliasedName);
         pdb.sequenced(decl.isSequenced());
         pdb.defaulted(decl.isDefaulted());
+        pdb.functional(decl.getModel() instanceof Method);
         pdb.type(paramType(gen, nonWideningDecl, nonWideningType, flags, canWiden), gen.makeJavaTypeAnnotations(decl.getModel()));
         return parameter(pdb);
     }
