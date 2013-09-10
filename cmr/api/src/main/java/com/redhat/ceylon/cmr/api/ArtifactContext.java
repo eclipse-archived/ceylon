@@ -44,7 +44,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
 
     private String name;
     private String version;
-    private String suffix = CAR;
+    private String[] suffixes = { CAR };
     private boolean localOnly;
     private boolean ignoreSHA;
     private boolean ignoreCache;
@@ -58,28 +58,32 @@ public class ArtifactContext implements Serializable, ContentOptions {
         this.version = version;
     }
 
-    public ArtifactContext(String name, String version, String suffix) {
+    public ArtifactContext(String name, String version, String... suffixes) {
         this(name, version);
-        this.suffix = suffix;
+        this.suffixes = suffixes;
     }
 
     public ArtifactContext() {
     }
 
     public ArtifactContext getSha1Context() {
-        return new ArtifactContext(name, version, suffix + SHA1);
+        String[] sha1Suffixes = new String[suffixes.length];
+        for (int i = 0; i < sha1Suffixes.length; i++) {
+            sha1Suffixes[i] = suffixes[i] + SHA1;
+        }
+        return new ArtifactContext(name, version, sha1Suffixes);
     }
 
     public ArtifactContext getDocsContext() {
-        return new ArtifactContext(name, version, DOCS);
+        return new ArtifactContext(name, version, new String[] { DOCS });
     }
 
     public ArtifactContext getModuleProperties() {
-        return new ArtifactContext(name, version, MODULE_PROPERTIES);
+        return new ArtifactContext(name, version, new String[] { MODULE_PROPERTIES });
     }
 
     public ArtifactContext getModuleXml() {
-        return new ArtifactContext(name, version, MODULE_XML);
+        return new ArtifactContext(name, version, new String[] { MODULE_XML });
     }
 
     public void toNode(Node node) {
@@ -119,12 +123,40 @@ public class ArtifactContext implements Serializable, ContentOptions {
         this.version = version;
     }
 
-    public String getSuffix() {
-        return suffix;
+    public String[] getSuffixes() {
+        return suffixes;
     }
 
-    public void setSuffix(String suffix) {
-        this.suffix = suffix;
+    public void setSuffixes(String... suffixes) {
+        this.suffixes = suffixes;
+    }
+
+    public String getSingleSuffix() {
+        if (suffixes.length != 1) {
+            throw new RepositoryException("ArtifactContext should have a single suffix");
+        }
+        return suffixes[0];
+    }
+    
+    public static String getSuffixFromNode(Node node) {
+        String fileName = node.getLabel();
+        return getSuffixFromFilename(fileName);
+    }
+
+    public static String getSuffixFromFilename(String fileName) {
+        if (fileName.endsWith(CAR)) {
+            return CAR;
+        } else if (fileName.endsWith(JAR)) {
+            return JAR;
+        } else if (fileName.endsWith(JS)) {
+            return JS;
+        } else if (fileName.endsWith(ZIP)) {
+            return ZIP;
+        } else if (fileName.endsWith(SRC)) {
+            return SRC;
+        } else {
+            throw new RepositoryException("Unknown suffix in " + fileName);
+        }
     }
 
     public boolean isLocalOnly() {
@@ -185,7 +217,23 @@ public class ArtifactContext implements Serializable, ContentOptions {
 
     @Override
     public String toString() {
-        return getName() + "-" + getVersion() + suffix;
+        StringBuilder str = new StringBuilder();
+        str.append(getName()).append("-").append(getVersion());
+        if (suffixes.length == 1) {
+            str.append(suffixes[0]);
+        } else {
+            str.append("(");
+            boolean first = true;
+            for (String s : suffixes) {
+                if (!first) {
+                    str.append("|");
+                }
+                str.append(s);
+                first = false;
+            }
+            str.append(")");
+        }
+        return str.toString();
     }
 
     public boolean forceOperation() {
