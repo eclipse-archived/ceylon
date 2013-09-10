@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -13,7 +12,7 @@ import java.util.zip.ZipFile;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
+import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.common.tool.Argument;
@@ -68,21 +67,8 @@ public class CeylonSrcTool extends RepoUsingTool {
     @Override
     public void run() throws Exception {
         for (ModuleSpec module : modules) {
-            if (!module.isVersioned()) {
-                Collection<ModuleVersionDetails> versions = getModuleVersions(module.getName(), module.getVersion(), false, false);
-                errorMsg("missing.version", module, getRepositoryManager().getRepositoriesDisplayString());
-                if (versions.size() > 1) {
-                    msg("try.versions");
-                    boolean first = true;
-                    for (ModuleVersionDetails version : versions) {
-                        if (!first) {
-                            append(", ");
-                        }
-                        append(version.getVersion());
-                        first = false;
-                    }
-                    newline();
-                }
+            if (module != ModuleSpec.DEFAULT_MODULE && !module.isVersioned()) {
+                checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, ModuleQuery.Type.SRC, null);
                 return;
             }
         }
