@@ -209,12 +209,8 @@ public class CeylonModuleLoader extends ModuleLoader {
     }
 
     protected ArtifactResult findArtifact(ModuleIdentifier mi) {
-        final ArtifactContext context = new ArtifactContext(mi.getName(), mi.getSlot(), ArtifactContext.CAR);
+        final ArtifactContext context = new ArtifactContext(mi.getName(), mi.getSlot(), ArtifactContext.CAR, ArtifactContext.JAR);
         ArtifactResult result = repository.getArtifactResult(context);
-        if (result == null) {
-            context.setSuffix(ArtifactContext.JAR);
-            result = repository.getArtifactResult(context);
-        }
         return result;
     }
 
