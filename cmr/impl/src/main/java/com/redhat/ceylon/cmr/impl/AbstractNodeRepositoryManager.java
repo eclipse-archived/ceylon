@@ -116,7 +116,11 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         final Node parent = getOrCreateParent(context);
         log.debug("Adding artifact " + context + " to cache " + cache.getDisplayString());
         log.debug(" -> " + NodeUtils.getFullPath(parent));
-        final String label = cache.getArtifactName(context);
+        final String[] names = cache.getArtifactNames(context);
+        if (names.length != 1) {
+            throw new RepositoryException("ArtifactContext should have a single suffix");
+        }
+        final String label = names[0];
         try {
             if (parent instanceof OpenNode) {
                 final OpenNode on = (OpenNode) parent;
@@ -143,7 +147,11 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             return;
         }
 
-        final String label = cache.getArtifactName(context);
+        final String[] names = cache.getArtifactNames(context);
+        if (names.length != 1) {
+            throw new RepositoryException("ArtifactContext should have a single suffix");
+        }
+        final String label = names[0];
         if (parent instanceof OpenNode) {
             final OpenNode on = (OpenNode) parent;
             final OpenNode curent = on.createNode(label);
@@ -171,8 +179,12 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             File zip = IOUtils.zipFolder(folder);
             log.debug("Herd module-doc zip file is at " + zip.getAbsolutePath());
             try {
-                context.setSuffix(ArtifactContext.DOCS_ZIPPED);
-                final String label = cache.getArtifactName(context);
+                context.setSuffixes(ArtifactContext.DOCS_ZIPPED);
+                final String[] names = cache.getArtifactNames(context);
+                if (names.length != 1) {
+                    throw new RepositoryException("ArtifactContext should have a single suffix");
+                }
+                final String label = names[0];
                 if (parent instanceof OpenNode) {
                     OpenNode.class.cast(parent).addContent(label, new FileInputStream(zip), context);
                 } else {
