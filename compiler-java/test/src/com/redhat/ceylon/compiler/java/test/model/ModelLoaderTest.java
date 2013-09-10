@@ -504,6 +504,11 @@ public class ModelLoaderTest extends CompilerTest {
                 new CompilerError(7, "missing argument to required parameter seq of VariadicPlus")
         );
     }
+    
+    @Test
+    public void loadFunctionalParameter(){
+        verifyClassLoading("FunctionalParameter.ceylon");
+    }
 
     @Test
     public void loadInnerClass(){
