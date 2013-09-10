@@ -225,7 +225,7 @@ public class SmokeTestCase extends AbstractTest {
         Repository externalRepo = MavenRepositoryHelper.getMavenRepository("https://repository.jboss.org/nexus/content/groups/public", log, false);
         builder.prependRepository(externalRepo);
         RepositoryManager manager = builder.buildRepository();
-        ArtifactContext ac = new ArtifactContext("org.jboss.jboss-vfs", "3.0.1.GA");
+        ArtifactContext ac = new ArtifactContext("org.jboss.jboss-vfs", "3.0.1.GA", ArtifactContext.JAR);
         File file = null;
         try {
             file = manager.getArtifact(ac);
@@ -464,6 +464,7 @@ public class SmokeTestCase extends AbstractTest {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps()),
                 new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps()),
+                new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps()),
         };
 
         testSearchResults("hello", Type.JVM, expected);
