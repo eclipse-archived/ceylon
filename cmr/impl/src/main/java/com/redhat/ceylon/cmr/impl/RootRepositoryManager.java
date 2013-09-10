@@ -121,7 +121,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         }
 
         // only check for jars or forced checks
-        if (ArtifactContext.JAR.equals(context.getSuffix()) || context.forceDescriptorCheck()) {
+        if (ArtifactContext.JAR.equals(context.getSingleSuffix()) || context.forceDescriptorCheck()) {
             // transfer descriptor as well, if there is one
             final Node descriptor = Configuration.getResolvers().descriptor(node);
             if (descriptor != null && descriptor.hasBinaries()) {
