@@ -30,9 +30,15 @@ import com.sun.tools.javac.util.Log;
 
 public class CeylonLog extends Log {
 
+    /** The number of errors reported by the typechecker */
     private int numCeylonAnalysisErrors;
+    /** The numer of exceptions throw by the code generator */
     private int numCeylonCodegenException;
+    /** The numer of erroneous messages (i.e. bugs) issued by the code generator */
     private int numCeylonCodegenErroneous;
+    /** The numer of non-bug error messages issued by the code generator */
+    private int numCeylonCodegenErrors;
+    /** The number of errors reported by the javac (=> bugs in codegen) */
     private int numNonCeylonErrors;
     
     /** Get the Log instance for this context. */
@@ -69,6 +75,8 @@ public class CeylonLog extends Log {
                 numCeylonCodegenException++;
             } else if (messageKey.startsWith("compiler.err.ceylon.codegen.erroneous")) {
                 numCeylonCodegenErroneous++;
+            } else if (messageKey.startsWith("compiler.err.ceylon.codegen.error")) {
+                numCeylonCodegenErrors++;
             } else if (messageKey.startsWith("compiler.err.ceylon")) {
                 numCeylonAnalysisErrors++;
             } else if (Context.isCeylon()) {
@@ -112,19 +120,27 @@ public class CeylonLog extends Log {
     }
 
     /** 
-     * The number of errors logs due to uncaught exceptions or messageful makeErroneous() 
+     * The number of errors logged due to uncaught exceptions or makeErroneous() 
      * calls during ceylon codegen.  
      */
-    public int getCeylonCodegenErrorCount() {
+    public int getCeylonCodegenBugCount() {
         return numCeylonCodegenException + numCeylonCodegenErroneous;
     }
     
     /** 
-     * The number of errors logs due to uncaught exceptions  
+     * The number of errors logged due to uncaught exceptions
      * calls during ceylon codegen.  
      */
     public int getCeylonCodegenExceptionCount() {
         return numCeylonCodegenException;
+    }
+    
+    /** 
+     * The number of errors logged due to {@link com.redhat.ceylon.compiler.java.codegen.AbstractTransformer#makeError()}  
+     * calls during ceylon codegen.  
+     */
+    public int getCeylonCodegenErrorCount() {
+        return numCeylonCodegenErrors;
     }
     
     /** 

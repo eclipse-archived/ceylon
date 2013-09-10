@@ -345,7 +345,11 @@ public class Main extends com.sun.tools.javac.main.Main {
             // Note: ex can be null
             if (comp instanceof LanguageCompiler && 
                     ((LanguageCompiler)comp).getTreatLikelyBugsAsErrors()) {
-                return new ExitState(EXIT_ERROR, CeylonState.ERROR, 0, ex, null);
+                if (hasCeylonCodegenErrors(comp) ) {
+                    return new ExitState(EXIT_ERROR, CeylonState.BUG, comp.errorCount(), ex, comp);
+                } else {
+                    return new ExitState(EXIT_ERROR, CeylonState.ERROR, 0, ex, null);
+                }
             }
             return new ExitState(EXIT_SYSERR, CeylonState.SYS, 0, ex, null);
         }
