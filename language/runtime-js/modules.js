@@ -121,6 +121,8 @@ function Modulo(meta, $$modulo){
       return r.reifyCeylonType({Element:$$$mptypes.Annotation});
     }
     $$modulo.annotations=annotations;
+  defineAttr($$modulo,'string',function(){return String$("Module[" + this.name+"/" + this.version + "]");},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
+
     annotations.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Annotation'}},$ps:[],$cont:Modulo,$tp:{Annotation:{'var':'out','satisfies':[{t:Annotation$model,a:{Value:'Annotation'}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','Module','$m','annotations']};
     return $$modulo;
 }
@@ -262,7 +264,7 @@ console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.
     getMember.$$metamodel$$={mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},'Kind']},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Paquete,$tp:{Kind:{'satisfies':[{t:TopLevelOrMemberDeclaration$model$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','Package','$m','getMember']};
     function getValue(name$4) {
       var m = this.pkg[name$4];
-      if (m && m['$mt']==='attr') {
+      if (m && (m['$mt']==='attr' || m['$mt']==='gttr')) {
         return OpenValue(name$4, this, true, m);
       }
       return null;
@@ -308,6 +310,7 @@ console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.
     }
     $$paquete.annotations=annotations;
     annotations.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Annotation'}},$ps:[],$cont:Paquete,$tp:{Annotation:{'var':'out','satisfies':[{t:Annotation$model,a:{Value:'Annotation'}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','Package','$m','annotations']};
+  defineAttr($$paquete,'string',function(){return String$("Package[" + this.name+"]");},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
     return $$paquete;
 }
 Paquete.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:Package$model$declaration}],$an:function(){return[shared()];},d:['ceylon.language.model.declaration','Package']};
