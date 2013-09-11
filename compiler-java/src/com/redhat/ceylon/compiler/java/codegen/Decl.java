@@ -393,7 +393,8 @@ public class Decl {
         Scope container = decl.getContainer();
         while (container != null) {
             if (container instanceof MethodOrValue
-                    || container instanceof ControlBlock) {
+                    || container instanceof ControlBlock
+                    || container instanceof NamedArgumentList) {
                 return true;
             }
             container = container.getContainer();
