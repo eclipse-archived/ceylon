@@ -590,9 +590,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     
     public void visit(Tree.CompilationUnit cu) {
         // Figure out all the local ids
-        LocalIdVisitor liv = new LocalIdVisitor();
-        cu.visit(liv);
-        gen.naming.setLocalIds(liv.getLocalIds());
+        gen.naming.assignNames(cu);
         super.visit(cu);
         String arg = CodegenUtil.getCompilerAnnotationArgument(cu, "die");
         if (arg != null) {

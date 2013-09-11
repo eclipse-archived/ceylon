@@ -50,7 +50,9 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.parser.Token;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -215,6 +217,92 @@ public class Naming implements LocalId {
         return "set"+capitalize(stripLeadingDollar(property));
     }
     
+    private final java.util.Map<Scope, Integer> locals = new java.util.HashMap<Scope, Integer>();
+    
+    /**
+     * A Visitor which assigns ids sometimes neede by Naming.getLocalId() for 
+     * determining the name munging necessary for "hoisting" interface declarations 
+     * to top level.
+     */
+    private class LocalIdVisitor extends Visitor implements NaturalVisitor {
+        
+        private int localId = 0;
+        
+        private void resetLocals() {
+            localId = 0;
+        }
+        
+        private void local(Scope decl) {
+            if (!locals.containsKey(decl)) {
+                locals.put(decl, localId);
+                localId++;
+            }
+        }
+        
+        void noteDecl(Declaration decl) {
+            if (decl.isToplevel()) {
+                resetLocals();
+            } else if (Decl.isLocal(decl)){
+                local(decl.getContainer());
+            }
+        }
+        
+        @Override
+        public void visit(Tree.ClassOrInterface that) {
+            noteDecl(that.getDeclarationModel());
+            super.visit(that);
+        }
+        
+        @Override
+        public void visit(Tree.TypeAliasDeclaration that) {
+            noteDecl(that.getDeclarationModel());
+            super.visit(that);
+        }
+        
+        @Override
+        public void visit(Tree.ObjectDefinition that) {
+            noteDecl(that.getDeclarationModel());
+            super.visit(that);
+        }
+        
+        @Override
+        public void visit(Tree.AnyMethod that) {
+            if (Decl.isLocal(that.getDeclarationModel())) {
+                noteDecl(that.getDeclarationModel());
+            }
+            super.visit(that);
+        }
+        
+        @Override
+        public void visit(Tree.AttributeGetterDefinition that) {
+            if (Decl.isLocal(that.getDeclarationModel())) {
+                noteDecl(that.getDeclarationModel());
+            }
+            super.visit(that);
+        }
+        
+        @Override
+        public void visit(Tree.AttributeSetterDefinition that) {
+            if (Decl.isLocal(that.getDeclarationModel())) {
+                noteDecl(that.getDeclarationModel());
+            }
+            super.visit(that);
+        }
+        
+        @Override
+        public void visit(Tree.NamedArgument that) {
+            local(that.getScope().getContainer());
+            local(that.getScope());
+            super.visit(that);
+        }
+    }
+    
+    public void assignNames(Tree.CompilationUnit cu) {
+        this.locals.clear();
+        LocalIdVisitor liv = new LocalIdVisitor();
+        cu.visit(liv);
+    }
+    
     /** 
      * Helper class for {@link #makeDeclName(JCExpression, TypeDeclaration, DeclNameFlag...)}
      */
@@ -250,6 +338,9 @@ public class Naming implements LocalId {
         public void clear() {
             expr = qualifying;
             sb.setLength(0);
+        }
+        public String toString() {
+            return result().toString() + " plus, maybe " + (Decl.isCeylon(decl) ? quoteClassName(sb.toString()) : sb.toString());
         }
     }
     
@@ -1592,12 +1683,6 @@ public class Naming implements LocalId {
     
     SyntheticName synthetic(String name) {
         return new SyntheticName(names.fromString(name));
-    }
-    
-    private java.util.Map<Scope, Integer> locals;
-    
-    public void setLocalIds(java.util.Map<Scope, Integer> locals) {
-        this.locals = locals;
     }
     
     void clearSubstitutions(Declaration decl) {
