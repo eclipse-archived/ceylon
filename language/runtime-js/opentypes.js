@@ -228,7 +228,7 @@ defineAttr($$openVariable,'toplevel',function(){return this.toplevel_;},undefine
     }
     return false;
   }
-  defineAttr($$openValue,'string',function(){return String$("OpenValue[" + this.packageContainer.name + "::" + this.name_+"]");},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
+  defineAttr($$openValue,'string',function(){return String$("OpenVariable[" + this.packageContainer.name + "::" + this.name_+"]");},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
 
         })(OpenVariable.$$.prototype);
     }
