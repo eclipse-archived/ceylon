@@ -1,21 +1,15 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 
-import ceylon.language.Iterator;
 import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.finished_;
 import ceylon.language.model.ClassOrInterface$impl;
 import ceylon.language.model.Model$impl;
-import ceylon.language.model.declaration.Package;
-import ceylon.language.model.declaration.TopLevelOrMemberDeclaration;
 
 import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -54,6 +48,13 @@ public abstract class AppliedClassOrInterface<Type>
     @Override
     @Ignore
     public ceylon.language.model.Type$impl $ceylon$language$model$Type$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @Ignore
+    public ceylon.language.model.Generic$impl $ceylon$language$model$Generic$impl() {
         // TODO Auto-generated method stub
         return null;
     }

@@ -9,12 +9,9 @@ import ceylon.language.model {
 
 shared interface ClassOrInterface<out Type=Anything> 
     of ClassModel<Type, Nothing> | InterfaceModel<Type>
-    satisfies Model & ClosedType<Type> {
+    satisfies Model & Generic & ClosedType<Type> {
     
     shared formal actual ClassOrInterfaceDeclaration declaration;
-    
-    // FIXME: turn that into an interface
-    shared formal Map<TypeParameter, ClosedType<Anything>> typeArguments;
     
     // FIXME: ClassModel probably?
     shared formal Class<Anything, Nothing>? superclass;

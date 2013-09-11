@@ -56,6 +56,13 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
 
     @Override
     @Ignore
+    public ceylon.language.model.Generic$impl $ceylon$language$model$Generic$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @Ignore
     public Model$impl $ceylon$language$model$Model$impl() {
         // TODO Auto-generated method stub
         return null;

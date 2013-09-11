@@ -796,15 +796,12 @@ public class Metamodel {
     public static String toTypeString(ceylon.language.model.Model model){
         StringBuffer string = new StringBuffer();
         string.append(model.getDeclaration().getName());
-        if(model instanceof ceylon.language.model.ClassOrInterface<?>)
-            addTypeArguments(string, (ceylon.language.model.declaration.GenericDeclaration) model.getDeclaration(), ((ceylon.language.model.ClassOrInterface<?>)model).getTypeArguments());
-        else if(model instanceof ceylon.language.model.FunctionModel<?,?>)
-            addTypeArguments(string, (ceylon.language.model.declaration.GenericDeclaration) model.getDeclaration(), ((ceylon.language.model.FunctionModel<?,?>)model).getTypeArguments());
+        if(model instanceof ceylon.language.model.Generic)
+            addTypeArguments(string, (ceylon.language.model.declaration.GenericDeclaration) model.getDeclaration(), ((ceylon.language.model.Generic)model).getTypeArguments());
         ceylon.language.model.ClassOrInterface<?> container = model.getContainer();
         while(container != null){
             StringBuffer string2 = new StringBuffer(container.getDeclaration().getName());
-            if(container instanceof ceylon.language.model.ClassOrInterface<?>)
-                addTypeArguments(string2, container.getDeclaration(), container.getTypeArguments());
+            addTypeArguments(string2, container.getDeclaration(), container.getTypeArguments());
             string2.append(".");
             string.insert(0, string2.toString());
             container = container.getContainer();
