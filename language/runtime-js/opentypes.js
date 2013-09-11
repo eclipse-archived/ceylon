@@ -170,6 +170,14 @@ function $init$OpenValue(){
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:OpenType$model$declaration},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','ValueDeclaration','$at','openType']};});defineAttr($$openValue,'name',function(){return this.name_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','ValueDeclaration','$at','name']};});
             defineAttr($$openValue,'packageContainer',function(){return this.packageContainer_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Package$model$declaration},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','ValueDeclaration','$at','packageContainer']};});
             defineAttr($$openValue,'toplevel',function(){return this.toplevel_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','ValueDeclaration','$at','toplevel']};});
+
+  $$openValue.equals=function(other) {
+    if (isOfType(other, {t:OpenValue}) && other.name.equals(this.name) && other.toplevel===this.toplevel && other.packageContainer.equals(this.packageContainer)) {
+      return other.meta==this.meta;
+    }
+    return false;
+  }
+  defineAttr($$openValue,'string',function(){return String$("OpenValue[" + this.packageContainer.name + "::" + this.name_+"]");},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
         })(OpenValue.$$.prototype);
     }
     return OpenValue;
