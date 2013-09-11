@@ -242,7 +242,7 @@ public class Naming implements LocalId {
         void noteDecl(Declaration decl) {
             if (decl.isToplevel()) {
                 resetLocals();
-            } else if (Decl.isLocal(decl)){
+            } else if (Decl.isLocalNotInitializer(decl)){
                 local(decl.getContainer());
             }
         }
@@ -267,7 +267,7 @@ public class Naming implements LocalId {
         
         @Override
         public void visit(Tree.AnyMethod that) {
-            if (Decl.isLocal(that.getDeclarationModel())) {
+            if (Decl.isLocalNotInitializer(that.getDeclarationModel())) {
                 noteDecl(that.getDeclarationModel());
             }
             super.visit(that);
@@ -275,7 +275,7 @@ public class Naming implements LocalId {
         
         @Override
         public void visit(Tree.AttributeGetterDefinition that) {
-            if (Decl.isLocal(that.getDeclarationModel())) {
+            if (Decl.isLocalNotInitializer(that.getDeclarationModel())) {
                 noteDecl(that.getDeclarationModel());
             }
             super.visit(that);
@@ -283,7 +283,7 @@ public class Naming implements LocalId {
         
         @Override
         public void visit(Tree.AttributeSetterDefinition that) {
-            if (Decl.isLocal(that.getDeclarationModel())) {
+            if (Decl.isLocalNotInitializer(that.getDeclarationModel())) {
                 noteDecl(that.getDeclarationModel());
             }
             super.visit(that);
@@ -398,7 +398,7 @@ public class Naming implements LocalId {
             helper.append(klass.getName());
             if (Decl.isCeylon(klass)) {
                 if (flags.contains(DeclNameFlag.COMPANION)
-                    && Decl.isLocal(klass)
+                    && Decl.isLocalNotInitializer(klass)
                     && last) {
                     helper.append(IMPL_POSTFIX);
                 } else if (flags.contains(DeclNameFlag.ANNOTATION)
@@ -613,7 +613,7 @@ public class Naming implements LocalId {
         if (decl instanceof Method) {
             return ((Method) decl).getName() + "$" + CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getName();
         } else if (decl instanceof ClassOrInterface) {
-            if (decl.isToplevel() || Decl.isLocal(decl)) {
+            if (decl.isToplevel() || Decl.isLocalNotInitializer(decl)) {
                 return "$init$" + param.getName();
             } else {
                 return "$" + decl.getName() + "$init$" + param.getName();
@@ -1120,7 +1120,7 @@ public class Naming implements LocalId {
         Assert.that((namingOptions & ~(NA_SETTER | NA_GETTER | NA_WRAPPER_UNQUOTED)) == 0, 
                 "Unsupported namingOption");
         String name = decl.getName();
-        if (Decl.isLocal(decl) || Decl.isLocalToInitializer(decl)) {
+        if (Decl.isLocalNotInitializer(decl) || Decl.isLocalToInitializer(decl)) {
             if ((Decl.isGetter(decl) && (namingOptions & NA_SETTER) == 0)
                     || (namingOptions & NA_GETTER) != 0){
                 name = name + "$getter";

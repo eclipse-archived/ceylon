@@ -129,7 +129,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         	if (!Decl.isNative(decl)) {
         		topattrBuilder.add(decl);
         	}
-        } else if ((Decl.isLocal(decl) || Decl.isLocalToInitializer(decl)) 
+        } else if ((Decl.isLocalNotInitializer(decl) || Decl.isLocalToInitializer(decl)) 
                 && ((Decl.isCaptured(decl) && Decl.isVariable(decl))
                         || Decl.isTransient(decl)
                         || Decl.hasSetter(decl))) {

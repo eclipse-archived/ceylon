@@ -3404,7 +3404,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             } else if (decl.isCaptured() || decl.isShared()) {
                 TypeDeclaration typeDecl = ((TypedDeclaration)decl).getType().getDeclaration();
                 mustUseField = Decl.isBoxedVariable((TypedDeclaration)decl);
-                if (Decl.isLocal(typeDecl)
+                if (Decl.isLocalNotInitializer(typeDecl)
                         && typeDecl.isAnonymous()) {
                     // accessing a local 'object' declaration, so don't need a getter 
                 } else if (decl.isCaptured() && !((TypedDeclaration) decl).isVariable()) {
@@ -3416,7 +3416,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         } else if (Decl.isMethodOrSharedOrCapturedParam(decl)) {
             if (!decl.isParameter()
-                    && (Decl.isLocal(decl) || (Decl.isLocalToInitializer(decl) && ((Method)decl).isDeferred()))) {
+                    && (Decl.isLocalNotInitializer(decl) || (Decl.isLocalToInitializer(decl) && ((Method)decl).isDeferred()))) {
                 primaryExpr = null;
                 int flags = Naming.NA_MEMBER;
                 if (!isRecursiveReference(expr)) {
@@ -3818,12 +3818,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                 result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER), attr);
             } else {
                 // must use the setter
-                if (Decl.isLocal(decl)) {
+                if (Decl.isLocalNotInitializer(decl)) {
                     lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER | Naming.NA_SETTER);
                 }
             }
         } else if (decl instanceof Method && Decl.isDeferred(decl)) {
-            if (Decl.isLocal(decl) || Decl.isLocalToInitializer(decl)) {
+            if (Decl.isLocalNotInitializer(decl) || Decl.isLocalToInitializer(decl)) {
                 // Deferred method initialization of a local function
                 // The Callable field has the same name as the method, so use NA_MEMBER
                 result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER_UNQUOTED | Naming.NA_MEMBER), rhs);
@@ -3847,7 +3847,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // must use the qualified setter
             if (Decl.isBoxedVariable(decl)) {
                 result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER | Naming.NA_MEMBER | Naming.NA_SETTER), rhs);
-            } else if (Decl.isLocal(decl)) {
+            } else if (Decl.isLocalNotInitializer(decl)) {
                 lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER);
             }
         } else {

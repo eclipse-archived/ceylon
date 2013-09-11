@@ -1649,7 +1649,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (def.isToplevel()) {
             result |= def.isShared() ? PUBLIC : 0;
             result |= STATIC;
-        } else if (Decl.isLocal(def)) {
+        } else if (Decl.isLocalNotInitializer(def)) {
             result |= def.isShared() ? PUBLIC : 0;
         } else {
             result |= def.isShared() ? PUBLIC : PRIVATE;
@@ -1812,7 +1812,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         List<JCTree> result = builder.build();
         
-        if (Decl.isLocal(def) || Decl.isLocalToInitializer(def)) {
+        if (Decl.isLocalNotInitializer(def) || Decl.isLocalToInitializer(def)) {
             // Inner method
             JCVariableDecl call = at(def).VarDef(
                     make().Modifiers(FINAL),
@@ -3096,7 +3096,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     public List<JCTree> transformObjectDefinition(Tree.ObjectDefinition def, ClassDefinitionBuilder containingClassBuilder) {
         return transformObject(def, def.getDeclarationModel(), 
-                def.getAnonymousClass(), containingClassBuilder, Decl.isLocal(def));
+                def.getAnonymousClass(), containingClassBuilder, Decl.isLocalNotInitializer(def));
     }
     
     public List<JCTree> transformObjectArgument(Tree.ObjectArgument def) {

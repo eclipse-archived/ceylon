@@ -92,7 +92,7 @@ class Strategy {
             return DefaultParameterMethodOwner.STATIC;
         } else if ((decl instanceof Class) 
                 && !decl.isToplevel()
-                && !Decl.isLocal(decl)) {
+                && !Decl.isLocalNotInitializer(decl)) {
             // Only inner classes have their default value methods on their outer
             return Decl.getClassOrInterfaceContainer(decl, false) instanceof Class ? DefaultParameterMethodOwner.OUTER : DefaultParameterMethodOwner.OUTER_COMPANION;
         }
@@ -131,7 +131,7 @@ class Strategy {
         // Only inner classes have their default value methods on their outer
         return (elem instanceof Class) 
                 && !((Class)elem).isToplevel()
-                && !Decl.isLocal((Class)elem);
+                && !Decl.isLocalNotInitializer((Class)elem);
     }
     
     public static boolean defaultParameterMethodOnSelf(Tree.Declaration decl) {

@@ -348,21 +348,23 @@ public class Decl {
     
     /**
      * Determines whether the declaration is local to a method,
-     * getter, setter or class initializer.
+     * getter or setter, but <strong>returns {@code false} for a declaration 
+     * local to a Class initializer.</strong>
      * @param decl The declaration
      * @return true if the declaration is local
      */
-    public static boolean isLocal(Tree.Declaration decl) {
-        return isLocal(decl.getDeclarationModel());
+    public static boolean isLocalNotInitializer(Tree.Declaration decl) {
+        return isLocalNotInitializer(decl.getDeclarationModel());
     }
 
     /**
      * Determines whether the declaration is local to a method,
-     * getter, setter or class initializer.
+     * getter or setter, but <strong>returns {@code false} for a declaration 
+     * local to a Class initializer.</strong>
      * @param decl The declaration
      * @return true if the declaration is local
      */
-    public static boolean isLocal(Declaration decl) {
+    public static boolean isLocalNotInitializer(Declaration decl) {
         return isLocalNotInitializerScope(decl.getContainer());
     }
     
@@ -562,7 +564,7 @@ public class Decl {
      */
     public static boolean isBoxedVariable(TypedDeclaration attr) {
         return isNonTransientValue(attr)
-                && isLocal(attr)
+                && isLocalNotInitializer(attr)
                 && attr.isVariable()
                 && attr.isCaptured();
     }
