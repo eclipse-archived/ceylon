@@ -185,6 +185,13 @@ shared void variadicParams(Integer count = 0, String* strings){
     }
 }
 
+shared class VariadicParams(Integer count = 0, String* strings){
+    assert(count == strings.size);
+    for(s in strings){
+        assert(s == "a");
+    }
+}
+        
 shared T typeParams<T>(T s, Integer i)
     given T satisfies Object {
     

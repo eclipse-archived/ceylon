@@ -71,6 +71,12 @@ void checkConstructors(){
     }catch(Exception x){
         assert(x is MyException);
     }
+    
+    value variadicClass = `VariadicParams`;
+    variadicClass();
+    variadicClass(0);
+    variadicClass(1, "a");
+    variadicClass(2, "a", "a");
 }
 
 void checkMemberAttributes(){
