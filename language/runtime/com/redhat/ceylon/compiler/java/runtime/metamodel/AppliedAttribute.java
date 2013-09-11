@@ -3,9 +3,9 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.model.Attribute$impl;
-import ceylon.language.model.ValueModel$impl;
 import ceylon.language.model.Model$impl;
 import ceylon.language.model.Value;
+import ceylon.language.model.ValueModel$impl;
 import ceylon.language.model.declaration.ValueDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -15,7 +15,6 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 
 @Ceylon(major = 5)
@@ -48,21 +47,18 @@ public class AppliedAttribute<Container, Type>
     @Override
     @Ignore
     public ValueModel$impl<Type> $ceylon$language$model$ValueModel$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public Model$impl $ceylon$language$model$Model$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public Attribute$impl<Container, Type> $ceylon$language$model$Attribute$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -80,7 +76,7 @@ public class AppliedAttribute<Container, Type>
     
     @Override
     protected Value<? extends Type> bindTo(Object instance) {
-        return new AppliedValue($reifiedType, declaration, typedReference, getContainer(), instance);
+        return new AppliedValue<Type>($reifiedType, declaration, typedReference, getContainer(), instance);
     }
 
     @Ignore
@@ -89,13 +85,14 @@ public class AppliedAttribute<Container, Type>
         return TypeDescriptor.klass(AppliedAttribute.class, super.$reifiedType, $reifiedType);
     }
 
-    public static ceylon.language.model.Attribute instance(@Ignore TypeDescriptor $reifiedSubType, @Ignore TypeDescriptor reifiedValueType, 
-                                                               FreeAttribute value, ProducedTypedReference valueTypedReference, 
-                                                               com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration decl,
-                                                               ceylon.language.model.ClassOrInterface<? extends Object> container) {
+    public static <ContainerType, ValueType> ceylon.language.model.Attribute<ContainerType, ValueType> 
+        instance(@Ignore TypeDescriptor $reifiedSubType, @Ignore TypeDescriptor reifiedValueType, 
+                 FreeAttribute value, ProducedTypedReference valueTypedReference, 
+                 com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration decl,
+                 ceylon.language.model.ClassOrInterface<? extends Object> container) {
         return decl.isVariable()
-                ? new AppliedVariableAttribute($reifiedSubType, reifiedValueType, value, valueTypedReference, container)
-                : new AppliedAttribute($reifiedSubType, reifiedValueType, value, valueTypedReference, container);
+                ? new AppliedVariableAttribute<ContainerType, ValueType>($reifiedSubType, reifiedValueType, value, valueTypedReference, container)
+                : new AppliedAttribute<ContainerType, ValueType>($reifiedSubType, reifiedValueType, value, valueTypedReference, container);
     }
     
     @Override
@@ -173,7 +170,7 @@ public class AppliedAttribute<Container, Type>
             return true;
         if(obj instanceof ceylon.language.model.Attribute == false)
             return false;
-        ceylon.language.model.Attribute other = (ceylon.language.model.Attribute) obj;
+        ceylon.language.model.Attribute<?,?> other = (ceylon.language.model.Attribute<?,?>) obj;
         return getDeclaration().equals(other.getDeclaration())
                 && getDeclaringClassOrInterface().equals(other.getDeclaringClassOrInterface());
     }

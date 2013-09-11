@@ -28,6 +28,12 @@ public class FreeVariable
         super(value);
     }
     
+    @Ignore
+    @Override
+    public VariableDeclaration$impl $ceylon$language$model$declaration$VariableDeclaration$impl() {
+        return null;
+    }
+
     @Override
     public int hashCode() {
         int result = 1;
@@ -55,13 +61,6 @@ public class FreeVariable
     @Override
     public TypeDescriptor $getType() {
         return $TypeDescriptor;
-    }
-    
-    @Ignore
-    @Override
-    public VariableDeclaration$impl $ceylon$language$model$declaration$VariableDeclaration$impl() {
-        // TODO Auto-generated method stub
-        return null;
     }
     
     @TypeInfo("ceylon.language.model.declaration::SetterDeclaration")

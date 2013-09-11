@@ -38,20 +38,18 @@ public class FreeUnionType
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : caseTypes){
             types[i++] = Metamodel.getMetamodel(pt);
         }
-        this.caseTypes = (Sequential)Util.sequentialInstance(ceylon.language.model.declaration.OpenType.$TypeDescriptor, types);
+        this.caseTypes = Util.sequentialInstance(ceylon.language.model.declaration.OpenType.$TypeDescriptor, types);
     }
 
     @Override
     @Ignore
     public OpenType$impl $ceylon$language$model$declaration$OpenType$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public OpenUnion$impl $ceylon$language$model$declaration$OpenUnion$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 

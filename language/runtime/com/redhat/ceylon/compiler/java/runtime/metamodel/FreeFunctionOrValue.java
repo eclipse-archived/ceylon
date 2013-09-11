@@ -26,7 +26,6 @@ public abstract class FreeFunctionOrValue
     @Override
     @Ignore
     public FunctionOrValueDeclaration$impl $ceylon$language$model$declaration$FunctionOrValueDeclaration$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 

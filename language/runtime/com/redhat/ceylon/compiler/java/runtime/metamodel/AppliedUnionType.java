@@ -39,12 +39,12 @@ public class AppliedUnionType<Union>
     
     private com.redhat.ceylon.compiler.typechecker.model.ProducedType model;
     
-    protected Sequential<ceylon.language.model.Type<Union>> caseTypes;
+    protected Sequential<? extends ceylon.language.model.Type<? extends Union>> caseTypes;
     
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        Iterator<? extends Type> iterator = caseTypes.iterator();
+        Iterator<? extends Type<?>> iterator = caseTypes.iterator();
         Object next=iterator.next();
         sb.append(next);
         while (!((next=iterator.next()) instanceof Finished)) {
@@ -57,25 +57,24 @@ public class AppliedUnionType<Union>
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> caseTypes = union.getCaseTypes();
         this.model = union.getType();
         this.$reifiedUnion = $reifiedType;
-        ceylon.language.model.Type<?>[] types = new ceylon.language.model.Type<?>[caseTypes.size()];
+        @SuppressWarnings("unchecked")
+        ceylon.language.model.Type<? extends Union>[] types = new ceylon.language.model.Type[caseTypes.size()];
         int i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : caseTypes){
             types[i++] = Metamodel.getAppliedMetamodel(pt);
         }
-        this.caseTypes = (Sequential)Util.sequentialInstance(TypeDescriptor.klass(ceylon.language.model.Type.class, ceylon.language.Anything.$TypeDescriptor), types);
+        this.caseTypes = Util.<ceylon.language.model.Type<? extends Union>>sequentialInstance(TypeDescriptor.klass(ceylon.language.model.Type.class, ceylon.language.Anything.$TypeDescriptor), types);
     }
     
     @Override
     @Ignore
-    public Type$impl $ceylon$language$model$Type$impl() {
-        // TODO Auto-generated method stub
+    public Type$impl<Union> $ceylon$language$model$Type$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public UnionType$impl $ceylon$language$model$UnionType$impl() {
-        // TODO Auto-generated method stub
+    public UnionType$impl<Union> $ceylon$language$model$UnionType$impl() {
         return null;
     }
 
@@ -89,7 +88,7 @@ public class AppliedUnionType<Union>
     public int hashCode() {
         int result = 1;
         // do not use caseTypes.hashCode because order is not significant
-        Iterator<? extends Type> iterator = caseTypes.iterator();
+        Iterator<? extends Type<?>> iterator = caseTypes.iterator();
         Object obj;
         while((obj = iterator.next()) != finished_.$get()){
             result = result + obj.hashCode();
@@ -105,7 +104,7 @@ public class AppliedUnionType<Union>
             return true;
         if(obj instanceof AppliedUnionType == false)
             return false;
-        AppliedUnionType other = (AppliedUnionType) obj;
+        AppliedUnionType<?> other = (AppliedUnionType<?>) obj;
         return other.model.isExactly(model);
     }
 }

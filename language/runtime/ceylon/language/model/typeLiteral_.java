@@ -16,9 +16,10 @@ public final class typeLiteral_ {
     
     private typeLiteral_() {}
     
+    @SuppressWarnings({ "unchecked", "hiding" })
     @TypeInfo("ceylon.language.model::Type<Type>")
     @TypeParameters(@TypeParameter(value = "Type", variance = Variance.OUT, satisfies = "ceylon.language::Anything"))
     public static <Type> ceylon.language.model.Type<? extends Type> typeLiteral(@Ignore TypeDescriptor $reifiedType) {
-        return Metamodel.getAppliedMetamodel($reifiedType);
+        return (ceylon.language.model.Type<? extends Type>) Metamodel.getAppliedMetamodel($reifiedType);
     }
 }

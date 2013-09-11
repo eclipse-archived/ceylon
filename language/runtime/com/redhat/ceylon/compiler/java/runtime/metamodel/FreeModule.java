@@ -5,12 +5,11 @@ import java.util.List;
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.model.Annotated$impl;
-import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.AnnotatedDeclaration$impl;
 import ceylon.language.model.declaration.Declaration$impl;
+import ceylon.language.model.declaration.Import;
 import ceylon.language.model.declaration.Module$impl;
 import ceylon.language.model.declaration.Package;
-import ceylon.language.model.declaration.Import;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -38,28 +37,24 @@ public class FreeModule implements ceylon.language.model.declaration.Module,
     @Override
     @Ignore
     public Declaration$impl $ceylon$language$model$declaration$Declaration$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public AnnotatedDeclaration$impl $ceylon$language$model$declaration$AnnotatedDeclaration$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public Module$impl $ceylon$language$model$declaration$Module$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
     
     @Override
     @Ignore
     public Annotated$impl $ceylon$language$model$Annotated$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
     

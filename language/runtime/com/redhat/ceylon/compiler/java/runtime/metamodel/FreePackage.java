@@ -34,8 +34,6 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
 
     private FreeModule module;
 
-    private Sequential<FreeTopLevelOrMemberDeclaration> members;
-
     public FreePackage(com.redhat.ceylon.compiler.typechecker.model.Package declaration){
         this.declaration = declaration;
     }
@@ -43,28 +41,24 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
     @Override
     @Ignore
     public Declaration$impl $ceylon$language$model$declaration$Declaration$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public AnnotatedDeclaration$impl $ceylon$language$model$declaration$AnnotatedDeclaration$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public Package$impl $ceylon$language$model$declaration$Package$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
     
     @Override
     @Ignore
     public Annotated$impl $ceylon$language$model$Annotated$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
     
@@ -109,7 +103,7 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
     public <Kind extends ceylon.language.model.declaration.TopLevelOrMemberDeclaration> Sequential<? extends Kind> 
     members(@Ignore TypeDescriptor $reifiedKind) {
         
-        Predicates.Predicate predicate = Predicates.isDeclarationOfKind($reifiedKind);
+        Predicates.Predicate<?> predicate = Predicates.isDeclarationOfKind($reifiedKind);
         
         return filteredMembers($reifiedKind, predicate);
     }
@@ -120,7 +114,7 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
     public <Kind extends ceylon.language.model.declaration.TopLevelOrMemberDeclaration> Kind 
     getMember(@Ignore TypeDescriptor $reifiedKind, @Name("name") String name) {
         
-        Predicates.Predicate predicate = Predicates.and(
+        Predicates.Predicate<?> predicate = Predicates.and(
                 Predicates.isDeclarationNamed(name),
                 Predicates.isDeclarationOfKind($reifiedKind)
         );
@@ -137,7 +131,7 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
     public <Kind extends ceylon.language.model.declaration.TopLevelOrMemberDeclaration, Annotation> Sequential<? extends Kind> 
     annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
         
-        Predicates.Predicate predicate = Predicates.and(
+        Predicates.Predicate<?> predicate = Predicates.and(
                 Predicates.isDeclarationOfKind($reifiedKind),
                 Predicates.isDeclarationAnnotatedWith($reifiedAnnotation));
         

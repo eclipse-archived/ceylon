@@ -210,7 +210,6 @@ public class MethodHandleUtil {
 
     public static MethodHandle boxReturnValue(MethodHandle method, java.lang.Class<?> type, ProducedType producedType) {
         try {
-            // FIXME: more boxing for interop
             if(type == java.lang.String.class){
                 // ceylon.language.String.instance(obj)
                 MethodHandle box = MethodHandles.lookup().findStatic(ceylon.language.String.class, "instance", 

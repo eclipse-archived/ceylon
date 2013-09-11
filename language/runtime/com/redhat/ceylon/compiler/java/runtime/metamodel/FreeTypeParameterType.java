@@ -32,14 +32,12 @@ public class FreeTypeParameterType
     @Override
     @Ignore
     public OpenType$impl $ceylon$language$model$declaration$OpenType$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public OpenTypeVariable$impl $ceylon$language$model$declaration$OpenTypeVariable$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 

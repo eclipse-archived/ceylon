@@ -42,7 +42,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     @Ignore
     private final TypeDescriptor $reifiedArguments;
     
-    private ceylon.language.model.Type type;
+    private ceylon.language.model.Type<? extends Type> type;
     protected FreeFunction declaration;
     private MethodHandle method;
     private MethodHandle[] dispatch;
@@ -198,28 +198,24 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     @Override
     @Ignore
     public ceylon.language.model.Generic$impl $ceylon$language$model$Generic$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public Model$impl $ceylon$language$model$Model$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
     
     @Override
     @Ignore
-    public FunctionModel$impl $ceylon$language$model$FunctionModel$impl() {
-        // TODO Auto-generated method stub
+    public FunctionModel$impl<Type, Arguments> $ceylon$language$model$FunctionModel$impl() {
         return null;
     }
     
     @Override
     @Ignore
     public Function$impl<Type, Arguments> $ceylon$language$model$Function$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 

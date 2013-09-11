@@ -3,10 +3,8 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.reflect.Field;
 
 import ceylon.language.model.Annotated$impl;
-import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.Import$impl;
 
-import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -35,14 +33,12 @@ public class FreeImport
     @Override
     @Ignore
     public Import$impl $ceylon$language$model$declaration$Import$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
     
     @Override
     @Ignore
     public Annotated$impl $ceylon$language$model$Annotated$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
     

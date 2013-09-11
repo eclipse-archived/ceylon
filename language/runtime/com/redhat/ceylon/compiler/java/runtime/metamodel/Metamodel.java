@@ -21,7 +21,6 @@ import ceylon.language.model.Annotated;
 import ceylon.language.model.ClassOrInterface;
 import ceylon.language.model.ConstrainedAnnotation;
 import ceylon.language.model.declaration.AnnotatedDeclaration;
-import ceylon.language.model.declaration.GenericDeclaration;
 import ceylon.language.model.declaration.Module;
 import ceylon.language.model.declaration.Package;
 import ceylon.language.model.declaration.TopLevelOrMemberDeclaration;
@@ -51,16 +50,13 @@ import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 
 public class Metamodel {
 
@@ -145,7 +141,7 @@ public class Metamodel {
         return instanceType.toProducedType(moduleManager);
     }
 
-    public static ceylon.language.model.Type getAppliedMetamodel(TypeDescriptor typeDescriptor) {
+    public static ceylon.language.model.Type<?> getAppliedMetamodel(TypeDescriptor typeDescriptor) {
         if(typeDescriptor == null)
             throw new RuntimeException("Metamodel not yet supported for Java types");
         ProducedType pt = typeDescriptor.toProducedType(moduleManager);
@@ -252,10 +248,10 @@ public class Metamodel {
         for(ProducedType pt : types){
             ret[i++] = Metamodel.getMetamodel(pt);
         }
-        return (Sequential)Util.sequentialInstance(ceylon.language.model.declaration.OpenType.$TypeDescriptor, ret);
+        return Util.sequentialInstance(ceylon.language.model.declaration.OpenType.$TypeDescriptor, ret);
     }
 
-    public static ceylon.language.model.Type getAppliedMetamodel(ProducedType pt) {
+    public static <T> ceylon.language.model.Type<T> getAppliedMetamodel(ProducedType pt) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
             // anonymous classes don't have parameter lists
@@ -275,21 +271,21 @@ public class Metamodel {
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
             if(declaration.isToplevel())
-                return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedInterface(reifiedType, pt, null, null);
+                return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedInterface<T>(reifiedType, pt, null, null);
 
             TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(pt.getQualifyingType());
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedMemberInterface(reifiedContainer, reifiedType, pt);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType){
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
-            return new AppliedUnionType(reifiedType, (com.redhat.ceylon.compiler.typechecker.model.UnionType)declaration);
+            return new AppliedUnionType<T>(reifiedType, (com.redhat.ceylon.compiler.typechecker.model.UnionType)declaration);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType){
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
-            return new AppliedIntersectionType(reifiedType, (com.redhat.ceylon.compiler.typechecker.model.IntersectionType)declaration);
+            return new AppliedIntersectionType<T>(reifiedType, (com.redhat.ceylon.compiler.typechecker.model.IntersectionType)declaration);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType){
-            return ceylon.language.model.nothingType_.$get();
+            return (ceylon.language.model.Type<T>)ceylon.language.model.nothingType_.$get();
         }
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
@@ -406,13 +402,13 @@ public class Metamodel {
 
     public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.model.declaration.OpenType pt) {
         if(pt instanceof FreeParameterisedType)
-            return ((FreeParameterisedType)pt).producedType;
+            return ((FreeParameterisedType<?>)pt).producedType;
         throw new RuntimeException("Unsupported produced type: " + pt);
     }
 
-    public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.model.Type pt) {
+    public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.model.Type<?> pt) {
         if(pt instanceof AppliedClassOrInterface)
-            return ((AppliedClassOrInterface)pt).producedType;
+            return ((AppliedClassOrInterface<?>)pt).producedType;
             
         throw new RuntimeException("Unsupported applied produced type: " + pt);
     }
@@ -427,12 +423,12 @@ public class Metamodel {
     }
 
 
-    public static java.util.List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> getProducedTypes(Sequential<? extends ceylon.language.model.Type> types) {
+    public static java.util.List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> getProducedTypes(Sequential<? extends ceylon.language.model.Type<?>> types) {
         Iterator<?> iterator = types.iterator();
         Object it;
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = new LinkedList<com.redhat.ceylon.compiler.typechecker.model.ProducedType>();
         while((it = iterator.next()) != finished_.$get()){
-            ceylon.language.model.Type pt = (ceylon.language.model.Type) it;
+            ceylon.language.model.Type<?> pt = (ceylon.language.model.Type<?>) it;
             com.redhat.ceylon.compiler.typechecker.model.ProducedType modelPt = Metamodel.getModel(pt);
             producedTypes.add(modelPt);
         }
@@ -511,7 +507,7 @@ public class Metamodel {
     }
     
     private static void addProxyCeylonAnnotation(
-            SequenceBuilder<? extends ceylon.language.model.Annotation> ceylonAnnotations,
+            SequenceBuilder<? extends ceylon.language.model.Annotation<?>> ceylonAnnotations,
             java.lang.annotation.Annotation jAnnotation) {
         Class<? extends java.lang.annotation.Annotation> jAnnotationType = jAnnotation.annotationType();
         InvocationHandler handler = new InvocationHandler() {
@@ -717,14 +713,16 @@ public class Metamodel {
         for(com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp : typeParameters){
             typeParametersArray[i++] = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter(tp);
         }
-        return (Sequential)Util.sequentialInstance(ceylon.language.model.declaration.TypeParameter.$TypeDescriptor, typeParametersArray);
+        return Util.sequentialInstance(ceylon.language.model.declaration.TypeParameter.$TypeDescriptor, typeParametersArray);
     }
 
+    @SuppressWarnings("hiding")
     public static <DeclarationType extends ceylon.language.model.declaration.Declaration>
         DeclarationType findDeclarationByName(Sequential<? extends DeclarationType> declarations, String name) {
         Iterator<? extends DeclarationType> iterator = declarations.iterator();
         Object it;
         while((it = iterator.next()) != finished_.$get()){
+            @SuppressWarnings("unchecked")
             DeclarationType tp = (DeclarationType) it;
             if(tp.getName().equals(name))
                 return tp;
@@ -759,7 +757,7 @@ public class Metamodel {
             com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter tp = (com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter) it;
             com.redhat.ceylon.compiler.typechecker.model.TypeParameter tpDecl = (com.redhat.ceylon.compiler.typechecker.model.TypeParameter) tp.declaration;
             com.redhat.ceylon.compiler.typechecker.model.ProducedType ptArg = ptArguments.get(tpDecl);
-            ceylon.language.model.Type ptArgWrapped = Metamodel.getAppliedMetamodel(ptArg);
+            ceylon.language.model.Type<?> ptArgWrapped = Metamodel.getAppliedMetamodel(ptArg);
             typeArguments.put(tp, ptArgWrapped);
         }
         return new InternalMap<ceylon.language.model.declaration.TypeParameter, 

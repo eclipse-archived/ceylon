@@ -25,95 +25,109 @@ public class AppliedVariableAttribute<Container, Type>
     @Override
     @Ignore
     public VariableAttribute$impl<Container, Type> $ceylon$language$model$VariableAttribute$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     @Ignore
+    // we cannot give type args to Member$impl due to multiple inheritance of same interface with different type args
     public Member$impl $ceylon$language$model$Member$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @Ignore
     public ceylon.language.model.Variable<Type> $call$variadic() {
         return (ceylon.language.model.Variable<Type>)super.$call$variadic();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @Ignore
     public ceylon.language.model.Variable<Type> $call$variadic(Object arg0) {
         return (ceylon.language.model.Variable<Type>)super.$call$variadic(arg0);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @Ignore
     public ceylon.language.model.Variable<Type> $call$variadic(Object arg0, Object arg1) {
         return (ceylon.language.model.Variable<Type>)super.$call$variadic(arg0, arg1);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @Ignore
     public ceylon.language.model.Variable<Type> $call$variadic(Object arg0, Object arg1, Object arg2) {
         return (ceylon.language.model.Variable<Type>)super.$call$variadic(arg0, arg1, arg2);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @Ignore
     public ceylon.language.model.Variable<Type> $call$variadic(Object... args) {
         return (ceylon.language.model.Variable<Type>)super.$call$variadic(args);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @Ignore
     public ceylon.language.model.Variable<Type> $call$variadic(Sequential<?> varargs) {
         return (ceylon.language.model.Variable<Type>)super.$call$variadic(varargs);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @Ignore
     public ceylon.language.model.Variable<Type> $call$variadic(Object arg0, Sequential<?> varargs) {
         return (ceylon.language.model.Variable<Type>)super.$call$variadic(arg0, varargs);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @Ignore
     public ceylon.language.model.Variable<Type> $call$variadic(Object arg0, Object arg1, Sequential<?> varargs) {
         return (ceylon.language.model.Variable<Type>)super.$call$variadic(arg0, arg1, varargs);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @Ignore
     public ceylon.language.model.Variable<Type> $call$variadic(Object arg0, Object arg1, Object arg2, Sequential<?> varargs) {
         return (ceylon.language.model.Variable<Type>)super.$call$variadic(arg0, arg1, arg2, varargs);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @Ignore
     public ceylon.language.model.Variable<Type> $call() {
         return (ceylon.language.model.Variable<Type>)super.$call();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @Ignore
     public ceylon.language.model.Variable<Type> $call(Object arg0) {
         return (ceylon.language.model.Variable<Type>)super.$call(arg0);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @Ignore
     public ceylon.language.model.Variable<Type> $call(Object arg0, Object arg1) {
         return (ceylon.language.model.Variable<Type>)super.$call(arg0, arg1);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @Ignore
     public ceylon.language.model.Variable<Type> $call(Object arg0, Object arg1, Object arg2) {
         return (ceylon.language.model.Variable<Type>)super.$call(arg0, arg1, arg2);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @Ignore
     public ceylon.language.model.Variable<Type> $call(Object... args) {
@@ -122,7 +136,7 @@ public class AppliedVariableAttribute<Container, Type>
 
     @Override
     protected ceylon.language.model.Variable<Type> bindTo(Object instance) {
-        return new AppliedVariable(null, declaration, typedReference, getContainer(), instance);
+        return new AppliedVariable<Type>(null, declaration, typedReference, getContainer(), instance);
     }
 
     @Override

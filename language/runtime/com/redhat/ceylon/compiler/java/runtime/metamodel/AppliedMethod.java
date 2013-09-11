@@ -57,28 +57,24 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     @Override
     @Ignore
     public ceylon.language.model.Generic$impl $ceylon$language$model$Generic$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public Model$impl $ceylon$language$model$Model$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public Method$impl<Container, Type, Arguments> $ceylon$language$model$Method$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public FunctionModel$impl<Type, Arguments> $ceylon$language$model$FunctionModel$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -102,7 +98,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
 
     @Override
     protected Function<Type, Arguments> bindTo(Object instance) {
-        return new AppliedFunction($reifiedType, $reifiedArguments, appliedFunction, declaration, getContainer(), instance);
+        return new AppliedFunction<Type, Arguments>($reifiedType, $reifiedArguments, appliedFunction, declaration, getContainer(), instance);
     }
 
     @Ignore
@@ -190,7 +186,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
             return true;
         if(obj instanceof ceylon.language.model.Method == false)
             return false;
-        ceylon.language.model.Method other = (ceylon.language.model.Method) obj;
+        ceylon.language.model.Method<?, ?, ?> other = (ceylon.language.model.Method<?, ?, ?>) obj;
         return getDeclaration().equals(other.getDeclaration())
                 && getDeclaringClassOrInterface().equals(other.getDeclaringClassOrInterface())
                 && getTypeArguments().equals(other.getTypeArguments());

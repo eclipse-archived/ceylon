@@ -10,8 +10,6 @@ import ceylon.language.finished_;
 import ceylon.language.model.declaration.OpenParameterisedType$impl;
 import ceylon.language.model.declaration.OpenType;
 import ceylon.language.model.declaration.OpenType$impl;
-import ceylon.language.model.declaration.Package;
-import ceylon.language.model.declaration.TopLevelOrMemberDeclaration;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
@@ -46,14 +44,12 @@ public class FreeParameterisedType<DeclarationType extends ceylon.language.model
     @Override
     @Ignore
     public OpenType$impl $ceylon$language$model$declaration$OpenType$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public OpenParameterisedType$impl $ceylon$language$model$declaration$OpenParameterisedType$impl() {
-        // TODO Auto-generated method stub
+    public OpenParameterisedType$impl<DeclarationType> $ceylon$language$model$declaration$OpenParameterisedType$impl() {
         return null;
     }
 
@@ -104,7 +100,7 @@ public class FreeParameterisedType<DeclarationType extends ceylon.language.model
             interfaces[i++] = (ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.InterfaceDeclaration>) 
                     Metamodel.getMetamodel(resolvedPt);
         }
-        this.interfaces = (Sequential)Util.sequentialInstance(FreeClassOrInterface.$InterfacesTypeDescriptor, interfaces);
+        this.interfaces = Util.sequentialInstance(FreeClassOrInterface.$InterfacesTypeDescriptor, interfaces);
     }
 
     @Override
@@ -113,6 +109,7 @@ public class FreeParameterisedType<DeclarationType extends ceylon.language.model
         return typeArguments;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @TypeInfo("DeclarationType")
     public DeclarationType getDeclaration() {

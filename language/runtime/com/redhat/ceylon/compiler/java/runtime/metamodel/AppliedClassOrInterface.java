@@ -47,29 +47,25 @@ public abstract class AppliedClassOrInterface<Type>
 
     @Override
     @Ignore
-    public ceylon.language.model.Type$impl $ceylon$language$model$Type$impl() {
-        // TODO Auto-generated method stub
+    public ceylon.language.model.Type$impl<Type> $ceylon$language$model$Type$impl() {
         return null;
     }
 
     @Override
     @Ignore
     public ceylon.language.model.Generic$impl $ceylon$language$model$Generic$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public Model$impl $ceylon$language$model$Model$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
     
     @Override
     @Ignore
     public ClassOrInterface$impl<Type> $ceylon$language$model$ClassOrInterface$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -96,14 +92,14 @@ public abstract class AppliedClassOrInterface<Type>
         }
         
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes = decl.getSatisfiedTypes();
-        ceylon.language.model.Interface[] interfaces = new ceylon.language.model.Interface[satisfiedTypes.size()];
+        ceylon.language.model.Interface<?>[] interfaces = new ceylon.language.model.Interface[satisfiedTypes.size()];
         int i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : satisfiedTypes){
             com.redhat.ceylon.compiler.typechecker.model.ProducedType resolvedPt = pt.substitute(producedType.getTypeArguments());
-            interfaces[i++] = (ceylon.language.model.Interface) Metamodel.getAppliedMetamodel(resolvedPt);
+            interfaces[i++] = (ceylon.language.model.Interface<?>) Metamodel.getAppliedMetamodel(resolvedPt);
         }
         // FIXME: reified type is wrong here and most likely in ClassOrInterfaceType too
-        this.interfaces = (Sequential)Util.sequentialInstance(FreeClassOrInterface.$InterfacesTypeDescriptor, interfaces);
+        this.interfaces = Util.sequentialInstance(FreeClassOrInterface.$InterfacesTypeDescriptor, interfaces);
     }
 
     @Override

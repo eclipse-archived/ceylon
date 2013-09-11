@@ -35,21 +35,18 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
     @Override
     @Ignore
     public ClassModel$impl<Type, Arguments> $ceylon$language$model$ClassModel$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public Member$impl<Container, Class<? extends Type, ? super Arguments>> $ceylon$language$model$Member$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public MemberClass$impl<Container, Type, Arguments> $ceylon$language$model$MemberClass$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -62,7 +59,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
     @Override
     @Ignore
     public Class<? extends Type, ? super Arguments> $call(Object arg0) {
-        return new AppliedClass($reifiedType, $reifiedArguments, super.producedType, getContainer(), arg0);
+        return new AppliedClass<Type, Arguments>($reifiedType, $reifiedArguments, super.producedType, getContainer(), arg0);
     }
 
     @Override
@@ -185,7 +182,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
             return true;
         if(obj instanceof ceylon.language.model.MemberClass == false)
             return false;
-        ceylon.language.model.MemberClass other = (ceylon.language.model.MemberClass) obj;
+        ceylon.language.model.MemberClass<?, ?, ?> other = (ceylon.language.model.MemberClass<?, ?, ?>) obj;
         return getDeclaration().equals(other.getDeclaration())
                 && getDeclaringClassOrInterface().equals(other.getDeclaringClassOrInterface())
                 && getTypeArguments().equals(other.getTypeArguments());

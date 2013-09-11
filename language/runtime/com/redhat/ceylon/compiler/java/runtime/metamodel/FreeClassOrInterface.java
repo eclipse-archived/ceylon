@@ -59,14 +59,12 @@ public abstract class FreeClassOrInterface
     @Override
     @Ignore
     public ClassOrInterfaceDeclaration$impl $ceylon$language$model$declaration$ClassOrInterfaceDeclaration$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public GenericDeclaration$impl $ceylon$language$model$declaration$GenericDeclaration$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -83,7 +81,7 @@ public abstract class FreeClassOrInterface
         for(ProducedType pt : satisfiedTypes){
             interfaces[i++] = (ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.InterfaceDeclaration>) Metamodel.getMetamodel(pt);
         }
-        this.interfaces = (Sequential)Util.sequentialInstance($InterfacesTypeDescriptor, interfaces);
+        this.interfaces = Util.sequentialInstance($InterfacesTypeDescriptor, interfaces);
 
         if(declaration.getCaseTypes() != null)
             this.caseTypes = Metamodel.getMetamodelSequential(declaration.getCaseTypes());
@@ -121,7 +119,7 @@ public abstract class FreeClassOrInterface
     public <Kind extends ceylon.language.model.declaration.TopLevelOrMemberDeclaration> Sequential<? extends Kind> 
     memberDeclarations(@Ignore TypeDescriptor $reifiedKind) {
         
-        Predicates.Predicate predicate = Predicates.isDeclarationOfKind($reifiedKind);
+        Predicates.Predicate<?> predicate = Predicates.isDeclarationOfKind($reifiedKind);
         
         return filteredMembers($reifiedKind, predicate);
     }
@@ -135,7 +133,7 @@ public abstract class FreeClassOrInterface
     public <Kind extends ceylon.language.model.declaration.TopLevelOrMemberDeclaration, Annotation> Sequential<? extends Kind> 
     annotatedMemberDeclarations(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
         
-        Predicates.Predicate predicate = Predicates.and(
+        Predicates.Predicate<?> predicate = Predicates.and(
                 Predicates.isDeclarationOfKind($reifiedKind),
                 Predicates.isDeclarationAnnotatedWith($reifiedAnnotation));
         
@@ -179,7 +177,7 @@ public abstract class FreeClassOrInterface
     public <Kind extends ceylon.language.model.declaration.TopLevelOrMemberDeclaration> Kind 
     getMemberDeclaration(@Ignore TypeDescriptor $reifiedKind, @Name("name") String name) {
         
-        Predicates.Predicate predicate = Predicates.and(
+        Predicates.Predicate<?> predicate = Predicates.and(
                 Predicates.isDeclarationNamed(name),
                 Predicates.isDeclarationOfKind($reifiedKind)
         );
@@ -232,6 +230,7 @@ public abstract class FreeClassOrInterface
         return Metamodel.findDeclarationByName(getTypeParameterDeclarations(), name);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
     public <Container, 

@@ -36,7 +36,6 @@ public abstract class AppliedMember<Type, Kind extends ceylon.language.model.Mod
     @Override
     @Ignore
     public Member$impl<Type, Kind> $ceylon$language$model$Member$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 

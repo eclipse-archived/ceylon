@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import java.lang.annotation.Annotation;
 import java.util.List;
 
 import ceylon.language.Iterator;
@@ -21,7 +20,6 @@ import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -54,7 +52,7 @@ public class FreeFunction
         for(com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp : typeParameters){
             typeParametersArray[i++] = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter(tp);
         }
-        this.typeParameters = (Sequential)Util.sequentialInstance(ceylon.language.model.declaration.TypeParameter.$TypeDescriptor, typeParametersArray);
+        this.typeParameters = Util.sequentialInstance(ceylon.language.model.declaration.TypeParameter.$TypeDescriptor, typeParametersArray);
         
         this.type = Metamodel.getMetamodel(declaration.getType());
         
@@ -73,21 +71,18 @@ public class FreeFunction
     @Override
     @Ignore
     public FunctionDeclaration$impl $ceylon$language$model$declaration$FunctionDeclaration$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public FunctionalDeclaration$impl $ceylon$language$model$declaration$FunctionalDeclaration$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public GenericDeclaration$impl $ceylon$language$model$declaration$GenericDeclaration$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -129,6 +124,7 @@ public class FreeFunction
         return null;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
     public ceylon.language.model.Function<? extends Object, ? super Sequential<? extends Object>> apply(){
@@ -141,6 +137,7 @@ public class FreeFunction
         return bindAndApply(null, types);
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Ignore
     @Override
     public ceylon.language.model.Function<? extends Object, ? super Sequential<? extends Object>> bindAndApply(Object instance){
@@ -160,6 +157,7 @@ public class FreeFunction
         return new AppliedFunction(reifiedType, reifiedArguments, appliedFunction, this, null/*FIXME*/, instance);
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Ignore
     @Override
     public <Container, Type, Arguments extends Sequential<? extends Object>>

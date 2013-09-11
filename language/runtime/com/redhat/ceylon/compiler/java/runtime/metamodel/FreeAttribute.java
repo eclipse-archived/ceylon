@@ -40,7 +40,6 @@ public class FreeAttribute
     @Override
     @Ignore
     public ValueDeclaration$impl $ceylon$language$model$declaration$ValueDeclaration$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 

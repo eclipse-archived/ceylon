@@ -31,21 +31,18 @@ public class AppliedMemberInterface<Container, Type>
     @Override
     @Ignore
     public InterfaceModel$impl<Type> $ceylon$language$model$InterfaceModel$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public Member$impl<Container, Interface<? extends Type>> $ceylon$language$model$Member$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public MemberInterface$impl<Container, Type> $ceylon$language$model$MemberInterface$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -58,7 +55,7 @@ public class AppliedMemberInterface<Container, Type>
     @Override
     @Ignore
     public Interface<? extends Type> $call(Object arg0) {
-        return new AppliedInterface($reifiedType, super.producedType, getContainer(), arg0);
+        return new AppliedInterface<Type>($reifiedType, super.producedType, getContainer(), arg0);
     }
 
     @Override
@@ -179,7 +176,7 @@ public class AppliedMemberInterface<Container, Type>
             return true;
         if(obj instanceof ceylon.language.model.MemberInterface == false)
             return false;
-        ceylon.language.model.MemberInterface other = (ceylon.language.model.MemberInterface) obj;
+        ceylon.language.model.MemberInterface<?, ?> other = (ceylon.language.model.MemberInterface<?, ?>) obj;
         return getDeclaration().equals(other.getDeclaration())
                 && getDeclaringClassOrInterface().equals(other.getDeclaringClassOrInterface())
                 && getTypeArguments().equals(other.getTypeArguments());

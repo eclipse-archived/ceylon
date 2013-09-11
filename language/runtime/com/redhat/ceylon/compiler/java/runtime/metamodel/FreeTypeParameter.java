@@ -66,14 +66,12 @@ public class FreeTypeParameter
     @Override
     @Ignore
     public Declaration$impl $ceylon$language$model$declaration$Declaration$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public TypeParameter$impl $ceylon$language$model$declaration$TypeParameter$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
     

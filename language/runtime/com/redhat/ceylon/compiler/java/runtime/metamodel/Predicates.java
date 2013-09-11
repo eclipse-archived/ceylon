@@ -359,16 +359,16 @@ class Predicates {
     }
     
     private static <A extends ceylon.language.model.Annotation<A>> Predicate<Declaration> 
-    isDeclarationAnnotatedWith(TypeDescriptor annotation, Type at) {
+    isDeclarationAnnotatedWith(TypeDescriptor annotation, Type<?> at) {
         if (at instanceof nothingType_) {
             return false_();
         } else if (at instanceof ClassOrInterface) {
             return new AnnotatedWith<A>(annotation, (ClassOrInterface)at);
         } else if (at instanceof AppliedUnionType) {
-            Sequential<? extends Type> caseTypes = ((AppliedUnionType)at).getCaseTypes();
+            Sequential<? extends Type<?>> caseTypes = ((AppliedUnionType)at).getCaseTypes();
             return or(mapTypesToDeclarationAnnotatedWith(annotation, caseTypes));
         } else if (at instanceof AppliedIntersectionType) {
-            Sequential<? extends Type> satisfiedTypes = ((AppliedIntersectionType)at).getSatisfiedTypes();
+            Sequential<? extends Type<?>> satisfiedTypes = ((AppliedIntersectionType)at).getSatisfiedTypes();
             return and(mapTypesToDeclarationAnnotatedWith(annotation, satisfiedTypes));
         } else {
             throw new EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive: "+at);
@@ -376,14 +376,14 @@ class Predicates {
     }
     
     private static Predicate<Declaration>[] mapTypesToDeclarationAnnotatedWith(TypeDescriptor annotation,
-            Sequential<? extends Type> caseTypes) {
+            Sequential<? extends Type<?>> caseTypes) {
         @SuppressWarnings("unchecked")
         Predicate<Declaration>[] preds = new Predicate[(int)caseTypes.getSize()];
         int ii = 0;
-        Iterator<? extends Type> iterator = caseTypes.iterator();
+        Iterator<? extends Type<?>> iterator = caseTypes.iterator();
         Object element = iterator.next();
         while (element instanceof Type) {
-            preds[ii++] = isDeclarationAnnotatedWith(annotation, (Type)element);
+            preds[ii++] = isDeclarationAnnotatedWith(annotation, (Type<?>)element);
             element = iterator.next();
         }
         return preds;
@@ -400,15 +400,15 @@ class Predicates {
     }
 
     private static <A extends ceylon.language.model.Annotation<? extends A>> Predicate<A> isAnnotationOfType(
-            TypeDescriptor $reifiedAnnotation, Type at)
+            TypeDescriptor $reifiedAnnotation, Type<?> at)
             throws EnumeratedTypeError {
         if (at instanceof nothingType_) {
             return false_();
         } else if (at instanceof AppliedUnionType) {
-            Sequential<? extends Type> caseTypes = ((AppliedUnionType)at).getCaseTypes();
+            Sequential<? extends Type<?>> caseTypes = ((AppliedUnionType)at).getCaseTypes();
             return or(Predicates.<A>mapTypesToIsAnnotationOfType($reifiedAnnotation, caseTypes));
         } else if (at instanceof AppliedIntersectionType) {
-            Sequential<? extends Type> satisfiedTypes = ((AppliedIntersectionType)at).getSatisfiedTypes();
+            Sequential<? extends Type<?>> satisfiedTypes = ((AppliedIntersectionType)at).getSatisfiedTypes();
             return and(Predicates.<A>mapTypesToIsAnnotationOfType($reifiedAnnotation, satisfiedTypes));
         } else if (at instanceof ClassOrInterface) {
             // TODO What if reified is Annotation, or ContrainedAnnotation, or OptionalAnnotation, or SequencedAnnotation?
@@ -420,14 +420,14 @@ class Predicates {
     }
     
     private static <A extends ceylon.language.model.Annotation<? extends A>> Predicate<A>[] mapTypesToIsAnnotationOfType(TypeDescriptor $reifiedAnnotation, 
-            Sequential<? extends Type> caseTypes) {
+            Sequential<? extends Type<?>> caseTypes) {
         @SuppressWarnings("unchecked")
         Predicate<A>[] preds = new Predicate[(int)caseTypes.getSize()];
         int ii = 0;
-        Iterator<? extends Type> iterator = caseTypes.iterator();
+        Iterator<? extends Type<?>> iterator = caseTypes.iterator();
         Object element = iterator.next();
         while (element instanceof Type) {
-            preds[ii++] = isAnnotationOfType($reifiedAnnotation, (Type)element);
+            preds[ii++] = isAnnotationOfType($reifiedAnnotation, (Type<?>)element);
             element = iterator.next();
         }
         return preds;

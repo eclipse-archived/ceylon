@@ -31,10 +31,10 @@ public class FreeInterface
     @Override
     @Ignore
     public InterfaceDeclaration$impl $ceylon$language$model$declaration$InterfaceDeclaration$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Ignore
     @Override
     public ceylon.language.model.Interface<? extends Object> apply(){
@@ -49,6 +49,7 @@ public class FreeInterface
         return bindAndApply(null, types);
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Ignore
     @Override
     public ceylon.language.model.Interface<? extends Object> bindAndApply(Object instance){

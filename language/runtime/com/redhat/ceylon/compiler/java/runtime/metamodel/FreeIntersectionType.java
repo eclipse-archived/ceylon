@@ -38,20 +38,18 @@ public class FreeIntersectionType
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : satisfiedTypes){
             types[i++] = Metamodel.getMetamodel(pt);
         }
-        this.satisfiedTypes = (Sequential)Util.sequentialInstance(ceylon.language.model.declaration.OpenType.$TypeDescriptor, types);
+        this.satisfiedTypes = Util.sequentialInstance(ceylon.language.model.declaration.OpenType.$TypeDescriptor, types);
     }
 
     @Override
     @Ignore
     public OpenType$impl $ceylon$language$model$declaration$OpenType$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public OpenIntersection$impl $ceylon$language$model$declaration$OpenIntersection$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 

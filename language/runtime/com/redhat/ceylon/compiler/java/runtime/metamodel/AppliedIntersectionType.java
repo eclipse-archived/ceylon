@@ -6,10 +6,9 @@ import ceylon.language.Finished;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
+import ceylon.language.model.IntersectionType$impl;
 import ceylon.language.model.Type;
 import ceylon.language.model.Type$impl;
-import ceylon.language.model.IntersectionType$impl;
-import ceylon.language.model.declaration.OpenType;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -45,7 +44,7 @@ public class AppliedIntersectionType<Intersection>
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        Iterator<? extends Type> iterator = satisfiedTypes.iterator();
+        Iterator<? extends Type<?>> iterator = satisfiedTypes.iterator();
         Object next=iterator.next();
         sb.append(next);
         while (!((next=iterator.next()) instanceof Finished)) {
@@ -63,20 +62,18 @@ public class AppliedIntersectionType<Intersection>
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : satisfiedTypes){
             types[i++] = Metamodel.getAppliedMetamodel(pt);
         }
-        this.satisfiedTypes = (Sequential)Util.sequentialInstance(TypeDescriptor.klass(ceylon.language.model.Type.class, ceylon.language.Anything.$TypeDescriptor), types);
+        this.satisfiedTypes = Util.sequentialInstance(TypeDescriptor.klass(ceylon.language.model.Type.class, ceylon.language.Anything.$TypeDescriptor), types);
     }
 
     @Override
     @Ignore
-    public Type$impl $ceylon$language$model$Type$impl() {
-        // TODO Auto-generated method stub
+    public Type$impl<Intersection> $ceylon$language$model$Type$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public IntersectionType$impl $ceylon$language$model$IntersectionType$impl() {
-        // TODO Auto-generated method stub
+    public IntersectionType$impl<Intersection> $ceylon$language$model$IntersectionType$impl() {
         return null;
     }
 
@@ -90,7 +87,7 @@ public class AppliedIntersectionType<Intersection>
     public int hashCode() {
         int result = 1;
         // do not use caseTypes.hashCode because order is not significant
-        Iterator<? extends Type> iterator = satisfiedTypes.iterator();
+        Iterator<? extends Type<?>> iterator = satisfiedTypes.iterator();
         Object obj;
         while((obj = iterator.next()) != finished_.$get()){
             result = result + obj.hashCode();
@@ -106,7 +103,7 @@ public class AppliedIntersectionType<Intersection>
             return true;
         if(obj instanceof AppliedIntersectionType == false)
             return false;
-        AppliedIntersectionType other = (AppliedIntersectionType) obj;
+        AppliedIntersectionType<?> other = (AppliedIntersectionType<?>) obj;
         return other.model.isExactly(model);
     }
 }

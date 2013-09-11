@@ -56,14 +56,12 @@ public class FreeAliasDeclaration extends FreeTopLevelOrMemberDeclaration
     @Override
     @Ignore
     public AliasDeclaration$impl $ceylon$language$model$declaration$AliasDeclaration$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public GenericDeclaration$impl $ceylon$language$model$declaration$GenericDeclaration$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -84,6 +82,7 @@ public class FreeAliasDeclaration extends FreeTopLevelOrMemberDeclaration
         return typeParameters;
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Ignore
     @Override
     public Type<? extends Object> apply() {
@@ -98,6 +97,7 @@ public class FreeAliasDeclaration extends FreeTopLevelOrMemberDeclaration
         return bindAndApply(null, types);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @Ignore
     public Type<? extends Object> bindAndApply(Object instance) {

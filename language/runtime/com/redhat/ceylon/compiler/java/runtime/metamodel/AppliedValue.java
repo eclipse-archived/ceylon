@@ -6,7 +6,6 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import ceylon.language.model.ClassOrInterface;
 import ceylon.language.model.Model$impl;
 import ceylon.language.model.Value$impl;
 import ceylon.language.model.ValueModel$impl;
@@ -148,21 +147,18 @@ public class AppliedValue<Type>
     @Override
     @Ignore
     public Value$impl<Type> $ceylon$language$model$Value$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public ValueModel$impl<Type> $ceylon$language$model$ValueModel$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public Model$impl $ceylon$language$model$Model$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -206,7 +202,7 @@ public class AppliedValue<Type>
             return true;
         if(obj instanceof AppliedValue == false)
             return false;
-        AppliedValue other = (AppliedValue) obj;
+        AppliedValue<?> other = (AppliedValue<?>) obj;
         // in theory, if our instance is the same, our containing type should be the same
         // and if we don't have an instance we're a toplevel and have no containing type
         return Util.eq(instance, other.instance)

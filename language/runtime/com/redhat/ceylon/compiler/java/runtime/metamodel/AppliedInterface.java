@@ -36,14 +36,12 @@ public class AppliedInterface<Type>
     @Override
     @Ignore
     public Interface$impl<Type> $ceylon$language$model$Interface$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public InterfaceModel$impl<Type> $ceylon$language$model$InterfaceModel$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -72,7 +70,7 @@ public class AppliedInterface<Type>
             return true;
         if(obj instanceof AppliedInterface == false)
             return false;
-        AppliedInterface other = (AppliedInterface) obj;
+        AppliedInterface<?> other = (AppliedInterface<?>) obj;
         // in theory, if our instance is the same, our containing type should be the same
         // and if we don't have an instance we're a toplevel and have no containing type
         return getDeclaration().equals(other.getDeclaration())

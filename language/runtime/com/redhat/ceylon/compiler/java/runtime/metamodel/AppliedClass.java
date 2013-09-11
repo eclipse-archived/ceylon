@@ -57,14 +57,12 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     @Override
     @Ignore
     public Class$impl<Type, Arguments> $ceylon$language$model$Class$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public ClassModel$impl<Type, Arguments> $ceylon$language$model$ClassModel$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -183,7 +181,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         java.lang.Class<?>[] parameterTypes;
         try {
             if(found instanceof java.lang.reflect.Constructor){
-                ((java.lang.reflect.Constructor) found).setAccessible(true);
+                ((java.lang.reflect.Constructor<?>) found).setAccessible(true);
                 constructor = MethodHandles.lookup().unreflectConstructor((java.lang.reflect.Constructor<?>)found);
                 parameterTypes = ((java.lang.reflect.Constructor<?>)found).getParameterTypes();
             }else{
@@ -396,7 +394,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             return true;
         if(obj instanceof AppliedClass == false)
             return false;
-        AppliedClass other = (AppliedClass) obj;
+        AppliedClass<?,?> other = (AppliedClass<?,?>) obj;
         // in theory, if our instance is the same, our containing type should be the same
         // and if we don't have an instance we're a toplevel and have no containing type
         return getDeclaration().equals(other.getDeclaration())

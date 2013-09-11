@@ -57,14 +57,12 @@ public class FreeClass
     @Override
     @Ignore
     public ClassDeclaration$impl $ceylon$language$model$declaration$ClassDeclaration$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
     public FunctionalDeclaration$impl $ceylon$language$model$declaration$FunctionalDeclaration$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -99,6 +97,7 @@ public class FreeClass
         return null;
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Ignore
     @Override
     public ceylon.language.model.Class<? extends Object, ? super Sequential<? extends Object>> apply(){
@@ -113,6 +112,7 @@ public class FreeClass
         return bindAndApply(null, types);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
     public ceylon.language.model.Class<? extends Object, ? super Sequential<? extends Object>> bindAndApply(Object instance){
