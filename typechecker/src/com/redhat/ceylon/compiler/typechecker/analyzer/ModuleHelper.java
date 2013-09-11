@@ -1,12 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import java.util.LinkedList;
+
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.maven.AetherUtils;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.compiler.typechecker.exceptions.LanguageModuleNotFoundException;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
-
-import java.util.LinkedList;
 
 /**
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
@@ -22,7 +22,7 @@ public class ModuleHelper {
             Exception exceptionOnGetArtifact,
             ModuleManager moduleManager) {
         StringBuilder error = new StringBuilder("cannot find module ");
-        if (AetherUtils.arrayContains(artifactContext.getSuffixes(), ArtifactContext.SRC)) {
+        if (CeylonUtils.arrayContains(artifactContext.getSuffixes(), ArtifactContext.SRC)) {
             error.append("source ");
         }
         error.append("artifact ");
