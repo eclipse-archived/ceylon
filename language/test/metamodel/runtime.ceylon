@@ -667,6 +667,7 @@ void checkEqualityAndHash(){
     assert(noParamsDecl.hash == noParamsDecl.hash);
     assert(noParamsDecl != fixedParamsDecl);
     assert(noParamsDecl.hash != fixedParamsDecl.hash);
+    assert(noParamsDecl.string == "class metamodel::NoParams");
     
     value tpaDecl = `interface TPA`;
     value tpbDecl = `interface TPB`;
@@ -674,6 +675,7 @@ void checkEqualityAndHash(){
     assert(tpaDecl.hash == tpaDecl.hash);
     assert(tpaDecl != tpbDecl);
     assert(tpaDecl.hash != tpbDecl.hash);
+    assert(tpaDecl.string == "interface metamodel::TPA");
     
     value alias1Decl = `alias TypeAliasToClass`;
     value alias2Decl = `alias TypeAliasToUnion`;
@@ -681,34 +683,39 @@ void checkEqualityAndHash(){
     assert(alias1Decl.hash == alias1Decl.hash);
     assert(alias1Decl != alias2Decl);
     assert(alias1Decl.hash != alias2Decl.hash);
-
+    assert(alias1Decl.string == "alias metamodel::TypeAliasToClass");
+    
     value attr1Decl = `value NoParams.str`;
     value attr2Decl = `value NoParams.integer`;
     assert(attr1Decl == attr1Decl);
     assert(attr1Decl.hash == attr1Decl.hash);
     assert(attr1Decl != attr2Decl);
     assert(attr1Decl.hash != attr2Decl.hash);
-
+    assert(attr1Decl.string == "value metamodel::NoParams.str");
+    
     value f1Decl = `function NoParams.noParams`;
     value f2Decl = `function NoParams.fixedParams`;
     assert(f1Decl == f1Decl);
     assert(f1Decl.hash == f1Decl.hash);
     assert(f1Decl != f2Decl);
     assert(f1Decl.hash != f2Decl.hash);
-
+    assert(f1Decl.string == "function metamodel::NoParams.noParams");
+    
     value p1Decl = `package ceylon.language.model`;
     value p2Decl = `package ceylon.language`;
     assert(p1Decl == p1Decl);
     assert(p1Decl.hash == p1Decl.hash);
     assert(p1Decl != p2Decl);
     assert(p1Decl.hash != p2Decl.hash);
-
+    assert(p1Decl.string == "package ceylon.language.model");
+    
     value m1Decl = `module ceylon.language`;
     value m2Decl = `module metamodel`;
     assert(m1Decl == m1Decl);
     assert(m1Decl.hash == m1Decl.hash);
     assert(m1Decl != m2Decl);
     assert(m1Decl.hash != m2Decl.hash);
+    assert(m1Decl.string == "module ceylon.language/0.6");
     
     assert(exists tp1Decl = `class TypeParams`.getTypeParameterDeclaration("T"));
     assert(exists tp2Decl = `class ParameterisedContainerClass`.getTypeParameterDeclaration("Outer"));
@@ -716,6 +723,7 @@ void checkEqualityAndHash(){
     assert(tp1Decl.hash == tp1Decl.hash);
     assert(tp1Decl != tp2Decl);
     assert(tp1Decl.hash != tp2Decl.hash);
+    assert(tp1Decl.string == "given metamodel::TypeParams.T");
     
     // FIXME: add SetterDeclaration tests
     
@@ -727,6 +735,7 @@ void checkEqualityAndHash(){
     assert(pt1OpenType.hash == pt1OpenType.hash);
     assert(pt1OpenType != pt2OpenType);
     assert(pt1OpenType.hash != pt2OpenType.hash);
+    assert(pt1OpenType.string == "class metamodel::TypeParams<class ceylon.language::Integer>");
 
     value u1OpenType = `value NoParams.union1`.openType;
     value u2OpenType = `value NoParams.union2`.openType;
@@ -737,7 +746,8 @@ void checkEqualityAndHash(){
     assert(u1OpenType.hash == u2OpenType.hash);
     assert(u1OpenType != u3OpenType);
     assert(u1OpenType.hash != u3OpenType.hash);
-
+    assert(u1OpenType.string == "interface metamodel::TPA|interface metamodel::TPB");
+    
     value i1OpenType = `value NoParams.intersection1`.openType;
     value i2OpenType = `value NoParams.intersection2`.openType;
     value i3OpenType = `value NoParams.intersection3`.openType;
@@ -747,7 +757,8 @@ void checkEqualityAndHash(){
     assert(i1OpenType.hash == i2OpenType.hash);
     assert(i1OpenType != i3OpenType);
     assert(i1OpenType.hash != i3OpenType.hash);
-
+    assert(i1OpenType.string == "interface metamodel::TPA&interface metamodel::TPB");
+    
     value tp1OpenType = `value TypeParams.t1`.openType;
     value tp2OpenType = `value TypeParams.t2`.openType;
     value tp3OpenType = `value TypeParams2.t1`.openType;
@@ -757,7 +768,8 @@ void checkEqualityAndHash(){
     assert(tp1OpenType.hash == tp2OpenType.hash);
     assert(tp1OpenType != tp3OpenType);
     assert(tp1OpenType.hash != tp3OpenType.hash);
-
+    assert(tp1OpenType.string == "given metamodel::TypeParams.T");
+    
     // models
     
     value pt1Type = `TypeParams<Integer>`;
@@ -766,6 +778,7 @@ void checkEqualityAndHash(){
     assert(pt1Type.hash == pt1Type.hash);
     assert(pt1Type != pt2Type);
     assert(pt1Type.hash != pt2Type.hash);
+    assert(pt1Type.string == "metamodel::TypeParams<ceylon.language::Integer>");
 
     value ipt1Type = `TPA`;
     value ipt2Type = `TPB`;
@@ -773,21 +786,24 @@ void checkEqualityAndHash(){
     assert(ipt1Type.hash == ipt1Type.hash);
     assert(ipt1Type != ipt2Type);
     assert(ipt1Type.hash != ipt2Type.hash);
-
+    assert(ipt1Type.string == "metamodel::TPA");
+    
     value pt1Function = `typeParams<Integer>`;
     value pt2Function = `typeParams<String>`;
     assert(pt1Function == pt1Function);
     assert(pt1Function.hash == pt1Function.hash);
     assert(pt1Function != pt2Function);
     assert(pt1Function.hash != pt2Function.hash);
-
+    assert(pt1Function.string == "metamodel::typeParams<ceylon.language::Integer>");
+    
     value value1 = `toplevelString`;
     value value2 = `toplevelInteger`;
     assert(value1 == value1);
     assert(value1.hash == value1.hash);
     assert(value1 != value2);
     assert(value1.hash != value2.hash);
-
+    assert(value1.string == "metamodel::toplevelString");
+    
     // members
     
     value ic1Type = `ContainerClass.InnerClass`;
@@ -796,7 +812,8 @@ void checkEqualityAndHash(){
     assert(ic1Type.hash == ic1Type.hash);
     assert(ic1Type != ic2Type);
     assert(ic1Type.hash != ic2Type.hash);
-
+    assert(ic1Type.string == "metamodel::ContainerClass.InnerClass");
+    
     // bound
     value bic1Type = `ContainerClass.InnerClass`(ContainerClass());
     value bic2Type = `ContainerClass.InnerClass`(ContainerClass());
@@ -804,14 +821,16 @@ void checkEqualityAndHash(){
     assert(bic1Type.hash == bic1Type.hash);
     assert(bic1Type != bic2Type);
     assert(bic1Type.hash != bic2Type.hash);
-
+    assert(bic1Type.string == "metamodel::ContainerClass.InnerClass");
+    
     value ii1Type = `ContainerClass.InnerInterface`;
     value ii2Type = `ContainerClass.InnerInterface2`;
     assert(ii1Type == ii1Type);
     assert(ii1Type.hash == ii1Type.hash);
     assert(ii1Type != ii2Type);
     assert(ii1Type.hash != ii2Type.hash);
-
+    assert(ii1Type.string == "metamodel::ContainerClass.InnerInterface");
+    
     // bound
     value bii1Type = `ContainerClass.InnerInterface`(ContainerClass());
     value bii2Type = `ContainerClass.InnerInterface`(ContainerClass());
@@ -819,6 +838,7 @@ void checkEqualityAndHash(){
     assert(bii1Type.hash == bii1Type.hash);
     assert(bii1Type != bii2Type);
     assert(bii1Type.hash != bii2Type.hash);
+    assert(bii1Type.string == "metamodel::ContainerClass.InnerInterface");
     
     value method1 = `NoParams.tp1<String>`;
     value method2 = `NoParams.tp1<Integer>`;
@@ -826,7 +846,8 @@ void checkEqualityAndHash(){
     assert(method1.hash == method1.hash);
     assert(method1 != method2);
     assert(method1.hash != method2.hash);
-
+    assert(method1.string == "metamodel::NoParams.tp1<ceylon.language::String>");
+    
     // bound
     value bmethod1 = `NoParams.tp1<String>`(NoParams());
     value bmethod2 = `NoParams.tp1<String>`(NoParams());
@@ -834,14 +855,16 @@ void checkEqualityAndHash(){
     assert(bmethod1.hash == bmethod1.hash);
     assert(bmethod1 != bmethod2);
     assert(bmethod1.hash != bmethod2.hash);
-
+    assert(bmethod1.string == "metamodel::NoParams.tp1<ceylon.language::String>");
+    
     value attr1 = `NoParams.str`;
     value attr2 = `NoParams.integer`;
     assert(attr1 == attr1);
     assert(attr1.hash == attr1.hash);
     assert(attr1 != attr2);
     assert(attr1.hash != attr2.hash);
-
+    assert(attr1.string == "metamodel::NoParams.str");
+    
     // bound
     value battr1 = `NoParams.str`(NoParams());
     value battr2 = `NoParams.str`(NoParams());
@@ -849,7 +872,8 @@ void checkEqualityAndHash(){
     assert(battr1.hash == battr1.hash);
     assert(battr1 != battr2);
     assert(battr1.hash != battr2.hash);
-
+    assert(battr1.string == "metamodel::NoParams.str");
+    
     value u1Type = `TypeParams<Integer|String>`;
     value u2Type = `TypeParams<String|Integer>`;
     value u3Type = `TypeParams<String|Integer|Float>`;
@@ -859,7 +883,8 @@ void checkEqualityAndHash(){
     assert(u1Type.hash == u2Type.hash);
     assert(u1Type != u3Type);
     assert(u1Type.hash != u3Type.hash);
-
+    assert(u1Type.string == "metamodel::TypeParams<ceylon.language::Integer|ceylon.language::String>");
+    
     value i1Type = `TypeParams<TPA&TPB>`;
     value i2Type = `TypeParams<TPB&TPA>`;
     value i3Type = `TypeParams<TPA&TPB&Number>`;
@@ -869,6 +894,7 @@ void checkEqualityAndHash(){
     assert(i1Type.hash == i2Type.hash);
     assert(i1Type != i3Type);
     assert(i1Type.hash != i3Type.hash);
+    assert(i1Type.string == "metamodel::TypeParams<metamodel::TPA&metamodel::TPB>");
 }
 
 shared void run() {
