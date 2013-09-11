@@ -126,6 +126,7 @@ public class FreeClass
             @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") 
             Sequential<? extends ceylon.language.model.Type<?>> types){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
+        Metamodel.checkTypeArguments(null/*FIXME*/, declaration, producedTypes);
         // FIXME: this is wrong because it does not include the container type
         com.redhat.ceylon.compiler.typechecker.model.ProducedType appliedClassType = declaration.getProducedReference(null, producedTypes).getType();
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(appliedClassType);

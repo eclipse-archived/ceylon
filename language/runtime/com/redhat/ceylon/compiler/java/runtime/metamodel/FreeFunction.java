@@ -150,6 +150,7 @@ public class FreeFunction
             @Name("instance") @TypeInfo("ceylon.language::Object") Object instance, 
             @Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> types){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
+        Metamodel.checkTypeArguments(null/*FIXME*/, declaration, producedTypes);
         // FIXME: should have the container type
         com.redhat.ceylon.compiler.typechecker.model.ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForFunction(appliedFunction);

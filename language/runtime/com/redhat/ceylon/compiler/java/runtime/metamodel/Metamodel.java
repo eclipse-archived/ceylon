@@ -20,6 +20,7 @@ import ceylon.language.finished_;
 import ceylon.language.model.Annotated;
 import ceylon.language.model.ClassOrInterface;
 import ceylon.language.model.ConstrainedAnnotation;
+import ceylon.language.model.TypeApplicationException;
 import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.Module;
 import ceylon.language.model.declaration.Package;
@@ -46,6 +47,7 @@ import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -57,6 +59,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 
 public class Metamodel {
 
@@ -820,5 +823,39 @@ public class Metamodel {
             container = container.getContainer();
         }
         return model.getDeclaration().getPackageContainer().getName() + "::" + string.toString();
+    }
+
+    public static void checkTypeArguments(ProducedType qualifyingType, Declaration declaration, List<ProducedType> typeArguments) {
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Generic){
+            List<com.redhat.ceylon.compiler.typechecker.model.TypeParameter> typeParameters = ((com.redhat.ceylon.compiler.typechecker.model.Generic) declaration).getTypeParameters();
+            if(typeParameters.size() < typeArguments.size())
+                throw new TypeApplicationException("Too many type arguments provided: "+typeArguments.size()+", but only accepts "+typeParameters.size());
+            int min = 0;
+            for (TypeParameter tp: typeParameters) { 
+                if (!tp.isDefaulted()) min++;
+            }
+            if(typeArguments.size() < min)
+                throw new TypeApplicationException("Not enough type arguments provided: "+typeArguments.size()+", but requires at least "+min);
+            for(int i=0;i<typeArguments.size();i++){
+                ProducedType typeArgument = typeArguments.get(i);
+                com.redhat.ceylon.compiler.typechecker.model.TypeParameter typeParameter = typeParameters.get(i);
+                for (ProducedType st: typeParameter.getSatisfiedTypes()) {
+                    ProducedType sts = st.getProducedType(qualifyingType, declaration, typeArguments);
+                    if (!typeArgument.isSubtypeOf(sts)) {
+                        throw new TypeApplicationException("Type argument "+i+": "+typeArgument.getProducedTypeQualifiedName()
+                                +" does not conform to upper bound constraint: "+sts.getProducedTypeQualifiedName()
+                                +" of type parameter "+typeParameter.getQualifiedNameString());
+                    }
+                }
+                if(!ExpressionVisitor.argumentSatisfiesEnumeratedConstraint(qualifyingType, declaration, typeArguments, typeArgument, typeParameter)){
+                    throw new TypeApplicationException("Type argument "+i+": "+typeArgument.getProducedTypeQualifiedName()
+                            +" does not conform to enumerated constraints "
+                            +" of type parameter "+typeParameter.getQualifiedNameString());
+                }
+            }
+        }else{
+            if(!typeArguments.isEmpty())
+                throw new TypeApplicationException("Declaration does not accept type arguments");
+        }
     }
 }
