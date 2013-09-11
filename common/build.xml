@@ -76,8 +76,10 @@
         <delete dir="${ceylon.common.repo}" />
     </target>
 
+    <target name="ide" depends="dist,ide-quick">
+    </target>
 
-    <target name="ide" depends="dist">
+    <target name="ide-quick">
         <copy 
             overwrite="true"
             todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository/${ceylon.common.dir}">
