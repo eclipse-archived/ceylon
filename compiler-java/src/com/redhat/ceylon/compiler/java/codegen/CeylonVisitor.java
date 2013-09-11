@@ -156,9 +156,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             }
             classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(adb);
         } else if (Decl.isToplevel(decl)) {
-        	if (!Decl.isNative(decl)) {
-        		topattrBuilder.add(decl);
-        	}
+            if (!Decl.isNative(decl)) {
+                topattrBuilder.add(decl);
+            }
         } else {
             appendList(gen.transform(decl));
         }
