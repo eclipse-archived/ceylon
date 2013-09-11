@@ -77,6 +77,7 @@ void checkConstructors(){
     variadicClass(0);
     variadicClass(1, "a");
     variadicClass(2, "a", "a");
+    unflatten(variadicClass)([2, "a", "a"]);
 }
 
 void checkMemberAttributes(){
@@ -495,6 +496,7 @@ void checkToplevelFunctions(){
     f13a(0);
     f13a(1, "a");
     f13a(2, "a", "a");
+    unflatten(f13a)([2, "a", "a"]);
     // check its parameters metamodel
     assert(f13.parameterDeclarations.size == 2);
     assert(exists f13p0 = f13.parameterDeclarations[0], f13p0.name == "count", f13p0.defaulted == true, f13p0.variadic == false);
