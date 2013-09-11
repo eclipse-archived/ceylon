@@ -479,4 +479,9 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     public void testBug1272() {
         compile("bug12xx/Bug1272.ceylon");
     }
+    
+    @Test
+    public void testBug1284() {
+        compareWithJavaSource("bug12xx/Bug1284");
+    }
 }
