@@ -417,7 +417,7 @@
         ! &amp;&amp; ||
         ~ &amp; |
         === == != &lt; &gt; &lt;= &gt;= &lt;=&gt;
-        += -= /= *= %= |= &amp;= ^= ~= ||= &amp;&amp;=
+        += -= /= *= %= |= &amp;= ~= ||= &amp;&amp;=
         </literal></para>
         
         <para>Certain symbols serve dual or multiple purposes in the grammar.</para>
