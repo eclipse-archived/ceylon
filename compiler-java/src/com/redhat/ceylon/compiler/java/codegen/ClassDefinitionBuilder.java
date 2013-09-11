@@ -96,10 +96,9 @@ public class ClassDefinitionBuilder {
 
     private ClassDefinitionBuilder containingClassBuilder;
 
-
     public static ClassDefinitionBuilder klass(AbstractTransformer gen, String javaClassName, String ceylonClassName) {
         ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, javaClassName, ceylonClassName);
-        builder.containingClassBuilder = gen.current();
+        builder.setContainingClassBuilder(gen.current());
         gen.replace(builder);
         return builder;
     }
@@ -111,7 +110,7 @@ public class ClassDefinitionBuilder {
     
     public static ClassDefinitionBuilder methodWrapper(AbstractTransformer gen, String ceylonClassName, boolean shared) {
         final ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, Naming.quoteClassName(ceylonClassName), null);
-        builder.containingClassBuilder = gen.current();
+        builder.setContainingClassBuilder(gen.current());
         gen.replace(builder);
         return builder
             .annotations(gen.makeAtMethod())
@@ -133,6 +132,10 @@ public class ClassDefinitionBuilder {
         }
     }
     
+    void setContainingClassBuilder(ClassDefinitionBuilder containingClassBuilder) {
+        this.containingClassBuilder = containingClassBuilder;
+    }
+    
     public String toString() {
         return "CDB for " + ((modifiers & INTERFACE) != 0 ? "interface " : "class ") + name;
     }
@@ -143,8 +146,8 @@ public class ClassDefinitionBuilder {
     
     private ClassDefinitionBuilder getTopLevelBuilder() {
         ClassDefinitionBuilder result = this;
-        while (result.containingClassBuilder != null) {
-            result = result.containingClassBuilder;
+        while (result.getContainingClassBuilder() != null) {
+            result = result.getContainingClassBuilder();
         }
         return result;
     }
@@ -195,7 +198,7 @@ public class ClassDefinitionBuilder {
             klasses.append(klass);
         }
         
-        gen.replace(containingClassBuilder);
+        gen.replace(getContainingClassBuilder());
         
         return klasses.toList();
     }
