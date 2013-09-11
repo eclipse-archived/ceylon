@@ -281,3 +281,11 @@ shared class Throws(Boolean t){
         throw MyException();
     }
 }
+
+shared class ConstrainedTypeParams<A, B>()
+    given A of String | Integer
+    given B satisfies TPA {}
+
+shared void constrainedTypeParams<A, B>()
+    given A of String | Integer
+    given B satisfies TPA {}

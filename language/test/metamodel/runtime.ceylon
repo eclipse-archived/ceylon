@@ -905,6 +905,52 @@ void checkEqualityAndHash(){
     assert(i1Type.string == "metamodel::TypeParams<metamodel::TPA&metamodel::TPB>");
 }
 
+void checkApplyTypeConstraints(){
+    value ctpClass = `class ConstrainedTypeParams`;
+    try{
+        ctpClass.apply(`String`, `Object`);
+        assert(false);
+    }catch(TypeApplicationException x){
+    }
+    try{
+        ctpClass.apply(`Object`, `TPA`);
+        assert(false);
+    }catch(TypeApplicationException x){
+    }
+    try{
+        ctpClass.apply();
+        assert(false);
+    }catch(TypeApplicationException x){
+    }
+    try{
+        ctpClass.apply(`Integer`, `TPA`, `String`);
+        assert(false);
+    }catch(TypeApplicationException x){
+    }
+
+    value ctpFunction = `function constrainedTypeParams`;
+    try{
+        ctpFunction.apply(`String`, `Object`);
+        assert(false);
+    }catch(TypeApplicationException x){
+    }
+    try{
+        ctpFunction.apply(`Object`, `TPA`);
+        assert(false);
+    }catch(TypeApplicationException x){
+    }
+    try{
+        ctpFunction.apply();
+        assert(false);
+    }catch(TypeApplicationException x){
+    }
+    try{
+        ctpFunction.apply(`Integer`, `TPA`, `String`);
+        assert(false);
+    }catch(TypeApplicationException x){
+    }
+}
+
 shared void run() {
     print("Running Metamodel tests");
     visitStringHierarchy();
@@ -944,6 +990,8 @@ shared void run() {
     checkLocalTypes();
 
     checkEqualityAndHash();
+
+    checkApplyTypeConstraints();
     // FIXME: test members() wrt filtering
     // FIXME: test untyped class to applied class
     
