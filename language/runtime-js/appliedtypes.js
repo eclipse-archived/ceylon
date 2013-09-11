@@ -9,14 +9,23 @@ function AppliedClass(tipo,$$targs$$,that){
 AppliedClass.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Type:{'var':'out',},A:{'var':'in','satisfies':[{t:Sequential,a:{Element:{t:Anything}}}]}},satisfies:[{t:Class$model,a:{Arguments:'A',Type:'Type'}}],d:['ceylon.language.model','Class']};
 function $init$AppliedClass(){
     if (AppliedClass.$$===undefined){
-        initTypeProto(AppliedClass,'ceylon.language.model:: AppliedClass',Basic,Class$model);
+        initTypeProto(AppliedClass,'ceylon.language.model::AppliedClass',Basic,Class$model);
         (function($$clase){
             
             //declaration
             defineAttr($$clase,'declaration',function(){
               var $$clase=this;
               if ($$clase._decl)return $$clase._decl;
-              throw Exception(String$("decl",4));
+              var mm = $$clase.tipo.$$metamodel$$;
+              if (typeof(mm)==='function'){
+                mm=mm();
+                t.$$metamodel$$=mm;
+              }
+              var mdl = get_model(mm);
+              var _mod = modules$model.find(mm.mod['$mod-name'],mm.mod['$mod-version']);
+              var _pkg = _mod.findPackage(mm.d[0]);
+              $$clase._decl = OpenClass(mdl['$nm'], _pkg, mm.$cont===undefined, $$clase.tipo);
+              return $$clase._decl;
             });
             //superclass
             defineAttr($$clase,'superclass',function(){
