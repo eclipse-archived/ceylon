@@ -13,16 +13,23 @@ function type$model(x) {
         return getNothingType$model();
     } else {
         //Search for metamodel
-        var mm = typeof(x.$$metamodel$$)==='function'?x.$$metamodel$$():x.$$metamodel$$;
+        var mm = x.$$metamodel$$;
+        if (typeof(mm)==='function') {
+          mm=mm();
+          x.$$metamodel$$=mm;
+        }
         if (mm === undefined && x.constructor && x.constructor.T$name && x.constructor.T$all) {
             //It's probably an instance of a Ceylon type
             var _x = x.constructor.T$all[x.constructor.T$name];
             if (_x) {
                 mm = _x.$$metamodel$$;
+                if (typeof(mm)==='function') {
+                  mm=mm();
+                  _x.$$metamodel$$=mm;
+                }
                 x=_x;
             }
         }
-        if (typeof(mm) == 'function') mm = mm();
         if (mm) {
             var metatype = get_model(mm)['$mt'];
             if (metatype === 'ifc' || metatype === 'cls') { //Interface or Class
@@ -55,7 +62,10 @@ function typeLiteral$model($$targs$$) {
       throw Exception("JS Interop not supported / incomplete metamodel for " + require('util').inspect(t));
     } else {
       var mm = t.$$metamodel$$;
-      if (typeof(mm)==='function')mm=mm();
+      if (typeof(mm)==='function') {
+        mm=mm();
+        t.$$metamodel$$=mm;
+      }
       var mdl = get_model(mm);
       if (mdl['$mt'] === 'cls') {
         return AppliedClass(t,mdl['$tp']);
@@ -74,7 +84,10 @@ function typeLiteral$model($$targs$$) {
     //open type
     var t = $$targs$$.Type;
     var mm = t.$$metamodel$$;
-    if (typeof(mm)==='function')mm=mm();
+    if (typeof(mm)==='function') {
+      mm=mm();
+      t.$$metamodel$$=mm;
+    }
     var mdl = get_model(mm);
     //We need the module
     var _mod = modules$model.find(mm.mod['$mod-name'],mm.mod['$mod-version']);
