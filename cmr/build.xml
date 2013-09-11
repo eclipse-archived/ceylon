@@ -108,7 +108,10 @@
         <delete dir="${cmr-testsuite-test.src}/repo/com"/>
     </target>
 
-    <target name="ide" depends="dist">
+    <target name="ide" depends="dist,ide-quick">
+    </target>
+
+    <target name="ide-quick">
         <copy 
             overwrite="true"
             todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository/${ceylon.module-resolver.dir}">
