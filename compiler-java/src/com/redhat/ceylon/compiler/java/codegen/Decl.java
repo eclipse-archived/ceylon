@@ -363,12 +363,16 @@ public class Decl {
      * @return true if the declaration is local
      */
     public static boolean isLocal(Declaration decl) {
-        return isLocalScope(decl.getContainer());
+        return isLocalNotInitializerScope(decl.getContainer());
     }
     
-    public static boolean isLocalScope(Scope scope) {
+    /**
+     * Is the given scope a local scope but not an initializer scope?
+     */
+    public static boolean isLocalNotInitializerScope(Scope scope) {
         return scope instanceof MethodOrValue 
                 || scope instanceof ControlBlock
+                || scope instanceof Setter
                 || scope instanceof NamedArgumentList
                 || scope instanceof Specification;
     }

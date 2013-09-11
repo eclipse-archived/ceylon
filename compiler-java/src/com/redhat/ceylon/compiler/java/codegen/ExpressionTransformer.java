@@ -3610,7 +3610,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     private boolean needDollarThis(Scope scope) {
-        while (Decl.isLocalScope(scope)) {
+        while (Decl.isLocalNotInitializerScope(scope)) {
             scope = scope.getContainer();
         }
         return scope instanceof Interface;

@@ -326,7 +326,7 @@ public class Naming implements LocalId {
                         || flags.contains(DeclNameFlag.COMPANION))) {
                 helper.append(IMPL_POSTFIX);
             }
-        } else if (Decl.isLocalScope(scope)) {
+        } else if (Decl.isLocalNotInitializerScope(scope)) {
             if (flags.contains(DeclNameFlag.COMPANION)
                 || !(decl instanceof Interface)) {
                 helper.clear();
