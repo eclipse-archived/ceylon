@@ -203,7 +203,10 @@
         </copy>
     </target>
 
-    <target name="ide" depends="dist"
+    <target name="ide" depends="dist,ide-quick">
+    </target>
+
+    <target name="ide-quick"
             description="Copies the JS compiler jar and language module into the ceylon-ide-eclipse project">
         <copy overwrite="true"
               file="${ceylon.js.lib}"
