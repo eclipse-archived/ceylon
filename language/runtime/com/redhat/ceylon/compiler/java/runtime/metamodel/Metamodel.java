@@ -119,6 +119,10 @@ public class Metamodel {
         typeCheckPackagesToRuntimeModel.clear();
     }
 
+    public static Object getLock(){
+        return moduleManager.getModelLoader();
+    }
+    
     public static TypeDescriptor getTypeDescriptor(Object instance) {
         if(instance == null)
             return Null.$TypeDescriptor;
@@ -149,7 +153,7 @@ public class Metamodel {
     }
     
     public static com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTopLevelOrMemberDeclaration getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration){
-        synchronized(typeCheckModelToRuntimeModel){
+        synchronized(getLock()){
             com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTopLevelOrMemberDeclaration ret = typeCheckModelToRuntimeModel.get(declaration);
             if(ret == null){
                 if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
@@ -198,7 +202,7 @@ public class Metamodel {
     }
 
     public static com.redhat.ceylon.compiler.java.runtime.metamodel.FreePackage getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.Package declaration){
-        synchronized(typeCheckPackagesToRuntimeModel){
+        synchronized(getLock()){
             com.redhat.ceylon.compiler.java.runtime.metamodel.FreePackage ret = typeCheckPackagesToRuntimeModel.get(declaration);
             if(ret == null){
                 ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreePackage(declaration); 
@@ -209,7 +213,7 @@ public class Metamodel {
     }
 
     public static com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.Module declaration){
-        synchronized(typeCheckModulesToRuntimeModel){
+        synchronized(getLock()){
             com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule ret = typeCheckModulesToRuntimeModel.get(declaration);
             if(ret == null){
                 ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule(declaration); 

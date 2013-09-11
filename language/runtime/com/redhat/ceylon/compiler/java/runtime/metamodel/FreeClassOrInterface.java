@@ -106,8 +106,7 @@ public abstract class FreeClassOrInterface
     
     protected final void checkInit(){
         if(!initialised){
-            // FIXME: lock on model loader?
-            synchronized(this){
+            synchronized(Metamodel.getLock()){
                 if(!initialised){
                     init();
                     initialised = true;
