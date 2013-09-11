@@ -49,6 +49,7 @@ public class AttributeDefinitionBuilder {
     private final JCTree.JCExpression attrTypeRaw;
     private final String attrName;
     private final String javaClassName;
+    private final ClassDefinitionBuilder classBuilder;
     private final boolean toplevel;
     private final boolean late;
     private final boolean variable;
@@ -89,6 +90,13 @@ public class AttributeDefinitionBuilder {
         this.attrTypeRaw = owner.makeJavaType(nonWideningType, AbstractTransformer.JT_RAW);
         this.owner = owner;
         this.javaClassName = javaClassName;
+        if (javaClassName != null) {
+            classBuilder = 
+                    ClassDefinitionBuilder
+                    .klass(owner, javaClassName, null);
+        } else {
+            classBuilder = null;
+        }
         this.attrName = attrName;
         this.fieldName = fieldName;
         this.toplevel = toplevel;
@@ -187,9 +195,7 @@ public class AttributeDefinitionBuilder {
         ListBuffer<JCTree> defs = ListBuffer.lb();
         appendDefinitionsTo(defs);
         if (javaClassName != null) {
-            ClassDefinitionBuilder classBuilder = 
-                    ClassDefinitionBuilder
-                    .klass(owner, javaClassName, null)
+            classBuilder
                     .modifiers(Flags.FINAL | (modifiers & (Flags.PUBLIC | Flags.PRIVATE)))
                     .constructorModifiers(Flags.PRIVATE)
                     .annotations(owner.makeAtAttribute())
