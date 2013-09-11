@@ -232,7 +232,6 @@ void checkMemberTypes(){
     // private member type
     assert(exists privateMemberType = `PrivateClass`.getClassOrInterface<PrivateClass, Class<Object,[]>>("Inner"));
     value privateMember = privateMemberType(PrivateClass())();
-    print(privateMember.string);
     assert(privateMember.string == "c");
 }
 
@@ -304,11 +303,7 @@ void checkPackageAndModule(){
     assert(pkg.name == "metamodel");
     assert(pkg.qualifiedName == "metamodel");
 
-    print(pkg.members<TopLevelOrMemberDeclaration>().size);
     assert(pkg.members<TopLevelOrMemberDeclaration>().size > 0);
-    for(decl in pkg.members<TopLevelOrMemberDeclaration>()){
-        print("decl: ``decl.name``");
-    }
 
     //
     // Module
@@ -509,10 +504,6 @@ void checkToplevelFunctions(){
 }
 
 void checkModules(){
-    print("Loaded modules:");
-    for(mod in modules.list){
-        print(" Module: ``mod.name``/``mod.version``");
-    }
     assert(modules.list.size >= 2);
     assert(exists languageModule = modules.find("ceylon.language", language.version));
     assert(languageModule.name == "ceylon.language", languageModule.version == language.version);
