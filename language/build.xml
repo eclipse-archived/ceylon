@@ -119,7 +119,11 @@
         <delete dir="${build.dir}"/>
     </target>
 
-    <target name="ide" depends="dist">
+    <target name="ide" depends="dist,ide-quick">
+    </target>
+
+    <target name="ide-quick">
+
         <copy 
             overwrite="true"
             todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository/${ceylon.language.dir}">
