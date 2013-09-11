@@ -314,41 +314,58 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     @Override
     @Ignore
     public Type $call$variadic() {
-        return $call(empty_.$get());
+        return $call();
     }
-
+    
     @Override
     @Ignore
-    public Type $call$variadic(
-            Sequential<?> varargs) {
+    public Type $call$variadic(Sequential<?> varargs) {
         return $call(varargs);
     }
 
     @Override
     @Ignore
-    public Type $call$variadic(
-            Object arg0, Sequential<?> varargs) {
+    public Type $call$variadic(Object arg0,
+            Sequential<?> varargs) {
         return $call(arg0, varargs);
     }
 
     @Override
     @Ignore
-    public Type $call$variadic(
-            Object arg0, Object arg1, Sequential<?> varargs) {
+    public Type $call$variadic(Object arg0,
+            Object arg1, Sequential<?> varargs) {
         return $call(arg0, arg1, varargs);
     }
 
     @Override
     @Ignore
-    public Type $call$variadic(
-            Object arg0, Object arg1, Object arg2, Sequential<?> varargs) {
+    public Type $call$variadic(Object arg0,
+            Object arg1, Object arg2, Sequential<?> varargs) {
         return $call(arg0, arg1, arg2, varargs);
     }
 
     @Override
     @Ignore
     public Type $call$variadic(Object... argsAndVarargs) {
-        return $call(argsAndVarargs);
+        return $call((Object[])argsAndVarargs);
+    }
+
+    @Override
+    @Ignore
+    public Type $call$variadic(Object arg0) {
+        return $call(arg0, empty_.$get());
+    }
+
+    @Override
+    @Ignore
+    public Type $call$variadic(Object arg0, Object arg1) {
+        return $call(arg0, arg1, empty_.$get());
+    }
+
+    @Override
+    @Ignore
+    public Type $call$variadic(Object arg0, Object arg1, Object arg2) {
+        return $call(arg0, arg1, arg2, empty_.$get());
     }
 
     @Ignore
@@ -356,30 +373,6 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     public short $getVariadicParameterIndex() {
         // TODO Auto-generated method stub
         return -1;
-    }
-
-    @Ignore
-    @Override
-    public TypeDescriptor $getType() {
-        return TypeDescriptor.klass(AppliedClass.class, $reifiedType, $reifiedArguments);
-    }
-
-    @Override
-    @Ignore
-    public Type $call$variadic(Object arg0) {
-        return $call$variadic(arg0, empty_.$get());
-    }
-
-    @Override
-    @Ignore
-    public Type $call$variadic(Object arg0, Object arg1) {
-        return $call$variadic(arg0, arg1, empty_.$get());
-    }
-
-    @Override
-    @Ignore
-    public Type $call$variadic(Object arg0, Object arg1, Object arg2) {
-        return $call$variadic(arg0, arg1, arg2, empty_.$get());
     }
 
     @Override
@@ -413,5 +406,11 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
     public ceylon.language.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
         return container;
+    }
+
+    @Ignore
+    @Override
+    public TypeDescriptor $getType() {
+        return TypeDescriptor.klass(AppliedClass.class, $reifiedType, $reifiedArguments);
     }
 }

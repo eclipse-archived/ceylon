@@ -315,12 +315,6 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         return type;
     }
 
-    @Ignore
-    @Override
-    public TypeDescriptor $getType() {
-        return TypeDescriptor.klass(AppliedFunction.class, $reifiedType, $reifiedArguments);
-    }
-
     @Override
     @Ignore
     public Type $call$variadic() {
@@ -415,5 +409,11 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     @Override
     public String toString() {
         return Metamodel.toTypeString(this);
+    }
+
+    @Ignore
+    @Override
+    public TypeDescriptor $getType() {
+        return TypeDescriptor.klass(AppliedFunction.class, $reifiedType, $reifiedArguments);
     }
 }
