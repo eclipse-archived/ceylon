@@ -11,6 +11,8 @@ import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.model.ClassOrInterface$impl;
 import ceylon.language.model.Model$impl;
+import ceylon.language.model.declaration.Package;
+import ceylon.language.model.declaration.TopLevelOrMemberDeclaration;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
@@ -44,11 +46,6 @@ public abstract class AppliedClassOrInterface<Type>
     @Ignore
     protected final TypeDescriptor $reifiedType;
     
-    @Override
-    public String toString() {
-        return producedType.getProducedTypeName();
-    }
-
     AppliedClassOrInterface(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
         this.producedType = producedType;
         this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(producedType);
@@ -230,7 +227,12 @@ public abstract class AppliedClassOrInterface<Type>
                                                                                         String name) {
         return (ceylon.language.model.VariableAttribute<SubType, Type>)getAttribute($reifiedSubType, $reifiedType, name);
     }
-
+    
+    @Override
+    public String toString() {
+        return Metamodel.toTypeString(this);
+    }
+    
     @Ignore
     @Override
     public TypeDescriptor $getType() {

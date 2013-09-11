@@ -214,6 +214,12 @@ public class AppliedValue<Type>
     }
 
     @Override
+    public String toString() {
+        return Metamodel.toTypeString(this);
+    }
+
+
+    @Override
     @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
     public ceylon.language.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
         return container;

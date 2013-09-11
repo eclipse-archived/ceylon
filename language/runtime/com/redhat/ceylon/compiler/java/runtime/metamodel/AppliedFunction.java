@@ -404,4 +404,9 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     public ceylon.language.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
         return container;
     }
+
+    @Override
+    public String toString() {
+        return Metamodel.toTypeString(this);
+    }
 }

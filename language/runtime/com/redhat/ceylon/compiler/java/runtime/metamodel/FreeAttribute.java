@@ -96,6 +96,11 @@ public class FreeAttribute
         return getName().equals(other.getName());
     }
 
+    @Override
+    public String toString() {
+        return "value "+super.toString();
+    }
+
     @Ignore
     @Override
     public TypeDescriptor $getType() {

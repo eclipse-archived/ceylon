@@ -1,10 +1,8 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.OpenType$impl;
 import ceylon.language.model.declaration.OpenTypeVariable$impl;
 
-import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -107,6 +105,11 @@ public class FreeTypeParameterType
         return getDeclaration().equals(other.getDeclaration());
     }
 
+    @Override
+    public String toString() {
+        return getDeclaration().toString();
+    }
+    
     @Override
     @Ignore
     public TypeDescriptor $getType() {

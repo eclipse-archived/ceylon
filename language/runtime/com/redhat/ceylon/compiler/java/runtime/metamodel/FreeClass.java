@@ -159,6 +159,11 @@ public class FreeClass
             return false;
         return getName().equals(other.getName());
     }
+
+    @Override
+    public String toString() {
+        return "class "+super.toString();
+    }
     
     @Override
     @Ignore

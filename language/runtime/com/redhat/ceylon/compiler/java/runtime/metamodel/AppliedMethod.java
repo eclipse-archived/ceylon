@@ -39,11 +39,6 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     
     private Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> typeArguments;
 
-    @Override
-    public String toString() {
-        return Metamodel.getProducedTypedReferenceString(appliedFunction);
-    }
-    
     public AppliedMethod(@Ignore TypeDescriptor $reifiedContainer, 
                          @Ignore TypeDescriptor $reifiedType, 
                          @Ignore TypeDescriptor $reifiedArguments, 
@@ -198,5 +193,10 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
     public ceylon.language.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
         return getDeclaringClassOrInterface();
+    }
+
+    @Override
+    public String toString() {
+        return Metamodel.toTypeString(this);
     }
 }

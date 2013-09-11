@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import ceylon.language.Iterable;
 import ceylon.language.Iterator;
 import ceylon.language.Map;
 import ceylon.language.Sequential;
@@ -11,6 +10,8 @@ import ceylon.language.finished_;
 import ceylon.language.model.declaration.OpenParameterisedType$impl;
 import ceylon.language.model.declaration.OpenType;
 import ceylon.language.model.declaration.OpenType$impl;
+import ceylon.language.model.declaration.Package;
+import ceylon.language.model.declaration.TopLevelOrMemberDeclaration;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
@@ -37,10 +38,6 @@ public class FreeParameterisedType<DeclarationType extends ceylon.language.model
     protected ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.declaration.OpenType> typeArguments;
     protected ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.ClassDeclaration> superclass;
     protected Sequential<ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.InterfaceDeclaration>> interfaces;
-    
-    public String toString() {
-        return producedType.getProducedTypeName();
-    }
     
     FreeParameterisedType(@Ignore TypeDescriptor $reifiedDeclarationType, com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
         this.producedType = producedType;
@@ -160,6 +157,18 @@ public class FreeParameterisedType<DeclarationType extends ceylon.language.model
         return getTypeArguments().equals(other.getTypeArguments());
     }
 
+    @Override
+    public String toString() {
+        String prefix = "";
+        if(declaration instanceof ceylon.language.model.declaration.ClassDeclaration)
+            prefix = "class ";
+        else if(declaration instanceof ceylon.language.model.declaration.InterfaceDeclaration)
+            prefix = "interface ";
+        else if(declaration instanceof ceylon.language.model.declaration.AliasDeclaration)
+            prefix = "alias ";
+        return prefix+Metamodel.toTypeString(getDeclaration(), getTypeArguments());
+    }
+    
     @Override
     @Ignore
     public TypeDescriptor $getType() {

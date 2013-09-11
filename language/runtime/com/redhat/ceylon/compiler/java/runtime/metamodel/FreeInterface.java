@@ -92,6 +92,11 @@ public class FreeInterface
     }
 
     @Override
+    public String toString() {
+        return "interface "+super.toString();
+    }
+    
+    @Override
     @Ignore
     public TypeDescriptor $getType() {
         return $TypeDescriptor;

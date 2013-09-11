@@ -36,11 +36,6 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
 
     private Sequential<FreeTopLevelOrMemberDeclaration> members;
 
-    @Override
-    public String toString() {
-        return declaration.getNameAsString();
-    }
-    
     public FreePackage(com.redhat.ceylon.compiler.typechecker.model.Package declaration){
         this.declaration = declaration;
     }
@@ -247,6 +242,11 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
         if(!Util.eq(other.getContainer(), getContainer()))
             return false;
         return getName().equals(other.getName());
+    }
+
+    @Override
+    public String toString() {
+        return "package " + getName();
     }
 
     @Ignore

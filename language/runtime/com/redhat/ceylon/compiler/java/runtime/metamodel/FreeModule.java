@@ -31,11 +31,6 @@ public class FreeModule implements ceylon.language.model.declaration.Module,
     private Sequential<Package> packages;
     private Sequential<Import> dependencies;
     
-    @Override
-    public String toString() {
-        return declaration.getNameAsString();
-    }
-    
     public FreeModule(com.redhat.ceylon.compiler.typechecker.model.Module declaration) {
         this.declaration = declaration;
     }
@@ -160,6 +155,11 @@ public class FreeModule implements ceylon.language.model.declaration.Module,
         if(!Util.eq(other.getVersion(), getVersion()))
             return false;
         return getName().equals(other.getName());
+    }
+
+    @Override
+    public String toString() {
+        return "module " + getName() + "/" + getVersion();
     }
 
     @Ignore

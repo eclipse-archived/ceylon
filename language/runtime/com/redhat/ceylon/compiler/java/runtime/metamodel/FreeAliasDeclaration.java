@@ -142,6 +142,11 @@ public class FreeAliasDeclaration extends FreeTopLevelOrMemberDeclaration
     }
 
     @Override
+    public String toString() {
+        return "alias "+super.toString();
+    }
+
+    @Override
     @Ignore
     public TypeDescriptor $getType() {
         return $TypeDescriptor;

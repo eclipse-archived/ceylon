@@ -2,7 +2,9 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
 import ceylon.language.model.Annotated$impl;
+import ceylon.language.model.declaration.ClassOrInterfaceDeclaration;
 import ceylon.language.model.declaration.Package;
+import ceylon.language.model.declaration.TopLevelOrMemberDeclaration;
 import ceylon.language.model.declaration.TopLevelOrMemberDeclaration$impl;
 import ceylon.language.model.declaration.Declaration$impl;
 import ceylon.language.model.declaration.TypedDeclaration$impl;
@@ -30,17 +32,6 @@ public abstract class FreeTopLevelOrMemberDeclaration
     protected com.redhat.ceylon.compiler.typechecker.model.Declaration declaration;
     
     private Package pkg;
-
-    @Override
-    public String toString() {
-        String string = declaration.getName();
-        Scope container = declaration.getContainer();
-        while (container instanceof TypeDeclaration) {
-            string = ((TypeDeclaration) container).getName() + '.' + string;
-            container = container.getContainer();
-        }
-        return string;
-    }
 
     public FreeTopLevelOrMemberDeclaration(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
         this.declaration = declaration;
@@ -138,6 +129,11 @@ public abstract class FreeTopLevelOrMemberDeclaration
         return Metamodel.annotations($reifiedAnnotation, this);
     }
 
+    @Override
+    public String toString() {
+        return getQualifiedName();
+    }
+    
     @Ignore
     @Override
     public TypeDescriptor $getType() {

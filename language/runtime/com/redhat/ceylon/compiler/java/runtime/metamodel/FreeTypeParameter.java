@@ -35,12 +35,6 @@ public class FreeTypeParameter
 
     private FreeTopLevelOrMemberDeclaration container;
     
-    @Override
-    public String toString() {
-        String string = declaration.getName();
-        return string;
-    }
-    
     public FreeTypeParameter(com.redhat.ceylon.compiler.typechecker.model.TypeParameter declaration) {
         this.declaration = declaration;
     }
@@ -169,5 +163,10 @@ public class FreeTypeParameter
         if(!Util.eq(other.getContainer(), getContainer()))
             return false;
         return getName().equals(other.getName());
+    }
+
+    @Override
+    public String toString() {
+        return "given " + getContainer().getQualifiedName() + "." + getName();
     }
 }

@@ -233,6 +233,11 @@ public class FreeFunction
         return getName().equals(other.getName());
     }
 
+    @Override
+    public String toString() {
+        return "function "+super.toString();
+    }
+    
     @Ignore
     @Override
     public TypeDescriptor $getType() {

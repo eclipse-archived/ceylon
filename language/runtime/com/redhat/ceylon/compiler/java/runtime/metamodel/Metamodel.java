@@ -21,7 +21,10 @@ import ceylon.language.model.Annotated;
 import ceylon.language.model.ClassOrInterface;
 import ceylon.language.model.ConstrainedAnnotation;
 import ceylon.language.model.declaration.AnnotatedDeclaration;
+import ceylon.language.model.declaration.GenericDeclaration;
 import ceylon.language.model.declaration.Module;
+import ceylon.language.model.declaration.Package;
+import ceylon.language.model.declaration.TopLevelOrMemberDeclaration;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
@@ -643,33 +646,6 @@ public class Metamodel {
         return fullType.getTypeArgumentList().get(0);
     }
 
-    public static String getProducedTypedReferenceString(ProducedTypedReference typedReference) {
-        StringBuilder sb = new StringBuilder();
-        if(typedReference.getQualifyingType() != null)
-            sb.append(typedReference.getQualifyingType().getProducedTypeName()).append(".");
-        TypedDeclaration modelDeclaration = typedReference.getDeclaration();
-        sb.append(modelDeclaration.getName());
-        if(modelDeclaration instanceof Generic){
-            Map<com.redhat.ceylon.compiler.typechecker.model.TypeParameter, ProducedType> typeArguments = typedReference.getTypeArguments();
-            boolean first = true;
-            for(com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp : ((Generic) modelDeclaration).getTypeParameters()){
-                if(first){
-                    first = false;
-                    sb.append("<");
-                }else
-                    sb.append(",");
-                ProducedType typeArgument = typeArguments.get(tp);
-                if(typeArgument != null)
-                    sb.append(typeArgument.getProducedTypeName());
-                else
-                    sb.append("##MISSING##");
-            }
-            if(!first)
-                sb.append(">");
-        }
-        return sb.toString();
-    }
-
     public static com.redhat.ceylon.compiler.typechecker.model.Parameter getParameterFromTypedDeclaration(com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration declaration) {
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.MethodOrValue)
             return ((com.redhat.ceylon.compiler.typechecker.model.MethodOrValue) declaration).getInitializerParameter();
@@ -775,5 +751,64 @@ public class Metamodel {
                                ceylon.language.model.Type<?>>(ceylon.language.model.declaration.TypeParameter.$TypeDescriptor, 
                                                               TypeDescriptor.klass(ceylon.language.model.Type.class, ceylon.language.Anything.$TypeDescriptor), 
                                                               typeArguments);
+    }
+    
+    public static String toTypeString(ceylon.language.model.declaration.TopLevelOrMemberDeclaration declaration, 
+            ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends java.lang.Object> typeArguments){
+        StringBuffer string = new StringBuffer();
+        string.append(declaration.getName());
+        if(declaration instanceof ceylon.language.model.declaration.GenericDeclaration)
+            addTypeArguments(string, (ceylon.language.model.declaration.GenericDeclaration)declaration, typeArguments);
+        ceylon.language.model.declaration.AnnotatedDeclaration container = declaration.getContainer();
+        while(container != null){
+            if(container instanceof Package)
+                return container.getName() + "::" + string;
+            StringBuffer string2 = new StringBuffer(container.getName());
+            if(container instanceof ceylon.language.model.declaration.GenericDeclaration)
+                addTypeArguments(string2, (ceylon.language.model.declaration.GenericDeclaration)container, typeArguments);
+            string2.append(".");
+            string.insert(0, string2.toString());
+            container = ((TopLevelOrMemberDeclaration)container).getContainer();
+        }
+        return string.toString();
+    }
+    
+    private static void addTypeArguments(StringBuffer string, ceylon.language.model.declaration.GenericDeclaration declaration,
+            ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends java.lang.Object> typeArguments) {
+        if(!declaration.getTypeParameterDeclarations().getEmpty()){
+            string.append("<");
+            Iterator<?> iterator = declaration.getTypeParameterDeclarations().iterator();
+            Object it;
+            boolean once = true;
+            while((it = iterator.next()) != finished_.$get()){
+                if(once)
+                    once = false;
+                else
+                    string.append(",");
+                ceylon.language.model.declaration.TypeParameter tpDecl = (ceylon.language.model.declaration.TypeParameter) it;
+                Object val = typeArguments != null ? typeArguments.get(tpDecl) : null;
+                string.append(val != null ? val : "##Missing##");
+            }
+            string.append(">");
+        }
+    }
+
+    public static String toTypeString(ceylon.language.model.Model model){
+        StringBuffer string = new StringBuffer();
+        string.append(model.getDeclaration().getName());
+        if(model instanceof ceylon.language.model.ClassOrInterface<?>)
+            addTypeArguments(string, (ceylon.language.model.declaration.GenericDeclaration) model.getDeclaration(), ((ceylon.language.model.ClassOrInterface<?>)model).getTypeArguments());
+        else if(model instanceof ceylon.language.model.FunctionModel<?,?>)
+            addTypeArguments(string, (ceylon.language.model.declaration.GenericDeclaration) model.getDeclaration(), ((ceylon.language.model.FunctionModel<?,?>)model).getTypeArguments());
+        ceylon.language.model.ClassOrInterface<?> container = model.getContainer();
+        while(container != null){
+            StringBuffer string2 = new StringBuffer(container.getDeclaration().getName());
+            if(container instanceof ceylon.language.model.ClassOrInterface<?>)
+                addTypeArguments(string2, container.getDeclaration(), container.getTypeArguments());
+            string2.append(".");
+            string.insert(0, string2.toString());
+            container = container.getContainer();
+        }
+        return model.getDeclaration().getPackageContainer().getName() + "::" + string.toString();
     }
 }

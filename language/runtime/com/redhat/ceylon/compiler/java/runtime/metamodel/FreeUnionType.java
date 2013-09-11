@@ -30,18 +30,6 @@ public class FreeUnionType
     // this is only used for equals
     private com.redhat.ceylon.compiler.typechecker.model.ProducedType model;
     
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        Iterator<? extends ceylon.language.model.declaration.OpenType> iterator = caseTypes.iterator();
-        Object next=iterator.next();
-        sb.append(next);
-        while (!((next=iterator.next()) instanceof Finished)) {
-            sb.append('|').append(next);
-        }
-        return sb.toString();
-    }
-
     FreeUnionType(com.redhat.ceylon.compiler.typechecker.model.UnionType union){
         this.model = union.getType();
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> caseTypes = union.getCaseTypes();
@@ -95,6 +83,18 @@ public class FreeUnionType
             return false;
         FreeUnionType other = (FreeUnionType) obj;
         return other.model.isExactly(model);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Iterator<? extends ceylon.language.model.declaration.OpenType> iterator = caseTypes.iterator();
+        Object next=iterator.next();
+        sb.append(next);
+        while (!((next=iterator.next()) instanceof Finished)) {
+            sb.append('|').append(next);
+        }
+        return sb.toString();
     }
 
     @Override

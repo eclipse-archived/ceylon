@@ -34,11 +34,6 @@ public class AppliedAttribute<Container, Type>
     @Ignore
     protected final TypeDescriptor $reifiedType;
     
-    @Override
-    public String toString() {
-        return Metamodel.getProducedTypedReferenceString(typedReference);
-    }
-    
     public AppliedAttribute(@Ignore TypeDescriptor $reifiedContainer, 
                             @Ignore TypeDescriptor $reifiedType,
                             FreeAttribute declaration, ProducedTypedReference typedReference,
@@ -188,5 +183,10 @@ public class AppliedAttribute<Container, Type>
     @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
     public ceylon.language.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
         return getDeclaringClassOrInterface();
+    }
+
+    @Override
+    public String toString() {
+        return Metamodel.toTypeString(this);
     }
 }
