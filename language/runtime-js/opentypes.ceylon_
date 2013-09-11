@@ -1,8 +1,8 @@
 import ceylon.language.model.declaration {
   FunctionDeclaration, ValueDeclaration, ClassDeclaration, InterfaceDeclaration,
-  Package, FunctionOrValueDeclaration,
+  Package, FunctionOrValueDeclaration, VariableDeclaration,
   TopLevelOrMemberDeclaration, OpenType, TypeParameter,
-  OpenParameterisedType, AnnotatedDeclaration
+  OpenParameterisedType, AnnotatedDeclaration, SetterDeclaration
 }
 import ceylon.language.model {
     AppliedInterface = Interface,
@@ -42,7 +42,7 @@ class OpenFunction(shared actual String name, shared actual Package packageConta
   shared actual AnnotatedDeclaration container { return packageContainer; }
 }
 
-class OpenValue(shared actual String name, shared actual Package packageContainer, shared actual Boolean toplevel) satisfies ValueDeclaration {
+class OpenValue(shared default actual String name, shared default actual Package packageContainer, shared default actual Boolean toplevel) satisfies ValueDeclaration {
     shared actual Value<Anything> apply(Anything instance) { throw; }
     shared actual Boolean defaulted => false;
     shared actual Boolean variadic => false;
@@ -54,8 +54,11 @@ class OpenValue(shared actual String name, shared actual Package packageContaine
   shared actual Boolean formal { return false; }
   shared actual Boolean default { return false; }
   shared actual Boolean shared { return false; }
-  shared actual String qualifiedName { return name; }
+  shared actual String qualifiedName { return "``packageContainer.name``::``name``"; }
   shared actual AnnotatedDeclaration container { return packageContainer; }
+}
+class OpenVariable(shared actual String name, shared actual Package packageContainer, shared actual Boolean toplevel) extends OpenValue(name,packageContainer,toplevel) satisfies VariableDeclaration {
+    shared actual SetterDeclaration setter { throw; }
 }
 
 class OpenClass(shared actual String name, shared actual Package packageContainer, shared actual Boolean toplevel) satisfies ClassDeclaration {
