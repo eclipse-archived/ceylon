@@ -1,0 +1,40 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
+
+interface bug1284$0$Consumer_<E> {
+    
+    public .java.lang.Object Consumer$impl();
+    
+    public void add(final E e);
+}
+final class bug1284_ {
+    
+    private bug1284_() {
+    }
+    
+    static void bug1284() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1284$0$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1284$0$Consumer_).ceylon.language.nothing_.$get();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1284$0$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1284$0$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1284$0$Consumer_)times1;
+        
+        final class Consumer$impl<E> {
+            
+            Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1284$0$Consumer_<? super E> $this) {
+                this.$reifiedE = $reifiedE;
+                this.$this = $this;
+            }
+            private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE;
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1284$0$Consumer_<? super E> $this;
+            
+            public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE) {
+                this.$reifiedE = $reifiedE;
+            }
+            
+            public void add(final E e) {
+            }
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1284_.bug1284();
+    }
+}
