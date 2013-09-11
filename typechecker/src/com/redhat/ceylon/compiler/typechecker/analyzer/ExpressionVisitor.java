@@ -5086,7 +5086,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private static boolean argumentSatisfiesEnumeratedConstraint(ProducedType receiver, 
+    public static boolean argumentSatisfiesEnumeratedConstraint(ProducedType receiver, 
             Declaration member, List<ProducedType> typeArguments, ProducedType argType,
             TypeParameter param) {
         
