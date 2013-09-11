@@ -49,6 +49,7 @@ public class GenerateJsVisitor extends Visitor
     private final EnclosingFunctionVisitor encloser = new EnclosingFunctionVisitor();
     private final JsIdentifierNames names;
     private final Set<Declaration> directAccess = new HashSet<Declaration>();
+    private final Set<Declaration> generatedAttributes = new HashSet<Declaration>();
     private final RetainedVars retainedVars = new RetainedVars();
     final ConditionGenerator conds;
     private final InvocationGenerator invoker;
@@ -1491,7 +1492,9 @@ public class GenerateJsVisitor extends Visitor
         else {
             out("var ", names.getter(d), "=function()");
             super.visit(that);
+            endLine();
             if (!shareGetter(d)) { out(";"); }
+            generateAttributeMetamodel(that, true, false);
         }
     }
 
@@ -1565,6 +1568,7 @@ public class GenerateJsVisitor extends Visitor
             out(";}");
         }
         if (!shareSetter(d)) { out(";"); }
+        generateAttributeMetamodel(that, false, true);
     }
 
     private boolean isCaptured(Declaration d) {
@@ -1609,6 +1613,9 @@ public class GenerateJsVisitor extends Visitor
             final boolean isLate = d.isLate();
             SpecifierOrInitializerExpression specInitExpr =
                         that.getSpecifierOrInitializerExpression();
+            final boolean addGetter = (specInitExpr != null) || (classParam != null) || !d.isMember()
+                    || d.isVariable() || isLate;
+            final boolean addSetter = (d.isVariable() || isLate) && !defineAsProperty(d);
             if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
                 if ((specInitExpr != null
                         && !(specInitExpr instanceof LazySpecifierExpression)) || isLate) {
@@ -1669,12 +1676,9 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
             else {
-                final boolean addGetter = (specInitExpr != null) || (classParam != null) || !d.isMember()
-                        || d.isVariable() || isLate;
                 if (addGetter) {
                     generateAttributeGetter(that, d, specInitExpr, classParam);
                 }
-                final boolean addSetter = (d.isVariable() || isLate) && !defineAsProperty(d);
                 if (addSetter) {
                     final String varName = names.name(d);
                     String paramVarName = names.createTempVariable(d.getName());
@@ -1686,27 +1690,44 @@ public class GenerateJsVisitor extends Visitor
                     endLine();
                     shareSetter(d);
                 }
-                if (d.isToplevel()) {
-                    out("$prop$", names.name(d), "={$$metamodel$$:");
-                    TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
-                    out(",get:");
-                    if (addGetter && isCaptured(d) && !defineAsProperty(d)) {
-                        out(names.getter(d));
-                    } else {
-                        out("function(){return ", names.name(d), "}");
-                    }
-                    if (addSetter) {
-                        out(",set:", names.setter(d));
-                    }
-                    out("}");
-                    endLine(true);
-                    out("exports.$prop$", names.name(d), "=$prop$", names.name(d));
-                    endLine(true);
-                }
             }
+            generateAttributeMetamodel(that, addGetter, addSetter);
         }
     }
-    
+
+    /** Generate runtime metamodel info for an attribute declaration or definition. */
+    private void generateAttributeMetamodel(Tree.TypedDeclaration that, final boolean addGetter, final boolean addSetter) {
+        Declaration d = that.getDeclarationModel();
+        if (!d.isToplevel())return;
+        if (!generatedAttributes.contains(d)) {
+            out("var $prop$", names.name(d), "={$$metamodel$$:");
+            TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+            out("};"); endLine();
+            if (d.isToplevel()) {
+                out("exports.$prop$", names.name(d), "=$prop$", names.name(d));
+                endLine(true);
+            }
+            generatedAttributes.add(d);
+        }
+        if (addGetter) {
+            out("$prop$", names.name(d), ".get=");
+            if (isCaptured(d) && !defineAsProperty(d)) {
+                out(names.getter(d));
+                endLine(true);
+                out(names.getter(d), ".$$metamodel$$=$prop$", names.name(d), ".$$metamodel$$");
+            } else {
+                out("function(){return ", names.name(d), "}");
+            }
+        }
+        if (addSetter) {
+            endLine(true);
+            out("$prop$", names.name(d), ".set=", names.setter(d));
+            endLine(true);
+            out(names.setter(d), ".$$metamodel$$=$prop$", names.name(d), ".$$metamodel$$");
+        }
+        endLine(true);
+    }
+
     private void generateAttributeGetter(AnyAttribute attributeNode, MethodOrValue decl,
                 SpecifierOrInitializerExpression expr, String param) {
         final String varName = names.name(decl);
