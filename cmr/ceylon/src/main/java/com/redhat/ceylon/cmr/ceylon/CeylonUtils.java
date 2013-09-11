@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 
 public class CeylonUtils {
@@ -443,6 +444,10 @@ public class CeylonUtils {
                                                                 Iterable<? extends File> sourcePaths, String moduleName, String moduleVersion,
                                                                 boolean verbose, Logger log) throws IOException {
         return new SourceArchiveCreatorImpl(repoManager, sourcePaths, moduleName, moduleVersion, verbose, log);
+    }
+
+    public static <T> boolean arrayContains(T[] array, T item) {
+        return Arrays.asList(array).contains(item);
     }
 
 }
