@@ -573,6 +573,17 @@ public class Metamodel {
         return -1;
     }
 
+    public static int getVariadicParameter(List<Parameter> parameters) {
+        int i = 0;
+        for(Parameter param : parameters){
+            if(param.isSequenced()){
+                return i;
+            }
+            i++;
+        }
+        return -1;
+    }
+
     public static Sequential<? extends ceylon.language.model.declaration.Module> getModuleList() {
         // FIXME: this probably needs synchronisation to avoid new modules loaded during traversal
         Set<com.redhat.ceylon.compiler.typechecker.model.Module> modules = moduleManager.getContext().getModules().getListOfModules();

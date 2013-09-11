@@ -39,6 +39,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     private MethodHandle constructor;
     private Object instance;
     private int firstDefaulted;
+    private int variadicIndex = -1;
     private MethodHandle[] dispatch;
     private ceylon.language.model.ClassOrInterface<?> container;
     
@@ -89,6 +90,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     private void initConstructor(com.redhat.ceylon.compiler.typechecker.model.Class decl) {
         List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
         this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
+        this.variadicIndex = Metamodel.getVariadicParameter(parameters);
 
         Object[] defaultedMethods = null;
         if(firstDefaulted != -1){
@@ -371,8 +373,8 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     @Ignore
     @Override
     public short $getVariadicParameterIndex() {
-        // TODO Auto-generated method stub
-        return -1;
+        checkInit();
+        return (short)variadicIndex;
     }
 
     @Override

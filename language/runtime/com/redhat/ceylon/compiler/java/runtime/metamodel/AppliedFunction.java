@@ -47,6 +47,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     private MethodHandle method;
     private MethodHandle[] dispatch;
     private int firstDefaulted = -1;
+    private int variadicIndex = -1;
     private ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> typeArguments;
     private Object instance;
     private ceylon.language.model.ClassOrInterface<? extends java.lang.Object> container;
@@ -65,6 +66,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
         
         this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
+        this.variadicIndex = Metamodel.getVariadicParameter(parameters);
 
         Method[] defaultedMethods = null;
         if(firstDefaulted != -1){
@@ -305,8 +307,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     @Ignore
     @Override
     public short $getVariadicParameterIndex() {
-        // TODO Auto-generated method stub
-        return -1;
+        return (short)variadicIndex;
     }
 
     @Override
