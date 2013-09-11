@@ -1596,23 +1596,14 @@ public class Naming implements LocalId {
     
     private java.util.Map<Scope, Integer> locals;
     
-    private void resetLocals() {
-        locals = new java.util.HashMap<Scope, Integer>();
-    }
-    
-    private void local(Scope decl) {
-        if (!locals.containsKey(decl)) {
-            locals.put(decl, locals.size());
-        }
+    public void setLocalIds(java.util.Map<Scope, Integer> locals) {
+        this.locals = locals;
     }
     
     void noteDecl(Declaration decl) {
         if (decl.isToplevel()) {
-            resetLocals();
             // Clear all the substitutions before each top level declaration
             getVarMapper().clear();
-        } else if (Decl.isLocal(decl)){
-            local(decl.getContainer());
         }
     }
     
