@@ -120,7 +120,7 @@ public class ClassTransformer extends AbstractTransformer {
                 && Decl.isAncestorLocal(def))
             return List.nil();
         
-        naming.noteDecl(model);
+        naming.clearSubstitutions(model);
         final String javaClassName;
         String ceylonClassName = def.getIdentifier().getText();
         if (def instanceof Tree.AnyInterface) {
@@ -1791,7 +1791,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (model.isParameter()) {
             return List.nil();
         }
-        naming.noteDecl(model);
+        naming.clearSubstitutions(model);
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
         ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def));
@@ -3108,7 +3108,7 @@ public class ClassTransformer extends AbstractTransformer {
             Class klass,
             ClassDefinitionBuilder containingClassBuilder,
             boolean makeLocalInstance) {
-        naming.noteDecl(model);
+        naming.clearSubstitutions(model);
         
         String name = model.getName();
         ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.object(
@@ -3263,7 +3263,7 @@ public class ClassTransformer extends AbstractTransformer {
         if(Decl.isAncestorLocal(def))
             return List.nil();
         
-        naming.noteDecl(model);
+        naming.clearSubstitutions(model);
         String ceylonClassName = def.getIdentifier().getText();
         final String javaClassName = Naming.quoteClassName(def.getIdentifier().getText());
 

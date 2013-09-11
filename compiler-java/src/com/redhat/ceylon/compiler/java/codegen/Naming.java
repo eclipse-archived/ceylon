@@ -1600,7 +1600,7 @@ public class Naming implements LocalId {
         this.locals = locals;
     }
     
-    void noteDecl(Declaration decl) {
+    void clearSubstitutions(Declaration decl) {
         if (decl.isToplevel()) {
             // Clear all the substitutions before each top level declaration
             getVarMapper().clear();
