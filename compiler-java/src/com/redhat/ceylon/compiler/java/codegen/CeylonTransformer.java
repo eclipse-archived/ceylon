@@ -241,7 +241,7 @@ public class CeylonTransformer extends AbstractTransformer {
             Tree.AttributeSetterDefinition sdef = (Tree.AttributeSetterDefinition)decl;
             block = sdef.getBlock();
             expression = sdef.getSpecifierExpression();
-            if (Decl.isLocalNotInitializer(decl) || Decl.isLocalToInitializer(decl)) {
+            if (Decl.isLocal(decl)) {
                 declarationModel = ((Tree.AttributeSetterDefinition)decl).getDeclarationModel().getParameter().getModel();
             }
         } else {
@@ -306,7 +306,7 @@ public class CeylonTransformer extends AbstractTransformer {
                 JCBlock getterBlock = makeGetterBlock(declarationModel, block, expression);
                 builder.getterBlock(getterBlock);
                 
-                if (Decl.isLocalNotInitializer(declarationModel) || Decl.isLocalToInitializer(declarationModel)) {
+                if (Decl.isLocal(declarationModel)) {
                     // For local getters
                     builder.immutable();
                 } else {
@@ -330,7 +330,7 @@ public class CeylonTransformer extends AbstractTransformer {
             builder.userAnnotationsSetter(makeAtIgnore());
         }
         
-        if (Decl.isLocalNotInitializer(declarationModel) || Decl.isLocalToInitializer(declarationModel)) {
+        if (Decl.isLocal(declarationModel)) {
             if(initialValue != null)
                 builder.valueConstructor();
             JCExpression typeExpr;

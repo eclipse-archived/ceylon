@@ -1120,7 +1120,7 @@ public class Naming implements LocalId {
         Assert.that((namingOptions & ~(NA_SETTER | NA_GETTER | NA_WRAPPER_UNQUOTED)) == 0, 
                 "Unsupported namingOption");
         String name = decl.getName();
-        if (Decl.isLocalNotInitializer(decl) || Decl.isLocalToInitializer(decl)) {
+        if (Decl.isLocal(decl)) {
             if ((Decl.isGetter(decl) && (namingOptions & NA_SETTER) == 0)
                     || (namingOptions & NA_GETTER) != 0){
                 name = name + "$getter";

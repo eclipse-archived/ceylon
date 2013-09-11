@@ -369,6 +369,26 @@ public class Decl {
     }
     
     /**
+     * Determines whether the declaration is local to a method,
+     * getter, setter or Class initializer.
+     * @param decl The declaration
+     * @return true if the declaration is local
+     */
+    public static boolean isLocal(Tree.Declaration decl) {
+        return isLocal(decl.getDeclarationModel());
+    }
+
+    /**
+     * Determines whether the declaration is local to a method,
+     * getter, setter or Class initializer.
+     * @param decl The declaration
+     * @return true if the declaration is local
+     */
+    public static boolean isLocal(Declaration decl) {
+        return isLocalNotInitializer(decl) || isLocalToInitializer(decl);
+    }
+    
+    /**
      * Is the given scope a local scope but not an initializer scope?
      */
     public static boolean isLocalNotInitializerScope(Scope scope) {
