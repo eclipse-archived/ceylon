@@ -19,7 +19,7 @@ function $init$AppliedClass(){
               var mm = $$clase.tipo.$$metamodel$$;
               if (typeof(mm)==='function'){
                 mm=mm();
-                t.$$metamodel$$=mm;
+                $$clase.tipo.$$metamodel$$=mm;
               }
               var mdl = get_model(mm);
               var _mod = modules$model.find(mm.mod['$mod-name'],mm.mod['$mod-version']);

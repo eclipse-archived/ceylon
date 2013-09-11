@@ -8,42 +8,11 @@ function get_model(mm) {
   return map;
 }
 
-function type$model(x) {
-    if (x === null) {
-        return getNothingType$model();
-    } else {
-        //Search for metamodel
-        var mm = x.$$metamodel$$;
-        if (typeof(mm)==='function') {
-          mm=mm();
-          x.$$metamodel$$=mm;
-        }
-        if (mm === undefined && x.constructor && x.constructor.T$name && x.constructor.T$all) {
-            //It's probably an instance of a Ceylon type
-            var _x = x.constructor.T$all[x.constructor.T$name];
-            if (_x) {
-                mm = _x.$$metamodel$$;
-                if (typeof(mm)==='function') {
-                  mm=mm();
-                  _x.$$metamodel$$=mm;
-                }
-                x=_x;
-            }
-        }
-        if (mm) {
-            var metatype = get_model(mm)['$mt'];
-            if (metatype === 'ifc' || metatype === 'cls') { //Interface or Class
-                return typeLiteral$model({Type:x});
-            } else if (metatype === 'mthd') { //Method
-                return typeLiteral$model({Type:$JsCallable(x)});
-            } else {
-                console.log("type(" + metatype + ")WTF?");
-            }
-        } else {
-            throw Exception(String$("No metamodel available for "+x));
-        }
-    }
-    return "UNIMPLEMENTED";
+function type$model(x,$$targs$$) {
+  if (x === null) {
+    return getNothingType$model();
+  }
+  return AppliedClass($$targs$$.Type.t, {Type:$$targs$$.Type, Arguments:{t:Nothing}});
 }
 type$model.$$metamodel$$={$ps:[{t:Anything}],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language.model','type']};
 exports.type$model=type$model;
