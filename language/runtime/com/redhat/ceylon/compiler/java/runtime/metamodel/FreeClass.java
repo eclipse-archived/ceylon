@@ -134,7 +134,7 @@ public class FreeClass
             reifiedArguments = TypeDescriptor.NothingType;
         else
             reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedClassType);
-        return new AppliedClass(reifiedType, reifiedArguments, appliedClassType, instance);
+        return new AppliedClass(reifiedType, reifiedArguments, appliedClassType, null/*FIXME*/, instance);
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import ceylon.language.model.ClassOrInterface;
 import ceylon.language.model.Model$impl;
 import ceylon.language.model.Value$impl;
 import ceylon.language.model.ValueModel$impl;
@@ -41,9 +42,12 @@ public class AppliedValue<Type>
     protected FreeAttribute declaration;
     private MethodHandle getter;
     private Object instance;
+    private ceylon.language.model.ClassOrInterface<? extends java.lang.Object> container;
 
-    public AppliedValue(@Ignore TypeDescriptor $reifiedType, FreeAttribute value, ProducedTypedReference valueTypedReference, Object instance) {
+    public AppliedValue(@Ignore TypeDescriptor $reifiedType, FreeAttribute value, ProducedTypedReference valueTypedReference, 
+            ceylon.language.model.ClassOrInterface<?> container, Object instance) {
         ProducedType producedType = valueTypedReference.getType();
+        this.container = container;
         this.type = Metamodel.getAppliedMetamodel(producedType);
         this.$reifiedType = $reifiedType;
         this.declaration = value;
@@ -207,6 +211,12 @@ public class AppliedValue<Type>
         // and if we don't have an instance we're a toplevel and have no containing type
         return Util.eq(instance, other.instance)
                 && getDeclaration().equals(other.getDeclaration());
+    }
+
+    @Override
+    @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
+    public ceylon.language.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
+        return container;
     }
 
     @Override

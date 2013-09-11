@@ -100,7 +100,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
 
     @Override
     protected Function<Type, Arguments> bindTo(Object instance) {
-        return new AppliedFunction($reifiedType, $reifiedArguments, appliedFunction, declaration, instance);
+        return new AppliedFunction($reifiedType, $reifiedArguments, appliedFunction, declaration, getContainer(), instance);
     }
 
     @Ignore
@@ -192,5 +192,11 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
         return getDeclaration().equals(other.getDeclaration())
                 && getDeclaringClassOrInterface().equals(other.getDeclaringClassOrInterface())
                 && getTypeArguments().equals(other.getTypeArguments());
+    }
+
+    @Override
+    @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
+    public ceylon.language.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
+        return getDeclaringClassOrInterface();
     }
 }

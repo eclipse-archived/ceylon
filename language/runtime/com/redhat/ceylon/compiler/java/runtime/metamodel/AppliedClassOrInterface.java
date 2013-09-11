@@ -32,7 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 @TypeParameters({
     @TypeParameter(value = "Type", variance = Variance.OUT),
     })
-public class AppliedClassOrInterface<Type> 
+public abstract class AppliedClassOrInterface<Type> 
     implements ceylon.language.model.ClassOrInterface<Type>, ReifiedType {
 
     private volatile boolean initialised;

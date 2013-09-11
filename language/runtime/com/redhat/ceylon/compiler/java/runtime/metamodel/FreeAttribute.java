@@ -63,8 +63,8 @@ public class FreeAttribute
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(modelDecl.getType());
         ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(null, Collections.<ProducedType>emptyList());
         return modelDecl.isVariable() 
-            ? new AppliedVariable(reifiedType, this, typedReference, instance) 
-            : new AppliedValue(reifiedType, this, typedReference, instance);
+            ? new AppliedVariable(reifiedType, this, typedReference, null/*FIXME*/, instance) 
+            : new AppliedValue(reifiedType, this, typedReference, null/*FIXME*/, instance);
     }
 
     @Override

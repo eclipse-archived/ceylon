@@ -58,7 +58,7 @@ public class AppliedMemberInterface<Container, Type>
     @Override
     @Ignore
     public Interface<? extends Type> $call(Object arg0) {
-        return new AppliedInterface($reifiedType, super.producedType, arg0);
+        return new AppliedInterface($reifiedType, super.producedType, getContainer(), arg0);
     }
 
     @Override
@@ -183,5 +183,11 @@ public class AppliedMemberInterface<Container, Type>
         return getDeclaration().equals(other.getDeclaration())
                 && getDeclaringClassOrInterface().equals(other.getDeclaringClassOrInterface())
                 && getTypeArguments().equals(other.getTypeArguments());
+    }
+
+    @Override
+    @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
+    public ceylon.language.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
+        return getDeclaringClassOrInterface();
     }
 }

@@ -122,7 +122,7 @@ public class AppliedVariableAttribute<Container, Type>
 
     @Override
     protected ceylon.language.model.Variable<Type> bindTo(Object instance) {
-        return new AppliedVariable(null, declaration, typedReference, instance);
+        return new AppliedVariable(null, declaration, typedReference, getContainer(), instance);
     }
 
     @Override

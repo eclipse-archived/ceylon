@@ -157,7 +157,7 @@ public class FreeFunction
         com.redhat.ceylon.compiler.typechecker.model.ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForFunction(appliedFunction);
         TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedFunction);
-        return new AppliedFunction(reifiedType, reifiedArguments, appliedFunction, this, instance);
+        return new AppliedFunction(reifiedType, reifiedArguments, appliedFunction, this, null/*FIXME*/, instance);
     }
 
     @Ignore

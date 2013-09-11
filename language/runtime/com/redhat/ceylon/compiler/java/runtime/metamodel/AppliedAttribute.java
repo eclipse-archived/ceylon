@@ -85,7 +85,7 @@ public class AppliedAttribute<Container, Type>
     
     @Override
     protected Value<? extends Type> bindTo(Object instance) {
-        return new AppliedValue($reifiedType, declaration, typedReference, instance);
+        return new AppliedValue($reifiedType, declaration, typedReference, getContainer(), instance);
     }
 
     @Ignore
@@ -181,5 +181,12 @@ public class AppliedAttribute<Container, Type>
         ceylon.language.model.Attribute other = (ceylon.language.model.Attribute) obj;
         return getDeclaration().equals(other.getDeclaration())
                 && getDeclaringClassOrInterface().equals(other.getDeclaringClassOrInterface());
+    }
+
+
+    @Override
+    @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
+    public ceylon.language.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
+        return getDeclaringClassOrInterface();
     }
 }

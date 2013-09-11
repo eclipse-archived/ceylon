@@ -260,7 +260,7 @@ public class Metamodel {
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
 
             if(declaration.isToplevel())
-                return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedClass(reifiedType, reifiedArguments, pt, null);
+                return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedClass(reifiedType, reifiedArguments, pt, null, null);
             
             TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(pt.getQualifyingType());
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedMemberClass(reifiedContainer, reifiedType, reifiedArguments, pt);
@@ -268,7 +268,7 @@ public class Metamodel {
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
             if(declaration.isToplevel())
-                return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedInterface(reifiedType, pt, null);
+                return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedInterface(reifiedType, pt, null, null);
 
             TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(pt.getQualifyingType());
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedMemberInterface(reifiedContainer, reifiedType, pt);

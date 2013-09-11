@@ -49,12 +49,16 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     private int firstDefaulted = -1;
     private ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> typeArguments;
     private Object instance;
+    private ceylon.language.model.ClassOrInterface<? extends java.lang.Object> container;
 
     public AppliedFunction(@Ignore TypeDescriptor $reifiedType, 
                            @Ignore TypeDescriptor $reifiedArguments,
-                           ProducedReference appliedFunction, FreeFunction function, Object instance) {
+                           ProducedReference appliedFunction, FreeFunction function, 
+                           ceylon.language.model.ClassOrInterface<?> container,
+                           Object instance) {
         this.$reifiedType = $reifiedType;
         this.$reifiedArguments = $reifiedArguments;
+        this.container = container;
         this.instance = instance;
         
         com.redhat.ceylon.compiler.typechecker.model.Method decl = (com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration;
@@ -392,5 +396,12 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         return getDeclaration().equals(other.getDeclaration())
                 && Util.eq(instance, other.instance)
                 && getTypeArguments().equals(other.getTypeArguments());
+    }
+
+
+    @Override
+    @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
+    public ceylon.language.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
+        return container;
     }
 }
