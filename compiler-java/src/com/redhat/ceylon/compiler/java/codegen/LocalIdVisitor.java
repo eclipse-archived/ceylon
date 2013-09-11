@@ -59,16 +59,34 @@ public class LocalIdVisitor extends Visitor implements NaturalVisitor {
     }
     
     @Override
-    public void visit(Tree.ObjectArgument that) {
-        noteDecl(that.getDeclarationModel());
-        super.visit(that);
-    }
-    
-    @Override
     public void visit(Tree.AnyMethod that) {
         if (Decl.isLocal(that.getDeclarationModel())) {
             noteDecl(that.getDeclarationModel());
         }
         super.visit(that);
     }
+    
+    @Override
+    public void visit(Tree.AttributeGetterDefinition that) {
+        if (Decl.isLocal(that.getDeclarationModel())) {
+            noteDecl(that.getDeclarationModel());
+        }
+        super.visit(that);
+    }
+    
+    @Override
+    public void visit(Tree.AttributeSetterDefinition that) {
+        if (Decl.isLocal(that.getDeclarationModel())) {
+            noteDecl(that.getDeclarationModel());
+        }
+        super.visit(that);
+    }
+    
+    @Override
+    public void visit(Tree.NamedArgument that) {
+        local(that.getScope().getContainer());
+        local(that.getScope());
+        super.visit(that);
+    }
+
 }
