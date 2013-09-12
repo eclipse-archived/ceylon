@@ -123,7 +123,11 @@ function OpenValue(name, packageContainer, toplevel, meta, that){
     if (meta.$$metamodel$$ === undefined) {
       //it's a metamodel
       that.meta=meta;
-      that.tipo=_findTypeFromModel(packageContainer,meta);
+      if (meta['$mt']==='prm') {
+        that.tipo={$$metamodel$$:meta};
+      } else {
+        that.tipo=_findTypeFromModel(packageContainer,meta);
+      }
     } else {
       //it's a type
       that.tipo = meta;
