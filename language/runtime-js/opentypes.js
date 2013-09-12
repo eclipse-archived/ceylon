@@ -11,6 +11,46 @@ function _findTypeFromModel(pkg,mdl) {
   return mod.meta[nm];
 }
 
+//ClassDefinition FreeParameterisedType at o.ceylon (136:0-147:0)
+function FreeParameterisedType(declaration, $$targs$$,that){
+    $init$FreeParameterisedType();
+    if (that===undefined)that=new FreeParameterisedType.$$;
+    set_type_args(that,$$targs$$);
+    OpenParameterisedType$model$declaration(that.$$targs$$===undefined?$$targs$$:{DeclarationType:that.$$targs$$.DeclarationType},that);
+    
+    //AttributeDeclaration declaration at o.ceylon (140:4-140:45)
+    that.decl=declaration;
+    return that;
+}
+FreeParameterisedType.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$tp:{DeclarationType:{'var':'out','satisfies':[{t:ClassOrInterfaceDeclaration$model$declaration}]}},satisfies:[{t:OpenParameterisedType$model$declaration,a:{DeclarationType:'DeclarationType'}}],d:['ceylon.language.model.declaration','OpenParameterisedType']};};
+function $init$FreeParameterisedType(){
+    if (FreeParameterisedType.$$===undefined){
+        initTypeProto(FreeParameterisedType,'FreeParameterisedType',Basic,OpenParameterisedType$model$declaration);
+        (function(that){
+            
+            //AttributeDeclaration declaration at o.ceylon (140:4-140:45)
+            defineAttr(that,'declaration',function(){return this.decl;},undefined,function(){return{mod:$$METAMODEL$$,$t:'DeclarationType',$cont:FreeParameterisedType,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','OpenParameterisedType','$at','declaration']};});
+            
+            //AttributeGetterDefinition superclass at o.ceylon (142:4-142:106)
+            defineAttr(that,'superclass',function(){
+                return this.declaration.superclassDeclaration;
+            },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:OpenParameterisedType$model$declaration,a:{DeclarationType:{t:ClassDeclaration$model$declaration}}}]},$cont:FreeParameterisedType,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','OpenParameterisedType','$at','superclass']};});
+            //AttributeGetterDefinition interfaces at o.ceylon (144:4-144:111)
+            defineAttr(that,'interfaces',function(){
+                return this.declaration.interfaceDeclarations;
+            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:OpenParameterisedType$model$declaration,a:{DeclarationType:{t:InterfaceDeclaration$model$declaration}}}}},$cont:FreeParameterisedType,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','OpenParameterisedType','$at','interfaces']};});
+            //AttributeGetterDefinition typeArguments at o.ceylon (146:4-146:97)
+            defineAttr(that,'typeArguments',function(){
+                var that=this;
+                throw wrapexc(Exception(String$("unimplemented",13)),'146:63-146:95','o.ceylon');
+            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$model$declaration},Item:{t:OpenType$model$declaration}}},$cont:FreeParameterisedType,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','OpenParameterisedType','$at','typeArguments']};});
+        })(FreeParameterisedType.$$.prototype);
+    }
+    return FreeParameterisedType;
+}
+exports.$init$FreeParameterisedType=$init$FreeParameterisedType;
+$init$FreeParameterisedType();
+
 //ClassDefinition OpenFunction at caca.ceylon (18:0-36:0)
 function OpenFunction(name, packageContainer, toplevel, meta, that){
     $init$OpenFunction();
@@ -356,14 +396,34 @@ function $init$OpenClass(){
             
             //AttributeDeclaration superclassDeclaration at caca.ceylon (68:2-68:86)
             defineAttr($$openClass,'superclassDeclaration',function(){
-                var $$openClass=this;
-                return null;
+              var sc = this.tipo.$$metamodel$$['super'];
+              var mm = sc.t.$$metamodel$$;
+              if (typeof(mm)==='function') {
+                mm = mm();
+                sc.t.$$metamodel$$=mm;
+              }
+              var pkg = getModules$model().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
+              return FreeParameterisedType(OpenClass(mm.d[mm.d.length-1], pkg, mm['$cont']===undefined, sc.t));
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:OpenParameterisedType$model$declaration,a:{DeclarationType:{t:ClassDeclaration$model$declaration}}}]},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','ClassDeclaration','$at','superclassDeclaration']};});
             
             //AttributeDeclaration interfaceDeclarations at caca.ceylon (69:2-69:89)
             defineAttr($$openClass,'interfaceDeclarations',function(){
-                var $$openClass=this;
-                return getEmpty();
+              var ints = this.tipo.$$metamodel$$['satisfies'];
+              if (ints && ints.length) {
+                var rv = [];
+                for (var i=0; i < ints.length; i++) {
+                  var ifc = ints[i].t;
+                  var mm = ifc.$$metamodel$$;
+                  if (typeof(mm)==='function') {
+                    mm = mm();
+                    ifc.$$metamodel$$=mm;
+                  }
+                  var pkg = getModules$model().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
+                  rv.push(FreeParameterisedType(OpenInterface(mm.d[mm.d.length-1], pkg, mm['$cont']===undefined, ifc)));
+                }
+                return rv.reifyCeylonType({Absent:{t:Null},Element:{t:OpenParameterisedType$model$declaration,a:{DeclarationType:{t:InterfaceDeclaration$model$declaration}}}});
+              }
+              return getEmpty();
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:OpenParameterisedType$model$declaration,a:{DeclarationType:{t:InterfaceDeclaration$model$declaration}}}}},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','ClassDeclaration','$at','interfaceDeclarations']};});
             defineAttr($$openClass,'name',function(){return this.name_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','ClassDeclaration','$at','name']};});
             defineAttr($$openClass,'packageContainer',function(){return this.packageContainer_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Package$model$declaration},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','ClassDeclaration','$at','packageContainer']};});
@@ -411,9 +471,7 @@ function $init$OpenInterface(){
             
             //MethodDefinition apply at caca.ceylon (73:2-73:71)
             $$openInterface.apply=function apply(types$16){
-                var $$openInterface=this;
-                if(types$16===undefined){types$16=getEmpty();}
-                throw Exception();
+              return AppliedInterface(this.tipo,{Type:{t:this.tipo}});
             };$$openInterface.apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Interface$model,a:{Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$model}}}}],$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','InterfaceDeclaration','$m','apply']};};
             
             //MethodDefinition bindAndApply at caca.ceylon (74:2-74:95)
@@ -487,3 +545,4 @@ function $init$OpenInterface(){
 }
 exports.$init$OpenInterface=$init$OpenInterface;
 $init$OpenInterface();
+

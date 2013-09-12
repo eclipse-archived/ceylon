@@ -1,5 +1,6 @@
 import ceylon.language.model.declaration {
-  FunctionDeclaration, ValueDeclaration, ClassDeclaration, InterfaceDeclaration,
+  FunctionDeclaration, ValueDeclaration,
+  ClassDeclaration, InterfaceDeclaration, ClassOrInterfaceDeclaration,
   Package, FunctionOrValueDeclaration, VariableDeclaration,
   TopLevelOrMemberDeclaration, OpenType, TypeParameter,
   OpenParameterisedType, AnnotatedDeclaration, SetterDeclaration
@@ -130,4 +131,17 @@ class OpenInterface(shared actual String name, shared actual Package packageCont
   shared actual OpenType[] caseTypes { throw Exception("Unimplemented"); }
 
   shared actual Boolean isAlias { throw Exception("Unimplemented"); }
+}
+
+class FreeParameterisedType<out DeclarationType>(declaration)
+        satisfies OpenParameterisedType<DeclarationType>
+        given DeclarationType satisfies ClassOrInterfaceDeclaration {
+
+    shared actual DeclarationType declaration;
+    
+    shared actual OpenParameterisedType<ClassDeclaration>? superclass { throw Exception("unimplemented"); }
+    
+    shared actual OpenParameterisedType<InterfaceDeclaration>[] interfaces { throw Exception("unimplemented"); }
+
+    shared actual Map<TypeParameter, OpenType> typeArguments { throw Exception("unimplemented"); }
 }
