@@ -1007,12 +1007,11 @@ public class ProducedType extends ProducedReference {
     
     private void checkVariance(boolean covariant, boolean contravariant,
                 Declaration declaration, List<TypeParameter> errors) {
-        //TODO: fix this to allow reporting multiple errors!
         if (getDeclaration() instanceof TypeParameter) {
             TypeParameter tp = (TypeParameter) getDeclaration();
             boolean ok = tp.getDeclaration().equals(declaration) ||
                     ((covariant || !tp.isCovariant()) && 
-                            (contravariant || !tp.isContravariant()));
+                    (contravariant || !tp.isContravariant()));
             if (!ok) {
                 //a covariant type parameter appears in a contravariant location, or
                 //a contravariant type parameter appears in a covariant location.
