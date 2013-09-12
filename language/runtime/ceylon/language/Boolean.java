@@ -1,6 +1,5 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.CaseTypes;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -40,6 +39,16 @@ public abstract class Boolean implements ReifiedType {
         else {
             return false;
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return java.lang.Boolean.valueOf(booleanValue()).hashCode();
+    }
+
+    @Ignore
+    public static int hashCode(boolean value) {
+        return java.lang.Boolean.valueOf(value).hashCode();
     }
 
     @Override
