@@ -93,6 +93,15 @@ Some more basic ant tasks:
 
     <target name="ide" depends="siblings">
         <delete dir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository" includes="**/*" includeEmptyDirs="true"/>
+        <property name="buildtarget" value="ide" />
+        <foreach list="${modules}"
+                 target="ide-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="ide-quick" depends="siblings">
+        <delete dir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository" includes="**/*" includeEmptyDirs="true"/>
+        <property name="buildtarget" value="ide-quick" />
         <foreach list="${modules}"
                  target="ide-item"
                  param="project.item.name"
@@ -103,7 +112,7 @@ Some more basic ant tasks:
         <fail unless="project.item.name" />
         <echo>Publishing ${project.item.name} to IDE</echo>
         <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
-             target="ide"
+             target="${buildtarget}"
              dir="${projects.base.dir}/${project.item.name}"
              inheritall="false">
         </ant>
