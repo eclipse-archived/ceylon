@@ -105,7 +105,8 @@ function AppliedInterface(tipo,$$targs$$,$$interfaz){
     
     //MethodDefinition getAttribute at test.ceylon (12:4-13:77)
     function getAttribute(name$6,$$$mptypes){
-        throw Exception(String$("attrib",6));
+      var nom = '$prop$get' + name$6[0].toUpperCase() + name$6.substring(1);
+      return AppliedValue(this.tipo.$$.prototype[nom], $$$mptypes);
     }
     $$interfaz.getAttribute=getAttribute;
     getAttribute.$$metamodel$$={mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Member$model,a:{Type:'SubType',Kind:'Kind'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$tp:{SubType:{},Kind:{'satisfies':[{t:Attribute$model,a:{Type:{t:Anything}}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.model','ClassOrInterface','$m','getAttribute']};//getAttribute.$$targs$$={Arguments:{t:Tuple,a:{Rest:{t:Empty},First:{t:String$},Element:{t:String$}}},Return:{ t:'u', l:[{t:Null},{t:Member$metamodel,a:{Type:$$$mptypes.SubType,Kind:$$$mptypes.Kind}}]}};
