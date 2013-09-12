@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
+
+final class bug1285_ {
+    
+    private bug1285_() {
+    }
+    
+    static void bug1285() {
+        final int hash1 = .ceylon.language.Boolean.hashCode(.ceylon.language.Integer.equals(1L, .ceylon.language.Integer.instance(2L)));
+        final int hash2 = .ceylon.language.Boolean.hashCode(.ceylon.language.Float.equals(1.0, .ceylon.language.Float.instance(2.0)));
+        final int hash3 = .ceylon.language.Boolean.hashCode(.ceylon.language.Boolean.instance(true).equals(.ceylon.language.Boolean.instance(false)));
+        final int hash4 = .ceylon.language.Boolean.hashCode(.ceylon.language.Character.equals(97, .ceylon.language.Character.instance(98)));
+        final int hash5 = .ceylon.language.Boolean.hashCode(.ceylon.language.String.equals("", .ceylon.language.String.instance("")));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1285_.bug1285();
+    }
+}
