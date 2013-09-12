@@ -210,6 +210,9 @@ void test<T>() {
     value localValueDecl = `localValue`;
     @error:"metamodel references to local functions not supported"
     value localFunctionDecl = `localFunction`;
+    
+    class LocalClass(String arg) {}
+    @type:"Class<LocalClass,Nothing>" value localClass = `LocalClass`;
 }
 
 

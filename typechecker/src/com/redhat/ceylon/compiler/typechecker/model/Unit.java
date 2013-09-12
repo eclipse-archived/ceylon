@@ -926,10 +926,19 @@ public class Unit {
     public ProducedType getClassMetatype(ProducedType literalType) {
         Class c = (Class) literalType.getDeclaration();
         ParameterList parameterList = c.getParameterList();
-        ProducedType parameterTuple = getParameterTypesAsTupleType(parameterList != null ? parameterList.getParameters() : Collections.<Parameter>emptyList(), literalType);
+        ProducedType parameterTuple;
+        if (c.isClassOrInterfaceMember()||c.isToplevel()) {
+        	parameterTuple = getParameterTypesAsTupleType(parameterList != null ? 
+        			    parameterList.getParameters() : Collections.<Parameter>emptyList(), 
+        		    literalType);
+        }
+        else {
+        	parameterTuple = new NothingType(this).getType();
+        }
         if (literalType.getDeclaration().isMember()) {
             return getLanguageModuleModelTypeDeclaration("MemberClass")
-                    .getProducedType(null, asList(literalType.getQualifyingType(), literalType, parameterTuple));
+                    .getProducedType(null, asList(literalType.getQualifyingType(), 
+                    		literalType, parameterTuple));
         }
         else {
             return getLanguageModuleModelTypeDeclaration("Class")
@@ -940,7 +949,8 @@ public class Unit {
     public ProducedType getInterfaceMetatype(ProducedType literalType) {
         if (literalType.getDeclaration().isMember()) {
             return getLanguageModuleModelTypeDeclaration("MemberInterface")
-                    .getProducedType(null, asList(literalType.getQualifyingType(), literalType));
+                    .getProducedType(null, asList(literalType.getQualifyingType(), 
+                    		literalType));
         }
         else {
             return getLanguageModuleModelTypeDeclaration("Interface")
@@ -951,10 +961,12 @@ public class Unit {
     public ProducedType getTypeMetaType(ProducedType literalType) {
         TypeDeclaration declaration = literalType.getDeclaration();
         if (declaration instanceof UnionType) {
-            return producedType(getLanguageModuleModelTypeDeclaration("UnionType"), literalType);
+            return producedType(getLanguageModuleModelTypeDeclaration("UnionType"), 
+            		literalType);
         }
         else if (declaration instanceof IntersectionType) {
-            return producedType(getLanguageModuleModelTypeDeclaration("IntersectionType"), literalType);
+            return producedType(getLanguageModuleModelTypeDeclaration("IntersectionType"), 
+            		literalType);
         }
         else {
             return producedType(getLanguageModuleModelTypeDeclaration("Type"), literalType);
