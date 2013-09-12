@@ -109,7 +109,7 @@ public class TypeUtils {
             gen.out(GenerateJsVisitor.getClAlias(), "Anything");
         } else {
             if (t.isAlias()) {
-                t = t.getExtendedTypeDeclaration();
+                t = t.getExtendedType().getDeclaration();
             }
             boolean qual = false;
             if (t.getScope() instanceof ClassOrInterface) {
@@ -133,11 +133,15 @@ public class TypeUtils {
                 qual = true;
             }
 
-            String tname = gen.getNames().name(t);
-            if (!qual && isReservedTypename(tname)) {
-                gen.out(tname, "$");
+            if (t instanceof UnionType || t instanceof IntersectionType) {
+                outputTypeList(null, t, gen);
             } else {
-                gen.out(tname);
+                String tname = gen.getNames().name(t);
+                if (!qual && isReservedTypename(tname)) {
+                    gen.out(tname, "$");
+                } else {
+                    gen.out(tname);
+                }
             }
         }
     }
