@@ -3,9 +3,10 @@ shared interface TypeParameter satisfies Declaration {
     shared formal TopLevelOrMemberDeclaration container;
     
     shared formal Boolean defaulted;
-    // FIXME: rename to 'default'?
+    // FIXME: rename to 'defaultTypeArgument'?
     shared formal OpenType? defaultValue;
-    // FIXME: replace this with an enumish?
+    
+    // FIXME: replace this with an enumish? -> yes
     shared formal Boolean invariant;
     shared formal Boolean covariant;
     shared formal Boolean contravariant;
