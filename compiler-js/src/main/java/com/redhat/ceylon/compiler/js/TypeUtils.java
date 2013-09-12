@@ -321,13 +321,16 @@ public class TypeUtils {
         gen.out(")");
     }
 
-    static void encodeParameterListForRuntime(ParameterList plist, GenerateJsVisitor gen) {
+    static void encodeParameterListForRuntime(Node n, ParameterList plist, GenerateJsVisitor gen) {
         boolean first = true;
         gen.out("[");
         for (Parameter p : plist.getParameters()) {
             if (first) first=false; else gen.out(",");
             gen.out("{", MetamodelGenerator.KEY_NAME, ":'", p.getName(), "',");
             gen.out(MetamodelGenerator.KEY_METATYPE, ":'", MetamodelGenerator.METATYPE_PARAMETER, "',");
+            if (p.getModel() instanceof Method) {
+                gen.out("$pt:'f',");
+            }
             if (p.isSequenced()) {
                 gen.out("seq:1,");
             }
@@ -336,6 +339,7 @@ public class TypeUtils {
             }
             gen.out(MetamodelGenerator.KEY_TYPE, ":");
             metamodelTypeNameOrList(gen.getCurrentPackage(), p.getType(), gen);
+            new ModelAnnotationGenerator(gen, p.getModel(), n).generateAnnotations();
             gen.out("}");
         }
         gen.out("]");
@@ -393,47 +397,18 @@ public class TypeUtils {
         gen.out("]");
     }
 
-    static void encodeForRuntime(final Declaration d, final GenerateJsVisitor gen) {
+    static void encodeForRuntime(Node that, final Declaration d, final GenerateJsVisitor gen) {
         if (d.getAnnotations() == null || d.getAnnotations().isEmpty()) {
-            encodeForRuntime(d, gen, null);
+            encodeForRuntime(that, d, gen, null);
         } else {
-            encodeForRuntime(d, gen, new RuntimeMetamodelAnnotationGenerator() {
-                @Override public void generateAnnotations() {
-                    gen.out(",", MetamodelGenerator.KEY_ANNOTATIONS, ":function(){return[");
-                    boolean first = true;
-                    for (Annotation a : d.getAnnotations()) {
-                        if (first) first=false; else gen.out(",");
-                        Declaration ad = d.getUnit().getPackage().getMemberOrParameter(d.getUnit(), a.getName(), null, false);
-                        if (ad instanceof Method) {
-                            gen.qualify(null, ad);
-                            gen.out(gen.getNames().name(ad), "(");
-                            if (a.getPositionalArguments() == null) {
-                                for (Parameter p : ((Method)ad).getParameterLists().get(0).getParameters()) {
-                                    String v = a.getNamedArguments().get(p.getName());
-                                    gen.out(v == null ? "undefined" : v);
-                                }
-                            } else {
-                                boolean farg = true;
-                                for (String s : a.getPositionalArguments()) {
-                                    if (farg)farg=false; else gen.out(",");
-                                    gen.out("\"", gen.escapeStringLiteral(s), "\"");
-                                }
-                            }
-                            gen.out(")");
-                        } else {
-                            gen.out("null/*MISSING DECLARATION FOR ANNOTATION ", a.getName(), "*/");
-                        }
-                    }
-                    gen.out("];}");
-                }
-            });
+            encodeForRuntime(that, d, gen, new ModelAnnotationGenerator(gen, d, that));
         }
     }
 
     /** Output a metamodel map for runtime use. */
     static void encodeForRuntime(final Declaration d, final Tree.AnnotationList annotations, final GenerateJsVisitor gen) {
         final boolean include = annotations != null && !(annotations.getAnnotations().isEmpty() && annotations.getAnonymousAnnotation()==null);
-        encodeForRuntime(d, gen, include ? new RuntimeMetamodelAnnotationGenerator() {
+        encodeForRuntime(annotations, d, gen, include ? new RuntimeMetamodelAnnotationGenerator() {
             @Override public void generateAnnotations() {
                 gen.out(",", MetamodelGenerator.KEY_ANNOTATIONS, ":");
                 outputAnnotationsFunction(annotations, gen);
@@ -441,7 +416,7 @@ public class TypeUtils {
         } : null);
     }
 
-    static void encodeForRuntime(final Declaration d, final GenerateJsVisitor gen, final RuntimeMetamodelAnnotationGenerator annGen) {
+    static void encodeForRuntime(final Node that, final Declaration d, final GenerateJsVisitor gen, final RuntimeMetamodelAnnotationGenerator annGen) {
         gen.out("function(){return{mod:$$METAMODEL$$");
         List<TypeParameter> tparms = null;
         List<ProducedType> satisfies = null;
@@ -467,7 +442,7 @@ public class TypeUtils {
             if (d instanceof Method) {
                 gen.out(",", MetamodelGenerator.KEY_PARAMS, ":");
                 //Parameter types of the first parameter list
-                encodeParameterListForRuntime(((Method)d).getParameterLists().get(0), gen);
+                encodeParameterListForRuntime(that, ((Method)d).getParameterLists().get(0), gen);
                 tparms = ((Method) d).getTypeParameters();
             }
 
@@ -700,6 +675,45 @@ public class TypeUtils {
     /** Abstraction for a callback that generates the runtime annotations list as part of the metamodel. */
     static interface RuntimeMetamodelAnnotationGenerator {
         public void generateAnnotations();
+    }
+
+    private static class ModelAnnotationGenerator implements RuntimeMetamodelAnnotationGenerator {
+        private final GenerateJsVisitor gen;
+        private final Declaration d;
+        private final Node node;
+        ModelAnnotationGenerator(GenerateJsVisitor generator, Declaration decl, Node n) {
+            gen = generator;
+            d = decl;
+            node = n;
+        }
+        @Override public void generateAnnotations() {
+            gen.out(",", MetamodelGenerator.KEY_ANNOTATIONS, ":function(){return[");
+            boolean first = true;
+            for (Annotation a : d.getAnnotations()) {
+                if (first) first=false; else gen.out(",");
+                Declaration ad = d.getUnit().getPackage().getMemberOrParameter(d.getUnit(), a.getName(), null, false);
+                if (ad instanceof Method) {
+                    gen.qualify(node, ad);
+                    gen.out(gen.getNames().name(ad), "(");
+                    if (a.getPositionalArguments() == null) {
+                        for (Parameter p : ((Method)ad).getParameterLists().get(0).getParameters()) {
+                            String v = a.getNamedArguments().get(p.getName());
+                            gen.out(v == null ? "undefined" : v);
+                        }
+                    } else {
+                        boolean farg = true;
+                        for (String s : a.getPositionalArguments()) {
+                            if (farg)farg=false; else gen.out(",");
+                            gen.out("\"", gen.escapeStringLiteral(s), "\"");
+                        }
+                    }
+                    gen.out(")");
+                } else {
+                    gen.out("null/*MISSING DECLARATION FOR ANNOTATION ", a.getName(), "*/");
+                }
+            }
+            gen.out("];}");
+        }
     }
 
 }
