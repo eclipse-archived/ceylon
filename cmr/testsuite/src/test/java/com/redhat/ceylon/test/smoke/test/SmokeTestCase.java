@@ -317,13 +317,13 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getRepositoryManager();
 
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps()),
-                new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps()),
-                new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps()),
-                new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1"), deps()),
-                new ModuleDetails("older-jar", null, null, set(), set("12-b3"), deps()),
-                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps()),
-                new ModuleDetails("test-jar", null, null, set(), set("0.1"), deps()),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), set(), null, null, false, null),
+                new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(), set(), null, null, false, null),
+                new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(), set(), null, null, false, null),
+                new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1"), deps(), set(), null, null, false, null),
+                new ModuleDetails("older-jar", null, null, set(), set("12-b3"), deps(), set(), null, null, false, null),
+                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps(), set(), null, null, false, null),
+                new ModuleDetails("test-jar", null, null, set(), set("0.1"), deps(), set(), null, null, false, null),
         };
         testComplete("", expected, manager);
     }
@@ -342,7 +342,7 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getRepositoryManager();
 
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps()),
+                new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(), set(), null, null, false, null),
         };
         testComplete("he", expected, manager);
     }
@@ -352,7 +352,7 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getRepositoryManager();
 
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps()),
+                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps(), set(), null, null, false, null),
         };
         testComplete("org", expected, manager);
     }
@@ -371,7 +371,7 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getRepositoryManager();
 
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps()),
+                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps(), set(), null, null, false, null),
         };
         testComplete("org.", expected, manager);
     }
@@ -410,13 +410,13 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testSearchModules() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps()),
-                new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps()),
-                new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps()),
-                new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1"), deps()),
-                new ModuleDetails("older-jar", null, null, set(), set("12-b3"), deps()),
-                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps()),
-                new ModuleDetails("test-jar", null, null, set(), set("0.1"), deps()),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), set(), null, null, false, null),
+                new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(), set(), null, null, false, null),
+                new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(), set(), null, null, false, null),
+                new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1"), deps(), set(), null, null, false, null),
+                new ModuleDetails("older-jar", null, null, set(), set("12-b3"), deps(), set(), null, null, false, null),
+                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps(), set(), null, null, false, null),
+                new ModuleDetails("test-jar", null, null, set(), set("0.1"), deps(), set(), null, null, false, null),
         };
 
         testSearchResults("", Type.JVM, expected);
@@ -428,8 +428,8 @@ public class SmokeTestCase extends AbstractTest {
 
         // first page
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps()),
-                new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps()),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), set(), null, null, false, null),
+                new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(), set(), null, null, false, null),
         };
         ModuleSearchResult results = testSearchResults("", Type.JVM, expected, 0l, 2l, repoManager);
         Assert.assertEquals(2, results.getCount());
@@ -438,9 +438,9 @@ public class SmokeTestCase extends AbstractTest {
 
         // second page
         expected = new ModuleDetails[]{
-                new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps()),
-                new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1"), deps()),
-                new ModuleDetails("older-jar", null, null, set(), set("12-b3"), deps()),
+                new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(), set(), null, null, false, null),
+                new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1"), deps(), set(), null, null, false, null),
+                new ModuleDetails("older-jar", null, null, set(), set("12-b3"), deps(), set(), null, null, false, null),
         };
 
         results = testSearchResults("", Type.JVM, expected, results.getStart() + results.getCount(), 3l, repoManager, results.getNextPagingInfo());
@@ -450,8 +450,8 @@ public class SmokeTestCase extends AbstractTest {
 
         // third page
         expected = new ModuleDetails[]{
-                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps()),
-                new ModuleDetails("test-jar", null, null, set(), set("0.1"), deps()),
+                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps(), set(), null, null, false, null),
+                new ModuleDetails("test-jar", null, null, set(), set("0.1"), deps(), set(), null, null, false, null),
         };
         results = testSearchResults("", Type.JVM, expected, results.getStart() + results.getCount(), 2l, repoManager, results.getNextPagingInfo());
         Assert.assertEquals(2, results.getCount());
@@ -462,9 +462,9 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testSearchModulesFilteredByName() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps()),
-                new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps()),
-                new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps()),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), set(), null, null, false, null),
+                new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(), set(), null, null, false, null),
+                new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(), set(), null, null, false, null),
         };
 
         testSearchResults("hello", Type.JVM, expected);
@@ -473,7 +473,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testSearchModulesFilteredByDocLicenseAndAuthor() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps()),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), set(), null, null, false, null),
         };
 
         testSearchResults("classic", Type.JVM, expected);
@@ -484,7 +484,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testSearchModulesFilteredByDocLicenseAndAuthorSrc() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps()),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), set(), null, null, false, null),
         };
 
         testSearchResults("classic", Type.SRC, expected);
@@ -496,9 +496,9 @@ public class SmokeTestCase extends AbstractTest {
     public void testSearchModulesIncompatibleBinaryVersion() throws Exception {
         // we only get jars since those have no binary version
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1"), deps()),
-                new ModuleDetails("older-jar", null, null, set(), set("12-b3"), deps()),
-                new ModuleDetails("test-jar", null, null, set(), set("0.1"), deps()),
+                new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1"), deps(), set(), null, null, false, null),
+                new ModuleDetails("older-jar", null, null, set(), set("12-b3"), deps(), set(), null, null, false, null),
+                new ModuleDetails("test-jar", null, null, set(), set("0.1"), deps(), set(), null, null, false, null),
         };
         testSearchResults("", Type.JVM, expected, null, null, getRepositoryManager(), null, 1234, 0);
     }
@@ -562,54 +562,54 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getJDKRepositoryManager();
 
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("java.auth", "JDK module java.auth", null, set(), set("7"), deps()),
-                new ModuleDetails("java.auth.kerberos", "JDK module java.auth.kerberos", null, set(), set("7"), deps()),
-                new ModuleDetails("java.base", "JDK module java.base", null, set(), set("7"), deps()),
-                new ModuleDetails("java.compiler", "JDK module java.compiler", null, set(), set("7"), deps()),
-                new ModuleDetails("java.corba", "JDK module java.corba", null, set(), set("7"), deps()),
-                new ModuleDetails("java.desktop", "JDK module java.desktop", null, set(), set("7"), deps()),
-                new ModuleDetails("java.instrument", "JDK module java.instrument", null, set(), set("7"), deps()),
-                new ModuleDetails("java.jdbc", "JDK module java.jdbc", null, set(), set("7"), deps()),
-                new ModuleDetails("java.jdbc.rowset", "JDK module java.jdbc.rowset", null, set(), set("7"), deps()),
-                new ModuleDetails("java.logging", "JDK module java.logging", null, set(), set("7"), deps()),
-                new ModuleDetails("java.management", "JDK module java.management", null, set(), set("7"), deps()),
-                new ModuleDetails("java.prefs", "JDK module java.prefs", null, set(), set("7"), deps()),
-                new ModuleDetails("java.rmi", "JDK module java.rmi", null, set(), set("7"), deps()),
-                new ModuleDetails("java.security.acl", "JDK module java.security.acl", null, set(), set("7"), deps()),
-                new ModuleDetails("java.tls", "JDK module java.tls", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.annotation", "JDK module javax.annotation", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.jaxws", "JDK module javax.jaxws", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.naming", "JDK module javax.naming", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.script", "JDK module javax.script", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.transaction", "JDK module javax.transaction", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.xml", "JDK module javax.xml", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.xmldsig", "JDK module javax.xmldsig", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.auth", "JDK module oracle.jdk.auth", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.base", "JDK module oracle.jdk.base", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.compat", "JDK module oracle.jdk.compat", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.corba", "JDK module oracle.jdk.corba", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.cosnaming", "JDK module oracle.jdk.cosnaming", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.deploy", "JDK module oracle.jdk.deploy", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.desktop", "JDK module oracle.jdk.desktop", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.httpserver", "JDK module oracle.jdk.httpserver", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.instrument", "JDK module oracle.jdk.instrument", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.jaxp", "JDK module oracle.jdk.jaxp", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.jaxws", "JDK module oracle.jdk.jaxws", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.jdbc.rowset", "JDK module oracle.jdk.jdbc.rowset", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.jndi", "JDK module oracle.jdk.jndi", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.logging", "JDK module oracle.jdk.logging", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.management", "JDK module oracle.jdk.management", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.management.iiop", "JDK module oracle.jdk.management.iiop", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.rmi", "JDK module oracle.jdk.rmi", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.scripting", "JDK module oracle.jdk.scripting", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.sctp", "JDK module oracle.jdk.sctp", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.security.acl", "JDK module oracle.jdk.security.acl", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.smartcardio", "JDK module oracle.jdk.smartcardio", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.tools.base", "JDK module oracle.jdk.tools.base", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.tools.jaxws", "JDK module oracle.jdk.tools.jaxws", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.tools.jre", "JDK module oracle.jdk.tools.jre", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.xmldsig", "JDK module oracle.jdk.xmldsig", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.sun.charsets", "JDK module oracle.sun.charsets", null, set(), set("7"), deps()),
+                new ModuleDetails("java.auth", "JDK module java.auth", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.auth.kerberos", "JDK module java.auth.kerberos", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.base", "JDK module java.base", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.compiler", "JDK module java.compiler", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.corba", "JDK module java.corba", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.desktop", "JDK module java.desktop", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.instrument", "JDK module java.instrument", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.jdbc", "JDK module java.jdbc", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.jdbc.rowset", "JDK module java.jdbc.rowset", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.logging", "JDK module java.logging", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.management", "JDK module java.management", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.prefs", "JDK module java.prefs", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.rmi", "JDK module java.rmi", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.security.acl", "JDK module java.security.acl", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.tls", "JDK module java.tls", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.annotation", "JDK module javax.annotation", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.jaxws", "JDK module javax.jaxws", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.naming", "JDK module javax.naming", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.script", "JDK module javax.script", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.transaction", "JDK module javax.transaction", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.xml", "JDK module javax.xml", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.xmldsig", "JDK module javax.xmldsig", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.auth", "JDK module oracle.jdk.auth", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.base", "JDK module oracle.jdk.base", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.compat", "JDK module oracle.jdk.compat", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.corba", "JDK module oracle.jdk.corba", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.cosnaming", "JDK module oracle.jdk.cosnaming", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.deploy", "JDK module oracle.jdk.deploy", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.desktop", "JDK module oracle.jdk.desktop", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.httpserver", "JDK module oracle.jdk.httpserver", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.instrument", "JDK module oracle.jdk.instrument", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.jaxp", "JDK module oracle.jdk.jaxp", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.jaxws", "JDK module oracle.jdk.jaxws", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.jdbc.rowset", "JDK module oracle.jdk.jdbc.rowset", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.jndi", "JDK module oracle.jdk.jndi", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.logging", "JDK module oracle.jdk.logging", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.management", "JDK module oracle.jdk.management", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.management.iiop", "JDK module oracle.jdk.management.iiop", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.rmi", "JDK module oracle.jdk.rmi", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.scripting", "JDK module oracle.jdk.scripting", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.sctp", "JDK module oracle.jdk.sctp", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.security.acl", "JDK module oracle.jdk.security.acl", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.smartcardio", "JDK module oracle.jdk.smartcardio", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.tools.base", "JDK module oracle.jdk.tools.base", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.tools.jaxws", "JDK module oracle.jdk.tools.jaxws", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.tools.jre", "JDK module oracle.jdk.tools.jre", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.xmldsig", "JDK module oracle.jdk.xmldsig", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.sun.charsets", "JDK module oracle.sun.charsets", null, set(), set("7"), deps(), set(), null, null, false, null),
         };
         testComplete("", expected, manager);
     }
@@ -628,39 +628,39 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getJDKRepositoryManager();
 
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("java.auth", "JDK module java.auth", null, set(), set("7"), deps()),
-                new ModuleDetails("java.auth.kerberos", "JDK module java.auth.kerberos", null, set(), set("7"), deps()),
-                new ModuleDetails("java.base", "JDK module java.base", null, set(), set("7"), deps()),
-                new ModuleDetails("java.compiler", "JDK module java.compiler", null, set(), set("7"), deps()),
-                new ModuleDetails("java.corba", "JDK module java.corba", null, set(), set("7"), deps()),
-                new ModuleDetails("java.desktop", "JDK module java.desktop", null, set(), set("7"), deps()),
-                new ModuleDetails("java.instrument", "JDK module java.instrument", null, set(), set("7"), deps()),
-                new ModuleDetails("java.jdbc", "JDK module java.jdbc", null, set(), set("7"), deps()),
-                new ModuleDetails("java.jdbc.rowset", "JDK module java.jdbc.rowset", null, set(), set("7"), deps()),
-                new ModuleDetails("java.logging", "JDK module java.logging", null, set(), set("7"), deps()),
-                new ModuleDetails("java.management", "JDK module java.management", null, set(), set("7"), deps()),
-                new ModuleDetails("java.prefs", "JDK module java.prefs", null, set(), set("7"), deps()),
-                new ModuleDetails("java.rmi", "JDK module java.rmi", null, set(), set("7"), deps()),
-                new ModuleDetails("java.security.acl", "JDK module java.security.acl", null, set(), set("7"), deps()),
-                new ModuleDetails("java.tls", "JDK module java.tls", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.annotation", "JDK module javax.annotation", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.jaxws", "JDK module javax.jaxws", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.naming", "JDK module javax.naming", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.script", "JDK module javax.script", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.transaction", "JDK module javax.transaction", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.xml", "JDK module javax.xml", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.xmldsig", "JDK module javax.xmldsig", null, set(), set("7"), deps()),
+                new ModuleDetails("java.auth", "JDK module java.auth", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.auth.kerberos", "JDK module java.auth.kerberos", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.base", "JDK module java.base", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.compiler", "JDK module java.compiler", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.corba", "JDK module java.corba", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.desktop", "JDK module java.desktop", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.instrument", "JDK module java.instrument", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.jdbc", "JDK module java.jdbc", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.jdbc.rowset", "JDK module java.jdbc.rowset", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.logging", "JDK module java.logging", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.management", "JDK module java.management", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.prefs", "JDK module java.prefs", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.rmi", "JDK module java.rmi", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.security.acl", "JDK module java.security.acl", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.tls", "JDK module java.tls", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.annotation", "JDK module javax.annotation", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.jaxws", "JDK module javax.jaxws", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.naming", "JDK module javax.naming", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.script", "JDK module javax.script", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.transaction", "JDK module javax.transaction", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.xml", "JDK module javax.xml", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.xmldsig", "JDK module javax.xmldsig", null, set(), set("7"), deps(), set(), null, null, false, null),
         };
         testComplete("java", expected, manager);
 
         expected = new ModuleDetails[]{
-                new ModuleDetails("javax.annotation", "JDK module javax.annotation", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.jaxws", "JDK module javax.jaxws", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.naming", "JDK module javax.naming", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.script", "JDK module javax.script", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.transaction", "JDK module javax.transaction", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.xml", "JDK module javax.xml", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.xmldsig", "JDK module javax.xmldsig", null, set(), set("7"), deps()),
+                new ModuleDetails("javax.annotation", "JDK module javax.annotation", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.jaxws", "JDK module javax.jaxws", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.naming", "JDK module javax.naming", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.script", "JDK module javax.script", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.transaction", "JDK module javax.transaction", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.xml", "JDK module javax.xml", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.xmldsig", "JDK module javax.xmldsig", null, set(), set("7"), deps(), set(), null, null, false, null),
         };
         testComplete("javax", expected, manager);
     }
@@ -683,9 +683,9 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testSearchJDKModulesFilteredByName() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("java.base", "JDK module java.base", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.base", "JDK module oracle.jdk.base", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.tools.base", "JDK module oracle.jdk.tools.base", null, set(), set("7"), deps()),
+                new ModuleDetails("java.base", "JDK module java.base", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.base", "JDK module oracle.jdk.base", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.tools.base", "JDK module oracle.jdk.tools.base", null, set(), set("7"), deps(), set(), null, null, false, null),
         };
 
         testSearchResults("base", Type.JVM, expected, getJDKRepositoryManager());
@@ -697,26 +697,26 @@ public class SmokeTestCase extends AbstractTest {
 
         // first page
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("java.auth", "JDK module java.auth", null, set(), set("7"), deps()),
-                new ModuleDetails("java.auth.kerberos", "JDK module java.auth.kerberos", null, set(), set("7"), deps()),
-                new ModuleDetails("java.base", "JDK module java.base", null, set(), set("7"), deps()),
-                new ModuleDetails("java.compiler", "JDK module java.compiler", null, set(), set("7"), deps()),
-                new ModuleDetails("java.corba", "JDK module java.corba", null, set(), set("7"), deps()),
-                new ModuleDetails("java.desktop", "JDK module java.desktop", null, set(), set("7"), deps()),
-                new ModuleDetails("java.instrument", "JDK module java.instrument", null, set(), set("7"), deps()),
-                new ModuleDetails("java.jdbc", "JDK module java.jdbc", null, set(), set("7"), deps()),
-                new ModuleDetails("java.jdbc.rowset", "JDK module java.jdbc.rowset", null, set(), set("7"), deps()),
-                new ModuleDetails("java.logging", "JDK module java.logging", null, set(), set("7"), deps()),
-                new ModuleDetails("java.management", "JDK module java.management", null, set(), set("7"), deps()),
-                new ModuleDetails("java.prefs", "JDK module java.prefs", null, set(), set("7"), deps()),
-                new ModuleDetails("java.rmi", "JDK module java.rmi", null, set(), set("7"), deps()),
-                new ModuleDetails("java.security.acl", "JDK module java.security.acl", null, set(), set("7"), deps()),
-                new ModuleDetails("java.tls", "JDK module java.tls", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.annotation", "JDK module javax.annotation", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.jaxws", "JDK module javax.jaxws", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.naming", "JDK module javax.naming", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.script", "JDK module javax.script", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.transaction", "JDK module javax.transaction", null, set(), set("7"), deps()),
+                new ModuleDetails("java.auth", "JDK module java.auth", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.auth.kerberos", "JDK module java.auth.kerberos", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.base", "JDK module java.base", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.compiler", "JDK module java.compiler", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.corba", "JDK module java.corba", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.desktop", "JDK module java.desktop", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.instrument", "JDK module java.instrument", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.jdbc", "JDK module java.jdbc", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.jdbc.rowset", "JDK module java.jdbc.rowset", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.logging", "JDK module java.logging", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.management", "JDK module java.management", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.prefs", "JDK module java.prefs", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.rmi", "JDK module java.rmi", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.security.acl", "JDK module java.security.acl", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("java.tls", "JDK module java.tls", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.annotation", "JDK module javax.annotation", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.jaxws", "JDK module javax.jaxws", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.naming", "JDK module javax.naming", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.script", "JDK module javax.script", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.transaction", "JDK module javax.transaction", null, set(), set("7"), deps(), set(), null, null, false, null),
         };
         ModuleSearchResult results = testSearchResults("", Type.JVM, expected, 0l, 20l, repoManager);
         Assert.assertEquals(20, results.getCount());
@@ -725,26 +725,26 @@ public class SmokeTestCase extends AbstractTest {
 
         // second page
         expected = new ModuleDetails[]{
-                new ModuleDetails("javax.xml", "JDK module javax.xml", null, set(), set("7"), deps()),
-                new ModuleDetails("javax.xmldsig", "JDK module javax.xmldsig", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.auth", "JDK module oracle.jdk.auth", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.base", "JDK module oracle.jdk.base", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.compat", "JDK module oracle.jdk.compat", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.corba", "JDK module oracle.jdk.corba", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.cosnaming", "JDK module oracle.jdk.cosnaming", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.deploy", "JDK module oracle.jdk.deploy", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.desktop", "JDK module oracle.jdk.desktop", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.httpserver", "JDK module oracle.jdk.httpserver", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.instrument", "JDK module oracle.jdk.instrument", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.jaxp", "JDK module oracle.jdk.jaxp", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.jaxws", "JDK module oracle.jdk.jaxws", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.jdbc.rowset", "JDK module oracle.jdk.jdbc.rowset", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.jndi", "JDK module oracle.jdk.jndi", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.logging", "JDK module oracle.jdk.logging", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.management", "JDK module oracle.jdk.management", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.management.iiop", "JDK module oracle.jdk.management.iiop", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.rmi", "JDK module oracle.jdk.rmi", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.scripting", "JDK module oracle.jdk.scripting", null, set(), set("7"), deps()),
+                new ModuleDetails("javax.xml", "JDK module javax.xml", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("javax.xmldsig", "JDK module javax.xmldsig", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.auth", "JDK module oracle.jdk.auth", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.base", "JDK module oracle.jdk.base", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.compat", "JDK module oracle.jdk.compat", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.corba", "JDK module oracle.jdk.corba", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.cosnaming", "JDK module oracle.jdk.cosnaming", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.deploy", "JDK module oracle.jdk.deploy", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.desktop", "JDK module oracle.jdk.desktop", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.httpserver", "JDK module oracle.jdk.httpserver", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.instrument", "JDK module oracle.jdk.instrument", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.jaxp", "JDK module oracle.jdk.jaxp", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.jaxws", "JDK module oracle.jdk.jaxws", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.jdbc.rowset", "JDK module oracle.jdk.jdbc.rowset", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.jndi", "JDK module oracle.jdk.jndi", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.logging", "JDK module oracle.jdk.logging", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.management", "JDK module oracle.jdk.management", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.management.iiop", "JDK module oracle.jdk.management.iiop", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.rmi", "JDK module oracle.jdk.rmi", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.scripting", "JDK module oracle.jdk.scripting", null, set(), set("7"), deps(), set(), null, null, false, null),
         };
 
         results = testSearchResults("", Type.JVM, expected, results.getStart() + results.getCount(), 20l, repoManager, results.getNextPagingInfo());
@@ -754,14 +754,14 @@ public class SmokeTestCase extends AbstractTest {
 
         // third page
         expected = new ModuleDetails[]{
-                new ModuleDetails("oracle.jdk.sctp", "JDK module oracle.jdk.sctp", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.security.acl", "JDK module oracle.jdk.security.acl", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.smartcardio", "JDK module oracle.jdk.smartcardio", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.tools.base", "JDK module oracle.jdk.tools.base", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.tools.jaxws", "JDK module oracle.jdk.tools.jaxws", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.tools.jre", "JDK module oracle.jdk.tools.jre", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.jdk.xmldsig", "JDK module oracle.jdk.xmldsig", null, set(), set("7"), deps()),
-                new ModuleDetails("oracle.sun.charsets", "JDK module oracle.sun.charsets", null, set(), set("7"), deps()),
+                new ModuleDetails("oracle.jdk.sctp", "JDK module oracle.jdk.sctp", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.security.acl", "JDK module oracle.jdk.security.acl", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.smartcardio", "JDK module oracle.jdk.smartcardio", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.tools.base", "JDK module oracle.jdk.tools.base", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.tools.jaxws", "JDK module oracle.jdk.tools.jaxws", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.tools.jre", "JDK module oracle.jdk.tools.jre", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.jdk.xmldsig", "JDK module oracle.jdk.xmldsig", null, set(), set("7"), deps(), set(), null, null, false, null),
+                new ModuleDetails("oracle.sun.charsets", "JDK module oracle.sun.charsets", null, set(), set("7"), deps(), set(), null, null, false, null),
         };
         results = testSearchResults("", Type.JVM, expected, results.getStart() + results.getCount(), 20l, repoManager, results.getNextPagingInfo());
         Assert.assertEquals(8, results.getCount());
