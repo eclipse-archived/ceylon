@@ -34,6 +34,7 @@ import org.jboss.jandex.IndexReader;
 import org.jboss.jandex.Indexer;
 import org.jboss.jandex.JarIndexer;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.DependencyResolver;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
@@ -48,7 +49,13 @@ public final class BytecodeUtils implements DependencyResolver {
     static BytecodeUtils INSTANCE = new BytecodeUtils();
 
     public static interface ModuleInfoCallback {
-        public void storeInfo(String doc, String license, String[] authors, ModuleInfo[] dependencies);
+        public void storeInfo(String doc,
+                String license,
+                String[] authors,
+                ModuleInfo[] dependencies,
+                String[] types,
+                Integer majorVersion,
+                Integer minorVersion);
     }
 
     private BytecodeUtils() {
@@ -74,15 +81,9 @@ public final class BytecodeUtils implements DependencyResolver {
      * @return module info list
      */
     public static Set<ModuleInfo> readModuleInformation(final String moduleName, final File jarFile) {
-        final ClassInfo moduleClass = getModuleInfo(moduleName, jarFile);
-        if (moduleClass == null)
+        final AnnotationInstance ai = getAnnotation(moduleName, jarFile, MODULE_ANNOTATION);
+        if (ai == null)
             return null;
-
-        List<AnnotationInstance> annotations = moduleClass.annotations().get(MODULE_ANNOTATION);
-        if (annotations == null || annotations.isEmpty())
-            return Collections.emptySet();
-
-        final AnnotationInstance ai = annotations.get(0);
         final AnnotationValue dependencies = ai.value("dependencies");
         if (dependencies == null)
             return Collections.emptySet();
@@ -134,17 +135,11 @@ public final class BytecodeUtils implements DependencyResolver {
     }
 
     public static int[] getBinaryVersions(String moduleName, File moduleArchive) {
-        final ClassInfo moduleClass = getModuleInfo(moduleName, moduleArchive);
-        if (moduleClass == null)
+        final AnnotationInstance ceylonAnnotation = getAnnotation(moduleName, moduleArchive, CEYLON_ANNOTATION);
+        if (ceylonAnnotation == null)
             return null;
-
-        List<AnnotationInstance> annotations = moduleClass.annotations().get(CEYLON_ANNOTATION);
-        if (annotations == null || annotations.isEmpty())
-            return null;
-
-        final AnnotationInstance moduleAnnotation = annotations.get(0);
-        AnnotationValue majorAnnotation = moduleAnnotation.value("major");
-        AnnotationValue minorAnnotation = moduleAnnotation.value("minor");
+        AnnotationValue majorAnnotation = ceylonAnnotation.value("major");
+        AnnotationValue minorAnnotation = ceylonAnnotation.value("minor");
 
         int major = majorAnnotation != null ? majorAnnotation.asInt() : 0;
         int minor = minorAnnotation != null ? minorAnnotation.asInt() : 0;
@@ -153,24 +148,30 @@ public final class BytecodeUtils implements DependencyResolver {
 
 
     public static void readModuleInfo(String moduleName, File moduleArchive, ModuleInfoCallback callback) {
-        final ClassInfo moduleClass = getModuleInfo(moduleName, moduleArchive);
-        if (moduleClass == null)
+        final AnnotationInstance moduleAnnotation = getAnnotation(moduleName, moduleArchive, MODULE_ANNOTATION);
+        if (moduleAnnotation == null)
             return;
-
-        List<AnnotationInstance> annotations = moduleClass.annotations().get(MODULE_ANNOTATION);
-        if (annotations == null || annotations.isEmpty())
-            return;
-
-        final AnnotationInstance moduleAnnotation = annotations.get(0);
+        
         AnnotationValue doc = moduleAnnotation.value("doc");
         AnnotationValue license = moduleAnnotation.value("license");
         AnnotationValue by = moduleAnnotation.value("by");
         AnnotationValue dependencies = moduleAnnotation.value("dependencies");
+        String type = ArtifactContext.getSuffixFromFilename(moduleArchive.getName());
+        
+        final AnnotationInstance ceylonAnnotation = getAnnotation(moduleName, moduleArchive, CEYLON_ANNOTATION);
+        if (ceylonAnnotation == null)
+            return;
 
+        AnnotationValue majorVer = ceylonAnnotation.value("major");
+        AnnotationValue minorVer = ceylonAnnotation.value("minor");
+        
         callback.storeInfo(doc != null ? doc.asString() : null,
                 license != null ? license.asString() : null,
                 by != null ? by.asStringArray() : null,
-                dependencies != null ? asModInfoArray(dependencies) : null);
+                dependencies != null ? asModInfoArray(dependencies) : null,
+                new String[] { type },
+                majorVer != null ? majorVer.asInt() : null,
+                minorVer != null ? minorVer.asInt() : null);
     }
 
     private static ModuleInfo[] asModInfoArray(AnnotationValue dependencies) {
@@ -191,15 +192,9 @@ public final class BytecodeUtils implements DependencyResolver {
     }
     
     public static boolean matchesModuleInfo(String moduleName, File moduleArchive, String query) {
-        final ClassInfo moduleClass = getModuleInfo(moduleName, moduleArchive);
-        if (moduleClass == null)
+        final AnnotationInstance moduleAnnotation = getAnnotation(moduleName, moduleArchive, MODULE_ANNOTATION);
+        if (moduleAnnotation == null)
             return false;
-
-        List<AnnotationInstance> annotations = moduleClass.annotations().get(MODULE_ANNOTATION);
-        if (annotations == null || annotations.isEmpty())
-            return false;
-
-        final AnnotationInstance moduleAnnotation = annotations.get(0);
         AnnotationValue doc = moduleAnnotation.value("doc");
         if (doc != null && matches(doc.asString(), query))
             return true;
@@ -239,4 +234,15 @@ public final class BytecodeUtils implements DependencyResolver {
         return (av != null) && av.asBoolean();
     }
 
+    private static AnnotationInstance getAnnotation(String moduleName, File moduleArchive, DotName annotationName) {
+        final ClassInfo moduleClass = getModuleInfo(moduleName, moduleArchive);
+        if (moduleClass == null)
+            return null;
+        
+        List<AnnotationInstance> annotations = moduleClass.annotations().get(annotationName);
+        if (annotations == null || annotations.isEmpty())
+            return null;
+        
+        return annotations.get(0);
+    }
 }
