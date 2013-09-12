@@ -2825,11 +2825,16 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 <listitem>
                     <para>for a toplevel class of callable type 
                     <literal>Callable&lt;R,P&gt;</literal>, the type is 
-                    <literal>Class&lt;R,P&gt;</literal>, and</para>
+                    <literal>Class&lt;R,P&gt;</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>for a toplevel interface of type 
-                    <literal>R</literal>, the type is 
+                    <para>for a class nested in a block of callable type 
+                    <literal>Callable&lt;R,P&gt;</literal>, the type is 
+                    <literal>Class&lt;R,Nothing&gt;</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>for a toplevel interface or interface nested 
+                    in a block of type <literal>R</literal>, the type is 
                     <literal>Interface&lt;R&gt;</literal>.</para>
                 </listitem>
             </itemizedlist>
