@@ -3,7 +3,8 @@ function _findTypeFromModel(pkg,mdl) {
   var mod = pkg.container;
   //TODO this is very primitive needs a lot of rules replicated from the JsIdentifierNames
   var nm = mdl.$nm;
-  if (mdl['$mt'] === 'attr' || mdl['$mt'] === 'gttr') {
+  var mt = mdl['$mt'];
+  if (mt === 'attr' || mt === 'gttr' || mt === 'obj') {
     nm = '$prop$get' + nm[0].toUpperCase() + nm.substring(1);
   }
   var nm = nm + pkg.suffix;

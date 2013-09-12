@@ -42,7 +42,7 @@ function typeLiteral$model($$targs$$) {
         return AppliedInterface(t,mdl['$tp']);
       } else if (mdl['$mt'] === 'mthd') {
         return AppliedFunction(t);
-      } else if (mdl['$mt'] === 'attr' || mdl['$mt'] === 'gttr') {
+      } else if (mdl['$mt'] === 'attr' || mdl['$mt'] === 'gttr' || mdl['$mt'] === 'obj') {
         return AppliedValue(t,{Container:{t:mm.$cont},Type:mm.$t});
       } else {
         console.log("WTF is a metatype " + mdl['$mt'] + " on a closed type???????");
