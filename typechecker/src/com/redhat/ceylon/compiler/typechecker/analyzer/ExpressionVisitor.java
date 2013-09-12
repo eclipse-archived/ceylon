@@ -1254,7 +1254,6 @@ public class ExpressionVisitor extends Visitor {
                     Parameter ap = apl.getParameters().get(i);
                     Parameter cp = pl.getParameters().get(i);
                     ProducedType pt = at.getTypedParameter(cp).getType();
-                    ap.setAliasedParameter(cp);
                     //TODO: properly check type of functional parameters!!
                     checkAssignableWithWarning(ap.getType(), pt, that, "alias parameter " + 
                             ap.getName() + " must be assignable to corresponding class parameter " +

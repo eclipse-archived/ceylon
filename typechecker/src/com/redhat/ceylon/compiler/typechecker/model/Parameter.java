@@ -6,8 +6,6 @@ public class Parameter {
 	private boolean defaulted;
 	private boolean sequenced;
     private Declaration declaration;
-//    private boolean captured = false;
-    private Parameter aliasedParameter = this;
     private boolean atLeastOne = false;
     private boolean declaredAnything = false;
     private MethodOrValue model;
@@ -33,16 +31,7 @@ public class Parameter {
     public void setModel(MethodOrValue model) {
         this.model = model;
     }
-    
-//    @Override
-//    public boolean isCaptured() {
-//        return captured;
-//    }
-//    
-//    public void setCaptured(boolean local) {
-//        this.captured = local;
-//    }
-    
+        
     public boolean isDefaulted() {
         return defaulted;
     }
@@ -73,14 +62,6 @@ public class Parameter {
     
     public void setDeclaration(Declaration declaration) {
         this.declaration = declaration;
-    }
-    
-    public Parameter getAliasedParameter() {
-        return aliasedParameter;
-    }
-    
-    public void setAliasedParameter(Parameter parameter) {
-        this.aliasedParameter = parameter;
     }
     
     public boolean isDeclaredAnything() {
