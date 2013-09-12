@@ -3,11 +3,14 @@ package com.redhat.ceylon.tools.info;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.OptionArgument;
@@ -63,7 +66,7 @@ public class CeylonInfoTool extends RepoUsingTool {
     public void run() throws Exception {
         for (ModuleSpec module : modules) {
             // TODO Figure out how to use Type.ALL instead of Type.JVM
-            Collection<ModuleVersionDetails> versions = getModuleVersions(module.getName(), module.getVersion(), ModuleQuery.Type.JVM, null);
+            Collection<ModuleVersionDetails> versions = getModuleVersions(module.getName(), module.getVersion(), ModuleQuery.Type.ALL, null);
             if (versions.isEmpty()) {
                 errorMsg("module.not.found", module, getRepositoryManager().getRepositoriesDisplayString());
                 continue;
@@ -86,16 +89,65 @@ public class CeylonInfoTool extends RepoUsingTool {
 
     private void outputVersion(ModuleVersionDetails version) throws IOException {
         msg("module.version").append(version.getVersion()).newline();
-        msg("module.description").append(version.getDoc()).newline();
-        msg("module.license").append(version.getLicense()).newline();
-        // XXX info about artifacts (e.g. src, car, js, etc) and/or supports JVM/JS?
-        
-        msg("module.dependencies", (depth == INFINITE_DEPTH ? "∞" : String.valueOf(depth))).newline();
-        
-        int depth = 0;
-        recurseDependencies(version, depth);
+        outputArtifacts(version.getArtifactTypes());
+        msg("module.available").append((version.isRemote() ? "No" : "Yes")).newline();
+        if (version.getOrigin() != null) {
+            msg("module.origin").append(version.getOrigin()).newline();
+        }
+        if (version.getDoc() != null) {
+            msg("module.description").append(version.getDoc()).newline();
+        }
+        if (version.getLicense() != null) {
+            msg("module.license").append(version.getLicense()).newline();
+        }
+        if (!version.getDependencies().isEmpty()) {
+            msg("module.dependencies", (depth == INFINITE_DEPTH ? "∞" : String.valueOf(depth))).newline();
+            recurseDependencies(version, 0);
+        }
     }
 
+    private RepoUsingTool outputArtifacts(Set<ModuleVersionArtifact> types) throws IOException {
+        if(!types.isEmpty()) {
+            msg("module.artifacts");
+            boolean first = true;
+            for (ModuleVersionArtifact type : types) {
+                if (!first) {
+                    append(", ");
+                }
+                String suffix = type.getSuffix();
+                if (suffix.equalsIgnoreCase(".car")) {
+                    append("JVM (#");
+                    if (type.getMajorBinaryVersion() != null) {
+                        append(type.getMajorBinaryVersion());
+                    }
+                    if (type.getMinorBinaryVersion() != null) {
+                        append(".");
+                        append(type.getMinorBinaryVersion());
+                    }
+                    if (type.getMajorBinaryVersion() != Versions.JVM_BINARY_MAJOR_VERSION) {
+                        append(" *incompatible*");
+                    }
+                    append(")");
+                } else if (suffix.equalsIgnoreCase(".jar")) {
+                    append("JVM (legacy)");
+                } else if (suffix.equalsIgnoreCase(".js")) {
+                    append("JavaScript");
+                } else if (suffix.equalsIgnoreCase(".src")) {
+                    append("Sources");
+                } else if (suffix.startsWith(".")) {
+                    append(suffix.substring(1).toUpperCase());
+                } else {
+                    // We might need to add some special cases
+                    // for these in the above list
+                    append(type);
+                }
+                first = false;
+            }
+            newline();
+        }
+        return this;
+    }
+    
     private void recurseDependencies(ModuleVersionDetails version, final int depth) throws IOException {
         for (ModuleInfo dep : version.getDependencies()) {
             dependency(dep, depth+1);
