@@ -14,14 +14,34 @@ public class ModuleSearchResult {
         private NavigableSet<String> authors = new TreeSet<String>();
         private NavigableSet<String> versions = new TreeSet<String>(VersionComparator.INSTANCE);
         private NavigableSet<ModuleInfo> dependencies = new TreeSet<ModuleInfo>();
+        private NavigableSet<String> artifactTypes = new TreeSet<String>();
+        private Integer majorBinaryVersion;
+        private Integer minorBinaryVersion;
+        private boolean remote;
+        private String origin;
 
-        public ModuleDetails(String name, String doc, String license, SortedSet<String> authors, SortedSet<String> versions, SortedSet<ModuleInfo> dependencies) {
+        public ModuleDetails(String name,
+                String doc,
+                String license,
+                SortedSet<String> authors,
+                SortedSet<String> versions,
+                SortedSet<ModuleInfo> dependencies,
+                SortedSet<String> types,
+                Integer majorBinaryVersion,
+                Integer minorBinaryVersion,
+                boolean remote,
+                String origin) {
             this.name = name;
             this.doc = toNull(doc);
             this.license = toNull(license);
             this.authors.addAll(authors);
             this.versions.addAll(versions);
             this.dependencies.addAll(dependencies);
+            this.artifactTypes.addAll(types);
+            this.majorBinaryVersion = majorBinaryVersion;
+            this.minorBinaryVersion = minorBinaryVersion;
+            this.remote = remote;
+            this.origin = origin;
         }
 
         private String toNull(String str) {
@@ -46,6 +66,22 @@ public class ModuleSearchResult {
             return versions.last();
         }
 
+        public Integer getMajorBinaryVersion() {
+            return majorBinaryVersion;
+        }
+
+        public Integer getMinorBinaryVersion() {
+            return minorBinaryVersion;
+        }
+
+        public boolean isRemote() {
+            return remote;
+        }
+
+        public String getOrigin() {
+            return origin;
+        }
+
         public NavigableSet<String> getAuthors() {
             return authors;
         }
@@ -57,6 +93,10 @@ public class ModuleSearchResult {
         public NavigableSet<ModuleInfo> getDependencies() {
             return dependencies;
         }
+
+        public NavigableSet<String> getArtifactTypes() {
+            return artifactTypes;
+        }
         
         @Override
         public String toString() {
@@ -66,6 +106,12 @@ public class ModuleSearchResult {
                     +", doc: "+doc
                     +", authors: "+authors
                     +", versions: "+versions
+                    +", deps: "+dependencies
+                    +", bin version: "
+                        +((majorBinaryVersion != null) ? majorBinaryVersion : "")
+                        +((minorBinaryVersion != null) ? "." + minorBinaryVersion : "")
+                    +", remote: "+remote
+                    +", origin: "+origin
                     +"]";
         }
     }
@@ -75,7 +121,17 @@ public class ModuleSearchResult {
     private long start;
     private boolean hasMoreResults;
 
-    public void addResult(String moduleName, String doc, String license, SortedSet<String> authors, SortedSet<String> versions, SortedSet<ModuleInfo> dependencies) {
+    public void addResult(String moduleName,
+            String doc,
+            String license,
+            SortedSet<String> authors,
+            SortedSet<String> versions,
+            SortedSet<ModuleInfo> dependencies,
+            SortedSet<String> artifactTypes,
+            Integer majorBinaryVersion,
+            Integer minorBinaryVersion,
+            boolean remote,
+            String origin) {
         if(versions.isEmpty())
             throw new RuntimeException("Empty versions");
         if(results.containsKey(moduleName)){
@@ -87,13 +143,31 @@ public class ModuleSearchResult {
             if(VersionComparator.compareVersions(oldLastVersion, newLastVersion) == -1){
                 details.doc = doc;
                 details.license = license;
+                details.dependencies.clear();
+                details.dependencies.addAll(dependencies);
+                details.artifactTypes.clear();
+                details.artifactTypes.addAll(artifactTypes);
+                details.majorBinaryVersion = majorBinaryVersion;
+                details.minorBinaryVersion = minorBinaryVersion;
+                details.remote = remote;
+                details.origin = origin;
             }
             details.authors.addAll(authors);
             details.versions.addAll(versions);
-            details.dependencies.addAll(dependencies);
         }else{
             // new module
-            results.put(moduleName, new ModuleDetails(moduleName, doc, license, authors, versions, dependencies));
+            results.put(moduleName, new ModuleDetails(
+                    moduleName,
+                    doc,
+                    license,
+                    authors,
+                    versions,
+                    dependencies,
+                    artifactTypes,
+                    majorBinaryVersion,
+                    minorBinaryVersion,
+                    remote,
+                    origin));
         }
     }
 
