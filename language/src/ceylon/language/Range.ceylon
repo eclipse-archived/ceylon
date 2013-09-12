@@ -10,7 +10,7 @@
  A range may be produced using the `..` operator:
  
      for (i in min..max) { ... }
-     if (char in `A`..`Z`) { ... }
+     if (char in 'A'..'Z') { ... }
  "
 by ("Gavin")
 shared final class Range<Element>(first, last) 
