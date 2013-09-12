@@ -207,3 +207,48 @@ void sanity() {
         @error function wes12() { return str5; }
     }
 }
+
+void okrefinement() {
+    abstract class NodeAbs() {
+        shared formal dynamic native;
+        shared formal dynamic f(dynamic str);
+    }
+    
+    class Node(dynamic n) extends NodeAbs() {
+        shared actual dynamic native;
+        shared actual dynamic f(dynamic str) => "";
+        dynamic {
+            native = n;
+        }
+    }
+}
+
+void badrefinement() {
+    abstract class NodeAbs() {
+        shared formal dynamic native;
+        shared formal dynamic f(dynamic str);
+    }
+    
+    class Node(dynamic n) extends NodeAbs() {
+        @error shared actual String native;
+        shared actual dynamic f(@error String str) => "";
+        dynamic {
+            native = n;
+        }
+    }
+}
+
+void worserefinement() {
+    abstract class NodeAbs() {
+        shared formal String native;
+        shared formal dynamic f(String str);
+    }
+    
+    class Node(dynamic n) extends NodeAbs() {
+        @error shared actual dynamic native;
+        shared actual dynamic f(@error dynamic str) => "";
+        dynamic {
+            native = n;
+        }
+    }
+}

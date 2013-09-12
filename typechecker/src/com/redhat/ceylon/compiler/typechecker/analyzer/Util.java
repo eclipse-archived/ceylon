@@ -249,7 +249,8 @@ public class Util {
         else {
             ProducedType supertype = pt.getSupertype(td);
             if (supertype==null) {
-                node.addError(message + message(pt, " is not a subtype of " + td.getName(), node.getUnit()));
+                node.addError(message + message(pt, " is not a subtype of " + td.getName(), 
+                		node.getUnit()));
             }
             return supertype;
         }
@@ -261,7 +262,8 @@ public class Util {
         	addTypeUnknownError(node, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-        	node.addError(message + message(type, " is not assignable to ", supertype, node.getUnit()));
+        	node.addError(message + message(type, " is not assignable to ", 
+        			supertype, node.getUnit()));
         }
     }
 
@@ -271,18 +273,21 @@ public class Util {
         	addTypeUnknownError(node, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-        	node.addWarning(message + message(type, " is not assignable to ", supertype, node.getUnit()));
+        	node.addWarning(message + message(type, " is not assignable to ", 
+        			supertype, node.getUnit()));
         }
     }
 
-    static void checkAssignableToOneOf(ProducedType type, ProducedType supertype1, ProducedType supertype2, 
+    static void checkAssignableToOneOf(ProducedType type, 
+    		ProducedType supertype1, ProducedType supertype2, 
             Node node, String message) {
         if (isTypeUnknown(type) || isTypeUnknown(supertype1) || isTypeUnknown(supertype2)) {
             addTypeUnknownError(node, message);
         }
         else if (!type.isSubtypeOf(supertype1)
                 && !type.isSubtypeOf(supertype2)) {
-            node.addError(message + message(type, " is not assignable to ", supertype1, node.getUnit()));
+            node.addError(message + message(type, " is not assignable to ", 
+            		supertype1, node.getUnit()));
         }
     }
 
@@ -292,7 +297,8 @@ public class Util {
             addTypeUnknownError(node, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-            node.addError(message + message(type, " is not assignable to ", supertype, node.getUnit()), code);
+            node.addError(message + message(type, " is not assignable to ", 
+            		supertype, node.getUnit()), code);
         }
     }
 
