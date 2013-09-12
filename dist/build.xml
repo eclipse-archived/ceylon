@@ -92,6 +92,7 @@ Some more basic ant tasks:
     </target>
 
     <target name="ide" depends="siblings">
+        <delete dir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository" includes="**/*" includeEmptyDirs="true"/>
         <foreach list="${modules}"
                  target="ide-item"
                  param="project.item.name"
