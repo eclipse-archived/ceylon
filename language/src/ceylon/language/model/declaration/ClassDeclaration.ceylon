@@ -10,8 +10,8 @@ shared interface ClassDeclaration
 
     shared formal Boolean anonymous;
 
-    // FIXME: add final
-    
+    shared formal Boolean final;
+
     // FIXME: parameterise
     shared formal actual AppliedClass<Anything, Nothing> apply(Type<Anything>* types);
 

@@ -77,6 +77,11 @@ public class FreeClass
     }
 
     @Override
+    public boolean getFinal() {
+        return ((com.redhat.ceylon.compiler.typechecker.model.Class)declaration).isFinal();
+    }
+
+    @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::FunctionOrValueDeclaration>")
     public Sequential<? extends ceylon.language.model.declaration.FunctionOrValueDeclaration> getParameterDeclarations(){
         checkInit();

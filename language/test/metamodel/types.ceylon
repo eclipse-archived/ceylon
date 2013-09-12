@@ -265,6 +265,8 @@ shared abstract class Modifiers(){
     shared actual default String string = "yup";
 }
 
+shared final class Final(){}
+
 shared class MyException() extends Exception("Hello!"){}
 
 shared class Throws(Boolean t){
