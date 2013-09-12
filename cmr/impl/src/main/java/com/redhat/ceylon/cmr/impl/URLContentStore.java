@@ -36,6 +36,7 @@ import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
+import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
@@ -58,6 +59,8 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     public final static String HERD_COMPLETE_VERSIONS_REL = "http://modules.ceylon-lang.org/rel/complete-versions";
     public final static String HERD_SEARCH_MODULES_REL = "http://modules.ceylon-lang.org/rel/search-modules";
 
+    private static final String HERD_ORIGIN = "The Herd";
+    
     protected final String root;
     protected String username;
     protected String password;
@@ -291,6 +294,9 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             return "jvm";
         case SRC:
             return "source";
+        case ALL:
+            // TODO Implement retrieval of various types at at time
+            return "jvm";
         default:
             throw new RuntimeException("Missing enum case handling");
         }
@@ -321,6 +327,8 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
 
     protected void parseCompleteVersionsResponse(Parser p, ModuleVersionResult result) {
         List<String> authors = new LinkedList<String>();
+        List<ModuleInfo> dependencies = new LinkedList<ModuleInfo>();
+        List<ModuleVersionArtifact> types = new LinkedList<ModuleVersionArtifact>();
         p.moveToOpenTag("results");
         
         while(p.moveToOptionalOpenTag("module-version")){
@@ -339,6 +347,15 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     license = p.contents();
                 }else if(p.isOpenTag("authors")){
                     authors.add(p.contents());
+                }else if(p.isOpenTag("dependencies")){
+                    // TODO Implement retrieval of dependencies from Herd
+                    // dependencies.add(...);
+                }else if(p.isOpenTag("types")){
+                    // TODO Implement retrieval of types from Herd
+                    // types.add(...);
+                }else if(p.isOpenTag("binaryversion")){
+                    // TODO Implement retrieval of binary version numbers
+                    // (JS doesn't have this yet and the word "binary" is a misnomer really)
                 }else{
                     throw new RuntimeException("Unknown tag: "+p.tagName());
                 }
@@ -353,6 +370,16 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     newVersion.setLicense(license);
                 if(!authors.isEmpty())
                     newVersion.getAuthors().addAll(authors);
+                if(!dependencies.isEmpty())
+                    newVersion.getDependencies().addAll(dependencies);
+                if(!types.isEmpty())
+                    newVersion.getArtifactTypes().addAll(types);
+                newVersion.setRemote(true);
+                if (isHerd()) {
+                    newVersion.setOrigin(HERD_ORIGIN + " (" + getDisplayString() + ")");
+                } else {
+                    newVersion.setOrigin(getDisplayString());
+                }
             }
             p.checkCloseTag();
         }
@@ -387,6 +414,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         SortedSet<String> authors = new TreeSet<String>();
         SortedSet<String> versions = new TreeSet<String>();
         SortedSet<ModuleInfo> dependencies = new TreeSet<ModuleInfo>();
+        SortedSet<String> types = new TreeSet<String>();
 
         p.moveToOpenTag("results");
         String total = p.getAttribute("total");
@@ -401,6 +429,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         int resultCount = 0;
         while(p.moveToOptionalOpenTag("module")){
             String module = null, doc = null, license = null;
+            Integer majorBinVer = null, minorBinVer = null;
             authors.clear();
             versions.clear();
             resultCount++;
@@ -419,6 +448,12 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 }else if(p.isOpenTag("dependencies")){
                     // TODO Implement retrieval of dependencies from Herd
                     // dependencies.add(...);
+                }else if(p.isOpenTag("types")){
+                    // TODO Implement retrieval of types from Herd
+                    types.add(p.contents());
+                }else if(p.isOpenTag("binaryversion")){
+                    // TODO Implement retrieval of binary version numbers
+                    // (JS doesn't have this yet and the word "binary" is a misnomer really)
                 }else{
                     throw new RuntimeException("Unknown tag: "+p.tagName());
                 }
@@ -428,7 +463,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             if(versions.isEmpty()){
                 log.debug("Ignoring result for " + module + " because it doesn't have a single version");
             }else{
-                result.addResult(module, doc, license, authors, versions, dependencies);
+                result.addResult(module, doc, license, authors, versions, dependencies, types, majorBinVer, minorBinVer, true, HERD_ORIGIN);
             }
             p.checkCloseTag();
         }
