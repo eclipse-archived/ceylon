@@ -17,7 +17,7 @@ function String$(/*{Character*}*/value,size) {
     if (size !== undefined) that.codePoints=size;
     return that;
 }
-String$.$$metamodel$$={$ps:[],$an:function(){return[shared(),native(),final()];},mod:$$METAMODEL$$,d:['ceylon.language','String']};
+String$.$$metamodel$$={'super':{t:Object$}, $ps:[],$an:function(){return[shared(),native(),final()];},mod:$$METAMODEL$$,d:['ceylon.language','String']};
 
 initExistingType(String$, String, 'ceylon.language::String', Object$, Sequential, Comparable,
         Ranged, Summable, Cloneable);
@@ -604,7 +604,7 @@ function Character(value) {
     that.value = value;
     return that;
 }
-Character.$$metamodel$$={$ps:[],$an:function(){return[shared(),native(),final()];},mod:$$METAMODEL$$,d:['ceylon.language','Character']};
+Character.$$metamodel$$={'super':{t:Object$},$ps:[],$an:function(){return[shared(),native(),final()];},mod:$$METAMODEL$$,d:['ceylon.language','Character']};
 
 initTypeProto(Character, 'ceylon.language::Character', Object$, Comparable, $init$Enumerable());
 var Character$proto = Character.$$.prototype;
@@ -710,7 +710,7 @@ function StringBuilder(/*String...*/comps) {
     }
     return that;
 }
-StringBuilder.$$metamodel$$={$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','StringBuilder']};
+StringBuilder.$$metamodel$$={'super':{t:Basic},$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','StringBuilder']};
 
 initTypeProto(StringBuilder, 'ceylon.language::StringBuilder', $init$Basic());
 var StringBuilder$proto = StringBuilder.$$.prototype;
