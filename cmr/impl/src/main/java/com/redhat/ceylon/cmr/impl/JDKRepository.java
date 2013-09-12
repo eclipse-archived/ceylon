@@ -27,6 +27,7 @@ import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
+import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
@@ -42,12 +43,17 @@ import com.redhat.ceylon.cmr.spi.OpenNode;
 public class JDKRepository extends AbstractRepository {
 
     public static final String JDK_VERSION = "7";
+    
+    private static final String JAVA_ORIGIN = "Java Runtime";
 
     private static final SortedSet<String> FixedVersionSet = new TreeSet<String>() {{
         add(JDK_VERSION);
     }};
     private static final SortedSet<String> EmptySet = new TreeSet<String>();
     private static final SortedSet<ModuleInfo> EmptyDependencySet = new TreeSet<ModuleInfo>();
+    private static final SortedSet<String> FixedTypeSet = new TreeSet<String>() {{
+        add(ArtifactContext.JAR);
+    }};
 
     public static final Set<String> JDK_MODULES = new TreeSet<String>();
 
@@ -69,6 +75,7 @@ public class JDKRepository extends AbstractRepository {
 
     public static class JDKRoot extends DefaultNode implements ContentFinder {
 
+
         public JDKRoot() {
             addService(ContentFinder.class, this);
         }
@@ -88,7 +95,7 @@ public class JDKRepository extends AbstractRepository {
                 name = "";
             for (String module : JDK_MODULES) {
                 if (module.startsWith(name))
-                    result.addResult(module, doc(module), null, EmptySet, FixedVersionSet, EmptyDependencySet);
+                    result.addResult(module, doc(module), null, EmptySet, FixedVersionSet, EmptyDependencySet, FixedTypeSet, null, null, false, JAVA_ORIGIN);
             }
         }
 
@@ -107,7 +114,10 @@ public class JDKRepository extends AbstractRepository {
                 return;
             final ModuleVersionDetails newVersion = result.addVersion(JDK_VERSION);
             newVersion.setDoc(doc(query.getName()));
+            newVersion.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
             newVersion.setVersion(JDK_VERSION);
+            newVersion.setRemote(false);
+            newVersion.setOrigin(JAVA_ORIGIN);
         }
 
         @Override
@@ -134,7 +144,7 @@ public class JDKRepository extends AbstractRepository {
                     }
                     if (query.getStart() == null || found++ >= query.getStart()) {
                         // are we interested in this result or did we need to skip it?
-                        result.addResult(module, doc(module), null, EmptySet, FixedVersionSet, EmptyDependencySet);
+                        result.addResult(module, doc(module), null, EmptySet, FixedVersionSet, EmptyDependencySet, FixedTypeSet, null, null, false, JAVA_ORIGIN);
                         // stop if we're done searching
                         if (query.getStart() != null
                                 && query.getCount() != null
