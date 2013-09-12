@@ -20,9 +20,7 @@ ClassOrInterfaceDeclaration$model$declaration.$$.prototype.getMemberDeclaration.
 
 defineAttr(FunctionalDeclaration$model$declaration.$$.prototype,'parameterDeclarations',function(){
   var that=this;
-  var parms = that.meta['$ps'];
-  if (parms === null || parms === undefined || parms.length === 0)return getEmpty();
-  parms = parms[0];
+  var parms = that.tipo.$$metamodel$$['$ps'];
   if (parms === null || parms === undefined || parms.length === 0)return getEmpty();
   var rv = [];
   for (var i=0; i<parms.length;i++) {
