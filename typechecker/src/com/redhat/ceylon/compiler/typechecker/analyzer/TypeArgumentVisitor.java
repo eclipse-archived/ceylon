@@ -3,8 +3,10 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -24,13 +26,7 @@ public class TypeArgumentVisitor extends Visitor {
     private void flip() {
         contravariant = !contravariant;
     }
-    
-    @Override public void visit(Tree.ParameterList that) {
-        flip();
-        super.visit(that);
-        flip();
-    }
-    
+        
     @Override public void visit(Tree.TypeConstraint that) {
         super.visit(that);
         TypeParameter dec = that.getDeclarationModel();
@@ -46,37 +42,25 @@ public class TypeArgumentVisitor extends Visitor {
             parameterizedDeclaration = null;
         }
     }
-    
-    @Override public void visit(Tree.ParameterDeclaration that) {
-        boolean topLevel = parameterizedDeclaration==null;
-        if (topLevel) {
-            parameterizedDeclaration = that.getParameterModel().getDeclaration();
-        }
-        super.visit(that);
-        check(that.getTypedDeclaration().getType(), false, parameterizedDeclaration);
-        if (topLevel) {
-            parameterizedDeclaration = null;
-        }
-    }
-    
-    @Override public void visit(Tree.InitializerParameter that) {
-        boolean topLevel = parameterizedDeclaration==null;
-        if (topLevel) {
-            parameterizedDeclaration = that.getParameterModel().getDeclaration();
-        }
-        super.visit(that);
-        check(that.getParameterModel().getType(), false, parameterizedDeclaration, that);
-        if (topLevel) {
-            parameterizedDeclaration = null;
-        }
-    }
-    
+        
     @Override public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
-        if (!(that instanceof Tree.Variable)) {
-            check(that.getType(), 
-                    that.getDeclarationModel().isVariable(), 
-                    that.getDeclarationModel());
+        TypedDeclaration dec = that.getDeclarationModel();
+		if (!(that instanceof Tree.Variable)) {
+            check(that.getType(), dec.isVariable(), dec);
+        }
+        if (dec.isParameter()) {
+        	flip();
+            boolean topLevel = parameterizedDeclaration==null; //i.e. toplevel parameter in a parameter declaration
+            if (topLevel) {
+            	parameterizedDeclaration = ((MethodOrValue) dec).getInitializerParameter().getDeclaration();
+            }
+			check(that.getType(), false, parameterizedDeclaration);
+			super.visit(that);
+			if (topLevel) {
+				parameterizedDeclaration = null;
+			}
+        	flip();
         }
     }
     

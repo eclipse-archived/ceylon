@@ -174,9 +174,9 @@ interface InitializerParams {
         Baz baz;
     }
     shared class BrokenVar<out T>() {
-        @error shared void method(t, lt) {
-            T t; 
-            List<T> lt;
+        shared void method(t, lt) {
+            @error T t; 
+            @error List<T> lt;
         }
     }
     class Superclass() {
