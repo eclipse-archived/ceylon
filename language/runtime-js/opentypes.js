@@ -4,7 +4,7 @@ function _findTypeFromModel(pkg,mdl) {
   //TODO this is very primitive needs a lot of rules replicated from the JsIdentifierNames
   var nm = mdl.$nm;
   if (mdl['$mt'] === 'attr' || mdl['$mt'] === 'gttr') {
-    nm = 'get' + nm[0].toUpperCase() + nm.substring(1);
+    nm = '$prop$get' + nm[0].toUpperCase() + nm.substring(1);
   }
   var nm = nm + pkg.suffix;
   return mod.meta[nm];
@@ -74,12 +74,6 @@ function $init$OpenFunction(){
                 var $$openFunction=this;
                 return false;
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','FunctionDeclaration','$at','variadic']};});
-            
-            //AttributeDeclaration parameterDeclarations at caca.ceylon (28:4-28:74)
-            defineAttr($$openFunction,'parameterDeclarations',function(){
-                var $$openFunction=this;
-                return getEmpty();
-            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:FunctionOrValueDeclaration$model$declaration}}},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','FunctionDeclaration','$at','parameterDeclarations']};});
             
             //MethodDeclaration getParameterDeclaration at caca.ceylon (29:4-29:90)
             $$openFunction.getParameterDeclaration=function (name$6){
@@ -214,8 +208,8 @@ function $init$OpenVariable(){
             
             //AttributeGetterDefinition setter at opentypes.ceylon (61:4-61:52)
             defineAttr($$openVariable,'setter',function(){
-                var $$openVariable=this;
-                throw wrapexc(Exception(),'61:45-61:50','opentypes.ceylon');
+              var $$openVariable=this;
+              return OpenSetter(this);
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:SetterDeclaration$model$declaration},$cont:OpenVariable,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','VariableDeclaration','$at','setter']};});
 
 defineAttr($$openVariable,'name',function(){return this.name_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenVariable,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','VariableDeclaration','$at','name']};});
@@ -236,6 +230,28 @@ defineAttr($$openVariable,'toplevel',function(){return this.toplevel_;},undefine
 }
 exports.$init$OpenVariable=$init$OpenVariable;
 $init$OpenVariable();
+
+//ClassDefinition OpenSetter at opentypes.ceylon (63:0-63:90)
+function OpenSetter(v, $$openSetter){
+    $init$OpenSetter();
+    if ($$openSetter===undefined)$$openSetter=new OpenSetter.$$;
+    $$openSetter.variable_=v;
+    SetterDeclaration$model$declaration($$openSetter);
+    $$openSetter.tipo=v.tipo.set;
+    return $$openSetter;
+}
+OpenSetter.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:SetterDeclaration$model$declaration}],d:['ceylon.language.model.declaration','SetterDeclaration']};};
+function $init$OpenSetter(){
+    if (OpenSetter.$$===undefined){
+        initTypeProto(OpenSetter,'OpenSetter',Basic,SetterDeclaration$model$declaration);
+        (function($$openSetter){
+            defineAttr($$openSetter,'variable',function(){return this.variable_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:VariableDeclaration$model$declaration},$cont:OpenSetter,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','SetterDeclaration','$at','variable']};});
+        })(OpenSetter.$$.prototype);
+    }
+    return OpenSetter;
+}
+exports.$init$OpenSetter=$init$OpenSetter;
+$init$OpenSetter();
 
 //ClassDefinition OpenClass at caca.ceylon (47:0-70:0)
 function OpenClass(name, packageContainer, toplevel, meta, that){
@@ -326,13 +342,7 @@ function $init$OpenClass(){
             };
             $$openClass.getTypeParameterDeclaration.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:TypeParameter$model$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','ClassDeclaration','$m','getTypeParameterDeclaration']};};
             
-            //AttributeDeclaration parameterDeclarations at caca.ceylon (65:2-65:72)
-            defineAttr($$openClass,'parameterDeclarations',function(){
-                var $$openClass=this;
-                return getEmpty();
-            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:FunctionOrValueDeclaration$model$declaration}}},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','ClassDeclaration','$at','parameterDeclarations']};});
-            
-            //MethodDeclaration getParameterDeclaration at caca.ceylon (66:2-66:88)
+           //MethodDeclaration getParameterDeclaration at caca.ceylon (66:2-66:88)
             $$openClass.getParameterDeclaration=function (name$15){
                 var $$openClass=this;
                 return null;

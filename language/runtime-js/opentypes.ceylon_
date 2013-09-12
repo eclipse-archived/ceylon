@@ -22,111 +22,112 @@ class OpenFunction(shared actual String name, shared actual Package packageConta
     shared actual Method<Container, MethodType, Arguments> memberApply<Container, MethodType, Arguments>(Type<Anything>* types)
         given Arguments satisfies Anything[] { throw; }
 
-    shared actual Boolean defaulted => false;
-    shared actual Boolean variadic => false;
+    shared actual Boolean defaulted { throw Exception("Implement me!"); }
+    shared actual Boolean variadic { throw Exception("Unimplemented"); }
 
-    shared actual FunctionOrValueDeclaration[] parameterDeclarations => [];
-    shared actual FunctionOrValueDeclaration? getParameterDeclaration(String name) => null;
+    shared actual FunctionOrValueDeclaration[] parameterDeclarations { throw Exception("Unimplemented"); }
+    shared actual FunctionOrValueDeclaration? getParameterDeclaration(String name) { throw Exception("Unimplemented"); }
   shared actual Annotation[] annotations<out Annotation>()
-        given Annotation satisfies MetamodelAnnotation<Annotation> => [];
+        given Annotation satisfies MetamodelAnnotation<Annotation> { throw Exception("Unimplemented"); }
 
-  shared actual OpenType openType { throw; }
-  shared actual TypeParameter[] typeParameterDeclarations => [];
-  shared actual TypeParameter? getTypeParameterDeclaration(String name) => null;
+  shared actual OpenType openType { throw Exception("Unimplemented"); }
+  shared actual TypeParameter[] typeParameterDeclarations { throw Exception("Unimplemented"); }
+  shared actual TypeParameter? getTypeParameterDeclaration(String name) { throw Exception("Unimplemented"); }
 
-  shared actual Boolean actual { return false; }
-  shared actual Boolean formal { return false; }
-  shared actual Boolean default { return false; }
-  shared actual Boolean shared { return false; }
-  shared actual String qualifiedName { return name; }
+  shared actual Boolean actual { throw Exception("Unimplemented"); }
+  shared actual Boolean formal { throw Exception("Unimplemented"); }
+  shared actual Boolean default { throw Exception("Unimplemented"); }
+  shared actual Boolean shared { throw Exception("Unimplemented"); }
+  shared actual String qualifiedName { return "``packageContainer.name``::``name``"; }
   shared actual AnnotatedDeclaration container { return packageContainer; }
 }
 
 class OpenValue(shared default actual String name, shared default actual Package packageContainer, shared default actual Boolean toplevel) satisfies ValueDeclaration {
     shared actual Value<Anything> apply(Anything instance) { throw; }
-    shared actual Boolean defaulted => false;
-    shared actual Boolean variadic => false;
+    shared actual Boolean defaulted { throw Exception("Unimplemented"); }
+    shared actual Boolean variadic { throw Exception("Unimplemented"); }
   shared actual Annotation[] annotations<out Annotation>()
-        given Annotation satisfies MetamodelAnnotation<Annotation> => [];
-  shared actual OpenType openType { throw; }
+        given Annotation satisfies MetamodelAnnotation<Annotation> { throw Exception("Unimplemented"); }
+  shared actual OpenType openType { throw Exception("Unimplemented"); }
 
-  shared actual Boolean actual { return false; }
-  shared actual Boolean formal { return false; }
-  shared actual Boolean default { return false; }
-  shared actual Boolean shared { return false; }
+  shared actual Boolean actual { throw Exception("Unimplemented"); }
+  shared actual Boolean formal { throw Exception("Unimplemented"); }
+  shared actual Boolean default { throw Exception("Unimplemented"); }
+  shared actual Boolean shared { throw Exception("Unimplemented"); }
   shared actual String qualifiedName { return "``packageContainer.name``::``name``"; }
   shared actual AnnotatedDeclaration container { return packageContainer; }
 }
 class OpenVariable(shared actual String name, shared actual Package packageContainer, shared actual Boolean toplevel) extends OpenValue(name,packageContainer,toplevel) satisfies VariableDeclaration {
-    shared actual SetterDeclaration setter { throw; }
+    shared actual SetterDeclaration setter => OpenSetter(this);
 }
+class OpenSetter(shared actual VariableDeclaration variable) satisfies SetterDeclaration {}
 
 class OpenClass(shared actual String name, shared actual Package packageContainer, shared actual Boolean toplevel) satisfies ClassDeclaration {
-  shared actual Boolean anonymous => false;
-  shared actual AppliedClass<Anything, Nothing> apply(Type<Anything>* types) { throw; }
-  shared actual AppliedClass<Anything, Nothing> bindAndApply(Object instance, Type<Anything>* types) { throw; }
+  shared actual Boolean anonymous { throw Exception("Unimplemented"); }
+  shared actual AppliedClass<Anything, Nothing> apply(Type<Anything>* types) { throw Exception("Unimplemented"); }
+  shared actual AppliedClass<Anything, Nothing> bindAndApply(Object instance, Type<Anything>* types) { throw Exception("Unimplemented"); }
   shared actual AppliedMember<Container, Kind> memberApply<Container, Kind>(Type<Anything>* types)
-        given Kind satisfies AppliedClassOrInterface<Anything> { throw; }
+        given Kind satisfies AppliedClassOrInterface<Anything> { throw Exception("Unimplemented"); }
   shared actual Kind[] memberDeclarations<Kind>() 
-            given Kind satisfies TopLevelOrMemberDeclaration => [];
+            given Kind satisfies TopLevelOrMemberDeclaration { throw Exception("Unimplemented"); }
   shared actual Kind[] annotatedMemberDeclarations<Kind, Annotation>() 
-            given Kind satisfies TopLevelOrMemberDeclaration => [];
+            given Kind satisfies TopLevelOrMemberDeclaration { throw Exception("Unimplemented"); }
   shared actual Annotation[] annotations<out Annotation>()
-        given Annotation satisfies MetamodelAnnotation<Annotation> => [];
+        given Annotation satisfies MetamodelAnnotation<Annotation> { throw Exception("Unimplemented"); }
   shared actual Kind? getMemberDeclaration<Kind>(String name) 
-            given Kind satisfies TopLevelOrMemberDeclaration => null;
-  shared actual OpenType openType { throw; }
-  shared actual TypeParameter[] typeParameterDeclarations => [];
-  shared actual TypeParameter? getTypeParameterDeclaration(String name) => null;
+            given Kind satisfies TopLevelOrMemberDeclaration { throw Exception("Unimplemented"); }
+  shared actual OpenType openType { throw Exception("Unimplemented"); }
+  shared actual TypeParameter[] typeParameterDeclarations { throw Exception("Unimplemented"); }
+  shared actual TypeParameter? getTypeParameterDeclaration(String name) { throw Exception("Unimplemented"); }
 
-  shared actual FunctionOrValueDeclaration[] parameterDeclarations => [];
-  shared actual FunctionOrValueDeclaration? getParameterDeclaration(String name) => null;
+  shared actual FunctionOrValueDeclaration[] parameterDeclarations { throw Exception("Unimplemented"); }
+  shared actual FunctionOrValueDeclaration? getParameterDeclaration(String name) { throw Exception("Unimplemented"); }
 
-  shared actual OpenParameterisedType<ClassDeclaration>? superclassDeclaration => null;
-  shared actual OpenParameterisedType<InterfaceDeclaration>[] interfaceDeclarations => [];
+  shared actual OpenParameterisedType<ClassDeclaration>? superclassDeclaration { throw Exception("Unimplemented"); }
+  shared actual OpenParameterisedType<InterfaceDeclaration>[] interfaceDeclarations { throw Exception("Unimplemented"); }
 
-  shared actual Boolean actual { return false; }
-  shared actual Boolean formal { return false; }
-  shared actual Boolean default { return false; }
-  shared actual Boolean shared { return false; }
-  shared actual String qualifiedName { return name; }
+  shared actual Boolean actual { throw Exception("Unimplemented"); }
+  shared actual Boolean formal { throw Exception("Unimplemented"); }
+  shared actual Boolean default { throw Exception("Unimplemented"); }
+  shared actual Boolean shared { throw Exception("Unimplemented"); }
+  shared actual String qualifiedName { return "``packageContainer.name``::``name``"; }
   shared actual AnnotatedDeclaration container { return packageContainer; }
 
-  shared actual Boolean abstract { return false; }
-  shared actual OpenType[] caseTypes { return []; }
+  shared actual Boolean abstract { throw Exception("Unimplemented"); }
+  shared actual OpenType[] caseTypes { throw Exception("Unimplemented"); }
 
-  shared actual Boolean isAlias => false;
+  shared actual Boolean isAlias { throw Exception("Unimplemented"); }
 }
 
 class OpenInterface(shared actual String name, shared actual Package packageContainer, shared actual Boolean toplevel) satisfies InterfaceDeclaration {
-  shared actual AppliedInterface<Anything> apply(Type<Anything>* types) { throw; }
-  shared actual AppliedInterface<Anything> bindAndApply(Object instance, Type<Anything>* types) { throw; }
+  shared actual AppliedInterface<Anything> apply(Type<Anything>* types) { throw Exception("Unimplemented"); }
+  shared actual AppliedInterface<Anything> bindAndApply(Object instance, Type<Anything>* types) { throw Exception("Unimplemented"); }
   shared actual AppliedMember<Container, Kind> memberApply<Container, Kind>(Type<Anything>* types)
-        given Kind satisfies AppliedClassOrInterface<Anything> { throw; }
+        given Kind satisfies AppliedClassOrInterface<Anything> { throw Exception("Unimplemented"); }
 
   shared actual Kind[] memberDeclarations<Kind>() 
-            given Kind satisfies TopLevelOrMemberDeclaration => [];
+            given Kind satisfies TopLevelOrMemberDeclaration { throw Exception("Unimplemented"); }
   shared actual Kind[] annotatedMemberDeclarations<Kind, Annotation>() 
-            given Kind satisfies TopLevelOrMemberDeclaration => [];
+            given Kind satisfies TopLevelOrMemberDeclaration { throw Exception("Unimplemented"); }
   shared actual Annotation[] annotations<out Annotation>()
-        given Annotation satisfies MetamodelAnnotation<Annotation> => [];
+        given Annotation satisfies MetamodelAnnotation<Annotation> { throw Exception("Unimplemented"); }
   shared actual Kind? getMemberDeclaration<Kind>(String name) 
-            given Kind satisfies TopLevelOrMemberDeclaration => null;
-  shared actual OpenType openType { throw; }
-  shared actual TypeParameter[] typeParameterDeclarations => [];
-  shared actual TypeParameter? getTypeParameterDeclaration(String name) => null;
+            given Kind satisfies TopLevelOrMemberDeclaration { throw Exception("Unimplemented"); }
+  shared actual OpenType openType { throw Exception("Unimplemented"); }
+  shared actual TypeParameter[] typeParameterDeclarations { throw Exception("Unimplemented"); }
+  shared actual TypeParameter? getTypeParameterDeclaration(String name) { throw Exception("Unimplemented"); }
 
-  shared actual OpenParameterisedType<ClassDeclaration>? superclassDeclaration => null;
-  shared actual OpenParameterisedType<InterfaceDeclaration>[] interfaceDeclarations => [];
+  shared actual OpenParameterisedType<ClassDeclaration>? superclassDeclaration { throw Exception("Unimplemented"); }
+  shared actual OpenParameterisedType<InterfaceDeclaration>[] interfaceDeclarations { throw Exception("Unimplemented"); }
 
-  shared actual Boolean actual { return false; }
-  shared actual Boolean formal { return false; }
-  shared actual Boolean default { return false; }
-  shared actual Boolean shared { return false; }
-  shared actual String qualifiedName { return name; }
+  shared actual Boolean actual { throw Exception("Unimplemented"); }
+  shared actual Boolean formal { throw Exception("Unimplemented"); }
+  shared actual Boolean default { throw Exception("Unimplemented"); }
+  shared actual Boolean shared { throw Exception("Unimplemented"); }
+  shared actual String qualifiedName { return "``packageContainer.name``::``name``"; }
   shared actual AnnotatedDeclaration container { return packageContainer; }
 
-  shared actual OpenType[] caseTypes { return []; }
+  shared actual OpenType[] caseTypes { throw Exception("Unimplemented"); }
 
-  shared actual Boolean isAlias => false;
+  shared actual Boolean isAlias { throw Exception("Unimplemented"); }
 }
