@@ -9,13 +9,17 @@ public class ModuleVersionDetails {
     private String version;
     private String doc;
     private String license;
+    private boolean remote;
+    private String origin;
     private NavigableSet<String> authors = new TreeSet<String>();
     private NavigableSet<ModuleInfo> dependencies = new TreeSet<ModuleInfo>();
+    private NavigableSet<ModuleVersionArtifact> artifactTypes = new TreeSet<ModuleVersionArtifact>();
 
     public ModuleVersionDetails(String version) {
         this.version = version;
     }
 
+    // THis constructor is only used by the unit tests
     public ModuleVersionDetails(String version, String doc, String license, String... by) {
         this(version);
         this.doc = doc;
@@ -47,6 +51,22 @@ public class ModuleVersionDetails {
         this.license = license;
     }
 
+    public boolean isRemote() {
+        return remote;
+    }
+
+    public void setRemote(boolean remote) {
+        this.remote = remote;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
     public NavigableSet<String> getAuthors() {
         return authors;
     }
@@ -59,4 +79,19 @@ public class ModuleVersionDetails {
     public NavigableSet<ModuleInfo> getDependencies() {
         return dependencies;
     }
+
+    public void setDependencies(SortedSet<ModuleInfo> dependencies) {
+        this.dependencies.clear();
+        this.dependencies.addAll(dependencies);
+    }
+    
+    public NavigableSet<ModuleVersionArtifact> getArtifactTypes() {
+        return artifactTypes;
+    }
+
+    public void setArtifactTypes(SortedSet<ModuleVersionArtifact> types) {
+        this.artifactTypes.clear();
+        this.artifactTypes.addAll(types);
+    }
+
 }
