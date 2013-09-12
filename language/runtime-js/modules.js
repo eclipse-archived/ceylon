@@ -264,7 +264,7 @@ console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.
     getMember.$$metamodel$$={mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},'Kind']},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Paquete,$tp:{Kind:{'satisfies':[{t:TopLevelOrMemberDeclaration$model$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','Package','$m','getMember']};
     function getValue(name$4) {
       var m = this.pkg[name$4];
-      if (m && (m['$mt']==='attr' || m['$mt']==='gttr')) {
+      if (m && (m['$mt']==='attr' || m['$mt']==='gttr' || m['$mt'] === 'obj')) {
         return (m['var']==='1' ? OpenVariable:OpenValue)(name$4, this, true, m);
       }
       return null;
