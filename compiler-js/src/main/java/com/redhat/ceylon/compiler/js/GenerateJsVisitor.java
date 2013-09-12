@@ -1631,7 +1631,9 @@ public class GenerateJsVisitor extends Visitor
         if (d.getContainer() instanceof Functional) {
             classParam = names.name(((Functional)d.getContainer()).getParameter(d.getName()));
         }
-        if (!d.isFormal()) {
+        if (d.isFormal()) {
+            if (!opts.isOptimize())generateAttributeMetamodel(that, false, false);
+        } else {
             comment(that);
             final boolean isLate = d.isLate();
             SpecifierOrInitializerExpression specInitExpr =
@@ -1721,10 +1723,15 @@ public class GenerateJsVisitor extends Visitor
     /** Generate runtime metamodel info for an attribute declaration or definition. */
     private void generateAttributeMetamodel(Tree.TypedDeclaration that, final boolean addGetter, final boolean addSetter) {
         Declaration d = that.getDeclarationModel();
-        if (!d.isToplevel())return;
+        if (d instanceof Setter) d = ((Setter)d).getGetter();
         final String pname = names.getter(d);
         if (!generatedAttributes.contains(pname)) {
-            out("var $prop$", pname, "={$$metamodel$$:");
+            if (d.isToplevel()) {
+                out("var ");
+            } else if (outerSelf(d)) {
+                out(".");
+            }
+            out("$prop$", pname, "={$$metamodel$$:");
             TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
             out("};"); endLine();
             if (d.isToplevel()) {
@@ -1734,6 +1741,9 @@ public class GenerateJsVisitor extends Visitor
             generatedAttributes.add(pname);
         }
         if (addGetter) {
+            if (!d.isToplevel()) {
+                if (outerSelf(d))out(".");
+            }
             out("$prop$", pname, ".get=");
             if (isCaptured(d) && !defineAsProperty(d)) {
                 out(pname);
@@ -1742,15 +1752,18 @@ public class GenerateJsVisitor extends Visitor
             } else {
                 out("function(){return ", names.name(d), "}");
             }
+            endLine(true);
         }
         if (addSetter) {
-            final String pset = names.setter(d);
-            endLine(true);
+            final String pset = names.setter(d instanceof Setter ? ((Setter)d).getGetter() : d);
+            if (!d.isToplevel()) {
+                if (outerSelf(d))out(".");
+            }
             out("$prop$", pname, ".set=", pset);
             endLine(true);
             out("if (", pset, ".$$metamodel$$===undefined)", pset, ".$$metamodel$$=$prop$", pname, ".$$metamodel$$");
+            endLine(true);
         }
-        endLine(true);
     }
 
     private void generateAttributeGetter(AnyAttribute attributeNode, MethodOrValue decl,
@@ -1859,8 +1872,10 @@ public class GenerateJsVisitor extends Visitor
             AttributeDeclaration that) {
         Value d = that.getDeclarationModel();
         if (!opts.isOptimize()||d.isToplevel()) return;
-        if (!d.isFormal()) {
-            comment(that);
+        comment(that);
+        if (d.isFormal()) {
+            generateAttributeMetamodel(that, false, false);
+        } else {
             String classParam = null;
             if (d.getContainer() instanceof Functional) {
                 classParam = names.name(((Functional)d.getContainer()).getParameter(d.getName()));
