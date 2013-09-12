@@ -1178,9 +1178,28 @@ public class GenerateJsVisitor extends Visitor
                 outerSelf(d);
                 out(".", names.getter(d), "=", names.getter(d), ";");
                 endLine();
-                outerSelf(d);
-                out(".", names.getter(d), ".$$metamodel$$=");
-                TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+            }
+            if (!d.isToplevel()) {
+                if(outerSelf(d))out(".");
+            }
+            out(names.getter(d), ".$$metamodel$$=");
+            TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+            endLine(true);
+            if (!d.isToplevel()) {
+                if (outerSelf(d))out(".");
+            }
+            out("$prop$", names.getter(d), "={get:");
+            if (!d.isToplevel()) {
+                if (outerSelf(d))out(".");
+            }
+            out(names.getter(d), ",$$metamodel$$:");
+            if (!d.isToplevel()) {
+                if (outerSelf(d))out(".");
+            }
+            out(names.getter(d), ".$$metamodel$$};");
+            endLine();
+            if (d.isToplevel()) {
+                out("exports.$prop$", names.getter(d), "=$prop$", names.getter(d));
                 endLine(true);
             }
         }
@@ -1197,7 +1216,6 @@ public class GenerateJsVisitor extends Visitor
             TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
             out(");");
             endLine();
-            //TODO $prop$ shit
         }
     }
 
