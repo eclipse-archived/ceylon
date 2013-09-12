@@ -659,7 +659,7 @@ public class GenerateJsVisitor extends Visitor
             //Fix #231 for lexical scope
             for (Parameter p : that.getParameterList().getParameters()) {
                 if (!p.getParameterModel().isHidden()){
-                    generateAttributeForParameter(d, p.getParameterModel());
+                    generateAttributeForParameter(that, d, p.getParameterModel());
                 }
             }
         }
@@ -837,9 +837,9 @@ public class GenerateJsVisitor extends Visitor
             public void addToPrototypeCallback() {
                 if (type instanceof ClassDefinition) {
                     com.redhat.ceylon.compiler.typechecker.model.Class c = ((ClassDefinition)type).getDeclarationModel();
-                    addToPrototype(c, ((ClassDefinition)type).getClassBody().getStatements());
+                    addToPrototype(type, c, ((ClassDefinition)type).getClassBody().getStatements());
                 } else if (type instanceof InterfaceDefinition) {
-                    addToPrototype(((InterfaceDefinition)type).getDeclarationModel(), ((InterfaceDefinition)type).getInterfaceBody().getStatements());
+                    addToPrototype(type, ((InterfaceDefinition)type).getDeclarationModel(), ((InterfaceDefinition)type).getInterfaceBody().getStatements());
                 }
             }
         };
@@ -943,7 +943,7 @@ public class GenerateJsVisitor extends Visitor
         return memberAccessBase(type, d, false, qualifiedPath(type, d, inProto));
     }
 
-    private void addToPrototype(ClassOrInterface d, List<Statement> statements) {
+    private void addToPrototype(Node node, ClassOrInterface d, List<Statement> statements) {
         boolean enter = opts.isOptimize();
         ArrayList<com.redhat.ceylon.compiler.typechecker.model.Parameter> plist = null;
         if (enter) {
@@ -970,7 +970,7 @@ public class GenerateJsVisitor extends Visitor
             //Generated attributes with corresponding parameters will remove them from the list
             if (plist != null) {
                 for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : plist) {
-                    generateAttributeForParameter((com.redhat.ceylon.compiler.typechecker.model.Class)d, p);
+                    generateAttributeForParameter(node, (com.redhat.ceylon.compiler.typechecker.model.Class)d, p);
                 }
             }
             endBlock();
@@ -981,7 +981,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void generateAttributeForParameter(com.redhat.ceylon.compiler.typechecker.model.Class d,
+    private void generateAttributeForParameter(Node node, com.redhat.ceylon.compiler.typechecker.model.Class d,
             com.redhat.ceylon.compiler.typechecker.model.Parameter p) {
         final String privname = names.name(p) + "_";
         out(clAlias, "defineAttr(", names.self(d), ",'", names.name(p.getModel()),
@@ -1002,7 +1002,7 @@ public class GenerateJsVisitor extends Visitor
             out(",undefined");
         }
         out(",");
-        TypeUtils.encodeForRuntime(p.getModel(), this);
+        TypeUtils.encodeForRuntime(node, p.getModel(), this);
         out(");");
         endLine();
     }
@@ -1153,7 +1153,7 @@ public class GenerateJsVisitor extends Visitor
 
         typeInitialization(that);
 
-        addToPrototype(c, that.getClassBody().getStatements());
+        addToPrototype(that, c, that.getClassBody().getStatements());
 
         if (!addToPrototype) {
             out("var ", names.name(d), "=", names.name(c), "(");
@@ -1197,6 +1197,7 @@ public class GenerateJsVisitor extends Visitor
             TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
             out(");");
             endLine();
+            //TODO $prop$ shit
         }
     }
 
@@ -1751,7 +1752,7 @@ public class GenerateJsVisitor extends Visitor
                 out(",");
                 if (decl instanceof Method) {
                     //Add parameters
-                    TypeUtils.encodeParameterListForRuntime(((Method)decl).getParameterLists().get(0),
+                    TypeUtils.encodeParameterListForRuntime(attributeNode, ((Method)decl).getParameterLists().get(0),
                             GenerateJsVisitor.this);
                 } else {
                     //Type of value must be Callable
@@ -1797,7 +1798,7 @@ public class GenerateJsVisitor extends Visitor
                     out(",");
                     //TODO if attributeNode is null then annotations should come from decl
                     if (attributeNode == null) {
-                        TypeUtils.encodeForRuntime(decl, this);
+                        TypeUtils.encodeForRuntime(attributeNode, decl, this);
                     } else {
                         TypeUtils.encodeForRuntime(decl, attributeNode.getAnnotationList(), this);
                     }
@@ -2480,7 +2481,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(ObjectArgument that) {
+    public void visit(final ObjectArgument that) {
         //Don't even bother with nodes that have errors
         if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
         final Class c = (Class)that.getDeclarationModel().getTypeDeclaration();
@@ -2519,7 +2520,7 @@ public class GenerateJsVisitor extends Visitor
         typeInitialization(xt, sts, false, c, new PrototypeInitCallback() {
             @Override
             public void addToPrototypeCallback() {
-                addToPrototype(c, body.getStatements());
+                addToPrototype(that, c, body.getStatements());
             }
         });
         out("return ", names.name(c), "(new ", names.name(c), ".$$);");
@@ -2672,7 +2673,7 @@ public class GenerateJsVisitor extends Visitor
                 endBlock();
                 if (property) {
                     out(",undefined,");
-                    TypeUtils.encodeForRuntime(bmeDecl, this);
+                    TypeUtils.encodeForRuntime(specStmt, bmeDecl, this);
                     out(")");
                 }
                 endLine(true);
@@ -2705,8 +2706,8 @@ public class GenerateJsVisitor extends Visitor
                                 out(",");
                                 if (moval instanceof Method) {
                                     //Add parameters
-                                    TypeUtils.encodeParameterListForRuntime(((Method)moval).getParameterLists().get(0),
-                                            GenerateJsVisitor.this);
+                                    TypeUtils.encodeParameterListForRuntime(specStmt,
+                                            ((Method)moval).getParameterLists().get(0), GenerateJsVisitor.this);
                                     out(",");
                                 } else {
                                     //TODO extract parameters from Value

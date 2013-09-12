@@ -382,7 +382,7 @@ public class InvocationGenerator {
         if (_m == null) {
             gen.out("[]");
         } else {
-            TypeUtils.encodeParameterListForRuntime(_m.getParameterLists().get(0), gen);
+            TypeUtils.encodeParameterListForRuntime(term, _m.getParameterLists().get(0), gen);
         }
     }
 
