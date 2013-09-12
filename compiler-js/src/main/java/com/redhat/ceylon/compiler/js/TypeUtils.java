@@ -432,7 +432,7 @@ public class TypeUtils {
 
     /** Output a metamodel map for runtime use. */
     static void encodeForRuntime(final Declaration d, final Tree.AnnotationList annotations, final GenerateJsVisitor gen) {
-        final boolean include = annotations != null && !annotations.getAnnotations().isEmpty();
+        final boolean include = annotations != null && !(annotations.getAnnotations().isEmpty() && annotations.getAnonymousAnnotation()==null);
         encodeForRuntime(d, gen, include ? new RuntimeMetamodelAnnotationGenerator() {
             @Override public void generateAnnotations() {
                 gen.out(",", MetamodelGenerator.KEY_ANNOTATIONS, ":");
@@ -677,7 +677,7 @@ public class TypeUtils {
 
     /** Outputs a function that returns the specified annotations, so that they can be loaded lazily. */
     static void outputAnnotationsFunction(final Tree.AnnotationList annotations, final GenerateJsVisitor gen) {
-        if (annotations == null || annotations.getAnnotations().isEmpty()) {
+        if (annotations == null || (annotations.getAnnotations().isEmpty() && annotations.getAnonymousAnnotation()==null)) {
             gen.out("[]");
         } else {
             gen.out("function(){return[");

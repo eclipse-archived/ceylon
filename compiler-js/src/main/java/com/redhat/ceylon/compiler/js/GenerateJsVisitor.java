@@ -45,11 +45,11 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminatePare
 public class GenerateJsVisitor extends Visitor
         implements NaturalVisitor {
 
-    private final Stack<Continuation> continues = new Stack<Continuation>();
+    private final Stack<Continuation> continues = new Stack<>();
     private final EnclosingFunctionVisitor encloser = new EnclosingFunctionVisitor();
     private final JsIdentifierNames names;
-    private final Set<Declaration> directAccess = new HashSet<Declaration>();
-    private final Set<Declaration> generatedAttributes = new HashSet<Declaration>();
+    private final Set<Declaration> directAccess = new HashSet<>();
+    private final Set<String> generatedAttributes = new HashSet<>();
     private final RetainedVars retainedVars = new RetainedVars();
     final ConditionGenerator conds;
     private final InvocationGenerator invoker;
@@ -1568,6 +1568,10 @@ public class GenerateJsVisitor extends Visitor
             out(";}");
         }
         if (!shareSetter(d)) { out(";"); }
+        if (!d.isToplevel())outerSelf(d);
+        out(names.setter(d.getGetter()), ".$$metamodel$$=");
+        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+        endLine(true);
         generateAttributeMetamodel(that, false, true);
     }
 
@@ -1699,31 +1703,33 @@ public class GenerateJsVisitor extends Visitor
     private void generateAttributeMetamodel(Tree.TypedDeclaration that, final boolean addGetter, final boolean addSetter) {
         Declaration d = that.getDeclarationModel();
         if (!d.isToplevel())return;
-        if (!generatedAttributes.contains(d)) {
-            out("var $prop$", names.name(d), "={$$metamodel$$:");
+        final String pname = names.getter(d);
+        if (!generatedAttributes.contains(pname)) {
+            out("var $prop$", pname, "={$$metamodel$$:");
             TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
             out("};"); endLine();
             if (d.isToplevel()) {
-                out("exports.$prop$", names.name(d), "=$prop$", names.name(d));
+                out("exports.$prop$", pname, "=$prop$", pname);
                 endLine(true);
             }
-            generatedAttributes.add(d);
+            generatedAttributes.add(pname);
         }
         if (addGetter) {
-            out("$prop$", names.name(d), ".get=");
+            out("$prop$", pname, ".get=");
             if (isCaptured(d) && !defineAsProperty(d)) {
-                out(names.getter(d));
+                out(pname);
                 endLine(true);
-                out(names.getter(d), ".$$metamodel$$=$prop$", names.name(d), ".$$metamodel$$");
+                out(pname, ".$$metamodel$$=$prop$", pname, ".$$metamodel$$");
             } else {
                 out("function(){return ", names.name(d), "}");
             }
         }
         if (addSetter) {
+            final String pset = names.setter(d);
             endLine(true);
-            out("$prop$", names.name(d), ".set=", names.setter(d));
+            out("$prop$", pname, ".set=", pset);
             endLine(true);
-            out(names.setter(d), ".$$metamodel$$=$prop$", names.name(d), ".$$metamodel$$");
+            out("if (", pset, ".$$metamodel$$===undefined)", pset, ".$$metamodel$$=$prop$", pname, ".$$metamodel$$");
         }
         endLine(true);
     }
@@ -4397,7 +4403,7 @@ public class GenerateJsVisitor extends Visitor
         } else if (d instanceof Method) {
             out("Function");
         } else if (d instanceof Value) {
-            out("Value");
+            out(((Value) d).isVariable() ? "Variable" : "Value");
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType) {
             out("Intersection");
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType) {
@@ -4419,9 +4425,10 @@ public class GenerateJsVisitor extends Visitor
             qualify(that, d);
         }
         if (d instanceof Value) {
-            out("$prop$");
+            out("$prop$", names.getter(d), ")");
+        } else {
+            out(names.name(d), ")");
         }
-        out(names.name(d), ")");
     }
 
     @Override
@@ -4475,9 +4482,10 @@ public class GenerateJsVisitor extends Visitor
                     out(".$$.prototype.");
                 }
                 if (d instanceof Value) {
-                    out("$prop$");
+                    out("$prop$", names.getter(d), ",");
+                } else {
+                    out(names.name(d),",");
                 }
-                out(names.name(d),",");
                 TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
                 out(")");
             } else if (that instanceof ValueLiteral || d instanceof Value) {
@@ -4490,10 +4498,10 @@ public class GenerateJsVisitor extends Visitor
                     out(".$$.prototype.");
                 }
                 if (d instanceof Value) {
-                    out("$prop$");
+                    out("$prop$", names.getter(d), ")");
+                } else {
+                    out(names.name(d), ")");
                 }
-                out(names.name(d));
-                out(")");
             } else {
                 out(clAlias, "/*TODO:closed member literal*/typeLiteral$model({Type:");
                 out("{t:");
@@ -4505,9 +4513,10 @@ public class GenerateJsVisitor extends Visitor
                     out(".$$.prototype.");
                 }
                 if (d instanceof Value) {
-                    out("$prop$");
+                    out("$prop$", names.getter(d));
+                } else {
+                    out(names.name(d));
                 }
-                out(names.name(d));
                 if (ltype != null && ltype.getTypeArguments() != null && !ltype.getTypeArguments().isEmpty()) {
                     out(",a:");
                     TypeUtils.printTypeArguments(that, ltype.getTypeArguments(), this);
