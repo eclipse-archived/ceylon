@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
-interface QualifiedInstantiationInInterface$m2$0$Local<T> {
+interface QualifiedInstantiationInInterface$m2$3$Local<T> {
     
     public .java.lang.Object Local$impl();
 }
@@ -62,12 +62,12 @@ final class QualifiedInstantiationInInterface$impl<G> {
         
         final class Local$impl<T> {
             
-            Local$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$0$Local<T> $this) {
+            Local$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$3$Local<T> $this) {
                 this.$reifiedT = $reifiedT;
                 this.$this = $this;
             }
             private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
-            private final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$0$Local<T> $this;
+            private final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$3$Local<T> $this;
             
             public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
                 this.$reifiedT = $reifiedT;
@@ -82,11 +82,11 @@ final class QualifiedInstantiationInInterface$impl<G> {
                 
                 @.java.lang.Override
                 public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$0$Local.class, Local$impl.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local$impl.LocalInner.class, $reifiedX));
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$3$Local.class, Local$impl.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local$impl.LocalInner.class, $reifiedX));
                 }
             }
             
-            private void m3$priv(final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$0$Local<.ceylon.language.String> l) {
+            private void m3$priv(final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$3$Local<.ceylon.language.String> l) {
                 (Local$impl<T>)$this.Local$impl().new LocalInner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, "");
                 (Local$impl<.ceylon.language.String>)l.Local$impl().new LocalInner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, "");
                 (
