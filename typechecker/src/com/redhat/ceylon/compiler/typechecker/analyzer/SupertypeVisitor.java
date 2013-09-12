@@ -58,16 +58,18 @@ public class SupertypeVisitor extends Visitor {
         Unit unit = d.getUnit();
         if (etn!=null) {
             Tree.StaticType et = etn.getType();
-            ProducedType t = et.getTypeModel();
-            if (t!=null) {
-                List<TypeDeclaration> l = t.isRecursiveRawTypeDefinition(singleton((TypeDeclaration)d));
-                if (!l.isEmpty()) {
-                    etn.addError("inheritance is circular: definition of " + 
-                            d.getName() + " is recursive, involving " + typeList(l));
-                    d.setExtendedType(unit.getBasicDeclaration().getType());
-                    d.getBrokenSupertypes().add(t);
-                    errors = true;
-                }
+            if (et!=null) {
+            	ProducedType t = et.getTypeModel();
+            	if (t!=null) {
+            		List<TypeDeclaration> l = t.isRecursiveRawTypeDefinition(singleton((TypeDeclaration)d));
+            		if (!l.isEmpty()) {
+            			etn.addError("inheritance is circular: definition of " + 
+            					d.getName() + " is recursive, involving " + typeList(l));
+            			d.setExtendedType(unit.getBasicDeclaration().getType());
+            			d.getBrokenSupertypes().add(t);
+            			errors = true;
+            		}
+            	}
             }
         }
         if (!errors) {
@@ -98,11 +100,13 @@ public class SupertypeVisitor extends Visitor {
             }
             if (etn!=null) {
                 Tree.StaticType et = etn.getType();
-                ProducedType t = et.getTypeModel();
-                if (t!=null) {
-                    if (checkSupertypeVariance(t, d, et)) {
-                        d.getSatisfiedTypes().remove(t);
-                    }
+                if (et!=null) {
+                	ProducedType t = et.getTypeModel();
+                	if (t!=null) {
+                		if (checkSupertypeVariance(t, d, et)) {
+                			d.getSatisfiedTypes().remove(t);
+                		}
+                	}
                 }
             }
         }
