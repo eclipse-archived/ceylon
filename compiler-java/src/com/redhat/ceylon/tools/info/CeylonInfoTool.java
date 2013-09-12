@@ -90,7 +90,7 @@ public class CeylonInfoTool extends RepoUsingTool {
     private void outputVersion(ModuleVersionDetails version) throws IOException {
         msg("module.version").append(version.getVersion()).newline();
         outputArtifacts(version.getArtifactTypes());
-        msg("module.available").append((version.isRemote() ? "No" : "Yes")).newline();
+        msg("module.available").msg((version.isRemote() ? "available.remote" : "available.local")).newline();
         if (version.getOrigin() != null) {
             msg("module.origin").append(version.getOrigin()).newline();
         }
