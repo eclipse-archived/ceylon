@@ -13,12 +13,15 @@ shared interface ClassOrInterface<out Type=Anything>
     
     shared formal actual ClassOrInterfaceDeclaration declaration;
     
-    // FIXME: ClassModel probably?
+    // FIXME: ClassModel
+    // FIXME: rename to extendedType
     shared formal Class<Anything, Nothing>? superclass;
     
-    // FIXME: InterfaceModel probably?
+    // FIXME: InterfaceModel
+    // FIXME: rename to satisfiedTypes
     shared formal Interface<Anything>[] interfaces;
 
+    // FIXME: move all these to Type
     // FIXME: introduce MemberClassOrInterface?
     shared formal Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType<Anything>* types)
         given Kind satisfies ClassOrInterface<Anything>;

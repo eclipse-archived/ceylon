@@ -1,3 +1,5 @@
+// FIXME: remove type parameter?
+// FIXME: rename to OpenClassOrInterfaceType?
 shared interface OpenParameterisedType<out DeclarationType>
     satisfies OpenType
     given DeclarationType satisfies ClassOrInterfaceDeclaration {
