@@ -351,7 +351,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 param.setDefaulted(p.containsKey(MetamodelGenerator.KEY_DEFAULT));
                 param.setSequenced(p.containsKey("seq"));
                 param.setAtLeastOne(p.containsKey("$min1"));
-                if ("v".equals(paramtype)) {
+                if (paramtype == null || "v".equals(paramtype)) {
                     Value _v = new Value();
                     param.setModel(_v);
                 } else if ("f".equals(paramtype)) {

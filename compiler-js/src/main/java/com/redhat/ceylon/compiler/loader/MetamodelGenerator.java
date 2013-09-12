@@ -271,9 +271,7 @@ public class MetamodelGenerator {
                 if (parm.isHidden()) {
                     pm.put("$hdn", "1");
                 }
-                if (parmtype instanceof Value) {
-                    pm.put("$pt", "v");
-                } else if (parmtype instanceof Method) {
+                if (parmtype instanceof Method) {
                     pm.put("$pt", "f");
                     List<List<Map<String, Object>>> _paramLists = new ArrayList<List<Map<String,Object>>>(
                             ((Method)parmtype).getParameterLists().size());
