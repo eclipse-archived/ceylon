@@ -1,4 +1,4 @@
-shared interface OpenType of OpenParameterisedType
+shared interface OpenType of OpenClassOrInterfaceType
                        | OpenTypeVariable
                        | OpenUnion
                        | OpenIntersection

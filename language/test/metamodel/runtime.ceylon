@@ -5,7 +5,7 @@ import ceylon.language.model.declaration {
     ClassDeclaration,
     InterfaceDeclaration,
     ClassOrInterfaceDeclaration,
-    OpenParameterisedType,
+    OpenClassOrInterfaceType,
     OpenTypeVariable,
     OpenUnion,
     Declaration,
@@ -533,7 +533,7 @@ void checkObjectDeclaration(){
     value noParamsClass = type(NoParams());
     value pkg = noParamsClass.declaration.containingPackage;
     assert(exists topLevelObjectDeclarationAttribute = pkg.getValue("topLevelObjectDeclaration"));
-    assert(is OpenParameterisedType topLevelObjectTypeDeclaration = topLevelObjectDeclarationAttribute.openType);
+    assert(is OpenClassOrInterfaceType topLevelObjectTypeDeclaration = topLevelObjectDeclarationAttribute.openType);
     assert(is ClassDeclaration topLevelObjectClassDeclaration = topLevelObjectTypeDeclaration.declaration);
     assert(topLevelObjectClassDeclaration.name == "topLevelObjectDeclaration");
     assert(topLevelObjectClassDeclaration.anonymous);
@@ -552,7 +552,7 @@ void checkAliases(){
     // check it
     assert(aliasDeclaration.name == "TypeAliasToClass");
     assert(aliasDeclaration.typeParameterDeclarations.size == 0);
-    assert(is OpenParameterisedType aliasedType = aliasDeclaration.openType);
+    assert(is OpenClassOrInterfaceType aliasedType = aliasDeclaration.openType);
     assert(aliasedType.declaration.name == "NoParams");
     assert(aliasedType.typeArguments.size == 0);
     // check that getMember also works
@@ -568,7 +568,7 @@ void checkAliases(){
     assert(aliasDeclarationTP.typeParameterDeclarations.size == 1);
     assert(aliasDeclarationTP.getTypeParameterDeclaration("J") exists);
     // make sure it points to TypeParams<T=J>
-    assert(is OpenParameterisedType aliasedTypeTP = aliasDeclarationTP.openType);
+    assert(is OpenClassOrInterfaceType aliasedTypeTP = aliasDeclarationTP.openType);
     assert(aliasedTypeTP.declaration.name == "TypeParams");
     assert(aliasedTypeTP.typeArguments.size == 1);
     assert(exists aliasedDeclarationTPTypeParam = aliasedTypeTP.declaration.getTypeParameterDeclaration("T"));
@@ -582,9 +582,9 @@ void checkAliases(){
     // make sure it points to Integer|String
     assert(is OpenUnion aliasedTypeUnion = aliasDeclarationUnion.openType);
     assert(aliasedTypeUnion.caseTypes.size == 2);
-    assert(is OpenParameterisedType firstUnion = aliasedTypeUnion.caseTypes[0], 
+    assert(is OpenClassOrInterfaceType firstUnion = aliasedTypeUnion.caseTypes[0], 
             firstUnion.declaration.name == "Integer");
-    assert(is OpenParameterisedType secondUnion = aliasedTypeUnion.caseTypes[1], 
+    assert(is OpenClassOrInterfaceType secondUnion = aliasedTypeUnion.caseTypes[1], 
             secondUnion.declaration.name == "String");
 }
 
@@ -599,12 +599,12 @@ void checkTypeParameters(){
     assert(!tp1.defaulted, !tp1.defaultTypeArgument exists);
 
     assert(tp1.caseTypes.size == 2);
-    assert(is OpenParameterisedType enumB1 = tp1.caseTypes[0], enumB1.declaration.name == "TP1");
-    assert(is OpenParameterisedType enumB2 = tp1.caseTypes[1], enumB2.declaration.name == "TP2");
+    assert(is OpenClassOrInterfaceType enumB1 = tp1.caseTypes[0], enumB1.declaration.name == "TP1");
+    assert(is OpenClassOrInterfaceType enumB2 = tp1.caseTypes[1], enumB2.declaration.name == "TP2");
 
     assert(tp1.satisfiedTypes.size == 2);
-    assert(is OpenParameterisedType upperB1 = tp1.satisfiedTypes[0], upperB1.declaration.name == "TPA");
-    assert(is OpenParameterisedType upperB2 = tp1.satisfiedTypes[1], upperB2.declaration.name == "TPB");
+    assert(is OpenClassOrInterfaceType upperB1 = tp1.satisfiedTypes[0], upperB1.declaration.name == "TPA");
+    assert(is OpenClassOrInterfaceType upperB2 = tp1.satisfiedTypes[1], upperB2.declaration.name == "TPB");
 
     assert(exists tp2 = tpTest.typeParameterDeclarations[1]);
     assert(tp2.name == "T");
@@ -617,7 +617,7 @@ void checkTypeParameters(){
     assert(exists tp3 = tpTest.typeParameterDeclarations[2]);
     assert(tp3.name == "V");
     assert(tp3.variance == covariant);
-    assert(tp3.defaulted, is OpenParameterisedType tv3 = tp3.defaultTypeArgument, tv3.declaration.name == "Integer");
+    assert(tp3.defaulted, is OpenClassOrInterfaceType tv3 = tp3.defaultTypeArgument, tv3.declaration.name == "Integer");
 
     assert(tp3.caseTypes.size == 0);
     assert(tp3.satisfiedTypes.size == 0);
@@ -631,11 +631,11 @@ void checkTypeParameters(){
 void checkClassOrInterfaceCaseTypes(){
     value iwct = `interface InterfaceWithCaseTypes`;
     assert(iwct.caseTypes.size == 2);
-    assert(is OpenParameterisedType iwcta = iwct.caseTypes[0],
+    assert(is OpenClassOrInterfaceType iwcta = iwct.caseTypes[0],
            is ClassDeclaration iwctaDecl = iwcta.declaration, 
            iwctaDecl.name == "iwcta",
            iwctaDecl.anonymous);
-    assert(is OpenParameterisedType iwctb = iwct.caseTypes[1],
+    assert(is OpenClassOrInterfaceType iwctb = iwct.caseTypes[1],
            is ClassDeclaration iwctbDecl = iwctb.declaration, 
            iwctbDecl.name == "iwctb",
            iwctbDecl.anonymous);
