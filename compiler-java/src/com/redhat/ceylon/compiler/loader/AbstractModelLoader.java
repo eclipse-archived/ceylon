@@ -2148,7 +2148,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             
             MethodOrValue value = null;
-            if(decl instanceof Class){
+            if (isCeylon && decl instanceof Class){
                 // For a functional parameter to a class, we can just lookup the member
                 value = (MethodOrValue)((Class)decl).getDirectMember(paramName, null, false);
             } 
