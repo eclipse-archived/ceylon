@@ -121,12 +121,12 @@ function Anything(wat) {
     return wat;
 }
 initType(Anything, 'ceylon.language::Anything');
-Anything.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$$METAMODEL$$,d:['ceylon.language','Anything']};
+Anything.$$metamodel$$={$an:function(){return[shared(),abstract()]},mod:$$METAMODEL$$,d:['ceylon.language','Anything']};
 function Null(wat) {
     return null;
 }
 initType(Null, 'ceylon.language::Null', Anything);
-Null.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$$METAMODEL$$,d:['ceylon.language','Null']};
+Null.$$metamodel$$={'super':{t:Anything},$an:function(){return[shared(),abstract()]},mod:$$METAMODEL$$,d:['ceylon.language','Null']};
 function Nothing(wat) {
     throw "Nothing";
 }
@@ -139,7 +139,7 @@ function Object$(wat) {
     return wat;
 }
 initTypeProto(Object$, 'ceylon.language::Object', Anything);
-Object$.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$$METAMODEL$$,d:['ceylon.language','Object']};
+Object$.$$metamodel$$={'super':{t:Anything},$an:function(){return[shared(),abstract()]},mod:$$METAMODEL$$,d:['ceylon.language','Object']};
 var Object$proto = Object$.$$.prototype;
 defineAttr(Object$proto, 'string', function(){
     return String$(className(this) + "@" + this.hash);
