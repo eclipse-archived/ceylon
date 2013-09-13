@@ -483,7 +483,7 @@ void checkToplevelFunctions(){
     
     // check its parameters metamodel
     assert(f12.parameterDeclarations.size == 5);
-    assert(exists f12p0 = f12.parameterDeclarations[0], f12p0.name == "set", f12p0.defaulted == false);
+    assert(exists f12p0 = f12.parameterDeclarations[0], f12p0.name == "set", f12p0.defaulted == false, f12p0.parameter);
     assert(f12p0.qualifiedName == "metamodel::defaultedParams2.set");
     assert(exists f12p1 = f12.parameterDeclarations[1], f12p1.name == "a", f12p1.defaulted == true);
     assert(exists f12p2 = f12.parameterDeclarations[2], f12p2.name == "b", f12p2.defaulted == true);
@@ -644,9 +644,9 @@ shared void checkModifiers(){
     assert(exists inner = mods.getMemberDeclaration<ClassDeclaration>("NonShared"));
     assert(!inner.abstract, !inner.shared, !inner.formal, !inner.actual, !inner.default);
     assert(exists m = mods.getMemberDeclaration<FunctionDeclaration>("method"));
-    assert(!m.annotation, m.shared, m.formal, !m.actual, !m.default);
+    assert(!m.annotation, m.shared, m.formal, !m.actual, !m.default, !m.parameter);
     assert(exists v = mods.getMemberDeclaration<ValueDeclaration>("string"));
-    assert(v.shared, !v.formal, v.actual, v.default);
+    assert(v.shared, !v.formal, v.actual, v.default, !m.parameter);
     value fin = `class Final`;
     assert(fin.final);
     assert(`class Annot`.annotation);

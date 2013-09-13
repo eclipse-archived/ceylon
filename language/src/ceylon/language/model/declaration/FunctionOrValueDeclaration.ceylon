@@ -3,7 +3,7 @@ shared interface FunctionOrValueDeclaration
      | ValueDeclaration
     satisfies TopLevelOrMemberDeclaration {
     
-    // FIXME: add Boolean parameter
+    shared formal Boolean parameter;
     
     shared formal Boolean defaulted;
     

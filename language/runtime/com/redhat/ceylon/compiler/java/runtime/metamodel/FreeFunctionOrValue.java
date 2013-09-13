@@ -38,7 +38,12 @@ public abstract class FreeFunctionOrValue
     public boolean getVariadic(){
         return parameter == null ? false : parameter.isSequenced();
     }
-    
+
+    @Override
+    public boolean getParameter(){
+        return parameter != null;
+    }
+
     @Override
     @Ignore
     public TypeDescriptor $getType() {
