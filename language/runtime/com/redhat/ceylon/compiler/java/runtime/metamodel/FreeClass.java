@@ -6,9 +6,6 @@ import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
-import ceylon.language.model.Class;
-import ceylon.language.model.MemberClass;
-import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.ClassDeclaration$impl;
 import ceylon.language.model.declaration.FunctionalDeclaration$impl;
 
@@ -21,11 +18,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class

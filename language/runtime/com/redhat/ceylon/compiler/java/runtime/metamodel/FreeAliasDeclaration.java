@@ -1,12 +1,8 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import java.util.List;
-
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.model.Type;
 import ceylon.language.model.declaration.AliasDeclaration$impl;
-import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.GenericDeclaration$impl;
 import ceylon.language.model.declaration.OpenType;
 
@@ -18,9 +14,6 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 
 public class FreeAliasDeclaration extends FreeNestableDeclaration 
     implements ceylon.language.model.declaration.AliasDeclaration {

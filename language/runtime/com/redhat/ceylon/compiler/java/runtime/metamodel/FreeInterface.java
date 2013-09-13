@@ -1,12 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import java.util.List;
-
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.model.Class;
-import ceylon.language.model.MemberClass;
-import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.InterfaceDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.Util;

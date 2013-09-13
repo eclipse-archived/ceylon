@@ -6,7 +6,6 @@ import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
-import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.FunctionDeclaration$impl;
 import ceylon.language.model.declaration.FunctionalDeclaration$impl;
 import ceylon.language.model.declaration.GenericDeclaration$impl;

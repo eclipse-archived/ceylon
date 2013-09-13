@@ -4,9 +4,6 @@ import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.List;
 
-import ceylon.language.Sequential;
-import ceylon.language.empty_;
-import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.OpenType;
 import ceylon.language.model.declaration.ValueDeclaration$impl;
 
@@ -15,15 +12,12 @@ import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 
 @Ceylon(major = 5)
