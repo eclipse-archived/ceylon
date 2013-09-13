@@ -72,6 +72,11 @@ public class FreeClass
     }
 
     @Override
+    public boolean getAnnotation(){
+        return declaration.isAnnotation();
+    }
+
+    @Override
     public boolean getAbstract() {
         return ((com.redhat.ceylon.compiler.typechecker.model.Class)declaration).isAbstract();
     }

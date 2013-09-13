@@ -640,15 +640,17 @@ void checkClassOrInterfaceCaseTypes(){
 
 shared void checkModifiers(){
     value mods = `class Modifiers`;
-    assert(!mods.final, mods.abstract, mods.shared, !mods.formal, !mods.actual, !mods.default);
+    assert(!mods.annotation, !mods.final, mods.abstract, mods.shared, !mods.formal, !mods.actual, !mods.default);
     assert(exists inner = mods.getMemberDeclaration<ClassDeclaration>("NonShared"));
     assert(!inner.abstract, !inner.shared, !inner.formal, !inner.actual, !inner.default);
     assert(exists m = mods.getMemberDeclaration<FunctionDeclaration>("method"));
-    assert(m.shared, m.formal, !m.actual, !m.default);
+    assert(!m.annotation, m.shared, m.formal, !m.actual, !m.default);
     assert(exists v = mods.getMemberDeclaration<ValueDeclaration>("string"));
     assert(v.shared, !v.formal, v.actual, v.default);
     value fin = `class Final`;
     assert(fin.final);
+    assert(`class Annot`.annotation);
+    assert(`function annot`.annotation);
 }
 
 void checkContainers(){

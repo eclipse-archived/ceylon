@@ -218,7 +218,7 @@ public abstract class FreeClassOrInterface
     public boolean getIsAlias(){
         return ((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)declaration).isAlias();
     }
-    
+
     @Override
     public OpenType getOpenType() {
         return Metamodel.getMetamodel(((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)declaration).getType());

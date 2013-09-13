@@ -1,3 +1,5 @@
+import ceylon.language.model { Annotation }
+
 shared String toplevelString = "a";
 shared Integer toplevelInteger = 1;
 shared Float toplevelFloat = 1.2;
@@ -291,3 +293,6 @@ shared class ConstrainedTypeParams<A, B>()
 shared void constrainedTypeParams<A, B>()
     given A of String | Integer
     given B satisfies TPA {}
+
+shared annotation final class Annot() satisfies Annotation<Annot> {}
+shared annotation Annot annot() => Annot();

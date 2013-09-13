@@ -210,6 +210,11 @@ public class FreeFunction
     }
 
     @Override
+    public boolean getAnnotation(){
+        return declaration.isAnnotation();
+    }
+
+    @Override
     public int hashCode() {
         int result = 1;
         AnnotatedDeclaration container = getContainer();
