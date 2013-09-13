@@ -227,6 +227,11 @@ public abstract class AppliedClassOrInterface<Type>
     public String toString() {
         return Metamodel.toTypeString(this);
     }
+
+    @Override
+    public boolean isTypeOf(@TypeInfo("ceylon.language::Anything") Object instance){
+        return Metamodel.isTypeOf(producedType, instance);
+    }
     
     @Ignore
     @Override

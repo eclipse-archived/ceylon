@@ -107,4 +107,9 @@ public class AppliedUnionType<Union>
         AppliedUnionType<?> other = (AppliedUnionType<?>) obj;
         return other.model.isExactly(model);
     }
+
+    @Override
+    public boolean isTypeOf(@TypeInfo("ceylon.language::Anything") Object instance){
+        return Metamodel.isTypeOf(model, instance);
+    }
 }

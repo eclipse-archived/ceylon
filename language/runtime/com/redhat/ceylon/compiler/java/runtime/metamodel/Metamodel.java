@@ -861,4 +861,9 @@ public class Metamodel {
                 throw new TypeApplicationException("Declaration does not accept type arguments");
         }
     }
+
+    public static boolean isTypeOf(ProducedType producedType, Object instance) {
+        ProducedType instanceType = Metamodel.getProducedType(instance);
+        return instanceType.isSubtypeOf(producedType);
+    }
 }

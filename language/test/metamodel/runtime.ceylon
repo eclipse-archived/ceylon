@@ -993,6 +993,16 @@ FIXME: to be determined wrt container types
 */
 }
 
+void checkTests(){
+    assert(`NoParams`.isTypeOf(NoParams()));
+    assert(!`Integer`.isTypeOf(NoParams()));
+    assert(`TPA & TPB`.isTypeOf(TP1()));
+    assert(!`TPA & TPB & Integer`.isTypeOf(TP1()));
+    assert(`NoParams | Integer`.isTypeOf(NoParams()));
+    assert(!`String | Integer`.isTypeOf(NoParams()));
+    assert(!`Nothing`.isTypeOf(NoParams()));
+}
+
 shared void run() {
     print("Running Metamodel tests");
     visitStringHierarchy();
@@ -1036,6 +1046,8 @@ shared void run() {
     checkApplyTypeConstraints();
 
     checkApplications();
+
+    checkTests();
 
     // FIXME: test members() wrt filtering
     // FIXME: test untyped class to applied class

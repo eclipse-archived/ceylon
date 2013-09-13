@@ -1,3 +1,6 @@
 shared object nothingType satisfies Type<Nothing> {
-    string=>"Nothing";
+    
+    string => "Nothing";
+    
+    isTypeOf(Anything instance) => false;
 }
