@@ -1,0 +1,75 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
+
+interface Bug1288_Foo<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1288_Foo$impl();
+    
+    public abstract T foo(final .java.lang.Object t);
+}
+final class Bug1288_Foo$impl<T> {
+    
+    Bug1288_Foo$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo<T> $this) {
+        this.$reifiedT = $reifiedT;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo<T> $this;
+    
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "Element",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+class Bug1288<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1288(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+        this.$reifiedElement = $reifiedElement;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Element")
+    private final Element plus$priv(@.com.redhat.ceylon.compiler.java.metadata.Name("x")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Element")
+    final Element x, @.com.redhat.ceylon.compiler.java.metadata.Name("inc")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long inc) {
+        if (x instanceof .ceylon.language.Integer) {
+            final long result = ((.ceylon.language.Summable<.ceylon.language.Integer>)(.ceylon.language.Summable)x).plus(.ceylon.language.Integer.instance(inc)).longValue();
+            final .java.lang.Object $result$4;
+            .java.lang.Object $result$3 = null;
+            if (.com.redhat.ceylon.compiler.java.Util.isReified($result$3 = .ceylon.language.Integer.instance(result), $reifiedElement)) {
+                $result$4 = $result$3;
+            } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Element result"));
+            return (Element)$result$4;
+        }
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(x, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo.class, .ceylon.language.Integer.$TypeDescriptor))) {
+            final long result = ((.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo<.ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo)x).foo(.ceylon.language.Boolean.instance(true)).longValue();
+            final .java.lang.Object $result$9;
+            .java.lang.Object $result$8 = null;
+            if (.com.redhat.ceylon.compiler.java.Util.isReified($result$8 = .ceylon.language.Integer.instance(result), $reifiedElement)) {
+                $result$9 = $result$8;
+            } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Element result"));
+            return (Element)$result$9;
+        }
+        return (Element).ceylon.language.nothing_.$get();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288.class, $reifiedElement);
+    }
+}
