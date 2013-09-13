@@ -1197,7 +1197,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression metamodelCall = makeMetamodelInvocation("getOrCreateMetamodel", List.of(classLiteral), null);
             ProducedType exprType = expr.getTypeModel().resolveAliases();
             // now cast if required
-            if(!exprType.isExactly(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("TopLevelOrMemberDeclaration")).getType())){
+            if(!exprType.isExactly(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("NestableDeclaration")).getType())){
                 JCExpression type = makeJavaType(exprType, JT_NO_PRIMITIVES);
                 return make().TypeCast(type, metamodelCall);
             }
