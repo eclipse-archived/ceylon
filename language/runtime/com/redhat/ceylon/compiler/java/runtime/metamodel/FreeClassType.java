@@ -26,7 +26,7 @@ public class FreeClassType extends FreeClassOrInterfaceType implements ceylon.la
 
     @Override
     public ceylon.language.model.declaration.ClassDeclaration getDeclaration() {
-        return (ceylon.language.model.declaration.ClassDeclaration)getDeclaration();
+        return (ceylon.language.model.declaration.ClassDeclaration)super.getDeclaration();
     }
 
     @Override
