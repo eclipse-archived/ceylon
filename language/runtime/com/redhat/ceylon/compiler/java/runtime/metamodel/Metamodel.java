@@ -822,7 +822,7 @@ public class Metamodel {
             string.insert(0, string2.toString());
             container = container.getContainer();
         }
-        return model.getDeclaration().getPackageContainer().getName() + "::" + string.toString();
+        return model.getDeclaration().getContainingPackage().getName() + "::" + string.toString();
     }
 
     public static void checkTypeArguments(ProducedType qualifyingType, Declaration declaration, List<ProducedType> typeArguments) {

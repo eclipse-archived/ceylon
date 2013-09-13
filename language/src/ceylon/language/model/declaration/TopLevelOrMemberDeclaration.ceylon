@@ -14,9 +14,9 @@ shared interface TopLevelOrMemberDeclaration of FunctionOrValueDeclaration |
 
     shared formal Boolean shared;
 
-    // FIXME: that name sucks: containingPackage?
-    shared formal Package packageContainer;
-    // FIXME: add containingModule?
+    shared formal Package containingPackage;
+
+    shared formal Module containingModule;
 
     // FIXME: introduce interface ContainedDeclaration { shared formal AnnotatedDeclaration container; }?
     // -> no interface but union

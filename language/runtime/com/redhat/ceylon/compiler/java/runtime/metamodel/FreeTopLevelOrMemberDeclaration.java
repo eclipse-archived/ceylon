@@ -4,6 +4,7 @@ import ceylon.language.Sequential;
 import ceylon.language.model.Annotated$impl;
 import ceylon.language.model.declaration.AnnotatedDeclaration$impl;
 import ceylon.language.model.declaration.Declaration$impl;
+import ceylon.language.model.declaration.Module;
 import ceylon.language.model.declaration.Package;
 import ceylon.language.model.declaration.TopLevelOrMemberDeclaration$impl;
 import ceylon.language.model.declaration.TypedDeclaration$impl;
@@ -74,13 +75,18 @@ public abstract class FreeTopLevelOrMemberDeclaration
     }
 
     @Override
-    public Package getPackageContainer() {
+    public Package getContainingPackage() {
         // this does not need to be thread-safe as Metamodel.getOrCreateMetamodel is thread-safe so if we
         // assign pkg twice we get the same result
         if(pkg == null){
             pkg = Metamodel.getOrCreateMetamodel(Metamodel.getPackage(declaration));
         }
         return pkg;
+    }
+
+    @Override
+    public Module getContainingModule() {
+        return getContainingPackage().getContainer();
     }
 
     @Override

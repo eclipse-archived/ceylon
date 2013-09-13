@@ -305,7 +305,7 @@ void checkPackageAndModule(){
     //
     // Package
 
-    value pkg = noParamsDecl.packageContainer;
+    value pkg = noParamsDecl.containingPackage;
 
     assert(pkg.name == "metamodel");
     assert(pkg.qualifiedName == "metamodel");
@@ -332,7 +332,7 @@ void checkToplevelAttributes(){
     
     value noParamsDecl = noParamsAppliedType.declaration;
 
-    value pkg = noParamsDecl.packageContainer;
+    value pkg = noParamsDecl.containingPackage;
 
     assert(pkg.members<TopLevelOrMemberDeclaration>().find((Declaration decl) => decl.name == "toplevelInteger") exists);
 
@@ -419,7 +419,7 @@ void checkToplevelFunctions(){
     
     value noParamsDecl = noParamsAppliedType.declaration;
 
-    value pkg = noParamsDecl.packageContainer;
+    value pkg = noParamsDecl.containingPackage;
 
     assert(pkg.members<TopLevelOrMemberDeclaration>().find((Declaration decl) => decl.name == "fixedParams") exists);
 
@@ -530,7 +530,7 @@ void checkModules(){
 void checkObjectDeclaration(){
     // get it via its package
     value noParamsClass = type(NoParams());
-    value pkg = noParamsClass.declaration.packageContainer;
+    value pkg = noParamsClass.declaration.containingPackage;
     assert(exists topLevelObjectDeclarationAttribute = pkg.getValue("topLevelObjectDeclaration"));
     assert(is OpenParameterisedType<ClassDeclaration> topLevelObjectTypeDeclaration = topLevelObjectDeclarationAttribute.openType);
     value topLevelObjectClassDeclaration = topLevelObjectTypeDeclaration.declaration;
