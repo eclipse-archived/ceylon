@@ -37,7 +37,7 @@ public class FreeVariable
     @Override
     public int hashCode() {
         int result = 1;
-        AnnotatedDeclaration container = getContainer();
+        java.lang.Object container = getContainer();
         result = 37 * result + (container == null ? 0 : container.hashCode());
         result = 37 * result + getName().hashCode();
         return result;

@@ -775,11 +775,11 @@ public class Metamodel {
         string.append(declaration.getName());
         if(declaration instanceof ceylon.language.model.declaration.GenericDeclaration)
             addTypeArguments(string, (ceylon.language.model.declaration.GenericDeclaration)declaration, typeArguments);
-        ceylon.language.model.declaration.AnnotatedDeclaration container = declaration.getContainer();
+        java.lang.Object container = declaration.getContainer();
         while(container != null){
             if(container instanceof Package)
-                return container.getName() + "::" + string;
-            StringBuffer string2 = new StringBuffer(container.getName());
+                return ((Package)container).getName() + "::" + string;
+            StringBuffer string2 = new StringBuffer(((TopLevelOrMemberDeclaration)container).getName());
             if(container instanceof ceylon.language.model.declaration.GenericDeclaration)
                 addTypeArguments(string2, (ceylon.language.model.declaration.GenericDeclaration)container, typeArguments);
             string2.append(".");

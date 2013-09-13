@@ -115,7 +115,8 @@ public abstract class FreeTopLevelOrMemberDeclaration
     }
 
     @Override
-    public ceylon.language.model.declaration.AnnotatedDeclaration getContainer() {
+    @TypeInfo(value = "ceylon.language.model.declaration::TopLevelOrMemberDeclaration|ceylon.language.model.declaration::Package", erased = true)
+    public java.lang.Object getContainer() {
         return Metamodel.getContainer(declaration);
     }
 
