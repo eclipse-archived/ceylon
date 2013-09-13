@@ -93,7 +93,9 @@ function isOfType(obj, type) {
                             return false;
                         }
                     } else if (iance === undefined) {
-                        if (!(tmpobj.$$targs$$[i] && tmpobj.$$targs$$[i].t.$$ && tmpobj.$$targs$$[i].t.$$.T$name && cmptype && cmptype.t.$$ && cmptype.t.$$.T$name && tmpobj.$$targs$$[i].t.$$.T$name === cmptype.t.$$.T$name)) {
+                        if (!(tmpobj.$$targs$$[i] && tmpobj.$$targs$$[i].t.$$
+                            && tmpobj.$$targs$$[i].t.$$.T$name && cmptype && cmptype.t.$$
+                            && cmptype.t.$$.T$name && tmpobj.$$targs$$[i].t.$$.T$name === cmptype.t.$$.T$name)) {
                             return false;
                         }
                     } else if (iance === null) {
@@ -136,7 +138,7 @@ function isOfTypes(obj, types) {
     return _ints ? inters||unions : unions;
 }
 function extendsType(t1, t2) {
-    if (t1 === undefined || t1.t === undefined) {
+    if (t1 === undefined || t1.t === undefined || (t2 !== undefined && t2.t === Nothing)) {
         return true;//t2 === undefined;
     } else if (t1 === null) {
         return t2.t === Null;
