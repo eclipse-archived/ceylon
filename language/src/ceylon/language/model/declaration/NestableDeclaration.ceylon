@@ -1,6 +1,5 @@
 import ceylon.language.model{Annotated}
 
-// FIXME: new name NestableDeclaration?
 shared interface NestableDeclaration of FunctionOrValueDeclaration |
                                                 ClassOrInterfaceDeclaration |
                                                 AliasDeclaration
