@@ -349,9 +349,8 @@ public abstract class BoxingVisitor extends Visitor {
     @Override
     public void visit(WithinOp that) {
         super.visit(that);
-        // Does it matter which Bound we choose?
-        propagateFromTerm(that, that.getLowerBound());
-        underlyingType(that.getLowerBound());
+        // this is not conditional
+        CodegenUtil.markUnBoxed(that);
     }
 
     @Override
