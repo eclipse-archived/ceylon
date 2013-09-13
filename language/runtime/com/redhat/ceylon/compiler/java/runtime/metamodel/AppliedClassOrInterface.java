@@ -98,8 +98,7 @@ public abstract class AppliedClassOrInterface<Type>
             com.redhat.ceylon.compiler.typechecker.model.ProducedType resolvedPt = pt.substitute(producedType.getTypeArguments());
             interfaces[i++] = (ceylon.language.model.Interface<?>) Metamodel.getAppliedMetamodel(resolvedPt);
         }
-        // FIXME: reified type is wrong here and most likely in ClassOrInterfaceType too
-        this.interfaces = Util.sequentialInstance(FreeClassOrInterface.$InterfacesTypeDescriptor, interfaces);
+        this.interfaces = Util.sequentialInstance(TypeDescriptor.klass(ceylon.language.model.Interface.class, ceylon.language.Anything.$TypeDescriptor), interfaces);
     }
 
     @Override

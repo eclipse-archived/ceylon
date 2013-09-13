@@ -1,14 +1,12 @@
-// FIXME: remove type parameter?
 // FIXME: rename to OpenClassOrInterfaceType?
-shared interface OpenParameterisedType<out DeclarationType>
-    satisfies OpenType
-    given DeclarationType satisfies ClassOrInterfaceDeclaration {
+shared interface OpenParameterisedType
+    satisfies OpenType {
     
-    shared formal DeclarationType declaration;
+    shared formal ClassOrInterfaceDeclaration declaration;
     
-    shared formal OpenParameterisedType<ClassDeclaration>? superclass;
+    shared formal OpenParameterisedType? superclass;
     
-    shared formal OpenParameterisedType<InterfaceDeclaration>[] interfaces;
+    shared formal OpenParameterisedType[] interfaces;
 
     shared formal Map<TypeParameter, OpenType> typeArguments;
 }

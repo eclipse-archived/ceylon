@@ -7,6 +7,7 @@ import ceylon.language.Iterator;
 import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
+import ceylon.language.model.declaration.ClassOrInterfaceDeclaration;
 import ceylon.language.model.declaration.OpenParameterisedType$impl;
 import ceylon.language.model.declaration.OpenType;
 import ceylon.language.model.declaration.OpenType$impl;
@@ -16,26 +17,20 @@ import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
-import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
-import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
-import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-@TypeParameters({
-    @TypeParameter(value = "DeclarationType", variance = Variance.OUT, satisfies = "ceylon.language.model.declaration::ClassOrInterfaceDeclaration"),
-    })
-public class FreeParameterisedType<DeclarationType extends ceylon.language.model.declaration.ClassOrInterfaceDeclaration>
-    implements ceylon.language.model.declaration.OpenParameterisedType<DeclarationType>, ReifiedType {
+public class FreeParameterisedType
+    implements ceylon.language.model.declaration.OpenParameterisedType, ReifiedType {
 
     private volatile boolean initialised;
     final com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType;
     protected com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface declaration;
     protected ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.declaration.OpenType> typeArguments;
-    protected ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.ClassDeclaration> superclass;
-    protected Sequential<ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.InterfaceDeclaration>> interfaces;
+    protected ceylon.language.model.declaration.OpenParameterisedType superclass;
+    protected Sequential<ceylon.language.model.declaration.OpenParameterisedType> interfaces;
     
     FreeParameterisedType(@Ignore TypeDescriptor $reifiedDeclarationType, com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
         this.producedType = producedType;
@@ -49,7 +44,7 @@ public class FreeParameterisedType<DeclarationType extends ceylon.language.model
 
     @Override
     @Ignore
-    public OpenParameterisedType$impl<DeclarationType> $ceylon$language$model$declaration$OpenParameterisedType$impl() {
+    public OpenParameterisedType$impl $ceylon$language$model$declaration$OpenParameterisedType$impl() {
         return null;
     }
 
@@ -88,19 +83,19 @@ public class FreeParameterisedType<DeclarationType extends ceylon.language.model
         com.redhat.ceylon.compiler.typechecker.model.ProducedType superType = decl.getExtendedType();
         if(superType != null){
             com.redhat.ceylon.compiler.typechecker.model.ProducedType superTypeResolved = superType.substitute(producedType.getTypeArguments());
-            this.superclass = (ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.ClassDeclaration>) Metamodel.getMetamodel(superTypeResolved);
+            this.superclass = (ceylon.language.model.declaration.OpenParameterisedType) Metamodel.getMetamodel(superTypeResolved);
         }
         
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes = decl.getSatisfiedTypes();
-        ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.InterfaceDeclaration>[] interfaces 
+        ceylon.language.model.declaration.OpenParameterisedType[] interfaces 
             = new ceylon.language.model.declaration.OpenParameterisedType[satisfiedTypes.size()];
         int i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : satisfiedTypes){
             com.redhat.ceylon.compiler.typechecker.model.ProducedType resolvedPt = pt.substitute(producedType.getTypeArguments());
-            interfaces[i++] = (ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.InterfaceDeclaration>) 
+            interfaces[i++] = (ceylon.language.model.declaration.OpenParameterisedType) 
                     Metamodel.getMetamodel(resolvedPt);
         }
-        this.interfaces = Util.sequentialInstance(FreeClassOrInterface.$InterfacesTypeDescriptor, interfaces);
+        this.interfaces = Util.sequentialInstance(ceylon.language.model.declaration.OpenParameterisedType.$TypeDescriptor, interfaces);
     }
 
     @Override
@@ -112,21 +107,21 @@ public class FreeParameterisedType<DeclarationType extends ceylon.language.model
     @SuppressWarnings("unchecked")
     @Override
     @TypeInfo("DeclarationType")
-    public DeclarationType getDeclaration() {
+    public ClassOrInterfaceDeclaration getDeclaration() {
         checkInit();
-        return (DeclarationType)declaration;
+        return declaration;
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::OpenParameterisedType<ceylon.language.model.declaration::InterfaceDeclaration>>")
-    public Sequential<? extends ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.InterfaceDeclaration>> getInterfaces() {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::OpenParameterisedType>")
+    public Sequential<? extends ceylon.language.model.declaration.OpenParameterisedType> getInterfaces() {
         checkInit();
         return interfaces;
     }
 
     @Override
-    @TypeInfo("ceylon.language.model.declaration::OpenParameterisedType<ceylon.language.model.declaration::ClassDeclaration>|ceylon.language::Null")
-    public ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.ClassDeclaration> getSuperclass() {
+    @TypeInfo("ceylon.language.model.declaration::OpenParameterisedType|ceylon.language::Null")
+    public ceylon.language.model.declaration.OpenParameterisedType getSuperclass() {
         checkInit();
         return superclass;
     }
@@ -147,7 +142,7 @@ public class FreeParameterisedType<DeclarationType extends ceylon.language.model
             return true;
         if(obj instanceof ceylon.language.model.declaration.OpenParameterisedType == false)
             return false;
-        ceylon.language.model.declaration.OpenParameterisedType<?> other = (ceylon.language.model.declaration.OpenParameterisedType<?>) obj;
+        ceylon.language.model.declaration.OpenParameterisedType other = (ceylon.language.model.declaration.OpenParameterisedType) obj;
         if(!getDeclaration().equals(other.getDeclaration()))
             return false;
         return getTypeArguments().equals(other.getTypeArguments());
