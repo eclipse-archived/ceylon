@@ -59,6 +59,8 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
         if(artifact == null)
             return;
         File file = artifact.artifact();
+        if(file == null)
+            return;
         jars.addJar(file);
         if(module instanceof LazyModule){
             ((LazyModule) module).loadPackageList(artifact);
