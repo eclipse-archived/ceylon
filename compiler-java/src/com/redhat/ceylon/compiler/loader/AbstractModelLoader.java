@@ -106,6 +106,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -2126,7 +2127,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 type = obtainType(variadicType, (Scope)decl, TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
                 if(!isCeylon && !variadicType.isPrimitive()){
                     // Java parameters are all optional unless primitives
-                    ProducedType optionalType = typeFactory.getOptionalType(type);
+                    ProducedType optionalType = getOptionalType(type);
                     optionalType.setUnderlyingType(type.getUnderlyingType());
                     type = optionalType;
                 }
@@ -2140,7 +2141,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // in the java side so let's not allow this
                 if(!isCeylon && !typeMirror.isPrimitive()){
                     // Java parameters are all optional unless primitives
-                    ProducedType optionalType = typeFactory.getOptionalType(type);
+                    ProducedType optionalType = getOptionalType(type);
                     optionalType.setUnderlyingType(type.getUnderlyingType());
                     type = optionalType;
                 }
@@ -2202,6 +2203,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             
             parameterIndex++;
         }
+    }
+
+    private ProducedType getOptionalType(ProducedType type) {
+        // we do not use Unit.getOptionalType because it causes lots of lazy loading that ultimately triggers the typechecker's
+        // infinite recursion loop
+        List<ProducedType> list = new ArrayList<ProducedType>(2);
+        list.add(typeFactory.getNullDeclaration().getType());
+        list.add(type);
+        UnionType ut = new UnionType(typeFactory);
+        ut.setCaseTypes(list);
+        return ut.getType();
     }
     
     private ProducedType logModelResolutionError(Scope container, String message) {
