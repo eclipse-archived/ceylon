@@ -449,21 +449,33 @@ public class SpecificationVisitor extends Visitor {
 	            if (!lazy) that.getSpecifierExpression().visit(this);
 	            boolean constant = !isVariable() && !isLate();
 				if (!declared && constant) {
-                    that.addError("specified value is not yet declared: " + 
+                    that.addError("value is not yet declared: " + 
                             member.getName());
 	            }
 	            else if (inLoop && constant && 
 	                    !(endsInBreakReturnThrow && lastContinue==null)) {
-	                that.addError("specified non-variable value is not definitely unspecified in loop: " + 
-	                        member.getName(), 803);
+	            	if (specified.definitely) {
+	            		that.addError("value is not variable and is aready definitely specified: " + 
+	            				member.getName(), 803);
+	            	}
+	            	else {
+	            		that.addError("value is not variable and is not definitely unspecified in loop: " + 
+	            				member.getName(), 803);
+	            	}
 	            }
                 else if (withinDeclaration && constant) {
                     that.addError("cannot specify value being declared: " + 
                             member.getName(), 803);
                 }
 	            else if (specified.possibly && constant) {
-	                that.addError("specified non-variable value is not definitely unspecified: " + 
-	                        member.getName(), 803);
+	            	if (specified.definitely) {
+	            		that.addError("value is not variable and is aready definitely specified: " + 
+	            				member.getName(), 803);
+	            	}
+	            	else {
+	            		that.addError("value is not variable and is not definitely unspecified: " + 
+	            				member.getName(), 803);
+	            	}
 	            }
 	            else {
 	                specify();
