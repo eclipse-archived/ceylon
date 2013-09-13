@@ -208,7 +208,7 @@ void visitInterface(InterfaceDeclaration klass){
 }
 
 void visitOpenType(OpenType pt){
-    if(is OpenParameterisedType pt){
+    if(is OpenClassOrInterfaceType pt){
         output(pt.declaration.name);
         variable Boolean once = true;
         if(pt.declaration.typeParameterDeclarations nonempty){
