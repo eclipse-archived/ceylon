@@ -7,7 +7,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import ceylon.language.Callable;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.model.Class$impl;
@@ -33,7 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
     })
 public class AppliedClass<Type, Arguments extends Sequential<? extends Object>> 
     extends AppliedClassOrInterface<Type>
-    implements ceylon.language.model.Class<Type, Arguments>, Callable<Type> {
+    implements ceylon.language.model.Class<Type, Arguments> {
 
     private TypeDescriptor $reifiedArguments;
     private MethodHandle constructor;
