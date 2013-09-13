@@ -201,13 +201,13 @@ public class Operators {
             return lessPermissive(left, right);
         }
         
-        protected OptimisationStrategy lessPermissive(OptimisationStrategy left, OptimisationStrategy right) {
+        protected final OptimisationStrategy lessPermissive(OptimisationStrategy left, OptimisationStrategy right) {
             // it's from most permissive to less permissive, so return the one with the higher ordinal (less permissive)
             if(left.ordinal() > right.ordinal())
                 return left;
             return right;
         }
-        protected OptimisationStrategy isTermOptimisable(Tree.Term t, AbstractTransformer gen){
+        final OptimisationStrategy isTermOptimisable(Tree.Term t, AbstractTransformer gen){
             if(javacOperator < 0 || !t.getUnboxed())
                 return OptimisationStrategy.NONE;
             ProducedType pt = t.getTypeModel();

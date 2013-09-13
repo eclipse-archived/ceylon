@@ -65,6 +65,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Bound;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
@@ -81,12 +82,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpreadArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.sun.tools.javac.code.Flags;
@@ -1577,48 +1575,50 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.WithinOp op) {
-        OperatorTranslation operator = Operators.getOperator(Tree.AndOp.class);
-        OptimisationStrategy optimisationStrategy = OptimisationStrategy.OPTIMISE;
-
-        SyntheticName middle = naming.alias("middle");
-        JCVariableDecl middleVarDecl = makeVar(middle, 
-                makeJavaType(op.getTerm().getTypeModel()), 
-                transformExpression(op.getTerm(), optimisationStrategy.getBoxingStrategy(), null));
+        Term middle = op.getTerm();
+        ProducedType middleType = middle.getTypeModel();
         
-        JCExpression lower = transformBound(middle, op.getTerm(), op.getLowerBound(), false);
-        JCExpression upper = transformBound(middle, op.getTerm(), op.getUpperBound(), true);
+        Bound lowerBound = op.getLowerBound();
+        OperatorTranslation lowerOp = Operators.getOperator(lowerBound instanceof Tree.OpenBound ? Tree.SmallerOp.class : Tree.SmallAsOp.class);
         
+        Bound upperBound = op.getUpperBound();
+        OperatorTranslation upperOp = Operators.getOperator(upperBound instanceof Tree.OpenBound ? Tree.SmallerOp.class : Tree.SmallAsOp.class);
+        
+        // If any of the terms is optimizable, then use optimized
+        OptimisationStrategy opt;
+        if (upperOp.isTermOptimisable(lowerBound.getTerm(), this) == OptimisationStrategy.OPTIMISE
+                || upperOp.isTermOptimisable(middle, this) == OptimisationStrategy.OPTIMISE
+                || upperOp.isTermOptimisable(upperBound.getTerm(), this) == OptimisationStrategy.OPTIMISE) {
+            opt = OptimisationStrategy.OPTIMISE;
+        } else {
+            opt = OptimisationStrategy.NONE;
+        }
+        
+        SyntheticName middleName = naming.alias("middle");
+        List<JCStatement> vars = List.<JCStatement>of(makeVar(middleName, 
+                makeJavaType(middleType, opt.getBoxingStrategy() == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES), 
+                transformExpression(middle, opt.getBoxingStrategy(), null)));
+        
+        JCExpression lower = transformBound(middleName, lowerOp, opt, middle, lowerBound, false);
+        JCExpression upper = transformBound(middleName, upperOp, opt, middle, upperBound, true);
         at(op);
-        return make().LetExpr(middleVarDecl, transformOverridableBinaryOperator(operator, optimisationStrategy, lower, upper, null));
+        OperatorTranslation andOp = Operators.getOperator(Tree.AndOp.class);
+        OptimisationStrategy optimisationStrategy = OptimisationStrategy.OPTIMISE;
+        return make().LetExpr(vars, transformOverridableBinaryOperator(andOp, optimisationStrategy, lower, upper, null));
     }
 
-    public JCExpression transformBound(SyntheticName middle, Tree.Term middleTerm, Tree.Bound bound, boolean isUpper) {
-        
-        final OperatorTranslation operator;
-        final OptimisationStrategy optimisationStrategy;
+    public JCExpression transformBound(SyntheticName middle, final OperatorTranslation operator, final OptimisationStrategy optimisationStrategy, Tree.Term middleTerm, Tree.Bound bound, boolean isUpper) {
+        ;
         final JCExpression left;
         final JCExpression right;
         if (isUpper) {
-            if (bound instanceof Tree.OpenBound) {
-                operator = Operators.getOperator(Tree.SmallerOp.class);
-            } else {
-                operator = Operators.getOperator(Tree.SmallAsOp.class);
-            }
-            optimisationStrategy = operator.getOptimisationStrategy(bound, middleTerm, bound.getTerm(), this);
             left = middle.makeIdent();
             right = transformExpression(bound.getTerm(), optimisationStrategy.getBoxingStrategy(), null);
             
         } else {
-            if (bound instanceof Tree.OpenBound) {
-                operator = Operators.getOperator(Tree.SmallerOp.class);
-            } else {
-                operator = Operators.getOperator(Tree.SmallAsOp.class);
-            }
-            optimisationStrategy = operator.getOptimisationStrategy(bound, middleTerm, bound.getTerm(), this);
             left = transformExpression(bound.getTerm(), optimisationStrategy.getBoxingStrategy(), null);
             right = middle.makeIdent();
         }
-                
         at(bound);
         return transformOverridableBinaryOperator(operator, optimisationStrategy, left, right, null);
     }
