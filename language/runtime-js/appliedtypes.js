@@ -6,7 +6,7 @@ function AppliedClass(tipo,$$targs$$,that){
     that.tipo=tipo;
     return that;
 }
-AppliedClass.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Type:{'var':'out',},A:{'var':'in','satisfies':[{t:Sequential,a:{Element:{t:Anything}}}]}},satisfies:[{t:Class$model,a:{Arguments:'A',Type:'Type'}}],d:['ceylon.language.model','Class']};
+AppliedClass.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Type:{'var':'out',},Arguments:{'var':'in','satisfies':[{t:Sequential,a:{Element:{t:Anything}}}]}},satisfies:[{t:Class$model,a:{Arguments:'A',Type:'Type'}}],d:['ceylon.language.model','Class']};
 function $init$AppliedClass(){
     if (AppliedClass.$$===undefined){
         initTypeProto(AppliedClass,'ceylon.language.model::AppliedClass',Basic,Class$model);
@@ -21,23 +21,22 @@ function $init$AppliedClass(){
                 mm=mm();
                 $$clase.tipo.$$metamodel$$=mm;
               }
-              var mdl = get_model(mm);
               var _mod = modules$model.find(mm.mod['$mod-name'],mm.mod['$mod-version']);
               var _pkg = _mod.findPackage(mm.d[0]);
-              $$clase._decl = OpenClass(mdl['$nm'], _pkg, mm.$cont===undefined, $$clase.tipo);
+              $$clase._decl = OpenClass(mm.d[mm.d.length-1], _pkg, mm.$cont===undefined, $$clase.tipo);
               return $$clase._decl;
             });
             //superclass
             defineAttr($$clase,'superclass',function(){
-                var $$clase=this;
-                throw Exception(String$("super",5));
+              var sc = this.tipo.$$metamodel$$['super'];
+              if (sc === undefined)return null;
+              var mm = sc.t.$$metamodel$$;
+              if (typeof(mm)==='function') {
+                mm = mm();
+                sc.t.$$metamodel$$=mm;
+              }
+              return AppliedClass(sc.t, {Type:sc,Arguments:{t:Nothing}});
             });
-            //interfaces
-            defineAttr($$clase,'interfaces',function(){
-                var $$clase=this;
-                throw Exception(String$("ifaces",6));
-            });
-
             $$clase.getFunction=function getFunction(name$2,types$3,$$$mptypes){
                 var $$clase=this;
                 if(types$3===undefined){types$3=getEmpty();}
@@ -74,17 +73,20 @@ function AppliedInterface(tipo,$$targs$$,$$interfaz){
     
     //AttributeGetterDefinition declaration at test.ceylon (5:4-5:78)
     defineAttr($$interfaz,'declaration',function() {
-        throw Exception(String$("decl",4));
+      if (this._decl)return this._decl;
+      var mm = this.tipo.$$metamodel$$;
+      if (typeof(mm)==='function') {
+        mm = mm();
+        this.tipo.$$metamodel$$=mm;
+      }
+      var _pkg = modules$model.find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
+      this._decl = OpenInterface(mm.d[mm.d.length-1], _pkg, mm['$cont']===undefined, this.tipo);
+      return this._decl;
     });
     
     //AttributeGetterDefinition superclass at test.ceylon (6:4-6:83)
     defineAttr($$interfaz,'superclass',function() {
         throw Exception(String$("super",5));
-    });
-    
-    //AttributeGetterDefinition interfaces at test.ceylon (7:4-7:80)
-    defineAttr($$interfaz,'interfaces',function() {
-        throw Exception(String$("ifaces",6));
     });
     
     //MethodDefinition getFunction at test.ceylon (8:4-9:83)
@@ -245,6 +247,13 @@ function $init$AppliedValue(){
                 var $$appliedAttribute=this;
                 throw Exception();
             },undefined,{mod:$$METAMODEL$$,$an:function(){return[shared(),actual()];},d:['ceylon.language.model','AttributeModel','$at','type']});
+
+            //AttributeGetterDefinition declaringClassOrInterface at caca.ceylon (11:2-11:105)
+            defineAttr($$appliedAttribute,'declaringClassOrInterface',function(){
+                var $$appliedAttribute=this;
+                throw wrapexc(Exception(String$("unimplemented",13)),'11:71-11:103','caca/caca.ceylon');
+            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:ClassOrInterface$model,a:{Type:{t:Anything}}},$cont:AppliedAttribute,$an:function(){return[shared(),actual()];},d:['ceylon.language.model','Attribute','$at','declaringClassOrInterface']};});defineAttr($$appliedAttribute,'container',function(){return this.container_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:ClassOrInterface$model,a:{Type:{t:Anything}}}]},$cont:AppliedAttribute,$an:function(){return[shared(),actual()];},d:['ceylon.language.model','Attribute','$at','container']};});
+
         })(AppliedValue.$$.prototype);
     }
     return AppliedValue;
