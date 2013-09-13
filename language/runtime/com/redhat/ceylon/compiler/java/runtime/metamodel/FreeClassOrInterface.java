@@ -293,6 +293,7 @@ public abstract class FreeClassOrInterface
                                                                         ceylon.language.model.Type<Type> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         ProducedType qualifyingType = Metamodel.getModel(container);
+        Metamodel.checkTypeArguments(qualifyingType, declaration, producedTypes);
         ProducedReference producedReference = declaration.getProducedReference(qualifyingType, producedTypes);
         final ProducedType appliedType = producedReference.getType();
         return (Member<Type, Kind>) Metamodel.getAppliedMetamodel(appliedType);
