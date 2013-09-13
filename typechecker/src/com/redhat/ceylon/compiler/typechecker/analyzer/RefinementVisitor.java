@@ -546,11 +546,18 @@ public class RefinementVisitor extends Visitor {
         ProducedReference refiningMember = ci.getType().getTypedReference(dec, typeArgs);
         Declaration refinedMemberDec = refinedMember.getDeclaration();
 		Declaration refiningMemberDec = refiningMember.getDeclaration();
+		Node typeNode = that;
+		if (that instanceof Tree.TypedDeclaration) {
+			Tree.Type type = ((Tree.TypedDeclaration) that).getType();
+			if (type!=null) {
+				typeNode = type;
+			}
+		}
 		if (refinedMemberDec instanceof TypedDeclaration && 
 				refiningMemberDec instanceof TypedDeclaration && 
         		((TypedDeclaration) refinedMemberDec).isDynamicallyTyped()) {
         	if (!((TypedDeclaration) refiningMemberDec).isDynamicallyTyped()) {
-        		that.addError("member which refines dynamically typed refined member must also be dynamically typed: " + 
+        		typeNode.addError("member which refines dynamically typed refined member must also be dynamically typed: " + 
         				message(refined));
         	}
         }
@@ -558,13 +565,13 @@ public class RefinementVisitor extends Visitor {
 				refiningMemberDec instanceof TypedDeclaration && 
         		((TypedDeclaration) refiningMemberDec).isDynamicallyTyped()) {
         	if (!((TypedDeclaration) refinedMemberDec).isDynamicallyTyped()) {
-        		that.addError("member which refines statically typed refined member must also be statically typed: " + 
+        		typeNode.addError("member which refines statically typed refined member must also be statically typed: " + 
         				message(refined));
         	}
         }
 		else if (refinedMemberDec instanceof TypedDeclaration &&
                 ((TypedDeclaration) refinedMemberDec).isVariable()) {
-            checkRefinedMemberTypeExactly(refiningMember, refinedMember, that,
+            checkRefinedMemberTypeExactly(refiningMember, refinedMember, typeNode,
                     "type of member must be exactly the same as type of variable refined member: " + 
                     message(refined));
         }
@@ -572,7 +579,7 @@ public class RefinementVisitor extends Visitor {
             //note: this version checks return type and parameter types in one shot, but the
             //resulting error messages aren't as friendly, so do it the hard way instead!
             //checkAssignable(refiningMember.getFullType(), refinedMember.getFullType(), that,
-            checkRefinedMemberTypeAssignable(refiningMember, refinedMember, that,
+            checkRefinedMemberTypeAssignable(refiningMember, refinedMember, typeNode,
                     "type of member must be assignable to type of refined member: " + 
                     message(refined));
         }
@@ -592,7 +599,7 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkRefinedMemberTypeAssignable(ProducedReference refiningMember, 
-    		ProducedReference refinedMember, Tree.Declaration that, String message) {
+    		ProducedReference refinedMember, Node that, String message) {
         if (hasUncheckedNullType(refinedMember)) {
             ProducedType optionalRefinedType = refiningMember.getDeclaration()
             		.getUnit().getOptionalType(refinedMember.getType());
@@ -606,7 +613,7 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkRefinedMemberTypeExactly(ProducedReference refiningMember, 
-    		ProducedReference refinedMember, Tree.Declaration that, String message) {
+    		ProducedReference refinedMember, Node that, String message) {
         if (hasUncheckedNullType(refinedMember)) {
             ProducedType optionalRefinedType = refiningMember.getDeclaration()
             		.getUnit().getOptionalType(refinedMember.getType());
@@ -705,11 +712,18 @@ public class RefinementVisitor extends Visitor {
                 ProducedType refinedParameterType = refinedMember.getTypedParameter(rparam).getFullType();
                 Parameter param = params.getParameters().get(i);
                 ProducedType parameterType = member.getTypedParameter(param).getFullType();
-                Tree.Parameter p = pl.getParameters().get(i);
-                if (p!=null) {
+                Tree.Parameter parameter = pl.getParameters().get(i);
+                Node typeNode = parameter;
+                if (parameter instanceof Tree.ParameterDeclaration) {
+                	Tree.Type type = ((Tree.ParameterDeclaration) parameter).getTypedDeclaration().getType();
+                	if (type!=null) {
+                		typeNode = type;
+                	}
+                }
+                if (parameter!=null) {
             		if (rparam.getModel().isDynamicallyTyped()) {
                     	if (!param.getModel().isDynamicallyTyped()) {
-                    		p.addError("parameter which refines dynamically typed parameter must also be dynamically typed: " + 
+                    		typeNode.addError("parameter which refines dynamically typed parameter must also be dynamically typed: " + 
                     				param.getName() + " of " + member.getDeclaration().getName() + 
                                     " declared by " + containerName(member) +
                                     " refining " + refinedMember.getDeclaration().getName() +
@@ -718,7 +732,7 @@ public class RefinementVisitor extends Visitor {
                     }
             		else if (param.getModel().isDynamicallyTyped()) {
                     	if (!rparam.getModel().isDynamicallyTyped()) {
-                    		p.addError("parameter which refines statically typed parameter must also be statically typed: " + 
+                    		typeNode.addError("parameter which refines statically typed parameter must also be statically typed: " + 
                     				param.getName() + " of " + member.getDeclaration().getName() + 
                                     " declared by " + containerName(member) +
                                     " refining " + refinedMember.getDeclaration().getName() +
@@ -726,7 +740,7 @@ public class RefinementVisitor extends Visitor {
                     	}
                     }
             		else if (refinedParameterType==null || parameterType==null) {
-                        p.addError("could not determine if parameter type is the same as the corresponding parameter of refined member: " +
+            			typeNode.addError("could not determine if parameter type is the same as the corresponding parameter of refined member: " +
                                 param.getName() + " of " + member.getDeclaration().getName() + 
                                 " declared by " + containerName(member) +
                                 " refining " + refinedMember.getDeclaration().getName() +
@@ -736,7 +750,7 @@ public class RefinementVisitor extends Visitor {
                         //TODO: consider type parameter substitution!!!
                         checkIsExactlyForInterop(refinedMember, 
                                 refinedParams.isNamedParametersSupported(), 
-                                parameterType, refinedParameterType, p,
+                                parameterType, refinedParameterType, typeNode,
                                 "type of parameter " + param.getName() + " of " + 
                                         member.getDeclaration().getName() +
                                         " declared by " + containerName(member) +
