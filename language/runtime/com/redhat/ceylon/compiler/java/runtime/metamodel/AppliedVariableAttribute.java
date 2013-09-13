@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import ceylon.language.Sequential;
 import ceylon.language.model.Member$impl;
 import ceylon.language.model.VariableAttribute$impl;
+import ceylon.language.model.declaration.VariableDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -134,6 +135,11 @@ public class AppliedVariableAttribute<Container, Type>
         return (ceylon.language.model.Variable<Type>)super.$call(args);
     }
 
+    @Override
+    public VariableDeclaration getDeclaration() {
+        return (VariableDeclaration) super.getDeclaration();
+    }
+    
     @Override
     protected ceylon.language.model.Variable<Type> bindTo(Object instance) {
         return new AppliedVariable<Type>(null, declaration, typedReference, getContainer(), instance);

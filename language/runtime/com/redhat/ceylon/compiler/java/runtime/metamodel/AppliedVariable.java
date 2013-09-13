@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import ceylon.language.model.Variable$impl;
+import ceylon.language.model.declaration.VariableDeclaration;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
@@ -101,6 +102,11 @@ public class AppliedVariable<Type>
         return null;
     }
 
+    @Override
+    public VariableDeclaration getDeclaration() {
+        return (VariableDeclaration) super.getDeclaration();
+    }
+    
     @Override
     public Object set(Type value) {
         try {
