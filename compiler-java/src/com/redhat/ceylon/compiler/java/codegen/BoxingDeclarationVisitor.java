@@ -243,12 +243,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ValueParameterDeclaration that) {
-        try {
-            super.visit(that);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
-        }
-        
+        super.visit(that);
     }
     
     @Override
@@ -271,17 +266,13 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     
     @Override
     public void visit(AttributeDeclaration that) {
-        try {
-            if(that.getSpecifierOrInitializerExpression() != null
-                    && that.getDeclarationModel() != null
-                    && that.getType() instanceof Tree.ValueModifier
-                    && that.getDeclarationModel().getType() == that.getSpecifierOrInitializerExpression().getExpression().getTypeModel()){
-                that.getDeclarationModel().setType(that.getDeclarationModel().getType().withoutUnderlyingType());
-            }
-            super.visit(that);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
+        if(that.getSpecifierOrInitializerExpression() != null
+                && that.getDeclarationModel() != null
+                && that.getType() instanceof Tree.ValueModifier
+                && that.getDeclarationModel().getType() == that.getSpecifierOrInitializerExpression().getExpression().getTypeModel()){
+            that.getDeclarationModel().setType(that.getDeclarationModel().getType().withoutUnderlyingType());
         }
+        super.visit(that);
     }
 
     @Override
