@@ -598,29 +598,29 @@ void checkTypeParameters(){
     assert(tp1.variance == invariant);
     assert(!tp1.defaulted, !tp1.defaultTypeArgument exists);
 
-    assert(tp1.enumeratedBounds.size == 2);
-    assert(is OpenParameterisedType<ClassOrInterfaceDeclaration> enumB1 = tp1.enumeratedBounds[0], enumB1.declaration.name == "TP1");
-    assert(is OpenParameterisedType<ClassOrInterfaceDeclaration> enumB2 = tp1.enumeratedBounds[1], enumB2.declaration.name == "TP2");
+    assert(tp1.caseTypes.size == 2);
+    assert(is OpenParameterisedType<ClassOrInterfaceDeclaration> enumB1 = tp1.caseTypes[0], enumB1.declaration.name == "TP1");
+    assert(is OpenParameterisedType<ClassOrInterfaceDeclaration> enumB2 = tp1.caseTypes[1], enumB2.declaration.name == "TP2");
 
-    assert(tp1.upperBounds.size == 2);
-    assert(is OpenParameterisedType<ClassOrInterfaceDeclaration> upperB1 = tp1.upperBounds[0], upperB1.declaration.name == "TPA");
-    assert(is OpenParameterisedType<ClassOrInterfaceDeclaration> upperB2 = tp1.upperBounds[1], upperB2.declaration.name == "TPB");
+    assert(tp1.satisfiedTypes.size == 2);
+    assert(is OpenParameterisedType<ClassOrInterfaceDeclaration> upperB1 = tp1.satisfiedTypes[0], upperB1.declaration.name == "TPA");
+    assert(is OpenParameterisedType<ClassOrInterfaceDeclaration> upperB2 = tp1.satisfiedTypes[1], upperB2.declaration.name == "TPB");
 
     assert(exists tp2 = tpTest.typeParameterDeclarations[1]);
     assert(tp2.name == "T");
     assert(tp2.variance == contravariant);
     assert(tp2.defaulted, is OpenTypeVariable tv2 = tp2.defaultTypeArgument, tv2.declaration.name == "P");
 
-    assert(tp2.enumeratedBounds.size == 0);
-    assert(tp2.upperBounds.size == 0);
+    assert(tp2.caseTypes.size == 0);
+    assert(tp2.satisfiedTypes.size == 0);
 
     assert(exists tp3 = tpTest.typeParameterDeclarations[2]);
     assert(tp3.name == "V");
     assert(tp3.variance == covariant);
     assert(tp3.defaulted, is OpenParameterisedType<ClassOrInterfaceDeclaration> tv3 = tp3.defaultTypeArgument, tv3.declaration.name == "Integer");
 
-    assert(tp3.enumeratedBounds.size == 0);
-    assert(tp3.upperBounds.size == 0);
+    assert(tp3.caseTypes.size == 0);
+    assert(tp3.satisfiedTypes.size == 0);
     
     value tpToplevelMethod = `function typeParameterTest`;
     assert(is OpenTypeVariable tpToplevelMethodTPType = tpToplevelMethod.openType);

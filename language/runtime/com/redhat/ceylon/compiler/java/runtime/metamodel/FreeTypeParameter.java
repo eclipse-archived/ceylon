@@ -29,9 +29,9 @@ public class FreeTypeParameter
 
     private OpenType defaultTypeArgument;
 
-    private Sequential<? extends OpenType> enumeratedBounds;
+    private Sequential<? extends OpenType> caseTypes;
 
-    private Sequential<? extends OpenType> upperBounds;
+    private Sequential<? extends OpenType> satisfiedTypes;
 
     private FreeTopLevelOrMemberDeclaration container;
     
@@ -56,10 +56,10 @@ public class FreeTypeParameter
         else
             defaultTypeArgument = null;
         if(declaration.getCaseTypes() != null)
-            enumeratedBounds = Metamodel.getMetamodelSequential(declaration.getCaseTypes());
+            caseTypes = Metamodel.getMetamodelSequential(declaration.getCaseTypes());
         else
-            enumeratedBounds = (Sequential)empty_.$get();
-        upperBounds = Metamodel.getMetamodelSequential(declaration.getSatisfiedTypes());
+            caseTypes = (Sequential)empty_.$get();
+        satisfiedTypes = Metamodel.getMetamodelSequential(declaration.getSatisfiedTypes());
         container = Metamodel.getOrCreateMetamodel(declaration.getDeclaration());
     }
 
@@ -117,16 +117,16 @@ public class FreeTypeParameter
 
     @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::OpenType>")
     @Override
-    public ceylon.language.Sequential<? extends ceylon.language.model.declaration.OpenType> getUpperBounds(){
+    public ceylon.language.Sequential<? extends ceylon.language.model.declaration.OpenType> getSatisfiedTypes(){
         checkInit();
-        return upperBounds;
+        return satisfiedTypes;
     }
 
     @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::OpenType>")
     @Override
-    public ceylon.language.Sequential<? extends ceylon.language.model.declaration.OpenType> getEnumeratedBounds(){
+    public ceylon.language.Sequential<? extends ceylon.language.model.declaration.OpenType> getCaseTypes(){
         checkInit();
-        return enumeratedBounds;
+        return caseTypes;
     }
 
     @Override
