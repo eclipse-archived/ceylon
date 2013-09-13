@@ -397,6 +397,7 @@ function $init$OpenClass(){
             //AttributeDeclaration superclassDeclaration at caca.ceylon (68:2-68:86)
             defineAttr($$openClass,'superclassDeclaration',function(){
               var sc = this.tipo.$$metamodel$$['super'];
+              if (sc === undefined)return null;
               var mm = sc.t.$$metamodel$$;
               if (typeof(mm)==='function') {
                 mm = mm();
