@@ -595,7 +595,7 @@ void checkTypeParameters(){
     assert(tp1.name == "P");
     assert(tp1.qualifiedName == "metamodel::TypeParameterTest.P");
     assert(tp1.invariant, !tp1.covariant, !tp1.contravariant);
-    assert(!tp1.defaulted, !tp1.defaultValue exists);
+    assert(!tp1.defaulted, !tp1.defaultTypeArgument exists);
 
     assert(tp1.enumeratedBounds.size == 2);
     assert(is OpenParameterisedType<ClassOrInterfaceDeclaration> enumB1 = tp1.enumeratedBounds[0], enumB1.declaration.name == "TP1");
@@ -608,7 +608,7 @@ void checkTypeParameters(){
     assert(exists tp2 = tpTest.typeParameterDeclarations[1]);
     assert(tp2.name == "T");
     assert(!tp2.invariant, !tp2.covariant, tp2.contravariant);
-    assert(tp2.defaulted, is OpenTypeVariable tv2 = tp2.defaultValue, tv2.declaration.name == "P");
+    assert(tp2.defaulted, is OpenTypeVariable tv2 = tp2.defaultTypeArgument, tv2.declaration.name == "P");
 
     assert(tp2.enumeratedBounds.size == 0);
     assert(tp2.upperBounds.size == 0);
@@ -616,7 +616,7 @@ void checkTypeParameters(){
     assert(exists tp3 = tpTest.typeParameterDeclarations[2]);
     assert(tp3.name == "V");
     assert(!tp3.invariant, tp3.covariant, !tp3.contravariant);
-    assert(tp3.defaulted, is OpenParameterisedType<ClassOrInterfaceDeclaration> tv3 = tp3.defaultValue, tv3.declaration.name == "Integer");
+    assert(tp3.defaulted, is OpenParameterisedType<ClassOrInterfaceDeclaration> tv3 = tp3.defaultTypeArgument, tv3.declaration.name == "Integer");
 
     assert(tp3.enumeratedBounds.size == 0);
     assert(tp3.upperBounds.size == 0);

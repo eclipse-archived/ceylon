@@ -27,7 +27,7 @@ public class FreeTypeParameter
 
     private volatile boolean initialised = false;
 
-    private OpenType defaultValue;
+    private OpenType defaultTypeArgument;
 
     private Sequential<? extends OpenType> enumeratedBounds;
 
@@ -52,9 +52,9 @@ public class FreeTypeParameter
 
     private void init() {
         if(declaration.isDefaulted())
-            defaultValue = Metamodel.getMetamodel(declaration.getDefaultTypeArgument());
+            defaultTypeArgument = Metamodel.getMetamodel(declaration.getDefaultTypeArgument());
         else
-            defaultValue = null;
+            defaultTypeArgument = null;
         if(declaration.getCaseTypes() != null)
             enumeratedBounds = Metamodel.getMetamodelSequential(declaration.getCaseTypes());
         else
@@ -114,9 +114,9 @@ public class FreeTypeParameter
 
     @TypeInfo("ceylon.language::Null|ceylon.language.model.declaration::OpenType")
     @Override
-    public ceylon.language.model.declaration.OpenType getDefaultValue(){
+    public ceylon.language.model.declaration.OpenType getDefaultTypeArgument(){
         checkInit();
-        return defaultValue;
+        return defaultTypeArgument;
     }
 
     @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::OpenType>")
