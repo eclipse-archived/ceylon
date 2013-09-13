@@ -2,7 +2,9 @@ import ceylon.language.model {
     type,
     Type,
     Class,
+    ClassModel,
     Interface,
+    InterfaceModel,
     ClassOrInterface,
     UnionType,
     IntersectionType,
@@ -46,7 +48,7 @@ void visitInheritedTypes(ClassOrInterface<Anything> type){
     }
 }
 
-void visitExtendedTypes(Class<Anything, Nothing> type){
+void visitExtendedTypes(ClassModel<Anything, Nothing> type){
     visitType(type);
     output("\n");
     if(exists xt = type.extendedType){
@@ -54,7 +56,7 @@ void visitExtendedTypes(Class<Anything, Nothing> type){
     }
 }
 
-void visitSatisfiedTypes(Interface<Anything> type){
+void visitSatisfiedTypes(InterfaceModel<Anything> type){
     visitType(type);
     output("\n");
     for(sat in type.satisfiedTypes){

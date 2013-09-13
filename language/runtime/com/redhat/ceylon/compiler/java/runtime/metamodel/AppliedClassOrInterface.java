@@ -35,8 +35,8 @@ public abstract class AppliedClassOrInterface<Type>
     final com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType;
     protected com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface declaration;
     protected ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> typeArguments;
-    protected ceylon.language.model.Class<? extends Object, ? super Sequential<? extends Object>> superclass;
-    protected Sequential<ceylon.language.model.Interface<? extends Object>> interfaces;
+    protected ceylon.language.model.ClassModel<? extends Object, ? super Sequential<? extends Object>> superclass;
+    protected Sequential<ceylon.language.model.InterfaceModel<? extends Object>> interfaces;
     @Ignore
     protected final TypeDescriptor $reifiedType;
     
@@ -88,17 +88,17 @@ public abstract class AppliedClassOrInterface<Type>
         com.redhat.ceylon.compiler.typechecker.model.ProducedType superType = decl.getExtendedType();
         if(superType != null){
             com.redhat.ceylon.compiler.typechecker.model.ProducedType superTypeResolved = superType.substitute(producedType.getTypeArguments());
-            this.superclass = (ceylon.language.model.Class) Metamodel.getAppliedMetamodel(superTypeResolved);
+            this.superclass = (ceylon.language.model.ClassModel) Metamodel.getAppliedMetamodel(superTypeResolved);
         }
         
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes = decl.getSatisfiedTypes();
-        ceylon.language.model.Interface<?>[] interfaces = new ceylon.language.model.Interface[satisfiedTypes.size()];
+        ceylon.language.model.InterfaceModel<?>[] interfaces = new ceylon.language.model.InterfaceModel[satisfiedTypes.size()];
         int i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : satisfiedTypes){
             com.redhat.ceylon.compiler.typechecker.model.ProducedType resolvedPt = pt.substitute(producedType.getTypeArguments());
-            interfaces[i++] = (ceylon.language.model.Interface<?>) Metamodel.getAppliedMetamodel(resolvedPt);
+            interfaces[i++] = (ceylon.language.model.InterfaceModel<?>) Metamodel.getAppliedMetamodel(resolvedPt);
         }
-        this.interfaces = Util.sequentialInstance(TypeDescriptor.klass(ceylon.language.model.Interface.class, ceylon.language.Anything.$TypeDescriptor), interfaces);
+        this.interfaces = Util.sequentialInstance(TypeDescriptor.klass(ceylon.language.model.InterfaceModel.class, ceylon.language.Anything.$TypeDescriptor), interfaces);
     }
 
     @Override
@@ -115,15 +115,15 @@ public abstract class AppliedClassOrInterface<Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Interface<ceylon.language::Anything>>")
-    public Sequential<? extends ceylon.language.model.Interface<? extends Object>> getSatisfiedTypes() {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.model::InterfaceModel<ceylon.language::Anything>>")
+    public Sequential<? extends ceylon.language.model.InterfaceModel<? extends Object>> getSatisfiedTypes() {
         checkInit();
         return interfaces;
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::Class<ceylon.language::Anything,ceylon.language::Nothing>|ceylon.language::Null")
-    public ceylon.language.model.Class<? extends Object, ? extends Object> getExtendedType() {
+    @TypeInfo("ceylon.language.model::ClassModel<ceylon.language::Anything,ceylon.language::Nothing>|ceylon.language::Null")
+    public ceylon.language.model.ClassModel<? extends Object, ? extends Object> getExtendedType() {
         checkInit();
         return superclass;
     }

@@ -13,11 +13,9 @@ shared interface ClassOrInterface<out Type=Anything>
     
     shared formal actual ClassOrInterfaceDeclaration declaration;
     
-    // FIXME: ClassModel
-    shared formal Class<Anything, Nothing>? extendedType;
+    shared formal ClassModel<Anything, Nothing>? extendedType;
     
-    // FIXME: InterfaceModel
-    shared formal Interface<Anything>[] satisfiedTypes;
+    shared formal InterfaceModel<Anything>[] satisfiedTypes;
 
     // FIXME: move all these to Type
     // FIXME: introduce MemberClassOrInterface?

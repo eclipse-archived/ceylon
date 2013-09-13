@@ -242,6 +242,10 @@ void checkMemberTypes(){
     assert(exists privateMemberType = `PrivateClass`.getClassOrInterface<PrivateClass, Class<Object,[]>>("Inner"));
     value privateMember = privateMemberType(PrivateClass())();
     assert(privateMember.string == "c");
+    
+    // make super extendedType and satisfiedTypes work with members
+    assert(exists isbExtendedType = `ContainerClass.InnerSubClass`.extendedType, isbExtendedType == `ContainerClass.InnerClass`);
+    assert(exists isbSatisfiedType = `ContainerClass.InnerSubClass`.satisfiedTypes[0], isbSatisfiedType == `ContainerClass.InnerInterface`);
 }
 
 void checkUntypedFunctionToAppliedFunction(){
