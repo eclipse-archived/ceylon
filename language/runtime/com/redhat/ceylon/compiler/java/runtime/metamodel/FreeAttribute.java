@@ -54,7 +54,7 @@ public class FreeAttribute
             throw new RuntimeException("Cannot apply a member declaration with no container type: use memberApply");
         com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
         com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(null, Collections.<ProducedType>emptyList());
-        TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(modelDecl.getType());
+        TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(typedReference.getType());
         return modelDecl.isVariable() 
                 ? new AppliedVariable(reifiedType, this, typedReference, null, null) 
                 : new AppliedValue(reifiedType, this, typedReference, null, null);
@@ -78,7 +78,7 @@ public class FreeAttribute
         com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
         com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(qualifyingType, Collections.<ProducedType>emptyList());
         TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(qualifyingType);
-        TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(modelDecl.getType());
+        TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(typedReference.getType());
         return modelDecl.isVariable() 
                 ? new AppliedVariableAttribute(reifiedContainer, reifiedType, this, typedReference, containerType) 
                 : new AppliedAttribute(reifiedContainer, reifiedType, this, typedReference, containerType);
