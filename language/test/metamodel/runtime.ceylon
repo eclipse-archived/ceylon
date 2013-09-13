@@ -274,25 +274,25 @@ void checkHierarchy(){
     assert(noParamsDecl.name == "NoParams");
     assert(noParamsDecl.qualifiedName == "metamodel::NoParams");
     
-    value basicType = noParamsDecl.superclassDeclaration;
+    value basicType = noParamsDecl.extendedType;
     
     assert(exists basicType);
     
     assert(basicType.declaration.name == "Basic");
 
-    value objectType = basicType.declaration.superclassDeclaration;
+    value objectType = basicType.declaration.extendedType;
     
     assert(exists objectType);
     
     assert(objectType.declaration.name == "Object");
     
-    value anythingType = objectType.declaration.superclassDeclaration;
+    value anythingType = objectType.declaration.extendedType;
     
     assert(exists anythingType);
     
     assert(anythingType.declaration.name == "Anything");
 
-    assert(!anythingType.declaration.superclassDeclaration exists);
+    assert(!anythingType.declaration.extendedType exists);
 }
 
 void checkPackageAndModule(){
@@ -739,8 +739,8 @@ void checkEqualityAndHash(){
     
     // open types
     
-    assert(exists pt1OpenType = `class Sub1`.superclassDeclaration);
-    assert(exists pt2OpenType = `class Sub2`.superclassDeclaration);
+    assert(exists pt1OpenType = `class Sub1`.extendedType);
+    assert(exists pt2OpenType = `class Sub2`.extendedType);
     assert(pt1OpenType == pt1OpenType);
     assert(pt1OpenType.hash == pt1OpenType.hash);
     assert(pt1OpenType != pt2OpenType);

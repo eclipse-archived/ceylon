@@ -21,7 +21,7 @@ void visitStringHierarchy(){
     "metamodel class name is String"
     assert(klass.name == "String");
     
-    value st = klass.superclassDeclaration;
+    value st = klass.extendedType;
     
     "super class exists"
     assert(exists st);
@@ -112,16 +112,16 @@ void visitClass(ClassDeclaration klass){
         output(" ``param.name``");
     }
     output(")");
-    if(exists superType = klass.superclassDeclaration){
+    if(exists superType = klass.extendedType){
         output("\n  extends ");
         visitOpenType(superType);
         output("()");
         queueDeclaration(superType.declaration);
     }
-    if(klass.interfaceDeclarations nonempty){
+    if(klass.satisfiedTypes nonempty){
         output("\n  satisfies ");
         variable Boolean once = true;
-        for(interf in klass.interfaceDeclarations){
+        for(interf in klass.satisfiedTypes){
             if(once){
                 once = false;
             }else{
@@ -187,10 +187,10 @@ void visitInterface(InterfaceDeclaration klass){
         output(",".join(klass.typeParameterDeclarations.map(function (TypeParameter tp) => tp.name)));
         output(">");
     }
-    if(klass.interfaceDeclarations nonempty){
+    if(klass.satisfiedTypes nonempty){
         output("\n satisfies ");
         variable Boolean once = true;
-        for(interf in klass.interfaceDeclarations){
+        for(interf in klass.satisfiedTypes){
             if(once){
                 once = false;
             }else{

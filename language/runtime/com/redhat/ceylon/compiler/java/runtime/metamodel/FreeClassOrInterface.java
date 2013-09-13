@@ -187,14 +187,14 @@ public abstract class FreeClassOrInterface
     
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::OpenParameterisedType<ceylon.language.model.declaration::InterfaceDeclaration>>")
-    public Sequential<? extends ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.InterfaceDeclaration>> getInterfaceDeclarations() {
+    public Sequential<? extends ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.InterfaceDeclaration>> getSatisfiedTypes() {
         checkInit();
         return interfaces;
     }
 
     @Override
     @TypeInfo("ceylon.language.model.declaration::OpenParameterisedType<ceylon.language.model.declaration::ClassDeclaration>|ceylon.language::Null")
-    public ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.ClassDeclaration> getSuperclassDeclaration() {
+    public ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.ClassDeclaration> getExtendedType() {
         checkInit();
         return superclass;
     }

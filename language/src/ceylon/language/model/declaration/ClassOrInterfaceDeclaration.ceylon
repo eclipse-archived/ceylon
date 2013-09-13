@@ -8,12 +8,9 @@ shared interface ClassOrInterfaceDeclaration
         of ClassDeclaration | InterfaceDeclaration 
         satisfies TopLevelOrMemberDeclaration & GenericDeclaration {
     
-    // FIXME: names are not great and not in line with OpenParameterisedType, perhaps declarationSuperClassType or superClassOpenType?
-    // or extendedType?
-    shared formal OpenParameterisedType<ClassDeclaration>? superclassDeclaration;
+    shared formal OpenParameterisedType<ClassDeclaration>? extendedType;
     
-    // FIXME: renmae to satisfiedTypes
-    shared formal OpenParameterisedType<InterfaceDeclaration>[] interfaceDeclarations;
+    shared formal OpenParameterisedType<InterfaceDeclaration>[] satisfiedTypes;
     
     shared formal OpenType[] caseTypes;
     
