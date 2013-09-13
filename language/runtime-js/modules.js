@@ -65,6 +65,7 @@ function Modulo(meta, $$modulo){
     }
     var name=String$(meta.$$METAMODEL$$['$mod-name']);
     defineAttr($$modulo,'name',function(){return name;},undefined,{mod:$$METAMODEL$$,$t:{t:String$},$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','Module','$at','name']});
+    defineAttr($$modulo,'qualifiedName',function(){return name;},undefined,{mod:$$METAMODEL$$,$t:{t:String$},$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','Module','$at','qualifiedName']});
     var version=String$(meta.$$METAMODEL$$['$mod-version']);
     defineAttr($$modulo,'version',function(){return version;},undefined,{mod:$$METAMODEL$$,$t:{t:String$},$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','Module','$at','version']});
     defineAttr($$modulo,'members',function(){
@@ -170,6 +171,7 @@ function Paquete(name, container, pkg, $$paquete){
     }
     $$paquete.suffix=suffix;
     defineAttr($$paquete,'name',function(){return name;},undefined,{mod:$$METAMODEL$$,$t:{t:String$},$cont:Paquete,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','Package','$at','name']});
+    defineAttr($$paquete,'qualifiedName',function(){return name;},undefined,{mod:$$METAMODEL$$,$t:{t:String$},$cont:Paquete,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','Package','$at','qualifiedName']});
     var container=container;
     defineAttr($$paquete,'container',function(){return container;},undefined,{mod:$$METAMODEL$$,$t:{t:Module$model$declaration},$cont:Paquete,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','Package','$at','container']});
     function members($$$mptypes){
