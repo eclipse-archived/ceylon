@@ -520,6 +520,11 @@ void checkModules(){
     assert(!modules.find("nonexistant", "123") exists);
     assert(!modules.find("ceylon.language", "0.1.1235") exists);
     assert(!modules.find("metamodel", "54321") exists);
+    
+    assert(!thisModule.findPackage("ceylon.language") exists);
+    assert(exists p1 = thisModule.findImportedPackage("ceylon.language"), p1 == `package ceylon.language`);
+    assert(exists p2 = thisModule.findPackage("metamodel"), p2 == `package metamodel`);
+    assert(exists p3 = thisModule.findImportedPackage("metamodel"), p3 == `package metamodel`);
 }
 
 void checkObjectDeclaration(){

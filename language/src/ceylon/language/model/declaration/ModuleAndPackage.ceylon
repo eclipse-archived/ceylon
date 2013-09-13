@@ -17,7 +17,7 @@ shared interface Module
     "Finds a package by name"
     shared formal Package? findPackage(String name);
     
-    // FIXME: add find package within dependencies
+    shared formal Package? findImportedPackage(String name);
 }
 
 "Model of an `import` declaration 

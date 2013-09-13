@@ -94,6 +94,13 @@ public class FreeModule implements ceylon.language.model.declaration.Module,
     }
 
     @Override
+    @TypeInfo("ceylon.language::Null|ceylon.language.model.declaration::Package")
+    public Package findImportedPackage(@Name("name") String name) {
+        com.redhat.ceylon.compiler.typechecker.model.Package pkg = declaration.getPackage(name);
+        return pkg == null ? null : Metamodel.getOrCreateMetamodel(pkg);
+    }
+
+    @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::Import>")
     public Sequential<? extends Import> getDependencies() {
         // no need to synchronise as concurrent invocations should get the same array back
