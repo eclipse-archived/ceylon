@@ -1,8 +1,8 @@
 import ceylon.language.model{Annotated}
 
 shared interface NestableDeclaration of FunctionOrValueDeclaration |
-                                                ClassOrInterfaceDeclaration |
-                                                AliasDeclaration
+                                        ClassOrInterfaceDeclaration |
+                                        AliasDeclaration
         satisfies AnnotatedDeclaration & TypedDeclaration {
 
     shared formal Boolean actual;

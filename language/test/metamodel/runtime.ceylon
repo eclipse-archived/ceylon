@@ -561,7 +561,7 @@ void checkAliases(){
     assert(exists aliasDeclaration2 = pkg.getMember<AliasDeclaration>("TypeAliasToClass"));
     assert(aliasDeclaration2.name == "TypeAliasToClass");
     // and members
-    assert(pkg.members<AliasDeclaration>().size == 3);
+    assert(pkg.members<AliasDeclaration>().size == 4);
     
     // get one with type parameters
     assert(exists aliasDeclarationTP = pkg.getAlias("TypeAliasToClassTP"));
@@ -985,7 +985,11 @@ void checkApplications(){
     assert(is MemberClass<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerClass<String>, []> memberClass);
     Object memberClass2 = `class ParameterisedContainerClass.InnerClass`.memberApply<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerClass<String>>(`ParameterisedContainerClass<Integer>`, `String`);
     assert(is MemberClass<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerClass<String>, []> memberClass2);
-
+/*
+FIXME: to be determined wrt container types
+    Object mixedAlias = `alias TypeAliasToMemberAndTopLevel`.apply<TPA & ContainerInterface.InnerClass>();
+    assert(is IntersectionType<TPA & ContainerInterface.InnerClass> mixedAlias);
+*/
 }
 
 shared void run() {

@@ -247,6 +247,8 @@ shared alias TypeAliasToClassTP<J>
 
 shared alias TypeAliasToUnion => Integer | String;
 
+shared alias TypeAliasToMemberAndTopLevel => TPA & ContainerInterface.InnerClass;
+
 shared interface TPA {}
 shared interface TPB {}
 
