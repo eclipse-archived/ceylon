@@ -8,9 +8,9 @@ shared interface ClassOrInterfaceDeclaration
         of ClassDeclaration | InterfaceDeclaration 
         satisfies NestableDeclaration & GenericDeclaration {
     
-    shared formal OpenClassOrInterfaceType? extendedType;
+    shared formal OpenClassType? extendedType;
     
-    shared formal OpenClassOrInterfaceType[] satisfiedTypes;
+    shared formal OpenInterfaceType[] satisfiedTypes;
     
     shared formal OpenType[] caseTypes;
     

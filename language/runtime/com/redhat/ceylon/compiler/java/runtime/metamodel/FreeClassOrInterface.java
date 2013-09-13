@@ -41,8 +41,8 @@ public abstract class FreeClassOrInterface
     private static final TypeDescriptor $ClassOrInterfaceTypeDescriptor = TypeDescriptor.klass(ceylon.language.model.declaration.ClassOrInterfaceDeclaration.class, Anything.$TypeDescriptor);
     
     private volatile boolean initialised = false;
-    private ceylon.language.model.declaration.OpenClassOrInterfaceType superclass;
-    private Sequential<ceylon.language.model.declaration.OpenClassOrInterfaceType> interfaces;
+    private ceylon.language.model.declaration.OpenClassType superclass;
+    private Sequential<ceylon.language.model.declaration.OpenInterfaceType> interfaces;
     private Sequential<? extends ceylon.language.model.declaration.TypeParameter> typeParameters;
 
     private List<ceylon.language.model.declaration.NestableDeclaration> declarations;
@@ -70,15 +70,15 @@ public abstract class FreeClassOrInterface
         
         ProducedType superType = declaration.getExtendedType();
         if(superType != null)
-            this.superclass = (ceylon.language.model.declaration.OpenClassOrInterfaceType) Metamodel.getMetamodel(superType);
+            this.superclass = (ceylon.language.model.declaration.OpenClassType) Metamodel.getMetamodel(superType);
         
         List<ProducedType> satisfiedTypes = declaration.getSatisfiedTypes();
-        ceylon.language.model.declaration.OpenClassOrInterfaceType[] interfaces = new ceylon.language.model.declaration.OpenClassOrInterfaceType[satisfiedTypes.size()];
+        ceylon.language.model.declaration.OpenInterfaceType[] interfaces = new ceylon.language.model.declaration.OpenInterfaceType[satisfiedTypes.size()];
         int i=0;
         for(ProducedType pt : satisfiedTypes){
-            interfaces[i++] = (ceylon.language.model.declaration.OpenClassOrInterfaceType) Metamodel.getMetamodel(pt);
+            interfaces[i++] = (ceylon.language.model.declaration.OpenInterfaceType) Metamodel.getMetamodel(pt);
         }
-        this.interfaces = Util.sequentialInstance(ceylon.language.model.declaration.OpenClassOrInterfaceType.$TypeDescriptor, interfaces);
+        this.interfaces = Util.sequentialInstance(ceylon.language.model.declaration.OpenInterfaceType.$TypeDescriptor, interfaces);
 
         if(declaration.getCaseTypes() != null)
             this.caseTypes = Metamodel.getMetamodelSequential(declaration.getCaseTypes());
@@ -183,15 +183,15 @@ public abstract class FreeClassOrInterface
     }
     
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::OpenClassOrInterfaceType>")
-    public Sequential<? extends ceylon.language.model.declaration.OpenClassOrInterfaceType> getSatisfiedTypes() {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::OpenInterfaceType>")
+    public Sequential<? extends ceylon.language.model.declaration.OpenInterfaceType> getSatisfiedTypes() {
         checkInit();
         return interfaces;
     }
 
     @Override
-    @TypeInfo("ceylon.language.model.declaration::OpenClassOrInterfaceType|ceylon.language::Null")
-    public ceylon.language.model.declaration.OpenClassOrInterfaceType getExtendedType() {
+    @TypeInfo("ceylon.language.model.declaration::OpenClassType|ceylon.language::Null")
+    public ceylon.language.model.declaration.OpenClassType getExtendedType() {
         checkInit();
         return superclass;
     }

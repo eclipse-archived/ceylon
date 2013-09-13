@@ -22,7 +22,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class FreeClassOrInterfaceType
+public abstract class FreeClassOrInterfaceType
     implements ceylon.language.model.declaration.OpenClassOrInterfaceType, ReifiedType {
 
     @Ignore
@@ -32,8 +32,8 @@ public class FreeClassOrInterfaceType
     final com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType;
     protected com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface declaration;
     protected ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.declaration.OpenType> typeArguments;
-    protected ceylon.language.model.declaration.OpenClassOrInterfaceType superclass;
-    protected Sequential<ceylon.language.model.declaration.OpenClassOrInterfaceType> interfaces;
+    protected ceylon.language.model.declaration.OpenClassType superclass;
+    protected Sequential<ceylon.language.model.declaration.OpenInterfaceType> interfaces;
     
     FreeClassOrInterfaceType(com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
         this.producedType = producedType;
@@ -86,19 +86,19 @@ public class FreeClassOrInterfaceType
         com.redhat.ceylon.compiler.typechecker.model.ProducedType superType = decl.getExtendedType();
         if(superType != null){
             com.redhat.ceylon.compiler.typechecker.model.ProducedType superTypeResolved = superType.substitute(producedType.getTypeArguments());
-            this.superclass = (ceylon.language.model.declaration.OpenClassOrInterfaceType) Metamodel.getMetamodel(superTypeResolved);
+            this.superclass = (ceylon.language.model.declaration.OpenClassType) Metamodel.getMetamodel(superTypeResolved);
         }
         
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes = decl.getSatisfiedTypes();
-        ceylon.language.model.declaration.OpenClassOrInterfaceType[] interfaces 
-            = new ceylon.language.model.declaration.OpenClassOrInterfaceType[satisfiedTypes.size()];
+        ceylon.language.model.declaration.OpenInterfaceType[] interfaces 
+            = new ceylon.language.model.declaration.OpenInterfaceType[satisfiedTypes.size()];
         int i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : satisfiedTypes){
             com.redhat.ceylon.compiler.typechecker.model.ProducedType resolvedPt = pt.substitute(producedType.getTypeArguments());
-            interfaces[i++] = (ceylon.language.model.declaration.OpenClassOrInterfaceType) 
+            interfaces[i++] = (ceylon.language.model.declaration.OpenInterfaceType) 
                     Metamodel.getMetamodel(resolvedPt);
         }
-        this.interfaces = Util.sequentialInstance(ceylon.language.model.declaration.OpenClassOrInterfaceType.$TypeDescriptor, interfaces);
+        this.interfaces = Util.sequentialInstance(ceylon.language.model.declaration.OpenInterfaceType.$TypeDescriptor, interfaces);
     }
 
     @Override
@@ -114,15 +114,15 @@ public class FreeClassOrInterfaceType
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::OpenClassOrInterfaceType>")
-    public Sequential<? extends ceylon.language.model.declaration.OpenClassOrInterfaceType> getInterfaces() {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::OpenInterfaceType>")
+    public Sequential<? extends ceylon.language.model.declaration.OpenInterfaceType> getInterfaces() {
         checkInit();
         return interfaces;
     }
 
     @Override
-    @TypeInfo("ceylon.language.model.declaration::OpenClassOrInterfaceType|ceylon.language::Null")
-    public ceylon.language.model.declaration.OpenClassOrInterfaceType getSuperclass() {
+    @TypeInfo("ceylon.language.model.declaration::OpenClassType|ceylon.language::Null")
+    public ceylon.language.model.declaration.OpenClassType getSuperclass() {
         checkInit();
         return superclass;
     }

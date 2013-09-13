@@ -1,11 +1,12 @@
 shared interface OpenClassOrInterfaceType
+    of OpenClassType | OpenInterfaceType
     satisfies OpenType {
     
     shared formal ClassOrInterfaceDeclaration declaration;
     
-    shared formal OpenClassOrInterfaceType? superclass;
+    shared formal OpenClassType? superclass;
     
-    shared formal OpenClassOrInterfaceType[] interfaces;
+    shared formal OpenInterfaceType[] interfaces;
 
     shared formal Map<TypeParameter, OpenType> typeArguments;
 }

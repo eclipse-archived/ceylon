@@ -224,8 +224,11 @@ public class Metamodel {
 
     public static ceylon.language.model.declaration.OpenType getMetamodel(ProducedType pt) {
         TypeDeclaration declaration = pt.getDeclaration();
-        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface){
-            return new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeParameterisedType(null, pt);
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
+            return new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassType(pt);
+        }
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
+            return new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeInterfaceType(pt);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.TypeParameter){
             com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp = (com.redhat.ceylon.compiler.typechecker.model.TypeParameter) declaration;
