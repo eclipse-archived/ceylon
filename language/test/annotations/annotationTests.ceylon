@@ -50,7 +50,7 @@ ClassDeclaration aAbstractClassDecl {
 }
 InterfaceDeclaration aInterfaceDecl {
     assert(exists sup=aClassDecl.extendedType);
-    assert(exists iface0=sup.interfaces[0]);
+    assert(exists iface0=sup.satisfiedTypes[0]);
     return iface0.declaration;
 }
 ClassDeclaration memberClassDecl(ClassOrInterfaceDeclaration outerClass, String memberName) {
