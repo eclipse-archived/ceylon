@@ -115,14 +115,14 @@ public abstract class FreeClassOrInterfaceType
 
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::OpenInterfaceType>")
-    public Sequential<? extends ceylon.language.model.declaration.OpenInterfaceType> getInterfaces() {
+    public Sequential<? extends ceylon.language.model.declaration.OpenInterfaceType> getSatisfiedTypes() {
         checkInit();
         return interfaces;
     }
 
     @Override
     @TypeInfo("ceylon.language.model.declaration::OpenClassType|ceylon.language::Null")
-    public ceylon.language.model.declaration.OpenClassType getSuperclass() {
+    public ceylon.language.model.declaration.OpenClassType getExtendedType() {
         checkInit();
         return superclass;
     }

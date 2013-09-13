@@ -4,9 +4,9 @@ shared interface OpenClassOrInterfaceType
     
     shared formal ClassOrInterfaceDeclaration declaration;
     
-    shared formal OpenClassType? superclass;
+    shared formal OpenClassType? extendedType;
     
-    shared formal OpenInterfaceType[] interfaces;
+    shared formal OpenInterfaceType[] satisfiedTypes;
 
     shared formal Map<TypeParameter, OpenType> typeArguments;
 }
