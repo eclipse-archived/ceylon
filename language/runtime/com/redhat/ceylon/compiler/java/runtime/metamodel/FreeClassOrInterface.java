@@ -247,7 +247,7 @@ public abstract class FreeClassOrInterface
             throw new RuntimeException("Cannot apply a member declaration with no container type: use memberApply");
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
-        com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference appliedType = ((TypedDeclaration) declaration).getProducedTypedReference(null, producedTypes);
+        com.redhat.ceylon.compiler.typechecker.model.ProducedReference appliedType = declaration.getProducedReference(null, producedTypes);
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(appliedType.getType());
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
             return new AppliedInterface(reifiedType, appliedType.getType(), null, null);
