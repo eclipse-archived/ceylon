@@ -1,1 +1,622 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
+
+interface Bug1289_Bar<Key> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<Key> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$impl();
+    
+    public abstract .java.lang.Object m(final Key x, final Key y, final Key z);
+}
+final class Bug1289_Bar$impl<Key> {
+    
+    Bug1289_Bar$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar<Key> $this) {
+        this.$reifiedKey = $reifiedKey;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar<Key> $this;
+    
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey) {
+        this.$reifiedKey = $reifiedKey;
+    }
+}
+class Bug1289_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar<.ceylon.language.Integer> {
+    
+    Bug1289_Foo() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object m(final .ceylon.language.Integer xboxed, final .ceylon.language.Integer yboxed, final .ceylon.language.Integer zboxed) {
+        final long x = ((.ceylon.language.Integer).ceylon.language.nothing_.$get()).longValue();
+        final long y = ((.ceylon.language.Integer).ceylon.language.nothing_.$get()).longValue();
+        final long z = ((.ceylon.language.Integer).ceylon.language.nothing_.$get()).longValue();
+        boolean b = false;
+        b = (
+            let
+            {
+                long $middle$0 = y;
+            }
+            returning x < $middle$0 && $middle$0 < z;
+        );
+        b = (
+            let
+            {
+                long $middle$1 = z;
+            }
+            returning x < $middle$1 && $middle$1 < y;
+        );
+        b = (
+            let
+            {
+                long $middle$2 = x;
+            }
+            returning y < $middle$2 && $middle$2 < z;
+        );
+        b = (
+            let
+            {
+                long $middle$3 = z;
+            }
+            returning y < $middle$3 && $middle$3 < x;
+        );
+        b = (
+            let
+            {
+                long $middle$4 = x;
+            }
+            returning z < $middle$4 && $middle$4 < y;
+        );
+        b = (
+            let
+            {
+                long $middle$5 = y;
+            }
+            returning z < $middle$5 && $middle$5 < x;
+        );
+        b = (
+            let
+            {
+                long $middle$6 = y;
+            }
+            returning xboxed.longValue() < $middle$6 && $middle$6 < z;
+        );
+        b = (
+            let
+            {
+                long $middle$7 = z;
+            }
+            returning xboxed.longValue() < $middle$7 && $middle$7 < y;
+        );
+        b = (
+            let
+            {
+                long $middle$8 = xboxed.longValue();
+            }
+            returning y < $middle$8 && $middle$8 < z;
+        );
+        b = (
+            let
+            {
+                long $middle$9 = z;
+            }
+            returning y < $middle$9 && $middle$9 < xboxed.longValue();
+        );
+        b = (
+            let
+            {
+                long $middle$10 = xboxed.longValue();
+            }
+            returning z < $middle$10 && $middle$10 < y;
+        );
+        b = (
+            let
+            {
+                long $middle$11 = y;
+            }
+            returning z < $middle$11 && $middle$11 < xboxed.longValue();
+        );
+        b = (
+            let
+            {
+                long $middle$12 = yboxed.longValue();
+            }
+            returning xboxed.longValue() < $middle$12 && $middle$12 < z;
+        );
+        b = (
+            let
+            {
+                long $middle$13 = z;
+            }
+            returning xboxed.longValue() < $middle$13 && $middle$13 < yboxed.longValue();
+        );
+        b = (
+            let
+            {
+                long $middle$14 = xboxed.longValue();
+            }
+            returning yboxed.longValue() < $middle$14 && $middle$14 < z;
+        );
+        b = (
+            let
+            {
+                long $middle$15 = z;
+            }
+            returning yboxed.longValue() < $middle$15 && $middle$15 < xboxed.longValue();
+        );
+        b = (
+            let
+            {
+                long $middle$16 = xboxed.longValue();
+            }
+            returning z < $middle$16 && $middle$16 < yboxed.longValue();
+        );
+        b = (
+            let
+            {
+                long $middle$17 = yboxed.longValue();
+            }
+            returning z < $middle$17 && $middle$17 < xboxed.longValue();
+        );
+        b = (
+            let
+            {
+                .ceylon.language.Integer $middle$18 = yboxed;
+            }
+            returning xboxed.compare($middle$18).smallerThan() && $middle$18.compare(zboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                .ceylon.language.Integer $middle$19 = zboxed;
+            }
+            returning xboxed.compare($middle$19).smallerThan() && $middle$19.compare(yboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                .ceylon.language.Integer $middle$20 = xboxed;
+            }
+            returning yboxed.compare($middle$20).smallerThan() && $middle$20.compare(zboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                .ceylon.language.Integer $middle$21 = zboxed;
+            }
+            returning yboxed.compare($middle$21).smallerThan() && $middle$21.compare(xboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                .ceylon.language.Integer $middle$22 = xboxed;
+            }
+            returning zboxed.compare($middle$22).smallerThan() && $middle$22.compare(yboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                .ceylon.language.Integer $middle$23 = yboxed;
+            }
+            returning zboxed.compare($middle$23).smallerThan() && $middle$23.compare(xboxed).smallerThan();
+        );
+        return null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo.class);
+}
+class Bug1289_Foo2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar<.ceylon.language.Float> {
+    
+    Bug1289_Foo2() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor, this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<.ceylon.language.Float> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<.ceylon.language.Float> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object m(final .ceylon.language.Float xboxed, final .ceylon.language.Float yboxed, final .ceylon.language.Float zboxed) {
+        final double x = ((.ceylon.language.Float).ceylon.language.nothing_.$get()).doubleValue();
+        final double y = ((.ceylon.language.Float).ceylon.language.nothing_.$get()).doubleValue();
+        final double z = ((.ceylon.language.Float).ceylon.language.nothing_.$get()).doubleValue();
+        boolean b = false;
+        b = (
+            let
+            {
+                double $middle$24 = y;
+            }
+            returning x < $middle$24 && $middle$24 < z;
+        );
+        b = (
+            let
+            {
+                double $middle$25 = z;
+            }
+            returning x < $middle$25 && $middle$25 < y;
+        );
+        b = (
+            let
+            {
+                double $middle$26 = x;
+            }
+            returning y < $middle$26 && $middle$26 < z;
+        );
+        b = (
+            let
+            {
+                double $middle$27 = z;
+            }
+            returning y < $middle$27 && $middle$27 < x;
+        );
+        b = (
+            let
+            {
+                double $middle$28 = x;
+            }
+            returning z < $middle$28 && $middle$28 < y;
+        );
+        b = (
+            let
+            {
+                double $middle$29 = y;
+            }
+            returning z < $middle$29 && $middle$29 < x;
+        );
+        b = (
+            let
+            {
+                double $middle$30 = y;
+            }
+            returning xboxed.doubleValue() < $middle$30 && $middle$30 < z;
+        );
+        b = (
+            let
+            {
+                double $middle$31 = z;
+            }
+            returning xboxed.doubleValue() < $middle$31 && $middle$31 < y;
+        );
+        b = (
+            let
+            {
+                double $middle$32 = xboxed.doubleValue();
+            }
+            returning y < $middle$32 && $middle$32 < z;
+        );
+        b = (
+            let
+            {
+                double $middle$33 = z;
+            }
+            returning y < $middle$33 && $middle$33 < xboxed.doubleValue();
+        );
+        b = (
+            let
+            {
+                double $middle$34 = xboxed.doubleValue();
+            }
+            returning z < $middle$34 && $middle$34 < y;
+        );
+        b = (
+            let
+            {
+                double $middle$35 = y;
+            }
+            returning z < $middle$35 && $middle$35 < xboxed.doubleValue();
+        );
+        b = (
+            let
+            {
+                double $middle$36 = yboxed.doubleValue();
+            }
+            returning xboxed.doubleValue() < $middle$36 && $middle$36 < z;
+        );
+        b = (
+            let
+            {
+                double $middle$37 = z;
+            }
+            returning xboxed.doubleValue() < $middle$37 && $middle$37 < yboxed.doubleValue();
+        );
+        b = (
+            let
+            {
+                double $middle$38 = xboxed.doubleValue();
+            }
+            returning yboxed.doubleValue() < $middle$38 && $middle$38 < z;
+        );
+        b = (
+            let
+            {
+                double $middle$39 = z;
+            }
+            returning yboxed.doubleValue() < $middle$39 && $middle$39 < xboxed.doubleValue();
+        );
+        b = (
+            let
+            {
+                double $middle$40 = xboxed.doubleValue();
+            }
+            returning z < $middle$40 && $middle$40 < yboxed.doubleValue();
+        );
+        b = (
+            let
+            {
+                double $middle$41 = yboxed.doubleValue();
+            }
+            returning z < $middle$41 && $middle$41 < xboxed.doubleValue();
+        );
+        b = (
+            let
+            {
+                .ceylon.language.Float $middle$42 = yboxed;
+            }
+            returning xboxed.compare($middle$42).smallerThan() && $middle$42.compare(zboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                .ceylon.language.Float $middle$43 = zboxed;
+            }
+            returning xboxed.compare($middle$43).smallerThan() && $middle$43.compare(yboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                .ceylon.language.Float $middle$44 = xboxed;
+            }
+            returning yboxed.compare($middle$44).smallerThan() && $middle$44.compare(zboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                .ceylon.language.Float $middle$45 = zboxed;
+            }
+            returning yboxed.compare($middle$45).smallerThan() && $middle$45.compare(xboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                .ceylon.language.Float $middle$46 = xboxed;
+            }
+            returning zboxed.compare($middle$46).smallerThan() && $middle$46.compare(yboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                .ceylon.language.Float $middle$47 = yboxed;
+            }
+            returning zboxed.compare($middle$47).smallerThan() && $middle$47.compare(xboxed).smallerThan();
+        );
+        return null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo2();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo2.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo2.class);
+}
+class Bug1289_Foo3<Element extends .ceylon.language.Comparable<? super Element>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar<Element> {
+    
+    Bug1289_Foo3(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+        this.$reifiedElement = $reifiedElement;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<Element>($reifiedElement, this);
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object m(final Element xboxed, final Element yboxed, final Element zboxed) {
+        final Element x = (Element).ceylon.language.nothing_.$get();
+        final Element y = (Element).ceylon.language.nothing_.$get();
+        final Element z = (Element).ceylon.language.nothing_.$get();
+        boolean b = false;
+        b = (
+            let
+            {
+                Element $middle$48 = y;
+            }
+            returning x.compare($middle$48).smallerThan() && $middle$48.compare(z).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$49 = z;
+            }
+            returning x.compare($middle$49).smallerThan() && $middle$49.compare(y).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$50 = x;
+            }
+            returning y.compare($middle$50).smallerThan() && $middle$50.compare(z).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$51 = z;
+            }
+            returning y.compare($middle$51).smallerThan() && $middle$51.compare(x).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$52 = x;
+            }
+            returning z.compare($middle$52).smallerThan() && $middle$52.compare(y).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$53 = y;
+            }
+            returning z.compare($middle$53).smallerThan() && $middle$53.compare(x).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$54 = y;
+            }
+            returning xboxed.compare($middle$54).smallerThan() && $middle$54.compare(z).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$55 = z;
+            }
+            returning xboxed.compare($middle$55).smallerThan() && $middle$55.compare(y).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$56 = xboxed;
+            }
+            returning y.compare($middle$56).smallerThan() && $middle$56.compare(z).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$57 = z;
+            }
+            returning y.compare($middle$57).smallerThan() && $middle$57.compare(xboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$58 = xboxed;
+            }
+            returning z.compare($middle$58).smallerThan() && $middle$58.compare(y).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$59 = y;
+            }
+            returning z.compare($middle$59).smallerThan() && $middle$59.compare(xboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$60 = yboxed;
+            }
+            returning xboxed.compare($middle$60).smallerThan() && $middle$60.compare(z).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$61 = z;
+            }
+            returning xboxed.compare($middle$61).smallerThan() && $middle$61.compare(yboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$62 = xboxed;
+            }
+            returning yboxed.compare($middle$62).smallerThan() && $middle$62.compare(z).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$63 = z;
+            }
+            returning yboxed.compare($middle$63).smallerThan() && $middle$63.compare(xboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$64 = xboxed;
+            }
+            returning z.compare($middle$64).smallerThan() && $middle$64.compare(yboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$65 = yboxed;
+            }
+            returning z.compare($middle$65).smallerThan() && $middle$65.compare(xboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$66 = yboxed;
+            }
+            returning xboxed.compare($middle$66).smallerThan() && $middle$66.compare(zboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$67 = zboxed;
+            }
+            returning xboxed.compare($middle$67).smallerThan() && $middle$67.compare(yboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$68 = xboxed;
+            }
+            returning yboxed.compare($middle$68).smallerThan() && $middle$68.compare(zboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$69 = zboxed;
+            }
+            returning yboxed.compare($middle$69).smallerThan() && $middle$69.compare(xboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$70 = xboxed;
+            }
+            returning zboxed.compare($middle$70).smallerThan() && $middle$70.compare(yboxed).smallerThan();
+        );
+        b = (
+            let
+            {
+                Element $middle$71 = yboxed;
+            }
+            returning zboxed.compare($middle$71).smallerThan() && $middle$71.compare(xboxed).smallerThan();
+        );
+        return null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo3(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo3.class, $reifiedElement);
+    }
+}
