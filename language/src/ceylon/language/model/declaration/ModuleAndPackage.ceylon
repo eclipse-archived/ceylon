@@ -50,15 +50,15 @@ shared interface Package
     
     "The members of this package."
     shared formal Kind[] members<Kind>() 
-            given Kind satisfies TopLevelOrMemberDeclaration;
+            given Kind satisfies NestableDeclaration;
     
     "The members of this package having a particular annotation."
     shared formal Kind[] annotatedMembers<Kind, Annotation>() 
-            given Kind satisfies TopLevelOrMemberDeclaration;
+            given Kind satisfies NestableDeclaration;
 
     "Looks up a member of this package by name and type."
     shared formal Kind? getMember<Kind>(String name) 
-            given Kind satisfies TopLevelOrMemberDeclaration;
+            given Kind satisfies NestableDeclaration;
 
     "The value with the given name."
     shared formal ValueDeclaration? getValue(String name);

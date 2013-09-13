@@ -137,7 +137,7 @@ void visitClass(ClassDeclaration klass){
 }
 
 void visitMembers(ClassOrInterfaceDeclaration decl){
-    for(m in decl.memberDeclarations<TopLevelOrMemberDeclaration>()){
+    for(m in decl.memberDeclarations<NestableDeclaration>()){
         switch(m)
         case(is FunctionDeclaration){
             visitFunction(m);

@@ -6,7 +6,7 @@ import ceylon.language.model.declaration.AnnotatedDeclaration$impl;
 import ceylon.language.model.declaration.Declaration$impl;
 import ceylon.language.model.declaration.Module;
 import ceylon.language.model.declaration.Package;
-import ceylon.language.model.declaration.TopLevelOrMemberDeclaration$impl;
+import ceylon.language.model.declaration.NestableDeclaration$impl;
 import ceylon.language.model.declaration.TypedDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -19,24 +19,24 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public abstract class FreeTopLevelOrMemberDeclaration 
-    implements ceylon.language.model.declaration.TopLevelOrMemberDeclaration, ReifiedType {
+public abstract class FreeNestableDeclaration 
+    implements ceylon.language.model.declaration.NestableDeclaration, ReifiedType {
     
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeTopLevelOrMemberDeclaration.class);
+    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeNestableDeclaration.class);
 
     @Ignore
     protected com.redhat.ceylon.compiler.typechecker.model.Declaration declaration;
     
     private Package pkg;
 
-    public FreeTopLevelOrMemberDeclaration(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
+    public FreeNestableDeclaration(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
         this.declaration = declaration;
     }
 
     @Override
     @Ignore
-    public TopLevelOrMemberDeclaration$impl $ceylon$language$model$declaration$TopLevelOrMemberDeclaration$impl() {
+    public NestableDeclaration$impl $ceylon$language$model$declaration$NestableDeclaration$impl() {
         return null;
     }
 
@@ -115,7 +115,7 @@ public abstract class FreeTopLevelOrMemberDeclaration
     }
 
     @Override
-    @TypeInfo(value = "ceylon.language.model.declaration::TopLevelOrMemberDeclaration|ceylon.language.model.declaration::Package", erased = true)
+    @TypeInfo(value = "ceylon.language.model.declaration::NestableDeclaration|ceylon.language.model.declaration::Package", erased = true)
     public java.lang.Object getContainer() {
         return Metamodel.getContainer(declaration);
     }

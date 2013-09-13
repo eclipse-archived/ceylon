@@ -18,7 +18,7 @@ import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-public class FreeAliasDeclaration extends FreeTopLevelOrMemberDeclaration 
+public class FreeAliasDeclaration extends FreeNestableDeclaration 
     implements ceylon.language.model.declaration.AliasDeclaration {
 
     @Ignore

@@ -1,6 +1,6 @@
 import ceylon.language.model{Annotated, MetamodelAnnotation = Annotation}
 
-shared interface AnnotatedDeclaration of TopLevelOrMemberDeclaration
+shared interface AnnotatedDeclaration of NestableDeclaration
                                        | Module
                                        | Package
     satisfies Declaration & Annotated {

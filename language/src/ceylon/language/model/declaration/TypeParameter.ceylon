@@ -1,6 +1,6 @@
 shared interface TypeParameter satisfies Declaration {
     
-    shared formal TopLevelOrMemberDeclaration container;
+    shared formal NestableDeclaration container;
     
     shared formal Boolean defaulted;
     

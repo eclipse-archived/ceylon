@@ -1,5 +1,5 @@
 import ceylon.language.model.declaration {
-    TopLevelOrMemberDeclaration
+    NestableDeclaration
 }
 
 shared interface Model of ClassOrInterface<Anything>
@@ -8,5 +8,5 @@ shared interface Model of ClassOrInterface<Anything>
     
     shared formal ClassOrInterface<Anything>? container;
     
-    shared formal TopLevelOrMemberDeclaration declaration;
+    shared formal NestableDeclaration declaration;
 }

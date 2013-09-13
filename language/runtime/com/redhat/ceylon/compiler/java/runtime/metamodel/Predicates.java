@@ -278,7 +278,7 @@ class Predicates {
      */
     public static Predicate<Declaration> isDeclarationOfKind(TypeDescriptor kind) {
         if (kind instanceof TypeDescriptor.Class) {
-            Class<? extends ceylon.language.model.declaration.TopLevelOrMemberDeclaration> declarationClass = (Class)((TypeDescriptor.Class) kind).getKlass();
+            Class<? extends ceylon.language.model.declaration.NestableDeclaration> declarationClass = (Class)((TypeDescriptor.Class) kind).getKlass();
             if (declarationClass == ceylon.language.model.declaration.VariableDeclaration.class) {
                 return DECLARATION_IS_VARIABLE;
             } else if (declarationClass == ceylon.language.model.declaration.ValueDeclaration.class) {
@@ -293,7 +293,7 @@ class Predicates {
                 return DECLARATION_IS_CLASS_OR_INTERFACE;
             } else if (declarationClass == ceylon.language.model.declaration.AliasDeclaration.class) {
                 return DECLARATION_IS_ALIAS;
-            } else if (declarationClass == ceylon.language.model.declaration.TopLevelOrMemberDeclaration.class) {
+            } else if (declarationClass == ceylon.language.model.declaration.NestableDeclaration.class) {
                 return true_();
             }
             throw new EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
@@ -339,7 +339,7 @@ class Predicates {
         /** Acceps the Declaration if the required annotation is present */
         @Override
         public boolean accept(Declaration memberModel) {
-            FreeTopLevelOrMemberDeclaration member = Metamodel.getOrCreateMetamodel(memberModel);
+            FreeNestableDeclaration member = Metamodel.getOrCreateMetamodel(memberModel);
             Sequential<? extends A> annotations = Metamodel.<A>annotations(annotation, member);
             return !annotations.getEmpty();
         }

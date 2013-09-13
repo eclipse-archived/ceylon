@@ -11,7 +11,7 @@ import ceylon.language.model{
 import ceylon.language.model.declaration {
     ValueDeclaration,
     VariableDeclaration,
-    TopLevelOrMemberDeclaration,
+    NestableDeclaration,
     FunctionDeclaration,
     ClassDeclaration,
     ClassOrInterfaceDeclaration,
@@ -22,7 +22,7 @@ import ceylon.language.model.declaration {
 Package aPackage {
     value aClassType = type(AClass(""));
     value aClassDecl = aClassType.declaration;
-    value pkg = aClassDecl.packageContainer;
+    value pkg = aClassDecl.containingPackage;
     return pkg;
 }
 ValueDeclaration aToplevelAttributeDecl {
@@ -45,11 +45,11 @@ ClassDeclaration aClassDecl {
     return type(AClass("")).declaration;
 }
 ClassDeclaration aAbstractClassDecl {
-    assert(exists sup=aClassDecl.superclassDeclaration);
+    assert(exists sup=aClassDecl.extendedType);
     return sup.declaration;
 }
 InterfaceDeclaration aInterfaceDecl {
-    assert(exists sup=aClassDecl.superclassDeclaration);
+    assert(exists sup=aClassDecl.extendedType);
     assert(exists iface0=sup.interfaces[0]);
     return iface0.declaration;
 }
@@ -676,7 +676,7 @@ void checkPackage() {
     assert(! aToplevelGetterSetterDecl in abstractCallables);
     assert(! aToplevelFunctionDecl in abstractCallables);
     
-    value sharedDeclarations = p.annotatedMembers<TopLevelOrMemberDeclaration, Shared>();
+    value sharedDeclarations = p.annotatedMembers<NestableDeclaration, Shared>();
     assert(aClassDecl in sharedDeclarations);
     assert(aAbstractClassDecl in sharedDeclarations);
     assert(aInterfaceDecl in sharedDeclarations);

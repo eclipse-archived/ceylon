@@ -99,8 +99,8 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
 
     @Override
     @TypeInfo("ceylon.language::Sequential<Kind>")
-    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::TopLevelOrMemberDeclaration"))
-    public <Kind extends ceylon.language.model.declaration.TopLevelOrMemberDeclaration> Sequential<? extends Kind> 
+    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::NestableDeclaration"))
+    public <Kind extends ceylon.language.model.declaration.NestableDeclaration> Sequential<? extends Kind> 
     members(@Ignore TypeDescriptor $reifiedKind) {
         
         Predicates.Predicate<?> predicate = Predicates.isDeclarationOfKind($reifiedKind);
@@ -110,8 +110,8 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
 
     @Override
     @TypeInfo("Kind")
-    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::TopLevelOrMemberDeclaration"))
-    public <Kind extends ceylon.language.model.declaration.TopLevelOrMemberDeclaration> Kind 
+    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::NestableDeclaration"))
+    public <Kind extends ceylon.language.model.declaration.NestableDeclaration> Kind 
     getMember(@Ignore TypeDescriptor $reifiedKind, @Name("name") String name) {
         
         Predicates.Predicate<?> predicate = Predicates.and(
@@ -125,10 +125,10 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
     @Override
     @TypeInfo("ceylon.language::Sequential<Kind>")
     @TypeParameters({ 
-        @TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::TopLevelOrMemberDeclaration"), 
+        @TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::NestableDeclaration"), 
         @TypeParameter(value = "Annotation") 
     })
-    public <Kind extends ceylon.language.model.declaration.TopLevelOrMemberDeclaration, Annotation> Sequential<? extends Kind> 
+    public <Kind extends ceylon.language.model.declaration.NestableDeclaration, Annotation> Sequential<? extends Kind> 
     annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
         
         Predicates.Predicate<?> predicate = Predicates.and(

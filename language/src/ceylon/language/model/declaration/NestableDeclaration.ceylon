@@ -1,7 +1,7 @@
 import ceylon.language.model{Annotated}
 
 // FIXME: new name NestableDeclaration?
-shared interface TopLevelOrMemberDeclaration of FunctionOrValueDeclaration |
+shared interface NestableDeclaration of FunctionOrValueDeclaration |
                                                 ClassOrInterfaceDeclaration |
                                                 AliasDeclaration
         satisfies AnnotatedDeclaration & TypedDeclaration {
@@ -18,7 +18,7 @@ shared interface TopLevelOrMemberDeclaration of FunctionOrValueDeclaration |
 
     shared formal Module containingModule;
 
-    shared formal TopLevelOrMemberDeclaration|Package container;
+    shared formal NestableDeclaration|Package container;
     
     shared formal Boolean toplevel;
 }

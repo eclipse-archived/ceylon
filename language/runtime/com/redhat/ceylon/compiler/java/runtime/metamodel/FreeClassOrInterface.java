@@ -27,7 +27,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public abstract class FreeClassOrInterface
-    extends FreeTopLevelOrMemberDeclaration
+    extends FreeNestableDeclaration
     implements ceylon.language.model.declaration.ClassOrInterfaceDeclaration, AnnotationBearing {
 
     @Ignore
@@ -48,7 +48,7 @@ public abstract class FreeClassOrInterface
     private Sequential<ceylon.language.model.declaration.OpenParameterisedType<ceylon.language.model.declaration.InterfaceDeclaration>> interfaces;
     private Sequential<? extends ceylon.language.model.declaration.TypeParameter> typeParameters;
 
-    private List<ceylon.language.model.declaration.TopLevelOrMemberDeclaration> declarations;
+    private List<ceylon.language.model.declaration.NestableDeclaration> declarations;
 
     private Sequential<? extends ceylon.language.model.declaration.OpenType> caseTypes;
 
@@ -92,7 +92,7 @@ public abstract class FreeClassOrInterface
         
         List<com.redhat.ceylon.compiler.typechecker.model.Declaration> memberModelDeclarations = declaration.getMembers();
         i=0;
-        this.declarations = new LinkedList<ceylon.language.model.declaration.TopLevelOrMemberDeclaration>();
+        this.declarations = new LinkedList<ceylon.language.model.declaration.NestableDeclaration>();
         for(com.redhat.ceylon.compiler.typechecker.model.Declaration memberModelDeclaration : memberModelDeclarations){
             if(memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value
                     || memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method
@@ -115,8 +115,8 @@ public abstract class FreeClassOrInterface
     
     @Override
     @TypeInfo("ceylon.language::Sequential<Kind>")
-    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::TopLevelOrMemberDeclaration"))
-    public <Kind extends ceylon.language.model.declaration.TopLevelOrMemberDeclaration> Sequential<? extends Kind> 
+    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::NestableDeclaration"))
+    public <Kind extends ceylon.language.model.declaration.NestableDeclaration> Sequential<? extends Kind> 
     memberDeclarations(@Ignore TypeDescriptor $reifiedKind) {
         
         Predicates.Predicate<?> predicate = Predicates.isDeclarationOfKind($reifiedKind);
@@ -127,10 +127,10 @@ public abstract class FreeClassOrInterface
     @Override
     @TypeInfo("ceylon.language::Sequential<Kind>")
     @TypeParameters({
-            @TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::TopLevelOrMemberDeclaration"),
+            @TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::NestableDeclaration"),
             @TypeParameter("Annotation")
     })
-    public <Kind extends ceylon.language.model.declaration.TopLevelOrMemberDeclaration, Annotation> Sequential<? extends Kind> 
+    public <Kind extends ceylon.language.model.declaration.NestableDeclaration, Annotation> Sequential<? extends Kind> 
     annotatedMemberDeclarations(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
         
         Predicates.Predicate<?> predicate = Predicates.and(
@@ -148,8 +148,8 @@ public abstract class FreeClassOrInterface
         }
         checkInit();
         SequenceBuilder<Kind> members = new SequenceBuilder<Kind>($reifiedKind, declarations.size());
-        for(ceylon.language.model.declaration.TopLevelOrMemberDeclaration decl : declarations){
-            if (predicate.accept(((FreeTopLevelOrMemberDeclaration)decl).declaration)) {
+        for(ceylon.language.model.declaration.NestableDeclaration decl : declarations){
+            if (predicate.accept(((FreeNestableDeclaration)decl).declaration)) {
                 members.append((Kind) decl);
             }
         }
@@ -173,8 +173,8 @@ public abstract class FreeClassOrInterface
     
     @Override
     @TypeInfo("Kind")
-    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::TopLevelOrMemberDeclaration"))
-    public <Kind extends ceylon.language.model.declaration.TopLevelOrMemberDeclaration> Kind 
+    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::NestableDeclaration"))
+    public <Kind extends ceylon.language.model.declaration.NestableDeclaration> Kind 
     getMemberDeclaration(@Ignore TypeDescriptor $reifiedKind, @Name("name") String name) {
         
         Predicates.Predicate<?> predicate = Predicates.and(
@@ -286,24 +286,24 @@ public abstract class FreeClassOrInterface
     }
 
     FreeFunction findMethod(String name) {
-        FreeTopLevelOrMemberDeclaration decl = this.findDeclaration(null, name);
+        FreeNestableDeclaration decl = this.findDeclaration(null, name);
         return decl instanceof FreeFunction ? (FreeFunction)decl : null;
     }
 
     FreeAttribute findValue(String name) {
-        FreeTopLevelOrMemberDeclaration decl = this.findDeclaration(null, name);
+        FreeNestableDeclaration decl = this.findDeclaration(null, name);
         return decl instanceof FreeAttribute ? (FreeAttribute)decl : null;
     }
 
 
     FreeClassOrInterface findType(String name) {
-        FreeTopLevelOrMemberDeclaration decl = this.findDeclaration(null, name);
+        FreeNestableDeclaration decl = this.findDeclaration(null, name);
         return decl instanceof FreeClassOrInterface ? (FreeClassOrInterface)decl : null;
     }
 
-    <T extends FreeTopLevelOrMemberDeclaration> T findDeclaration(@Ignore TypeDescriptor $reifiedT, String name) {
+    <T extends FreeNestableDeclaration> T findDeclaration(@Ignore TypeDescriptor $reifiedT, String name) {
         checkInit();
-        for(ceylon.language.model.declaration.TopLevelOrMemberDeclaration decl : declarations){
+        for(ceylon.language.model.declaration.NestableDeclaration decl : declarations){
             // skip anonymous types which can't be looked up by name
             if(decl instanceof ceylon.language.model.declaration.ClassDeclaration
                     && ((ceylon.language.model.declaration.ClassDeclaration) decl).getAnonymous())

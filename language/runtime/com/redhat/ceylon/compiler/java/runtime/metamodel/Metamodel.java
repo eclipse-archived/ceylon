@@ -24,7 +24,7 @@ import ceylon.language.model.TypeApplicationException;
 import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.Module;
 import ceylon.language.model.declaration.Package;
-import ceylon.language.model.declaration.TopLevelOrMemberDeclaration;
+import ceylon.language.model.declaration.NestableDeclaration;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
@@ -66,8 +66,8 @@ public class Metamodel {
     private static RuntimeModuleManager moduleManager;
     
     // FIXME: this will need better thinking in terms of memory usage
-    private static Map<com.redhat.ceylon.compiler.typechecker.model.Declaration, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTopLevelOrMemberDeclaration> typeCheckModelToRuntimeModel
-        = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Declaration, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTopLevelOrMemberDeclaration>();
+    private static Map<com.redhat.ceylon.compiler.typechecker.model.Declaration, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeNestableDeclaration> typeCheckModelToRuntimeModel
+        = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Declaration, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeNestableDeclaration>();
 
     private static Map<com.redhat.ceylon.compiler.typechecker.model.Package, com.redhat.ceylon.compiler.java.runtime.metamodel.FreePackage> typeCheckPackagesToRuntimeModel
         = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Package, com.redhat.ceylon.compiler.java.runtime.metamodel.FreePackage>();
@@ -151,9 +151,9 @@ public class Metamodel {
         return getAppliedMetamodel(pt);
     }
     
-    public static com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTopLevelOrMemberDeclaration getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration){
+    public static com.redhat.ceylon.compiler.java.runtime.metamodel.FreeNestableDeclaration getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration){
         synchronized(getLock()){
-            com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTopLevelOrMemberDeclaration ret = typeCheckModelToRuntimeModel.get(declaration);
+            com.redhat.ceylon.compiler.java.runtime.metamodel.FreeNestableDeclaration ret = typeCheckModelToRuntimeModel.get(declaration);
             if(ret == null){
                 if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
                     com.redhat.ceylon.compiler.typechecker.model.Class klass = (com.redhat.ceylon.compiler.typechecker.model.Class) declaration;
@@ -640,14 +640,14 @@ public class Metamodel {
      * This is also used by generated code in the JVM compiler, for type declaration literals.
      * In theory this can only be used for ClassOrInterface or TypeAlias.
      */
-    public static ceylon.language.model.declaration.TopLevelOrMemberDeclaration getOrCreateMetamodel(java.lang.Class<?> klass){
+    public static ceylon.language.model.declaration.NestableDeclaration getOrCreateMetamodel(java.lang.Class<?> klass){
         // FIXME: is this really enough?
         String typeName = klass.getName();
         com.redhat.ceylon.compiler.typechecker.model.Module module = moduleManager.findModuleForClass(klass);
         com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration decl = 
                 (com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration) 
                     moduleManager.getModelLoader().getDeclaration(module, typeName, DeclarationType.TYPE);
-        return (ceylon.language.model.declaration.TopLevelOrMemberDeclaration) getOrCreateMetamodel(decl);
+        return (ceylon.language.model.declaration.NestableDeclaration) getOrCreateMetamodel(decl);
     }
 
     public static TypeDescriptor getTypeDescriptorForFunction(ProducedReference appliedFunction) {
@@ -769,7 +769,7 @@ public class Metamodel {
                                                               typeArguments);
     }
     
-    public static String toTypeString(ceylon.language.model.declaration.TopLevelOrMemberDeclaration declaration, 
+    public static String toTypeString(ceylon.language.model.declaration.NestableDeclaration declaration, 
             ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends java.lang.Object> typeArguments){
         StringBuffer string = new StringBuffer();
         string.append(declaration.getName());
@@ -779,12 +779,12 @@ public class Metamodel {
         while(container != null){
             if(container instanceof Package)
                 return ((Package)container).getName() + "::" + string;
-            StringBuffer string2 = new StringBuffer(((TopLevelOrMemberDeclaration)container).getName());
+            StringBuffer string2 = new StringBuffer(((NestableDeclaration)container).getName());
             if(container instanceof ceylon.language.model.declaration.GenericDeclaration)
                 addTypeArguments(string2, (ceylon.language.model.declaration.GenericDeclaration)container, typeArguments);
             string2.append(".");
             string.insert(0, string2.toString());
-            container = ((TopLevelOrMemberDeclaration)container).getContainer();
+            container = ((NestableDeclaration)container).getContainer();
         }
         return string.toString();
     }

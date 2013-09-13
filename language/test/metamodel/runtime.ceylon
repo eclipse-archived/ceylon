@@ -9,7 +9,7 @@ import ceylon.language.model.declaration {
     OpenTypeVariable,
     OpenUnion,
     Declaration,
-    TopLevelOrMemberDeclaration,
+    NestableDeclaration,
     AliasDeclaration,
     covariant, contravariant, invariant
 }
@@ -311,7 +311,7 @@ void checkPackageAndModule(){
     assert(pkg.name == "metamodel");
     assert(pkg.qualifiedName == "metamodel");
 
-    assert(pkg.members<TopLevelOrMemberDeclaration>().size > 0);
+    assert(pkg.members<NestableDeclaration>().size > 0);
 
     //
     // Module
@@ -335,7 +335,7 @@ void checkToplevelAttributes(){
 
     value pkg = noParamsDecl.containingPackage;
 
-    assert(pkg.members<TopLevelOrMemberDeclaration>().find((Declaration decl) => decl.name == "toplevelInteger") exists);
+    assert(pkg.members<NestableDeclaration>().find((Declaration decl) => decl.name == "toplevelInteger") exists);
 
     assert(is ValueDeclaration toplevelIntegerDecl = pkg.getValue("toplevelInteger"));
     assert(is Value<Integer> toplevelIntegerAttribute = toplevelIntegerDecl.apply());
@@ -422,7 +422,7 @@ void checkToplevelFunctions(){
 
     value pkg = noParamsDecl.containingPackage;
 
-    assert(pkg.members<TopLevelOrMemberDeclaration>().find((Declaration decl) => decl.name == "fixedParams") exists);
+    assert(pkg.members<NestableDeclaration>().find((Declaration decl) => decl.name == "fixedParams") exists);
 
     assert(exists f2 = pkg.getFunction("fixedParams"));
     assert(is Function<Anything,[String, Integer, Float, Character, Boolean, Object, NoParams]> f2a = f2.apply());

@@ -33,7 +33,7 @@ public class FreeTypeParameter
 
     private Sequential<? extends OpenType> satisfiedTypes;
 
-    private FreeTopLevelOrMemberDeclaration container;
+    private FreeNestableDeclaration container;
     
     public FreeTypeParameter(com.redhat.ceylon.compiler.typechecker.model.TypeParameter declaration) {
         this.declaration = declaration;
@@ -130,7 +130,7 @@ public class FreeTypeParameter
     }
 
     @Override
-    public ceylon.language.model.declaration.TopLevelOrMemberDeclaration getContainer(){
+    public ceylon.language.model.declaration.NestableDeclaration getContainer(){
         checkInit();
         return container;
     }

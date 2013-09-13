@@ -10,7 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public abstract class FreeFunctionOrValue 
-    extends FreeTopLevelOrMemberDeclaration
+    extends FreeNestableDeclaration
     implements ceylon.language.model.declaration.FunctionOrValueDeclaration {
 
     @Ignore

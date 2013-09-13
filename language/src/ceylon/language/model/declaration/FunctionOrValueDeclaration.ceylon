@@ -1,7 +1,7 @@
 shared interface FunctionOrValueDeclaration
     of FunctionDeclaration
      | ValueDeclaration
-    satisfies TopLevelOrMemberDeclaration {
+    satisfies NestableDeclaration {
     
     shared formal Boolean parameter;
     

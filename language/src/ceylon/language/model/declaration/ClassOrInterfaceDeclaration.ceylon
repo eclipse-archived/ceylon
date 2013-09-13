@@ -6,7 +6,7 @@ import ceylon.language.model {
 
 shared interface ClassOrInterfaceDeclaration 
         of ClassDeclaration | InterfaceDeclaration 
-        satisfies TopLevelOrMemberDeclaration & GenericDeclaration {
+        satisfies NestableDeclaration & GenericDeclaration {
     
     shared formal OpenParameterisedType<ClassDeclaration>? extendedType;
     
@@ -16,16 +16,16 @@ shared interface ClassOrInterfaceDeclaration
     
     shared formal Boolean isAlias;
     
-    // FIXME: should Kind default to TopLevelOrMemberDeclaration?
+    // FIXME: should Kind default to NestableDeclaration?
     shared formal Kind[] memberDeclarations<Kind>() 
-            given Kind satisfies TopLevelOrMemberDeclaration;
+            given Kind satisfies NestableDeclaration;
     
     shared formal Kind[] annotatedMemberDeclarations<Kind, Annotation>() 
-            given Kind satisfies TopLevelOrMemberDeclaration;
+            given Kind satisfies NestableDeclaration;
     
     "Looks up a member of this package by name and type."
     shared formal Kind? getMemberDeclaration<Kind>(String name) 
-            given Kind satisfies TopLevelOrMemberDeclaration;
+            given Kind satisfies NestableDeclaration;
     
     shared formal AppliedClassOrInterface<Anything> apply(Type<Anything>* types);
     

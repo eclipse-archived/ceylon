@@ -3,7 +3,7 @@ import ceylon.language.model {
 }
 
 shared interface AliasDeclaration 
-    satisfies TopLevelOrMemberDeclaration & GenericDeclaration {
+    satisfies NestableDeclaration & GenericDeclaration {
     
     shared formal Type<Anything> apply(Type<Anything>* types);
     
