@@ -553,6 +553,7 @@ void checkAliases(){
     assert(exists aliasDeclaration = pkg.getAlias("TypeAliasToClass"));
     // check it
     assert(aliasDeclaration.name == "TypeAliasToClass");
+    assert(aliasDeclaration.extendedType == `class NoParams`.openType);
     assert(aliasDeclaration.typeParameterDeclarations.size == 0);
     assert(is OpenClassOrInterfaceType aliasedType = aliasDeclaration.openType);
     assert(aliasedType.declaration.name == "NoParams");

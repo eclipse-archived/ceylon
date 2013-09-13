@@ -22,6 +22,8 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
     private boolean initialised = false;
 
     private Sequential<? extends ceylon.language.model.declaration.TypeParameter> typeParameters;
+
+    private OpenType extendedType;
     
     public FreeAliasDeclaration(com.redhat.ceylon.compiler.typechecker.model.TypeAlias declaration) {
         super(declaration);
@@ -44,6 +46,8 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
         com.redhat.ceylon.compiler.typechecker.model.TypeAlias declaration = (com.redhat.ceylon.compiler.typechecker.model.TypeAlias) this.declaration;
         
         this.typeParameters = Metamodel.getTypeParameters(declaration);
+        
+        this.extendedType = Metamodel.getMetamodel(declaration.getExtendedType());
     }
 
     @Override
@@ -63,6 +67,12 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
         return openType;
     }
 
+    @Override
+    public OpenType getExtendedType() {
+        checkInit();
+        return extendedType;
+    }
+    
     @Override
     public ceylon.language.model.declaration.TypeParameter getTypeParameterDeclaration(@Name("name") @TypeInfo("ceylon.language::String") String name) {
         return Metamodel.findDeclarationByName(getTypeParameterDeclarations(), name);

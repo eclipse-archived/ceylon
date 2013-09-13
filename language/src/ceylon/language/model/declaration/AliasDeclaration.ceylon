@@ -7,6 +7,8 @@ import ceylon.language.model {
 shared interface AliasDeclaration 
     satisfies NestableDeclaration & GenericDeclaration {
 
+    shared formal OpenType extendedType;
+
     /*
     FIXME: this is too shaky WRT member types, we'll figure it out later    
     shared formal AppliedType<Type> apply<Type=Anything>(AppliedType<Anything>* typeArguments);
