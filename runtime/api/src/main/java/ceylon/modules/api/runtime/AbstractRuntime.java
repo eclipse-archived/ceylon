@@ -20,11 +20,11 @@ package ceylon.modules.api.runtime;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.logging.Logger;
 
 import ceylon.modules.CeylonRuntimeException;
 import ceylon.modules.Configuration;
 import ceylon.modules.spi.Constants;
+
 import com.redhat.ceylon.compiler.java.metadata.Module;
 
 /**
@@ -77,8 +77,13 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
                 // we add _ to run class
                 runClass = cl.loadClass(Character.isLowerCase(firstChar) ? runClassName + "_" : runClassName);
             } catch (ClassNotFoundException ignored) {
-                Logger.getLogger("ceylon.runtime").severe("Could not find class or method '" + runClassName + "'");
-                return; // looks like no such run class is available
+                String type;
+                if (Character.isUpperCase(runClassName.charAt(0))) {
+                    type = "class";
+                } else {
+                    type = "method";
+                }
+                throw new CeylonRuntimeException("Could not find toplevel " + type + " '" + runClassName + "'");
             }
 
             SecurityActions.invokeRun(runClass, args);
