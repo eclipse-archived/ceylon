@@ -116,14 +116,14 @@ public abstract class AppliedClassOrInterface<Type>
 
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Interface<ceylon.language::Anything>>")
-    public Sequential<? extends ceylon.language.model.Interface<? extends Object>> getInterfaces() {
+    public Sequential<? extends ceylon.language.model.Interface<? extends Object>> getSatisfiedTypes() {
         checkInit();
         return interfaces;
     }
 
     @Override
     @TypeInfo("ceylon.language.model::Class<ceylon.language::Anything,ceylon.language::Nothing>|ceylon.language::Null")
-    public ceylon.language.model.Class<? extends Object, ? extends Object> getSuperclass() {
+    public ceylon.language.model.Class<? extends Object, ? extends Object> getExtendedType() {
         checkInit();
         return superclass;
     }

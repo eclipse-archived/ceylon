@@ -37,11 +37,11 @@ void visitStringHierarchy(){
 
 void visitInheritedTypes(ClassOrInterface<Anything> type){
     output("Types extended by ``type.declaration.name``:\n");
-    if(exists xt = type.superclass){
+    if(exists xt = type.extendedType){
         visitExtendedTypes(xt);
     }
     output("Types satisfied by ``type.declaration.name``:\n");
-    for(sat in type.interfaces){
+    for(sat in type.satisfiedTypes){
         visitSatisfiedTypes(sat);
     }
 }
@@ -49,7 +49,7 @@ void visitInheritedTypes(ClassOrInterface<Anything> type){
 void visitExtendedTypes(Class<Anything, Nothing> type){
     visitType(type);
     output("\n");
-    if(exists xt = type.superclass){
+    if(exists xt = type.extendedType){
         visitExtendedTypes(xt);
     }
 }
@@ -57,7 +57,7 @@ void visitExtendedTypes(Class<Anything, Nothing> type){
 void visitSatisfiedTypes(Interface<Anything> type){
     visitType(type);
     output("\n");
-    for(sat in type.interfaces){
+    for(sat in type.satisfiedTypes){
         visitSatisfiedTypes(sat);
     }
 }
