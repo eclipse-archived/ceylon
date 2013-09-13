@@ -1,14 +1,15 @@
 import ceylon.language.model {
     SequencedAnnotation, OptionalAnnotation, 
-    Annotated }
+    Annotated
+}
 import ceylon.language.model.declaration {
     Module, Package, Import,
     ClassDeclaration,
     ClassOrInterfaceDeclaration,
-    InterfaceDeclaration,
     FunctionDeclaration,
     Declaration,
-    ValueDeclaration} 
+    ValueDeclaration
+} 
 
 "The annotation class for [[annotation]]."
 shared final annotation class Annotation()
