@@ -1001,6 +1001,22 @@ void checkTests(){
     assert(`NoParams | Integer`.isTypeOf(NoParams()));
     assert(!`String | Integer`.isTypeOf(NoParams()));
     assert(!`Nothing`.isTypeOf(NoParams()));
+    
+    assert(`NoParams`.isSubTypeOf(`Object`));
+    assert(!`NoParams`.isSubTypeOf(`TPA`));
+    assert(`Nothing`.isSubTypeOf(`Nothing`));
+    assert(`Nothing`.isSubTypeOf(`NoParams`));
+
+    assert(`Object`.isSuperTypeOf(`NoParams`));
+    assert(!`TPA`.isSuperTypeOf(`NoParams`));
+    assert(`Nothing`.isSuperTypeOf(`Nothing`));
+    assert(!`Nothing`.isSuperTypeOf(`Object`));
+
+    assert(`NoParams`.isExactly(`NoParams`));
+    assert(!`NoParams`.isExactly(`Object`));
+    assert(`TPA & TPB`.isExactly(`TPB & TPA & TPB`));
+    assert(`Nothing`.isExactly(`Nothing`));
+    assert(!`Nothing`.isExactly(`Object`));
 }
 
 shared void run() {

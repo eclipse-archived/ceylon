@@ -415,6 +415,12 @@ public class Metamodel {
     public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.model.Type<?> pt) {
         if(pt instanceof AppliedClassOrInterface)
             return ((AppliedClassOrInterface<?>)pt).producedType;
+        if(pt instanceof AppliedUnionType<?>)
+            return ((AppliedUnionType<?>)pt).model;
+        if(pt instanceof AppliedIntersectionType<?>)
+            return ((AppliedIntersectionType<?>)pt).model;
+        if(pt instanceof ceylon.language.model.nothingType_)
+            return new NothingType(moduleManager.getModelLoader().getUnit()).getType();
             
         throw new RuntimeException("Unsupported applied produced type: " + pt);
     }
@@ -865,5 +871,20 @@ public class Metamodel {
     public static boolean isTypeOf(ProducedType producedType, Object instance) {
         ProducedType instanceType = Metamodel.getProducedType(instance);
         return instanceType.isSubtypeOf(producedType);
+    }
+
+    public static boolean isSuperTypeOf(ProducedType a, ceylon.language.model.Type<? extends Object> type) {
+        ProducedType b = Metamodel.getModel(type);
+        return a.isSupertypeOf(b);
+    }
+
+    public static boolean isSubTypeOf(ProducedType a, ceylon.language.model.Type<? extends Object> type) {
+        ProducedType b = Metamodel.getModel(type);
+        return a.isSubtypeOf(b);
+    }
+
+    public static boolean isExactly(ProducedType a, ceylon.language.model.Type<? extends Object> type) {
+        ProducedType b = Metamodel.getModel(type);
+        return a.isExactly(b);
     }
 }

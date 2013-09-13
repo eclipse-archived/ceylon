@@ -233,6 +233,21 @@ public abstract class AppliedClassOrInterface<Type>
         return Metamodel.isTypeOf(producedType, instance);
     }
     
+    @Override
+    public boolean isSuperTypeOf(@TypeInfo("ceylon.language.model::Type<ceylon.language::Anything>") ceylon.language.model.Type<? extends Object> type){
+        return Metamodel.isSuperTypeOf(producedType, type);
+    }
+    
+    @Override
+    public boolean isSubTypeOf(@TypeInfo("ceylon.language.model::Type<ceylon.language::Anything>") ceylon.language.model.Type<? extends Object> type){
+        return Metamodel.isSubTypeOf(producedType, type);
+    }
+
+    @Override
+    public boolean isExactly(@TypeInfo("ceylon.language.model::Type<ceylon.language::Anything>") ceylon.language.model.Type<? extends Object> type){
+        return Metamodel.isExactly(producedType, type);
+    }
+
     @Ignore
     @Override
     public TypeDescriptor $getType() {

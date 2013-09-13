@@ -37,7 +37,7 @@ public class AppliedUnionType<Union>
     @Ignore
     protected TypeDescriptor $reifiedUnion;
     
-    private com.redhat.ceylon.compiler.typechecker.model.ProducedType model;
+    com.redhat.ceylon.compiler.typechecker.model.ProducedType model;
     
     protected Sequential<? extends ceylon.language.model.Type<? extends Union>> caseTypes;
     
@@ -111,5 +111,20 @@ public class AppliedUnionType<Union>
     @Override
     public boolean isTypeOf(@TypeInfo("ceylon.language::Anything") Object instance){
         return Metamodel.isTypeOf(model, instance);
+    }
+
+    @Override
+    public boolean isSuperTypeOf(@TypeInfo("ceylon.language.model::Type<ceylon.language::Anything>") ceylon.language.model.Type<? extends Object> type){
+        return Metamodel.isSuperTypeOf(model, type);
+    }
+    
+    @Override
+    public boolean isSubTypeOf(@TypeInfo("ceylon.language.model::Type<ceylon.language::Anything>") ceylon.language.model.Type<? extends Object> type){
+        return Metamodel.isSubTypeOf(model, type);
+    }
+
+    @Override
+    public boolean isExactly(@TypeInfo("ceylon.language.model::Type<ceylon.language::Anything>") ceylon.language.model.Type<? extends Object> type){
+        return Metamodel.isExactly(model, type);
     }
 }
