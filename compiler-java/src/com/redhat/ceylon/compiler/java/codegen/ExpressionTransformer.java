@@ -1034,16 +1034,23 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression toplevelCall = make().Apply(null, makeSelect(packageCall, getter), 
                                                      List.<JCExpression>of(ceylonLiteral(declaration.getName())));
             
-            List<JCExpression> closedTypeArgs = List.<JCExpression>nil();
-            if(Decl.isMethod(declaration)
-                    && !expr.getWantsDeclaration()
-                    && expr.getTypeArgumentList() != null){
-                JCExpression closedTypesExpr = getClosedTypesSequential(expr.getTypeArgumentList().getTypeModels());
-                // must apply it
-                closedTypeArgs = List.of(closedTypesExpr);
-            } 
             if(!expr.getWantsDeclaration()){
-                toplevelCall = make().Apply(null, makeSelect(toplevelCall, "apply"), closedTypeArgs);
+                ListBuffer<JCExpression> closedTypeArgs = new ListBuffer<JCExpression>();
+                // expr is of type Function<Type,Arguments> or Value<Type> so we can get its type like that
+                JCExpression reifiedType = makeReifiedTypeArgument(expr.getTypeModel().getTypeArgumentList().get(0));
+                closedTypeArgs.append(reifiedType);
+                if(Decl.isMethod(declaration)){
+                    // expr is of type Function<Type,Arguments> so we can get its arguments type like that
+                    ProducedType argumentsType = typeFact().getCallableTuple(expr.getTypeModel());
+                    JCExpression reifiedArguments = makeReifiedTypeArgument(argumentsType);
+                    closedTypeArgs.append(reifiedArguments);
+                    if(expr.getTypeArgumentList() != null){
+                        JCExpression closedTypesExpr = getClosedTypesSequential(expr.getTypeArgumentList().getTypeModels());
+                        // must apply it
+                        closedTypeArgs.append(closedTypesExpr);
+                    }
+                }
+                toplevelCall = make().Apply(null, makeSelect(toplevelCall, "apply"), closedTypeArgs.toList());
             }
             // add cast
             ProducedType exprType = expr.getTypeModel().resolveAliases();
