@@ -6,6 +6,7 @@ import ceylon.language.model.declaration {
     InterfaceDeclaration,
     ClassOrInterfaceDeclaration,
     OpenClassOrInterfaceType,
+    OpenClassType,
     OpenTypeVariable,
     OpenUnion,
     Declaration,
@@ -631,14 +632,12 @@ void checkTypeParameters(){
 void checkClassOrInterfaceCaseTypes(){
     value iwct = `interface InterfaceWithCaseTypes`;
     assert(iwct.caseTypes.size == 2);
-    assert(is OpenClassOrInterfaceType iwcta = iwct.caseTypes[0],
-           is ClassDeclaration iwctaDecl = iwcta.declaration, 
-           iwctaDecl.name == "iwcta",
-           iwctaDecl.anonymous);
-    assert(is OpenClassOrInterfaceType iwctb = iwct.caseTypes[1],
-           is ClassDeclaration iwctbDecl = iwctb.declaration, 
-           iwctbDecl.name == "iwctb",
-           iwctbDecl.anonymous);
+    assert(is OpenClassType iwcta = iwct.caseTypes[0],
+           iwcta.declaration.name == "iwcta",
+           iwcta.declaration.anonymous);
+    assert(is OpenClassType iwctb = iwct.caseTypes[1],
+           iwctb.declaration.name == "iwctb",
+           iwctb.declaration.anonymous);
     
     value iwst = `interface InterfaceWithSelfType`;
     assert(iwst.caseTypes.size == 1);

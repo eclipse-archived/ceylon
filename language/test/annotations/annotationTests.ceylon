@@ -45,14 +45,13 @@ ClassDeclaration aClassDecl {
     return type(AClass("")).declaration;
 }
 ClassDeclaration aAbstractClassDecl {
-    assert(exists sup=aClassDecl.extendedType, is ClassDeclaration supDecl = sup.declaration);
-    return supDecl;
+    assert(exists sup=aClassDecl.extendedType);
+    return sup.declaration;
 }
 InterfaceDeclaration aInterfaceDecl {
     assert(exists sup=aClassDecl.extendedType);
     assert(exists iface0=sup.interfaces[0]);
-    assert(is InterfaceDeclaration iface0Decl = iface0.declaration);
-    return iface0Decl;
+    return iface0.declaration;
 }
 ClassDeclaration memberClassDecl(ClassOrInterfaceDeclaration outerClass, String memberName) {
     for (ClassDeclaration cDecl in outerClass.memberDeclarations<ClassDeclaration>()) {
