@@ -963,6 +963,31 @@ void checkApplyTypeConstraints(){
     }
 }
 
+void checkApplications(){
+    Object topLevelValue = `value toplevelString`.apply<String>();
+    assert(is Value<String> topLevelValue);
+
+    Object memberValue = `value TypeParams.t1`.memberApply<TypeParams<String>,String>(`TypeParams<String>`);
+    assert(is Attribute<TypeParams<String>,String> memberValue);
+
+    Object topLevelFunction = `function typeParams`.apply<String, [String, Integer]>(`String`);
+    assert(is Function<String, [String, Integer]> topLevelFunction);
+
+    Object method = `function TypeParams.method`.memberApply<TypeParams<String>, String, [String, Integer]>(`TypeParams<String>`, `Integer`);
+    assert(is Method<TypeParams<String>, String, [String, Integer]> method);
+
+    Object topLevelClass = `class TypeParams`.classApply<TypeParams<String>, [String, Integer]>(`String`);
+    assert(is Class<TypeParams<String>, [String, Integer]> topLevelClass);
+    Object topLevelClass2 = `class TypeParams`.apply<TypeParams<String>>(`String`);
+    assert(is Class<TypeParams<String>, [String, Integer]> topLevelClass2);
+    
+    Object memberClass = `class ParameterisedContainerClass.InnerClass`.memberClassApply<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerClass<String>, []>(`ParameterisedContainerClass<Integer>`, `String`);
+    assert(is MemberClass<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerClass<String>, []> memberClass);
+    Object memberClass2 = `class ParameterisedContainerClass.InnerClass`.memberApply<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerClass<String>>(`ParameterisedContainerClass<Integer>`, `String`);
+    assert(is MemberClass<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerClass<String>, []> memberClass2);
+
+}
+
 shared void run() {
     print("Running Metamodel tests");
     visitStringHierarchy();
@@ -1004,6 +1029,9 @@ shared void run() {
     checkEqualityAndHash();
 
     checkApplyTypeConstraints();
+
+    checkApplications();
+
     // FIXME: test members() wrt filtering
     // FIXME: test untyped class to applied class
     

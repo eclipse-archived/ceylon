@@ -135,6 +135,8 @@ shared class TypeParams<T>(T s, Integer i)
     
     shared T t1 = s;
     shared T t2 = s;
+    
+    shared T method<S>(T t, S s) => t;
 }
 
 shared class TypeParams2<T>() {
