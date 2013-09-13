@@ -404,8 +404,8 @@ public class Metamodel {
     }
 
     public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.model.declaration.OpenType pt) {
-        if(pt instanceof FreeParameterisedType)
-            return ((FreeParameterisedType)pt).producedType;
+        if(pt instanceof FreeClassOrInterfaceType)
+            return ((FreeClassOrInterfaceType)pt).producedType;
         throw new RuntimeException("Unsupported produced type: " + pt);
     }
 

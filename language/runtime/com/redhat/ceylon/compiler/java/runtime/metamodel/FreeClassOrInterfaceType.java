@@ -22,9 +22,12 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class FreeParameterisedType
+public class FreeClassOrInterfaceType
     implements ceylon.language.model.declaration.OpenClassOrInterfaceType, ReifiedType {
 
+    @Ignore
+    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeClassOrInterfaceType.class);
+    
     private volatile boolean initialised;
     final com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType;
     protected com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface declaration;
@@ -32,7 +35,7 @@ public class FreeParameterisedType
     protected ceylon.language.model.declaration.OpenClassOrInterfaceType superclass;
     protected Sequential<ceylon.language.model.declaration.OpenClassOrInterfaceType> interfaces;
     
-    FreeParameterisedType(@Ignore TypeDescriptor $reifiedDeclarationType, com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
+    FreeClassOrInterfaceType(com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
         this.producedType = producedType;
     }
 
@@ -104,9 +107,7 @@ public class FreeParameterisedType
         return typeArguments;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    @TypeInfo("DeclarationType")
     public ClassOrInterfaceDeclaration getDeclaration() {
         checkInit();
         return declaration;
@@ -163,7 +164,6 @@ public class FreeParameterisedType
     @Override
     @Ignore
     public TypeDescriptor $getType() {
-        checkInit();
-        return TypeDescriptor.klass(FreeParameterisedType.class, declaration.$getType());
+        return $TypeDescriptor;
     }
 }
