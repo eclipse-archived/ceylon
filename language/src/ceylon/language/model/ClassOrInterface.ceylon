@@ -19,6 +19,9 @@ shared interface ClassOrInterface<out Type=Anything>
 
     // FIXME: move all these to Type
     // FIXME: introduce MemberClassOrInterface?
+    // if I do that I have to give up the enumerated type of ClassModel | InterfaceModel here, so let's not do that for now,
+    // since I don't quite see what we would gain
+    // FIXME: should we turn this into getClass and getInterface like we do for the rest?
     shared formal Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType<Anything>* types)
         given Kind satisfies ClassOrInterface<Anything>;
     
