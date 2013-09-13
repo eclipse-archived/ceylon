@@ -41,10 +41,10 @@ public class AppliedValue<Type>
     protected FreeAttribute declaration;
     private MethodHandle getter;
     private Object instance;
-    private ceylon.language.model.ClassOrInterface<? extends java.lang.Object> container;
+    private ceylon.language.model.Type<? extends java.lang.Object> container;
 
     public AppliedValue(@Ignore TypeDescriptor $reifiedType, FreeAttribute value, ProducedTypedReference valueTypedReference, 
-            ceylon.language.model.ClassOrInterface<?> container, Object instance) {
+            ceylon.language.model.Type<?> container, Object instance) {
         ProducedType producedType = valueTypedReference.getType();
         this.container = container;
         this.type = Metamodel.getAppliedMetamodel(producedType);
@@ -216,8 +216,8 @@ public class AppliedValue<Type>
 
 
     @Override
-    @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
-    public ceylon.language.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
+    @TypeInfo("ceylon.language.model::Type<ceylon.language::Anything>")
+    public ceylon.language.model.Type<? extends java.lang.Object> getContainer(){
         return container;
     }
 

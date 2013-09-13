@@ -21,8 +21,12 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -230,50 +234,88 @@ public abstract class FreeClassOrInterface
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
-    public <Container, 
-            Kind extends ceylon.language.model.ClassOrInterface<? extends Object>>
-        ceylon.language.model.Member<Container, Kind> memberApply(TypeDescriptor $reifiedContainer,
-                                                                      TypeDescriptor $reifiedKind){
+    public <Type> ceylon.language.model.ClassOrInterface<Type> apply(@Ignore TypeDescriptor $reifiedType){
+        return apply($reifiedType, (Sequential)empty_.$get());
+    }
+
+    @Override
+    @TypeInfo("ceylon.language.model::ClassOrInterface<Type>")
+    @TypeParameters({
+        @TypeParameter("Type"),
+    })
+    public <Type extends Object> ceylon.language.model.ClassOrInterface<Type> apply(@Ignore TypeDescriptor $reifiedType,
+            @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> typeArguments){
+        if(!getToplevel())
+            // FIXME: change type
+            throw new RuntimeException("Cannot apply a member declaration with no container type: use memberApply");
+        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
+        Metamodel.checkTypeArguments(null, declaration, producedTypes);
+        com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference appliedType = ((TypedDeclaration) declaration).getProducedTypedReference(null, producedTypes);
+        TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(appliedType.getType());
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
+            return new AppliedInterface(reifiedType, appliedType.getType(), null, null);
+        }else{
+            TypeDescriptor reifiedArguments = getReifiedArgumentsForClass(appliedType);
+            return new AppliedClass(reifiedType, reifiedArguments, appliedType.getType(), null, null);
+        }
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Ignore
+    @Override
+    public <Container, Type extends Object>
+        java.lang.Object memberApply(TypeDescriptor $reifiedContainer,
+                                     TypeDescriptor $reifiedType,
+                                     ceylon.language.model.Type<? extends Container> containerType){
         
-        return this.<Container, Kind>memberApply($reifiedContainer,
-                                                 $reifiedKind,
+        return this.<Container, Type>memberApply($reifiedContainer,
+                                                 $reifiedType,
+                                                 containerType,
                                                  (Sequential)empty_.$get());
     }
 
-    @TypeInfo("ceylon.language.model::Member<Container,Kind>")
+    @TypeInfo("ceylon.language.model::Member<Container,ceylon.language.model::ClassOrInterface<Type>>&ceylon.language.model::ClassOrInterface<Type>")
     @TypeParameters({
-        @TypeParameter(value = "Container"),
-        @TypeParameter(value = "Kind", satisfies = "ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
+        @TypeParameter("Container"),
+        @TypeParameter("Type"),
     })
     @Override
-    public <Container, 
-            Kind extends ceylon.language.model.ClassOrInterface<? extends Object>>
-        ceylon.language.model.Member<Container, Kind> memberApply(
+    public <Container, Type extends Object>
+        java.lang.Object memberApply(
                 @Ignore TypeDescriptor $reifiedContainer,
-                @Ignore TypeDescriptor $reifiedKind,
-                @Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> types){
-        // FIXME: check this
-        AppliedClassOrInterface<Container> containerType = (AppliedClassOrInterface<Container>) Metamodel.getAppliedMetamodel($reifiedContainer);
-        return getAppliedClassOrInterface($reifiedContainer, $reifiedKind, types, containerType);
+                @Ignore TypeDescriptor $reifiedType,
+                @Name("containerType") ceylon.language.model.Type<? extends Container> containerType,
+                @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> typeArguments){
+        if(getToplevel())
+            // FIXME: change type
+            throw new RuntimeException("Cannot apply a toplevel declaration to a container type: use apply");
+        return getAppliedClassOrInterface(null, null, typeArguments, containerType);
     }
 
     <Type, Kind extends ceylon.language.model.ClassOrInterface<? extends Object>>
     ceylon.language.model.Member<Type, Kind> getAppliedClassOrInterface(@Ignore TypeDescriptor $reifiedType, 
-                                                                            @Ignore TypeDescriptor $reifiedKind, 
-                                                                            Sequential<? extends ceylon.language.model.Type<?>> types,
-                                                                            AppliedClassOrInterface<Type> container){
+                                                                        @Ignore TypeDescriptor $reifiedKind, 
+                                                                        Sequential<? extends ceylon.language.model.Type<?>> types,
+                                                                        ceylon.language.model.Type<Type> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
-        ProducedReference producedReference = declaration.getProducedReference(container.producedType, producedTypes);
+        ProducedType qualifyingType = Metamodel.getModel(container);
+        TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(qualifyingType);
+        ProducedReference producedReference = declaration.getProducedReference(qualifyingType, producedTypes);
         final ProducedType appliedType = producedReference.getType();
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(appliedType);
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
-            return new AppliedMemberInterface($reifiedType, reifiedType, appliedType);
+            return new AppliedMemberInterface(reifiedContainer, reifiedType, appliedType);
         }else{
-            TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), 
-                    (com.redhat.ceylon.compiler.typechecker.model.Class)declaration, 
-                    producedReference);
-            return new AppliedMemberClass($reifiedType, reifiedType, reifiedArguments, appliedType);
+            TypeDescriptor reifiedArguments = getReifiedArgumentsForClass(appliedType);
+            return new AppliedMemberClass(reifiedContainer, reifiedType, reifiedArguments, appliedType);
         }
+    }
+
+    private TypeDescriptor getReifiedArgumentsForClass(ProducedReference appliedType) {
+        if(declaration.isAnonymous() || Metamodel.isLocalType((com.redhat.ceylon.compiler.typechecker.model.Class)declaration))
+            return TypeDescriptor.NothingType;
+        else
+            return Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedType);
     }
 
     @Override

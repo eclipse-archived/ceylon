@@ -20,14 +20,14 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public abstract class AppliedMember<Type, Kind extends ceylon.language.model.Model> 
     implements ceylon.language.model.Member<Type, Kind>, ReifiedType {
 
-    private ceylon.language.model.ClassOrInterface<? extends Object> container;
+    private ceylon.language.model.Type<? extends Object> container;
     @Ignore
     protected final TypeDescriptor $reifiedKind;
     @Ignore
     protected final TypeDescriptor $reifiedType;
 
     public AppliedMember(@Ignore TypeDescriptor $reifiedType, @Ignore TypeDescriptor $reifiedKind,
-                         ceylon.language.model.ClassOrInterface<? extends Object> container){
+                         ceylon.language.model.Type<? extends Object> container){
         this.$reifiedType = $reifiedType;
         this.$reifiedKind = $reifiedKind;
         this.container = container;
@@ -40,8 +40,8 @@ public abstract class AppliedMember<Type, Kind extends ceylon.language.model.Mod
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
-    public ceylon.language.model.ClassOrInterface<? extends Object> getDeclaringClassOrInterface() {
+    @TypeInfo("ceylon.language.model::Type<ceylon.language::Anything>")
+    public ceylon.language.model.Type<? extends Object> getDeclaringClassOrInterface() {
         return container;
     }
 

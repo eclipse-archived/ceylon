@@ -4,6 +4,8 @@ import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.List;
 
+import ceylon.language.Sequential;
+import ceylon.language.empty_;
 import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.OpenType;
 import ceylon.language.model.declaration.ValueDeclaration$impl;
@@ -13,8 +15,12 @@ import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
@@ -44,26 +50,44 @@ public class FreeAttribute
     }
 
     @Override
-    public Object apply$instance() {
-        return null;
+    @TypeInfo("ceylon.language.model::Value<Type>")
+    @TypeParameters({
+        @TypeParameter("Type"),
+    })
+    public <Type> ceylon.language.model.Value<Type> apply(@Ignore TypeDescriptor $reifiedType){
+        if(!getToplevel())
+            // FIXME: change type
+            throw new RuntimeException("Cannot apply a member declaration with no container type: use memberApply");
+        com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
+        com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(null, Collections.<ProducedType>emptyList());
+        TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(modelDecl.getType());
+        return modelDecl.isVariable() 
+                ? new AppliedVariable(reifiedType, this, typedReference, null, null) 
+                : new AppliedValue(reifiedType, this, typedReference, null, null);
     }
 
+    @TypeInfo("ceylon.language.model::Attribute<Container,Type>")
+    @TypeParameters({
+        @TypeParameter("Container"),
+        @TypeParameter("Type"),
+    })
     @Override
-    public ceylon.language.model.Value<? extends Object> apply() {
-        return apply(null);
-    }
-    
-    @Override
-    @TypeInfo("ceylon.language.model::Value<ceylon.language::Anything>")
-    public ceylon.language.model.Value<? extends Object> apply(@Name @TypeInfo("ceylon.language::Anything") Object instance) {
-        // FIXME: validate that instance is null for toplevels and not null for memberss
+    public <Container, Type>
+        ceylon.language.model.Attribute<Container, Type> memberApply(
+                @Ignore TypeDescriptor $reifiedContainer,
+                @Ignore TypeDescriptor $reifiedType,
+                @Name("containerType") ceylon.language.model.Type<? extends Container> containerType){
+        if(getToplevel())
+            // FIXME: change type
+            throw new RuntimeException("Cannot apply a toplevel declaration to a container type: use apply");
+        ProducedType qualifyingType = Metamodel.getModel(containerType);
         com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
-        // FIXME: this is not valid if the container type has TP
+        com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(qualifyingType, Collections.<ProducedType>emptyList());
+        TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(qualifyingType);
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(modelDecl.getType());
-        ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(null, Collections.<ProducedType>emptyList());
         return modelDecl.isVariable() 
-            ? new AppliedVariable(reifiedType, this, typedReference, null/*FIXME*/, instance) 
-            : new AppliedValue(reifiedType, this, typedReference, null/*FIXME*/, instance);
+                ? new AppliedVariableAttribute(reifiedContainer, reifiedType, this, typedReference, containerType) 
+                : new AppliedAttribute(reifiedContainer, reifiedType, this, typedReference, containerType);
     }
 
     @Override

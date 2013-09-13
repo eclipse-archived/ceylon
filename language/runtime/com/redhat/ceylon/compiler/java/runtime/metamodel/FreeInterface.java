@@ -4,6 +4,8 @@ import java.util.List;
 
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
+import ceylon.language.model.Class;
+import ceylon.language.model.MemberClass;
 import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.InterfaceDeclaration$impl;
 
@@ -13,6 +15,8 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
@@ -34,39 +38,52 @@ public class FreeInterface
         return null;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Ignore
+    @Override
+    public <Type> ceylon.language.model.Interface<Type> interfaceApply(TypeDescriptor $reifiedType){
+        return interfaceApply($reifiedType, (Sequential)empty_.$get());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    @TypeInfo("ceylon.language.model::Interface<Type>")
+    @TypeParameters({
+        @TypeParameter("Type"),
+    })
+    public <Type> ceylon.language.model.Interface<Type> interfaceApply(TypeDescriptor $reifiedType,
+            @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> typeArguments){
+        return (ceylon.language.model.Interface<Type>) super.apply($reifiedType, typeArguments);
+    }
+
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Ignore
     @Override
-    public ceylon.language.model.Interface<? extends Object> apply(){
-        return apply((Sequential)empty_.$get());
+    public <Container, Type>
+        ceylon.language.model.MemberInterface<Container, Type> memberInterfaceApply(TypeDescriptor $reifiedContainer,
+                                                                                    TypeDescriptor $reifiedType,
+                                                                                    ceylon.language.model.Type<? extends Container> containerType){
+        
+        return this.<Container, Type>memberInterfaceApply($reifiedContainer,
+                                                          $reifiedType,
+                                                          containerType,
+                                                          (Sequential)empty_.$get());
     }
 
+    @SuppressWarnings("unchecked")
+    @TypeInfo("ceylon.language.model::MemberInterface<Container,Type>")
+    @TypeParameters({
+        @TypeParameter("Container"),
+        @TypeParameter("Type"),
+    })
     @Override
-    @TypeInfo("ceylon.language.model::Interface<ceylon.language::Anything>")
-    public ceylon.language.model.Interface<? extends Object> apply(
-            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") 
-            Sequential<? extends ceylon.language.model.Type<?>> types){
-        return bindAndApply(null, types);
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    @Ignore
-    @Override
-    public ceylon.language.model.Interface<? extends Object> bindAndApply(Object instance){
-        return bindAndApply(instance, (Sequential)empty_.$get());
-    }
-
-    @Override
-    @TypeInfo("ceylon.language.model::Interface<ceylon.language::Anything>")
-    public ceylon.language.model.Interface<? extends Object> bindAndApply(
-            @Name("instance") @TypeInfo("ceylon.language::Object") Object instance,
-            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") 
-            Sequential<? extends ceylon.language.model.Type<?>> types){
-        // FIXME: refactor with FreeClass.bindAndApply
-        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
-        // FIXME: this is wrong because it does not include the container type
-        com.redhat.ceylon.compiler.typechecker.model.ProducedType appliedInterfaceType = declaration.getProducedReference(null, producedTypes).getType();
-        return (AppliedInterface)Metamodel.getAppliedMetamodel(appliedInterfaceType);
+    public <Container, Type>
+    ceylon.language.model.MemberInterface<Container, Type> memberInterfaceApply(
+                @Ignore TypeDescriptor $reifiedContainer,
+                @Ignore TypeDescriptor $reifiedType,
+                @Name("containerType") ceylon.language.model.Type<? extends Container> containerType,
+                @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> typeArguments){
+        return (ceylon.language.model.MemberInterface<Container, Type>) super.memberApply($reifiedContainer, $reifiedType, containerType, typeArguments);
     }
 
     @Override

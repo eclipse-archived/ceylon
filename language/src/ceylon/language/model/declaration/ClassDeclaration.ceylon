@@ -1,6 +1,7 @@
 import ceylon.language.model {
-    AppliedClass = Class,
-    Type
+    Class,
+    MemberClass,
+    AppliedType = Type
 }
 
 shared interface ClassDeclaration
@@ -12,12 +13,9 @@ shared interface ClassDeclaration
 
     shared formal Boolean final;
 
-    // FIXME: parameterise
-    shared formal actual AppliedClass<Anything, Nothing> apply(Type<Anything>* types);
+    shared formal Class<Type, Arguments> classApply<Type=Anything, Arguments=Nothing>(AppliedType<Anything>* typeArguments)
+        given Arguments satisfies Anything[];
 
-    // FIXME: add
-    //shared formal actual MemberClass<Anything, Anything, Nothing> applyMember(Type<Anything>* types);
-    
-    // FIXME: remove
-    shared formal actual AppliedClass<Anything, Nothing> bindAndApply(Object instance, Type<Anything>* types);
+    shared formal MemberClass<Container, Type, Arguments> memberClassApply<Container=Nothing, Type=Anything, Arguments=Nothing>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments)
+        given Arguments satisfies Anything[];
 }

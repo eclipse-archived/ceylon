@@ -1,7 +1,7 @@
 import ceylon.language.model {
-    AppliedClassOrInterface = ClassOrInterface,
-    AppliedMember = Member,
-    Type
+    ClassOrInterface,
+    Member,
+    AppliedType = Type
 }
 
 shared interface ClassOrInterfaceDeclaration 
@@ -27,11 +27,9 @@ shared interface ClassOrInterfaceDeclaration
     shared formal Kind? getMemberDeclaration<Kind>(String name) 
             given Kind satisfies NestableDeclaration;
     
-    shared formal AppliedClassOrInterface<Anything> apply(Type<Anything>* types);
+    shared formal ClassOrInterface<Type> apply<Type>(AppliedType<Anything>* typeArguments);
     
-    shared formal AppliedClassOrInterface<Anything> bindAndApply(Object instance, Type<Anything>* types);
-
-    shared formal AppliedMember<Container, Kind> memberApply<Container, Kind>(Type<Anything>* types)
-        given Kind satisfies AppliedClassOrInterface<Anything>;
+    shared formal Member<Container, ClassOrInterface<Type>> & ClassOrInterface<Type> 
+        memberApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments);
 
 }

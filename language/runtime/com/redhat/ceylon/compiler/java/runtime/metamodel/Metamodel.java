@@ -814,18 +814,18 @@ public class Metamodel {
 
     public static String toTypeString(ceylon.language.model.Model model){
         StringBuffer string = new StringBuffer();
+        ceylon.language.model.Type<?> container = model.getContainer();
+        if(container == null){
+            string.append(model.getDeclaration().getContainingPackage().getName()).append("::");
+        }else if(container instanceof ceylon.language.model.ClassOrInterface<?>){
+            string.append(container.toString()).append(".");
+        }else{
+            string.append("<").append(container.toString()).append(">.");
+        }
         string.append(model.getDeclaration().getName());
         if(model instanceof ceylon.language.model.Generic)
             addTypeArguments(string, (ceylon.language.model.declaration.GenericDeclaration) model.getDeclaration(), ((ceylon.language.model.Generic)model).getTypeArguments());
-        ceylon.language.model.ClassOrInterface<?> container = model.getContainer();
-        while(container != null){
-            StringBuffer string2 = new StringBuffer(container.getDeclaration().getName());
-            addTypeArguments(string2, container.getDeclaration(), container.getTypeArguments());
-            string2.append(".");
-            string.insert(0, string2.toString());
-            container = container.getContainer();
-        }
-        return model.getDeclaration().getContainingPackage().getName() + "::" + string.toString();
+        return string.toString();
     }
 
     public static void checkTypeArguments(ProducedType qualifyingType, Declaration declaration, List<ProducedType> typeArguments) {

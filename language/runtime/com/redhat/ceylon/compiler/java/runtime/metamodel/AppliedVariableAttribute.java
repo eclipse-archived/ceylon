@@ -19,7 +19,7 @@ public class AppliedVariableAttribute<Container, Type>
 
     public AppliedVariableAttribute(@Ignore TypeDescriptor $reifiedContainer, @Ignore TypeDescriptor $reifiedType, 
                                     FreeAttribute declaration, ProducedTypedReference typedReference,
-                                    ceylon.language.model.ClassOrInterface<? extends Object> container) {
+                                    ceylon.language.model.Type<? extends Object> container) {
         super($reifiedContainer, $reifiedType, declaration, typedReference, container);
     }
 

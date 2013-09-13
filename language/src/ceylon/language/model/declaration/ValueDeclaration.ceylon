@@ -1,9 +1,9 @@
-import ceylon.language.model { Value }
+import ceylon.language.model { Value, Attribute, AppliedType = Type }
 
 shared interface ValueDeclaration
         satisfies FunctionOrValueDeclaration {
     
-    // why is this not parameterised for the return type?
-    shared formal Value<Anything> apply(Anything instance = null);
-    // TODO: add memberApply?
+    shared formal Value<Type> apply<Type=Anything>();
+
+    shared formal Attribute<Container, Type> memberApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType);
 }

@@ -1,11 +1,13 @@
 import ceylon.language.model {
-    Type
+    Member,
+    Model,
+    AppliedType = Type
 }
 
 shared interface AliasDeclaration 
     satisfies NestableDeclaration & GenericDeclaration {
     
-    shared formal Type<Anything> apply(Type<Anything>* types);
+    shared formal AppliedType<Type> apply<Type=Anything>(AppliedType<Anything>* typeArguments);
     
-    shared formal Type<Anything> bindAndApply(Object instance, Type<Anything>* types);
+    shared formal AppliedType<Type> & Member<Container, AppliedType<Type> & Model> memberApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments);
 }

@@ -1,18 +1,15 @@
 import ceylon.language.model { 
-    AppliedFunction = Function,
+    Function,
     Type,
-    Method,
-    AppliedMember = Member,
-    AppliedClassOrInterface = ClassOrInterface
+    Method
 }
 
 shared interface FunctionDeclaration
         satisfies FunctionOrValueDeclaration & GenericDeclaration & FunctionalDeclaration {
 
-    shared formal AppliedFunction<Anything, Nothing> apply(Type<Anything>* types);
+    shared formal Function<Return, Arguments> apply<Return=Anything, Arguments=Nothing>(Type<Anything>* typeArguments)
+        given Arguments satisfies Anything[];
 
-    shared formal AppliedFunction<Anything, Nothing> bindAndApply(Object instance, Type<Anything>* types);
-
-    shared formal Method<Container, MethodType, Arguments> memberApply<Container, MethodType, Arguments>(Type<Anything>* types)
+    shared formal Method<Container, Return, Arguments> memberApply<Container=Nothing, Return=Anything, Arguments=Nothing>(Type<Container> containerType, Type<Anything>* typeArguments)
         given Arguments satisfies Anything[];
 }

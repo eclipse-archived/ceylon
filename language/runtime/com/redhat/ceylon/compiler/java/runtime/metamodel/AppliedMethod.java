@@ -44,7 +44,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
                          @Ignore TypeDescriptor $reifiedArguments, 
                          ProducedTypedReference appliedFunction, 
                          FreeFunction declaration,
-                         ceylon.language.model.ClassOrInterface<? extends Object> container) {
+                         ceylon.language.model.Type<? extends Object> container) {
         super($reifiedContainer, TypeDescriptor.klass(ceylon.language.model.Function.class, $reifiedType, $reifiedArguments), container);
         this.$reifiedType = $reifiedType;
         this.$reifiedArguments = $reifiedArguments;
@@ -193,8 +193,8 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
-    public ceylon.language.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
+    @TypeInfo("ceylon.language.model::Type<ceylon.language::Anything>")
+    public ceylon.language.model.Type<? extends java.lang.Object> getContainer(){
         return getDeclaringClassOrInterface();
     }
 

@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.model.declaration.AnnotatedDeclaration;
+import ceylon.language.model.Variable;
+import ceylon.language.model.VariableAttribute;
 import ceylon.language.model.declaration.SetterDeclaration;
 import ceylon.language.model.declaration.VariableDeclaration;
 import ceylon.language.model.declaration.VariableDeclaration$impl;
@@ -9,8 +10,11 @@ import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 
@@ -56,6 +60,32 @@ public class FreeVariable
             return false;
         return getName().equals(other.getName());
     }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    @TypeInfo("ceylon.language.model::Variable<Type>")
+    @TypeParameters({
+        @TypeParameter("Type"),
+    })
+    public <Type> ceylon.language.model.Variable<Type> apply(@Ignore TypeDescriptor $reifiedType){
+        return (Variable<Type>) super.apply($reifiedType);
+    }
+
+    @SuppressWarnings("unchecked")
+    @TypeInfo("ceylon.language.model::VariableAttribute<Container,Type>")
+    @TypeParameters({
+        @TypeParameter("Container"),
+        @TypeParameter("Type"),
+    })
+    @Override
+    public <Container, Type>
+        ceylon.language.model.VariableAttribute<Container, Type> memberApply(
+                @Ignore TypeDescriptor $reifiedContainer,
+                @Ignore TypeDescriptor $reifiedType,
+                @Name("containerType") ceylon.language.model.Type<? extends Container> containerType){
+        return (VariableAttribute<Container, Type>) super.memberApply($reifiedContainer, $reifiedType, containerType);
+    }
+
 
     @Ignore
     @Override

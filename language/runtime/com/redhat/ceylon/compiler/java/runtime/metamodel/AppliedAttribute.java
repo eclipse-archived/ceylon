@@ -36,7 +36,7 @@ public class AppliedAttribute<Container, Type>
     public AppliedAttribute(@Ignore TypeDescriptor $reifiedContainer, 
                             @Ignore TypeDescriptor $reifiedType,
                             FreeAttribute declaration, ProducedTypedReference typedReference,
-                            ceylon.language.model.ClassOrInterface<? extends Object> container) {
+                            ceylon.language.model.Type<? extends Object> container) {
         super($reifiedContainer, TypeDescriptor.klass(ceylon.language.model.Value.class, $reifiedType), container);
         this.declaration = declaration;
         this.typedReference = typedReference;
@@ -177,8 +177,8 @@ public class AppliedAttribute<Container, Type>
 
 
     @Override
-    @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
-    public ceylon.language.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
+    @TypeInfo("ceylon.language.model::Type<ceylon.language::Anything>")
+    public ceylon.language.model.Type<? extends java.lang.Object> getContainer(){
         return getDeclaringClassOrInterface();
     }
 

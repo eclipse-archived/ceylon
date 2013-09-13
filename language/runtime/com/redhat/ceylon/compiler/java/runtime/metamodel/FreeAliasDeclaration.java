@@ -9,14 +9,18 @@ import ceylon.language.model.declaration.AliasDeclaration$impl;
 import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.GenericDeclaration$impl;
 import ceylon.language.model.declaration.OpenType;
-import ceylon.language.model.declaration.TypeParameter;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 
 public class FreeAliasDeclaration extends FreeNestableDeclaration 
     implements ceylon.language.model.declaration.AliasDeclaration {
@@ -71,51 +75,71 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
     }
 
     @Override
-    public TypeParameter getTypeParameterDeclaration(@Name("name") @TypeInfo("ceylon.language::String") String name) {
+    public ceylon.language.model.declaration.TypeParameter getTypeParameterDeclaration(@Name("name") @TypeInfo("ceylon.language::String") String name) {
         return Metamodel.findDeclarationByName(getTypeParameterDeclarations(), name);
     }
 
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::TypeParameter>")
-    public Sequential<? extends TypeParameter> getTypeParameterDeclarations() {
+    public Sequential<? extends ceylon.language.model.declaration.TypeParameter> getTypeParameterDeclarations() {
         checkInit();
         return typeParameters;
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Ignore
+    @Override
+    public <Type> ceylon.language.model.Type<Type> apply(@Ignore TypeDescriptor $reifiedType){
+        return apply($reifiedType, (Sequential)empty_.$get());
+    }
+
+    @Override
+    @TypeInfo("ceylon.language.model::Type<Type>")
+    @TypeParameters({
+        @TypeParameter("Type"),
+    })
+    public <Type extends Object> ceylon.language.model.Type<Type> apply(@Ignore TypeDescriptor $reifiedType,
+            @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> typeArguments){
+        if(!getToplevel())
+            // FIXME: change type
+            throw new RuntimeException("Cannot apply a member declaration with no container type: use memberApply");
+        // FIXME
+        return null;
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Ignore
     @Override
-    public Type<? extends Object> apply() {
-        return apply((Sequential)empty_.$get());
-    }
-
-    @Override
-    @TypeInfo("ceylon.language.model::Type<ceylon.language::Anything>")
-    public Type<? extends Object> apply(@Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") 
-        Sequential<? extends Type<? extends Object>> types) {
+    public <Container, Type extends Object>
+        java.lang.Object memberApply(TypeDescriptor $reifiedContainer,
+                                     TypeDescriptor $reifiedType,
+                                     ceylon.language.model.Type<? extends Container> containerType){
         
-        return bindAndApply(null, types);
+        return this.<Container, Type>memberApply($reifiedContainer,
+                                                 $reifiedType,
+                                                 containerType,
+                                                 (Sequential)empty_.$get());
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @TypeInfo("ceylon.language.model::Member<Container,ceylon.language.model::Type<Type>>&ceylon.language.model::Type<Type>")
+    @TypeParameters({
+        @TypeParameter("Container"),
+        @TypeParameter("Type"),
+    })
     @Override
-    @Ignore
-    public Type<? extends Object> bindAndApply(Object instance) {
-        return bindAndApply(instance, (Sequential)empty_.$get());
+    public <Container, Type extends Object>
+        java.lang.Object memberApply(
+                @Ignore TypeDescriptor $reifiedContainer,
+                @Ignore TypeDescriptor $reifiedType,
+                @Name("containerType") ceylon.language.model.Type<? extends Container> containerType,
+                @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> typeArguments){
+        if(getToplevel())
+            // FIXME: change type
+            throw new RuntimeException("Cannot apply a toplevel declaration to a container type: use apply");
+        // FIXME
+        return null;
     }
 
-    @Override
-    @TypeInfo("ceylon.language.model::Type<ceylon.language::Anything>")
-    public Type<? extends Object> bindAndApply(@Name("instance") @TypeInfo("ceylon.language::Object") Object instance, 
-            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") 
-            Sequential<? extends Type<? extends Object>> types) {
-        
-        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
-        // FIXME: this is wrong because it does not include the container type
-        com.redhat.ceylon.compiler.typechecker.model.ProducedType appliedType = declaration.getProducedReference(null, producedTypes).getType();
-        // FIXME: this is wrong because it does not bind the instance
-        return Metamodel.getAppliedMetamodel(appliedType);
-    }
 
     @Override
     public int hashCode() {

@@ -1,12 +1,13 @@
 import ceylon.language.model {
-    AppliedInterface = Interface,
-    Type
+    Interface,
+    MemberInterface,
+    AppliedType = Type
 }
 
 shared interface InterfaceDeclaration
         satisfies ClassOrInterfaceDeclaration {
     
-    shared formal actual AppliedInterface<Anything> apply(Type<Anything>* types);
-    
-    shared formal actual AppliedInterface<Anything> bindAndApply(Object instance, Type<Anything>* types);
+    shared formal Interface<Type> interfaceApply<Type=Anything>(AppliedType<Anything>* typeArguments);
+
+    shared formal MemberInterface<Container, Type> memberInterfaceApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments);
 }

@@ -6,6 +6,8 @@ import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
+import ceylon.language.model.Class;
+import ceylon.language.model.MemberClass;
 import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.ClassDeclaration$impl;
 import ceylon.language.model.declaration.FunctionalDeclaration$impl;
@@ -16,10 +18,14 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -107,45 +113,59 @@ public class FreeClass
         return null;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    @Ignore
-    @Override
-    public ceylon.language.model.Class<? extends Object, ? super Sequential<? extends Object>> apply(){
-        return apply((Sequential)empty_.$get());
-    }
-
-    @Override
-    @TypeInfo("ceylon.language.model::Class<ceylon.language::Anything,ceylon.language::Nothing>")
-    public ceylon.language.model.Class<? extends Object, ? super Sequential<? extends Object>> apply(
-            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") 
-            Sequential<? extends ceylon.language.model.Type<?>> types){
-        return bindAndApply(null, types);
-    }
-
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
-    public ceylon.language.model.Class<? extends Object, ? super Sequential<? extends Object>> bindAndApply(Object instance){
-        return bindAndApply(instance, (Sequential)empty_.$get());
+    public <Type, Arguments extends Sequential<? extends Object>> ceylon.language.model.Class<Type, Arguments> classApply(TypeDescriptor $reifiedType,
+            TypeDescriptor $reifiedArguments){
+        return classApply($reifiedType, $reifiedArguments, (Sequential)empty_.$get());
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    @TypeInfo("ceylon.language.model::Class<ceylon.language::Anything,ceylon.language::Nothing>")
-    public ceylon.language.model.Class<? extends Object, ? super Sequential<? extends Object>> bindAndApply(
-            @Name("instance") @TypeInfo("ceylon.language::Object") Object instance,
-            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") 
-            Sequential<? extends ceylon.language.model.Type<?>> types){
-        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
-        Metamodel.checkTypeArguments(null/*FIXME*/, declaration, producedTypes);
-        // FIXME: this is wrong because it does not include the container type
-        com.redhat.ceylon.compiler.typechecker.model.ProducedType appliedClassType = declaration.getProducedReference(null, producedTypes).getType();
-        TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(appliedClassType);
-        TypeDescriptor reifiedArguments;
-        if(declaration.isAnonymous())
-            reifiedArguments = TypeDescriptor.NothingType;
-        else
-            reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedClassType);
-        return new AppliedClass(reifiedType, reifiedArguments, appliedClassType, null/*FIXME*/, instance);
+    @TypeInfo("ceylon.language.model::Class<Type,Arguments>")
+    @TypeParameters({
+        @TypeParameter("Type"),
+        @TypeParameter(value = "Arguments", satisfies = "ceylon.language::Sequential<ceylon.language::Anything>")
+    })
+    public <Type, Arguments extends Sequential<? extends Object>> ceylon.language.model.Class<Type, Arguments> classApply(TypeDescriptor $reifiedType,
+            TypeDescriptor $reifiedArguments,
+            @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> typeArguments){
+        return (ceylon.language.model.Class<Type, Arguments>) super.apply($reifiedType, typeArguments);
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Ignore
+    @Override
+    public <Container, Type, Arguments extends Sequential<? extends Object>>
+        ceylon.language.model.MemberClass<Container, Type, Arguments> memberClassApply(TypeDescriptor $reifiedContainer,
+                                                                                       TypeDescriptor $reifiedType,
+                                                                                       TypeDescriptor $reifiedArguments,
+                                                                                       ceylon.language.model.Type<? extends Container> containerType){
+        
+        return this.<Container, Type, Arguments>memberClassApply($reifiedContainer,
+                                                 $reifiedType,
+                                                 $reifiedArguments,
+                                                 containerType,
+                                                 (Sequential)empty_.$get());
+    }
+
+    @SuppressWarnings("unchecked")
+    @TypeInfo("ceylon.language.model::MemberClass<Container,Type,Arguments>")
+    @TypeParameters({
+        @TypeParameter("Container"),
+        @TypeParameter("Type"),
+        @TypeParameter(value = "Arguments", satisfies = "ceylon.language::Sequential<ceylon.language::Anything>")
+    })
+    @Override
+    public <Container, Type, Arguments extends Sequential<? extends Object>>
+    ceylon.language.model.MemberClass<Container, Type, Arguments> memberClassApply(
+                @Ignore TypeDescriptor $reifiedContainer,
+                @Ignore TypeDescriptor $reifiedType,
+                @Ignore TypeDescriptor $reifiedArguments,
+                @Name("containerType") ceylon.language.model.Type<? extends Container> containerType,
+                @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> typeArguments){
+        return (ceylon.language.model.MemberClass<Container, Type, Arguments>) super.memberApply($reifiedContainer, $reifiedType, containerType, typeArguments);
     }
 
     @Override

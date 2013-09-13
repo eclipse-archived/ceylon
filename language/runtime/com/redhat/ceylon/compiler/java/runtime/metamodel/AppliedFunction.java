@@ -50,12 +50,12 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     private int variadicIndex = -1;
     private ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> typeArguments;
     private Object instance;
-    private ceylon.language.model.ClassOrInterface<? extends java.lang.Object> container;
+    private ceylon.language.model.Type<? extends java.lang.Object> container;
 
     public AppliedFunction(@Ignore TypeDescriptor $reifiedType, 
                            @Ignore TypeDescriptor $reifiedArguments,
                            ProducedReference appliedFunction, FreeFunction function, 
-                           ceylon.language.model.ClassOrInterface<?> container,
+                           ceylon.language.model.Type<?> container,
                            Object instance) {
         this.$reifiedType = $reifiedType;
         this.$reifiedArguments = $reifiedArguments;
@@ -398,8 +398,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 
 
     @Override
-    @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
-    public ceylon.language.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
+    @TypeInfo("ceylon.language.model::Type<ceylon.language::Anything>")
+    public ceylon.language.model.Type<? extends java.lang.Object> getContainer(){
         return container;
     }
 
