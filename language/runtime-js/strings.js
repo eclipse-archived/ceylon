@@ -609,7 +609,9 @@ function Character(value) {
     that.value = value;
     return that;
 }
-Character.$$metamodel$$={'super':{t:Object$},$ps:[],$an:function(){return[shared(),native(),final()];},mod:$$METAMODEL$$,d:['ceylon.language','Character']};
+Character.$$metamodel$$={'super':{t:Object$}, 'satisfies':[
+    {t:Comparable,a:{Other:{t:Character}}}, {t:Enumerable,a:{Other:{t:Character}}}],
+  $an:function(){return[shared(),native(),final()];},mod:$$METAMODEL$$,d:['ceylon.language','Character']};
 
 initTypeProto(Character, 'ceylon.language::Character', Object$, Comparable, $init$Enumerable());
 var Character$proto = Character.$$.prototype;
