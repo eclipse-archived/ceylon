@@ -78,7 +78,7 @@ public class AppliedIntersectionType<Intersection>
     }
 
     @Override
-    @TypeInfo("ceylon.language.Sequential<ceylon.language.model::Type<ceylon.language::Anything>")
+    @TypeInfo("ceylon.language.Sequential<ceylon.language.model::Type<ceylon.language::Anything>>")
     public ceylon.language.Sequential<? extends ceylon.language.model.Type<?>> getSatisfiedTypes() {
         return satisfiedTypes;
     }
