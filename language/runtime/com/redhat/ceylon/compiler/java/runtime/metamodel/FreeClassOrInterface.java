@@ -8,6 +8,8 @@ import ceylon.language.Empty;
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
+import ceylon.language.model.ClassOrInterface;
+import ceylon.language.model.Member;
 import ceylon.language.model.declaration.ClassOrInterfaceDeclaration$impl;
 import ceylon.language.model.declaration.GenericDeclaration$impl;
 import ceylon.language.model.declaration.OpenType;
@@ -21,7 +23,6 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
@@ -235,6 +236,7 @@ public abstract class FreeClassOrInterface
         return apply($reifiedType, (Sequential)empty_.$get());
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @TypeInfo("ceylon.language.model::ClassOrInterface<Type>")
     @TypeParameters({
@@ -248,13 +250,7 @@ public abstract class FreeClassOrInterface
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
         com.redhat.ceylon.compiler.typechecker.model.ProducedReference appliedType = declaration.getProducedReference(null, producedTypes);
-        TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(appliedType.getType());
-        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
-            return new AppliedInterface(reifiedType, appliedType.getType(), null, null);
-        }else{
-            TypeDescriptor reifiedArguments = getReifiedArgumentsForClass(appliedType);
-            return new AppliedClass(reifiedType, reifiedArguments, appliedType.getType(), null, null);
-        }
+        return (ClassOrInterface<Type>) Metamodel.getAppliedMetamodel(appliedType.getType());
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -289,6 +285,7 @@ public abstract class FreeClassOrInterface
         return getAppliedClassOrInterface(null, null, typeArguments, containerType);
     }
 
+    @SuppressWarnings("unchecked")
     <Type, Kind extends ceylon.language.model.ClassOrInterface<? extends Object>>
     ceylon.language.model.Member<Type, Kind> getAppliedClassOrInterface(@Ignore TypeDescriptor $reifiedType, 
                                                                         @Ignore TypeDescriptor $reifiedKind, 
@@ -296,23 +293,9 @@ public abstract class FreeClassOrInterface
                                                                         ceylon.language.model.Type<Type> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         ProducedType qualifyingType = Metamodel.getModel(container);
-        TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(qualifyingType);
         ProducedReference producedReference = declaration.getProducedReference(qualifyingType, producedTypes);
         final ProducedType appliedType = producedReference.getType();
-        TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(appliedType);
-        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
-            return new AppliedMemberInterface(reifiedContainer, reifiedType, appliedType);
-        }else{
-            TypeDescriptor reifiedArguments = getReifiedArgumentsForClass(appliedType);
-            return new AppliedMemberClass(reifiedContainer, reifiedType, reifiedArguments, appliedType);
-        }
-    }
-
-    private TypeDescriptor getReifiedArgumentsForClass(ProducedReference appliedType) {
-        if(declaration.isAnonymous() || Metamodel.isLocalType((com.redhat.ceylon.compiler.typechecker.model.Class)declaration))
-            return TypeDescriptor.NothingType;
-        else
-            return Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedType);
+        return (Member<Type, Kind>) Metamodel.getAppliedMetamodel(appliedType);
     }
 
     @Override
