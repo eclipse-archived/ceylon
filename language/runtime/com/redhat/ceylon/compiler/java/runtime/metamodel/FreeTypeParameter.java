@@ -98,18 +98,14 @@ public class FreeTypeParameter
     }
 
     @Override
-    public boolean getInvariant(){
-        return declaration.isInvariant();
-    }
-
-    @Override
-    public boolean getCovariant(){
-        return declaration.isCovariant();
-    }
-
-    @Override
-    public boolean getContravariant(){
-        return declaration.isContravariant();
+    public ceylon.language.model.declaration.Variance getVariance(){
+        if(declaration.isInvariant())
+            return ceylon.language.model.declaration.invariant_.$get();
+        if(declaration.isCovariant())
+            return ceylon.language.model.declaration.covariant_.$get();
+        if(declaration.isContravariant())
+            return ceylon.language.model.declaration.contravariant_.$get();
+        throw new RuntimeException("Underlying declaration is neither invariant, covariant nor contravariant");
     }
 
     @TypeInfo("ceylon.language::Null|ceylon.language.model.declaration::OpenType")
