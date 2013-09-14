@@ -375,10 +375,9 @@ public class TypeVisitor extends Visitor {
             i.setDeclaration(d);
             member.setDeclarationModel(d);
             if (il.hasImport(d)) {
-                id.addError("already imported: " +
-                        name);
+                id.addError("already imported: " + name);
             }
-            if (!checkForHiddenToplevel(id, i, alias)) {
+            else if (!checkForHiddenToplevel(id, i, alias)) {
                 addImport(member, il, i);
             }
             checkAliasCase(alias, d);
@@ -436,13 +435,15 @@ public class TypeVisitor extends Visitor {
                 id.addError("already imported: " +
                         name + " of " + td.getName());
             }
-            if (m.isStaticallyImportable()) {
-                if (!checkForHiddenToplevel(id, i, alias)) {
-                    addImport(member, il, i);
-                }
-            }
             else {
-                addMemberImport(member, il, i);
+                if (m.isStaticallyImportable()) {
+                    if (!checkForHiddenToplevel(id, i, alias)) {
+                        addImport(member, il, i);
+                    }
+                }
+                else {
+                    addMemberImport(member, il, i);
+                }
             }
             checkAliasCase(alias, m);
         }
