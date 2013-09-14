@@ -18,4 +18,8 @@ defineAttr(ClassOrInterface$model.$$.prototype,'interfaces',function(){
   return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:Interface$model,a:{Type:{t:Anything}}}}},$cont:ClassOrInterface$model,
   $an:function(){return[shared(),formal()];},d:['ceylon.language.model','ClassOrInterface','$at','interfaces']};
 });
+ClassOrInterface$model.$$.prototype.getMethod=function(name,types,$$$mptypes) {
+  console.log("IMPLEMENT ME! ClassOrInterface.getMethod");
+  return null;
+}
 
