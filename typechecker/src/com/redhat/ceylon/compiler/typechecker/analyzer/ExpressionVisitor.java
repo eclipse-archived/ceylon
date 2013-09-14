@@ -68,6 +68,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -1234,31 +1235,86 @@ public class ExpressionVisitor extends Visitor {
         if (c!=null) {
             if (c.isAbstract()) {
                 if (!alias.isFormal() && !alias.isAbstract()) {
-                    that.addError("alias of abstract class must be annotated abstract"); //TODO: error code
+                    that.addError("alias of abstract class must be annotated abstract", 310);
                 }
             }
             //TODO: all this can be removed once the backend
             //      implements full support for the new class 
             //      alias stuff
             ProducedType at = alias.getExtendedType();
-            ParameterList pl = c.getParameterList();
+            ParameterList cpl = c.getParameterList();
             ParameterList apl = alias.getParameterList();
-            if (pl!=null&&apl!=null) {
-                int cps = pl.getParameters().size();
+            if (cpl!=null && apl!=null) {
+                int cps = cpl.getParameters().size();
                 int aps = apl.getParameters().size();
                 if (cps!=aps) {
-                    that.addWarning("wrong number of initializer parameters declared by class alias: " + 
-                            alias.getName());
+                    that.getParameterList()
+                            .addWarning("wrong number of initializer parameters declared by class alias: " + 
+                                    alias.getName());
                 }
-                for (int i=0; i<(cps<=aps ? cps : aps); i++) {
+                
+                for (int i=0; i<cps && i<aps; i++) {
                     Parameter ap = apl.getParameters().get(i);
-                    Parameter cp = pl.getParameters().get(i);
+                    Parameter cp = cpl.getParameters().get(i);
                     ProducedType pt = at.getTypedParameter(cp).getType();
                     //TODO: properly check type of functional parameters!!
                     checkAssignableWithWarning(ap.getType(), pt, that, "alias parameter " + 
                             ap.getName() + " must be assignable to corresponding class parameter " +
                             cp.getName());
                 }
+                
+                //temporary restrictions
+                if (that.getClassSpecifier()!=null) {
+                    Tree.InvocationExpression ie = that.getClassSpecifier().getInvocationExpression();
+                    Tree.PositionalArgumentList pal = ie.getPositionalArgumentList();
+                    if (pal!=null) {
+                        List<PositionalArgument> pas = pal.getPositionalArguments();
+                        if (cps!=pas.size()) {
+                            pal.addWarning("wrong number of arguments for aliased class: " + 
+                                            alias.getName() + " has " + cps + " parameters");
+                        }
+                        for (int i=0; i<pas.size() && i<cps && i<aps; i++) {
+                            Tree.PositionalArgument pa = pas.get(i);
+                            Parameter aparam = apl.getParameters().get(i);
+                            Parameter cparam = cpl.getParameters().get(i);
+                            if (pa instanceof Tree.ListedArgument) {
+                                if (cparam.isSequenced()) {
+                                    pa.addWarning("argument to variadic parameter of aliased class must be spread");
+                                }
+                                Tree.Expression e = ((Tree.ListedArgument) pa).getExpression();
+                                checkAliasArg(aparam, e);
+                            }
+                            else if (pa instanceof Tree.SpreadArgument) {
+                                if (!cparam.isSequenced()) {
+                                    pa.addWarning("argument to non-variadic parameter of aliased class may not be spread");
+                                }
+                                Tree.Expression e = ((Tree.SpreadArgument) pa).getExpression();
+                                checkAliasArg(aparam, e);
+                            }
+                            else if (pa!=null) {
+                                pa.addWarning("argument to parameter or aliased class must be listed or spread");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void checkAliasArg(Parameter param, Tree.Expression e) {
+        if (e!=null) {
+            Tree.Term term = e.getTerm();
+            MethodOrValue p = param.getModel();
+            if (term instanceof Tree.BaseMemberExpression) {
+                Declaration d = ((Tree.BaseMemberExpression)term).getDeclaration();
+                if (d!=null && !d.equals(p)) {
+                    e.addWarning("argument must be a parameter reference to " +
+                            p.getName());
+                }
+            }
+            else {
+                e.addWarning("argument must be a parameter reference to " +
+                            p.getName());
             }
         }
     }
