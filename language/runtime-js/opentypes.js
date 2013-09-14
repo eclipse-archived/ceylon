@@ -145,7 +145,16 @@ function $init$OpenFunction(){
             defineAttr($$openFunction,'toplevel',function(){return this.toplevel_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','FunctionDeclaration','$at','toplevel']};});
 
     defineAttr($$openFunction,'qualifiedName',function(){
-       return String$(this.packageContainer.name + "::" + this.name);
+       if (this.toplevel) {
+         return String$(this.packageContainer.name + "::" + this.name);
+       } else {
+         var qn = this.packageContainer.name + "::";
+         for (var i=1; i<this.tipo.$$metamodel$$.d.length;i++) {
+           var part = this.tipo.$$metamodel$$.d[i];
+           qn += part[0]=='$'?'.':part;
+         }
+         return String$(qn);
+       }
     },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','Declaration','$at','qualifiedName']};});
         })(OpenFunction.$$.prototype);
     }
@@ -225,7 +234,16 @@ defineAttr($$openValue,'toplevel',function(){return this.toplevel_;},undefined,f
   defineAttr($$openValue,'string',function(){return String$("OpenValue[" + this.packageContainer.name + "::" + this.name_+"]");},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
 
     defineAttr($$openValue,'qualifiedName',function(){
-       return String$(this.packageContainer.name + "::" + this.name);
+       if (this.toplevel) {
+         return String$(this.packageContainer.name + "::" + this.name);
+       } else {
+         var qn = this.packageContainer.name + "::";
+         for (var i=1; i<this.tipo.$$metamodel$$.d.length;i++) {
+           var part = this.tipo.$$metamodel$$.d[i];
+           qn += part[0]=='$'?'.':part;
+         }
+         return String$(qn);
+       }
     },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','Declaration','$at','qualifiedName']};});
         })(OpenValue.$$.prototype);
     }
@@ -431,7 +449,16 @@ function $init$OpenClass(){
             defineAttr($$openClass,'toplevel',function(){return this.toplevel_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','ClassDeclaration','$at','toplevel']};});
 
     defineAttr($$openClass,'qualifiedName',function(){
-       return String$(this.packageContainer.name + "::" + this.name);
+       if (this.toplevel) {
+         return String$(this.packageContainer.name + "::" + this.name);
+       } else {
+         var qn = this.packageContainer.name + "::";
+         for (var i=1; i<this.tipo.$$metamodel$$.d.length;i++) {
+           var part = this.tipo.$$metamodel$$.d[i];
+           qn += part[0]=='$'?'.':part;
+         }
+         return String$(qn);
+       }
     },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','Declaration','$at','qualifiedName']};});
         })(OpenClass.$$.prototype);
     }
@@ -538,7 +565,16 @@ function $init$OpenInterface(){
             defineAttr($$openInterface,'toplevel',function(){return this.toplevel_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','InterfaceDeclaration','$at','toplevel']};});
 
     defineAttr($$openInterface,'qualifiedName',function(){
-       return String$(this.packageContainer.name + "::" + this.name);
+       if (this.toplevel) {
+         return String$(this.packageContainer.name + "::" + this.name);
+       } else {
+         var qn = this.packageContainer.name + "::";
+         for (var i=1; i<this.tipo.$$metamodel$$.d.length;i++) {
+           var part = this.tipo.$$metamodel$$.d[i];
+           qn += part[0]=='$'?'.':part;
+         }
+         return String$(qn);
+       }
     },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.model.declaration','Declaration','$at','qualifiedName']};});
         })(OpenInterface.$$.prototype);
     }
