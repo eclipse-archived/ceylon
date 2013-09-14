@@ -19,7 +19,8 @@ defineAttr(ClassOrInterface$model.$$.prototype,'interfaces',function(){
   $an:function(){return[shared(),formal()];},d:['ceylon.language.model','ClassOrInterface','$at','interfaces']};
 });
 ClassOrInterface$model.$$.prototype.getMethod=function(name,types,$$$mptypes) {
-  console.log("IMPLEMENT ME! ClassOrInterface.getMethod");
-  return null;
+  var fun = this.tipo[name];
+  if (fun === undefined) fun = this.tipo.$$.prototype[name];
+  return AppliedMethod(this.tipo, fun, {Container:$$$mptypes.SubType,Type:$$$mptypes.Type,Arguments:$$$mptypes.Arguments});
 }
-
+ClassOrInterface$model.$$.prototype.getMethod.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Method$model,a:{SubType:'SubType',Type:'Type',Arguments:'Arguments'}},$an:function(){return[shared(),formal()];},d:['ceylon.language.model','ClassOrInterface']};};
