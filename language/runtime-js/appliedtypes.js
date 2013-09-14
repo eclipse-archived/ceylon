@@ -262,11 +262,13 @@ exports.$init$AppliedValue$model=$init$AppliedValue;
 $init$AppliedValue();
 
 //ClassDefinition AppliedMethod at caca.ceylon (10:0-21:0)
-function AppliedMethod($$targs$$,$$appliedMethod){
+function AppliedMethod(tipo,fun,$$targs$$,$$appliedMethod){
     $init$AppliedMethod();
     if ($$appliedMethod===undefined)$$appliedMethod=new AppliedMethod.$$;
     set_type_args($$appliedMethod,$$targs$$);
     Method$model($$appliedMethod.$$targs$$===undefined?$$targs$$:{Arguments:$$appliedMethod.$$targs$$.Arguments,Type:$$appliedMethod.$$targs$$.Type,Container:$$appliedMethod.$$targs$$.Container},$$appliedMethod);
+    $$appliedMethod.tipo=tipo;
+    $$appliedMethod.fun=fun;
     return $$appliedMethod;
 }
 AppliedMethod.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Container:{'var':'in'},Type:{'var':'out','def':{t:Anything}},Arguments:{'var':'in','satisfies':[{t:Sequential,a:{Element:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:Method$model,a:{Arguments:'Arguments',Type:'Type',Container:'Container'}}],$an:function(){return[shared()];},d:['ceylon.language.model','Method']};};
@@ -278,23 +280,37 @@ function $init$AppliedMethod(){
             
             //AttributeGetterDefinition declaration at caca.ceylon (14:4-14:86)
             defineAttr($$appliedMethod,'declaration',function(){
-                var $$appliedMethod=this;
-                throw wrapexc(Exception(String$("unimplemented",13)),'14:52-14:84','caca/caca.ceylon');
+              var $$appliedMethod=this;
+              var mm = $$appliedMethod.fun.$$metamodel$$;
+              if (typeof(mm)==='function') {
+                mm = mm();
+                $$appliedMethod.fun.$$metamodel$$=mm;
+              }
+              var _pkg = modules$model.find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
+              return OpenFunction(mm.d[mm.d.length-1], _pkg, false, $$appliedMethod.fun);
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:FunctionDeclaration$model$declaration},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.model','Method','$at','declaration']};});
             //AttributeGetterDefinition type at caca.ceylon (15:4-15:76)
             defineAttr($$appliedMethod,'type',function(){
-                var $$appliedMethod=this;
-                throw wrapexc(Exception(String$("unimplemented",13)),'15:42-15:74','caca/caca.ceylon');
+              var $$appliedMethod=this;
+              //TODO envolver
+              return $$appliedMethod.fun.$$metamodel$$['$t'];
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Type$model,a:{Type:'Type'}},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.model','Method','$at','type']};});
             //AttributeGetterDefinition declaringClassOrInterface at caca.ceylon (16:4-16:107)
             defineAttr($$appliedMethod,'declaringClassOrInterface',function(){
-                var $$appliedMethod=this;
-                throw wrapexc(Exception(String$("unimplemented",13)),'16:73-16:105','caca/caca.ceylon');
+              var $$appliedMethod=this;
+              var mm = $$appliedMethod.tipo.$$metamodel$$;
+              if (typeof(mm)==='function') {
+                mm = mm();
+                $$appliedMethod.tipo.$$metamodel$$=mm;
+              }
+              var _pkg = modules$model.find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
+              var m2 = get_model(mm);
+              return (m2['$mt']==='cls'?OpenClass:OpenInterface)(mm.d[mm.d.length-1],_pkg,mm.$cont===undefined,$$appliedMethod.tipo);
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:ClassOrInterface$model,a:{Type:{t:Anything}}},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.model','Method','$at','declaringClassOrInterface']};});
             //AttributeGetterDefinition container at caca.ceylon (18:4-18:92)
             defineAttr($$appliedMethod,'container',function(){
                 var $$appliedMethod=this;
-                throw wrapexc(Exception(String$("unimplemented",13)),'18:58-18:90','caca/caca.ceylon');
+                return $$appliedMethod.declaringClassOrInterface;
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:ClassOrInterface$model,a:{Type:{t:Anything}}}]},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.model','Method','$at','container']};});
             //AttributeGetterDefinition typeArguments at caca.ceylon (20:4-20:109)
             defineAttr($$appliedMethod,'typeArguments',function(){
