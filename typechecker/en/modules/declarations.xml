@@ -2065,7 +2065,11 @@ case (hexadecimal) {
                 </listitem>
                  <listitem>
                     <para>have a return type that is assignable to the return type 
-                    of the realization.</para>
+                    of the realization, or</para>
+                </listitem>
+                 <listitem>
+                    <para>if it has no return type, the refined method must also 
+                    have no return type.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2495,17 +2499,20 @@ print(greeting);</programlisting>
             defined in <xref linkend="realizations"/>, the refining attribute must:</para>
             
             <itemizedlist>
+                <listitem>
+                    <para>be variable, if the attribute it refines is variable, and</para>
+                </listitem>
                  <listitem>
                     <para>have <emphasis>exactly the same type</emphasis> as the 
-                    realization, if the attribute it refines is variable, 
-                    or</para>
+                    realization, if the attribute it refines is variable,</para>
                 </listitem>
                  <listitem>
                     <para>have a type that is assignable to the type of the refined 
-                    schema, if the attribute it refines is not variable, and</para>
+                    schema, if the attribute it refines is not variable, or</para>
                 </listitem>
                 <listitem>
-                    <para>be variable, if the attribute it refines is variable.</para>
+                    <para>if it has no type, the refined attribute must also have no 
+                    type.</para>
                 </listitem>
             </itemizedlist>
             

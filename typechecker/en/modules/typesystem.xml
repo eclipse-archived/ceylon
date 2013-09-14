@@ -270,6 +270,9 @@
         may be defined. A value schema, function schema, or parameter list with a missing type 
         is called <emphasis>partially typed</emphasis>.</para>
         
+        <para>Two signatures are considered identical if they have exactly the same types, at
+        exactly the same positions, and missing types at exactly the same positions.</para> 
+        
         <section id="memberdistinctness">
             <title>Member distinctness</title>
         
