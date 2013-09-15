@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.buildAnnotations;
+import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.SPECIFY;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
@@ -1208,6 +1209,22 @@ public class DeclarationVisitor extends Visitor {
                     }
                 }
             }
+        }
+    }
+    
+    @Override
+    public void visit(Tree.ClassSpecifier that) {
+        super.visit(that);
+        if (that.getMainToken().getType()==SPECIFY) {
+            that.addError("incorrect syntax: aliased class must be specified using =>", 1050);
+        }
+    }
+    
+    @Override
+    public void visit(Tree.TypeSpecifier that) {
+        super.visit(that);
+        if (that.getMainToken().getType()==SPECIFY) {
+            that.addError("incorrect syntax: aliased type must be specified using =>", 1050);
         }
     }
     

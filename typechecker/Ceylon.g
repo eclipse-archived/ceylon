@@ -695,7 +695,13 @@ extendedType returns [ExtendedType extendedType]
     ;
 
 classSpecifier returns [ClassSpecifier classSpecifier]
-    : COMPUTE { $classSpecifier = new ClassSpecifier($COMPUTE); }
+    : (
+        COMPUTE 
+        { $classSpecifier = new ClassSpecifier($COMPUTE); }
+      |
+        SPECIFY 
+        { $classSpecifier = new ClassSpecifier($SPECIFY); }
+      )
       ci=classInstantiation
       { $classSpecifier.setType($ci.type);
         $classSpecifier.setInvocationExpression($ci.invocationExpression); }
@@ -1169,8 +1175,13 @@ continueDirective returns [Continue directive]
     ;
 
 typeSpecifier returns [TypeSpecifier typeSpecifier]
-    : COMPUTE 
-      { $typeSpecifier = new TypeSpecifier($COMPUTE); }
+    : (
+        COMPUTE 
+        { $typeSpecifier = new TypeSpecifier($COMPUTE); }
+      |
+        SPECIFY 
+        { $typeSpecifier = new TypeSpecifier($SPECIFY); }
+      )
       type
       { $typeSpecifier.setType($type.type); }
     ;
