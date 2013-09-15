@@ -122,6 +122,9 @@
 ^(TYPE_SPECIFIER 
     STATIC_TYPE type)
 
+"A default type argument for a type parameter"
+^(DEFAULT_TYPE_ARGUMENT: TYPE_SPECIFIER)
+    
 "An aliased class specified in a class alias."
 ^(CLASS_SPECIFIER 
     SIMPLE_TYPE type

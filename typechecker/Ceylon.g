@@ -367,8 +367,8 @@ voidOrInferredMethodDeclaration returns [AnyMethod declaration]
         { def.setBlock($block.block); }
       | 
         (
-          lazySpecifier
-          { dec.setSpecifierExpression($lazySpecifier.specifierExpression); }
+          functionSpecifier
+          { dec.setSpecifierExpression($functionSpecifier.specifierExpression); }
         )?
         { expecting=SEMICOLON; }
         SEMICOLON
@@ -387,8 +387,8 @@ setterDeclaration returns [AttributeSetterDefinition declaration]
         block
         { $declaration.setBlock($block.block); }
       | (
-          lazySpecifier
-          { $declaration.setSpecifierExpression($lazySpecifier.specifierExpression); }
+          functionSpecifier
+          { $declaration.setSpecifierExpression($functionSpecifier.specifierExpression); }
         )?
         { expecting=SEMICOLON; }
         SEMICOLON
@@ -476,7 +476,7 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
          { mdef.setBlock($b1.block); }
         | 
           (
-            ms=lazySpecifier
+            ms=functionSpecifier
            { mdec.setSpecifierExpression($ms.specifierExpression); }
           )?
           { expecting=SEMICOLON; }
@@ -889,8 +889,8 @@ parameter returns [ParameterDeclaration parameter]
             $parameter=fp; }
         )+
         (
-          lazySpecifier
-          { m.setSpecifierExpression($lazySpecifier.specifierExpression); }
+          functionSpecifier
+          { m.setSpecifierExpression($functionSpecifier.specifierExpression); }
         )?
       )
     ;
@@ -1188,7 +1188,7 @@ typeSpecifier returns [TypeSpecifier typeSpecifier]
 
 typeDefault returns [TypeSpecifier typeSpecifier]
     : SPECIFY 
-      { $typeSpecifier = new TypeSpecifier($SPECIFY); }
+      { $typeSpecifier = new DefaultTypeArgument($SPECIFY); }
       type
       { $typeSpecifier.setType($type.type); }
     ;
@@ -1203,6 +1203,18 @@ specifier returns [SpecifierExpression specifierExpression]
 lazySpecifier returns [SpecifierExpression specifierExpression]
     : COMPUTE
       { $specifierExpression = new LazySpecifierExpression($COMPUTE); }
+      functionOrExpression
+      { $specifierExpression.setExpression($functionOrExpression.expression); }
+    ;
+
+functionSpecifier returns [SpecifierExpression specifierExpression]
+    : (
+        COMPUTE
+        { $specifierExpression = new LazySpecifierExpression($COMPUTE); }
+      |
+        SPECIFY
+        { $specifierExpression = new LazySpecifierExpression($SPECIFY); }
+      )
       functionOrExpression
       { $specifierExpression.setExpression($functionOrExpression.expression); }
     ;
@@ -1616,8 +1628,8 @@ voidOrInferredMethodArgument returns [MethodArgument declaration]
         { $declaration.setBlock($block.block); }
       | 
         (
-          lazySpecifier
-          { $declaration.setSpecifierExpression($lazySpecifier.specifierExpression); }
+          functionSpecifier
+          { $declaration.setSpecifierExpression($functionSpecifier.specifierExpression); }
         )?
         { expecting=SEMICOLON; }
         SEMICOLON
@@ -1637,8 +1649,8 @@ inferredGetterArgument returns [AttributeArgument declaration]
         { $declaration.setBlock($block.block); }
       | 
         (
-          lazySpecifier
-          { $declaration.setSpecifierExpression($lazySpecifier.specifierExpression); }
+          functionSpecifier
+          { $declaration.setSpecifierExpression($functionSpecifier.specifierExpression); }
         )?
         { expecting=SEMICOLON; }
         SEMICOLON
@@ -1670,9 +1682,9 @@ typedMethodOrGetterArgument returns [TypedArgument declaration]
           aarg.setBlock($block.block); }
       | 
         (
-          lazySpecifier
-          { marg.setSpecifierExpression($lazySpecifier.specifierExpression);
-            aarg.setSpecifierExpression($lazySpecifier.specifierExpression); }
+          functionSpecifier
+          { marg.setSpecifierExpression($functionSpecifier.specifierExpression);
+            aarg.setSpecifierExpression($functionSpecifier.specifierExpression); }
         )?
         { expecting=SEMICOLON; }
         SEMICOLON

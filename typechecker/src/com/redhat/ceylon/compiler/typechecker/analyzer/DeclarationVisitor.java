@@ -1223,8 +1223,17 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.TypeSpecifier that) {
         super.visit(that);
-        if (that.getMainToken().getType()==SPECIFY) {
+        if (that.getMainToken().getType()==SPECIFY && 
+                !(that instanceof Tree.DefaultTypeArgument)) {
             that.addError("incorrect syntax: aliased type must be specified using =>", 1050);
+        }
+    }
+    
+    @Override
+    public void visit(Tree.LazySpecifierExpression that) {
+        super.visit(that);
+        if (that.getMainToken().getType()==SPECIFY) {
+            that.addError("incorrect syntax: expression must be specified using =>", 1050);
         }
     }
     
