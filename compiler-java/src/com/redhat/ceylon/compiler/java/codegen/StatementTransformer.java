@@ -879,7 +879,9 @@ public class StatementTransformer extends AbstractTransformer {
          * is simply the variable name.
          */
         private boolean isErasedToObjectOptimization() {
-            return !typecastRequired() && !hasAliasedVariable();
+            return !typecastRequired() 
+                    && !hasAliasedVariable() 
+                    && !canUnbox(this.specifierExpr.getTypeModel());
         }
         
         /** 
