@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.java.test.issues.PackageIssuesTest;
 import com.redhat.ceylon.compiler.java.test.language.LanguageMetamodelSuite;
 import com.redhat.ceylon.compiler.java.test.language.LanguageSuite;
 import com.redhat.ceylon.compiler.java.test.languagesatisfaction.LanguageSatisfactionSuite;
+import com.redhat.ceylon.compiler.java.test.metamodel.MetamodelTest;
 import com.redhat.ceylon.compiler.java.test.misc.MiscTest;
 import com.redhat.ceylon.compiler.java.test.model.ModelLoaderTest;
 import com.redhat.ceylon.compiler.java.test.model.TypeParserTest;
@@ -80,6 +81,7 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     QuotingTest.class,
     CMRTest.class,
     RuntimeSuite.class,
+    MetamodelTest.class,
     LanguageSatisfactionSuite.class,
     // FIXME: this compiles the metamodel tests for nothing
     LanguageSuite.class,
