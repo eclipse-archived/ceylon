@@ -228,7 +228,7 @@ public class Unit {
     public Declaration getLanguageModuleModelDeclaration(String name) {
         Module languageModule = getPackage().getModule().getLanguageModule();
         if ( languageModule != null && languageModule.isAvailable() ) {
-            Package languageScope = languageModule.getPackage("ceylon.language.model");
+            Package languageScope = languageModule.getPackage("ceylon.language.meta.model");
             if (languageScope != null) {
                 Declaration d = languageScope.getMember(name, null, false);
                 if (d != null && d.isShared()) {
@@ -245,7 +245,7 @@ public class Unit {
     public Declaration getLanguageModuleDeclarationDeclaration(String name) {
         Module languageModule = getPackage().getModule().getLanguageModule();
         if ( languageModule != null && languageModule.isAvailable() ) {
-            Package languageScope = languageModule.getPackage("ceylon.language.model.declaration");
+            Package languageScope = languageModule.getPackage("ceylon.language.meta.declaration");
             if (languageScope != null) {
                 Declaration d = languageScope.getMember(name, null, false);
                 if (d != null && d.isShared()) {
@@ -1037,15 +1037,19 @@ public class Unit {
     }
     
     public TypeDeclaration getAnnotationDeclaration() {
-        return getLanguageModuleModelTypeDeclaration("Annotation");
+        return (TypeDeclaration) getLanguageModuleDeclaration("Annotation");
     }
     
     public TypeDeclaration getConstrainedAnnotationDeclaration() {
-        return getLanguageModuleModelTypeDeclaration("ConstrainedAnnotation");
+        return (TypeDeclaration) getLanguageModuleDeclaration("ConstrainedAnnotation");
     }
-    
+
+    public TypeDeclaration getSequencedAnnotationDeclaration() {
+        return (TypeDeclaration) getLanguageModuleDeclaration("SequencedAnnotation");
+    }
+
     public TypeDeclaration getOptionalAnnotationDeclaration() {
-        return getLanguageModuleModelTypeDeclaration("OptionalAnnotation");
+        return (TypeDeclaration) getLanguageModuleDeclaration("OptionalAnnotation");
     }
     
     public TypeDeclaration getDeclarationDeclaration() {
