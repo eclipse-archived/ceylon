@@ -27,7 +27,7 @@ shared interface ClassOrInterfaceDeclaration
     shared formal Kind? getMemberDeclaration<Kind>(String name) 
             given Kind satisfies NestableDeclaration;
     
-    shared formal ClassOrInterface<Type> apply<Type>(AppliedType<Anything>* typeArguments);
+    shared formal ClassOrInterface<Type> apply<Type=Anything>(AppliedType<Anything>* typeArguments);
     
     shared formal Member<Container, ClassOrInterface<Type>> & ClassOrInterface<Type> 
         memberApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments);
