@@ -8,6 +8,7 @@ import java.util.Map;
 import org.jboss.modules.ModuleClassLoader;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.compiler.loader.impl.reflect.CachedTOCJars;
 import com.redhat.ceylon.compiler.loader.impl.reflect.ReflectionModelLoader;
@@ -43,8 +44,18 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
     @Override
     protected Class<?> loadClass(Module module, String name) {
         ClassLoader classLoader = classLoaders.get(module);
-        if(classLoader == null)
+        if(classLoader == null){
+            if(JDKUtils.isJDKModule(module.getNameAsString())
+                    || JDKUtils.isOracleJDKModule(module.getNameAsString())){
+                // the JDK does not have class loaders so load it from the root class loader
+                try {
+                    return ClassLoader.getSystemClassLoader().loadClass(name);
+                } catch (ClassNotFoundException e) {
+                    return null;
+                }
+            }
             return null;
+        }
         try{
             return classLoader.loadClass(name);
         }catch(ClassNotFoundException x){
@@ -90,6 +101,11 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
             // revert to a single classloader version?
             // FIXME: perhaps we can have other one-classloader-to-one-module setups than jboss modules?
             String pkgName = ReflectionUtils.getPackageName(klass);
+            // even on jboss modules, the jdk has no class loader, so jdk classes will have to be resolved
+            // to the jdk modules by package
+            String jdkModuleName = JDKUtils.getJDKModuleNameForPackage(pkgName);
+            if(jdkModuleName != null)
+                return findModule(jdkModuleName, JDK_MODULE_VERSION);
             return lookupModuleInternal(pkgName);
         }
     }
