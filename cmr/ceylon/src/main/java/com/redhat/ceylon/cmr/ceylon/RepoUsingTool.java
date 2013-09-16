@@ -151,24 +151,22 @@ public abstract class RepoUsingTool implements Tool {
             } else {
                 errorMsg("version.not.found", version, name);
             }
-            msg("try.versions");
+            msg(error, "try.versions");
             boolean first = true;
             for (ModuleVersionDetails mvd : versions) {
                 if (!first) {
-                    append(", ");
+                    append(error, ", ");
                 }
-                append(mvd.getVersion());
+                append(error, mvd.getVersion());
+                if (mvd.isRemote()) {
+                    append(error, " (*)");
+                }
                 first = false;
             }
-            newline();
+            newline(error);
             return null;
         }
         return versions.iterator().next().getVersion();
-    }
-    
-    public RepoUsingTool msg(String msgKey, Object...msgArgs) throws IOException {
-        out.append(Messages.msg(bundle, msgKey, msgArgs));
-        return this;
     }
     
     public RepoUsingTool errorMsg(String msgKey, Object...msgArgs) throws IOException {
@@ -177,13 +175,30 @@ public abstract class RepoUsingTool implements Tool {
         return this;
     }
     
-    public RepoUsingTool append(Object s) throws IOException {
+    public RepoUsingTool msg(Appendable out, String msgKey, Object...msgArgs) throws IOException {
+        out.append(Messages.msg(bundle, msgKey, msgArgs));
+        return this;
+    }
+    
+    public RepoUsingTool msg(String msgKey, Object...msgArgs) throws IOException {
+        return msg(out, msgKey, msgArgs);
+    }
+    
+    public RepoUsingTool append(Appendable out, Object s) throws IOException {
         out.append(String.valueOf(s));
         return this;
     }
     
-    public RepoUsingTool newline() throws IOException {
+    public RepoUsingTool append(Object s) throws IOException {
+        return append(out, s);
+    }
+    
+    public RepoUsingTool newline(Appendable out) throws IOException {
         out.append(System.lineSeparator());
         return this;
+    }
+    
+    public RepoUsingTool newline() throws IOException {
+        return newline(out);
     }
 }

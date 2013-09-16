@@ -65,6 +65,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     protected String username;
     protected String password;
     private Boolean _isHerd = null;
+    private Boolean _isLocalMachine = null;
     private String herdCompleteModulesURL;
     private String herdCompleteVersionsURL;
     private String herdSearchModulesURL;
@@ -137,11 +138,15 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
     
     private boolean rootIsLocalMachine() {
-        URL url = getURL("");
-        return hostIsLocalMachine(url.getHost());
+        if (_isLocalMachine == null) {
+            URL url = getURL("");
+            _isLocalMachine = hostIsLocalMachine(url.getHost());
+        }
+        return _isLocalMachine;
     }
     
     private boolean hostIsLocalMachine(String host) {
+//        return "localhost".equals(host) || "127.0.0.1".equals(host) || "::1".equals(host);
         Enumeration<NetworkInterface> interfaces;
         try {
             interfaces = NetworkInterface.getNetworkInterfaces();
@@ -150,7 +155,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 Enumeration<InetAddress> addresses = nic.getInetAddresses();
                 while (addresses.hasMoreElements()) {
                     InetAddress address = addresses.nextElement();
-                    if (host.equalsIgnoreCase(address.getCanonicalHostName()) || host.equalsIgnoreCase(address.getHostAddress())) {
+                    if (host.equalsIgnoreCase(address.getHostName()) || host.equalsIgnoreCase(address.getHostAddress())) {
                         return true;
                     }
                 }
