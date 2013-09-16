@@ -343,7 +343,14 @@ void checkAAbstractClass() {
     // InnerClass parameter doc
     assert(exists icpdoc = annotations(docAnnotation, icparameter),
             icpdoc.description == "AAbstractClass.InnerClass.parameter");
-    // TODO inner classes methods
+    // InnerClass method doc
+    assert(exists icmdoc = annotations(docAnnotation, `function AAbstractClass.InnerClass.method`),
+            icmdoc.description == "AAbstractClass.InnerClass.method");
+    // InnerClass method param doc
+    assert(
+            exists icmpDecl = `function AAbstractClass.InnerClass.method`.parameterDeclarations[0],
+            exists icmpdoc = annotations(docAnnotation, icmpDecl),
+            icmpdoc.description == "AAbstractClass.InnerClass.method.parameter");
     
     // InnerInterface
     assert(exists iim=aAbstractClassDecl.apply<AAbstractClass>().getClassOrInterface<AAbstractClass, Interface<AAbstractClass.InnerInterface>>("InnerInterface"));
@@ -353,10 +360,17 @@ void checkAAbstractClass() {
     // shared
     assert(exists iidoc = annotations(docAnnotation, ii));
     assert(iidoc.description == "AAbstractClass.InnerInterface");
-    // TODO inner interfaces methods
+    // InnerInterface method doc
+    assert(exists iimdoc = annotations(docAnnotation, `function AAbstractClass.InnerInterface.method`),
+    iimdoc.description == "AAbstractClass.InnerInterface.method");
+    // InnerInterface method parameter doc
+    assert(exists iimpDecl = `function AAbstractClass.InnerInterface.method`.parameterDeclarations[0],
+    exists iimpdoc = annotations(docAnnotation, iimpDecl),
+            iimpdoc.description == "AAbstractClass.InnerInterface.method.parameter");
     
-    
-    // TODO Object members
+    // objectMember
+    assert(exists omdoc = annotations(docAnnotation, `value AAbstractClass.objectMember`),
+    omdoc.description == "AAbstractClass.objectMember");
 }
 
 void checkAInterface() {
@@ -417,25 +431,37 @@ void checkAInterface() {
     //        ngsdoc.description == "AInterface.nonsharedGetterSetter");
     // TODO Test the setter annotations
     
-    // TODO formalMethod
+    // formalMethod
     assert(exists fm=iface.getMethod<AInterface, Anything,[String]>("formalMethod"));
     value fmd = fm(AClass("")).declaration;
-    // TODO defaultMethod
+    assert(exists idfmdoc = annotations(docAnnotation, `function AInterface.formalMethod`),
+            idfmdoc.description == "AInterface.formalMethod");
+    // defaultMethod
     assert(exists dm=iface.getMethod<AInterface, Anything,[String]>("defaultMethod"));
     value dmd = dm(AClass("")).declaration;
-    // TODO method
+    assert(exists iddmdoc = annotations(docAnnotation, `function AInterface.defaultMethod`),
+            iddmdoc.description == "AInterface.defaultMethod");
+    // method
     assert(exists m=iface.getMethod<AInterface, Anything,[String]>("method"));
     value md = m(AClass("")).declaration;
+    assert(exists idmdoc = annotations(docAnnotation, `function AInterface.method`),
+            idmdoc.description == "AInterface.method");
     // TODO nonsharedMethod
     //assert(exists nsm=iface.getFunction<AInterface, Anything,[String]>("nonsharedMethod"));
     //value nsmd = nsm(AClass("")).declaration;
+    //assert(exists insmdoc = annotations(docAnnotation, `function AInterface.nonsharedMethod`),
+    //        insmdoc.description == "AInterface.method");
     
-    // TODO Class & interface members
+    // Class & interface members
     variable ClassDeclaration ficd = memberClassDecl(aInterfaceDecl, "FormalInnerClass");
+    assert(exists ificdoc = annotations(docAnnotation, `class AInterface.FormalInnerClass`),
+            ificdoc.description == "AInterface.FormalInnerClass");
     variable ClassDeclaration dicd = memberClassDecl(aInterfaceDecl, "DefaultInnerClass");
+    assert(exists idicdoc = annotations(docAnnotation, `class AInterface.DefaultInnerClass`),
+            idicdoc.description == "AInterface.DefaultInnerClass");
     variable InterfaceDeclaration iid = memberInterfaceDecl(aInterfaceDecl, "SharedInnerInterface");
-    
-    // TODO Object members
+    assert(exists iiidoc = annotations(docAnnotation, `interface AInterface.SharedInnerInterface`),
+            iiidoc.description == "AInterface.SharedInnerInterface");
     
     // Tests for annotatedMembers()
     value sharedClasses = aInterfaceDecl.annotatedMemberDeclarations<ClassDeclaration, Shared>();
