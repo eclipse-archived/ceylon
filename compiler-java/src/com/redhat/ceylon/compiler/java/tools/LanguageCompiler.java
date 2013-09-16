@@ -477,32 +477,33 @@ public class LanguageCompiler extends JavaCompiler {
 
     // FIXME: this function is terrible, possibly refactor it with getPackage?
     private File getSrcDir(File sourceFile) throws IOException {
-        String name;
+        Iterable<? extends File> prefixes = ((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH);
+        File srcDirFile = getSrcDir(prefixes, sourceFile);
+        if (srcDirFile != null) {
+            return srcDirFile;
+        } else {
+            // This error should have been caught by the tool chain
+            throw new RuntimeException(sourceFile.getPath() + " is not in the current source path");
+        }
+    }
+
+    public static File getSrcDir(Iterable<? extends File> prefixes, File sourceFile) {
         try {
-            name = sourceFile.getCanonicalPath();
+            String name = sourceFile.getCanonicalPath();
+            int maxPrefixLength = 0;
+            File srcDirFile = null;
+            for (File prefixFile : prefixes) {
+                String path = prefixFile.getCanonicalPath() + File.separatorChar;
+                if (name.startsWith(path) && path.length() > maxPrefixLength) {
+                    maxPrefixLength = path.length();
+                    srcDirFile = prefixFile;
+                }
+            }
+            return srcDirFile;
         } catch (IOException e) {
             // FIXME
             throw new RuntimeException(e);
         }
-        Iterable<? extends File> prefixes = ((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH);
-        
-        int maxPrefixLength = 0;
-        File srcDirFile = null;
-        for (File prefixFile : prefixes) {
-            String path = prefixFile.getCanonicalPath();
-            if (name.startsWith(path) && path.length() > maxPrefixLength) {
-                maxPrefixLength = path.length();
-                srcDirFile = prefixFile;
-            }
-        }
-        if (srcDirFile != null) {
-            return srcDirFile;
-        }
-        
-        String srcPath = ((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH).toString();
-        String msg = sourceFile.getPath() + " is not in the current source path: " + srcPath + "\n"
-                + "Either move the sources into that path or add a --src argument to specify their actual location.";
-        throw new CompilerErrorException(msg);
     }
 
     private String getPackage(JavaFileObject file) throws IOException{

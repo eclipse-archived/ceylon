@@ -29,6 +29,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -37,9 +38,9 @@ import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
-import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
+import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.sun.tools.javac.main.JavacOption;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.main.RecognizedOptions;
@@ -323,7 +324,17 @@ public class CeylonCompileTool extends RepoUsingTool {
         for (String moduleSpec : this.module) {
             if (sourceFileOpt != null) {
                 validateWithJavac(options, sourceFileOpt, moduleSpec, moduleSpec, "argument.error");
-            }            
+            }
+            if (moduleSpec.endsWith(Constants.CEYLON_SUFFIX)) {
+                // It's a single source file instead of a module name, so let's check
+                // if it's really located in one of the defined source folders
+                File sourceFile = new File(moduleSpec);
+                if (LanguageCompiler.getSrcDir(this.source, sourceFile) == null) {
+                    String srcPath = this.source.toString();
+                    throw new IllegalStateException(CeylonCompileMessages.msg("error.not.in.source.path", moduleSpec, srcPath));
+                }
+
+            }
             arguments.add(moduleSpec);
         }
         
