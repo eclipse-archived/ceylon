@@ -307,6 +307,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 || JAVA_LANG_ARRAYS.equals(name)) {
                 // turn them into their real class location (get rid of the "java.lang" prefix)
                 name = "com.redhat.ceylon.compiler.java.language" + name.substring(9);
+                module = getLanguageModule();
             }
             String cacheKey = cacheKeyByModule(module, name);
             // we use containsKey to be able to cache null results
