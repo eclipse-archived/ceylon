@@ -188,3 +188,11 @@ class RelativeLiterals(shared String str = "a") {
         value temp4 = `Inner`;
     }
 }
+
+void casting(Type<LitClass> l){
+    casting(`LitClass`);
+    Integer i = `LitClass.attribute`(LitClass(2)).get();
+    String j = `LitClass.parameterisedMethod<String>`(LitClass(2))("a");
+    Integer i2 = `litValue`.get();
+    String j2 = `litParameterisedFunction<String>`("a");
+}
