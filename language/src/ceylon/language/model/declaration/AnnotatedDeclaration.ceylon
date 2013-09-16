@@ -1,4 +1,4 @@
-import ceylon.language.model{Annotated, MetamodelAnnotation = Annotation}
+import ceylon.language{AnnotationType = Annotation}
 
 shared interface AnnotatedDeclaration of NestableDeclaration
                                        | Module
@@ -8,5 +8,5 @@ shared interface AnnotatedDeclaration of NestableDeclaration
     "The annotation instances of the given 
      annotation type on this declaration."
     shared formal Annotation[] annotations<out Annotation>()
-        given Annotation satisfies MetamodelAnnotation<Annotation>;
+        given Annotation satisfies AnnotationType<Annotation>;
 }

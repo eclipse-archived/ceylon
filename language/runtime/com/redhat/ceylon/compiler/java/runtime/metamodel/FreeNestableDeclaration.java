@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
-import ceylon.language.model.Annotated$impl;
+import ceylon.language.Annotated$impl;
 import ceylon.language.model.declaration.AnnotatedDeclaration$impl;
 import ceylon.language.model.declaration.Declaration$impl;
 import ceylon.language.model.declaration.Module;
@@ -60,7 +60,7 @@ public abstract class FreeNestableDeclaration
 
     @Override
     @Ignore
-    public Annotated$impl $ceylon$language$model$Annotated$impl() {
+    public Annotated$impl $ceylon$language$Annotated$impl() {
         return null;
     }
 
@@ -122,8 +122,8 @@ public abstract class FreeNestableDeclaration
 
     @Override
     @TypeInfo("ceylon.language::Sequential<Annotation>")
-    @TypeParameters(@TypeParameter(value = "Annotation", satisfies = "ceylon.language.model::Annotation<Annotation>"))
-    public <Annotation extends ceylon.language.model.Annotation<? extends Annotation>> Sequential<? extends Annotation> annotations(@Ignore TypeDescriptor $reifiedAnnotation) {
+    @TypeParameters(@TypeParameter(value = "Annotation", satisfies = "ceylon.language::Annotation<Annotation>"))
+    public <Annotation extends ceylon.language.Annotation<? extends Annotation>> Sequential<? extends Annotation> annotations(@Ignore TypeDescriptor $reifiedAnnotation) {
         return Metamodel.annotations($reifiedAnnotation, this);
     }
 

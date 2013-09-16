@@ -1,7 +1,3 @@
-import ceylon.language.model {
-    SequencedAnnotation, OptionalAnnotation, 
-    Annotated
-}
 import ceylon.language.model.declaration {
     Module, Package, Import,
     ClassDeclaration,

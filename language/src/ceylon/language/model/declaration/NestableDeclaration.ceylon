@@ -1,4 +1,3 @@
-import ceylon.language.model{Annotated}
 
 shared interface NestableDeclaration of FunctionOrValueDeclaration |
                                         ClassOrInterfaceDeclaration |

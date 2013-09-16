@@ -5,7 +5,7 @@ import java.util.List;
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.model.Annotated$impl;
+import ceylon.language.Annotated$impl;
 import ceylon.language.model.declaration.AnnotatedDeclaration;
 import ceylon.language.model.declaration.AnnotatedDeclaration$impl;
 import ceylon.language.model.declaration.Declaration$impl;
@@ -58,7 +58,7 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
     
     @Override
     @Ignore
-    public Annotated$impl $ceylon$language$model$Annotated$impl() {
+    public Annotated$impl $ceylon$language$Annotated$impl() {
         return null;
     }
     
@@ -71,8 +71,8 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
 
     @Override
     @TypeInfo("ceylon.language::Sequential<Annotation>")
-    @TypeParameters(@TypeParameter(value = "Annotation", satisfies = "ceylon.language.model::Annotation<Annotation>"))
-    public <Annotation extends ceylon.language.model.Annotation<? extends Annotation>> Sequential<? extends Annotation> annotations(@Ignore TypeDescriptor $reifiedAnnotation) {
+    @TypeParameters(@TypeParameter(value = "Annotation", satisfies = "ceylon.language::Annotation<Annotation>"))
+    public <Annotation extends ceylon.language.Annotation<? extends Annotation>> Sequential<? extends Annotation> annotations(@Ignore TypeDescriptor $reifiedAnnotation) {
         return Metamodel.annotations($reifiedAnnotation, this);
     }
 

@@ -1,3 +1,5 @@
+import ceylon.language.model { Class, annotations }
+
 "An annotation that may occur multiple times
  at a single program element."
 shared interface SequencedAnnotation<out Value, in ProgramElement=Annotated>

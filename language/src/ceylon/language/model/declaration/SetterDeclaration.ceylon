@@ -1,6 +1,3 @@
-import ceylon.language.model {
-    Annotated
-}
 
 "Model of the setter of a `VariableDeclaration`."
 shared interface SetterDeclaration

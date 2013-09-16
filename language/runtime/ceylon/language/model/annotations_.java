@@ -26,13 +26,13 @@ public final class annotations_ {
     @Annotations({@com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @TypeInfo("Values")
     @TypeParameters({
-        @TypeParameter(value = "Value", satisfies = {"ceylon.language.model::ConstrainedAnnotation<Value,Values,ProgramElement>"}), 
+        @TypeParameter(value = "Value", satisfies = {"ceylon.language::ConstrainedAnnotation<Value,Values,ProgramElement>"}), 
         @TypeParameter(value = "Values"), 
-        @TypeParameter(value = "ProgramElement", satisfies = {"ceylon.language.model::Annotated"}, variance=Variance.IN)
+        @TypeParameter(value = "ProgramElement", satisfies = {"ceylon.language::Annotated"}, variance=Variance.IN)
     })
-    public static <Value extends ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>, 
+    public static <Value extends ceylon.language.ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>, 
                    Values, 
-                   ProgramElement extends ceylon.language.model.Annotated>
+                   ProgramElement extends ceylon.language.Annotated>
     Values annotations(
             @Ignore
             final TypeDescriptor $reifiedValue, 
@@ -41,14 +41,14 @@ public final class annotations_ {
             @Ignore
             final TypeDescriptor $reifiedProgramElement, 
             @Name("annotationType")
-            @TypeInfo("ceylon.language.model::Class<ceylon.language.model::ConstrainedAnnotation<Value,Values,ProgramElement>,ceylon.language::Nothing>")
-            final Class<? extends ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>,?> annotationType, 
+            @TypeInfo("ceylon.language.model::Class<ceylon.language::ConstrainedAnnotation<Value,Values,ProgramElement>,ceylon.language::Nothing>")
+            final Class<? extends ceylon.language.ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>,?> annotationType, 
             @Name("programElement")
             @TypeInfo("ProgramElement")
             final ProgramElement programElement) {
-        Sequential<Annotation> annots = (Sequential)Metamodel.annotations($reifiedValue, programElement);
+        Sequential<ceylon.language.Annotation> annots = (Sequential)Metamodel.annotations($reifiedValue, programElement);
         final java.lang.Class<?> refAnnotationClass = (java.lang.Class<?>)Metamodel.getReflectedAnnotationClass(annotationType);
-        if (OptionalAnnotation.class.isAssignableFrom(refAnnotationClass)) {
+        if (ceylon.language.OptionalAnnotation.class.isAssignableFrom(refAnnotationClass)) {
             if (annots.getSize() > 1L) {
                 throw new RuntimeException("Assertion error");
             }

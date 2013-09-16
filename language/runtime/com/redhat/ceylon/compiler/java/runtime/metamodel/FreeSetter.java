@@ -3,8 +3,8 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
-import ceylon.language.model.Annotated;
-import ceylon.language.model.Annotated$impl;
+import ceylon.language.Annotated;
+import ceylon.language.Annotated$impl;
 import ceylon.language.model.declaration.SetterDeclaration;
 import ceylon.language.model.declaration.SetterDeclaration$impl;
 import ceylon.language.model.declaration.VariableDeclaration;
@@ -20,9 +20,9 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @Class
-@SatisfiedTypes({"ceylon.language.model::Annotated", "ceylon.language.model.declaration::SetterDeclaration"})
+@SatisfiedTypes({"ceylon.language.model.declaration::SetterDeclaration"})
 public class FreeSetter 
-        implements SetterDeclaration, Annotated, AnnotationBearing, ReifiedType {
+        implements SetterDeclaration, AnnotationBearing, ReifiedType {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeSetter.class);
@@ -39,7 +39,7 @@ public class FreeSetter
     }
 
     @Override
-    public Annotated$impl $ceylon$language$model$Annotated$impl() {
+    public Annotated$impl $ceylon$language$Annotated$impl() {
         return null;
     }
     

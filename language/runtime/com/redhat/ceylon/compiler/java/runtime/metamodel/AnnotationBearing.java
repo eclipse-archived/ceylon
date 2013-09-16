@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.model.Annotated;
+import ceylon.language.Annotated;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
