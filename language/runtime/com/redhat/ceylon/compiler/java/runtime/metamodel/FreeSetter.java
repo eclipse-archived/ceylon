@@ -5,9 +5,9 @@ import java.lang.reflect.Method;
 
 import ceylon.language.Annotated;
 import ceylon.language.Annotated$impl;
-import ceylon.language.model.declaration.SetterDeclaration;
-import ceylon.language.model.declaration.SetterDeclaration$impl;
-import ceylon.language.model.declaration.VariableDeclaration;
+import ceylon.language.meta.declaration.SetterDeclaration;
+import ceylon.language.meta.declaration.SetterDeclaration$impl;
+import ceylon.language.meta.declaration.VariableDeclaration;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -20,7 +20,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @Class
-@SatisfiedTypes({"ceylon.language.model.declaration::SetterDeclaration"})
+@SatisfiedTypes({"ceylon.language.meta.declaration::SetterDeclaration"})
 public class FreeSetter 
         implements SetterDeclaration, AnnotationBearing, ReifiedType {
 
@@ -44,7 +44,7 @@ public class FreeSetter
     }
     
     @Override
-    public SetterDeclaration$impl $ceylon$language$model$declaration$SetterDeclaration$impl() {
+    public SetterDeclaration$impl $ceylon$language$meta$declaration$SetterDeclaration$impl() {
         return null;
     }
 
@@ -53,7 +53,7 @@ public class FreeSetter
         return declaredSetter != null ? declaredSetter.getDeclaredAnnotations() : AnnotationBearing.NONE;
     }
     
-    @TypeInfo("ceylon.language.model.declaration::VariableDeclaration")
+    @TypeInfo("ceylon.language.meta.declaration::VariableDeclaration")
     @Override
     public VariableDeclaration getVariable() {
         return variable;
@@ -72,9 +72,9 @@ public class FreeSetter
             return false;
         if(obj == this)
             return true;
-        if(obj instanceof ceylon.language.model.declaration.SetterDeclaration == false)
+        if(obj instanceof ceylon.language.meta.declaration.SetterDeclaration == false)
             return false;
-        ceylon.language.model.declaration.SetterDeclaration other = (ceylon.language.model.declaration.SetterDeclaration) obj;
+        ceylon.language.meta.declaration.SetterDeclaration other = (ceylon.language.meta.declaration.SetterDeclaration) obj;
         return getVariable().equals(other.getVariable());
     }
 

@@ -6,8 +6,8 @@ import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
-import ceylon.language.model.declaration.ClassDeclaration$impl;
-import ceylon.language.model.declaration.FunctionalDeclaration$impl;
+import ceylon.language.meta.declaration.ClassDeclaration$impl;
+import ceylon.language.meta.declaration.FunctionalDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -25,11 +25,11 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeClass 
     extends FreeClassOrInterface
-    implements ceylon.language.model.declaration.ClassDeclaration {
+    implements ceylon.language.meta.declaration.ClassDeclaration {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeClass.class);
-    private Sequential<? extends ceylon.language.model.declaration.FunctionOrValueDeclaration> parameters;
+    private Sequential<? extends ceylon.language.meta.declaration.FunctionOrValueDeclaration> parameters;
     
     public FreeClass(com.redhat.ceylon.compiler.typechecker.model.Class declaration) {
         super(declaration);
@@ -42,13 +42,13 @@ public class FreeClass
         if(!declaration.isAnonymous()){
             ParameterList parameterList = ((com.redhat.ceylon.compiler.typechecker.model.Class)declaration).getParameterList();
             List<Parameter> modelParameters = parameterList.getParameters();
-            ceylon.language.model.declaration.FunctionOrValueDeclaration[] parameters = new ceylon.language.model.declaration.FunctionOrValueDeclaration[modelParameters.size()];
+            ceylon.language.meta.declaration.FunctionOrValueDeclaration[] parameters = new ceylon.language.meta.declaration.FunctionOrValueDeclaration[modelParameters.size()];
             int i=0;
             for(Parameter modelParameter : modelParameters){
-                parameters[i] = (ceylon.language.model.declaration.FunctionOrValueDeclaration) Metamodel.getOrCreateMetamodel(modelParameter.getModel());
+                parameters[i] = (ceylon.language.meta.declaration.FunctionOrValueDeclaration) Metamodel.getOrCreateMetamodel(modelParameter.getModel());
                 i++;
             }
-            this.parameters = Util.sequentialInstance(ceylon.language.model.declaration.FunctionOrValueDeclaration.$TypeDescriptor, parameters);
+            this.parameters = Util.sequentialInstance(ceylon.language.meta.declaration.FunctionOrValueDeclaration.$TypeDescriptor, parameters);
         }else{
             this.parameters = (Sequential) empty_.$get();
         }
@@ -56,13 +56,13 @@ public class FreeClass
     
     @Override
     @Ignore
-    public ClassDeclaration$impl $ceylon$language$model$declaration$ClassDeclaration$impl() {
+    public ClassDeclaration$impl $ceylon$language$meta$declaration$ClassDeclaration$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public FunctionalDeclaration$impl $ceylon$language$model$declaration$FunctionalDeclaration$impl() {
+    public FunctionalDeclaration$impl $ceylon$language$meta$declaration$FunctionalDeclaration$impl() {
         return null;
     }
 
@@ -87,20 +87,20 @@ public class FreeClass
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::FunctionOrValueDeclaration>")
-    public Sequential<? extends ceylon.language.model.declaration.FunctionOrValueDeclaration> getParameterDeclarations(){
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::FunctionOrValueDeclaration>")
+    public Sequential<? extends ceylon.language.meta.declaration.FunctionOrValueDeclaration> getParameterDeclarations(){
         checkInit();
         return parameters;
     }
 
     @Override
-    @TypeInfo("ceylon.language.model.declaration::FunctionOrValueDeclaration|ceylon.language::Null")
-    public ceylon.language.model.declaration.FunctionOrValueDeclaration getParameterDeclaration(@Name("name") String name){
+    @TypeInfo("ceylon.language.meta.declaration::FunctionOrValueDeclaration|ceylon.language::Null")
+    public ceylon.language.meta.declaration.FunctionOrValueDeclaration getParameterDeclaration(@Name("name") String name){
         checkInit();
         Iterator<?> iterator = parameters.iterator();
         Object o;
         while((o = iterator.next()) != finished_.$get()){
-            ceylon.language.model.declaration.FunctionOrValueDeclaration pd = (ceylon.language.model.declaration.FunctionOrValueDeclaration) o;
+            ceylon.language.meta.declaration.FunctionOrValueDeclaration pd = (ceylon.language.meta.declaration.FunctionOrValueDeclaration) o;
             if(pd.getName().equals(name))
                 return pd;
         }
@@ -110,32 +110,32 @@ public class FreeClass
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
-    public <Type, Arguments extends Sequential<? extends Object>> ceylon.language.model.Class<Type, Arguments> classApply(TypeDescriptor $reifiedType,
+    public <Type, Arguments extends Sequential<? extends Object>> ceylon.language.meta.model.Class<Type, Arguments> classApply(TypeDescriptor $reifiedType,
             TypeDescriptor $reifiedArguments){
         return classApply($reifiedType, $reifiedArguments, (Sequential)empty_.$get());
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    @TypeInfo("ceylon.language.model::Class<Type,Arguments>")
+    @TypeInfo("ceylon.language.meta.model::Class<Type,Arguments>")
     @TypeParameters({
         @TypeParameter("Type"),
         @TypeParameter(value = "Arguments", satisfies = "ceylon.language::Sequential<ceylon.language::Anything>")
     })
-    public <Type, Arguments extends Sequential<? extends Object>> ceylon.language.model.Class<Type, Arguments> classApply(TypeDescriptor $reifiedType,
+    public <Type, Arguments extends Sequential<? extends Object>> ceylon.language.meta.model.Class<Type, Arguments> classApply(TypeDescriptor $reifiedType,
             TypeDescriptor $reifiedArguments,
-            @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> typeArguments){
-        return (ceylon.language.model.Class<Type, Arguments>) super.apply($reifiedType, typeArguments);
+            @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
+        return (ceylon.language.meta.model.Class<Type, Arguments>) super.apply($reifiedType, typeArguments);
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Ignore
     @Override
     public <Container, Type, Arguments extends Sequential<? extends Object>>
-        ceylon.language.model.MemberClass<Container, Type, Arguments> memberClassApply(TypeDescriptor $reifiedContainer,
+        ceylon.language.meta.model.MemberClass<Container, Type, Arguments> memberClassApply(TypeDescriptor $reifiedContainer,
                                                                                        TypeDescriptor $reifiedType,
                                                                                        TypeDescriptor $reifiedArguments,
-                                                                                       ceylon.language.model.Type<? extends Container> containerType){
+                                                                                       ceylon.language.meta.model.Type<? extends Container> containerType){
         
         return this.<Container, Type, Arguments>memberClassApply($reifiedContainer,
                                                  $reifiedType,
@@ -145,7 +145,7 @@ public class FreeClass
     }
 
     @SuppressWarnings("unchecked")
-    @TypeInfo("ceylon.language.model::MemberClass<Container,Type,Arguments>")
+    @TypeInfo("ceylon.language.meta.model::MemberClass<Container,Type,Arguments>")
     @TypeParameters({
         @TypeParameter("Container"),
         @TypeParameter("Type"),
@@ -153,13 +153,13 @@ public class FreeClass
     })
     @Override
     public <Container, Type, Arguments extends Sequential<? extends Object>>
-    ceylon.language.model.MemberClass<Container, Type, Arguments> memberClassApply(
+    ceylon.language.meta.model.MemberClass<Container, Type, Arguments> memberClassApply(
                 @Ignore TypeDescriptor $reifiedContainer,
                 @Ignore TypeDescriptor $reifiedType,
                 @Ignore TypeDescriptor $reifiedArguments,
-                @Name("containerType") ceylon.language.model.Type<? extends Container> containerType,
-                @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> typeArguments){
-        return (ceylon.language.model.MemberClass<Container, Type, Arguments>) super.memberApply($reifiedContainer, $reifiedType, containerType, typeArguments);
+                @Name("containerType") ceylon.language.meta.model.Type<? extends Container> containerType,
+                @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
+        return (ceylon.language.meta.model.MemberClass<Container, Type, Arguments>) super.memberApply($reifiedContainer, $reifiedType, containerType, typeArguments);
     }
 
     @Override
@@ -177,9 +177,9 @@ public class FreeClass
             return false;
         if(obj == this)
             return true;
-        if(obj instanceof ceylon.language.model.declaration.ClassDeclaration == false)
+        if(obj instanceof ceylon.language.meta.declaration.ClassDeclaration == false)
             return false;
-        ceylon.language.model.declaration.ClassDeclaration other = (ceylon.language.model.declaration.ClassDeclaration) obj;
+        ceylon.language.meta.declaration.ClassDeclaration other = (ceylon.language.meta.declaration.ClassDeclaration) obj;
         if(!Util.eq(other.getContainer(), getContainer()))
             return false;
         return getName().equals(other.getName());

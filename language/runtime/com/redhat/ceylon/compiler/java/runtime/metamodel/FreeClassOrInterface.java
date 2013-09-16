@@ -8,11 +8,11 @@ import ceylon.language.Empty;
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.model.ClassOrInterface;
-import ceylon.language.model.Member;
-import ceylon.language.model.declaration.ClassOrInterfaceDeclaration$impl;
-import ceylon.language.model.declaration.GenericDeclaration$impl;
-import ceylon.language.model.declaration.OpenType;
+import ceylon.language.meta.model.ClassOrInterface;
+import ceylon.language.meta.model.Member;
+import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration$impl;
+import ceylon.language.meta.declaration.GenericDeclaration$impl;
+import ceylon.language.meta.declaration.OpenType;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -30,26 +30,26 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 @com.redhat.ceylon.compiler.java.metadata.Class
 public abstract class FreeClassOrInterface
     extends FreeNestableDeclaration
-    implements ceylon.language.model.declaration.ClassOrInterfaceDeclaration, AnnotationBearing {
+    implements ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, AnnotationBearing {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeClassOrInterface.class);
     
     @Ignore
-    private static final TypeDescriptor $FunctionTypeDescriptor = TypeDescriptor.klass(ceylon.language.model.declaration.FunctionDeclaration.class, Anything.$TypeDescriptor, Empty.$TypeDescriptor);
+    private static final TypeDescriptor $FunctionTypeDescriptor = TypeDescriptor.klass(ceylon.language.meta.declaration.FunctionDeclaration.class, Anything.$TypeDescriptor, Empty.$TypeDescriptor);
     @Ignore
-    private static final TypeDescriptor $AttributeTypeDescriptor = TypeDescriptor.klass(ceylon.language.model.declaration.ValueDeclaration.class, Anything.$TypeDescriptor);
+    private static final TypeDescriptor $AttributeTypeDescriptor = TypeDescriptor.klass(ceylon.language.meta.declaration.ValueDeclaration.class, Anything.$TypeDescriptor);
     @Ignore
-    private static final TypeDescriptor $ClassOrInterfaceTypeDescriptor = TypeDescriptor.klass(ceylon.language.model.declaration.ClassOrInterfaceDeclaration.class, Anything.$TypeDescriptor);
+    private static final TypeDescriptor $ClassOrInterfaceTypeDescriptor = TypeDescriptor.klass(ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.class, Anything.$TypeDescriptor);
     
     private volatile boolean initialised = false;
-    private ceylon.language.model.declaration.OpenClassType superclass;
-    private Sequential<ceylon.language.model.declaration.OpenInterfaceType> interfaces;
-    private Sequential<? extends ceylon.language.model.declaration.TypeParameter> typeParameters;
+    private ceylon.language.meta.declaration.OpenClassType superclass;
+    private Sequential<ceylon.language.meta.declaration.OpenInterfaceType> interfaces;
+    private Sequential<? extends ceylon.language.meta.declaration.TypeParameter> typeParameters;
 
-    private List<ceylon.language.model.declaration.NestableDeclaration> declarations;
+    private List<ceylon.language.meta.declaration.NestableDeclaration> declarations;
 
-    private Sequential<? extends ceylon.language.model.declaration.OpenType> caseTypes;
+    private Sequential<? extends ceylon.language.meta.declaration.OpenType> caseTypes;
 
     public FreeClassOrInterface(com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration) {
         super(declaration);
@@ -57,13 +57,13 @@ public abstract class FreeClassOrInterface
 
     @Override
     @Ignore
-    public ClassOrInterfaceDeclaration$impl $ceylon$language$model$declaration$ClassOrInterfaceDeclaration$impl() {
+    public ClassOrInterfaceDeclaration$impl $ceylon$language$meta$declaration$ClassOrInterfaceDeclaration$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public GenericDeclaration$impl $ceylon$language$model$declaration$GenericDeclaration$impl() {
+    public GenericDeclaration$impl $ceylon$language$meta$declaration$GenericDeclaration$impl() {
         return null;
     }
 
@@ -72,15 +72,15 @@ public abstract class FreeClassOrInterface
         
         ProducedType superType = declaration.getExtendedType();
         if(superType != null)
-            this.superclass = (ceylon.language.model.declaration.OpenClassType) Metamodel.getMetamodel(superType);
+            this.superclass = (ceylon.language.meta.declaration.OpenClassType) Metamodel.getMetamodel(superType);
         
         List<ProducedType> satisfiedTypes = declaration.getSatisfiedTypes();
-        ceylon.language.model.declaration.OpenInterfaceType[] interfaces = new ceylon.language.model.declaration.OpenInterfaceType[satisfiedTypes.size()];
+        ceylon.language.meta.declaration.OpenInterfaceType[] interfaces = new ceylon.language.meta.declaration.OpenInterfaceType[satisfiedTypes.size()];
         int i=0;
         for(ProducedType pt : satisfiedTypes){
-            interfaces[i++] = (ceylon.language.model.declaration.OpenInterfaceType) Metamodel.getMetamodel(pt);
+            interfaces[i++] = (ceylon.language.meta.declaration.OpenInterfaceType) Metamodel.getMetamodel(pt);
         }
-        this.interfaces = Util.sequentialInstance(ceylon.language.model.declaration.OpenInterfaceType.$TypeDescriptor, interfaces);
+        this.interfaces = Util.sequentialInstance(ceylon.language.meta.declaration.OpenInterfaceType.$TypeDescriptor, interfaces);
 
         if(declaration.getCaseTypes() != null)
             this.caseTypes = Metamodel.getMetamodelSequential(declaration.getCaseTypes());
@@ -91,7 +91,7 @@ public abstract class FreeClassOrInterface
         
         List<com.redhat.ceylon.compiler.typechecker.model.Declaration> memberModelDeclarations = declaration.getMembers();
         i=0;
-        this.declarations = new LinkedList<ceylon.language.model.declaration.NestableDeclaration>();
+        this.declarations = new LinkedList<ceylon.language.meta.declaration.NestableDeclaration>();
         for(com.redhat.ceylon.compiler.typechecker.model.Declaration memberModelDeclaration : memberModelDeclarations){
             if(memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value
                     || memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method
@@ -114,8 +114,8 @@ public abstract class FreeClassOrInterface
     
     @Override
     @TypeInfo("ceylon.language::Sequential<Kind>")
-    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::NestableDeclaration"))
-    public <Kind extends ceylon.language.model.declaration.NestableDeclaration> Sequential<? extends Kind> 
+    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.declaration::NestableDeclaration"))
+    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration> Sequential<? extends Kind> 
     memberDeclarations(@Ignore TypeDescriptor $reifiedKind) {
         
         Predicates.Predicate<?> predicate = Predicates.isDeclarationOfKind($reifiedKind);
@@ -126,10 +126,10 @@ public abstract class FreeClassOrInterface
     @Override
     @TypeInfo("ceylon.language::Sequential<Kind>")
     @TypeParameters({
-            @TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::NestableDeclaration"),
+            @TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.declaration::NestableDeclaration"),
             @TypeParameter("Annotation")
     })
-    public <Kind extends ceylon.language.model.declaration.NestableDeclaration, Annotation> Sequential<? extends Kind> 
+    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration, Annotation> Sequential<? extends Kind> 
     annotatedMemberDeclarations(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
         
         Predicates.Predicate<?> predicate = Predicates.and(
@@ -147,7 +147,7 @@ public abstract class FreeClassOrInterface
         }
         checkInit();
         SequenceBuilder<Kind> members = new SequenceBuilder<Kind>($reifiedKind, declarations.size());
-        for(ceylon.language.model.declaration.NestableDeclaration decl : declarations){
+        for(ceylon.language.meta.declaration.NestableDeclaration decl : declarations){
             if (predicate.accept(((FreeNestableDeclaration)decl).declaration)) {
                 members.append((Kind) decl);
             }
@@ -172,8 +172,8 @@ public abstract class FreeClassOrInterface
     
     @Override
     @TypeInfo("Kind")
-    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::NestableDeclaration"))
-    public <Kind extends ceylon.language.model.declaration.NestableDeclaration> Kind 
+    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.declaration::NestableDeclaration"))
+    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration> Kind 
     getMemberDeclaration(@Ignore TypeDescriptor $reifiedKind, @Name("name") String name) {
         
         Predicates.Predicate<?> predicate = Predicates.and(
@@ -185,30 +185,30 @@ public abstract class FreeClassOrInterface
     }
     
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::OpenInterfaceType>")
-    public Sequential<? extends ceylon.language.model.declaration.OpenInterfaceType> getSatisfiedTypes() {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::OpenInterfaceType>")
+    public Sequential<? extends ceylon.language.meta.declaration.OpenInterfaceType> getSatisfiedTypes() {
         checkInit();
         return interfaces;
     }
 
     @Override
-    @TypeInfo("ceylon.language.model.declaration::OpenClassType|ceylon.language::Null")
-    public ceylon.language.model.declaration.OpenClassType getExtendedType() {
+    @TypeInfo("ceylon.language.meta.declaration::OpenClassType|ceylon.language::Null")
+    public ceylon.language.meta.declaration.OpenClassType getExtendedType() {
         checkInit();
         return superclass;
     }
 
 
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::OpenType>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::OpenType>")
     @Override
-    public ceylon.language.Sequential<? extends ceylon.language.model.declaration.OpenType> getCaseTypes(){
+    public ceylon.language.Sequential<? extends ceylon.language.meta.declaration.OpenType> getCaseTypes(){
         checkInit();
         return caseTypes;
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::TypeParameter>")
-    public Sequential<? extends ceylon.language.model.declaration.TypeParameter> getTypeParameterDeclarations() {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::TypeParameter>")
+    public Sequential<? extends ceylon.language.meta.declaration.TypeParameter> getTypeParameterDeclarations() {
         checkInit();
         return typeParameters;
     }
@@ -224,26 +224,26 @@ public abstract class FreeClassOrInterface
     }
 
     @Override
-    @TypeInfo("ceylon.language.model.declaration::TypeParameter|ceylon.language::Null")
-    public ceylon.language.model.declaration.TypeParameter getTypeParameterDeclaration(@Name("name") String name) {
+    @TypeInfo("ceylon.language.meta.declaration::TypeParameter|ceylon.language::Null")
+    public ceylon.language.meta.declaration.TypeParameter getTypeParameterDeclaration(@Name("name") String name) {
         return Metamodel.findDeclarationByName(getTypeParameterDeclarations(), name);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
-    public <Type> ceylon.language.model.ClassOrInterface<Type> apply(@Ignore TypeDescriptor $reifiedType){
+    public <Type> ceylon.language.meta.model.ClassOrInterface<Type> apply(@Ignore TypeDescriptor $reifiedType){
         return apply($reifiedType, (Sequential)empty_.$get());
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    @TypeInfo("ceylon.language.model::ClassOrInterface<Type>")
+    @TypeInfo("ceylon.language.meta.model::ClassOrInterface<Type>")
     @TypeParameters({
         @TypeParameter("Type"),
     })
-    public <Type extends Object> ceylon.language.model.ClassOrInterface<Type> apply(@Ignore TypeDescriptor $reifiedType,
-            @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> typeArguments){
+    public <Type extends Object> ceylon.language.meta.model.ClassOrInterface<Type> apply(@Ignore TypeDescriptor $reifiedType,
+            @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
         if(!getToplevel())
             // FIXME: change type
             throw new RuntimeException("Cannot apply a member declaration with no container type: use memberApply");
@@ -259,7 +259,7 @@ public abstract class FreeClassOrInterface
     public <Container, Type extends Object>
         java.lang.Object memberApply(TypeDescriptor $reifiedContainer,
                                      TypeDescriptor $reifiedType,
-                                     ceylon.language.model.Type<? extends Container> containerType){
+                                     ceylon.language.meta.model.Type<? extends Container> containerType){
         
         return this.<Container, Type>memberApply($reifiedContainer,
                                                  $reifiedType,
@@ -267,7 +267,7 @@ public abstract class FreeClassOrInterface
                                                  (Sequential)empty_.$get());
     }
 
-    @TypeInfo("ceylon.language.model::Member<Container,ceylon.language.model::ClassOrInterface<Type>>&ceylon.language.model::ClassOrInterface<Type>")
+    @TypeInfo("ceylon.language.meta.model::Member<Container,ceylon.language.meta.model::ClassOrInterface<Type>>&ceylon.language.meta.model::ClassOrInterface<Type>")
     @TypeParameters({
         @TypeParameter("Container"),
         @TypeParameter("Type"),
@@ -277,8 +277,8 @@ public abstract class FreeClassOrInterface
         java.lang.Object memberApply(
                 @Ignore TypeDescriptor $reifiedContainer,
                 @Ignore TypeDescriptor $reifiedType,
-                @Name("containerType") ceylon.language.model.Type<? extends Container> containerType,
-                @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> typeArguments){
+                @Name("containerType") ceylon.language.meta.model.Type<? extends Container> containerType,
+                @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
         if(getToplevel())
             // FIXME: change type
             throw new RuntimeException("Cannot apply a toplevel declaration to a container type: use apply");
@@ -286,11 +286,11 @@ public abstract class FreeClassOrInterface
     }
 
     @SuppressWarnings("unchecked")
-    <Type, Kind extends ceylon.language.model.ClassOrInterface<? extends Object>>
-    ceylon.language.model.Member<Type, Kind> getAppliedClassOrInterface(@Ignore TypeDescriptor $reifiedType, 
+    <Type, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends Object>>
+    ceylon.language.meta.model.Member<Type, Kind> getAppliedClassOrInterface(@Ignore TypeDescriptor $reifiedType, 
                                                                         @Ignore TypeDescriptor $reifiedKind, 
-                                                                        Sequential<? extends ceylon.language.model.Type<?>> types,
-                                                                        ceylon.language.model.Type<Type> container){
+                                                                        Sequential<? extends ceylon.language.meta.model.Type<?>> types,
+                                                                        ceylon.language.meta.model.Type<Type> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         ProducedType qualifyingType = Metamodel.getModel(container);
         Metamodel.checkTypeArguments(qualifyingType, declaration, producedTypes);
@@ -323,10 +323,10 @@ public abstract class FreeClassOrInterface
 
     <T extends FreeNestableDeclaration> T findDeclaration(@Ignore TypeDescriptor $reifiedT, String name) {
         checkInit();
-        for(ceylon.language.model.declaration.NestableDeclaration decl : declarations){
+        for(ceylon.language.meta.declaration.NestableDeclaration decl : declarations){
             // skip anonymous types which can't be looked up by name
-            if(decl instanceof ceylon.language.model.declaration.ClassDeclaration
-                    && ((ceylon.language.model.declaration.ClassDeclaration) decl).getAnonymous())
+            if(decl instanceof ceylon.language.meta.declaration.ClassDeclaration
+                    && ((ceylon.language.meta.declaration.ClassDeclaration) decl).getAnonymous())
                 continue;
             // in theory we can't have several members with the same name so no need to check the type
             // FIXME: interop and overloading

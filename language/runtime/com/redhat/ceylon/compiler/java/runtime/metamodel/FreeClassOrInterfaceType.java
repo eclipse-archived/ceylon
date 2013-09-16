@@ -7,10 +7,10 @@ import ceylon.language.Iterator;
 import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
-import ceylon.language.model.declaration.ClassOrInterfaceDeclaration;
-import ceylon.language.model.declaration.OpenClassOrInterfaceType$impl;
-import ceylon.language.model.declaration.OpenType;
-import ceylon.language.model.declaration.OpenType$impl;
+import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration;
+import ceylon.language.meta.declaration.OpenClassOrInterfaceType$impl;
+import ceylon.language.meta.declaration.OpenType;
+import ceylon.language.meta.declaration.OpenType$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
@@ -23,7 +23,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public abstract class FreeClassOrInterfaceType
-    implements ceylon.language.model.declaration.OpenClassOrInterfaceType, ReifiedType {
+    implements ceylon.language.meta.declaration.OpenClassOrInterfaceType, ReifiedType {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeClassOrInterfaceType.class);
@@ -31,9 +31,9 @@ public abstract class FreeClassOrInterfaceType
     private volatile boolean initialised;
     final com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType;
     protected com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface declaration;
-    protected ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.declaration.OpenType> typeArguments;
-    protected ceylon.language.model.declaration.OpenClassType superclass;
-    protected Sequential<ceylon.language.model.declaration.OpenInterfaceType> interfaces;
+    protected ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.declaration.OpenType> typeArguments;
+    protected ceylon.language.meta.declaration.OpenClassType superclass;
+    protected Sequential<ceylon.language.meta.declaration.OpenInterfaceType> interfaces;
     
     FreeClassOrInterfaceType(com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
         this.producedType = producedType;
@@ -41,13 +41,13 @@ public abstract class FreeClassOrInterfaceType
 
     @Override
     @Ignore
-    public OpenType$impl $ceylon$language$model$declaration$OpenType$impl() {
+    public OpenType$impl $ceylon$language$meta$declaration$OpenType$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public OpenClassOrInterfaceType$impl $ceylon$language$model$declaration$OpenClassOrInterfaceType$impl() {
+    public OpenClassOrInterfaceType$impl $ceylon$language$meta$declaration$OpenClassOrInterfaceType$impl() {
         return null;
     }
 
@@ -65,9 +65,9 @@ public abstract class FreeClassOrInterfaceType
     protected void init() {
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface decl = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) producedType.getDeclaration();
         this.declaration = (FreeClassOrInterface) Metamodel.getOrCreateMetamodel(decl);
-        java.util.Map<ceylon.language.model.declaration.TypeParameter, ceylon.language.model.declaration.OpenType> typeArguments 
-            = new LinkedHashMap<ceylon.language.model.declaration.TypeParameter, ceylon.language.model.declaration.OpenType>();
-        Iterator<? extends ceylon.language.model.declaration.TypeParameter> typeParameters = declaration.getTypeParameterDeclarations().iterator();
+        java.util.Map<ceylon.language.meta.declaration.TypeParameter, ceylon.language.meta.declaration.OpenType> typeArguments 
+            = new LinkedHashMap<ceylon.language.meta.declaration.TypeParameter, ceylon.language.meta.declaration.OpenType>();
+        Iterator<? extends ceylon.language.meta.declaration.TypeParameter> typeParameters = declaration.getTypeParameterDeclarations().iterator();
         Object it;
         java.util.Map<com.redhat.ceylon.compiler.typechecker.model.TypeParameter, com.redhat.ceylon.compiler.typechecker.model.ProducedType> ptArguments 
             = producedType.getTypeArguments();
@@ -78,32 +78,32 @@ public abstract class FreeClassOrInterfaceType
             OpenType ptArgWrapped = Metamodel.getMetamodel(ptArg);
             typeArguments.put(tp, ptArgWrapped);
         }
-        this.typeArguments = new InternalMap<ceylon.language.model.declaration.TypeParameter, 
-                                             ceylon.language.model.declaration.OpenType>(ceylon.language.model.declaration.TypeParameter.$TypeDescriptor, 
-                                                                                             ceylon.language.model.declaration.OpenType.$TypeDescriptor, 
+        this.typeArguments = new InternalMap<ceylon.language.meta.declaration.TypeParameter, 
+                                             ceylon.language.meta.declaration.OpenType>(ceylon.language.meta.declaration.TypeParameter.$TypeDescriptor, 
+                                                                                             ceylon.language.meta.declaration.OpenType.$TypeDescriptor, 
                                                                                              typeArguments);
         
         com.redhat.ceylon.compiler.typechecker.model.ProducedType superType = decl.getExtendedType();
         if(superType != null){
             com.redhat.ceylon.compiler.typechecker.model.ProducedType superTypeResolved = superType.substitute(producedType.getTypeArguments());
-            this.superclass = (ceylon.language.model.declaration.OpenClassType) Metamodel.getMetamodel(superTypeResolved);
+            this.superclass = (ceylon.language.meta.declaration.OpenClassType) Metamodel.getMetamodel(superTypeResolved);
         }
         
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes = decl.getSatisfiedTypes();
-        ceylon.language.model.declaration.OpenInterfaceType[] interfaces 
-            = new ceylon.language.model.declaration.OpenInterfaceType[satisfiedTypes.size()];
+        ceylon.language.meta.declaration.OpenInterfaceType[] interfaces 
+            = new ceylon.language.meta.declaration.OpenInterfaceType[satisfiedTypes.size()];
         int i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : satisfiedTypes){
             com.redhat.ceylon.compiler.typechecker.model.ProducedType resolvedPt = pt.substitute(producedType.getTypeArguments());
-            interfaces[i++] = (ceylon.language.model.declaration.OpenInterfaceType) 
+            interfaces[i++] = (ceylon.language.meta.declaration.OpenInterfaceType) 
                     Metamodel.getMetamodel(resolvedPt);
         }
-        this.interfaces = Util.sequentialInstance(ceylon.language.model.declaration.OpenInterfaceType.$TypeDescriptor, interfaces);
+        this.interfaces = Util.sequentialInstance(ceylon.language.meta.declaration.OpenInterfaceType.$TypeDescriptor, interfaces);
     }
 
     @Override
-    @TypeInfo("ceylon.language::Map<ceylon.language.model.declaration::TypeParameter,ceylon.language.model.declaration::OpenType>")
-    public Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends OpenType> getTypeArguments() {
+    @TypeInfo("ceylon.language::Map<ceylon.language.meta.declaration::TypeParameter,ceylon.language.meta.declaration::OpenType>")
+    public Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends OpenType> getTypeArguments() {
         return typeArguments;
     }
 
@@ -114,15 +114,15 @@ public abstract class FreeClassOrInterfaceType
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::OpenInterfaceType>")
-    public Sequential<? extends ceylon.language.model.declaration.OpenInterfaceType> getSatisfiedTypes() {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::OpenInterfaceType>")
+    public Sequential<? extends ceylon.language.meta.declaration.OpenInterfaceType> getSatisfiedTypes() {
         checkInit();
         return interfaces;
     }
 
     @Override
-    @TypeInfo("ceylon.language.model.declaration::OpenClassType|ceylon.language::Null")
-    public ceylon.language.model.declaration.OpenClassType getExtendedType() {
+    @TypeInfo("ceylon.language.meta.declaration::OpenClassType|ceylon.language::Null")
+    public ceylon.language.meta.declaration.OpenClassType getExtendedType() {
         checkInit();
         return superclass;
     }
@@ -141,9 +141,9 @@ public abstract class FreeClassOrInterfaceType
             return false;
         if(obj == this)
             return true;
-        if(obj instanceof ceylon.language.model.declaration.OpenClassOrInterfaceType == false)
+        if(obj instanceof ceylon.language.meta.declaration.OpenClassOrInterfaceType == false)
             return false;
-        ceylon.language.model.declaration.OpenClassOrInterfaceType other = (ceylon.language.model.declaration.OpenClassOrInterfaceType) obj;
+        ceylon.language.meta.declaration.OpenClassOrInterfaceType other = (ceylon.language.meta.declaration.OpenClassOrInterfaceType) obj;
         if(!getDeclaration().equals(other.getDeclaration()))
             return false;
         return getTypeArguments().equals(other.getTypeArguments());
@@ -152,11 +152,11 @@ public abstract class FreeClassOrInterfaceType
     @Override
     public String toString() {
         String prefix = "";
-        if(declaration instanceof ceylon.language.model.declaration.ClassDeclaration)
+        if(declaration instanceof ceylon.language.meta.declaration.ClassDeclaration)
             prefix = "class ";
-        else if(declaration instanceof ceylon.language.model.declaration.InterfaceDeclaration)
+        else if(declaration instanceof ceylon.language.meta.declaration.InterfaceDeclaration)
             prefix = "interface ";
-        else if(declaration instanceof ceylon.language.model.declaration.AliasDeclaration)
+        else if(declaration instanceof ceylon.language.meta.declaration.AliasDeclaration)
             prefix = "alias ";
         return prefix+Metamodel.toTypeString(getDeclaration(), getTypeArguments());
     }

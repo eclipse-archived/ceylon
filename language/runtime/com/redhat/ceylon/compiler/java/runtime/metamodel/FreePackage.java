@@ -6,10 +6,10 @@ import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.Annotated$impl;
-import ceylon.language.model.declaration.AnnotatedDeclaration;
-import ceylon.language.model.declaration.AnnotatedDeclaration$impl;
-import ceylon.language.model.declaration.Declaration$impl;
-import ceylon.language.model.declaration.Package$impl;
+import ceylon.language.meta.declaration.AnnotatedDeclaration;
+import ceylon.language.meta.declaration.AnnotatedDeclaration$impl;
+import ceylon.language.meta.declaration.Declaration$impl;
+import ceylon.language.meta.declaration.Package$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -23,7 +23,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class FreePackage implements ceylon.language.model.declaration.Package, 
+public class FreePackage implements ceylon.language.meta.declaration.Package, 
         AnnotationBearing,
         ReifiedType {
 
@@ -40,19 +40,19 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
     
     @Override
     @Ignore
-    public Declaration$impl $ceylon$language$model$declaration$Declaration$impl() {
+    public Declaration$impl $ceylon$language$meta$declaration$Declaration$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public AnnotatedDeclaration$impl $ceylon$language$model$declaration$AnnotatedDeclaration$impl() {
+    public AnnotatedDeclaration$impl $ceylon$language$meta$declaration$AnnotatedDeclaration$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public Package$impl $ceylon$language$model$declaration$Package$impl() {
+    public Package$impl $ceylon$language$meta$declaration$Package$impl() {
         return null;
     }
     
@@ -88,7 +88,7 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
     }
 
     @Override
-    public ceylon.language.model.declaration.Module getContainer() {
+    public ceylon.language.meta.declaration.Module getContainer() {
         // this does not need to be thread-safe as Metamodel.getOrCreateMetamodel is thread-safe so if we
         // assign module twice we get the same result
         if(module == null){
@@ -99,8 +99,8 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
 
     @Override
     @TypeInfo("ceylon.language::Sequential<Kind>")
-    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::NestableDeclaration"))
-    public <Kind extends ceylon.language.model.declaration.NestableDeclaration> Sequential<? extends Kind> 
+    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.declaration::NestableDeclaration"))
+    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration> Sequential<? extends Kind> 
     members(@Ignore TypeDescriptor $reifiedKind) {
         
         Predicates.Predicate<?> predicate = Predicates.isDeclarationOfKind($reifiedKind);
@@ -110,8 +110,8 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
 
     @Override
     @TypeInfo("Kind")
-    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::NestableDeclaration"))
-    public <Kind extends ceylon.language.model.declaration.NestableDeclaration> Kind 
+    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.declaration::NestableDeclaration"))
+    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration> Kind 
     getMember(@Ignore TypeDescriptor $reifiedKind, @Name("name") String name) {
         
         Predicates.Predicate<?> predicate = Predicates.and(
@@ -125,10 +125,10 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
     @Override
     @TypeInfo("ceylon.language::Sequential<Kind>")
     @TypeParameters({ 
-        @TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::NestableDeclaration"), 
+        @TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.declaration::NestableDeclaration"), 
         @TypeParameter(value = "Annotation") 
     })
-    public <Kind extends ceylon.language.model.declaration.NestableDeclaration, Annotation> Sequential<? extends Kind> 
+    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration, Annotation> Sequential<? extends Kind> 
     annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
         
         Predicates.Predicate<?> predicate = Predicates.and(
@@ -171,8 +171,8 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
     }
 
     @Override
-    @TypeInfo("ceylon.language.model.declaration::ValueDeclaration|ceylon.language::Null")
-    public ceylon.language.model.declaration.ValueDeclaration getValue(String name) {
+    @TypeInfo("ceylon.language.meta.declaration::ValueDeclaration|ceylon.language::Null")
+    public ceylon.language.meta.declaration.ValueDeclaration getValue(String name) {
         com.redhat.ceylon.compiler.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
         if(toplevel instanceof com.redhat.ceylon.compiler.typechecker.model.Value == false)
             return null;
@@ -181,8 +181,8 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
     }
 
     @Override
-    @TypeInfo("ceylon.language.model.declaration::FunctionDeclaration|ceylon.language::Null")
-    public ceylon.language.model.declaration.FunctionDeclaration getFunction(String name) {
+    @TypeInfo("ceylon.language.meta.declaration::FunctionDeclaration|ceylon.language::Null")
+    public ceylon.language.meta.declaration.FunctionDeclaration getFunction(String name) {
         com.redhat.ceylon.compiler.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
         if(toplevel instanceof com.redhat.ceylon.compiler.typechecker.model.Method == false)
             return null;
@@ -191,8 +191,8 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
     }
 
     @Override
-    @TypeInfo("ceylon.language.model.declaration::ClassOrInterfaceDeclaration|ceylon.language::Null")
-    public ceylon.language.model.declaration.ClassOrInterfaceDeclaration getClassOrInterface(String name) {
+    @TypeInfo("ceylon.language.meta.declaration::ClassOrInterfaceDeclaration|ceylon.language::Null")
+    public ceylon.language.meta.declaration.ClassOrInterfaceDeclaration getClassOrInterface(String name) {
         com.redhat.ceylon.compiler.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
         if(toplevel instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface == false)
             return null;
@@ -201,8 +201,8 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
     }
 
     @Override
-    @TypeInfo("ceylon.language.model.declaration::AliasDeclaration|ceylon.language::Null")
-    public ceylon.language.model.declaration.AliasDeclaration getAlias(String name) {
+    @TypeInfo("ceylon.language.meta.declaration::AliasDeclaration|ceylon.language::Null")
+    public ceylon.language.meta.declaration.AliasDeclaration getAlias(String name) {
         com.redhat.ceylon.compiler.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
         if(toplevel instanceof com.redhat.ceylon.compiler.typechecker.model.TypeAlias == false)
             return null;
@@ -230,9 +230,9 @@ public class FreePackage implements ceylon.language.model.declaration.Package,
             return false;
         if(obj == this)
             return true;
-        if(obj instanceof ceylon.language.model.declaration.Package == false)
+        if(obj instanceof ceylon.language.meta.declaration.Package == false)
             return false;
-        ceylon.language.model.declaration.Package other = (ceylon.language.model.declaration.Package) obj;
+        ceylon.language.meta.declaration.Package other = (ceylon.language.meta.declaration.Package) obj;
         if(!Util.eq(other.getContainer(), getContainer()))
             return false;
         return getName().equals(other.getName());

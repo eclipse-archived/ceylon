@@ -242,13 +242,13 @@
                 <exclude name="ceylon/language/flatten.ceylon"/>
                 <include name="ceylon/language/flatten_.java"/>
                 <include name="ceylon/language/unflatten_.java"/>
-                <exclude name="ceylon/language/model/metamodel.ceylon"/>
-                <include name="ceylon/language/model/type_.java"/>
-                <include name="ceylon/language/model/typeLiteral_.java"/>
-                <exclude name="ceylon/language/model/annotations.ceylon"/>
-                <include name="ceylon/language/model/annotations_.java"/>
-                <exclude name="ceylon/language/model/modules.ceylon"/>
-                <include name="ceylon/language/model/modules_.java"/>
+                <exclude name="ceylon/language/meta/metamodel.ceylon"/>
+                <include name="ceylon/language/meta/type_.java"/>
+                <include name="ceylon/language/meta/typeLiteral_.java"/>
+                <exclude name="ceylon/language/meta/annotations.ceylon"/>
+                <include name="ceylon/language/meta/annotations_.java"/>
+                <exclude name="ceylon/language/meta/modules.ceylon"/>
+                <include name="ceylon/language/meta/modules_.java"/>
             </files>
         </ceylon-compile>
     </target>

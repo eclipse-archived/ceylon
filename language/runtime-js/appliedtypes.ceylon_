@@ -1,8 +1,8 @@
-import ceylon.language.model {
+import ceylon.language.meta.model {
   ClosedType=Type, UnionType, IntersectionType,
   Member, Interface, VariableAttribute, Class, ClassOrInterface, Attribute, Method, Value, Function
 }
-import ceylon.language.model.declaration {
+import ceylon.language.meta.declaration {
   ClassDeclaration, InterfaceDeclaration, ValueDeclaration, FunctionDeclaration,
   TypeParameter }
 

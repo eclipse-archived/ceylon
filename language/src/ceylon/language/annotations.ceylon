@@ -1,4 +1,4 @@
-import ceylon.language.model.declaration {
+import ceylon.language.meta.declaration {
     Module, Package, Import,
     ClassDeclaration,
     ClassOrInterfaceDeclaration,

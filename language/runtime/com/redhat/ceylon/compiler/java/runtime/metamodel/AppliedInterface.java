@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.model.Interface$impl;
-import ceylon.language.model.InterfaceModel$impl;
+import ceylon.language.meta.model.Interface$impl;
+import ceylon.language.meta.model.InterfaceModel$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -19,15 +19,15 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
     })
 public class AppliedInterface<Type> 
     extends AppliedClassOrInterface<Type>
-    implements ceylon.language.model.Interface<Type> {
+    implements ceylon.language.meta.model.Interface<Type> {
 
     private Object instance;
-    private ceylon.language.model.ClassOrInterface<?> container;
+    private ceylon.language.meta.model.ClassOrInterface<?> container;
 
     // FIXME: get rid of duplicate instantiations of AppliedInterfaceType when the type in question has no type parameters
     public AppliedInterface(@Ignore TypeDescriptor $reifiedType, 
                             com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType,
-                            ceylon.language.model.ClassOrInterface<?> container, Object instance) {
+                            ceylon.language.meta.model.ClassOrInterface<?> container, Object instance) {
         super(null, producedType);
         this.container = container;
         this.instance = instance;
@@ -35,19 +35,19 @@ public class AppliedInterface<Type>
     
     @Override
     @Ignore
-    public Interface$impl<Type> $ceylon$language$model$Interface$impl() {
+    public Interface$impl<Type> $ceylon$language$meta$model$Interface$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public InterfaceModel$impl<Type> $ceylon$language$model$InterfaceModel$impl() {
+    public InterfaceModel$impl<Type> $ceylon$language$meta$model$InterfaceModel$impl() {
         return null;
     }
 
     @Override
-    @TypeInfo("ceylon.language.model.declaration::InterfaceDeclaration")
-    public ceylon.language.model.declaration.InterfaceDeclaration getDeclaration() {
+    @TypeInfo("ceylon.language.meta.declaration::InterfaceDeclaration")
+    public ceylon.language.meta.declaration.InterfaceDeclaration getDeclaration() {
         return (FreeInterface) super.getDeclaration();
     }
 
@@ -79,8 +79,8 @@ public class AppliedInterface<Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
-    public ceylon.language.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
+    @TypeInfo("ceylon.language.meta.model::ClassOrInterface<ceylon.language::Anything>")
+    public ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
         return container;
     }
 

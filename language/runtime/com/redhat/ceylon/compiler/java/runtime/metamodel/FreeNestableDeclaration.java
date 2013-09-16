@@ -2,12 +2,12 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
 import ceylon.language.Annotated$impl;
-import ceylon.language.model.declaration.AnnotatedDeclaration$impl;
-import ceylon.language.model.declaration.Declaration$impl;
-import ceylon.language.model.declaration.Module;
-import ceylon.language.model.declaration.Package;
-import ceylon.language.model.declaration.NestableDeclaration$impl;
-import ceylon.language.model.declaration.TypedDeclaration$impl;
+import ceylon.language.meta.declaration.AnnotatedDeclaration$impl;
+import ceylon.language.meta.declaration.Declaration$impl;
+import ceylon.language.meta.declaration.Module;
+import ceylon.language.meta.declaration.Package;
+import ceylon.language.meta.declaration.NestableDeclaration$impl;
+import ceylon.language.meta.declaration.TypedDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -20,7 +20,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public abstract class FreeNestableDeclaration 
-    implements ceylon.language.model.declaration.NestableDeclaration, ReifiedType {
+    implements ceylon.language.meta.declaration.NestableDeclaration, ReifiedType {
     
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeNestableDeclaration.class);
@@ -36,25 +36,25 @@ public abstract class FreeNestableDeclaration
 
     @Override
     @Ignore
-    public NestableDeclaration$impl $ceylon$language$model$declaration$NestableDeclaration$impl() {
+    public NestableDeclaration$impl $ceylon$language$meta$declaration$NestableDeclaration$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public Declaration$impl $ceylon$language$model$declaration$Declaration$impl() {
+    public Declaration$impl $ceylon$language$meta$declaration$Declaration$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public TypedDeclaration$impl $ceylon$language$model$declaration$TypedDeclaration$impl() {
+    public TypedDeclaration$impl $ceylon$language$meta$declaration$TypedDeclaration$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public AnnotatedDeclaration$impl $ceylon$language$model$declaration$AnnotatedDeclaration$impl() {
+    public AnnotatedDeclaration$impl $ceylon$language$meta$declaration$AnnotatedDeclaration$impl() {
         return null;
     }
 
@@ -115,7 +115,7 @@ public abstract class FreeNestableDeclaration
     }
 
     @Override
-    @TypeInfo(value = "ceylon.language.model.declaration::NestableDeclaration|ceylon.language.model.declaration::Package", erased = true)
+    @TypeInfo(value = "ceylon.language.meta.declaration::NestableDeclaration|ceylon.language.meta.declaration::Package", erased = true)
     public java.lang.Object getContainer() {
         return Metamodel.getContainer(declaration);
     }

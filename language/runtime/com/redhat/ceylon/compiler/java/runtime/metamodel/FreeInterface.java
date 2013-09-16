@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.model.declaration.InterfaceDeclaration$impl;
+import ceylon.language.meta.declaration.InterfaceDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -18,7 +18,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeInterface 
     extends FreeClassOrInterface
-    implements ceylon.language.model.declaration.InterfaceDeclaration {
+    implements ceylon.language.meta.declaration.InterfaceDeclaration {
 
     @Ignore
     public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeInterface.class);
@@ -29,35 +29,35 @@ public class FreeInterface
 
     @Override
     @Ignore
-    public InterfaceDeclaration$impl $ceylon$language$model$declaration$InterfaceDeclaration$impl() {
+    public InterfaceDeclaration$impl $ceylon$language$meta$declaration$InterfaceDeclaration$impl() {
         return null;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
-    public <Type> ceylon.language.model.Interface<Type> interfaceApply(TypeDescriptor $reifiedType){
+    public <Type> ceylon.language.meta.model.Interface<Type> interfaceApply(TypeDescriptor $reifiedType){
         return interfaceApply($reifiedType, (Sequential)empty_.$get());
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    @TypeInfo("ceylon.language.model::Interface<Type>")
+    @TypeInfo("ceylon.language.meta.model::Interface<Type>")
     @TypeParameters({
         @TypeParameter("Type"),
     })
-    public <Type> ceylon.language.model.Interface<Type> interfaceApply(TypeDescriptor $reifiedType,
-            @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> typeArguments){
-        return (ceylon.language.model.Interface<Type>) super.apply($reifiedType, typeArguments);
+    public <Type> ceylon.language.meta.model.Interface<Type> interfaceApply(TypeDescriptor $reifiedType,
+            @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
+        return (ceylon.language.meta.model.Interface<Type>) super.apply($reifiedType, typeArguments);
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Ignore
     @Override
     public <Container, Type>
-        ceylon.language.model.MemberInterface<Container, Type> memberInterfaceApply(TypeDescriptor $reifiedContainer,
+        ceylon.language.meta.model.MemberInterface<Container, Type> memberInterfaceApply(TypeDescriptor $reifiedContainer,
                                                                                     TypeDescriptor $reifiedType,
-                                                                                    ceylon.language.model.Type<? extends Container> containerType){
+                                                                                    ceylon.language.meta.model.Type<? extends Container> containerType){
         
         return this.<Container, Type>memberInterfaceApply($reifiedContainer,
                                                           $reifiedType,
@@ -66,19 +66,19 @@ public class FreeInterface
     }
 
     @SuppressWarnings("unchecked")
-    @TypeInfo("ceylon.language.model::MemberInterface<Container,Type>")
+    @TypeInfo("ceylon.language.meta.model::MemberInterface<Container,Type>")
     @TypeParameters({
         @TypeParameter("Container"),
         @TypeParameter("Type"),
     })
     @Override
     public <Container, Type>
-    ceylon.language.model.MemberInterface<Container, Type> memberInterfaceApply(
+    ceylon.language.meta.model.MemberInterface<Container, Type> memberInterfaceApply(
                 @Ignore TypeDescriptor $reifiedContainer,
                 @Ignore TypeDescriptor $reifiedType,
-                @Name("containerType") ceylon.language.model.Type<? extends Container> containerType,
-                @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> typeArguments){
-        return (ceylon.language.model.MemberInterface<Container, Type>) super.memberApply($reifiedContainer, $reifiedType, containerType, typeArguments);
+                @Name("containerType") ceylon.language.meta.model.Type<? extends Container> containerType,
+                @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
+        return (ceylon.language.meta.model.MemberInterface<Container, Type>) super.memberApply($reifiedContainer, $reifiedType, containerType, typeArguments);
     }
 
     @Override
@@ -96,9 +96,9 @@ public class FreeInterface
             return false;
         if(obj == this)
             return true;
-        if(obj instanceof ceylon.language.model.declaration.InterfaceDeclaration == false)
+        if(obj instanceof ceylon.language.meta.declaration.InterfaceDeclaration == false)
             return false;
-        ceylon.language.model.declaration.InterfaceDeclaration other = (ceylon.language.model.declaration.InterfaceDeclaration) obj;
+        ceylon.language.meta.declaration.InterfaceDeclaration other = (ceylon.language.meta.declaration.InterfaceDeclaration) obj;
         if(!Util.eq(other.getContainer(), getContainer()))
             return false;
         return getName().equals(other.getName());

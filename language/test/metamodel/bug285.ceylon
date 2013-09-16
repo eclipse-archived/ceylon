@@ -1,4 +1,4 @@
-import ceylon.language.model { Annotation }
+import ceylon.language.meta { Annotation }
 
 class Bug285(){
     shared class Inner(){}

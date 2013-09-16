@@ -6,9 +6,9 @@ import ceylon.language.Finished;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
-import ceylon.language.model.declaration.OpenIntersection$impl;
-import ceylon.language.model.declaration.OpenType;
-import ceylon.language.model.declaration.OpenType$impl;
+import ceylon.language.meta.declaration.OpenIntersection$impl;
+import ceylon.language.meta.declaration.OpenType;
+import ceylon.language.meta.declaration.OpenType$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -20,12 +20,12 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeIntersectionType 
-    implements ceylon.language.model.declaration.OpenIntersection, ReifiedType {
+    implements ceylon.language.meta.declaration.OpenIntersection, ReifiedType {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeIntersectionType.class);
     
-    protected Sequential<ceylon.language.model.declaration.OpenType> satisfiedTypes;
+    protected Sequential<ceylon.language.meta.declaration.OpenType> satisfiedTypes;
     
     // this is only used for equals
     private com.redhat.ceylon.compiler.typechecker.model.ProducedType model;
@@ -33,29 +33,29 @@ public class FreeIntersectionType
     FreeIntersectionType(com.redhat.ceylon.compiler.typechecker.model.IntersectionType intersection){
         this.model = intersection.getType();
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes = intersection.getSatisfiedTypes();
-        ceylon.language.model.declaration.OpenType[] types = new ceylon.language.model.declaration.OpenType[satisfiedTypes.size()];
+        ceylon.language.meta.declaration.OpenType[] types = new ceylon.language.meta.declaration.OpenType[satisfiedTypes.size()];
         int i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : satisfiedTypes){
             types[i++] = Metamodel.getMetamodel(pt);
         }
-        this.satisfiedTypes = Util.sequentialInstance(ceylon.language.model.declaration.OpenType.$TypeDescriptor, types);
+        this.satisfiedTypes = Util.sequentialInstance(ceylon.language.meta.declaration.OpenType.$TypeDescriptor, types);
     }
 
     @Override
     @Ignore
-    public OpenType$impl $ceylon$language$model$declaration$OpenType$impl() {
+    public OpenType$impl $ceylon$language$meta$declaration$OpenType$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public OpenIntersection$impl $ceylon$language$model$declaration$OpenIntersection$impl() {
+    public OpenIntersection$impl $ceylon$language$meta$declaration$OpenIntersection$impl() {
         return null;
     }
 
     @Override
-    @TypeInfo("ceylon.language.Sequential<ceylon.language.model.declaration::OpenType>")
-    public ceylon.language.Sequential<? extends ceylon.language.model.declaration.OpenType> getSatisfiedTypes() {
+    @TypeInfo("ceylon.language.Sequential<ceylon.language.meta.declaration::OpenType>")
+    public ceylon.language.Sequential<? extends ceylon.language.meta.declaration.OpenType> getSatisfiedTypes() {
         return satisfiedTypes;
     }
 
@@ -86,7 +86,7 @@ public class FreeIntersectionType
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        Iterator<? extends ceylon.language.model.declaration.OpenType> iterator = satisfiedTypes.iterator();
+        Iterator<? extends ceylon.language.meta.declaration.OpenType> iterator = satisfiedTypes.iterator();
         Object next=iterator.next();
         sb.append(next);
         while (!((next=iterator.next()) instanceof Finished)) {

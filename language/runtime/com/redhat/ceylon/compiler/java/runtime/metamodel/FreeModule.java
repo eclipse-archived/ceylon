@@ -5,11 +5,11 @@ import java.util.List;
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.Annotated$impl;
-import ceylon.language.model.declaration.AnnotatedDeclaration$impl;
-import ceylon.language.model.declaration.Declaration$impl;
-import ceylon.language.model.declaration.Import;
-import ceylon.language.model.declaration.Module$impl;
-import ceylon.language.model.declaration.Package;
+import ceylon.language.meta.declaration.AnnotatedDeclaration$impl;
+import ceylon.language.meta.declaration.Declaration$impl;
+import ceylon.language.meta.declaration.Import;
+import ceylon.language.meta.declaration.Module$impl;
+import ceylon.language.meta.declaration.Package;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -20,7 +20,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-public class FreeModule implements ceylon.language.model.declaration.Module,
+public class FreeModule implements ceylon.language.meta.declaration.Module,
         AnnotationBearing,
         ReifiedType {
 
@@ -36,19 +36,19 @@ public class FreeModule implements ceylon.language.model.declaration.Module,
 
     @Override
     @Ignore
-    public Declaration$impl $ceylon$language$model$declaration$Declaration$impl() {
+    public Declaration$impl $ceylon$language$meta$declaration$Declaration$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public AnnotatedDeclaration$impl $ceylon$language$model$declaration$AnnotatedDeclaration$impl() {
+    public AnnotatedDeclaration$impl $ceylon$language$meta$declaration$AnnotatedDeclaration$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public Module$impl $ceylon$language$model$declaration$Module$impl() {
+    public Module$impl $ceylon$language$meta$declaration$Module$impl() {
         return null;
     }
     
@@ -72,7 +72,7 @@ public class FreeModule implements ceylon.language.model.declaration.Module,
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::Package>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::Package>")
     public Sequential<? extends Package> getMembers() {
         // no need to synchronise as concurrent invocations should get the same array back
         if(this.packages == null){
@@ -87,21 +87,21 @@ public class FreeModule implements ceylon.language.model.declaration.Module,
     }
 
     @Override
-    @TypeInfo("ceylon.language::Null|ceylon.language.model.declaration::Package")
+    @TypeInfo("ceylon.language::Null|ceylon.language.meta.declaration::Package")
     public Package findPackage(@Name("name") String name) {
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = declaration.getDirectPackage(name);
         return pkg == null ? null : Metamodel.getOrCreateMetamodel(pkg);
     }
 
     @Override
-    @TypeInfo("ceylon.language::Null|ceylon.language.model.declaration::Package")
+    @TypeInfo("ceylon.language::Null|ceylon.language.meta.declaration::Package")
     public Package findImportedPackage(@Name("name") String name) {
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = declaration.getPackage(name);
         return pkg == null ? null : Metamodel.getOrCreateMetamodel(pkg);
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::Import>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::Import>")
     public Sequential<? extends Import> getDependencies() {
         // no need to synchronise as concurrent invocations should get the same array back
         if(this.dependencies == null){
@@ -151,9 +151,9 @@ public class FreeModule implements ceylon.language.model.declaration.Module,
             return false;
         if(obj == this)
             return true;
-        if(obj instanceof ceylon.language.model.declaration.Module == false)
+        if(obj instanceof ceylon.language.meta.declaration.Module == false)
             return false;
-        ceylon.language.model.declaration.Module other = (ceylon.language.model.declaration.Module) obj;
+        ceylon.language.meta.declaration.Module other = (ceylon.language.meta.declaration.Module) obj;
         if(!Util.eq(other.getVersion(), getVersion()))
             return false;
         return getName().equals(other.getName());

@@ -1,5 +1,5 @@
-import ceylon.language.model{Annotated, SequencedAnnotation, OptionalAnnotation}
-import ceylon.language.model.declaration{Declaration}
+import ceylon.language.meta{Annotated, SequencedAnnotation, OptionalAnnotation}
+import ceylon.language.meta.declaration{Declaration}
 
 shared final annotation class Seq(shared String seq) 
     satisfies SequencedAnnotation<Seq, Annotated> {}
@@ -22,7 +22,7 @@ seq("aToplevelAttribute 1")
 seq("aToplevelAttribute 2")
 see(`value aToplevelGetterSetter`,
     `module ceylon.language`,
-    `package ceylon.language.model.declaration`)
+    `package ceylon.language.meta.declaration`)
 enumerated(larger)
 enumeratedVariadic(larger, equal, smaller)
 shared String aToplevelAttribute = "";

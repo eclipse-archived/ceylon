@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.model.Member$impl;
+import ceylon.language.meta.model.Member$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -15,19 +15,19 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @com.redhat.ceylon.compiler.java.metadata.Class
 @TypeParameters({
     @TypeParameter(value = "Type", variance = Variance.IN),
-    @TypeParameter(value = "Kind", variance = Variance.OUT, satisfies = "ceylon.language.model::Model")
+    @TypeParameter(value = "Kind", variance = Variance.OUT, satisfies = "ceylon.language.meta.model::Model")
 })
-public abstract class AppliedMember<Type, Kind extends ceylon.language.model.Model> 
-    implements ceylon.language.model.Member<Type, Kind>, ReifiedType {
+public abstract class AppliedMember<Type, Kind extends ceylon.language.meta.model.Model> 
+    implements ceylon.language.meta.model.Member<Type, Kind>, ReifiedType {
 
-    private ceylon.language.model.Type<? extends Object> container;
+    private ceylon.language.meta.model.Type<? extends Object> container;
     @Ignore
     protected final TypeDescriptor $reifiedKind;
     @Ignore
     protected final TypeDescriptor $reifiedType;
 
     public AppliedMember(@Ignore TypeDescriptor $reifiedType, @Ignore TypeDescriptor $reifiedKind,
-                         ceylon.language.model.Type<? extends Object> container){
+                         ceylon.language.meta.model.Type<? extends Object> container){
         this.$reifiedType = $reifiedType;
         this.$reifiedKind = $reifiedKind;
         this.container = container;
@@ -35,13 +35,13 @@ public abstract class AppliedMember<Type, Kind extends ceylon.language.model.Mod
     
     @Override
     @Ignore
-    public Member$impl<Type, Kind> $ceylon$language$model$Member$impl() {
+    public Member$impl<Type, Kind> $ceylon$language$meta$model$Member$impl() {
         return null;
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::Type<ceylon.language::Anything>")
-    public ceylon.language.model.Type<? extends Object> getDeclaringClassOrInterface() {
+    @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>")
+    public ceylon.language.meta.model.Type<? extends Object> getDeclaringClassOrInterface() {
         return container;
     }
 

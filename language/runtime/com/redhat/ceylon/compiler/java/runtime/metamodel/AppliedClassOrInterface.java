@@ -6,8 +6,8 @@ import java.util.List;
 import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.model.ClassOrInterface$impl;
-import ceylon.language.model.Model$impl;
+import ceylon.language.meta.model.ClassOrInterface$impl;
+import ceylon.language.meta.model.Model$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -29,14 +29,14 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
     @TypeParameter(value = "Type", variance = Variance.OUT),
     })
 public abstract class AppliedClassOrInterface<Type> 
-    implements ceylon.language.model.ClassOrInterface<Type>, ReifiedType {
+    implements ceylon.language.meta.model.ClassOrInterface<Type>, ReifiedType {
 
     private volatile boolean initialised;
     final com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType;
     protected com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface declaration;
-    protected ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> typeArguments;
-    protected ceylon.language.model.ClassModel<? extends Object, ? super Sequential<? extends Object>> superclass;
-    protected Sequential<ceylon.language.model.InterfaceModel<? extends Object>> interfaces;
+    protected ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> typeArguments;
+    protected ceylon.language.meta.model.ClassModel<? extends Object, ? super Sequential<? extends Object>> superclass;
+    protected Sequential<ceylon.language.meta.model.InterfaceModel<? extends Object>> interfaces;
     @Ignore
     protected final TypeDescriptor $reifiedType;
     
@@ -47,25 +47,25 @@ public abstract class AppliedClassOrInterface<Type>
 
     @Override
     @Ignore
-    public ceylon.language.model.Type$impl<Type> $ceylon$language$model$Type$impl() {
+    public ceylon.language.meta.model.Type$impl<Type> $ceylon$language$meta$model$Type$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public ceylon.language.model.Generic$impl $ceylon$language$model$Generic$impl() {
+    public ceylon.language.meta.model.Generic$impl $ceylon$language$meta$model$Generic$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public Model$impl $ceylon$language$model$Model$impl() {
+    public Model$impl $ceylon$language$meta$model$Model$impl() {
         return null;
     }
     
     @Override
     @Ignore
-    public ClassOrInterface$impl<Type> $ceylon$language$model$ClassOrInterface$impl() {
+    public ClassOrInterface$impl<Type> $ceylon$language$meta$model$ClassOrInterface$impl() {
         return null;
     }
 
@@ -88,42 +88,42 @@ public abstract class AppliedClassOrInterface<Type>
         com.redhat.ceylon.compiler.typechecker.model.ProducedType superType = decl.getExtendedType();
         if(superType != null){
             com.redhat.ceylon.compiler.typechecker.model.ProducedType superTypeResolved = superType.substitute(producedType.getTypeArguments());
-            this.superclass = (ceylon.language.model.ClassModel) Metamodel.getAppliedMetamodel(superTypeResolved);
+            this.superclass = (ceylon.language.meta.model.ClassModel) Metamodel.getAppliedMetamodel(superTypeResolved);
         }
         
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes = decl.getSatisfiedTypes();
-        ceylon.language.model.InterfaceModel<?>[] interfaces = new ceylon.language.model.InterfaceModel[satisfiedTypes.size()];
+        ceylon.language.meta.model.InterfaceModel<?>[] interfaces = new ceylon.language.meta.model.InterfaceModel[satisfiedTypes.size()];
         int i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : satisfiedTypes){
             com.redhat.ceylon.compiler.typechecker.model.ProducedType resolvedPt = pt.substitute(producedType.getTypeArguments());
-            interfaces[i++] = (ceylon.language.model.InterfaceModel<?>) Metamodel.getAppliedMetamodel(resolvedPt);
+            interfaces[i++] = (ceylon.language.meta.model.InterfaceModel<?>) Metamodel.getAppliedMetamodel(resolvedPt);
         }
-        this.interfaces = Util.sequentialInstance(TypeDescriptor.klass(ceylon.language.model.InterfaceModel.class, ceylon.language.Anything.$TypeDescriptor), interfaces);
+        this.interfaces = Util.sequentialInstance(TypeDescriptor.klass(ceylon.language.meta.model.InterfaceModel.class, ceylon.language.Anything.$TypeDescriptor), interfaces);
     }
 
     @Override
-    @TypeInfo("ceylon.language::Map<ceylon.language.model.declaration::TypeParameter,ceylon.language.model::Type<ceylon.language::Anything>")
-    public Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> getTypeArguments() {
+    @TypeInfo("ceylon.language::Map<ceylon.language.meta.declaration::TypeParameter,ceylon.language.meta.model::Type<ceylon.language::Anything>")
+    public Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> getTypeArguments() {
         return typeArguments;
     }
 
     @Override
-    @TypeInfo("ceylon.language.model.declaration::ClassOrInterfaceDeclaration")
-    public ceylon.language.model.declaration.ClassOrInterfaceDeclaration getDeclaration() {
+    @TypeInfo("ceylon.language.meta.declaration::ClassOrInterfaceDeclaration")
+    public ceylon.language.meta.declaration.ClassOrInterfaceDeclaration getDeclaration() {
         checkInit();
         return declaration;
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.model::InterfaceModel<ceylon.language::Anything>>")
-    public Sequential<? extends ceylon.language.model.InterfaceModel<? extends Object>> getSatisfiedTypes() {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::InterfaceModel<ceylon.language::Anything>>")
+    public Sequential<? extends ceylon.language.meta.model.InterfaceModel<? extends Object>> getSatisfiedTypes() {
         checkInit();
         return interfaces;
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::ClassModel<ceylon.language::Anything,ceylon.language::Nothing>|ceylon.language::Null")
-    public ceylon.language.model.ClassModel<? extends Object, ? extends Object> getExtendedType() {
+    @TypeInfo("ceylon.language.meta.model::ClassModel<ceylon.language::Anything,ceylon.language::Nothing>|ceylon.language::Null")
+    public ceylon.language.meta.model.ClassModel<? extends Object, ? extends Object> getExtendedType() {
         checkInit();
         return superclass;
     }
@@ -131,7 +131,7 @@ public abstract class AppliedClassOrInterface<Type>
     @Ignore
     @Override
     public <SubType, Type, Arguments extends Sequential<? extends Object>>
-    ceylon.language.model.Method<SubType, Type, Arguments> getMethod(@Ignore TypeDescriptor $reifiedSubType, 
+    ceylon.language.meta.model.Method<SubType, Type, Arguments> getMethod(@Ignore TypeDescriptor $reifiedSubType, 
                                                                          @Ignore TypeDescriptor $reifiedType, 
                                                                          @Ignore TypeDescriptor $reifiedArguments, 
                                                                          String name){
@@ -145,13 +145,13 @@ public abstract class AppliedClassOrInterface<Type>
         @TypeParameter(value = "Type"),
         @TypeParameter(value = "Arguments", satisfies = "ceylon.language::Sequential<ceylon.language::Anything>")
     })
-    @TypeInfo("ceylon.language.model::Method<SubType,Type,Arguments>|ceylon.language::Null")
+    @TypeInfo("ceylon.language.meta.model::Method<SubType,Type,Arguments>|ceylon.language::Null")
     public <SubType, Type, Arguments extends Sequential<? extends Object>>
-        ceylon.language.model.Method<SubType, Type, Arguments> getMethod(@Ignore TypeDescriptor $reifiedSubType, 
+        ceylon.language.meta.model.Method<SubType, Type, Arguments> getMethod(@Ignore TypeDescriptor $reifiedSubType, 
                                                                              @Ignore TypeDescriptor $reifiedType, 
                                                                              @Ignore TypeDescriptor $reifiedArguments, 
                                                                              String name, 
-                                                                             @Name("types") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> types) {
+                                                                             @Name("types") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
         
         checkInit();
         final FreeFunction method = declaration.findMethod(name);
@@ -162,8 +162,8 @@ public abstract class AppliedClassOrInterface<Type>
 
     @Ignore
     @Override
-    public <SubType, Kind extends ceylon.language.model.ClassOrInterface<? extends java.lang.Object>>
-        ceylon.language.model.Member<SubType, Kind> getClassOrInterface(@Ignore TypeDescriptor $reifiedSubType, 
+    public <SubType, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
+        ceylon.language.meta.model.Member<SubType, Kind> getClassOrInterface(@Ignore TypeDescriptor $reifiedSubType, 
                                                                             @Ignore TypeDescriptor $reifiedKind, 
                                                                             String name){
         
@@ -173,14 +173,14 @@ public abstract class AppliedClassOrInterface<Type>
     @Override
     @TypeParameters({
         @TypeParameter(value = "SubType"),
-        @TypeParameter(value = "Kind", satisfies = "ceylon.language.model::ClassOrInterface<ceylon.language::Anything,ceylon.language::Nothing>")
+        @TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.model::ClassOrInterface<ceylon.language::Anything,ceylon.language::Nothing>")
     })
-    @TypeInfo("ceylon.language.model::Member<SubType,Kind>|ceylon.language::Null")
-    public <SubType, Kind extends ceylon.language.model.ClassOrInterface<? extends java.lang.Object>>
-        ceylon.language.model.Member<SubType, Kind> getClassOrInterface(@Ignore TypeDescriptor $reifiedSubType, 
+    @TypeInfo("ceylon.language.meta.model::Member<SubType,Kind>|ceylon.language::Null")
+    public <SubType, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
+        ceylon.language.meta.model.Member<SubType, Kind> getClassOrInterface(@Ignore TypeDescriptor $reifiedSubType, 
                                                                             @Ignore TypeDescriptor $reifiedKind, 
                                                                             String name, 
-                                                                            @Name("types") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> types) {
+                                                                            @Name("types") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
         
         checkInit();
         final FreeClassOrInterface type = declaration.findType(name);
@@ -194,9 +194,9 @@ public abstract class AppliedClassOrInterface<Type>
         @TypeParameter(value = "SubType"),
         @TypeParameter(value = "Type")
     })
-    @TypeInfo("ceylon.language.model::Attribute<SubType,Type>|ceylon.language::Null")
+    @TypeInfo("ceylon.language.meta.model::Attribute<SubType,Type>|ceylon.language::Null")
     public <SubType, Type>
-        ceylon.language.model.Attribute<SubType, Type> getAttribute(@Ignore TypeDescriptor $reifiedSubType, 
+        ceylon.language.meta.model.Attribute<SubType, Type> getAttribute(@Ignore TypeDescriptor $reifiedSubType, 
                                                                         @Ignore TypeDescriptor $reifiedType, 
                                                                         String name) {
         
@@ -215,12 +215,12 @@ public abstract class AppliedClassOrInterface<Type>
         @TypeParameter(value = "SubType"),
         @TypeParameter(value = "Type")
     })
-    @TypeInfo("ceylon.language.model::VariableAttribute<SubType,Type>|ceylon.language::Null")
+    @TypeInfo("ceylon.language.meta.model::VariableAttribute<SubType,Type>|ceylon.language::Null")
     public <SubType, Type>
-        ceylon.language.model.VariableAttribute<SubType, Type> getVariableAttribute(@Ignore TypeDescriptor $reifiedSubType, 
+        ceylon.language.meta.model.VariableAttribute<SubType, Type> getVariableAttribute(@Ignore TypeDescriptor $reifiedSubType, 
                                                                                         @Ignore TypeDescriptor $reifiedType, 
                                                                                         String name) {
-        return (ceylon.language.model.VariableAttribute<SubType, Type>)getAttribute($reifiedSubType, $reifiedType, name);
+        return (ceylon.language.meta.model.VariableAttribute<SubType, Type>)getAttribute($reifiedSubType, $reifiedType, name);
     }
     
     @Override
@@ -234,17 +234,17 @@ public abstract class AppliedClassOrInterface<Type>
     }
     
     @Override
-    public boolean isSuperTypeOf(@TypeInfo("ceylon.language.model::Type<ceylon.language::Anything>") ceylon.language.model.Type<? extends Object> type){
+    public boolean isSuperTypeOf(@TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>") ceylon.language.meta.model.Type<? extends Object> type){
         return Metamodel.isSuperTypeOf(producedType, type);
     }
     
     @Override
-    public boolean isSubTypeOf(@TypeInfo("ceylon.language.model::Type<ceylon.language::Anything>") ceylon.language.model.Type<? extends Object> type){
+    public boolean isSubTypeOf(@TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>") ceylon.language.meta.model.Type<? extends Object> type){
         return Metamodel.isSubTypeOf(producedType, type);
     }
 
     @Override
-    public boolean isExactly(@TypeInfo("ceylon.language.model::Type<ceylon.language::Anything>") ceylon.language.model.Type<? extends Object> type){
+    public boolean isExactly(@TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>") ceylon.language.meta.model.Type<? extends Object> type){
         return Metamodel.isExactly(producedType, type);
     }
 

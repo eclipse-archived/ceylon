@@ -5,10 +5,10 @@ import java.util.Arrays;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.Annotated;
-import ceylon.language.model.Type;
-import ceylon.language.model.ClassOrInterface;
+import ceylon.language.meta.model.Type;
+import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.ConstrainedAnnotation;
-import ceylon.language.model.nothingType_;
+import ceylon.language.meta.model.nothingType_;
 
 import com.redhat.ceylon.compiler.java.language.EnumeratedTypeError;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -278,22 +278,22 @@ class Predicates {
      */
     public static Predicate<Declaration> isDeclarationOfKind(TypeDescriptor kind) {
         if (kind instanceof TypeDescriptor.Class) {
-            Class<? extends ceylon.language.model.declaration.NestableDeclaration> declarationClass = (Class)((TypeDescriptor.Class) kind).getKlass();
-            if (declarationClass == ceylon.language.model.declaration.VariableDeclaration.class) {
+            Class<? extends ceylon.language.meta.declaration.NestableDeclaration> declarationClass = (Class)((TypeDescriptor.Class) kind).getKlass();
+            if (declarationClass == ceylon.language.meta.declaration.VariableDeclaration.class) {
                 return DECLARATION_IS_VARIABLE;
-            } else if (declarationClass == ceylon.language.model.declaration.ValueDeclaration.class) {
+            } else if (declarationClass == ceylon.language.meta.declaration.ValueDeclaration.class) {
                 return DECLARATION_IS_VALUE;
-            } else if (declarationClass == ceylon.language.model.declaration.FunctionDeclaration.class) {
+            } else if (declarationClass == ceylon.language.meta.declaration.FunctionDeclaration.class) {
                 return DECLARATION_IS_FUNCTION;
-            } else if (declarationClass == ceylon.language.model.declaration.ClassDeclaration.class) {
+            } else if (declarationClass == ceylon.language.meta.declaration.ClassDeclaration.class) {
                 return DECLARATION_IS_CLASS;
-            } else if (declarationClass == ceylon.language.model.declaration.InterfaceDeclaration.class) {
+            } else if (declarationClass == ceylon.language.meta.declaration.InterfaceDeclaration.class) {
                 return DECLARATION_IS_INTERFACE;
-            } else if (declarationClass == ceylon.language.model.declaration.ClassOrInterfaceDeclaration.class) {
+            } else if (declarationClass == ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.class) {
                 return DECLARATION_IS_CLASS_OR_INTERFACE;
-            } else if (declarationClass == ceylon.language.model.declaration.AliasDeclaration.class) {
+            } else if (declarationClass == ceylon.language.meta.declaration.AliasDeclaration.class) {
                 return DECLARATION_IS_ALIAS;
-            } else if (declarationClass == ceylon.language.model.declaration.NestableDeclaration.class) {
+            } else if (declarationClass == ceylon.language.meta.declaration.NestableDeclaration.class) {
                 return true_();
             }
             throw new EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
@@ -352,7 +352,7 @@ class Predicates {
     /**
      * Returns a predicate for Declarations having the given annotation 
      */
-    public static <Kind extends ceylon.language.model.declaration.Declaration, A extends ceylon.language.Annotation<A>>  
+    public static <Kind extends ceylon.language.meta.declaration.Declaration, A extends ceylon.language.Annotation<A>>  
             Predicate<Declaration> isDeclarationAnnotatedWith(TypeDescriptor annotation) {
         Type at = Metamodel.getAppliedMetamodel(annotation);
         return Predicates.<A>isDeclarationAnnotatedWith(annotation, at);
@@ -438,7 +438,7 @@ class Predicates {
         /** 
          * Whether we should instantiate the given Java annotation into a 
          * Ceylon annotation. If this returns true 
-         * {@link #accept(ceylon.language.model.Annotation)} 
+         * {@link #accept(ceylon.language.meta.model.Annotation)} 
          * will still be called to determine whether the Ceylon annotation 
          * meets the acceptance criteria.
          */

@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.reflect.Field;
 
 import ceylon.language.Annotated$impl;
-import ceylon.language.model.declaration.Import$impl;
+import ceylon.language.meta.declaration.Import$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -15,7 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeImport 
-    implements ceylon.language.model.declaration.Import,
+    implements ceylon.language.meta.declaration.Import,
         AnnotationBearing,
         ReifiedType {
     @Ignore
@@ -32,7 +32,7 @@ public class FreeImport
 
     @Override
     @Ignore
-    public Import$impl $ceylon$language$model$declaration$Import$impl() {
+    public Import$impl $ceylon$language$meta$declaration$Import$impl() {
         return null;
     }
     
@@ -75,7 +75,7 @@ public class FreeImport
     }
 
     @Override
-    public ceylon.language.model.declaration.Module getContainer(){
+    public ceylon.language.meta.declaration.Module getContainer(){
         return module;
     }
     
@@ -106,9 +106,9 @@ public class FreeImport
             return false;
         if(obj == this)
             return true;
-        if(obj instanceof ceylon.language.model.declaration.Import == false)
+        if(obj instanceof ceylon.language.meta.declaration.Import == false)
             return false;
-        ceylon.language.model.declaration.Import other = (ceylon.language.model.declaration.Import) obj;
+        ceylon.language.meta.declaration.Import other = (ceylon.language.meta.declaration.Import) obj;
         return getContainer().equals(other.getContainer())
                 && getName().equals(other.getName())
                 && getVersion().equals(other.getVersion())

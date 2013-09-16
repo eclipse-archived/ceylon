@@ -1,9 +1,9 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
-import ceylon.language.model.declaration.AliasDeclaration$impl;
-import ceylon.language.model.declaration.GenericDeclaration$impl;
-import ceylon.language.model.declaration.OpenType;
+import ceylon.language.meta.declaration.AliasDeclaration$impl;
+import ceylon.language.meta.declaration.GenericDeclaration$impl;
+import ceylon.language.meta.declaration.OpenType;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 public class FreeAliasDeclaration extends FreeNestableDeclaration 
-    implements ceylon.language.model.declaration.AliasDeclaration {
+    implements ceylon.language.meta.declaration.AliasDeclaration {
 
     @Ignore
     public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeAliasDeclaration.class);
@@ -21,7 +21,7 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
 
     private boolean initialised = false;
 
-    private Sequential<? extends ceylon.language.model.declaration.TypeParameter> typeParameters;
+    private Sequential<? extends ceylon.language.meta.declaration.TypeParameter> typeParameters;
 
     private OpenType extendedType;
     
@@ -52,13 +52,13 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
 
     @Override
     @Ignore
-    public AliasDeclaration$impl $ceylon$language$model$declaration$AliasDeclaration$impl() {
+    public AliasDeclaration$impl $ceylon$language$meta$declaration$AliasDeclaration$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public GenericDeclaration$impl $ceylon$language$model$declaration$GenericDeclaration$impl() {
+    public GenericDeclaration$impl $ceylon$language$meta$declaration$GenericDeclaration$impl() {
         return null;
     }
 
@@ -74,13 +74,13 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
     }
     
     @Override
-    public ceylon.language.model.declaration.TypeParameter getTypeParameterDeclaration(@Name("name") @TypeInfo("ceylon.language::String") String name) {
+    public ceylon.language.meta.declaration.TypeParameter getTypeParameterDeclaration(@Name("name") @TypeInfo("ceylon.language::String") String name) {
         return Metamodel.findDeclarationByName(getTypeParameterDeclarations(), name);
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::TypeParameter>")
-    public Sequential<? extends ceylon.language.model.declaration.TypeParameter> getTypeParameterDeclarations() {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::TypeParameter>")
+    public Sequential<? extends ceylon.language.meta.declaration.TypeParameter> getTypeParameterDeclarations() {
         checkInit();
         return typeParameters;
     }
@@ -90,17 +90,17 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
-    public <Type> ceylon.language.model.Type<Type> apply(@Ignore TypeDescriptor $reifiedType){
+    public <Type> ceylon.language.meta.model.Type<Type> apply(@Ignore TypeDescriptor $reifiedType){
         return apply($reifiedType, (Sequential)empty_.$get());
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::Type<Type>")
+    @TypeInfo("ceylon.language.meta.model::Type<Type>")
     @TypeParameters({
         @TypeParameter("Type"),
     })
-    public <Type extends Object> ceylon.language.model.Type<Type> apply(@Ignore TypeDescriptor $reifiedType,
-            @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> typeArguments){
+    public <Type extends Object> ceylon.language.meta.model.Type<Type> apply(@Ignore TypeDescriptor $reifiedType,
+            @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
         if(!getToplevel())
             // FIXME: change type
             throw new RuntimeException("Cannot apply a member declaration with no container type: use memberApply");
@@ -117,7 +117,7 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
     public <Container, Type extends Object>
         java.lang.Object memberApply(TypeDescriptor $reifiedContainer,
                                      TypeDescriptor $reifiedType,
-                                     ceylon.language.model.Type<? extends Container> containerType){
+                                     ceylon.language.meta.model.Type<? extends Container> containerType){
         
         return this.<Container, Type>memberApply($reifiedContainer,
                                                  $reifiedType,
@@ -125,7 +125,7 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
                                                  (Sequential)empty_.$get());
     }
 
-    @TypeInfo("ceylon.language.model::Member<Container,ceylon.language.model::Type<Type>>&ceylon.language.model::Type<Type>")
+    @TypeInfo("ceylon.language.meta.model::Member<Container,ceylon.language.meta.model::Type<Type>>&ceylon.language.meta.model::Type<Type>")
     @TypeParameters({
         @TypeParameter("Container"),
         @TypeParameter("Type"),
@@ -135,8 +135,8 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
         java.lang.Object memberApply(
                 @Ignore TypeDescriptor $reifiedContainer,
                 @Ignore TypeDescriptor $reifiedType,
-                @Name("containerType") ceylon.language.model.Type<? extends Container> containerType,
-                @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.model.Type<?>> typeArguments){
+                @Name("containerType") ceylon.language.meta.model.Type<? extends Container> containerType,
+                @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
         if(getToplevel())
             // FIXME: change type
             throw new RuntimeException("Cannot apply a toplevel declaration to a container type: use apply");
@@ -164,9 +164,9 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
             return false;
         if(obj == this)
             return true;
-        if(obj instanceof ceylon.language.model.declaration.AliasDeclaration == false)
+        if(obj instanceof ceylon.language.meta.declaration.AliasDeclaration == false)
             return false;
-        ceylon.language.model.declaration.AliasDeclaration other = (ceylon.language.model.declaration.AliasDeclaration) obj;
+        ceylon.language.meta.declaration.AliasDeclaration other = (ceylon.language.meta.declaration.AliasDeclaration) obj;
         if(!Util.eq(other.getContainer(), getContainer()))
             return false;
         return getName().equals(other.getName());

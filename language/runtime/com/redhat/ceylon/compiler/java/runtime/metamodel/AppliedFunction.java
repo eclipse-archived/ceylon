@@ -11,9 +11,9 @@ import java.util.Map;
 
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.model.Function$impl;
-import ceylon.language.model.FunctionModel$impl;
-import ceylon.language.model.Model$impl;
+import ceylon.language.meta.model.Function$impl;
+import ceylon.language.meta.model.FunctionModel$impl;
+import ceylon.language.meta.model.Model$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -35,27 +35,27 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
     @TypeParameter(value = "Arguments", variance = Variance.IN, satisfies = "ceylon.language::Sequential<ceylon.language::Anything>"),
     })
 public class AppliedFunction<Type, Arguments extends Sequential<? extends Object>> 
-    implements ceylon.language.model.Function<Type, Arguments>, ReifiedType {
+    implements ceylon.language.meta.model.Function<Type, Arguments>, ReifiedType {
 
     @Ignore
     private final TypeDescriptor $reifiedType;
     @Ignore
     private final TypeDescriptor $reifiedArguments;
     
-    private ceylon.language.model.Type<? extends Type> type;
+    private ceylon.language.meta.model.Type<? extends Type> type;
     protected FreeFunction declaration;
     private MethodHandle method;
     private MethodHandle[] dispatch;
     private int firstDefaulted = -1;
     private int variadicIndex = -1;
-    private ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> typeArguments;
+    private ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> typeArguments;
     private Object instance;
-    private ceylon.language.model.Type<? extends java.lang.Object> container;
+    private ceylon.language.meta.model.Type<? extends java.lang.Object> container;
 
     public AppliedFunction(@Ignore TypeDescriptor $reifiedType, 
                            @Ignore TypeDescriptor $reifiedArguments,
                            ProducedReference appliedFunction, FreeFunction function, 
-                           ceylon.language.model.Type<?> container,
+                           ceylon.language.meta.model.Type<?> container,
                            Object instance) {
         this.$reifiedType = $reifiedType;
         this.$reifiedArguments = $reifiedArguments;
@@ -190,32 +190,32 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     }
     
     @Override
-    @TypeInfo("ceylon.language::Map<ceylon.language.model.declaration::TypeParameter,ceylon.language.model::Type<ceylon.language::Anything>")
-    public ceylon.language.Map<? extends ceylon.language.model.declaration.TypeParameter, ? extends ceylon.language.model.Type<?>> getTypeArguments() {
+    @TypeInfo("ceylon.language::Map<ceylon.language.meta.declaration::TypeParameter,ceylon.language.meta.model::Type<ceylon.language::Anything>")
+    public ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> getTypeArguments() {
         return typeArguments;
     }
 
     @Override
     @Ignore
-    public ceylon.language.model.Generic$impl $ceylon$language$model$Generic$impl() {
+    public ceylon.language.meta.model.Generic$impl $ceylon$language$meta$model$Generic$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public Model$impl $ceylon$language$model$Model$impl() {
+    public Model$impl $ceylon$language$meta$model$Model$impl() {
         return null;
     }
     
     @Override
     @Ignore
-    public FunctionModel$impl<Type, Arguments> $ceylon$language$model$FunctionModel$impl() {
+    public FunctionModel$impl<Type, Arguments> $ceylon$language$meta$model$FunctionModel$impl() {
         return null;
     }
     
     @Override
     @Ignore
-    public Function$impl<Type, Arguments> $ceylon$language$model$Function$impl() {
+    public Function$impl<Type, Arguments> $ceylon$language$meta$model$Function$impl() {
         return null;
     }
 
@@ -307,8 +307,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::Type<Type>")
-    public ceylon.language.model.Type<? extends Type> getType() {
+    @TypeInfo("ceylon.language.meta.model::Type<Type>")
+    public ceylon.language.meta.model.Type<? extends Type> getType() {
         return type;
     }
 
@@ -398,8 +398,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 
 
     @Override
-    @TypeInfo("ceylon.language.model::Type<ceylon.language::Anything>")
-    public ceylon.language.model.Type<? extends java.lang.Object> getContainer(){
+    @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>")
+    public ceylon.language.meta.model.Type<? extends java.lang.Object> getContainer(){
         return container;
     }
 

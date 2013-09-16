@@ -1,4 +1,4 @@
-import ceylon.language.model { 
+import ceylon.language.meta { 
     type,
     Type,
     Class,
@@ -10,7 +10,7 @@ import ceylon.language.model {
     IntersectionType,
     appliedNothingType = nothingType
 }
-import ceylon.language.model.declaration { ... }
+import ceylon.language.meta.declaration { ... }
 
 void visitStringHierarchy(){
     value classType = type("falbala");

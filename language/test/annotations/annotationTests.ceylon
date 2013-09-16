@@ -1,5 +1,5 @@
 
-import ceylon.language.model{
+import ceylon.language.meta{
     type, 
     annotations, optionalAnnotation, sequencedAnnotations,
     Annotation2 = Annotation, 
@@ -8,7 +8,7 @@ import ceylon.language.model{
     ClassOrInterface, Class, Interface,
     Function, Attribute
 }
-import ceylon.language.model.declaration {
+import ceylon.language.meta.declaration {
     ValueDeclaration,
     VariableDeclaration,
     NestableDeclaration,
@@ -133,7 +133,7 @@ void checkAToplevelAttributeAnnotations() {
     assert(see.first.programElements.size == 3);
     assert(see.first.programElements.contains(`value aToplevelGetterSetter`));
     assert(see.first.programElements.contains(`module ceylon.language`));
-    assert(see.first.programElements.contains(`package ceylon.language.model.declaration`));
+    assert(see.first.programElements.contains(`package ceylon.language.meta.declaration`));
     
     
     assert(exists enumed = annotations(enumeratedAnnotation, aToplevelAttributeDecl));

@@ -4,8 +4,8 @@ import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.List;
 
-import ceylon.language.model.declaration.OpenType;
-import ceylon.language.model.declaration.ValueDeclaration$impl;
+import ceylon.language.meta.declaration.OpenType;
+import ceylon.language.meta.declaration.ValueDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
@@ -24,7 +24,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeAttribute 
     extends FreeFunctionOrValue
-    implements ceylon.language.model.declaration.ValueDeclaration, AnnotationBearing {
+    implements ceylon.language.meta.declaration.ValueDeclaration, AnnotationBearing {
 
     @Ignore
     public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeAttribute.class);
@@ -39,16 +39,16 @@ public class FreeAttribute
 
     @Override
     @Ignore
-    public ValueDeclaration$impl $ceylon$language$model$declaration$ValueDeclaration$impl() {
+    public ValueDeclaration$impl $ceylon$language$meta$declaration$ValueDeclaration$impl() {
         return null;
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::Value<Type>")
+    @TypeInfo("ceylon.language.meta.model::Value<Type>")
     @TypeParameters({
         @TypeParameter("Type"),
     })
-    public <Type> ceylon.language.model.Value<Type> apply(@Ignore TypeDescriptor $reifiedType){
+    public <Type> ceylon.language.meta.model.Value<Type> apply(@Ignore TypeDescriptor $reifiedType){
         if(!getToplevel())
             // FIXME: change type
             throw new RuntimeException("Cannot apply a member declaration with no container type: use memberApply");
@@ -60,17 +60,17 @@ public class FreeAttribute
                 : new AppliedValue(reifiedType, this, typedReference, null, null);
     }
 
-    @TypeInfo("ceylon.language.model::Attribute<Container,Type>")
+    @TypeInfo("ceylon.language.meta.model::Attribute<Container,Type>")
     @TypeParameters({
         @TypeParameter("Container"),
         @TypeParameter("Type"),
     })
     @Override
     public <Container, Type>
-        ceylon.language.model.Attribute<Container, Type> memberApply(
+        ceylon.language.meta.model.Attribute<Container, Type> memberApply(
                 @Ignore TypeDescriptor $reifiedContainer,
                 @Ignore TypeDescriptor $reifiedType,
-                @Name("containerType") ceylon.language.model.Type<? extends Container> containerType){
+                @Name("containerType") ceylon.language.meta.model.Type<? extends Container> containerType){
         if(getToplevel())
             // FIXME: change type
             throw new RuntimeException("Cannot apply a toplevel declaration to a container type: use apply");
@@ -85,7 +85,7 @@ public class FreeAttribute
     }
 
     @Override
-    @TypeInfo("ceylon.language.model.declaration::OpenType")
+    @TypeInfo("ceylon.language.meta.declaration::OpenType")
     public OpenType getOpenType() {
         return type;
     }
@@ -105,9 +105,9 @@ public class FreeAttribute
             return false;
         if(obj == this)
             return true;
-        if(obj instanceof ceylon.language.model.declaration.ValueDeclaration == false)
+        if(obj instanceof ceylon.language.meta.declaration.ValueDeclaration == false)
             return false;
-        ceylon.language.model.declaration.ValueDeclaration other = (ceylon.language.model.declaration.ValueDeclaration) obj;
+        ceylon.language.meta.declaration.ValueDeclaration other = (ceylon.language.meta.declaration.ValueDeclaration) obj;
         if(!Util.eq(other.getContainer(), getContainer()))
             return false;
         return getName().equals(other.getName());

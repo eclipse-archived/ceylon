@@ -1,5 +1,5 @@
-import ceylon.language.model { ... }
-import ceylon.language.model.declaration {
+import ceylon.language.meta { ... }
+import ceylon.language.meta.declaration {
     ValueDeclaration,
     VariableDeclaration,
     FunctionDeclaration,
@@ -729,13 +729,13 @@ void checkEqualityAndHash(){
     assert(f1Decl.hash != f2Decl.hash);
     assert(f1Decl.string == "function metamodel::NoParams.noParams");
     
-    value p1Decl = `package ceylon.language.model`;
+    value p1Decl = `package ceylon.language.meta`;
     value p2Decl = `package ceylon.language`;
     assert(p1Decl == p1Decl);
     assert(p1Decl.hash == p1Decl.hash);
     assert(p1Decl != p2Decl);
     assert(p1Decl.hash != p2Decl.hash);
-    assert(p1Decl.string == "package ceylon.language.model");
+    assert(p1Decl.string == "package ceylon.language.meta");
     
     value m1Decl = `module ceylon.language`;
     value m2Decl = `module metamodel`;

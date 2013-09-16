@@ -1,11 +1,11 @@
-import ceylon.language.model.declaration {
+import ceylon.language.meta.declaration {
   FunctionDeclaration, ValueDeclaration,
   ClassDeclaration, InterfaceDeclaration, ClassOrInterfaceDeclaration,
   Package, FunctionOrValueDeclaration, VariableDeclaration,
   TopLevelOrMemberDeclaration, OpenType, TypeParameter,
   OpenParameterisedType, AnnotatedDeclaration, SetterDeclaration
 }
-import ceylon.language.model {
+import ceylon.language.meta.model {
     AppliedInterface = Interface,
     AppliedClass = Class,
     AppliedFunction = Function,

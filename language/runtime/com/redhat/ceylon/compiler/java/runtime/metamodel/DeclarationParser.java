@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.model.declaration.ClassOrInterfaceDeclaration;
-import ceylon.language.model.declaration.Declaration;
-import ceylon.language.model.declaration.FunctionDeclaration;
-import ceylon.language.model.declaration.Module;
-import ceylon.language.model.declaration.Package;
-import ceylon.language.model.declaration.ValueDeclaration;
+import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration;
+import ceylon.language.meta.declaration.Declaration;
+import ceylon.language.meta.declaration.FunctionDeclaration;
+import ceylon.language.meta.declaration.Module;
+import ceylon.language.meta.declaration.Package;
+import ceylon.language.meta.declaration.ValueDeclaration;
 
 /**
  * <p>A reusable but non-threadsafe parser for the serialized form of 
@@ -245,7 +245,7 @@ class DeclarationParser {
         if (version == null) {
             throw metamodelError("Runtime versions not yet supported");
         }
-        Module module = ceylon.language.model.modules_.$get().find(moduleName, version);
+        Module module = ceylon.language.meta.modules_.$get().find(moduleName, version);
         if (module == null) {
             throw metamodelNotFound("Could not find module: " + moduleName + ", version: " + version);
         }
@@ -260,7 +260,7 @@ class DeclarationParser {
         return package_;
     }
     
-    // .ceylon.language.model.typeLiteral_.typeLiteral(.ceylon.language.Anything.$TypeDescriptor)
+    // .ceylon.language.meta.model.typeLiteral_.typeLiteral(.ceylon.language.Anything.$TypeDescriptor)
     protected ClassOrInterfaceDeclaration makeClassOrInterface(Declaration packageOrType, String typeName) {
         final ClassOrInterfaceDeclaration result;
         if (packageOrType instanceof Package) {

@@ -2,10 +2,10 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.model.declaration.AnnotatedDeclaration;
-import ceylon.language.model.declaration.Declaration$impl;
-import ceylon.language.model.declaration.OpenType;
-import ceylon.language.model.declaration.TypeParameter$impl;
+import ceylon.language.meta.declaration.AnnotatedDeclaration;
+import ceylon.language.meta.declaration.Declaration$impl;
+import ceylon.language.meta.declaration.OpenType;
+import ceylon.language.meta.declaration.TypeParameter$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -18,7 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeTypeParameter
-    implements ceylon.language.model.declaration.TypeParameter, ReifiedType {
+    implements ceylon.language.meta.declaration.TypeParameter, ReifiedType {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeTypeParameter.class);
@@ -65,13 +65,13 @@ public class FreeTypeParameter
 
     @Override
     @Ignore
-    public Declaration$impl $ceylon$language$model$declaration$Declaration$impl() {
+    public Declaration$impl $ceylon$language$meta$declaration$Declaration$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public TypeParameter$impl $ceylon$language$model$declaration$TypeParameter$impl() {
+    public TypeParameter$impl $ceylon$language$meta$declaration$TypeParameter$impl() {
         return null;
     }
     
@@ -88,7 +88,7 @@ public class FreeTypeParameter
 
     @Override
     public String getQualifiedName() {
-        ceylon.language.model.declaration.AnnotatedDeclaration container = Metamodel.getContainer(declaration);
+        ceylon.language.meta.declaration.AnnotatedDeclaration container = Metamodel.getContainer(declaration);
         return container.getQualifiedName() + "." + getName();
     }
     
@@ -98,39 +98,39 @@ public class FreeTypeParameter
     }
 
     @Override
-    public ceylon.language.model.declaration.Variance getVariance(){
+    public ceylon.language.meta.declaration.Variance getVariance(){
         if(declaration.isInvariant())
-            return ceylon.language.model.declaration.invariant_.$get();
+            return ceylon.language.meta.declaration.invariant_.$get();
         if(declaration.isCovariant())
-            return ceylon.language.model.declaration.covariant_.$get();
+            return ceylon.language.meta.declaration.covariant_.$get();
         if(declaration.isContravariant())
-            return ceylon.language.model.declaration.contravariant_.$get();
+            return ceylon.language.meta.declaration.contravariant_.$get();
         throw new RuntimeException("Underlying declaration is neither invariant, covariant nor contravariant");
     }
 
-    @TypeInfo("ceylon.language::Null|ceylon.language.model.declaration::OpenType")
+    @TypeInfo("ceylon.language::Null|ceylon.language.meta.declaration::OpenType")
     @Override
-    public ceylon.language.model.declaration.OpenType getDefaultTypeArgument(){
+    public ceylon.language.meta.declaration.OpenType getDefaultTypeArgument(){
         checkInit();
         return defaultTypeArgument;
     }
 
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::OpenType>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::OpenType>")
     @Override
-    public ceylon.language.Sequential<? extends ceylon.language.model.declaration.OpenType> getSatisfiedTypes(){
+    public ceylon.language.Sequential<? extends ceylon.language.meta.declaration.OpenType> getSatisfiedTypes(){
         checkInit();
         return satisfiedTypes;
     }
 
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::OpenType>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::OpenType>")
     @Override
-    public ceylon.language.Sequential<? extends ceylon.language.model.declaration.OpenType> getCaseTypes(){
+    public ceylon.language.Sequential<? extends ceylon.language.meta.declaration.OpenType> getCaseTypes(){
         checkInit();
         return caseTypes;
     }
 
     @Override
-    public ceylon.language.model.declaration.NestableDeclaration getContainer(){
+    public ceylon.language.meta.declaration.NestableDeclaration getContainer(){
         checkInit();
         return container;
     }
@@ -150,9 +150,9 @@ public class FreeTypeParameter
             return false;
         if(obj == this)
             return true;
-        if(obj instanceof ceylon.language.model.declaration.Package == false)
+        if(obj instanceof ceylon.language.meta.declaration.Package == false)
             return false;
-        ceylon.language.model.declaration.Package other = (ceylon.language.model.declaration.Package) obj;
+        ceylon.language.meta.declaration.Package other = (ceylon.language.meta.declaration.Package) obj;
         if(!Util.eq(other.getContainer(), getContainer()))
             return false;
         return getName().equals(other.getName());

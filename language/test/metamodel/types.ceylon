@@ -1,4 +1,4 @@
-import ceylon.language.model { Annotation }
+import ceylon.language.meta { Annotation }
 
 shared String toplevelString = "a";
 shared Integer toplevelInteger = 1;

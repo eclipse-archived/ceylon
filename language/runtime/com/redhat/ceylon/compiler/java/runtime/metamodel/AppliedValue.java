@@ -6,9 +6,9 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import ceylon.language.model.Model$impl;
-import ceylon.language.model.Value$impl;
-import ceylon.language.model.ValueModel$impl;
+import ceylon.language.meta.model.Model$impl;
+import ceylon.language.meta.model.Value$impl;
+import ceylon.language.meta.model.ValueModel$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
@@ -33,18 +33,18 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
     @TypeParameter(value = "Type", variance = Variance.OUT),
 })
 public class AppliedValue<Type> 
-        implements ceylon.language.model.Value<Type>, ReifiedType {
+        implements ceylon.language.meta.model.Value<Type>, ReifiedType {
 
-    private ceylon.language.model.Type<Type> type;
+    private ceylon.language.meta.model.Type<Type> type;
     @Ignore
     protected TypeDescriptor $reifiedType;
     protected FreeAttribute declaration;
     private MethodHandle getter;
     private Object instance;
-    private ceylon.language.model.Type<? extends java.lang.Object> container;
+    private ceylon.language.meta.model.Type<? extends java.lang.Object> container;
 
     public AppliedValue(@Ignore TypeDescriptor $reifiedType, FreeAttribute value, ProducedTypedReference valueTypedReference, 
-            ceylon.language.model.Type<?> container, Object instance) {
+            ceylon.language.meta.model.Type<?> container, Object instance) {
         ProducedType producedType = valueTypedReference.getType();
         this.container = container;
         this.type = Metamodel.getAppliedMetamodel(producedType);
@@ -146,25 +146,25 @@ public class AppliedValue<Type>
 
     @Override
     @Ignore
-    public Value$impl<Type> $ceylon$language$model$Value$impl() {
+    public Value$impl<Type> $ceylon$language$meta$model$Value$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public ValueModel$impl<Type> $ceylon$language$model$ValueModel$impl() {
+    public ValueModel$impl<Type> $ceylon$language$meta$model$ValueModel$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public Model$impl $ceylon$language$model$Model$impl() {
+    public Model$impl $ceylon$language$meta$model$Model$impl() {
         return null;
     }
 
     @Override
-    @TypeInfo("ceylon.language.model.declaration::ValueDeclaration")
-    public ceylon.language.model.declaration.ValueDeclaration getDeclaration() {
+    @TypeInfo("ceylon.language.meta.declaration::ValueDeclaration")
+    public ceylon.language.meta.declaration.ValueDeclaration getDeclaration() {
         return declaration;
     }
 
@@ -179,8 +179,8 @@ public class AppliedValue<Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::Type<Type>")
-    public ceylon.language.model.Type<? extends Type> getType() {
+    @TypeInfo("ceylon.language.meta.model::Type<Type>")
+    public ceylon.language.meta.model.Type<? extends Type> getType() {
         return type;
     }
 
@@ -216,8 +216,8 @@ public class AppliedValue<Type>
 
 
     @Override
-    @TypeInfo("ceylon.language.model::Type<ceylon.language::Anything>")
-    public ceylon.language.model.Type<? extends java.lang.Object> getContainer(){
+    @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>")
+    public ceylon.language.meta.model.Type<? extends java.lang.Object> getContainer(){
         return container;
     }
 

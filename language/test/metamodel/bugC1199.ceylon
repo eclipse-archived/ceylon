@@ -1,4 +1,4 @@
-import ceylon.language.model { modules }
+import ceylon.language.meta { modules }
 
 class BugC1199() {}
 

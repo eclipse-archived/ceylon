@@ -1,4 +1,4 @@
-import ceylon.language.model { modules }
+import ceylon.language.meta { modules }
 
 shared class BugC1201Person(name) {
     variable shared String name;

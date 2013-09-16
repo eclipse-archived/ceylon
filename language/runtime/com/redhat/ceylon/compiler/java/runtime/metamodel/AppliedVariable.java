@@ -7,8 +7,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import ceylon.language.model.Variable$impl;
-import ceylon.language.model.declaration.VariableDeclaration;
+import ceylon.language.meta.model.Variable$impl;
+import ceylon.language.meta.declaration.VariableDeclaration;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
@@ -31,12 +31,12 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 })
 public class AppliedVariable<Type> 
     extends AppliedValue<Type> 
-    implements ceylon.language.model.Variable<Type> {
+    implements ceylon.language.meta.model.Variable<Type> {
 
     private MethodHandle setter;
 
     public AppliedVariable(@Ignore TypeDescriptor $reifiedType, FreeAttribute value, ProducedTypedReference valueTypedReference, 
-            ceylon.language.model.Type<?> container, Object instance) {
+            ceylon.language.meta.model.Type<?> container, Object instance) {
         super($reifiedType, value, valueTypedReference, container, instance);
     }
 
@@ -97,7 +97,7 @@ public class AppliedVariable<Type>
 
     @Override
     @Ignore
-    public Variable$impl<Type> $ceylon$language$model$Variable$impl() {
+    public Variable$impl<Type> $ceylon$language$meta$model$Variable$impl() {
         // TODO Auto-generated method stub
         return null;
     }

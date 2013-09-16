@@ -1,4 +1,4 @@
-import ceylon.language.model { modules }
+import ceylon.language.meta { modules }
 
 void bug238(){
     value m = modules.find("metamodel", "0.1");

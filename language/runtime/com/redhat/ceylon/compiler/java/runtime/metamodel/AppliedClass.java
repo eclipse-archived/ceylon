@@ -9,9 +9,9 @@ import java.util.List;
 
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.model.Class$impl;
-import ceylon.language.model.ClassModel$impl;
-import ceylon.language.model.InvocationException;
+import ceylon.language.meta.model.Class$impl;
+import ceylon.language.meta.model.ClassModel$impl;
+import ceylon.language.meta.model.InvocationException;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -33,7 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
     })
 public class AppliedClass<Type, Arguments extends Sequential<? extends Object>> 
     extends AppliedClassOrInterface<Type>
-    implements ceylon.language.model.Class<Type, Arguments> {
+    implements ceylon.language.meta.model.Class<Type, Arguments> {
 
     private TypeDescriptor $reifiedArguments;
     private MethodHandle constructor;
@@ -41,13 +41,13 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     private int firstDefaulted;
     private int variadicIndex = -1;
     private MethodHandle[] dispatch;
-    private ceylon.language.model.ClassOrInterface<?> container;
+    private ceylon.language.meta.model.ClassOrInterface<?> container;
     
     // FIXME: get rid of duplicate instantiations of AppliedClassType when the type in question has no type parameters
     public AppliedClass(@Ignore TypeDescriptor $reifiedType, 
                         @Ignore TypeDescriptor $reifiedArguments,
                         com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType, 
-                        ceylon.language.model.ClassOrInterface<?> container, Object instance) {
+                        ceylon.language.meta.model.ClassOrInterface<?> container, Object instance) {
         super($reifiedType, producedType);
         this.$reifiedArguments = $reifiedArguments;
         this.container = container;
@@ -56,20 +56,20 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
 
     @Override
     @Ignore
-    public Class$impl<Type, Arguments> $ceylon$language$model$Class$impl() {
+    public Class$impl<Type, Arguments> $ceylon$language$meta$model$Class$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public ClassModel$impl<Type, Arguments> $ceylon$language$model$ClassModel$impl() {
+    public ClassModel$impl<Type, Arguments> $ceylon$language$meta$model$ClassModel$impl() {
         return null;
     }
 
     @Override
-    @TypeInfo("ceylon.language.model.declaration::ClassDeclaration")
-    public ceylon.language.model.declaration.ClassDeclaration getDeclaration() {
-        return (ceylon.language.model.declaration.ClassDeclaration) super.getDeclaration();
+    @TypeInfo("ceylon.language.meta.declaration::ClassDeclaration")
+    public ceylon.language.meta.declaration.ClassDeclaration getDeclaration() {
+        return (ceylon.language.meta.declaration.ClassDeclaration) super.getDeclaration();
     }
 
     @Override
@@ -405,8 +405,8 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
-    public ceylon.language.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
+    @TypeInfo("ceylon.language.meta.model::ClassOrInterface<ceylon.language::Anything>")
+    public ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
         return container;
     }
 

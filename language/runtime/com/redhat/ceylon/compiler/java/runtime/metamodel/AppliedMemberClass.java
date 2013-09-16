@@ -2,12 +2,12 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.model.Class;
-import ceylon.language.model.ClassModel$impl;
-import ceylon.language.model.ClassOrInterface;
-import ceylon.language.model.Member$impl;
-import ceylon.language.model.MemberClass$impl;
-import ceylon.language.model.declaration.ClassDeclaration;
+import ceylon.language.meta.model.Class;
+import ceylon.language.meta.model.ClassModel$impl;
+import ceylon.language.meta.model.ClassOrInterface;
+import ceylon.language.meta.model.Member$impl;
+import ceylon.language.meta.model.MemberClass$impl;
+import ceylon.language.meta.declaration.ClassDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -16,7 +16,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? extends Object>> 
     extends AppliedClassOrInterface<Type>
-    implements ceylon.language.model.MemberClass<Container, Type, Arguments> {
+    implements ceylon.language.meta.model.MemberClass<Container, Type, Arguments> {
 
     @Ignore
     private TypeDescriptor $reifiedContainer;
@@ -34,19 +34,19 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
 
     @Override
     @Ignore
-    public ClassModel$impl<Type, Arguments> $ceylon$language$model$ClassModel$impl() {
+    public ClassModel$impl<Type, Arguments> $ceylon$language$meta$model$ClassModel$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public Member$impl<Container, Class<? extends Type, ? super Arguments>> $ceylon$language$model$Member$impl() {
+    public Member$impl<Container, Class<? extends Type, ? super Arguments>> $ceylon$language$meta$model$Member$impl() {
         return null;
     }
 
     @Override
     @Ignore
-    public MemberClass$impl<Container, Type, Arguments> $ceylon$language$model$MemberClass$impl() {
+    public MemberClass$impl<Container, Type, Arguments> $ceylon$language$meta$model$MemberClass$impl() {
         return null;
     }
 
@@ -87,14 +87,14 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
     }
     
     @Override
-    @TypeInfo("ceylon.language.model.declaration::ClassDeclaration")
+    @TypeInfo("ceylon.language.meta.declaration::ClassDeclaration")
     public ClassDeclaration getDeclaration() {
         return (ClassDeclaration) super.getDeclaration();
     }
     
     @Override
-    @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
-    public ceylon.language.model.ClassOrInterface<? extends Object> getDeclaringClassOrInterface() {
+    @TypeInfo("ceylon.language.meta.model::ClassOrInterface<ceylon.language::Anything>")
+    public ceylon.language.meta.model.ClassOrInterface<? extends Object> getDeclaringClassOrInterface() {
         return (ClassOrInterface<? extends Object>) Metamodel.getAppliedMetamodel(producedType.getQualifyingType());
     }
 
@@ -180,17 +180,17 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
             return false;
         if(obj == this)
             return true;
-        if(obj instanceof ceylon.language.model.MemberClass == false)
+        if(obj instanceof ceylon.language.meta.model.MemberClass == false)
             return false;
-        ceylon.language.model.MemberClass<?, ?, ?> other = (ceylon.language.model.MemberClass<?, ?, ?>) obj;
+        ceylon.language.meta.model.MemberClass<?, ?, ?> other = (ceylon.language.meta.model.MemberClass<?, ?, ?>) obj;
         return getDeclaration().equals(other.getDeclaration())
                 && getDeclaringClassOrInterface().equals(other.getDeclaringClassOrInterface())
                 && getTypeArguments().equals(other.getTypeArguments());
     }
 
     @Override
-    @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
-    public ceylon.language.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
+    @TypeInfo("ceylon.language.meta.model::ClassOrInterface<ceylon.language::Anything>")
+    public ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
         return getDeclaringClassOrInterface();
     }
 }
