@@ -1,4 +1,3 @@
-import ceylon.language.meta{Annotated, SequencedAnnotation, OptionalAnnotation}
 import ceylon.language.meta.declaration{Declaration}
 
 shared final annotation class Seq(shared String seq) 

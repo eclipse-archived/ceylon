@@ -1,5 +1,3 @@
-import ceylon.language.meta { Annotation }
-
 final annotation class Bug263Annotation(shared actual String string) 
         satisfies Annotation<Bug263Annotation> {}
 

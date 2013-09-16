@@ -1,4 +1,5 @@
 import ceylon.language.meta { ... }
+import ceylon.language.meta.model { ... }
 import ceylon.language.meta.declaration {
     ValueDeclaration,
     VariableDeclaration,

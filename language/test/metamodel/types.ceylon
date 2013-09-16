@@ -1,5 +1,3 @@
-import ceylon.language.meta { Annotation }
-
 shared String toplevelString = "a";
 shared Integer toplevelInteger = 1;
 shared Float toplevelFloat = 1.2;

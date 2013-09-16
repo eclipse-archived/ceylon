@@ -1,10 +1,9 @@
 
 import ceylon.language.meta{
     type, 
-    annotations, optionalAnnotation, sequencedAnnotations,
-    Annotation2 = Annotation, 
-    ConstrainedAnnotation, OptionalAnnotation, SequencedAnnotation, 
-    Annotated,
+    annotations, optionalAnnotation, sequencedAnnotations
+}
+import ceylon.language.meta.model{
     ClassOrInterface, Class, Interface,
     Function, Attribute
 }

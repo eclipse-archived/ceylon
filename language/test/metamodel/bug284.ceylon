@@ -1,4 +1,4 @@
-import ceylon.language.meta { ... }
+import ceylon.language.meta.model { ... }
 
 class Bug284(){
     shared class Inner(String x){}

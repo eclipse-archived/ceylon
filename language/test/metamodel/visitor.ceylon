@@ -1,5 +1,5 @@
-import ceylon.language.meta { 
-    type,
+import ceylon.language.meta { type }
+import ceylon.language.meta.model { 
     Type,
     Class,
     ClassModel,
