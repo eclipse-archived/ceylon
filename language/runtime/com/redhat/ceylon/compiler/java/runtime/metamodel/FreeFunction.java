@@ -202,6 +202,7 @@ public class FreeFunction
                                                                               ceylon.language.meta.model.Type<? extends Object> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
         ProducedType containerType = Metamodel.getModel(container);
+        Metamodel.checkQualifyingType(containerType, declaration);
         Metamodel.checkTypeArguments(containerType, declaration, producedTypes);
         final ProducedTypedReference appliedFunction = ((com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration)declaration).getProducedTypedReference(containerType, producedTypes);
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForFunction(appliedFunction);

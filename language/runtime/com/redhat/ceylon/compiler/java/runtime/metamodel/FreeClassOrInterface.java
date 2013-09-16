@@ -287,7 +287,6 @@ public abstract class FreeClassOrInterface
 
         ceylon.language.meta.model.Member<? extends Container, ceylon.language.meta.model.ClassOrInterface<?>> member 
             = getAppliedClassOrInterface(null, null, typeArguments, containerType);
-        // FIXME: check containerType
         
         // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
         // implementation types to the user, such as AppliedMemberClass
@@ -311,6 +310,7 @@ public abstract class FreeClassOrInterface
                                                                         ceylon.language.meta.model.Type<Container> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         ProducedType qualifyingType = Metamodel.getModel(container);
+        Metamodel.checkQualifyingType(qualifyingType, declaration);
         Metamodel.checkTypeArguments(qualifyingType, declaration, producedTypes);
         ProducedReference producedReference = declaration.getProducedReference(qualifyingType, producedTypes);
         final ProducedType appliedType = producedReference.getType();

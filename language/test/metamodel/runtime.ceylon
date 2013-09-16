@@ -1088,6 +1088,25 @@ void checkTypeArgumentChecks(){
     }catch(Exception x){
         assert(is IncompatibleTypeException x);
     }
+    // invalid containers types
+    try{
+        `value NoParams.str`.memberApply<ContainerClass,String>(`ContainerClass`);
+        assert(false);
+    }catch(Exception x){
+        assert(is IncompatibleTypeException x);
+    }
+    try{
+        `function NoParams.noParams`.memberApply<ContainerClass,NoParams,[]>(`ContainerClass`);
+        assert(false);
+    }catch(Exception x){
+        assert(is IncompatibleTypeException x);
+    }
+    try{
+        `class ContainerClass.InnerClass`.memberApply<NoParams,ContainerClass.InnerClass>(`NoParams`);
+        assert(false);
+    }catch(Exception x){
+        assert(is IncompatibleTypeException x);
+    }
 }
 
 shared void run() {

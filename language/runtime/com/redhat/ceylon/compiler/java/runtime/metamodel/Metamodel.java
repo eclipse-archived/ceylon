@@ -974,4 +974,14 @@ public class Metamodel {
             throw new RuntimeException("Invalid variance: "+variance);
         }
     }
+
+    public static void checkQualifyingType(ProducedType qualifyingType, Declaration declaration) {
+        Scope container = declaration.getContainer();
+        if(container instanceof TypeDeclaration == false)
+            throw new IncompatibleTypeException("Declaration container is not a type: "+container);
+        TypeDeclaration typeDecl = (TypeDeclaration) container;
+        ProducedType supertype = qualifyingType.getSupertype(typeDecl);
+        if(supertype == null)
+            throw new IncompatibleTypeException("Invalid container type: "+qualifyingType+" is not a subtype of "+typeDecl);
+    }
 }

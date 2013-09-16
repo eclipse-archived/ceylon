@@ -178,7 +178,6 @@ public class FreeClass
         ceylon.language.meta.model.MemberClass<Container, Type, Arguments> member 
             = (ceylon.language.meta.model.MemberClass)
                 getAppliedClassOrInterface(null, null, typeArguments, containerType);
-        // FIXME: check containerType
         
         // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
         // implementation types to the user, such as AppliedMemberClass

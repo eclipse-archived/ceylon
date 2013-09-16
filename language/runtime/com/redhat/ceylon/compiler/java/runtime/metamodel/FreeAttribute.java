@@ -78,6 +78,7 @@ public class FreeAttribute
             // FIXME: change type
             throw new RuntimeException("Cannot apply a toplevel declaration to a container type: use apply");
         ProducedType qualifyingType = Metamodel.getModel(containerType);
+        Metamodel.checkQualifyingType(qualifyingType, declaration);
         com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
         com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(qualifyingType, Collections.<ProducedType>emptyList());
         TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(qualifyingType);
