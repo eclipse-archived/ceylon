@@ -278,7 +278,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
                 boolean once=false;
                 if (f.exists() && f.isFile()) {
                     for (File root : roots) {
-                        if (f.getAbsolutePath().startsWith(root.getAbsolutePath())) {
+                        if (f.getAbsolutePath().startsWith(root.getAbsolutePath() + File.separatorChar)) {
                             if (opts.isVerbose()) {
                                 System.out.printf("Adding %s to compilation set%n", filedir);
                             }
