@@ -277,7 +277,6 @@ public abstract class AppliedClassOrInterface<Type>
     @Ignore
     @Override
     public TypeDescriptor $getType() {
-        checkInit();
         return TypeDescriptor.klass(AppliedClassOrInterface.class, $reifiedType);
     }
 }

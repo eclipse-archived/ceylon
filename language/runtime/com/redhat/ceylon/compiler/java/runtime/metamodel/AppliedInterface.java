@@ -28,7 +28,7 @@ public class AppliedInterface<Type>
     public AppliedInterface(@Ignore TypeDescriptor $reifiedType, 
                             com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType,
                             ceylon.language.meta.model.ClassOrInterface<?> container, Object instance) {
-        super(null, producedType);
+        super($reifiedType, producedType);
         this.container = container;
         this.instance = instance;
     }
