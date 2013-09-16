@@ -11,6 +11,7 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.model.Class$impl;
 import ceylon.language.model.ClassModel$impl;
+import ceylon.language.model.InvocationException;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -228,8 +229,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     @Override
     public Type $call() {
         checkInit();
-        if(constructor == null)
-            throw new RuntimeException("No constructor found for: "+declaration.getName());
+        checkConstructor();
         try {
             if(firstDefaulted == -1)
                 return (Type)constructor.invokeExact();
@@ -241,12 +241,18 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         }
     }
 
+    private void checkConstructor() {
+        if(((FreeClass)declaration).getAbstract())
+            throw new InvocationException("Abstract class cannot be instantiated");
+        if(constructor == null)
+            throw new RuntimeException("No constructor found for: "+declaration.getName());
+    }
+
     @Ignore
     @Override
     public Type $call(Object arg0) {
         checkInit();
-        if(constructor == null)
-            throw new RuntimeException("No constructor found for: "+declaration.getName());
+        checkConstructor();
         try {
             if(firstDefaulted == -1)
                 return (Type)constructor.invokeExact(arg0);
@@ -262,8 +268,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     @Override
     public Type $call(Object arg0, Object arg1) {
         checkInit();
-        if(constructor == null)
-            throw new RuntimeException("No constructor found for: "+declaration.getName());
+        checkConstructor();
         try {
             if(firstDefaulted == -1)
                 return (Type)constructor.invokeExact(arg0, arg1);
@@ -279,8 +284,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     @Override
     public Type $call(Object arg0, Object arg1, Object arg2) {
         checkInit();
-        if(constructor == null)
-            throw new RuntimeException("No constructor found for: "+declaration.getName());
+        checkConstructor();
         try {
             if(firstDefaulted == -1)
                 return (Type)constructor.invokeExact(arg0, arg1, arg2);
@@ -296,8 +300,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     @Override
     public Type $call(Object... args) {
         checkInit();
-        if(constructor == null)
-            throw new RuntimeException("No constructor found for: "+declaration.getName());
+        checkConstructor();
         try {
             if(firstDefaulted == -1)
                 // FIXME: this does not do invokeExact and does boxing/widening

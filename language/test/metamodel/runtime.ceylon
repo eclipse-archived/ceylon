@@ -81,6 +81,13 @@ void checkConstructors(){
     variadicClass(1, "a");
     variadicClass(2, "a", "a");
     unflatten(variadicClass)([2, "a", "a"]);
+    
+    try{
+        `Modifiers`();
+        assert(false);
+    }catch(Exception x){
+        assert(is InvocationException x);
+    }
 }
 
 void checkMemberAttributes(){
