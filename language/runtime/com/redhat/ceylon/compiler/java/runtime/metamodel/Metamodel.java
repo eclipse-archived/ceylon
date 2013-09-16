@@ -19,6 +19,7 @@ import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.Annotated;
 import ceylon.language.meta.model.ClassOrInterface;
+import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.ConstrainedAnnotation;
 import ceylon.language.meta.model.TypeApplicationException;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
@@ -34,6 +35,7 @@ import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -141,7 +143,11 @@ public class Metamodel {
         TypeDescriptor instanceType = getTypeDescriptor(instance);
         if(instanceType == null)
             throw new RuntimeException("Metamodel not yet supported for Java types");
-        return instanceType.toProducedType(moduleManager);
+        return getProducedType(instanceType);
+    }
+
+    public static ProducedType getProducedType(TypeDescriptor reifiedType) {
+        return reifiedType.toProducedType(moduleManager);
     }
 
     public static ceylon.language.meta.model.Type<?> getAppliedMetamodel(TypeDescriptor typeDescriptor) {
@@ -644,7 +650,19 @@ public class Metamodel {
             return TypeDescriptor.NothingType;
         }
     }
-    
+
+    public static ProducedType getProducedTypeForArguments(com.redhat.ceylon.compiler.typechecker.model.Unit unit, 
+            com.redhat.ceylon.compiler.typechecker.model.Functional decl, 
+            ProducedReference producedReference) {
+        
+        if(!decl.getParameterLists().isEmpty()){
+            List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
+            return unit.getParameterTypesAsTupleType(parameters, producedReference);
+        }else{
+            return new NothingType(unit).getType();
+        }
+    }
+
     /**
      * This is also used by generated code in the JVM compiler, for type declaration literals.
      * In theory this can only be used for ClassOrInterface or TypeAlias.
@@ -886,5 +904,74 @@ public class Metamodel {
     public static boolean isExactly(ProducedType a, ceylon.language.meta.model.Type<? extends Object> type) {
         ProducedType b = Metamodel.getModel(type);
         return a.isExactly(b);
+    }
+
+    public static void checkReifiedTypeArgument(String methodName, String className, Variance variance, ProducedType appliedType, TypeDescriptor $reifiedType) {
+        ProducedType expectedReifiedType = Metamodel.getProducedType($reifiedType);
+        boolean check = checkReifiedTypeArgument(variance, appliedType, expectedReifiedType);
+        if(!check){
+            String appliedTypeString = appliedType.getProducedTypeName();
+            String expectedReifiedTypeString = expectedReifiedType.getProducedTypeName();
+            String appliedString = className.replace("$1", appliedTypeString);
+            String expectedString = className.replace("$1", expectedReifiedTypeString);
+            throw new IncompatibleTypeException("Incompatible type: actual type of applied declaration is "+appliedString
+                    +" is not compatible with expected type: "+expectedString+". Try passing the type argument explicitely with: "
+                    +methodName+"<"+appliedTypeString+">(), or using default type arguments with "+methodName+"<>()");
+        }
+    }
+
+    public static void checkReifiedTypeArgument(String methodName, String className, 
+            Variance variance1, ProducedType appliedType1, TypeDescriptor $reifiedType1,
+            Variance variance2, ProducedType appliedType2, TypeDescriptor $reifiedType2) {
+        ProducedType expectedReifiedType1 = Metamodel.getProducedType($reifiedType1);
+        ProducedType expectedReifiedType2 = Metamodel.getProducedType($reifiedType2);
+        boolean check1 = checkReifiedTypeArgument(variance1, appliedType1, expectedReifiedType1);
+        boolean check2 = checkReifiedTypeArgument(variance2, appliedType2, expectedReifiedType2);
+        if(!check1 || !check2){
+            String appliedTypeString1 = appliedType1.getProducedTypeName();
+            String expectedReifiedTypeString1 = expectedReifiedType1.getProducedTypeName();
+            String appliedTypeString2 = appliedType2.getProducedTypeName();
+            String expectedReifiedTypeString2 = expectedReifiedType2.getProducedTypeName();
+            String appliedString = className.replace("$1", appliedTypeString1).replace("$2", appliedTypeString2);
+            String expectedString = className.replace("$1", expectedReifiedTypeString1).replace("$2", expectedReifiedTypeString2);
+            throw new IncompatibleTypeException("Incompatible type: actual type of applied declaration is "+appliedString
+                    +" is not compatible with expected type: "+expectedString+". Try passing the type argument explicitly with: "
+                    +methodName+"<"+appliedTypeString1+","+appliedTypeString2+">(), or using default type arguments with "+methodName+"<>()");
+        }
+    }
+
+    public static void checkReifiedTypeArgument(String methodName, String className, 
+            Variance variance1, ProducedType appliedType1, TypeDescriptor $reifiedType1,
+            Variance variance2, ProducedType appliedType2, TypeDescriptor $reifiedType2,
+            Variance variance3, ProducedType appliedType3, TypeDescriptor $reifiedType3) {
+        ProducedType expectedReifiedType1 = Metamodel.getProducedType($reifiedType1);
+        ProducedType expectedReifiedType2 = Metamodel.getProducedType($reifiedType2);
+        ProducedType expectedReifiedType3 = Metamodel.getProducedType($reifiedType3);
+        boolean check1 = checkReifiedTypeArgument(variance1, appliedType1, expectedReifiedType1);
+        boolean check2 = checkReifiedTypeArgument(variance2, appliedType2, expectedReifiedType2);
+        boolean check3 = checkReifiedTypeArgument(variance3, appliedType3, expectedReifiedType3);
+        if(!check1 || !check2 || !check3){
+            String appliedTypeString1 = appliedType1.getProducedTypeName();
+            String expectedReifiedTypeString1 = expectedReifiedType1.getProducedTypeName();
+            String appliedTypeString2 = appliedType2.getProducedTypeName();
+            String expectedReifiedTypeString2 = expectedReifiedType2.getProducedTypeName();
+            String appliedTypeString3 = appliedType3.getProducedTypeName();
+            String expectedReifiedTypeString3 = expectedReifiedType3.getProducedTypeName();
+            String appliedString = className.replace("$1", appliedTypeString1).replace("$2", appliedTypeString2).replace("$3", appliedTypeString3);
+            String expectedString = className.replace("$1", expectedReifiedTypeString1).replace("$2", expectedReifiedTypeString2).replace("$3", expectedReifiedTypeString3);
+            throw new IncompatibleTypeException("Incompatible type: actual type of applied declaration is "+appliedString
+                    +" is not compatible with expected type: "+expectedString+". Try passing the type argument explicitly with: "
+                    +methodName+"<"+appliedTypeString1+","+appliedTypeString2+","+appliedTypeString3+">(), or using default type arguments with "+methodName+"<>()");
+        }
+    }
+
+    private static boolean checkReifiedTypeArgument(Variance variance, ProducedType appliedType, ProducedType expectedReifiedType) {
+        switch(variance){
+        case IN: return appliedType.isSupertypeOf(expectedReifiedType);
+        case OUT: return appliedType.isSubtypeOf(expectedReifiedType);
+        case NONE: return appliedType.isExactly(expectedReifiedType);
+        default:
+            throw new RuntimeException("Invalid variance: "+variance);
+        }
     }
 }

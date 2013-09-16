@@ -15,7 +15,9 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -54,6 +56,7 @@ public class FreeAttribute
             throw new RuntimeException("Cannot apply a member declaration with no container type: use memberApply");
         com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
         com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(null, Collections.<ProducedType>emptyList());
+        Metamodel.checkReifiedTypeArgument("apply", "Value<$1>", Variance.OUT, typedReference.getType(), $reifiedType);
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(typedReference.getType());
         return modelDecl.isVariable() 
                 ? new AppliedVariable(reifiedType, this, typedReference, null, null) 
@@ -79,6 +82,9 @@ public class FreeAttribute
         com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(qualifyingType, Collections.<ProducedType>emptyList());
         TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(qualifyingType);
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(typedReference.getType());
+        Metamodel.checkReifiedTypeArgument("memberApply", "Attribute<$1,$2>", 
+                Variance.IN, qualifyingType, $reifiedContainer,
+                Variance.OUT, typedReference.getType(), $reifiedType);
         return modelDecl.isVariable() 
                 ? new AppliedVariableAttribute(reifiedContainer, reifiedType, this, typedReference, containerType) 
                 : new AppliedAttribute(reifiedContainer, reifiedType, this, typedReference, containerType);

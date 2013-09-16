@@ -35,7 +35,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     extends AppliedClassOrInterface<Type>
     implements ceylon.language.meta.model.Class<Type, Arguments> {
 
-    private TypeDescriptor $reifiedArguments;
+    final TypeDescriptor $reifiedArguments;
     private MethodHandle constructor;
     private Object instance;
     private int firstDefaulted;

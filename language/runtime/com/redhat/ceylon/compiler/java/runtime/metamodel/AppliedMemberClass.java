@@ -18,10 +18,10 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
     extends AppliedClassOrInterface<Type>
     implements ceylon.language.meta.model.MemberClass<Container, Type, Arguments> {
 
+    @Ignore 
+    final TypeDescriptor $reifiedContainer;
     @Ignore
-    private TypeDescriptor $reifiedContainer;
-    @Ignore
-    private TypeDescriptor $reifiedArguments;
+    final TypeDescriptor $reifiedArguments;
 
     AppliedMemberClass(@Ignore TypeDescriptor $reifiedContainer,
                        @Ignore TypeDescriptor $reifiedType,

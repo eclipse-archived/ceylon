@@ -8,8 +8,8 @@ class Bug284(){
 
 void bug284() {
     value b = `Bug284`;
-    assert(is MemberClass<Bug284, Bug284.Inner, [String]> ic = b.getClassOrInterface("Inner"));
-    assert(exists m = b.getMethod("method"));
+    assert(is MemberClass<Bug284, Bug284.Inner, [String]> ic = b.getClassOrInterface<>("Inner"));
+    assert(exists m = b.getMethod<>("method"));
     assert(is Method<Bug284, String, [Integer]> m);
-    assert(is Attribute<Bug284, Integer> a = b.getAttribute("attr"));
+    assert(is Attribute<Bug284, Integer> a = b.getAttribute<>("attr"));
 }

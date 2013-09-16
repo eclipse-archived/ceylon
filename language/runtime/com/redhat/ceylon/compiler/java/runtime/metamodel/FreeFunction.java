@@ -19,6 +19,7 @@ import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -151,6 +152,9 @@ public class FreeFunction
         com.redhat.ceylon.compiler.typechecker.model.ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForFunction(appliedFunction);
         TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedFunction);
+
+        Metamodel.checkReifiedTypeArgument("apply", "Function<$1,$2>", Variance.OUT, appliedFunction.getType(), $reifiedReturn, 
+                Variance.IN, Metamodel.getProducedTypeForArguments(declaration.getUnit(), (Functional)declaration, appliedFunction), $reifiedArguments);
         return new AppliedFunction(reifiedType, reifiedArguments, appliedFunction, this, null, null);
     }
 
@@ -202,8 +206,14 @@ public class FreeFunction
         final ProducedTypedReference appliedFunction = ((com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration)declaration).getProducedTypedReference(containerType, producedTypes);
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForFunction(appliedFunction);
         TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedFunction);
+        TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(containerType);
 
-        return new AppliedMethod($reifiedContainer, reifiedType, reifiedArguments, appliedFunction, this, container);
+        Metamodel.checkReifiedTypeArgument("memberApply", "Method<$1,$2,$3>", 
+                Variance.IN, containerType, $reifiedContainer, 
+                Variance.OUT, appliedFunction.getType(), $reifiedType,
+                Variance.IN, Metamodel.getProducedTypeForArguments(declaration.getUnit(), (Functional)declaration, appliedFunction), $reifiedArguments);
+
+        return new AppliedMethod(reifiedContainer, reifiedType, reifiedArguments, appliedFunction, this, container);
     }
     
     @Override

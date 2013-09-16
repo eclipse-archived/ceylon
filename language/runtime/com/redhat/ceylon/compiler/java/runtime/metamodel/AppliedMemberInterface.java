@@ -18,8 +18,8 @@ public class AppliedMemberInterface<Container, Type>
     extends AppliedClassOrInterface<Type>
     implements ceylon.language.meta.model.MemberInterface<Container, Type> {
 
-    @Ignore
-    private TypeDescriptor $reifiedContainer;
+    @Ignore 
+    final TypeDescriptor $reifiedContainer;
 
     AppliedMemberInterface(@Ignore TypeDescriptor $reifiedContainer,
                            @Ignore TypeDescriptor $reifiedType,

@@ -8,6 +8,7 @@ import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.meta.declaration.ClassDeclaration$impl;
 import ceylon.language.meta.declaration.FunctionalDeclaration$impl;
+import ceylon.language.meta.model.ClassOrInterface;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -17,9 +18,11 @@ import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -125,7 +128,16 @@ public class FreeClass
     public <Type, Arguments extends Sequential<? extends Object>> ceylon.language.meta.model.Class<Type, Arguments> classApply(TypeDescriptor $reifiedType,
             TypeDescriptor $reifiedArguments,
             @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
-        return (ceylon.language.meta.model.Class<Type, Arguments>) super.apply($reifiedType, typeArguments);
+        if(!getToplevel())
+            // FIXME: change type
+            throw new RuntimeException("Cannot apply a member declaration with no container type: use memberApply");
+        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
+        Metamodel.checkTypeArguments(null, declaration, producedTypes);
+        com.redhat.ceylon.compiler.typechecker.model.ProducedReference appliedType = declaration.getProducedReference(null, producedTypes);
+        AppliedClass<Type, Arguments> ret = (AppliedClass<Type, Arguments>) Metamodel.getAppliedMetamodel(appliedType.getType());;
+        Metamodel.checkReifiedTypeArgument("classApply", "Class<$1,$2>", Variance.OUT, appliedType.getType(), $reifiedType, 
+                Variance.IN, Metamodel.getProducedType(ret.$reifiedArguments), $reifiedArguments);
+        return ret;
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -159,7 +171,25 @@ public class FreeClass
                 @Ignore TypeDescriptor $reifiedArguments,
                 @Name("containerType") ceylon.language.meta.model.Type<? extends Container> containerType,
                 @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
-        return (ceylon.language.meta.model.MemberClass<Container, Type, Arguments>) super.memberApply($reifiedContainer, $reifiedType, containerType, typeArguments);
+        if(getToplevel())
+            // FIXME: change type
+            throw new RuntimeException("Cannot apply a toplevel declaration to a container type: use apply");
+
+        ceylon.language.meta.model.MemberClass<Container, Type, Arguments> member 
+            = (ceylon.language.meta.model.MemberClass)
+                getAppliedClassOrInterface(null, null, typeArguments, containerType);
+        // FIXME: check containerType
+        
+        // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
+        // implementation types to the user, such as AppliedMemberClass
+        TypeDescriptor actualReifiedContainer = ((AppliedMemberClass)member).$reifiedContainer;
+        TypeDescriptor actualReifiedArguments = ((AppliedMemberClass)member).$reifiedArguments;
+        ProducedType actualType = Metamodel.getModel((ceylon.language.meta.model.Type<?>) member);
+        Metamodel.checkReifiedTypeArgument("memberApply", "Member<$1,Class<$2,$3>>&Class<$2,$3>", 
+                Variance.IN, Metamodel.getProducedType(actualReifiedContainer), $reifiedContainer, 
+                Variance.OUT, actualType, $reifiedType,
+                Variance.IN, Metamodel.getProducedType(actualReifiedArguments), $reifiedArguments);
+        return member;
     }
 
     @Override

@@ -8,11 +8,11 @@ import ceylon.language.Empty;
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.meta.model.ClassOrInterface;
-import ceylon.language.meta.model.Member;
 import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration$impl;
 import ceylon.language.meta.declaration.GenericDeclaration$impl;
 import ceylon.language.meta.declaration.OpenType;
+import ceylon.language.meta.model.ClassOrInterface;
+import ceylon.language.meta.model.Member;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -22,6 +22,7 @@ import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -250,6 +251,7 @@ public abstract class FreeClassOrInterface
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
         com.redhat.ceylon.compiler.typechecker.model.ProducedReference appliedType = declaration.getProducedReference(null, producedTypes);
+        Metamodel.checkReifiedTypeArgument("apply", "ClassOrInterface<$1>", Variance.OUT, appliedType.getType(), $reifiedType);
         return (ClassOrInterface<Type>) Metamodel.getAppliedMetamodel(appliedType.getType());
     }
 
@@ -282,21 +284,37 @@ public abstract class FreeClassOrInterface
         if(getToplevel())
             // FIXME: change type
             throw new RuntimeException("Cannot apply a toplevel declaration to a container type: use apply");
-        return getAppliedClassOrInterface(null, null, typeArguments, containerType);
+
+        ceylon.language.meta.model.Member<? extends Container, ceylon.language.meta.model.ClassOrInterface<?>> member 
+            = getAppliedClassOrInterface(null, null, typeArguments, containerType);
+        // FIXME: check containerType
+        
+        // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
+        // implementation types to the user, such as AppliedMemberClass
+        TypeDescriptor actualReifiedContainer;
+        if(member instanceof AppliedMemberClass)
+            actualReifiedContainer = ((AppliedMemberClass)member).$reifiedContainer;
+        else
+            actualReifiedContainer = ((AppliedMemberInterface)member).$reifiedContainer;
+        ProducedType actualType = Metamodel.getModel((ceylon.language.meta.model.Type<?>) member);
+        Metamodel.checkReifiedTypeArgument("memberApply", "Member<$1,ClassOrInterface<$2>>&ClassOrInterface<$2>", 
+                Variance.IN, Metamodel.getProducedType(actualReifiedContainer), $reifiedContainer, 
+                Variance.OUT, actualType, $reifiedType);
+        return member;
     }
 
     @SuppressWarnings("unchecked")
-    <Type, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends Object>>
-    ceylon.language.meta.model.Member<Type, Kind> getAppliedClassOrInterface(@Ignore TypeDescriptor $reifiedType, 
+    <Container, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends Object>>
+    ceylon.language.meta.model.Member<Container, Kind> getAppliedClassOrInterface(@Ignore TypeDescriptor $reifiedContainer, 
                                                                         @Ignore TypeDescriptor $reifiedKind, 
                                                                         Sequential<? extends ceylon.language.meta.model.Type<?>> types,
-                                                                        ceylon.language.meta.model.Type<Type> container){
+                                                                        ceylon.language.meta.model.Type<Container> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         ProducedType qualifyingType = Metamodel.getModel(container);
         Metamodel.checkTypeArguments(qualifyingType, declaration, producedTypes);
         ProducedReference producedReference = declaration.getProducedReference(qualifyingType, producedTypes);
         final ProducedType appliedType = producedReference.getType();
-        return (Member<Type, Kind>) Metamodel.getAppliedMetamodel(appliedType);
+        return (Member<Container, Kind>) Metamodel.getAppliedMetamodel(appliedType);
     }
 
     @Override

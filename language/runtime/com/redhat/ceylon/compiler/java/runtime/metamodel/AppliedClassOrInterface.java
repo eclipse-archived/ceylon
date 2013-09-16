@@ -7,6 +7,7 @@ import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.model.ClassOrInterface$impl;
+import ceylon.language.meta.model.Member;
 import ceylon.language.meta.model.Model$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -186,7 +187,29 @@ public abstract class AppliedClassOrInterface<Type>
         final FreeClassOrInterface type = declaration.findType(name);
         if(type == null)
             return null;
-        return type.getAppliedClassOrInterface(this.$reifiedType, $reifiedKind, types, (AppliedClassOrInterface<SubType>)this);
+        Member<SubType, Kind> member = type.getAppliedClassOrInterface(this.$reifiedType, $reifiedKind, types, (AppliedClassOrInterface<SubType>)this);
+
+        // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
+        // implementation types to the user, such as AppliedMemberClass
+        TypeDescriptor actualReifiedContainer;
+        TypeDescriptor actualKind;
+        
+        if(member instanceof AppliedMemberClass){
+            actualReifiedContainer = ((AppliedMemberClass)member).$reifiedContainer;
+            actualKind = TypeDescriptor.klass(ceylon.language.meta.model.Class.class,
+                    ((AppliedMemberClass) member).$reifiedType, 
+                    ((AppliedMemberClass) member).$reifiedArguments);
+        }else{
+            actualReifiedContainer = ((AppliedMemberInterface)member).$reifiedContainer;
+            actualKind = TypeDescriptor.klass(ceylon.language.meta.model.Interface.class,
+                    ((AppliedMemberInterface) member).$reifiedType);
+        }
+        
+        Metamodel.checkReifiedTypeArgument("getClassOrInterface", "Member<$1,$2>&$2", 
+                Variance.IN, Metamodel.getProducedType(actualReifiedContainer), $reifiedSubType, 
+                Variance.OUT, Metamodel.getProducedType(actualKind), $reifiedKind);
+
+        return member;
     }
 
     @Override
@@ -207,6 +230,9 @@ public abstract class AppliedClassOrInterface<Type>
         com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration decl = (com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration) value.declaration;
         ProducedTypedReference typedReference = decl.getProducedTypedReference(producedType, Collections.<ProducedType>emptyList());
         TypeDescriptor reifiedValueType = Metamodel.getTypeDescriptorForProducedType(typedReference.getType());
+        Metamodel.checkReifiedTypeArgument("getAttribute", "Attribute<$1,$2>", 
+                Variance.IN, producedType, $reifiedSubType,
+                Variance.OUT, typedReference.getType(), $reifiedType);
         return AppliedAttribute.instance(this.$reifiedType, reifiedValueType, value, typedReference, decl, this);
     }
 
