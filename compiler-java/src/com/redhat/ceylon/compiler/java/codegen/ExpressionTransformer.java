@@ -3252,9 +3252,17 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression qualifier = null;
             if (needDollarThis(superOfQualifiedExpr.getScope())) {
                 qualifier = naming.makeQuotedThis();
-                result = naming.makeCompanionAccessorCall(qualifier, iface);
+                if (iface.equals(typeFact().getIdentifiableDeclaration())) {
+                    result = naming.makeQualifiedSuper(qualifier);
+                } else {
+                    result = naming.makeCompanionAccessorCall(qualifier, iface);
+                }
             } else {
-                result = naming.makeCompanionFieldName(iface);
+                if (iface.equals(typeFact().getIdentifiableDeclaration())) {
+                    result = naming.makeQualifiedSuper(qualifier);
+                } else {
+                    result = naming.makeCompanionFieldName(iface);
+                }
             }
         } else {
             result = makeErroneous(superOfQualifiedExpr, "Unhandled case in widen(): " + (inheritedFrom == null ? "null" : inheritedFrom.getClass().getName()));
