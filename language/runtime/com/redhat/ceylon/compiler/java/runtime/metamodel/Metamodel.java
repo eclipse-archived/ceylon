@@ -915,7 +915,7 @@ public class Metamodel {
             String appliedString = className.replace("$1", appliedTypeString);
             String expectedString = className.replace("$1", expectedReifiedTypeString);
             throw new IncompatibleTypeException("Incompatible type: actual type of applied declaration is "+appliedString
-                    +" is not compatible with expected type: "+expectedString+". Try passing the type argument explicitely with: "
+                    +" is not compatible with expected type: "+expectedString+". Try passing the type argument explicitly with: "
                     +methodName+"<"+appliedTypeString+">(), or using default type arguments with "+methodName+"<>()");
         }
     }
