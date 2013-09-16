@@ -121,8 +121,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     public static final String JAVA_BASE_MODULE_NAME = "java.base";
     public static final String CEYLON_LANGUAGE = "ceylon.language";
-    public static final String CEYLON_LANGUAGE_MODEL = "ceylon.language.model";
-    public static final String CEYLON_LANGUAGE_MODEL_DECLARATION = "ceylon.language.model.declaration";
+    public static final String CEYLON_LANGUAGE_MODEL = "ceylon.language.meta.model";
+    public static final String CEYLON_LANGUAGE_MODEL_DECLARATION = "ceylon.language.meta.declaration";
     
     private static final String TIMER_MODEL_LOADER_CATEGORY = "model loader";
     public static final String JDK_MODULE_VERSION = "7";
@@ -175,7 +175,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     private static final String CEYLON_LANGUAGE_ABSTRACT_ANNOTATION = "ceylon.language.Abstract$annotation";
     private static final String CEYLON_LANGUAGE_ACTUAL_ANNOTATION = "ceylon.language.Actual$annotation";
-    private static final String CEYLON_LANGUAGE_ANNOTATION_ANNOTATION = "ceylon.language.Annotation$annotation";
+    private static final String CEYLON_LANGUAGE_ANNOTATION_ANNOTATION = "ceylon.language.AnnotationAnnotation$annotation";
     private static final String CEYLON_LANGUAGE_DEFAULT_ANNOTATION = "ceylon.language.Default$annotation";
     private static final String CEYLON_LANGUAGE_FORMAL_ANNOTATION = "ceylon.language.Formal$annotation";
     private static final String CEYLON_LANGUAGE_LATE_ANNOTATION = "ceylon.language.Late$annotation";

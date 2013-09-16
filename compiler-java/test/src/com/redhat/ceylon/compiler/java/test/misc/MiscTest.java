@@ -88,7 +88,7 @@ public class MiscTest extends CompilerTest {
         String ceylonSourcePath = "../ceylon.language/src";
         String javaSourcePath = "../ceylon.language/runtime";
         
-        String[] ceylonPackages = {"ceylon.language", "ceylon.language.model", "ceylon.language.impl", "ceylon.language.model.declaration"};
+        String[] ceylonPackages = {"ceylon.language", "ceylon.language.meta", "ceylon.language.impl", "ceylon.language.meta.declaration", "ceylon.language.meta.model"};
         // Native files
         FileFilter exceptions = new FileFilter() {
             @Override
@@ -104,7 +104,7 @@ public class MiscTest extends CompilerTest {
                     }
                 } 
                 if (filename.equals("annotations")
-                        && pathname.getParentFile().getName().equals("model")) {
+                        && pathname.getParentFile().getName().equals("meta")) {
                     return true;
                 }
                 return false;
@@ -139,7 +139,7 @@ public class MiscTest extends CompilerTest {
         File javaPkgDir = new File(javaSourcePath, "ceylon/language");
         for(String extra : extras)
             addJavaSourceFile(extra, sourceFiles, javaPkgDir, true);
-        File javaModelPkgDir = new File(javaSourcePath, "ceylon/language/model");
+        File javaModelPkgDir = new File(javaSourcePath, "ceylon/language/meta");
         for(String extra : modelExtras)
             addJavaSourceFile(extra, sourceFiles, javaModelPkgDir, true);
         

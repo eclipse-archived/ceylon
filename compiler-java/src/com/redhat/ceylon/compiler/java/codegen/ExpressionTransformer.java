@@ -1147,7 +1147,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression makeModuleLiteralCall(Module module) {
-        JCExpression modulesGetIdent = naming.makeFQIdent("ceylon", "language", "model", "modules_", "$get");
+        JCExpression modulesGetIdent = naming.makeFQIdent("ceylon", "language", "meta", "modules_", "$get");
         JCExpression modulesGet = make().Apply(null, modulesGetIdent, List.<JCExpression>nil());
         if(module.isDefault()){
             return make().Apply(null, makeSelect(modulesGet, "getDefault"), List.<JCExpression>nil());
@@ -1169,7 +1169,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression makeTypeLiteralCall(ProducedType producedType) {
-        JCExpression typeLiteralIdent = naming.makeFQIdent("ceylon", "language", "model", "typeLiteral_", "typeLiteral");
+        JCExpression typeLiteralIdent = naming.makeFQIdent("ceylon", "language", "meta", "typeLiteral_", "typeLiteral");
         JCExpression reifiedTypeArgument = makeReifiedTypeArgument(producedType.resolveAliases());
         // note that we don't pass it a Java type argument since it's not used
         return make().Apply(null, typeLiteralIdent, List.of(reifiedTypeArgument));
