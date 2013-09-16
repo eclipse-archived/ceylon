@@ -4,21 +4,21 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @interface AnnotationTarget$annotation {
 }
 @.ceylon.language.Final$annotation
-@.ceylon.language.Annotation$annotation
-final class AnnotationTarget implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.Annotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget> {
+@.ceylon.language.AnnotationAnnotation$annotation
+final class AnnotationTarget implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Annotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget> {
     
     AnnotationTarget(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation anno) {
         this();
     }
     
     AnnotationTarget() {
-        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget.$TypeDescriptor, this);
+        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget.$TypeDescriptor, this);
     }
-    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget> $ceylon$language$model$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
-    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget> $ceylon$language$model$Annotation$impl() {
-        return $ceylon$language$model$Annotation$this;
+    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget> $ceylon$language$Annotation$impl() {
+        return $ceylon$language$Annotation$this;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -40,7 +40,7 @@ final class annotationTarget_ {
     private annotationTarget_() {
     }
     
-    @.ceylon.language.Annotation$annotation
+    @.ceylon.language.AnnotationAnnotation$annotation
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget annotationTarget() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget();
     }
@@ -54,21 +54,21 @@ final class annotationTarget_ {
 @interface AnnotationTarget2$annotation {
 }
 @.ceylon.language.Final$annotation
-@.ceylon.language.Annotation$annotation
-final class AnnotationTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.Annotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2> {
+@.ceylon.language.AnnotationAnnotation$annotation
+final class AnnotationTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Annotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2> {
     
     AnnotationTarget2(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2$annotation anno) {
         this();
     }
     
     AnnotationTarget2() {
-        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2.$TypeDescriptor, this);
+        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2.$TypeDescriptor, this);
     }
-    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2> $ceylon$language$model$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
-    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2> $ceylon$language$model$Annotation$impl() {
-        return $ceylon$language$model$Annotation$this;
+    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2> $ceylon$language$Annotation$impl() {
+        return $ceylon$language$Annotation$this;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -90,7 +90,7 @@ final class annotationTarget2_ {
     private annotationTarget2_() {
     }
     
-    @.ceylon.language.Annotation$annotation
+    @.ceylon.language.AnnotationAnnotation$annotation
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2 annotationTarget2() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2();
     }
