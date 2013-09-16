@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -201,5 +202,18 @@ public class JDKUtils {
         loadPackageList();
         Tuple tuple = jdkOracleModules.get(module);
         return tuple != null ? tuple.paths : null;
+    }
+
+    public static String getJDKModuleNameForPackage(String pkgName) {
+        loadPackageList();
+        for(Entry<String, Tuple> entry : jdkModules.entrySet()){
+            if(entry.getValue().packages.contains(pkgName))
+                return entry.getKey();
+        }
+        for(Entry<String, Tuple> entry : jdkOracleModules.entrySet()){
+            if(entry.getValue().packages.contains(pkgName))
+                return entry.getKey();
+        }
+        return null;
     }
 }
