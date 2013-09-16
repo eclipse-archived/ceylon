@@ -12,12 +12,12 @@ import ceylon.language.model.declaration {
 } 
 
 "The annotation class for [[annotation]]."
-shared final annotation class Annotation()
-        satisfies OptionalAnnotation<Annotation, ClassDeclaration|FunctionDeclaration> {}
+shared final annotation class AnnotationAnnotation()
+        satisfies OptionalAnnotation<AnnotationAnnotation, ClassDeclaration|FunctionDeclaration> {}
 
 "Annotation to mark a class as an annotation class, or a 
  method as an annotation method."
-shared annotation Annotation annotation() => Annotation(); 
+shared annotation AnnotationAnnotation annotation() => AnnotationAnnotation(); 
 
 "The annotation class for [[shared]]."
 shared final annotation class Shared()
