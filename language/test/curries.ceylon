@@ -56,4 +56,8 @@ void testCurries() {
     check(unflatten(function (Integer a, Integer b, Integer c, Integer d, Integer* e) => e[0] else 0)([1,2,3,4,5]) == 5, "unflatten 5.6");
     check(unflatten(function (Integer a, Integer b, Integer c, Integer d, Integer e, Integer f=0) => e)([1,2,3,4,5]) == 5, "unflatten 5.7");
     check(unflatten(function (Integer a, Integer b, Integer c, Integer d, Integer e, Integer* f) => e)([1,2,3,4,5]) == 5, "unflatten 5.8");
+
+    check(apply(function () => 1, []) == 1, "apply 0");
+    check(apply(function (Integer a = 2) => a, []) == 2, "apply 0.1");
+    check(apply(function (Integer a = 2) => a, [1]) == 1, "apply 0.2");
 }
