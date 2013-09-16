@@ -1,5 +1,6 @@
-import ceylon.language.model { ... }
-import ceylon.language.model.declaration {
+import ceylon.language.meta{ ... }
+import ceylon.language.meta.model { ... }
+import ceylon.language.meta.declaration {
   FunctionDeclaration, InterfaceDeclaration, ValueDeclaration, ClassDeclaration
 }
 import check { check,fail,results }

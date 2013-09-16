@@ -1,5 +1,5 @@
-import ceylon.language.model { modules, annotations }
-import ceylon.language.model.declaration {
+import ceylon.language.meta { modules, annotations }
+import ceylon.language.meta.declaration {
   Import, FunctionDeclaration, ClassOrInterfaceDeclaration
 }
 import check { check,fail }

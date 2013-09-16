@@ -51,7 +51,7 @@ public class TypeUtils {
         anything = (TypeDeclaration)pkg.getMember("Anything", null, false);
         callable = (TypeDeclaration)pkg.getMember("Callable", null, false);
         empty = (TypeDeclaration)pkg.getMember("Empty", null, false);
-        pkg = languageModule.getPackage("ceylon.language.model");
+        pkg = languageModule.getPackage("ceylon.language.meta.model");
         metaClass = (TypeDeclaration)pkg.getMember("Class", null, false);
     }
 

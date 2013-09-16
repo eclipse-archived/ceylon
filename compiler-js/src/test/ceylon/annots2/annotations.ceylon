@@ -1,10 +1,9 @@
 import check { check,fail,results }
 
-import ceylon.language.model{
-  annotations,
-  SequencedAnnotation,OptionalAnnotation
+import ceylon.language.meta{
+  annotations
 }
-import ceylon.language.model.declaration{
+import ceylon.language.meta.declaration{
   ClassOrInterfaceDeclaration, ValueDeclaration,
   FunctionDeclaration
 }
