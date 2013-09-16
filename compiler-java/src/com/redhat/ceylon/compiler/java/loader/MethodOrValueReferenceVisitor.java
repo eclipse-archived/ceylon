@@ -30,7 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 public class MethodOrValueReferenceVisitor extends Visitor {
     
-    private TypedDeclaration declaration;
+    private final TypedDeclaration declaration;
     private boolean inCapturingScope = false;
     private boolean inLazySpecifierExpression = false;
     private Tree.CompilationUnit cu;
