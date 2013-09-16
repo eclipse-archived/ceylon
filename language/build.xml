@@ -16,7 +16,8 @@
     <property name="runtime-js.src" location="runtime-js"/> 
 
     <property name="test.src" location="test"/>
-	<property name="test-jvm.src" location="test-jvm"/>
+    <property name="test.java.src" location="test-java"/>
+    <property name="test-jvm.src" location="test-jvm"/>
     <property name="test-js.src" location="test-js"/>
     <property name="test.reports" location="${build.dir}/test-reports"/>
 
@@ -307,13 +308,14 @@
     <target name="compile.tests.java" depends="ceylon.language.java,compile.tests.setup">
         <ceylon-compile
             executable="${ceylon.compiler.loc}"
-            src="${test.src}"
+            src="${test.src}:${test.java.src}"
             sysrep="${build.test.repo}"
         	encoding="UTF-8"
             out="${build.test}">
             <files>
                 <include name="**/*.ceylon"/>
             </files>
+            <rep url="aether"/>
         </ceylon-compile>
         <javac
             srcdir="${test-jvm.src}"
@@ -335,6 +337,14 @@
             module="default"
             resultproperty="test.ceylon.result">
             <rep url="${build.test}"/>
+        </ceylon-run>
+        <ceylon-run
+            executable="${ceylon.compiler.loc}"
+            sysrep="${build.test.repo}"
+            module="javaa/1"
+            resultproperty="test.ceylon.result">
+            <rep url="${build.test}"/>
+            <rep url="aether"/>
         </ceylon-run>
         <ceylon-run
             executable="${ceylon.compiler.loc}"
