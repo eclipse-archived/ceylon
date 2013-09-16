@@ -85,6 +85,12 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                     if (!sameScope || methodSpecifier || inLazySpecifierExpression) {
                         ((MethodOrValue)d).setCaptured(true);
                     }
+                    
+                    // Accessing another instance's member passed to a class initializer
+                    if (that instanceof Tree.QualifiedMemberExpression
+                            && ((Tree.QualifiedMemberExpression)that).getPrimary().getTypeModel().getDeclaration().equals(d.getContainer())) {
+                        ((MethodOrValue)d).setCaptured(true);
+                    }
                 } else if (Decl.isValue(d) || Decl.isGetter(decl)) {
                     Value v = (Value) d;
                     v.setCaptured(true);
