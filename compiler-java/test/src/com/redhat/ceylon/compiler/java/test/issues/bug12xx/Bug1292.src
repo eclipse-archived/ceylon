@@ -1,0 +1,76 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
+
+class Bug1292 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1292() {
+    }
+    
+    @.java.lang.Override
+    public final boolean equals(final .java.lang.Object that) {
+        return super.equals(that);
+    }
+    
+    public final void m() {
+        long i = 0L;
+        i += super.hashCode();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292.class);
+}
+interface Bug1292I {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1292I$impl();
+    
+    @.java.lang.Override
+    public boolean equals(final .java.lang.Object other);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I.class);
+}
+final class Bug1292I$impl {
+    
+    Bug1292I$impl(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I $this;
+    
+    public boolean equals(final .java.lang.Object other) {
+        return ((.ceylon.language.Boolean).ceylon.language.nothing_.$get()).booleanValue();
+    }
+}
+class Bug1292_2 extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I {
+    
+    Bug1292_2() {
+        super();
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1292I$this = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1292I$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1292I$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1292I$this;
+    }
+    
+    @.java.lang.Override
+    public final boolean equals(final .java.lang.Object that) {
+        return super.equals(that);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292_2();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292_2.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292_2.class);
+}
