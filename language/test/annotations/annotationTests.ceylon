@@ -303,7 +303,7 @@ void checkAAbstractClass() {
     
     // Members of abstract class
     // formalAttribute
-    assert(exists fam=aAbstractClassDecl.apply().getAttribute<AAbstractClass, String>("formalAttribute"));
+    assert(exists fam=aAbstractClassDecl.apply<AAbstractClass>().getAttribute<AAbstractClass, String>("formalAttribute"));
     assert(is VariableDeclaration fa=fam(AClass("")).declaration);
     assert(annotations(sharedAnnotation, fa) exists);
     assert(annotations(actualAnnotation, fa) exists);
@@ -313,7 +313,7 @@ void checkAAbstractClass() {
             fasdoc.description == "AAbstractClass.formalAttributeSetter");
     
     // formalMethod
-    assert(exists fmm=aAbstractClassDecl.apply().getMethod<AAbstractClass, Anything, [String]>("formalMethod"));
+    assert(exists fmm=aAbstractClassDecl.apply<AAbstractClass>().getMethod<AAbstractClass, Anything, [String]>("formalMethod"));
     value fm=fmm(AClass("")).declaration;
     // shared
     assert(annotations(sharedAnnotation, fm) exists);
@@ -331,7 +331,7 @@ void checkAAbstractClass() {
             fmpdoc.description == "AAbstractClass.formalMethod.parameter");
     
     // InnerClass
-    assert(exists icm=aAbstractClassDecl.apply().getClassOrInterface<AAbstractClass, Class<AAbstractClass.InnerClass, [String]>>("InnerClass"));
+    assert(exists icm=aAbstractClassDecl.apply<AAbstractClass>().getClassOrInterface<AAbstractClass, Class<AAbstractClass.InnerClass, [String]>>("InnerClass"));
     value ic=icm(AClass("")).declaration;
     // shared
     assert(annotations(sharedAnnotation, ic) exists);
@@ -346,7 +346,7 @@ void checkAAbstractClass() {
     // TODO inner classes methods
     
     // InnerInterface
-    assert(exists iim=aAbstractClassDecl.apply().getClassOrInterface<AAbstractClass, Interface<AAbstractClass.InnerInterface>>("InnerInterface"));
+    assert(exists iim=aAbstractClassDecl.apply<AAbstractClass>().getClassOrInterface<AAbstractClass, Interface<AAbstractClass.InnerInterface>>("InnerInterface"));
     value ii=iim(AClass("")).declaration;
     // shared
     assert(annotations(sharedAnnotation, ii) exists);
@@ -360,7 +360,7 @@ void checkAAbstractClass() {
 }
 
 void checkAInterface() {
-    assert(is Interface<AInterface> iface = aInterfaceDecl.apply());
+    assert(is Interface<AInterface> iface = aInterfaceDecl.apply<AInterface>());
     //shared
     assert(annotations(sharedAnnotation, aInterfaceDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aInterfaceDecl) exists);
