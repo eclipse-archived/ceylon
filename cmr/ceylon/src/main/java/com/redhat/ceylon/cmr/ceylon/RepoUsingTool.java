@@ -136,12 +136,21 @@ public abstract class RepoUsingTool implements Tool {
             return "";
         }
         Collection<ModuleVersionDetails> versions = getModuleVersions(repoMgr, name, version, type, binaryVersion);
+        if (versions.isEmpty() && version != null) {
+            // Maybe the user specified the wrong version?
+            // Let's see if we can find any and suggest them
+            versions = getModuleVersions(repoMgr, name, null, type, binaryVersion);
+        }
         if (versions.isEmpty()) {
             errorMsg("module.not.found", name, repoMgr.getRepositoriesDisplayString());
             return null;
         }
-        if (versions.size() > 1) {
-            errorMsg("missing.version", name, repoMgr.getRepositoriesDisplayString());
+        if (versions.size() > 1 || version != null) {
+            if (version == null) {
+                errorMsg("missing.version", name, repoMgr.getRepositoriesDisplayString());
+            } else {
+                errorMsg("version.not.found", version, name);
+            }
             msg("try.versions");
             boolean first = true;
             for (ModuleVersionDetails mvd : versions) {
