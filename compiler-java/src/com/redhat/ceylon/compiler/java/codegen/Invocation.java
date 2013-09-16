@@ -1386,7 +1386,7 @@ class NamedArgumentInvocation extends Invocation {
             ProducedType type = ((Tree.MemberOrTypeExpression)getPrimary()).getTarget().getQualifyingType();
             JCExpression varType;
             if (isOnValueType()) {
-                varType = gen.makeJavaType(type);
+                varType = gen.makeJavaType(getQmePrimary().getTypeModel());
             } else {
                 if (getPrimary() instanceof QualifiedTypeExpression
                         && !getPrimaryDeclaration().isShared()
