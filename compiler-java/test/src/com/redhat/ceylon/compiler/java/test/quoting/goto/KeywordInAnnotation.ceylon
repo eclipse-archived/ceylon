@@ -17,8 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import ceylon.language.model { Annotation }
-
 @nomodel
 shared annotation final class AnnotationClass(String strictfp) satisfies Annotation<AnnotationClass> {}
 @nomodel

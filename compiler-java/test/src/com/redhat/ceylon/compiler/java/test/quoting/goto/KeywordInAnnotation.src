@@ -6,22 +6,22 @@ public @interface AnnotationClass$annotation {
     public abstract .java.lang.String $strictfp();
 }
 @.ceylon.language.Shared$annotation
-@.ceylon.language.Annotation$annotation
+@.ceylon.language.AnnotationAnnotation$annotation
 @.ceylon.language.Final$annotation
-public final class AnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.Annotation<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass> {
+public final class AnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Annotation<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass> {
     
     public AnnotationClass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass$annotation anno) {
         this(anno.$strictfp());
     }
     
     public AnnotationClass(final .java.lang.String strictfp) {
-        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass>(.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.$TypeDescriptor, this);
+        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass>(.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.$TypeDescriptor, this);
     }
-    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass> $ceylon$language$model$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
-    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass> $ceylon$language$model$Annotation$impl() {
-        return $ceylon$language$model$Annotation$this;
+    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass> $ceylon$language$Annotation$impl() {
+        return $ceylon$language$Annotation$this;
     }
     
     @.java.lang.Override
@@ -39,7 +39,7 @@ public final class enum_ {
     }
     
     @.ceylon.language.Shared$annotation
-    @.ceylon.language.Annotation$annotation
+    @.ceylon.language.AnnotationAnnotation$annotation
     public static .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass $enum(final .java.lang.String instanceof) {
         return new .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass(instanceof);
     }

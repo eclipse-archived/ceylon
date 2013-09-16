@@ -1,13 +1,4 @@
-import ceylon.language.model{
-    //type, 
-    //annotations, optionalAnnotation, sequencedAnnotations,
-    //Annotation2 = Annotation, 
-    ConstrainedAnnotation, OptionalAnnotation, SequencedAnnotation 
-    //Annotated,
-    //ClassOrInterface, Class, Interface,
-    //Function, Value
-}
-import ceylon.language.model.declaration {
+import ceylon.language.meta.declaration {
     ValueDeclaration,
     VariableDeclaration,
     Declaration,

@@ -1,4 +1,3 @@
-import ceylon.language.model { Annotation }
 
 @nomodel
 final annotation class AnnotationTarget() satisfies Annotation<AnnotationTarget> {}

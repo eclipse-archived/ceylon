@@ -1,5 +1,4 @@
-import ceylon.language.model{SequencedAnnotation}
-import ceylon.language.model.declaration{FunctionDeclaration}
+import ceylon.language.meta.declaration{FunctionDeclaration}
 
 final annotation class NestedLeaf(shared Integer i1 = 1) 
     satisfies SequencedAnnotation<NestedLeaf, FunctionDeclaration>{

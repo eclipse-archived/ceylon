@@ -1,5 +1,4 @@
-import ceylon.language.model{SequencedAnnotation, OptionalAnnotation}
-import ceylon.language.model.declaration { ClassOrInterfaceDeclaration }
+import ceylon.language.meta.declaration { ClassOrInterfaceDeclaration }
 
 @nomodel
 final annotation class ParameterDefaults(String s1, String s2=s1/*, String[] seq = [s1, s1, s2, s2]*/)

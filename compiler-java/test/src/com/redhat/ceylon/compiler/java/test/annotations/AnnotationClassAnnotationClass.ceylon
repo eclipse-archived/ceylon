@@ -1,5 +1,4 @@
-import ceylon.language.model { SequencedAnnotation, OptionalAnnotation, Annotation }
-import ceylon.language.model.declaration { ClassOrInterfaceDeclaration }
+import ceylon.language.meta.declaration { ClassOrInterfaceDeclaration }
 
 @nomodel
 annotation final class AnnotationClassParam(String name) satisfies Annotation<AnnotationClassParam> {}

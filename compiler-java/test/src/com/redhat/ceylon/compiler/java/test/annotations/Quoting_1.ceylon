@@ -1,5 +1,4 @@
-import ceylon.language.model{SequencedAnnotation}
-import ceylon.language.model.declaration { ClassOrInterfaceDeclaration }
+import ceylon.language.meta.declaration { ClassOrInterfaceDeclaration }
 
 annotation final class Quoting(
     shared actual String string,

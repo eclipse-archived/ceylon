@@ -1,5 +1,4 @@
-import ceylon.language.model{SequencedAnnotation}
-import ceylon.language.model.declaration{FunctionDeclaration}
+import ceylon.language.meta.declaration{FunctionDeclaration}
 
 @nomodel
 shared final annotation class EnumeratedReference_X(shared EnumeratedReference_Y y) 

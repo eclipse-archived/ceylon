@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import ceylon.language.model { Function }
+import ceylon.language.meta.model { Function }
 
 @noanno
 shared void bug1133<Args>()

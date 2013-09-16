@@ -1,4 +1,4 @@
-import ceylon.language.model { Class }
+import ceylon.language.meta.model { Class }
 
 void literalsRuntime(){
     // make sure that literals work

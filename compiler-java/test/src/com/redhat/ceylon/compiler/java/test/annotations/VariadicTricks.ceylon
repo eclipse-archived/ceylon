@@ -1,5 +1,4 @@
-import ceylon.language.model{SequencedAnnotation, OptionalAnnotation, Annotation}
-import ceylon.language.model.declaration { Declaration, ClassOrInterfaceDeclaration }
+import ceylon.language.meta.declaration { Declaration, ClassOrInterfaceDeclaration }
 
 @nomodel
 final annotation class VariadicTricks(String* args) satisfies SequencedAnnotation<VariadicTricks, ClassOrInterfaceDeclaration>{}

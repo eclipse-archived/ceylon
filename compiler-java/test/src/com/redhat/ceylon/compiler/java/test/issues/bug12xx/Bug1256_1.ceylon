@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import ceylon.language.model.declaration {Module,Package,ClassDeclaration,FunctionDeclaration}
+import ceylon.language.meta.declaration {Module,Package,ClassDeclaration,FunctionDeclaration}
 
 shared alias TestSource => Module|Package|ClassDeclaration|FunctionDeclaration;
 

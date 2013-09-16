@@ -1,5 +1,4 @@
-import ceylon.language.model{SequencedAnnotation, OptionalAnnotation}
-import ceylon.language.model.declaration { ClassOrInterfaceDeclaration, Declaration, ValueDeclaration }
+import ceylon.language.meta.declaration { ClassOrInterfaceDeclaration, Declaration, ValueDeclaration }
 
 //  Use an iterable type
 final annotation class SequenceDefaults_String({String*} seq) 

@@ -1,5 +1,4 @@
-import ceylon.language.model{SequencedAnnotation}
-import ceylon.language.model.declaration{FunctionDeclaration}
+import ceylon.language.meta.declaration{FunctionDeclaration}
 
 @nomodel
 final annotation class CollidingLiteralDefaults(shared Integer i1, shared Integer i2) 

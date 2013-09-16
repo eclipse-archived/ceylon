@@ -9,7 +9,7 @@ final class bug1277_ {
     
     @.ceylon.language.See$annotations({
             @.ceylon.language.See$annotation(programElements = "::0.6:ceylon.language"),
-            @.ceylon.language.See$annotation(programElements = "::0.6:ceylon.language:model")})
+            @.ceylon.language.See$annotation(programElements = "::0.6:ceylon.language:meta")})
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("see"),
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("see")})

@@ -1,5 +1,4 @@
-import ceylon.language.model{SequencedAnnotation, OptionalAnnotation}
-import ceylon.language.model.declaration { ClassOrInterfaceDeclaration }
+import ceylon.language.meta.declaration { ClassOrInterfaceDeclaration }
 
 final annotation class Tuple(String[] tup)
     satisfies SequencedAnnotation<Tuple, ClassOrInterfaceDeclaration>{

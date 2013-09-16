@@ -1,5 +1,5 @@
-import ceylon.language.model { ... }
-import ceylon.language.model.declaration { ... }
+import ceylon.language.meta.model { ... }
+import ceylon.language.meta.declaration { ... }
 
 class LitClass(Integer i){
     shared Integer attribute = 1;
