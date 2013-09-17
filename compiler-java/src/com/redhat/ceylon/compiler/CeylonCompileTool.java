@@ -329,11 +329,12 @@ public class CeylonCompileTool extends RepoUsingTool {
                 // It's a single source file instead of a module name, so let's check
                 // if it's really located in one of the defined source folders
                 File sourceFile = new File(moduleSpec);
-                if (LanguageCompiler.getSrcDir(this.source, sourceFile) == null) {
-                    String srcPath = this.source.toString();
-                    throw new IllegalStateException(CeylonCompileMessages.msg("error.not.in.source.path", moduleSpec, srcPath));
+                if (sourceFile.isFile()) {
+                    if (LanguageCompiler.getSrcDir(this.source, sourceFile) == null) {
+                        String srcPath = this.source.toString();
+                        throw new IllegalStateException(CeylonCompileMessages.msg("error.not.in.source.path", moduleSpec, srcPath));
+                    }
                 }
-
             }
             arguments.add(moduleSpec);
         }
