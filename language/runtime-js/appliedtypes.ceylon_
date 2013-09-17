@@ -1,6 +1,7 @@
 import ceylon.language.meta.model {
   ClosedType=Type, UnionType, IntersectionType,
-  Member, Interface, VariableAttribute, Class, ClassOrInterface, Attribute, Method, Value, Function
+  Member, Interface, VariableAttribute, Class, ClassOrInterface, Attribute, Method, Value, Function,
+  ClassModel,InterfaceModel
 }
 import ceylon.language.meta.declaration {
   ClassDeclaration, InterfaceDeclaration, ValueDeclaration, FunctionDeclaration,
@@ -11,49 +12,71 @@ shared class AppliedClass<out Type, in Arguments>() satisfies Class<Type,Argumen
     given Arguments satisfies Anything[] {
 
   shared actual ClassDeclaration declaration { throw Exception("Class declaration"); }
-  shared actual Map<TypeParameter, ClosedType> typeArguments => LazyMap{};
-  shared actual Class<Anything, Nothing>? superclass => null;
-  shared actual Interface<Anything>[] interfaces => {};
+  shared actual Map<TypeParameter, ClosedType> typeArguments { throw Exception("Class declaration"); }
+  shared actual ClassModel<Anything, Nothing>? extendedType { throw Exception("unimplemented"); }
+  shared actual InterfaceModel<Anything>[] satisfiedTypes { throw Exception("unimplemented"); }
   shared actual Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType* types)
-    given Kind satisfies ClassOrInterface<Anything> => null;
+    given Kind satisfies ClassOrInterface<Anything> { throw Exception("unimplemented"); }
   shared actual Method<SubType, Type, Arguments>? getMethod<SubType, Type, Arguments>(String name, ClosedType* types)
-    given Arguments satisfies Anything[] => null;
-  shared actual Attribute<SubType, Type>? getAttribute<SubType, Type>(String name) => null;
-  shared actual VariableAttribute<SubType, Type>? getVariableAttribute<SubType, Type>(String name) => null;
+    given Arguments satisfies Anything[] { throw Exception("unimplemented"); }
+  shared actual Attribute<SubType, Type>? getAttribute<SubType, Type>(String name) { throw Exception("unimplemented"); }
+  shared actual VariableAttribute<SubType, Type>? getVariableAttribute<SubType, Type>(String name) { throw Exception("unimplemented"); }
+
+  shared actual Boolean isTypeOf(Anything instance) { throw Exception("Class declaration"); }
+  shared actual Boolean isSuperTypeOf(ClosedType<Anything> type) { throw Exception("Class declaration"); }
+  shared actual Boolean isExactly(ClosedType<Anything> type) { throw Exception("Class declaration"); }
+  shared actual ClosedType<Anything>? container { throw Exception("Class declaration"); }
 }
 
 shared class AppliedInterface<out Type>() satisfies Interface<Type>
     given Type satisfies Object {
   shared actual InterfaceDeclaration declaration { throw Exception("Interface declaration"); }
-  shared actual Map<TypeParameter, ClosedType> typeArguments => LazyMap{};
-  shared actual Class<Anything, Nothing>? superclass => null;
-  shared actual Interface<Anything>[] interfaces => {};
+  shared actual Map<TypeParameter, ClosedType> typeArguments { throw Exception("unimplemented"); }
+  shared actual ClassModel<Anything, Nothing>? extendedType { throw Exception("unimplemented"); }
+  shared actual InterfaceModel<Anything>[] satisfiedTypes { throw Exception("unimplemented"); }
   shared actual Method<SubType, Type, Arguments>? getMethod<SubType, Type, Arguments>(String name, ClosedType* types)
-    given Arguments satisfies Anything[] => null;
+    given Arguments satisfies Anything[] { throw Exception("unimplemented"); }
   shared actual Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType* types)
-    given Kind satisfies ClassOrInterface<Anything> => null;
-  shared actual Attribute<SubType, Type>? getAttribute<SubType, Type>(String name) => null;
-  shared actual VariableAttribute<SubType, Type>? getVariableAttribute<SubType, Type>(String name) => null;
+    given Kind satisfies ClassOrInterface<Anything> { throw Exception("unimplemented"); }
+  shared actual Attribute<SubType, Type>? getAttribute<SubType, Type>(String name) { throw Exception("unimplemented"); }
+  shared actual VariableAttribute<SubType, Type>? getVariableAttribute<SubType, Type>(String name) { throw Exception("unimplemented"); }
+
+  shared actual Boolean isTypeOf(Anything instance) { throw Exception("Class declaration"); }
+  shared actual Boolean isSuperTypeOf(ClosedType<Anything> type) { throw Exception("Class declaration"); }
+  shared actual Boolean isExactly(ClosedType<Anything> type) { throw Exception("Class declaration"); }
+  shared actual ClosedType<Anything>? container { throw Exception("Class declaration"); }
 }
 
 shared class AppliedValue<out Type>() satisfies Value<Type> {
   shared actual Type get() { throw Exception("Implement get"); }
-  shared actual actual ValueDeclaration declaration {throw Exception("Value.declaration"); }
-  shared actual ClosedType type { throw Exception("Value.type"); }
+  shared actual ValueDeclaration declaration {throw Exception("Value.declaration"); }
+  shared actual ClosedType<Type> type { throw Exception("Value.type"); }
+
+  shared actual ClosedType<Anything>? container { throw Exception("Class declaration"); }
 }
 
 shared class AppliedFunction<out Type, in Arguments>() satisfies Function<Type,Arguments>
     given Arguments satisfies Anything[] {
   shared actual FunctionDeclaration declaration { throw Exception("Function declaration"); }
-  shared actual ClosedType type {throw Exception("Function.type"); }
+  shared actual ClosedType<Type> type {throw Exception("Function.type"); }
+  shared actual ClosedType<Anything>? container { throw Exception("Class declaration"); }
+  shared actual Map<TypeParameter, ClosedType> typeArguments { throw Exception("unimplemented"); }
 }
 
 shared class AppliedUnionType() satisfies UnionType {
   shared actual List<ClosedType> caseTypes { throw Exception("Implement case types"); }
+
+  shared actual Boolean isTypeOf(Anything instance) { throw Exception("Class declaration"); }
+  shared actual Boolean isSuperTypeOf(ClosedType<Anything> type) { throw Exception("Class declaration"); }
+  shared actual Boolean isExactly(ClosedType<Anything> type) { throw Exception("Class declaration"); }
 }
 
 shared class AppliedIntersectionType() satisfies IntersectionType {
   shared actual List<ClosedType> satisfiedTypes { throw Exception("Implement satisfied types"); }
+
+  shared actual Boolean isTypeOf(Anything instance) { throw Exception("Class declaration"); }
+  shared actual Boolean isSuperTypeOf(ClosedType<Anything> type) { throw Exception("Class declaration"); }
+  shared actual Boolean isExactly(ClosedType<Anything> type) { throw Exception("Class declaration"); }
 }
 
 shared class AppliedMethod<in Container, out Type=Anything, in Arguments=Nothing>()
