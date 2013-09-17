@@ -4449,7 +4449,7 @@ public class GenerateJsVisitor extends Visitor
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.TypeAlias) {
             out("Alias");
         }
-        out("()('", d.getName(), "',", clAlias, "getModules$model().find('", m.getNameAsString(),
+        out("()('", d.getName(), "',", clAlias, "getModules$meta().find('", m.getNameAsString(),
                 "','", m.getVersion(), "').findPackage('", d.getUnit().getPackage().getNameAsString(),
                 "'),"+ d.isToplevel(),",");
         if (d.isMember()) {
@@ -4474,13 +4474,13 @@ public class GenerateJsVisitor extends Visitor
             final ProducedType ltype = that.getType().getTypeModel();
             final TypeDeclaration td = ltype.getDeclaration();
             if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-                out(clAlias, "$init$AppliedClass$model()(");
+                out(clAlias, "$init$AppliedClass$meta$model()(");
                 qualify(that, td);
                 out(names.name(td),",");
                 TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
                 out(")");
             } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
-                out(clAlias, "$init$AppliedInterface$model()(");
+                out(clAlias, "$init$AppliedInterface$meta$model()(");
                 qualify(that, td);
                 out(names.name(td),",");
                 TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
@@ -4490,7 +4490,7 @@ public class GenerateJsVisitor extends Visitor
             } else if (that instanceof Tree.TypeParameterLiteral) {
                 out("/*TODO: applied type parameter*/");
             } else {
-                out(clAlias, "/*TODO closed type literal", that.getClass().getName(),"*/typeLiteral$model({Type:");
+                out(clAlias, "/*TODO closed type literal", that.getClass().getName(),"*/typeLiteral$meta({Type:");
                 TypeUtils.typeNameOrList(that, ltype, this);
                 out("})");
             }
@@ -4507,7 +4507,7 @@ public class GenerateJsVisitor extends Visitor
             final ProducedType ltype = that.getType() == null ? null : that.getType().getTypeModel();
             final Declaration d = ref.getDeclaration();
             if (that instanceof FunctionLiteral || d instanceof Method) {
-                out(clAlias, "AppliedFunction$model(");
+                out(clAlias, "AppliedFunction$meta$model(");
                 if (ltype == null) {
                     qualify(that, d);
                 } else {
@@ -4523,7 +4523,7 @@ public class GenerateJsVisitor extends Visitor
                 TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
                 out(")");
             } else if (that instanceof ValueLiteral || d instanceof Value) {
-                out(clAlias, "$init$AppliedValue()(");
+                out(clAlias, "$init$AppliedValue$meta$model()(");
                 if (ltype == null) {
                     qualify(that, d);
                 } else {
@@ -4537,7 +4537,7 @@ public class GenerateJsVisitor extends Visitor
                     out(names.name(d), ")");
                 }
             } else {
-                out(clAlias, "/*TODO:closed member literal*/typeLiteral$model({Type:");
+                out(clAlias, "/*TODO:closed member literal*/typeLiteral$meta({Type:");
                 out("{t:");
                 if (ltype == null) {
                     qualify(that, d);
@@ -4564,7 +4564,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(Tree.PackageLiteral that) {
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = (com.redhat.ceylon.compiler.typechecker.model.Package)that.getImportPath().getModel();
         
-        out(clAlias, "getModules$model().find('", pkg.getModule().getNameAsString(),
+        out(clAlias, "getModules$meta().find('", pkg.getModule().getNameAsString(),
                 "','", pkg.getModule().getVersion(), "').findPackage('", pkg.getNameAsString(),
                 "')");
     }
@@ -4572,7 +4572,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(Tree.ModuleLiteral that) {
         Module m = (Module)that.getImportPath().getModel();
-        out(clAlias, "getModules$model().find('", m.getNameAsString(),
+        out(clAlias, "getModules$meta().find('", m.getNameAsString(),
                 "','", m.getVersion(), "')");
     }
 
