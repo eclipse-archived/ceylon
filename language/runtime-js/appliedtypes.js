@@ -21,9 +21,7 @@ function $init$AppliedClass(){
                 mm=mm();
                 $$clase.tipo.$$metamodel$$=mm;
               }
-              var _mod = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']);
-              var _pkg = _mod.findPackage(mm.d[0]);
-              $$clase._decl = OpenClass(mm.d[mm.d.length-1], _pkg, mm.$cont===undefined, $$clase.tipo);
+              $$clase._decl = OpenClass(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), $$clase.tipo);
               return $$clase._decl;
             });
             //superclass
@@ -287,7 +285,7 @@ function $init$AppliedMethod(){
                 $$appliedMethod.fun.$$metamodel$$=mm;
               }
               var _pkg = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
-              return OpenFunction(mm.d[mm.d.length-1], _pkg, false, $$appliedMethod.fun);
+              return OpenFunction(_pkg, $$appliedMethod.fun);
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:FunctionDeclaration$meta$model$declaration},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.model','Method','$at','declaration']};});
             //AttributeGetterDefinition type at caca.ceylon (15:4-15:76)
             defineAttr($$appliedMethod,'type',function(){
@@ -303,9 +301,8 @@ function $init$AppliedMethod(){
                 mm = mm();
                 $$appliedMethod.tipo.$$metamodel$$=mm;
               }
-              var _pkg = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
               var m2 = get_model(mm);
-              return (m2['$mt']==='cls'?OpenClass:OpenInterface)(mm.d[mm.d.length-1],_pkg,mm.$cont===undefined,$$appliedMethod.tipo);
+              return (m2['$mt']==='cls'?OpenClass:OpenInterface)(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), $$appliedMethod.tipo);
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:ClassOrInterface$meta$model,a:{Type:{t:Anything}}},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.model','Method','$at','declaringClassOrInterface']};});
             //AttributeGetterDefinition container at caca.ceylon (18:4-18:92)
             defineAttr($$appliedMethod,'container',function(){

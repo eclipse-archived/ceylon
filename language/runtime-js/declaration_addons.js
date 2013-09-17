@@ -3,16 +3,16 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
   var $$oi=this;
   if (extendsType($$$mptypes.Kind, {t:ValueDeclaration$meta$declaration})) {
     var _d = $$oi.meta.$at ? $$oi.meta.$at[name$20] : undefined;
-    return _d ? OpenValue(name$20, $$oi.packageContainer, false, _d) : null;
+    return _d ? OpenValue($$oi.containingPackage, _d) : null;
   } else if (extendsType($$$mptypes.Kind, {t:FunctionDeclaration$meta$declaration})) {
     var _d = $$oi.meta.$m ? $$oi.meta.$m[name$20] : undefined;
-    return _d ? OpenFunction(name$20, $$oi.packageContainer, false, _d) : null;
+    return _d ? OpenFunction($$oi.packageContainer, _d) : null;
   } else if (extendsType($$$mptypes.Kind, {t:ClassDeclaration$meta$declaration})) {
     var _d = $$oi.meta.$c ? $$oi.meta.$c[name$20] : undefined;
-    return _d ? OpenClass(name$20, $$oi.packageContainer, false, _d) : null;
+    return _d ? OpenClass($$oi.containingPackage, _d) : null;
   } else if (extendsType($$$mptypes.Kind, {t:InterfaceDeclaration$meta$declaration})) {
     var _d = $$oi.meta.$i ? $$oi.meta.$i[name$20] : undefined;
-    return _d ? OpenInterface(name$20, $$oi.packageContainer, false, _d) : null;
+    return _d ? OpenInterface($$oi.containingPackage, _d) : null;
   }
   return null;
 };
@@ -25,10 +25,11 @@ defineAttr(FunctionalDeclaration$meta$declaration.$$.prototype,'parameterDeclara
   var rv = [];
   for (var i=0; i<parms.length;i++) {
     var p = parms[i];
+//TODO set "parameter" to true
     if (p['$pt'] === 'f') {
       console.log("parametro funcional");
     } else {
-      rv.push(OpenValue(p['$nm'], that.packageContainer, false, p));
+      rv.push(OpenValue(that.containingPackage, p));
     }
   }
   return rv.reifyCeylonType({Element:{t:FunctionOrValueDeclaration$meta$declaration},Absent:{t:Null}});

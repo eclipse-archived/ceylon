@@ -62,13 +62,13 @@ function typeLiteral$meta($$targs$$) {
     var _mod = modules$meta$model.find(mm.mod['$mod-name'],mm.mod['$mod-version']);
     var _pkg = _mod.findPackage(mm.d[0]);
     if (mdl['$mt'] === 'cls') {
-      return OpenClass(mdl['$nm'], _pkg, mm.$cont===undefined, t);
+      return OpenClass(_pkg, t);
     } else if (mdl['$mt'] === 'ifc') {
-      return OpenInterface(mdl['$nm'], _pkg, mm.$cont===undefined, t);
+      return OpenInterface(_pkg, t);
     } else if (mdl['$mt'] === 'mthd') {
-      return OpenFunction(mdl['$nm'], _pkg, mm.$cont===undefined, t);
+      return OpenFunction(_pkg, t);
     } else if (mdl['$mt'] === 'attr' || mdl['$mt'] === 'gttr') {
-      return OpenValue(mdl['$nm'], _pkg, mm.$cont===undefined, t);
+      return OpenValue(_pkg, t);
     } else {
       console.log("WTF is a metatype " + mdl['$mt'] + " on an open type???????");
     }

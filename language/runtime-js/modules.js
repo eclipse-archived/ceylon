@@ -198,13 +198,13 @@ function Paquete(name, container, pkg, $$paquete){
         if (filter(m)) {
           var mt = m['$mt'];
           if (mt === 'mthd') {
-            r.push(OpenFunction(String$(m['$nm']), this, true, m));
+            r.push(OpenFunction(this, m));
           } else if (mt==='cls') {
-            r.push(OpenClass(String$(m['$nm']), this, true, m));
+            r.push(OpenClass(this, m));
           } else if (mt==='ifc') {
-            r.push(OpenInterface(String$(m['$nm']), this, true, m));
+            r.push(OpenInterface(this, m));
           } else if (mt==='attr'||mt==='gttr'||mt==='obj') {
-            r.push(OpenValue(String$(m['$nm']), this, true, m));
+            r.push(OpenValue(this, m));
           }
         }
       }
@@ -224,36 +224,36 @@ function Paquete(name, container, pkg, $$paquete){
         //There's a member alright, but check its type
         if (extendsType({t:ValueDeclaration$meta$declaration}, $$$mptypes.Kind)) {
           if (mt==='attr'||m==='gttr'||m==='obj') {
-            return OpenValue(name$3, this, true, m);
+            return OpenValue(this, m);
           }
           return null;
         } else if (extendsType({t:FunctionDeclaration$meta$declaration}, $$$mptypes.Kind)) {
           if (mt==='mthd') {
-            return OpenFunction(name$3, this, true, m);
+            return OpenFunction(this, m);
           }
           return null;
         } else if (extendsType({t:FunctionOrValueDeclaration$meta$declaration}, $$$mptypes.Kind)) {
           if (mt==='attr'||m==='gttr'||m==='obj') {
-            return OpenValue(name$3, this, true, m);
+            return OpenValue(this, m);
           } else if (mt==='mthd') {
-            return OpenFunction(name$3, this, true, m);
+            return OpenFunction(this, m);
           }
           return null;
         } else if (extendsType({t:ClassDeclaration$meta$declaration}, $$$mptypes.Kind)) {
           if (mt==='cls') {
-            return OpenClass(name$3, this, true, m);
+            return OpenClass(this, m);
           }
           return null;
         } else if (extendsType({t:InterfaceDeclaration$meta$declaration}, $$$mptypes.Kind)) {
           if (mt==='ifc') {
-            return OpenInterface(name$3, this, true, m);
+            return OpenInterface(this, m);
           }
           return null;
         } else if (extendsType({t:ClassOrInterfaceDeclaration$meta$declaration}, $$$mptypes.Kind)) {
           if (mt==='ifc') {
-            return OpenInterface(name$3, this, true, m);
+            return OpenInterface(this, m);
           } else if (mt==='cls') {
-            return OpenClass(name$3, this, true, m);
+            return OpenClass(this, m);
           }
           return null;
         } else {
@@ -267,7 +267,7 @@ console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.
     function getValue(name$4) {
       var m = this.pkg[name$4];
       if (m && (m['$mt']==='attr' || m['$mt']==='gttr' || m['$mt'] === 'obj')) {
-        return (m['var']==='1' ? OpenVariable:OpenValue)(name$4, this, true, m);
+        return (m['var']==='1' ? OpenVariable:OpenValue)(this, m);
       }
       return null;
     }
@@ -276,9 +276,9 @@ console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.
     function getClassOrInterface(name$5){
       var ci = this.pkg[name$5];
       if (ci && ci['$mt']==='cls') {
-        return OpenClass(name$5, this, true, ci);
+        return OpenClass(this, ci);
       } else if (ci && ci['$mt']==='ifc') {
-        return OpenInterface(name$5, this, true, ci);
+        return OpenInterface(this, ci);
       }
       return null;
     }
@@ -287,7 +287,7 @@ console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.
     function getFunction(name$6){
       var f = this.pkg[name$6];
       if (f && f['$mt']==='mthd') {
-        return OpenFunction(name$6, this, true, f);
+        return OpenFunction(this, f);
       }
       return null;
     }
