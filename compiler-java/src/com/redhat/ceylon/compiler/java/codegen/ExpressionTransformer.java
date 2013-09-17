@@ -4573,10 +4573,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public static Referenceable getMetaLiteralReferenceable(Tree.MetaLiteral ml) {
         if (ml instanceof Tree.TypeLiteral) {
-            Tree.TypeLiteral tl = (Tree.TypeLiteral)ml;
-            if (tl.getType() != null && tl.getType().getTypeModel() != null) {
-                return tl.getType().getTypeModel().resolveAliases().getDeclaration();
-            }
+            return ml.getDeclaration();
         } else if (ml instanceof Tree.MemberLiteral) {
             return ml.getDeclaration();
         } else if (ml instanceof Tree.PackageLiteral) {
