@@ -133,11 +133,11 @@ function $init$OpenFunction(){
         (function($$openFunction){
             
             //MethodDefinition apply at caca.ceylon (20:4-20:81)
-            $$openFunction.apply=function apply(types$2){
+            $$openFunction.$apply=function $apply(types$2){
                 var $$openFunction=this;
                 if(types$2===undefined){types$2=getEmpty();}
                 throw Exception();
-            };$$openFunction.apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Function$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','apply']};};
+            };$$openFunction.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Function$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','apply']};};
             
             //MethodDefinition memberApply at caca.ceylon (21:4-21:105)
             $$openFunction.memberApply=function memberApply(instance$3,types$4,$$$mptypes){
@@ -256,10 +256,10 @@ function $init$OpenValue(){
         (function($$openValue){
             
             //MethodDefinition apply at caca.ceylon (39:4-39:68)
-            $$openValue.apply=function apply(instance$8){
+            $$openValue.$apply=function $apply(instance$8){
               if (instance$8===null || instance$8===undefined)return null;
               return instance$8[this.name];
-            };$$openValue.apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Value$meta$model,a:{Type:{t:Anything}}},$ps:[{$nm:'instance',$mt:'prm',$def:1,$t:{t:Anything}}],$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$m','apply']};};
+            };$$openValue.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Value$meta$model,a:{Type:{t:Anything}}},$ps:[{$nm:'instance',$mt:'prm',$def:1,$t:{t:Anything}}],$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$m','apply']};};
             
             //AttributeDeclaration defaulted at caca.ceylon (40:4-40:44)
             defineAttr($$openValue,'defaulted',function(){
@@ -410,11 +410,11 @@ function $init$OpenClass(){
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','anonymous']};});
             
             //MethodDefinition apply at caca.ceylon (49:2-49:76)
-            $$openClass.apply=function apply(types$9){
+            $$openClass.$apply=function $apply(types$9){
                 var $$openClass=this;
                 if(types$9===undefined){types$9=getEmpty();}
                 throw Exception();
-            };$$openClass.apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Class$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$m','apply']};};
+            };$$openClass.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Class$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$m','apply']};};
             
             //MethodDeclaration memberDeclarations at caca.ceylon (53:2-54:66)
             $$openClass.memberDeclarations=function ($$$mptypes){
@@ -545,9 +545,9 @@ function $init$OpenInterface(){
         (function($$openInterface){
             
             //MethodDefinition apply at caca.ceylon (73:2-73:71)
-            $$openInterface.apply=function apply(types$16){
+            $$openInterface.$apply=function $apply(types$16){
               return AppliedInterface(this.tipo,{Type:{t:this.tipo}});
-            };$$openInterface.apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Interface$meta,a:{Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$m','apply']};};
+            };$$openInterface.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Interface$meta,a:{Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$m','apply']};};
             
             //MethodDeclaration memberDeclarations at caca.ceylon (78:2-79:66)
             $$openInterface.memberDeclarations=function ($$$mptypes){
