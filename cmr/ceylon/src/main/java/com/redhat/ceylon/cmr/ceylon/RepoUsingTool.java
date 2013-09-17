@@ -1,10 +1,12 @@
 package com.redhat.ceylon.cmr.ceylon;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.NavigableMap;
 import java.util.ResourceBundle;
@@ -15,10 +17,15 @@ import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.Messages;
+import com.redhat.ceylon.common.ModuleDescriptorReader;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
+import com.redhat.ceylon.common.tool.ServiceToolLoader;
 import com.redhat.ceylon.common.tool.Tool;
+import com.redhat.ceylon.common.tool.ToolFactory;
+import com.redhat.ceylon.common.tool.ToolLoader;
+import com.redhat.ceylon.common.tool.ToolModel;
 
 public abstract class RepoUsingTool implements Tool {
     protected List<URI> repo;
@@ -132,20 +139,57 @@ public abstract class RepoUsingTool implements Tool {
     }
 
     protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryVersion) throws IOException {
+        return checkModuleVersionsOrShowSuggestions(repoMgr, name, version, type, binaryVersion, false);
+    }
+
+    protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryVersion, boolean allowCompilation) throws IOException {
         if ("default".equals(name)) {
             return "";
         }
+        boolean suggested = false;
         Collection<ModuleVersionDetails> versions = getModuleVersions(repoMgr, name, version, type, binaryVersion);
-        if (versions.isEmpty() && version != null) {
-            // Maybe the user specified the wrong version?
-            // Let's see if we can find any and suggest them
-            versions = getModuleVersions(repoMgr, name, null, type, binaryVersion);
+        if (version != null) {
+            // Here we either have a single version or none
+            if (versions.isEmpty()) {
+                if (allowCompilation) {
+                    Collection<ModuleVersionDetails> srcVersions = getVersionFromSource(name);
+                    if (!srcVersions.isEmpty() && version.equals(srcVersions.iterator().next().getVersion())) {
+                        // There seems to be source code that has the proper version
+                        // Let's see if we can compile it...
+                        if (runCompiler(name)) {
+                            // All okay it seems, let's use this version
+                            versions = srcVersions;
+                        }
+                    }
+                }
+                if (versions.isEmpty()) {
+                    // Maybe the user specified the wrong version?
+                    // Let's see if we can find any and suggest them
+                    versions = getModuleVersions(repoMgr, name, null, type, binaryVersion);
+                    suggested = true;
+                }
+            }
+        } else {
+            // Here we can have any number of versions, including none
+            if ((versions.isEmpty() || onlyRemote(versions)) && allowCompilation) {
+                // If there are no versions at all or only in remote repositories we
+                // first check if there's local code we could compile before giving up
+                Collection<ModuleVersionDetails> srcVersions = getVersionFromSource(name);
+                if (!srcVersions.isEmpty()) {
+                    // There seems to be source code
+                    // Let's see if we can compile it...
+                    if (runCompiler(name)) {
+                        // All okay it seems, let's use this version
+                        versions = srcVersions;
+                    }
+                }
+            }
         }
         if (versions.isEmpty()) {
             errorMsg("module.not.found", name, repoMgr.getRepositoriesDisplayString());
             return null;
         }
-        if (versions.size() > 1 || version != null) {
+        if (versions.size() > 1 || suggested) {
             if (version == null) {
                 errorMsg("missing.version", name, repoMgr.getRepositoriesDisplayString());
             } else {
@@ -167,6 +211,72 @@ public abstract class RepoUsingTool implements Tool {
             return null;
         }
         return versions.iterator().next().getVersion();
+    }
+    
+    private boolean onlyRemote(Collection<ModuleVersionDetails> versions) {
+        for (ModuleVersionDetails version : versions) {
+            if (!version.isRemote()) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private Collection<ModuleVersionDetails> getVersionFromSource(String name) {
+        Collection<ModuleVersionDetails> result = new ArrayList<ModuleVersionDetails>();
+        try {
+            File srcDir = new File("source");
+            ModuleDescriptorReader mdr = new ModuleDescriptorReader(name, srcDir);
+            String version = mdr.getModuleVersion();
+            if (version != null) {
+                ModuleVersionDetails mvd = new ModuleVersionDetails(version);
+                mvd.setLicense(mdr.getModuleLicense());
+                List<String> by = mdr.getModuleAuthors();
+                if (by != null) {
+                    mvd.getAuthors().addAll(by);
+                }
+                mvd.setRemote(false);
+                mvd.setOrigin("Local source folder");
+                result.add(mvd);
+            }
+        } catch (Exception ex) {
+            // Just continue as if nothing happened
+        }
+        return result;
+    }
+    
+    private boolean runCompiler(String name) {
+        List<String> args = new ArrayList<String>();
+        if (systemRepo != null) {
+            args.add("--sysrep");
+            args.add(systemRepo);
+        }
+        if (repo != null) {
+            for (URI r : repo) {
+                args.add("--rep");
+                args.add(r.toString());
+            }
+        }
+        if (offline) {
+            args.add("--offline");
+        }
+        args.add(name);
+        
+        ToolFactory pluginFactory = new ToolFactory();
+        ToolLoader pluginLoader = new ServiceToolLoader(Tool.class) {
+            @Override
+            public String getToolName(String className) {
+                return camelCaseToDashes(className.replaceAll("^(.*\\.)?Ceylon(.*)Tool$", "$2"));
+            }
+        };
+        ToolModel<Tool> model = pluginLoader.loadToolModel("compile");
+        Tool tool = pluginFactory.bindArguments(model, args);
+        try {
+            tool.run();
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
     
     public RepoUsingTool errorMsg(String msgKey, Object...msgArgs) throws IOException {
