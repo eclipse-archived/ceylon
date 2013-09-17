@@ -1,5 +1,5 @@
 //Add-on to AnnotatedDeclaration            //MethodDeclaration annotations at caca.ceylon (82:2-83:72)
-AnnotatedDeclaration$model$declaration.$$.prototype.annotations=function ($$$mptypes) {
+AnnotatedDeclaration$meta$declaration.$$.prototype.annotations=function ($$$mptypes) {
     var $$openInterface=this;
     var ans = [];
     var _mdl = $$openInterface.tipo.$$metamodel$$;
@@ -19,4 +19,4 @@ AnnotatedDeclaration$model$declaration.$$.prototype.annotations=function ($$$mpt
     }
     return ans.length == 0 ? getEmpty() : ans.reifyCeylonType({Element:$$$mptypes.Annotation});
 };
-AnnotatedDeclaration$model$declaration.$$.prototype.annotations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Annotation'}},$ps:[],$cont:AnnotatedDeclaration$model$declaration,$tp:{Annotation:{'var':'out','satisfies':[{t:Annotation$model,a:{Value:'Annotation'}}]}},$an:function(){return[shared(),formal()];},d:['ceylon.language.model.declaration','AnnotatedDeclaration','$m','annotations']};};
+AnnotatedDeclaration$meta$declaration.$$.prototype.annotations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Annotation'}},$ps:[],$cont:AnnotatedDeclaration$meta$declaration,$tp:{Annotation:{'var':'out','satisfies':[{t:Annotation,a:{Value:'Annotation'}}]}},$an:function(){return[shared(),formal()];},d:['ceylon.language.meta.declaration','AnnotatedDeclaration','$m','annotations']};};

@@ -8,16 +8,16 @@ function get_model(mm) {
   return map;
 }
 
-function type$model(x,$$targs$$) {
+function type$meta(x,$$targs$$) {
   if (x === null) {
-    return getNothingType$model();
+    return getNothingType$meta$model();
   }
   return AppliedClass($$targs$$.Type.t, {Type:$$targs$$.Type, Arguments:{t:Nothing}});
 }
-type$model.$$metamodel$$={$ps:[{t:Anything}],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language.model','type']};
-exports.type$model=type$model;
+type$meta.$$metamodel$$={$ps:[{t:Anything}],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language.meta','type']};
+exports.type$meta=type$meta;
 
-function typeLiteral$model($$targs$$) {
+function typeLiteral$meta($$targs$$) {
   if ($$targs$$ === undefined || $$targs$$.Type === undefined) {
     throw Exception("Missing type argument 'Type' " + require('util').inspect($$targs$$));
   } else if ($$targs$$.Type.$$metamodel$$ == undefined) {
@@ -59,7 +59,7 @@ function typeLiteral$model($$targs$$) {
     }
     var mdl = get_model(mm);
     //We need the module
-    var _mod = modules$model.find(mm.mod['$mod-name'],mm.mod['$mod-version']);
+    var _mod = modules$meta$model.find(mm.mod['$mod-name'],mm.mod['$mod-version']);
     var _pkg = _mod.findPackage(mm.d[0]);
     if (mdl['$mt'] === 'cls') {
       return OpenClass(mdl['$nm'], _pkg, mm.$cont===undefined, t);
@@ -76,8 +76,8 @@ function typeLiteral$model($$targs$$) {
   }
   throw Exception("typeLiteral UNIMPLEMENTED for " + require('util').inspect($$targs$$));
 }
-typeLiteral$model.$$metamodel$$={$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language.model','typeLiteral']};
-exports.typeLiteral$model=typeLiteral$model;
+typeLiteral$meta.$$metamodel$$={$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language.meta','typeLiteral']};
+exports.typeLiteral$meta=typeLiteral$meta;
 
 function pushTypes(list, types) {
   for (var i=0; i<types.length; i++) {
@@ -87,7 +87,7 @@ function pushTypes(list, types) {
     } else if (t.t === 'i') {
       list.push(applyIntersectionType(t, t.l));
     } else {
-      list.push(typeLiteral$model({Type:t}));
+      list.push(typeLiteral$meta({Type:t}));
     }
   }
   return list;
@@ -96,10 +96,10 @@ function pushTypes(list, types) {
 function applyUnionType(ut) { //return AppliedUnionType
   var cases = [];
   pushTypes(cases, ut.l);
-  return AppliedUnionType(ut, cases.reifyCeylonType({Absent:{t:Null},Element:{t:Type$model}}), {Union:{t:Anything}});
+  return AppliedUnionType(ut, cases.reifyCeylonType({Absent:{t:Null},Element:{t:Type$meta$model}}), {Union:{t:Anything}});
 }
 function applyIntersectionType(it) { //return AppliedIntersectionType
   var sats = [];
   pushTypes(sats, it.l);
-  return AppliedIntersectionType(it, sats.reifyCeylonType({Absent:{t:Null},Element:{t:Type$model}}), {Union:{t:Anything}});
+  return AppliedIntersectionType(it, sats.reifyCeylonType({Absent:{t:Null},Element:{t:Type$meta$model}}), {Union:{t:Anything}});
 }
