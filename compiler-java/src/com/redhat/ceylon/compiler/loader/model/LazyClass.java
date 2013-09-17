@@ -142,7 +142,7 @@ public class LazyClass extends Class implements LazyContainer {
 
     @Override
     public boolean isStaticallyImportable() {
-        load();
+        // no lazy loading since it is set before completion
         return super.isStaticallyImportable();
     }
 

@@ -856,6 +856,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         klass.setDefault(classMirror.getAnnotation(CEYLON_LANGUAGE_DEFAULT_ANNOTATION) != null);
         klass.setActual(classMirror.getAnnotation(CEYLON_LANGUAGE_ACTUAL_ANNOTATION) != null);
         klass.setFinal(classMirror.isFinal());
+        klass.setStaticallyImportable(!klass.isCeylon() && classMirror.isStatic());
         return klass;
     }
 
@@ -1574,8 +1575,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 && ((Class) klass).getParameterList() == null){
             ((Class) klass).setParameterList(new ParameterList());
         }
-        
-        klass.setStaticallyImportable(!isCeylon && classMirror.isStatic());
         
         setExtendedType(klass, classMirror);
         setSatisfiedTypes(klass, classMirror);
