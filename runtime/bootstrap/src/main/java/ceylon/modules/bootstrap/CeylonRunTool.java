@@ -57,7 +57,6 @@ public class CeylonRunTool extends RepoUsingTool {
 
     private String moduleNameOptVersion;
     private String run;
-    private boolean disableDefault;
     private boolean verbose = false;
     private String verboseFlags = "";
     private List<String> args = Collections.emptyList();
@@ -80,12 +79,6 @@ public class CeylonRunTool extends RepoUsingTool {
     @Description("Specifies the fully qualified name of a toplevel method or class with no parameters.")
     public void setRun(String run) {
         this.run = run;
-    }
-
-    @Option(longName = "d")
-    @Description("Disables the default module repositories and source directory.")
-    public void setDisableDefault(boolean disableDefault) {
-        this.disableDefault = disableDefault;
     }
 
     @Option
@@ -115,10 +108,6 @@ public class CeylonRunTool extends RepoUsingTool {
         if (run != null) {
             argList.add("-run");
             argList.add(run);
-        }
-
-        if (disableDefault) {
-            argList.add("-d");
         }
 
         if (offline) {
