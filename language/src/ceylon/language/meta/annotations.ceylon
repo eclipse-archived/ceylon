@@ -9,6 +9,13 @@ import ceylon.language.meta.model { Class }
  * 
  */
 
+"The annotations of the given type on the given program element. For example:
+ 
+     // Does the process declaration have the Shared annotation?
+     value isShared = annotations(`Shared`, `value process`) exists;
+ 
+ The annotations may be returned in any order.
+ "
 shared native Values annotations<Value,Values, in ProgramElement>(
               Class<ConstrainedAnnotation<Value,Values,ProgramElement>> annotationType,
               ProgramElement programElement)
