@@ -282,7 +282,9 @@ public class InteropTest extends CompilerTest {
         compile("access/JavaDefaultAccessClass3.java");
         assertErrors("ExtendsDefaultAccessClassInAnotherPkg",
                 new CompilerError(21, "imported package private declaration is not visible: JavaDefaultAccessClass"),
+                new CompilerError(21, "imported declaration is not shared: JavaDefaultAccessClass"),
                 new CompilerError(22, "imported package private declaration is not visible: JavaDefaultAccessClass2"),
+                new CompilerError(22, "imported declaration is not shared: JavaDefaultAccessClass2"),
                 new CompilerError(27, "package private type is not visible: JavaDefaultAccessClass"),
                 new CompilerError(29, "package private type is not visible: JavaDefaultAccessClass2"),
                 new CompilerError(31, "package private constructor is not visible: JavaDefaultAccessClass3")
@@ -310,7 +312,9 @@ public class InteropTest extends CompilerTest {
         compile("access/JavaDefaultAccessClass3.java");
         assertErrors("CallsDefaultAccessClassInAnotherPkg",
                 new CompilerError(21, "imported package private declaration is not visible: JavaDefaultAccessClass"),
+                new CompilerError(21, "imported declaration is not shared: JavaDefaultAccessClass"),
                 new CompilerError(22, "imported package private declaration is not visible: JavaDefaultAccessClass2"),
+                new CompilerError(22, "imported declaration is not shared: JavaDefaultAccessClass2"),
                 new CompilerError(28, "package private type is not visible: JavaDefaultAccessClass"),
                 new CompilerError(29, "package private type is not visible: JavaDefaultAccessClass2"),
                 new CompilerError(30, "package private constructor is not visible: JavaDefaultAccessClass3")
