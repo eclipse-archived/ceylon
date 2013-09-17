@@ -91,8 +91,8 @@
      [[ClassModel|ceylon.language.meta.model::ClassModel]] since only classes can be instantiated.
    - The [[typeLiteral]] function is the functional equivalent to closed type literals: it turns a type argument
      value into a metamodel closed type.
-   - The [declaration](declaration) package contains all the declaration and open types.
-   - The [model](model) package contains all the model and closed types.
+   - The [declaration](declaration/index.html) package contains all the declaration and open types.
+   - The [model](model/index.html) package contains all the model and closed types.
    """
 by ("Gavin King", "Stephane Epardaud")
 shared package ceylon.language.meta;

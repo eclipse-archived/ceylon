@@ -1,5 +1,5 @@
 
-"Model of the setter of a `VariableDeclaration`."
+"A setter declaration for a `VariableDeclaration`."
 shared interface SetterDeclaration
         satisfies Annotated {
 

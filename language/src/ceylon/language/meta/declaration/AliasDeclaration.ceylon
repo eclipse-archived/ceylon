@@ -4,9 +4,12 @@ import ceylon.language.meta.model {
     AppliedType = Type
 }
 
+"Type alias declaration. While type aliases are erased (substituted for what they alias is a better term) from every 
+ declaration that uses them during compile-time, the declaration of the type alias is still visible at run-time."
 shared interface AliasDeclaration 
     satisfies NestableDeclaration & GenericDeclaration {
 
+    "The open type that is substituted by this type alias."
     shared formal OpenType extendedType;
 
     /*

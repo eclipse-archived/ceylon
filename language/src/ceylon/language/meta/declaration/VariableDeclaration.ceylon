@@ -1,14 +1,16 @@
 import ceylon.language.meta.model { Variable, VariableAttribute, AppliedType = Type }
 
-"Model of an attribute that is `variable` or has an `assign` block."
+"Declaration of an attribute that is `variable` or has an `assign` block."
 shared interface VariableDeclaration
         satisfies ValueDeclaration {
     
+    see(`function ValueDeclaration.apply`)
     shared actual formal Variable<Type> apply<Type=Anything>();
 
+    see(`function ValueDeclaration.memberApply`)
     shared actual formal VariableAttribute<Container, Type> memberApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType);
 
-    "Returns a model of the setter of this variable.
+    "Returns the setter declaration for this variable.
      
      For modelling purposes `variable` reference 
      values have a SetterDeclaration even though there is no 

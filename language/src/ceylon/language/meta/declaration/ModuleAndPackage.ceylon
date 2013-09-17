@@ -1,10 +1,10 @@
 
-"Model of a `module` declaration
+"A `module` declaration
  from a `module.ceylon` compilation unit"
 shared interface Module 
         satisfies Identifiable & AnnotatedDeclaration {
     
-    "The version of the module."
+    "The module version."
     shared formal String version;
     
     "The package members of the module."
@@ -13,9 +13,11 @@ shared interface Module
     "The modules this module depends on."
     shared formal Import[] dependencies;
     
-    "Finds a package by name"
+    "Finds a package by name. Returns `null` if not found."
     shared formal Package? findPackage(String name);
     
+    "Finds a package by name in this module or in its dependencies. Note that all transitive `shared`
+     dependencies are searched. Returns `null` if not found."
     shared formal Package? findImportedPackage(String name);
 }
 
@@ -30,10 +32,13 @@ shared interface Import
     "The compile-time version of the imported module."
     shared formal String version;
 
+    "True if this imported module is shared."
     shared formal Boolean shared;
 
+    "True if this imported module is optional."
     shared formal Boolean optional;
 
+    "The containing module."
     shared formal Module container;
 }
 
@@ -45,30 +50,33 @@ shared interface Package
     "The module this package belongs to."
     shared formal Module container;
 
+    "True if this package is shared."
     shared formal Boolean shared;
     
-    "The members of this package."
+    "Returns the list of member declarations that satisfy the given `Kind` type argument."
     shared formal Kind[] members<Kind>() 
             given Kind satisfies NestableDeclaration;
     
-    "The members of this package having a particular annotation."
+    "Returns the list of member declarations that satisfy the given `Kind` type argument and
+     that are annotated with the given `Annotation` type argument"
     shared formal Kind[] annotatedMembers<Kind, Annotation>() 
             given Kind satisfies NestableDeclaration;
 
-    "Looks up a member of this package by name and type."
+    "Looks up a member declaration by name, provided it satisfies the given `Kind` type
+     argument. Returns `null` if no such member matches."
     shared formal Kind? getMember<Kind>(String name) 
             given Kind satisfies NestableDeclaration;
 
-    "The value with the given name."
+    "The value with the given name. Returns `null` if not found."
     shared formal ValueDeclaration? getValue(String name);
 
-    "The class or interface with the given name."
+    "The class or interface with the given name. Returns `null` if not found."
     shared formal ClassOrInterfaceDeclaration? getClassOrInterface(String name);
 
-    "The function with the given name."
+    "The function with the given name. Returns `null` if not found."
     shared formal FunctionDeclaration? getFunction(String name);
 
-    "The type alias with the given name."
+    "The type alias with the given name. Returns `null` if not found."
     shared formal AliasDeclaration? getAlias(String name);
 }
 
