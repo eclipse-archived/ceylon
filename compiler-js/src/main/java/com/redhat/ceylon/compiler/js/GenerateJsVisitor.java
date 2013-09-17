@@ -1053,12 +1053,20 @@ public class GenerateJsVisitor extends Visitor
         out("if (");
         self(d);
         out("===undefined)");
-        self(d);
-        out("=new ");
-        if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
-            out("this.", names.name(d), ".$$;");
+        if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class && d.isAbstract()) {
+            out(clAlias, "throwexc(", clAlias, "InvocationException$meta$model(", clAlias, "String");
+            if (JsCompiler.isCompilingLanguageModule()) {
+                out("$");
+            }
+            out("(\"Cannot instantiate abstract class\")),'?','?')");
         } else {
-            out(names.name(d), ".$$;");
+            self(d);
+            out("=new ");
+            if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
+                out("this.", names.name(d), ".$$;");
+            } else {
+                out(names.name(d), ".$$;");
+            }
         }
         endLine();
         /*out("var ");
