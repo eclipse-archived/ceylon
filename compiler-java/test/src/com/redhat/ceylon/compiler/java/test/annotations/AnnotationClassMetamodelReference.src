@@ -319,6 +319,18 @@ final class annotationClassMetamodelReferenceVariadic3_ {
                 mmr}));
     }
 }
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Shared$annotation
+@.ceylon.language.Abstract$annotation
+@.com.redhat.ceylon.compiler.java.metadata.Alias("ceylon.language::Object")
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("abstract")})
+public final class ObjectAlias {
+    
+    private ObjectAlias() {
+    }
+}
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotations({
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6:ceylon.language::CAnything"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6:ceylon.language::Vprocess"),
@@ -328,6 +340,7 @@ final class annotationClassMetamodelReferenceVariadic3_ {
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6:ceylon.language::IList.Fget"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6:ceylon.language::Fsort"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6:ceylon.language::Vtrue"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CObjectAlias"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CAnnotationClassMetamodelReference")})
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted$annotations({
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted$annotation(mmr = "::0.6:ceylon.language::CAnything"),

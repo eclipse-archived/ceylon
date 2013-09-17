@@ -20,6 +20,9 @@ annotation AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelRef
 annotation AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelReferenceVariadic2() => AnnotationClassMetamodelReferenceVariadic();
 @nomodel
 annotation AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelReferenceVariadic3(Declaration mmr) => AnnotationClassMetamodelReferenceVariadic(mmr, mmr);
+
+shared abstract class ObjectAlias() => Object();
+
 @nomodel
 annotationClassMetamodelReference(`class Anything`)
 annotationClassMetamodelReference(`value process`)
@@ -30,6 +33,7 @@ annotationClassMetamodelReference(`value List.size`)
 annotationClassMetamodelReference(`function List.get`)
 annotationClassMetamodelReference(`function sort`)
 annotationClassMetamodelReference(`value true`)
+annotationClassMetamodelReference(`class ObjectAlias`)
 //illegal annotationClassMetamodelReference(`sort<String>`)
 // TODO annotationClassMetamodelReference(`package`)
 // TODO annotationClassMetamodelReference(`package ceylon.language`)
