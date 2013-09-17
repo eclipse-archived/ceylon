@@ -44,6 +44,7 @@ import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionClass;
 import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionMethod;
 import com.redhat.ceylon.compiler.loader.model.JavaMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
+import com.redhat.ceylon.compiler.loader.model.LazyClassAlias;
 import com.redhat.ceylon.compiler.loader.model.LazyElement;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
@@ -335,6 +336,10 @@ public class Metamodel {
         }
         if(declaration.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Declaration){
             return getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Declaration)declaration.getContainer());
+        }
+        if (declaration instanceof LazyClassAlias) {
+            ReflectionClass classMirror = (ReflectionClass) ((LazyClassAlias) declaration).classMirror;
+            return classMirror.klass;
         }
         throw new RuntimeException("Unsupported declaration type: " + declaration);
     }

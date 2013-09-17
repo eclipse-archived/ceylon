@@ -833,6 +833,20 @@ void checkMetamodelRefs() {
     assert(exists d28 = decls[28],
         d28.decl is ValueDeclaration,
         `value MetamodelRefs.parameter` == d28.decl);
+    
+    assert(exists d29 = decls[29],
+        d29.decl is ClassDeclaration,
+        `class AClassAlias` == d29.decl);
+}
+
+void checkAClassAlias() {
+    assert(exists acadoc = annotations(docAnnotation, `class AClassAlias`),
+            acadoc.description == "AClassAlias");
+    /* TODO #1298 
+    assert(
+            exists acapDecl = `class AClassAlias`.parameterDeclarations[0],
+            exists acapdoc = annotations(docAnnotation, acapDecl),
+            acapdoc.description == "AClassAlias.p");*/
 }
 
 shared void run() {
@@ -843,6 +857,7 @@ shared void run() {
     checkAInterface();
     checkAAbstractClass();
     checkAClass();
+    checkAClassAlias();
     // TODO Local declarations
     checkModuleAndImports();
     checkPackage();

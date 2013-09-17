@@ -201,6 +201,11 @@ shared class AClass(
  
 }
 
+"AClassAlias"
+class AClassAlias(
+        "AClassAlias.p"
+        String p) => AClass(p);
+
 decl(`value aToplevelAttribute`)
 decl(`value aToplevelGetterSetter`)
 decl(`function aToplevelFunction`)
@@ -232,6 +237,8 @@ decl(`function AAbstractClass.InnerInterface.method`)
 decl(`class AClass`)
 decl(`class MetamodelRefs`)
 decl(`value MetamodelRefs.parameter`)
+decl(`class AClassAlias`)
 class MetamodelRefs(
     shared String parameter) {
 }
+
