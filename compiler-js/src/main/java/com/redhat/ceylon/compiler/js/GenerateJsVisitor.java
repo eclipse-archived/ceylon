@@ -4449,9 +4449,9 @@ public class GenerateJsVisitor extends Visitor
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.TypeAlias) {
             out("Alias");
         }
-        out("()('", d.getName(), "',", clAlias, "getModules$meta().find('", m.getNameAsString(),
+        out("()(", clAlias, "getModules$meta().find('", m.getNameAsString(),
                 "','", m.getVersion(), "').findPackage('", d.getUnit().getPackage().getNameAsString(),
-                "'),"+ d.isToplevel(),",");
+                "'),");
         if (d.isMember()) {
             qualify(that, (Declaration)d.getContainer());
             out(names.name((Declaration)d.getContainer()), ".$$.prototype.");
