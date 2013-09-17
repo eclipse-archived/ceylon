@@ -19,6 +19,7 @@ import com.redhat.ceylon.compiler.loader.model.LazyModule;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
 public class RuntimeModelLoader extends ReflectionModelLoader {
@@ -31,6 +32,22 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
         super(moduleManager, modules, new JULLogger());
     }
 
+    @Override
+    public void loadStandardModules() {
+        // set up the type factory and that's it: do not try to load the language module package before it's set up
+        // by Metamodel.loadModule
+        Module languageModule = findOrCreateModule(CEYLON_LANGUAGE, null);
+        addModuleToClassPath(languageModule, null);
+        Package languagePackage = findOrCreatePackage(languageModule, CEYLON_LANGUAGE);
+        typeFactory.setPackage(languagePackage);
+        
+        // make sure the jdk modules are loaded because those are not initialised by jboss modules nor the IDE Launcher
+        for(String jdkModule : JDKUtils.getJDKModuleNames())
+            findOrCreateModule(jdkModule, JDK_MODULE_VERSION);
+        for(String jdkOracleModule : JDKUtils.getOracleJDKModuleNames())
+            findOrCreateModule(jdkOracleModule, JDK_MODULE_VERSION);
+    }
+    
     @Override
     protected List<String> getPackageList(Module module, String packageName) {
         return jars.getPackageList(packageName);
@@ -108,6 +125,13 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
                 return findModule(jdkModuleName, JDK_MODULE_VERSION);
             return lookupModuleInternal(pkgName);
         }
+    }
+    
+    @Override
+    protected String cacheKeyByModule(Module module, String name) {
+        if(module == null)
+            throw new NullPointerException("No module found for "+name);
+        return super.cacheKeyByModule(module, name);
     }
     
     private String cacheKeyByModule(String name, String version) {
