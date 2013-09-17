@@ -849,7 +849,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         klass.setAnonymous(classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null);
         klass.setAnnotation(classMirror.getAnnotation(CEYLON_LANGUAGE_ANNOTATION_ANNOTATION) != null);
         if(klass.isCeylon())
-            klass.setAbstract(classMirror.getAnnotation(CEYLON_LANGUAGE_ABSTRACT_ANNOTATION) != null);
+            klass.setAbstract(classMirror.getAnnotation(CEYLON_LANGUAGE_ABSTRACT_ANNOTATION) != null
+                              // for toplevel classes if the annotation is missing we respect the java abstract modifier
+                              // for member classes that would be ambiguous between formal and abstract so we don't and require
+                              // the model annotation
+                              || (!classMirror.isInnerClass() && !classMirror.isLocalClass() && classMirror.isAbstract()));
         else
             klass.setAbstract(classMirror.isAbstract());
         klass.setFormal(classMirror.getAnnotation(CEYLON_LANGUAGE_FORMAL_ANNOTATION) != null);
