@@ -104,4 +104,10 @@ public class OutputRepositoryManager extends AbstractRepositoryManager {
     public ModuleSearchResult searchModules(ModuleQuery query) {
         return new ModuleSearchResult();
     }
+    
+    @Override
+    public void refresh(boolean recurse) {
+        output.refresh(recurse);
+        manager.refresh(recurse);
+    }
 }

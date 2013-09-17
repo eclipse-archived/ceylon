@@ -188,4 +188,9 @@ public interface RepositoryManager {
      * @return the list of matching module names
      */
     ModuleSearchResult searchModules(ModuleQuery query);
+
+    /**
+     * Makes sure that content cached as "unavailable" is reasessed
+     */
+    void refresh(boolean recurse);
 }

@@ -71,4 +71,9 @@ public interface Repository extends ContentFinder {
      * Returns a display string that represents this Repository
      */
     String getDisplayString();
+
+    /**
+     * Makes sure that content cached as "unavailable" is reasessed
+     */
+    void refresh(boolean recurse);
 }

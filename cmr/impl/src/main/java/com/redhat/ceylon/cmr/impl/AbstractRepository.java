@@ -163,6 +163,11 @@ public abstract class AbstractRepository implements Repository {
     }
 
     @Override
+    public void refresh(boolean recurse) {
+        root.refresh(recurse);
+    }
+
+    @Override
     public void completeModules(ModuleQuery query, ModuleSearchResult result) {
         // check for delegate
         ContentFinder delegate = root.getService(ContentFinder.class);

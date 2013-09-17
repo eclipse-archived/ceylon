@@ -505,4 +505,11 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             return result;
         }
     }
+    
+    @Override
+    public void refresh(boolean recurse) {
+        for (Repository root : roots) {
+            root.refresh(recurse);
+        }
+    }
 }
