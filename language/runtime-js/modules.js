@@ -195,7 +195,7 @@ function Paquete(name, container, pkg, $$paquete){
       var r=[];
       for (var mn in this.pkg) {
         var m = this.pkg[mn];
-        if (filter(m)) {
+        if (filter(m) && m['$an'] && m['$an']['shared']) {
           var mt = m['$mt'];
           if (mt === 'mthd') {
             r.push(OpenFunction(this, m));
