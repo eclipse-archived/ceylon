@@ -63,16 +63,16 @@ shared class AppliedFunction<out Type, in Arguments>() satisfies Function<Type,A
   shared actual Map<TypeParameter, ClosedType> typeArguments { throw Exception("unimplemented"); }
 }
 
-shared class AppliedUnionType() satisfies UnionType {
-  shared actual List<ClosedType> caseTypes { throw Exception("Implement case types"); }
+shared class AppliedUnionType<out Union=Anything>() satisfies UnionType<Union> {
+  shared actual List<ClosedType<Union>> caseTypes { throw Exception("Implement case types"); }
 
   shared actual Boolean isTypeOf(Anything instance) { throw Exception("Class declaration"); }
   shared actual Boolean isSuperTypeOf(ClosedType<Anything> type) { throw Exception("Class declaration"); }
   shared actual Boolean isExactly(ClosedType<Anything> type) { throw Exception("Class declaration"); }
 }
 
-shared class AppliedIntersectionType() satisfies IntersectionType {
-  shared actual List<ClosedType> satisfiedTypes { throw Exception("Implement satisfied types"); }
+shared class AppliedIntersectionType<out Union=Anything>() satisfies IntersectionType<Union> {
+  shared actual List<ClosedType<Union>> satisfiedTypes { throw Exception("Implement satisfied types"); }
 
   shared actual Boolean isTypeOf(Anything instance) { throw Exception("Class declaration"); }
   shared actual Boolean isSuperTypeOf(ClosedType<Anything> type) { throw Exception("Class declaration"); }
