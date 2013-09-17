@@ -97,6 +97,8 @@ public class JsIdentifierNames {
         reservedWords.add("volatile");
         //reservedWords.add("while");
         reservedWords.add("with");
+        reservedWords.add("apply");
+        reservedWords.add("call");
 
         // The names of the following members also have to be escaped to avoid
         // collisions with members of native JavaScript classes in the
