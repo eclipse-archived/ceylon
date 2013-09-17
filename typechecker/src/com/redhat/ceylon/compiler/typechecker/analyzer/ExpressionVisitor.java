@@ -3728,12 +3728,10 @@ public class ExpressionVisitor extends Visitor {
                 that.addError("type is not visible: " + 
                         baseDescription(that), 400);
             }
-            else {
-                if (type.isPackageVisibility() && 
-                        !declaredInPackage(type, unit)) {
-                    that.addError("package private type is not visible: " + 
-                        baseDescription(that));
-                }
+            else if (type.isPackageVisibility() && 
+                    !declaredInPackage(type, unit)) {
+                that.addError("package private type is not visible: " + 
+                    baseDescription(that));
             }
         }
     }
@@ -3841,7 +3839,7 @@ public class ExpressionVisitor extends Visitor {
             that.addError("function or value is not visible: " +
                     name, 400);
         }
-        if (member.isPackageVisibility() && 
+        else if (member.isPackageVisibility() && 
                 !declaredInPackage(member, unit)) {
             that.addError("package private function or value is not visible: " +
                     name);
@@ -3942,13 +3940,13 @@ public class ExpressionVisitor extends Visitor {
             that.addError("method or attribute is not visible: " +
                     name + " of " + container, 400);
         }
-        if (member.isProtectedVisibility() && 
+        else if (member.isProtectedVisibility() && 
                 !selfReference && 
                 !declaredInPackage(member, unit)) {
             that.addError("protected method or attribute is not visible: " +
                     name + " of " + container);
         }
-        if (member.isPackageVisibility() && 
+        else if (member.isPackageVisibility() && 
                 !declaredInPackage(member, unit)) {
             that.addError("package private method or attribute is not visible: " +
                     name + " of " + container);

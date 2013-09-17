@@ -363,11 +363,11 @@ public class TypeVisitor extends Visitor {
                     id.addError("imported declaration is not shared: " +
                             name, 400);
                 }
-                if (d.isPackageVisibility()) {
+                else if (d.isPackageVisibility()) {
                     id.addError("imported package private declaration is not visible: " +
                             name);
                 }
-                if (d.isProtectedVisibility()) {
+                else if (d.isProtectedVisibility()) {
                     id.addError("imported protected declaration is not visible: " +
                             name);
                 }
@@ -413,12 +413,12 @@ public class TypeVisitor extends Visitor {
                 id.addError("imported declaration is not shared: " +
                         name + " of " + td.getName(), 400);
             }
-            if (!declaredInPackage(m, unit)) {
+            else if (!declaredInPackage(m, unit)) {
                 if (m.isPackageVisibility()) {
                     id.addError("imported package private declaration is not visible: " +
                             name + " of " + td.getName());
                 }
-                if (m.isProtectedVisibility()) {
+                else if (m.isProtectedVisibility()) {
                     id.addError("imported protected declaration is not visible: " +
                             name + " of " + td.getName());
                 }
