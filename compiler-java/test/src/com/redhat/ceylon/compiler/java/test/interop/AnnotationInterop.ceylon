@@ -42,14 +42,14 @@ javaAnnotationPrimitives {
     stra={""};
 }
 javaAnnotationClass {
-    clas=`String`;
-    classRaw=`String`;
-    classWithBound=`Exception`;
-    classExact=`String`;
-    classes={`String`, `Boolean`};
-    classesRaw={`String`, `Boolean`};
-    classesWithBound={`Exception`, `AssertionException`};
-    classesExact={`String`};
+    clas=`class String`;
+    classRaw=`class String`;
+    classWithBound=`class Exception`;
+    classExact=`class String`;
+    classes={`class String`, `class Boolean`, `interface Sequential`};
+    classesRaw={`class String`, `class Boolean`, `interface Sequential`};
+    classesWithBound={`class Exception`, `class AssertionException`};
+    classesExact={`class String`};
 }
 javaAnnotationEnum {
     threadState=new;
