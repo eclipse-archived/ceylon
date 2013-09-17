@@ -506,7 +506,7 @@ class AnnotationInvocationVisitor extends Visitor {
         if(tl.getType() != null && tl.getType().getTypeModel() != null){
             if (anno.isInterop()) {
                 append(exprGen.naming.makeQualIdent(
-                        exprGen.makeJavaType(tl.getType().getTypeModel()),
+                        exprGen.makeJavaType(tl.getType().getTypeModel(), AbstractTransformer.JT_RAW),
                         "class"));
             } else {
                 append(exprGen.makeMetaLiteralStringLiteralForAnnotation(tl));
