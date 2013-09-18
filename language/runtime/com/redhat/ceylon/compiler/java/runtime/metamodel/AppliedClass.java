@@ -41,13 +41,13 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     private int firstDefaulted;
     private int variadicIndex = -1;
     private MethodHandle[] dispatch;
-    private ceylon.language.meta.model.ClassOrInterface<?> container;
+    private ceylon.language.meta.model.Type<?> container;
     
     // FIXME: get rid of duplicate instantiations of AppliedClassType when the type in question has no type parameters
     public AppliedClass(@Ignore TypeDescriptor $reifiedType, 
                         @Ignore TypeDescriptor $reifiedArguments,
                         com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType, 
-                        ceylon.language.meta.model.ClassOrInterface<?> container, Object instance) {
+                        ceylon.language.meta.model.Type<?> container, Object instance) {
         super($reifiedType, producedType);
         this.$reifiedArguments = $reifiedArguments;
         this.container = container;
@@ -405,8 +405,8 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     }
 
     @Override
-    @TypeInfo("ceylon.language.meta.model::ClassOrInterface<ceylon.language::Anything>")
-    public ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
+    @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>|ceylon.language::Null")
+    public ceylon.language.meta.model.Type<? extends java.lang.Object> getContainer(){
         return container;
     }
 

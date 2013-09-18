@@ -157,7 +157,7 @@ public class AppliedAttribute<Container, Type>
     @Override
     public int hashCode() {
         int result = 1;
-        result = 37 * result + getDeclaringClassOrInterface().hashCode();
+        result = 37 * result + getDeclaringType().hashCode();
         result = 37 * result + getDeclaration().hashCode();
         return result;
     }
@@ -172,14 +172,14 @@ public class AppliedAttribute<Container, Type>
             return false;
         ceylon.language.meta.model.Attribute<?,?> other = (ceylon.language.meta.model.Attribute<?,?>) obj;
         return getDeclaration().equals(other.getDeclaration())
-                && getDeclaringClassOrInterface().equals(other.getDeclaringClassOrInterface());
+                && getDeclaringType().equals(other.getDeclaringType());
     }
 
 
     @Override
     @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>")
     public ceylon.language.meta.model.Type<? extends java.lang.Object> getContainer(){
-        return getDeclaringClassOrInterface();
+        return getDeclaringType();
     }
 
     @Override

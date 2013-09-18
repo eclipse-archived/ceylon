@@ -172,7 +172,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     @Override
     public int hashCode() {
         int result = 1;
-        result = 37 * result + getDeclaringClassOrInterface().hashCode();
+        result = 37 * result + getDeclaringType().hashCode();
         result = 37 * result + getDeclaration().hashCode();
         result = 37 * result + getTypeArguments().hashCode();
         return result;
@@ -188,14 +188,14 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
             return false;
         ceylon.language.meta.model.Method<?, ?, ?> other = (ceylon.language.meta.model.Method<?, ?, ?>) obj;
         return getDeclaration().equals(other.getDeclaration())
-                && getDeclaringClassOrInterface().equals(other.getDeclaringClassOrInterface())
+                && getDeclaringType().equals(other.getDeclaringType())
                 && getTypeArguments().equals(other.getTypeArguments());
     }
 
     @Override
     @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>")
     public ceylon.language.meta.model.Type<? extends java.lang.Object> getContainer(){
-        return getDeclaringClassOrInterface();
+        return getDeclaringType();
     }
 
     @Override

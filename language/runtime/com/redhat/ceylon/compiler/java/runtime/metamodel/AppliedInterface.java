@@ -22,12 +22,12 @@ public class AppliedInterface<Type>
     implements ceylon.language.meta.model.Interface<Type> {
 
     private Object instance;
-    private ceylon.language.meta.model.ClassOrInterface<?> container;
+    private ceylon.language.meta.model.Type<?> container;
 
     // FIXME: get rid of duplicate instantiations of AppliedInterfaceType when the type in question has no type parameters
     public AppliedInterface(@Ignore TypeDescriptor $reifiedType, 
                             com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType,
-                            ceylon.language.meta.model.ClassOrInterface<?> container, Object instance) {
+                            ceylon.language.meta.model.Type<?> container, Object instance) {
         super($reifiedType, producedType);
         this.container = container;
         this.instance = instance;
@@ -79,8 +79,8 @@ public class AppliedInterface<Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.meta.model::ClassOrInterface<ceylon.language::Anything>")
-    public ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
+    @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>|ceylon.language::Null")
+    public ceylon.language.meta.model.Type<? extends java.lang.Object> getContainer(){
         return container;
     }
 

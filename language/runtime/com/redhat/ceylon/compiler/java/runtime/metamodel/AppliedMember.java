@@ -41,7 +41,7 @@ public abstract class AppliedMember<Container, Kind extends ceylon.language.meta
 
     @Override
     @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>")
-    public ceylon.language.meta.model.Type<? extends Object> getDeclaringClassOrInterface() {
+    public ceylon.language.meta.model.Type<? extends Object> getDeclaringType() {
         return container;
     }
 

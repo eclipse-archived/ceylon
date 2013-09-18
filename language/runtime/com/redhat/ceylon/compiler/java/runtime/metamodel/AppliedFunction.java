@@ -398,7 +398,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 
 
     @Override
-    @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>")
+    @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>|ceylon.language::Null")
     public ceylon.language.meta.model.Type<? extends java.lang.Object> getContainer(){
         return container;
     }

@@ -89,9 +89,9 @@ public class AppliedMemberInterface<Container, Type>
     }
     
     @Override
-    @TypeInfo("ceylon.language.meta.model::ClassOrInterface<ceylon.language::Anything>")
-    public ceylon.language.meta.model.ClassOrInterface<? extends Object> getDeclaringClassOrInterface() {
-        return (ClassOrInterface<? extends Object>) Metamodel.getAppliedMetamodel(producedType.getQualifyingType());
+    @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>")
+    public ceylon.language.meta.model.Type<? extends Object> getDeclaringType() {
+        return Metamodel.getAppliedMetamodel(producedType.getQualifyingType());
     }
 
     @Override
@@ -162,7 +162,7 @@ public class AppliedMemberInterface<Container, Type>
     @Override
     public int hashCode() {
         int result = 1;
-        result = 37 * result + getDeclaringClassOrInterface().hashCode();
+        result = 37 * result + getDeclaringType().hashCode();
         result = 37 * result + getDeclaration().hashCode();
         result = 37 * result + getTypeArguments().hashCode();
         return result;
@@ -178,13 +178,13 @@ public class AppliedMemberInterface<Container, Type>
             return false;
         ceylon.language.meta.model.MemberInterface<?, ?> other = (ceylon.language.meta.model.MemberInterface<?, ?>) obj;
         return getDeclaration().equals(other.getDeclaration())
-                && getDeclaringClassOrInterface().equals(other.getDeclaringClassOrInterface())
+                && getDeclaringType().equals(other.getDeclaringType())
                 && getTypeArguments().equals(other.getTypeArguments());
     }
 
     @Override
-    @TypeInfo("ceylon.language.meta.model::ClassOrInterface<ceylon.language::Anything>")
-    public ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object> getContainer(){
-        return getDeclaringClassOrInterface();
+    @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>")
+    public ceylon.language.meta.model.Type<? extends java.lang.Object> getContainer(){
+        return getDeclaringType();
     }
 }

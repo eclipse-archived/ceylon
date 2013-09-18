@@ -22,5 +22,5 @@ shared interface Member<in Container, out Kind>
         given Kind satisfies Model {
     
     "The declaring closed type. This is the type that declared this member."
-    shared formal AppliedType<Anything> declaringClassOrInterface;
+    shared formal AppliedType<Anything> declaringType;
 }
