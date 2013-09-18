@@ -67,7 +67,12 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                 final boolean forceOp = context.isForceOperation();
                 try {
                     context.setForceOperation(true); // just force the ops
-                    final File file = putContent(context, node, node.getInputStream());
+                    InputStream inputStream = node.getInputStream();
+                    // temp fix for https://github.com/ceylon/ceylon-module-resolver/issues/60
+                    // in theory we should not have nodes with null streams, but at least provide a helpful exception
+                    if(inputStream == null)
+                        throw new RepositoryException("Node "+node+" for repository "+this+" returned a null stream");
+                    final File file = putContent(context, node, inputStream);
                     // we expect the remote nodes to support Ceylon module info                    
                     return new FileArtifactResult(this, context.getName(), context.getVersion(), file);
                 } catch (IOException e) {
