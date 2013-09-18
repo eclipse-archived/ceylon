@@ -34,7 +34,9 @@ final class switchValues_ {
         }
         {
             .java.lang.Object $sel$5 = .ceylon.language.Integer.instance(num);
-            if ($sel$5.equals(.ceylon.language.Integer.instance(0L))) {
+            if ($sel$5.equals(.ceylon.language.Integer.instance(-1L))) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("negative identity"));
+            } else if ($sel$5.equals(.ceylon.language.Integer.instance(0L))) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("additive identity"));
             } else if ($sel$5.equals(.ceylon.language.Integer.instance(1L))) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("multiplicative identity"));

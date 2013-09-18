@@ -33,6 +33,7 @@ void switchValues(String? name, Integer num, Character ch) {
     else { print("Somewhere else"); }
     
     switch (num)
+    case (-1) { print("negative identity"); }
     case (0) { print("additive identity"); }
     case (1) { print("multiplicative identity"); }
     else { print("something else"); }
