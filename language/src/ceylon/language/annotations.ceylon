@@ -16,113 +16,113 @@ shared final annotation class AnnotationAnnotation()
 shared annotation AnnotationAnnotation annotation() => AnnotationAnnotation(); 
 
 "The annotation class for [[shared]]."
-shared final annotation class Shared()
-        satisfies OptionalAnnotation<Shared, ValueDeclaration|FunctionDeclaration|ClassOrInterfaceDeclaration|Package|Import> {}
+shared final annotation class SharedAnnotation()
+        satisfies OptionalAnnotation<SharedAnnotation, ValueDeclaration|FunctionDeclaration|ClassOrInterfaceDeclaration|Package|Import> {}
 
 "Annotation to mark a type or member as shared. A `shared` 
  member is visible outside the block of code in which it is 
  declared."
-shared annotation Shared shared() => Shared();
+shared annotation SharedAnnotation shared() => SharedAnnotation();
 
 "The annotation class for [[variable]]."
-shared final annotation class Variable()
-        satisfies OptionalAnnotation<Variable, ValueDeclaration> {}
+shared final annotation class VariableAnnotation()
+        satisfies OptionalAnnotation<VariableAnnotation, ValueDeclaration> {}
 
 "Annotation to mark an value as variable. A `variable` value 
  may be assigned multiple times."
-shared annotation Variable variable() => Variable();
+shared annotation VariableAnnotation variable() => VariableAnnotation();
 
 "The annotation class for [[abstract]]."
-shared final annotation class Abstract()
-        satisfies OptionalAnnotation<Abstract, ClassDeclaration> {}
+shared final annotation class AbstractAnnotation()
+        satisfies OptionalAnnotation<AbstractAnnotation, ClassDeclaration> {}
 
 "Annotation to mark a class as abstract. An `abstract` class 
  may not be directly instantiated. An `abstract` class may 
  have enumerated cases."
-shared annotation Abstract abstract() => Abstract();
+shared annotation AbstractAnnotation abstract() => AbstractAnnotation();
 
 "The annotation class for [[final]]."
-shared final annotation class Final()
-        satisfies OptionalAnnotation<Final, ClassDeclaration> {}
+shared final annotation class FinalAnnotation()
+        satisfies OptionalAnnotation<FinalAnnotation, ClassDeclaration> {}
 
 "Annotation to mark a class as final. A `final` class may 
  not be extended. Marking a class as final affects disjoint
  type analysis."
-shared annotation Final final() => Final();
+shared annotation FinalAnnotation final() => FinalAnnotation();
 
 "The annotation class for [[actual]]."
-shared final annotation class Actual()
-        satisfies OptionalAnnotation<Actual, ValueDeclaration|FunctionDeclaration|ClassOrInterfaceDeclaration> {}
+shared final annotation class ActualAnnotation()
+        satisfies OptionalAnnotation<ActualAnnotation, ValueDeclaration|FunctionDeclaration|ClassOrInterfaceDeclaration> {}
 
 "Annotation to mark a member of a type as refining a member 
  of a supertype."
-shared annotation Actual actual() => Actual();
+shared annotation ActualAnnotation actual() => ActualAnnotation();
 
 "The annotation class for [[formal]]."
-shared final annotation class Formal()
-        satisfies OptionalAnnotation<Formal, ValueDeclaration|FunctionDeclaration|ClassOrInterfaceDeclaration> {}
+shared final annotation class FormalAnnotation()
+        satisfies OptionalAnnotation<FormalAnnotation, ValueDeclaration|FunctionDeclaration|ClassOrInterfaceDeclaration> {}
 
 "Annotation to mark a member whose implementation must be 
  provided by subtypes."  
-shared annotation Formal formal() => Formal();
+shared annotation FormalAnnotation formal() => FormalAnnotation();
 
 "The annotation class for [[default]]."
-shared final annotation class Default()
-        satisfies OptionalAnnotation<Default, ValueDeclaration|FunctionDeclaration|ClassOrInterfaceDeclaration> {}
+shared final annotation class DefaultAnnotation()
+        satisfies OptionalAnnotation<DefaultAnnotation, ValueDeclaration|FunctionDeclaration|ClassOrInterfaceDeclaration> {}
 
 "Annotation to mark a member whose implementation may be 
  refined by subtypes. Non-`default` declarations may not be 
  refined."
-shared annotation Default default() => Default();
+shared annotation DefaultAnnotation default() => DefaultAnnotation();
 
 "The annotation class for [[late]]."
-shared final annotation class Late()
-        satisfies OptionalAnnotation<Late, ValueDeclaration> {}
+shared final annotation class LateAnnotation()
+        satisfies OptionalAnnotation<LateAnnotation, ValueDeclaration> {}
 
 "Annotation to disable definite initialization analysis for 
  a reference."  
-shared annotation Late late() => Late();
+shared annotation LateAnnotation late() => LateAnnotation();
 
 "The annotation class for [[native]]."
-shared final annotation class Native()
-        satisfies OptionalAnnotation<Native, Annotated> {}
+shared final annotation class NativeAnnotation()
+        satisfies OptionalAnnotation<NativeAnnotation, Annotated> {}
 
 "Annotation to mark a member whose implementation is defined 
  in platform-native code."  
-shared annotation Native native() => Native();
+shared annotation NativeAnnotation native() => NativeAnnotation();
 
 "The annotation class for the [[doc]] annotation."
-shared final annotation class Doc(shared String description)
-        satisfies OptionalAnnotation<Doc, Annotated> {}
+shared final annotation class DocAnnotation(shared String description)
+        satisfies OptionalAnnotation<DocAnnotation, Annotated> {}
 
 "Annotation to specify API documentation of a program
  element." 
-shared annotation Doc doc(String description) => Doc(description);
+shared annotation DocAnnotation doc(String description) => DocAnnotation(description);
 
-shared final annotation class See(shared Declaration* programElements)
-        satisfies SequencedAnnotation<See, Annotated> {}
+shared final annotation class SeeAnnotation(shared Declaration* programElements)
+        satisfies SequencedAnnotation<SeeAnnotation, Annotated> {}
 
 "Annotation to specify API references to other related 
  program elements."
-shared annotation See see(Declaration* programElements) => See(*programElements);
+shared annotation SeeAnnotation see(Declaration* programElements) => SeeAnnotation(*programElements);
 
 "The annotation class for [[by]]."
-shared final annotation class Authors(shared String* authors)
-        satisfies OptionalAnnotation<Authors, Annotated> {}
+shared final annotation class AuthorsAnnotation(shared String* authors)
+        satisfies OptionalAnnotation<AuthorsAnnotation, Annotated> {}
 
 "Annotation to specify API authors."
-shared annotation Authors by(String* authors) => Authors(*authors);
+shared annotation AuthorsAnnotation by(String* authors) => AuthorsAnnotation(*authors);
 
-shared final annotation class ThrownException(shared Declaration type, shared String when) 
-        satisfies SequencedAnnotation<ThrownException, ValueDeclaration|FunctionDeclaration|ClassDeclaration> {}
+shared final annotation class ThrownExceptionAnnotation(shared Declaration type, shared String when) 
+        satisfies SequencedAnnotation<ThrownExceptionAnnotation, ValueDeclaration|FunctionDeclaration|ClassDeclaration> {}
 
 "Annotation to mark a program element that throws an 
  exception."
-shared annotation ThrownException throws(Declaration type, String when="") => ThrownException(type, when);
+shared annotation ThrownExceptionAnnotation throws(Declaration type, String when="") => ThrownExceptionAnnotation(type, when);
 
 "The annotation class for [[deprecated]]."
-shared final annotation class Deprecation(shared String description)
-        satisfies OptionalAnnotation<Deprecation, Annotated> {
+shared final annotation class DeprecationAnnotation(shared String description)
+        satisfies OptionalAnnotation<DeprecationAnnotation, Annotated> {
     shared String? reason {
         if (description.empty) {
             return null;
@@ -133,28 +133,28 @@ shared final annotation class Deprecation(shared String description)
 
 "Annotation to mark program elements which should not be 
  used anymore."
-shared annotation Deprecation deprecated(String reason="") => Deprecation(reason);
+shared annotation DeprecationAnnotation deprecated(String reason="") => DeprecationAnnotation(reason);
 
 "The annotation class for [[tagged]]."
-shared final annotation class Tags(shared String* tags)
-        satisfies OptionalAnnotation<Tags, Annotated> {}
+shared final annotation class TagsAnnotation(shared String* tags)
+        satisfies OptionalAnnotation<TagsAnnotation, Annotated> {}
 
 "Annotation to categorize the API by tag." 
-shared annotation Tags tagged(String* tags) => Tags(*tags);
+shared annotation TagsAnnotation tagged(String* tags) => TagsAnnotation(*tags);
 
 "The annotation class for [[license]]."
-shared final annotation class License(shared String url) 
-        satisfies OptionalAnnotation<License, Module> {}
+shared final annotation class LicenseAnnotation(shared String url) 
+        satisfies OptionalAnnotation<LicenseAnnotation, Module> {}
 
 "Annotation to specify the URL of the license of a module or 
  package." 
-shared annotation License license(String url) => License(url);
+shared annotation LicenseAnnotation license(String url) => LicenseAnnotation(url);
 
 "The annotation class for [[optional]]."
-shared final annotation class Optional() 
-        satisfies OptionalAnnotation<Optional, Import> {}
+shared final annotation class OptionalImportAnnotation() 
+        satisfies OptionalAnnotation<OptionalImportAnnotation, Import> {}
 
 "Annotation to specify that a module can be executed even if 
  the annotated dependency is not available."
-shared annotation Optional optional() => Optional();
+shared annotation OptionalImportAnnotation optional() => OptionalImportAnnotation();
 
