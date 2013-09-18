@@ -268,15 +268,15 @@ public class GenerateJsVisitor extends Visitor
             setCLAlias(names.moduleAlias(clm));
             require(clm);
         }
-        if (that.getModuleDescriptor() != null) {
+        if (!that.getModuleDescriptors().isEmpty()) {
             out("exports.$mod$ans$=");
-            TypeUtils.outputAnnotationsFunction(that.getModuleDescriptor().getAnnotationList(), this);
+            TypeUtils.outputAnnotationsFunction(that.getModuleDescriptors().get(0).getAnnotationList(), this);
             endLine(true);
         }
-        if (that.getPackageDescriptor() != null) {
+        if (!that.getPackageDescriptors().isEmpty()) {
             final String pknm = that.getUnit().getPackage().getNameAsString().replaceAll("\\.", "\\$");
             out("exports.$pkg$ans$", pknm, "=");
-            TypeUtils.outputAnnotationsFunction(that.getPackageDescriptor().getAnnotationList(), this);
+            TypeUtils.outputAnnotationsFunction(that.getPackageDescriptors().get(0).getAnnotationList(), this);
             endLine(true);
         }
 
