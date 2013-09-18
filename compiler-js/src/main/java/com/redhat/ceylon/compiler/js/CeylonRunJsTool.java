@@ -227,7 +227,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         }
         final boolean isDefault = module.equals("default");
         //The timeout is to have enough time to start reading on the process streams
-        final String eval = String.format("if(typeof setTimeout==='function'){setTimeout(function(){},50)};require('%s%s/%s%s').%s();",
+        final String eval = String.format("if(typeof setTimeout==='function'){setTimeout(function(){},50)};var __entry_point__=require('%s%s/%s%s').%s;if (__entry_point__===undefined)console.log('The specified method does not exist or is not shared in the module');else __entry_point();",
                 module.replace(".", "/"),
                 isDefault ? "" : "/" + version,
                 module,
