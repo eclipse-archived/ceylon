@@ -4555,7 +4555,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
 
     public void transformAnonymousAnnotation(Tree.AnonymousAnnotation annotation, Map<Class, ListBuffer<JCAnnotation>> annos) {
-        ProducedType docType = ((TypeDeclaration)typeFact().getLanguageModuleDeclaration("Doc")).getType();
+        ProducedType docType = ((TypeDeclaration)typeFact().getLanguageModuleDeclaration("DocAnnotation")).getType();
         JCAnnotation docAnnotation = at(annotation).Annotation(
                 makeJavaType(docType,  JT_ANNOTATION), 
                 List.<JCExpression>of(make().Assign(naming.makeUnquotedIdent("description"),
