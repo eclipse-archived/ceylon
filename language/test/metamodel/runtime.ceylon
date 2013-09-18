@@ -97,6 +97,7 @@ void checkMemberAttributes(){
     assert(is Class<NoParams, []> noParamsType);
     
     assert(exists string = noParamsType.getAttribute<NoParams, String>("str"));
+    assert(!string.declaration.variable);
     assert(string.declaration.name == "str");
     assert(string.declaration.qualifiedName == "metamodel::NoParams.str");
     assert(string(noParamsInstance).get() == "a");
@@ -117,6 +118,7 @@ void checkMemberAttributes(){
     assert(obj(noParamsInstance).get() === noParamsInstance);
 
     assert(exists string2 = noParamsType.getVariableAttribute<NoParams, String>("str2"));
+    assert(string2.declaration.variable);
     value string2Bound = string2(noParamsInstance);
     assert(string2Bound.get() == "a");
     string2Bound.set("b");

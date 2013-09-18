@@ -17,7 +17,6 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -45,6 +44,11 @@ public class FreeAttribute
         return null;
     }
 
+    @Override
+    public boolean getVariable(){
+        return ((com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration) declaration).isVariable();
+    }
+    
     @Override
     @TypeInfo("ceylon.language.meta.model::Value<Type>")
     @TypeParameters({

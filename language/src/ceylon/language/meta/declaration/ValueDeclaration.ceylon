@@ -41,6 +41,9 @@ import ceylon.language.meta.model { Value, Attribute, AppliedType = Type, Incomp
 shared interface ValueDeclaration
         satisfies FunctionOrValueDeclaration {
     
+    "True if this declaration is annotated with [[variable|ceylon.language::variable]]."
+    shared formal Boolean variable;
+
     "Applies this value declaration in order to obtain a value model. 
      See [this code sample](#toplevel-sample) for an example on how to use this."
     throws(`class IncompatibleTypeException`, "If the specified `Type` type argument is not compatible with the actual result.")

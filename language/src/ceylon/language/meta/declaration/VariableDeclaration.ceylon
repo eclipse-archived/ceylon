@@ -4,6 +4,9 @@ import ceylon.language.meta.model { Variable, VariableAttribute, AppliedType = T
 shared interface VariableDeclaration
         satisfies ValueDeclaration {
     
+    "True."
+    shared actual Boolean variable => true;
+
     see(`function ValueDeclaration.apply`)
     shared actual formal Variable<Type> apply<Type=Anything>();
 

@@ -39,6 +39,11 @@ public class FreeVariable
     }
 
     @Override
+    public boolean getVariable(){
+        return true;
+    }
+
+    @Override
     public int hashCode() {
         int result = 1;
         java.lang.Object container = getContainer();
