@@ -323,10 +323,10 @@ public class CeylonRunJsTool extends RepoUsingTool {
         
         ArtifactContext ac = new ArtifactContext(modname, version, ".js");
         ac.setFetchSingleArtifact(true);
-        ac.setThrowErrorIfMissing(true);
+        ac.setThrowErrorIfMissing(false);
         File jsmod = repoman.getArtifact(ac);
         if (jsmod == null) {
-            throw new CeylonRunJsException("Cannot find module " + module + " in specified modules");
+            throw new CeylonRunJsException("Cannot find module " + module + " in specified module repositories");
         }
         // NB localRepos will contain a set of files pointing to the module repositories
         // where all the needed modules can be found
