@@ -3,10 +3,8 @@ package com.redhat.ceylon.cmr.ceylon;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.NavigableMap;
 import java.util.ResourceBundle;
@@ -22,6 +20,7 @@ import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.ServiceToolLoader;
+import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
@@ -58,11 +57,11 @@ public abstract class RepoUsingTool implements Tool {
         }
     }
     
-    public void setRepositoryAsStrings(List<String> repo) throws URISyntaxException {
+    public void setRepositoryAsStrings(List<String> repo) throws Exception {
         if (repo != null) {
             List<URI> result = new ArrayList<URI>(repo.size());
             for (String r : repo) {
-                result.add(new URI(r));
+                result.add(StandardArgumentParsers.URI_PARSER.parse(r, this));
             }
             setRepository(result);
         } else {
