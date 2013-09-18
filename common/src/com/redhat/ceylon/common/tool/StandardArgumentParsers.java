@@ -11,28 +11,28 @@ import java.util.List;
 
 public class StandardArgumentParsers {
 
-    private static final ArgumentParser<String> CHAR_SEQUENCE_PARSER = new ArgumentParser<String>() {
+    public static final ArgumentParser<String> CHAR_SEQUENCE_PARSER = new ArgumentParser<String>() {
         @Override
         public String parse(String argument, Tool tool) {
             return argument != null ? argument : null;
         }
     };
     
-    static final ArgumentParser<Boolean> BOOLEAN_PARSER = new ArgumentParser<Boolean>() {
+    public static final ArgumentParser<Boolean> BOOLEAN_PARSER = new ArgumentParser<Boolean>() {
         @Override
         public Boolean parse(String argument, Tool tool) {
             return argument.matches("1|yes|true");
         }
     };
     
-    static final ArgumentParser<Integer> INTEGER_PARSER = new ArgumentParser<Integer>() {
+    public static final ArgumentParser<Integer> INTEGER_PARSER = new ArgumentParser<Integer>() {
         @Override
         public Integer parse(String argument, Tool tool) {
             return Integer.valueOf(argument);
         }
     };
     
-    static final ArgumentParser<URI> URI_PARSER = new ArgumentParser<URI>() {
+    public static final ArgumentParser<URI> URI_PARSER = new ArgumentParser<URI>() {
         @Override
         public URI parse(String argument, Tool tool) {
             try {
@@ -44,7 +44,7 @@ public class StandardArgumentParsers {
         }
     };
 
-    static class ConstructorArgumentParser<T> implements ArgumentParser<T> {
+    public static class ConstructorArgumentParser<T> implements ArgumentParser<T> {
 
         private Constructor<T> ctor;
 
@@ -80,7 +80,7 @@ public class StandardArgumentParsers {
         
     }
     
-    static class EnumArgumentParser<E extends Enum<E>> implements EnumerableParser<E> {
+    public static class EnumArgumentParser<E extends Enum<E>> implements EnumerableParser<E> {
 
         private final boolean denormalize;
         private final Class<E> enumClass;
