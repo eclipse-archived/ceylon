@@ -3370,6 +3370,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         for(Declaration decl : declarationsByName.values()){
             if(decl instanceof LazyElement){
                 Package pkg = getPackage(decl);
+                if(pkg == null){
+                    logVerbose("[Model loader stats: declaration "+decl.getName()+" has no package. Skipping.]");
+                    continue;
+                }
                 Stats stats = loadedByPackage.get(pkg);
                 if(stats == null){
                     stats = new Stats();
