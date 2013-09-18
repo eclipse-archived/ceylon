@@ -133,7 +133,7 @@ public class CeylonRunTool extends RepoUsingTool {
         }
 
         String module = moduleName(moduleNameOptVersion);
-        String version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module, moduleVersion(moduleNameOptVersion), ModuleQuery.Type.JVM, Versions.JVM_BINARY_MAJOR_VERSION, COMPILE_JVM);
+        String version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module, moduleVersion(moduleNameOptVersion), ModuleQuery.Type.JVM, Versions.JVM_BINARY_MAJOR_VERSION, true);
         if (version == null) {
             return;
         }
