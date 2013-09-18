@@ -1,7 +1,9 @@
 import ceylon.language.meta.model { 
     Function,
     Type,
-    Method
+    Method,
+    IncompatibleTypeException,
+    TypeApplicationException
 }
 
 """A function declaration.
@@ -49,11 +51,15 @@ shared interface FunctionDeclaration
 
     "Applies the given closed type arguments to this function declaration in order to obtain a function model. 
      See [this code sample](#toplevel-sample) for an example on how to use this."
+    throws(`class IncompatibleTypeException`, "If the specified `Return` or `Arguments` type arguments are not compatible with the actual result.")
+    throws(`class TypeApplicationException`, "If the specified closed type argument values are not compatible with the actual result's type parameters.")
     shared formal Function<Return, Arguments> apply<Return=Anything, Arguments=Nothing>(Type<Anything>* typeArguments)
         given Arguments satisfies Anything[];
 
     "Applies the given closed container type and type arguments to this method declaration in order to obtain a method model. 
      See [this code sample](#member-sample) for an example on how to use this."
+    throws(`class IncompatibleTypeException`, "If the specified `Container`, `Return` or `Arguments` type arguments are not compatible with the actual result.")
+    throws(`class TypeApplicationException`, "If the specified closed container type or type argument values are not compatible with the actual result's container type or type parameters.")
     shared formal Method<Container, Return, Arguments> memberApply<Container=Nothing, Return=Anything, Arguments=Nothing>(Type<Container> containerType, Type<Anything>* typeArguments)
         given Arguments satisfies Anything[];
 }

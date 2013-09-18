@@ -1,7 +1,9 @@
 import ceylon.language.meta.model {
     Class,
     MemberClass,
-    AppliedType = Type
+    AppliedType = Type,
+    IncompatibleTypeException,
+    TypeApplicationException
 }
 
 """Class declaration.
@@ -60,11 +62,15 @@ shared interface ClassDeclaration
 
     "Applies the given closed type arguments to this toplevel class declaration in order to obtain a class model. 
      See [this code sample](#toplevel-sample) for an example on how to use this."
+    throws(`class IncompatibleTypeException`, "If the specified `Type` or `Arguments` type arguments are not compatible with the actual result.")
+    throws(`class TypeApplicationException`, "If the specified closed type argument values are not compatible with the actual result's type parameters.")
     shared formal Class<Type, Arguments> classApply<Type=Anything, Arguments=Nothing>(AppliedType<Anything>* typeArguments)
         given Arguments satisfies Anything[];
 
     "Applies the given closed container type and type arguments to this member class declaration in order to obtain a member class model. 
      See [this code sample](#member-sample) for an example on how to use this."
+    throws(`class IncompatibleTypeException`, "If the specified `Container`, `Type` or `Arguments` type arguments are not compatible with the actual result.")
+    throws(`class TypeApplicationException`, "If the specified closed container type or type argument values are not compatible with the actual result's container type or type parameters.")
     shared formal MemberClass<Container, Type, Arguments> memberClassApply<Container=Nothing, Type=Anything, Arguments=Nothing>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments)
         given Arguments satisfies Anything[];
 }

@@ -1,4 +1,4 @@
-import ceylon.language.meta.model { Value, Attribute, AppliedType = Type }
+import ceylon.language.meta.model { Value, Attribute, AppliedType = Type, IncompatibleTypeException }
 
 """A value declaration.
    
@@ -43,9 +43,11 @@ shared interface ValueDeclaration
     
     "Applies this value declaration in order to obtain a value model. 
      See [this code sample](#toplevel-sample) for an example on how to use this."
+    throws(`class IncompatibleTypeException`, "If the specified `Type` type argument is not compatible with the actual result.")
     shared formal Value<Type> apply<Type=Anything>();
 
     "Applies the given closed container type to this attribute declaration in order to obtain an attribute model. 
      See [this code sample](#member-sample) for an example on how to use this."
+    throws(`class IncompatibleTypeException`, "If the specified `Container` or `Type` type arguments are not compatible with the actual result.")
     shared formal Attribute<Container, Type> memberApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType);
 }
