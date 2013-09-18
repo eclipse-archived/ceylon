@@ -381,8 +381,17 @@ public class LinkRenderer {
         String text;
         if( customText != null  ) {
             text = customText;
-        } else if( to instanceof String ) { 
-            text = (String) to;
+        } else if (to instanceof String) {
+            if (from instanceof Element) {
+                String aliasedName = ((Element) from).getUnit().getAliasedName(decl);
+                if (aliasedName != null && !aliasedName.equals(decl.getName()) && aliasedName.equals(to)) {
+                    text = decl.getQualifiedNameString();
+                } else {
+                    text = (String) to;
+                }
+            } else {
+                text = (String) to;
+            }
         } else {
             text = decl.getName();
         }
