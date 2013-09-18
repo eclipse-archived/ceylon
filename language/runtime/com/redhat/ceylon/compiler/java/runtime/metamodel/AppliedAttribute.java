@@ -86,13 +86,13 @@ public class AppliedAttribute<Container, Type>
     }
 
     public static <ContainerType, ValueType> ceylon.language.meta.model.Attribute<ContainerType, ValueType> 
-        instance(@Ignore TypeDescriptor $reifiedSubType, @Ignore TypeDescriptor reifiedValueType, 
+        instance(@Ignore TypeDescriptor $reifiedContainer, @Ignore TypeDescriptor reifiedValueType, 
                  FreeAttribute value, ProducedTypedReference valueTypedReference, 
                  com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration decl,
                  ceylon.language.meta.model.ClassOrInterface<? extends Object> container) {
         return decl.isVariable()
-                ? new AppliedVariableAttribute<ContainerType, ValueType>($reifiedSubType, reifiedValueType, value, valueTypedReference, container)
-                : new AppliedAttribute<ContainerType, ValueType>($reifiedSubType, reifiedValueType, value, valueTypedReference, container);
+                ? new AppliedVariableAttribute<ContainerType, ValueType>($reifiedContainer, reifiedValueType, value, valueTypedReference, container)
+                : new AppliedAttribute<ContainerType, ValueType>($reifiedContainer, reifiedValueType, value, valueTypedReference, container);
     }
     
     @Override

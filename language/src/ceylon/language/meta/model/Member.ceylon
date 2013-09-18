@@ -17,8 +17,8 @@ import ceylon.language.meta.model { AppliedType = Type }
            print(c().hello);
        }
    """
-shared interface Member<in Type, out Kind> 
-        satisfies Kind(Type)
+shared interface Member<in Container, out Kind> 
+        satisfies Kind(Container)
         given Kind satisfies Model {
     
     "The declaring closed type. This is the type that declared this member."

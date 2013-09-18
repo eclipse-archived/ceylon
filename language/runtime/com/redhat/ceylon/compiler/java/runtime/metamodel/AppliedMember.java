@@ -14,29 +14,28 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 @TypeParameters({
-    @TypeParameter(value = "Type", variance = Variance.IN),
+    @TypeParameter(value = "Container", variance = Variance.IN),
     @TypeParameter(value = "Kind", variance = Variance.OUT, satisfies = "ceylon.language.meta.model::Model")
 })
-public abstract class AppliedMember<Type, Kind extends ceylon.language.meta.model.Model> 
-    implements ceylon.language.meta.model.Member<Type, Kind>, ReifiedType {
+public abstract class AppliedMember<Container, Kind extends ceylon.language.meta.model.Model> 
+    implements ceylon.language.meta.model.Member<Container, Kind>, ReifiedType {
 
     private ceylon.language.meta.model.Type<? extends Object> container;
     @Ignore
     protected final TypeDescriptor $reifiedKind;
-    // call it container to help subclasses not get confused
     @Ignore
     protected final TypeDescriptor $reifiedContainer;
 
-    public AppliedMember(@Ignore TypeDescriptor $reifiedType, @Ignore TypeDescriptor $reifiedKind,
+    public AppliedMember(@Ignore TypeDescriptor $reifiedContainer, @Ignore TypeDescriptor $reifiedKind,
                          ceylon.language.meta.model.Type<? extends Object> container){
-        this.$reifiedContainer = $reifiedType;
+        this.$reifiedContainer = $reifiedContainer;
         this.$reifiedKind = $reifiedKind;
         this.container = container;
     }
     
     @Override
     @Ignore
-    public Member$impl<Type, Kind> $ceylon$language$meta$model$Member$impl() {
+    public Member$impl<Container, Kind> $ceylon$language$meta$model$Member$impl() {
         return null;
     }
 

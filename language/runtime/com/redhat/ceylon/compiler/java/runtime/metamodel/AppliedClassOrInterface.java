@@ -214,12 +214,12 @@ public abstract class AppliedClassOrInterface<Type>
 
     @Override
     @TypeParameters({
-        @TypeParameter(value = "SubType"),
+        @TypeParameter(value = "Container"),
         @TypeParameter(value = "Type")
     })
-    @TypeInfo("ceylon.language.meta.model::Attribute<SubType,Type>|ceylon.language::Null")
-    public <SubType, Type>
-        ceylon.language.meta.model.Attribute<SubType, Type> getAttribute(@Ignore TypeDescriptor $reifiedSubType, 
+    @TypeInfo("ceylon.language.meta.model::Attribute<Container,Type>|ceylon.language::Null")
+    public <Container, Type>
+        ceylon.language.meta.model.Attribute<Container, Type> getAttribute(@Ignore TypeDescriptor $reifiedContainer, 
                                                                         @Ignore TypeDescriptor $reifiedType, 
                                                                         String name) {
         
@@ -231,7 +231,7 @@ public abstract class AppliedClassOrInterface<Type>
         ProducedTypedReference typedReference = decl.getProducedTypedReference(producedType, Collections.<ProducedType>emptyList());
         TypeDescriptor reifiedValueType = Metamodel.getTypeDescriptorForProducedType(typedReference.getType());
         Metamodel.checkReifiedTypeArgument("getAttribute", "Attribute<$1,$2>", 
-                Variance.IN, producedType, $reifiedSubType,
+                Variance.IN, producedType, $reifiedContainer,
                 Variance.OUT, typedReference.getType(), $reifiedType);
         return AppliedAttribute.instance(this.$reifiedType, reifiedValueType, value, typedReference, decl, this);
     }

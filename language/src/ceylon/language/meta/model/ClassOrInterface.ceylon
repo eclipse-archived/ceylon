@@ -31,23 +31,23 @@ shared interface ClassOrInterface<out Type=Anything>
     // FIXME: should we turn this into getClass and getInterface like we do for the rest?
 
     "Gets a member class or interface by name. Returns `null` if not found."
-    throws(`class IncompatibleTypeException`, "If the specified `SubType` or `Kind` type arguments are not compatible with the actual result.")
+    throws(`class IncompatibleTypeException`, "If the specified `Container` or `Kind` type arguments are not compatible with the actual result.")
     throws(`class TypeApplicationException`, "If the specified closed type argument values are not compatible with the actual result's type parameters.")
-    shared formal Member<SubType, Kind>? getClassOrInterface<SubType=Nothing, Kind=ClassOrInterface<Anything>>(String name, ClosedType<Anything>* types)
+    shared formal Member<Container, Kind>? getClassOrInterface<Container=Nothing, Kind=ClassOrInterface<Anything>>(String name, ClosedType<Anything>* types)
         given Kind satisfies ClassOrInterface<Anything>;
     
     "Gets a method by name. Returns `null` if not found."
-    throws(`class IncompatibleTypeException`, "If the specified `SubType`, `Type` or `Arguments` type arguments are not compatible with the actual result.")
+    throws(`class IncompatibleTypeException`, "If the specified `Container`, `Type` or `Arguments` type arguments are not compatible with the actual result.")
     throws(`class TypeApplicationException`, "If the specified closed type argument values are not compatible with the actual result's type parameters.")
-    shared formal Method<SubType, Type, Arguments>? getMethod<SubType=Nothing, Type=Anything, Arguments=Nothing>(String name, ClosedType<Anything>* types)
+    shared formal Method<Container, Type, Arguments>? getMethod<Container=Nothing, Type=Anything, Arguments=Nothing>(String name, ClosedType<Anything>* types)
         given Arguments satisfies Anything[];
     
     "Gets an attribute by name. Returns `null` if not found."
-    throws(`class IncompatibleTypeException`, "If the specified `SubType` or `Type` type arguments are not compatible with the actual result.")
-    shared formal Attribute<SubType, Type>? getAttribute<SubType=Nothing, Type=Anything>(String name);
+    throws(`class IncompatibleTypeException`, "If the specified `Container` or `Type` type arguments are not compatible with the actual result.")
+    shared formal Attribute<Container, Type>? getAttribute<Container=Nothing, Type=Anything>(String name);
 
     "Gets a variable attribute by name. Returns `null` if not found."
-    throws(`class IncompatibleTypeException`, "If the specified `SubType` or `Type` type arguments are not compatible with the actual result.")
-    shared formal VariableAttribute<SubType, Type>? getVariableAttribute<SubType=Nothing, Type=Anything>(String name);
+    throws(`class IncompatibleTypeException`, "If the specified `Container` or `Type` type arguments are not compatible with the actual result.")
+    shared formal VariableAttribute<Container, Type>? getVariableAttribute<Container=Nothing, Type=Anything>(String name);
 }
 
