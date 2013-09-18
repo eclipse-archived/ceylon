@@ -1899,8 +1899,8 @@ else {
             <itemizedlist>
                 <listitem>
                     <para>a <emphasis>value case</emphasis>&mdash;a list of string literals, 
-                    character literals, integer literals and/or value references to 
-                    anonymous classes, or</para>
+                    character literals, integer literals, negated integer literals, and/or 
+                    value references to anonymous classes, or</para>
                 </listitem>
                 <listitem>
                     <para>a <emphasis>type case</emphasis>&mdash;an assignability condition 
@@ -1909,7 +1909,8 @@ else {
             </itemizedlist>
             
             <synopsis>Case: CaseValue ("," CaseValue)* | "is" Type</synopsis>
-            <synopsis>CaseValue: IntegerLiteral | CharacterLiteral | StringLiteral | VerbatimStringLiteral | BaseExpression</synopsis>
+            <synopsis>CaseValue: LiteralCase | BaseExpression</synopsis>
+            <synopsis>LiteralCase: "-"? IntegerLiteral | CharacterLiteral | StringLiteral | VerbatimStringLiteral</synopsis>
             
             <para>Every <literal>case</literal> has a type:</para>
             
