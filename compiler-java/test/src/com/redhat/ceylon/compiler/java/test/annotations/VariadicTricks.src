@@ -11,7 +11,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks$annotation[] value();
 }
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.ceylon.language.AnnotationAnnotation$annotation
 final class VariadicTricks implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
     

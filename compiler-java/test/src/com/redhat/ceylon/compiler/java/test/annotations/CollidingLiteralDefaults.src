@@ -13,7 +13,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults$annotation[] value();
 }
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.ceylon.language.AnnotationAnnotation$annotation
 final class CollidingLiteralDefaults implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, .ceylon.language.meta.declaration.FunctionDeclaration> {
     
@@ -30,13 +30,13 @@ final class CollidingLiteralDefaults implements .com.redhat.ceylon.compiler.java
     }
     private final long i1;
     
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     public final long getI1() {
         return i1;
     }
     private final long i2;
     
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     public final long getI2() {
         return i2;
     }

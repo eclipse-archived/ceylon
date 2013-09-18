@@ -13,7 +13,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation[] value();
 }
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 final class AnnotationClassMetamodelReference implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
     
     AnnotationClassMetamodelReference(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation anno) {
@@ -68,7 +68,7 @@ final class AnnotationClassMetamodelReference implements .com.redhat.ceylon.comp
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted$annotation[] value();
 }
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 final class AnnotationClassMetamodelReferenceDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
     
     AnnotationClassMetamodelReferenceDefaulted() {
@@ -143,7 +143,7 @@ final class AnnotationClassMetamodelReferenceDefaulted implements .com.redhat.ce
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation[] value();
 }
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 final class AnnotationClassMetamodelReferenceVariadic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
     
     AnnotationClassMetamodelReferenceVariadic() {
@@ -320,8 +320,8 @@ final class annotationClassMetamodelReferenceVariadic3_ {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Shared$annotation
-@.ceylon.language.Abstract$annotation
+@.ceylon.language.SharedAnnotation$annotation
+@.ceylon.language.AbstractAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Alias("ceylon.language::Object")
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),

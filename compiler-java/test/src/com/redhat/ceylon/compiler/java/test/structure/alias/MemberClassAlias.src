@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.structure.alias;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Members({
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.MemberClassAlias.class),
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member.class)})
@@ -17,7 +17,7 @@ public class MemberClassAlias_Foo implements .com.redhat.ceylon.compiler.java.ru
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -38,7 +38,7 @@ public class MemberClassAlias_Foo implements .com.redhat.ceylon.compiler.java.ru
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAlias_Foo.Member")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})

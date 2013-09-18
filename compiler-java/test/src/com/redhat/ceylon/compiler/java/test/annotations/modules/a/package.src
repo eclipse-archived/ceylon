@@ -6,8 +6,8 @@ package com.redhat.ceylon.compiler.java.test.annotations.modules.a;
         doc = "Module A doc",
         by = {"Tom"},
         shared = false)
-@.ceylon.language.Doc$annotation(description = "Module A doc")
-@.ceylon.language.Authors$annotation(authors = "Tom")
+@.ceylon.language.DocAnnotation$annotation(description = "Module A doc")
+@.ceylon.language.AuthorsAnnotation$annotation(authors = "Tom")
 final class package_ {
     
     private package_() {

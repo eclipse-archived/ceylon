@@ -17,18 +17,18 @@ package com.redhat.ceylon.compiler.java.test.annotations.modules.c;
                 @.com.redhat.ceylon.compiler.java.metadata.Import(
                         name = "com.redhat.ceylon.module-resolver",
                         version = "0.6")})
-@.ceylon.language.Doc$annotation(description = "Module C doc, with imports!")
+@.ceylon.language.DocAnnotation$annotation(description = "Module C doc, with imports!")
 final class module_ {
     
     private module_() {
     }
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     public static final .java.lang.String com$redhat$ceylon$compiler$java$test$annotations$modules$a = null;
-    @.ceylon.language.Doc$annotation(description = "Optionally depend on b")
-    @.ceylon.language.Deprecation$annotation(description = "doesn\'t _do_ anything either")
-    @.ceylon.language.Optional$annotation
+    @.ceylon.language.DocAnnotation$annotation(description = "Optionally depend on b")
+    @.ceylon.language.DeprecationAnnotation$annotation(description = "doesn\'t _do_ anything either")
+    @.ceylon.language.OptionalImportAnnotation$annotation
     @.java.lang.Deprecated
     public static final .java.lang.String com$redhat$ceylon$compiler$java$test$annotations$modules$b = null;
-    @.ceylon.language.Doc$annotation(description = "module name with a dash")
+    @.ceylon.language.DocAnnotation$annotation(description = "module name with a dash")
     public static final .java.lang.String com$redhat$ceylon$module-resolver = null;
 }

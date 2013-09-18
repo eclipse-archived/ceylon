@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.structure.alias;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class ClassAliasWithParameters_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -39,7 +39,7 @@ public class ClassAliasWithParameters_Foo implements .com.redhat.ceylon.compiler
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::ClassAliasWithParameters_Foo")
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public final class ClassAliasWithParameters {

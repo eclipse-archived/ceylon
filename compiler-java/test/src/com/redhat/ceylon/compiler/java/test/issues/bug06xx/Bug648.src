@@ -15,14 +15,14 @@ class Bug648<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null|T")
     public final T foo() {
         return null;
     }
     
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public final .ceylon.language.Integer bar() {

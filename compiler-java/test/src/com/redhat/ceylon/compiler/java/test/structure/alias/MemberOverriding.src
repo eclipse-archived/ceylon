@@ -55,8 +55,8 @@ class MemberOverriding_Super implements .com.redhat.ceylon.compiler.java.runtime
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-    @.ceylon.language.Shared$annotation
-    @.ceylon.language.Default$annotation
+    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.DefaultAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -97,8 +97,8 @@ class MemberOverriding_Sub1 extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-    @.ceylon.language.Shared$annotation
-    @.ceylon.language.Actual$annotation
+    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.ActualAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Bar")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -139,8 +139,8 @@ class MemberOverriding_Sub2 extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-    @.ceylon.language.Shared$annotation
-    @.ceylon.language.Actual$annotation
+    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.ActualAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -182,8 +182,8 @@ class MemberOverriding_Sub3 extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-    @.ceylon.language.Shared$annotation
-    @.ceylon.language.Actual$annotation
+    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.ActualAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.class)
     @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -231,8 +231,8 @@ class MemberOverriding_Sub4 extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-    @.ceylon.language.Shared$annotation
-    @.ceylon.language.Actual$annotation
+    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.ActualAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.class)
     @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -280,8 +280,8 @@ class MemberOverriding_Sub5 extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-    @.ceylon.language.Shared$annotation
-    @.ceylon.language.Actual$annotation
+    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.ActualAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.class)
     @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Bar")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({

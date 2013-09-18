@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Exception")
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class SubclassException extends .ceylon.language.Exception {

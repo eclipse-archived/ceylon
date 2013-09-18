@@ -12,7 +12,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotation[] value();
 }
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 final class AnnotationClassCharacter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
     
     AnnotationClassCharacter(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotation anno) {
@@ -27,7 +27,7 @@ final class AnnotationClassCharacter implements .com.redhat.ceylon.compiler.java
     }
     private final int c;
     
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     public final int getC() {
         return c;
     }
@@ -67,7 +67,7 @@ final class AnnotationClassCharacter implements .com.redhat.ceylon.compiler.java
     public abstract int c() default 97;
 }
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 final class AnnotationClassCharacterDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
     
     AnnotationClassCharacterDefaulted() {
@@ -93,7 +93,7 @@ final class AnnotationClassCharacterDefaulted implements .com.redhat.ceylon.comp
     }
     private final int c;
     
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     public final int getC() {
         return c;
     }

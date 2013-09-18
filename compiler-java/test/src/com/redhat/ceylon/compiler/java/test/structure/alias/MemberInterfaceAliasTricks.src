@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.alias;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Name("MemberInterface")
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl.MemberInterface$impl.MemberClassAliasToEnclosingMemberClass.class)})
 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo.class)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -15,7 +15,7 @@ public interface MemberInterfaceAliasTricks_Foo$MemberInterface {
     public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl.MemberClass MemberClassAliasToEnclosingMemberClass$new();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Members({
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$MemberInterface.class),
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl.MemberClass.class)})
@@ -44,7 +44,7 @@ public final class MemberInterfaceAliasTricks_Foo$impl {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public class MemberClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -73,7 +73,7 @@ public final class MemberInterfaceAliasTricks_Foo$impl {
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-        @.ceylon.language.Shared$annotation
+        @.ceylon.language.SharedAnnotation$annotation
         @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberInterfaceAliasTricks_Foo.MemberClass")
         @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$MemberInterface.class)
         @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -97,7 +97,7 @@ public final class MemberInterfaceAliasTricks_Foo$impl {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricksImpl.MemberInterfaceImpl.class)})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.alias::MemberInterfaceAliasTricks_Foo"})
@@ -127,7 +127,7 @@ public class MemberInterfaceAliasTricksImpl implements .com.redhat.ceylon.compil
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricksImpl.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.alias::MemberInterfaceAliasTricks_Foo.MemberInterface"})
@@ -173,7 +173,7 @@ public class MemberInterfaceAliasTricksImpl implements .com.redhat.ceylon.compil
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricksImpl.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.A$impl.Foo.class)})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public interface A {
@@ -200,7 +200,7 @@ public final class A$impl {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.A.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -216,7 +216,7 @@ public final class A$impl {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.alias::A"})
 public class AImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.alias.A {

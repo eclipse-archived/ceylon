@@ -132,7 +132,7 @@ public final class first_ {
     private first_() {
     }
     
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({

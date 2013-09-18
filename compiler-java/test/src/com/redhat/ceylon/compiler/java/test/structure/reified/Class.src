@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.structure.reified;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -37,7 +37,7 @@ public final class Interface$impl<Key, Value> {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::Interface<ceylon.language::String,ceylon.language::Integer>"})
 public interface SubInterface extends .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<.ceylon.language.String, .ceylon.language.Integer> {
@@ -56,7 +56,7 @@ public final class SubInterface$impl {
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface $this;
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::Interface<Key,ceylon.language::Integer>"})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
@@ -146,7 +146,7 @@ public class Class<Key, Value> implements .com.redhat.ceylon.compiler.java.runti
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.reified::Class<T,ceylon.language::Integer>")
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -200,7 +200,7 @@ public final class toplevelObject_ implements .com.redhat.ceylon.compiler.java.r
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.reified::toplevelObject")
     public static .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_ $get() {

@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Doc$annotation(description = "class doc")
+@.ceylon.language.DocAnnotation$annotation(description = "class doc")
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(
         value = "doc",
         arguments = {"class doc"})})
@@ -11,7 +11,7 @@ class AnnonymousAnnotation implements .com.redhat.ceylon.compiler.java.runtime.m
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String s, @.com.redhat.ceylon.compiler.java.metadata.Name("s2")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-    @.ceylon.language.Doc$annotation(description = "class param doc")
+    @.ceylon.language.DocAnnotation$annotation(description = "class param doc")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(
             value = "doc",
             arguments = {"class param doc"})})
@@ -21,8 +21,8 @@ class AnnonymousAnnotation implements .com.redhat.ceylon.compiler.java.runtime.m
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.String s;
     
-    @.ceylon.language.Doc$annotation(description = "attribute doc")
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.DocAnnotation$annotation(description = "attribute doc")
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
             @.com.redhat.ceylon.compiler.java.metadata.Annotation(
                     value = "doc",
@@ -33,14 +33,14 @@ class AnnonymousAnnotation implements .com.redhat.ceylon.compiler.java.runtime.m
         return s;
     }
     
-    @.ceylon.language.Doc$annotation(description = "method doc")
+    @.ceylon.language.DocAnnotation$annotation(description = "method doc")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(
             value = "doc",
             arguments = {"method doc"})})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void m$priv(@.com.redhat.ceylon.compiler.java.metadata.Name("p")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-    @.ceylon.language.Doc$annotation(description = "method param doc")
+    @.ceylon.language.DocAnnotation$annotation(description = "method param doc")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(
             value = "doc",
             arguments = {"method param doc"})})

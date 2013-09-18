@@ -22,7 +22,7 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return new .java.lang.StringBuilder().append("narySequenced(").append(s1).append(", ").append(s2).append(", ").append(s3).append(", ").append(s4).append("; ").append(s.toString()).append(")").toString();
     }
     
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String narySequenced(@.com.redhat.ceylon.compiler.java.metadata.Name("s1")
@@ -45,7 +45,7 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return this;
     }
     
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void bug(@.com.redhat.ceylon.compiler.java.metadata.Name("bug")

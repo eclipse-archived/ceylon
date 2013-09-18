@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface AnnotationClassNullary$annotation {
 }
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.ceylon.language.AnnotationAnnotation$annotation
 final class AnnotationClassNullary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
     
@@ -60,7 +60,7 @@ final class AnnotationClassNullary implements .com.redhat.ceylon.compiler.java.r
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced$annotation[] value();
 }
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.ceylon.language.AnnotationAnnotation$annotation
 final class AnnotationClassNullarySequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
     

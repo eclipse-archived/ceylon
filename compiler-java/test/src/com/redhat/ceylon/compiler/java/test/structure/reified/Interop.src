@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.structure.reified;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.reified::JavaClass<Element>")
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::JavaInterface<Element>"})
@@ -20,8 +20,8 @@ public class CeylonClass<Element> extends .com.redhat.ceylon.compiler.java.test.
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
     
-    @.ceylon.language.Shared$annotation
-    @.ceylon.language.Actual$annotation
+    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.ActualAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
@@ -48,7 +48,7 @@ public class CeylonClass<Element> extends .com.redhat.ceylon.compiler.java.test.
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::JavaInterface<Element>"})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(

@@ -14,7 +14,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.ceylon.language.AnnotationAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
@@ -237,7 +237,7 @@ final class sequenceArguments_String_Empty_ {
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.ceylon.language.AnnotationAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
@@ -456,7 +456,7 @@ final class sequenceArguments_Boolean_Empty_ {
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.ceylon.language.AnnotationAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
@@ -679,7 +679,7 @@ final class sequenceArguments_Character_Empty_ {
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.ceylon.language.AnnotationAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
@@ -902,7 +902,7 @@ final class sequenceArguments_Float_Empty_ {
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.ceylon.language.AnnotationAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
@@ -1126,7 +1126,7 @@ final class sequenceArguments_Integer_Empty_ {
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.ceylon.language.AnnotationAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
@@ -1348,7 +1348,7 @@ final class sequenceArguments_Object_Empty_ {
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.ceylon.language.AnnotationAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),

@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -143,14 +143,14 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             private final long i1;
             
-            @.ceylon.language.Shared$annotation
+            @.ceylon.language.SharedAnnotation$annotation
             @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
             public final long getI1() {
                 return i1;
             }
             
-            @.ceylon.language.Shared$annotation
+            @.ceylon.language.SharedAnnotation$annotation
             @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
             @.com.redhat.ceylon.compiler.java.metadata.Transient
@@ -179,7 +179,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             private void m2$(final long arg1, final .ceylon.language.Sequential<? extends T> t) {
             }
             
-            @.ceylon.language.Shared$annotation
+            @.ceylon.language.SharedAnnotation$annotation
             @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
             public final void m2(@.com.redhat.ceylon.compiler.java.metadata.Name("arg1")
@@ -197,8 +197,8 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
                 );
             }
             
-            @.ceylon.language.Shared$annotation
-            @.ceylon.language.Actual$annotation
+            @.ceylon.language.SharedAnnotation$annotation
+            @.ceylon.language.ActualAnnotation$annotation
             @.com.redhat.ceylon.compiler.java.metadata.Annotations({
                     @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
                     @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})

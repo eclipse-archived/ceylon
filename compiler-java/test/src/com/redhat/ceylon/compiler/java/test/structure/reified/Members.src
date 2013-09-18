@@ -14,7 +14,7 @@ interface OuterClass$outerMethod$0$InnerInterface<Inner> {
     public .java.lang.Object InnerInterface$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.InnerClass.class)})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -37,7 +37,7 @@ public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -61,7 +61,7 @@ public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runti
         }
     }
     
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void outerMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("o")
@@ -129,7 +129,7 @@ public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runti
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Name("InnerInterface")
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface.class)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
@@ -149,7 +149,7 @@ public interface OuterInterface$InnerInterface<Outer, Inner> {
     public .com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface$impl<Outer>.InnerInterface$impl<Inner> $com$redhat$ceylon$compiler$java$test$structure$reified$OuterInterface$impl$InnerInterface$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface$InnerInterface.class)})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -211,7 +211,7 @@ public final class outerMethod_ {
     private outerMethod_() {
     }
     
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void outerMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("o")
@@ -280,7 +280,7 @@ public final class outerMethod_ {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass2.InnerClass.class)})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class OuterClass2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -294,7 +294,7 @@ public class OuterClass2 implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass2.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -330,7 +330,7 @@ public final class testMembers_ {
     private testMembers_() {
     }
     
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void testMembers(@.com.redhat.ceylon.compiler.java.metadata.Name("o")

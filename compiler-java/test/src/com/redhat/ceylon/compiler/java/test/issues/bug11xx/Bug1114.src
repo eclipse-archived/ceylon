@@ -83,7 +83,7 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     private final .com.redhat.ceylon.compiler.java.language.GetterDouble g_;
     
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     public final double getG() {
         return g_.$get();
     }

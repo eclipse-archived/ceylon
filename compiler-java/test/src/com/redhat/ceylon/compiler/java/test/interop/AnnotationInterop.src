@@ -64,8 +64,8 @@ class AnnotationInterop implements .com.redhat.ceylon.compiler.java.runtime.mode
             name = "tom",
             type = .com.redhat.ceylon.compiler.java.test.interop.AnnotationInterop.class,
             authenticationType = .javax.annotation.Resource.AuthenticationType.APPLICATION)
-    @.ceylon.language.Shared$annotation
-    @.ceylon.language.Variable$annotation
+    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.VariableAnnotation$annotation
     public final .java.lang.String getTom() {
         return tom;
     }
@@ -75,12 +75,12 @@ class AnnotationInterop implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     @.javax.annotation.PostConstruct
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     public final void afterConstrution() {
     }
     
     @.javax.annotation.PreDestroy
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     public final void beforeDestruction() {
     }
     

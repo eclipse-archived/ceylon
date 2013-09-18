@@ -7,7 +7,7 @@ public final class multipleParameterLists_ {
     private multipleParameterLists_() {
     }
     
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::String,ceylon.language::Tuple<ceylon.language::Integer,ceylon.language::Integer,ceylon.language::Empty>>")
     public static .ceylon.language.Callable<? extends .ceylon.language.String> multipleParameterLists() {
@@ -29,7 +29,7 @@ public final class multipleParameterLists2_ {
     private multipleParameterLists2_() {
     }
     
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Callable<ceylon.language::String,ceylon.language::Tuple<ceylon.language::Object,ceylon.language::Object,ceylon.language::Empty>>,ceylon.language::Tuple<ceylon.language::Float,ceylon.language::Float,ceylon.language::Empty>>")
     public static .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> multipleParameterLists2(@.com.redhat.ceylon.compiler.java.metadata.Name("a")

@@ -12,7 +12,7 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.String name;
     
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getName() {
@@ -25,7 +25,7 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.Person.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public class Address implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -63,7 +63,7 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             return city;
         }
         
-        @.ceylon.language.Shared$annotation
+        @.ceylon.language.SharedAnnotation$annotation
         @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
         public final .java.lang.String format() {
@@ -77,7 +77,7 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         }
     }
     
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void say(@.com.redhat.ceylon.compiler.java.metadata.Name("greeting")

@@ -14,7 +14,7 @@ final class bug1001Foo_ {
         .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo();
     }
 }
-@.ceylon.language.Shared$annotation
+@.ceylon.language.SharedAnnotation$annotation
 public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public Bug1001(final .ceylon.language.Callable<? extends .ceylon.language.Integer> paramUnusedMethodRef, final .ceylon.language.Callable<? extends .ceylon.language.Integer> paramMethodRef, final .ceylon.language.Callable<? extends .ceylon.language.Integer> paramMethodRefCaptured, final .ceylon.language.Callable<? extends .java.lang.Object> paramMethodRefCaptured2) {
@@ -88,7 +88,7 @@ public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> paramMethodRefCaptured2;
     
-    @.ceylon.language.Shared$annotation
+    @.ceylon.language.SharedAnnotation$annotation
     public final void paramMethodRefCaptured2(final long i) {
         paramMethodRefCaptured2.$call(.ceylon.language.Integer.instance(i));
     }

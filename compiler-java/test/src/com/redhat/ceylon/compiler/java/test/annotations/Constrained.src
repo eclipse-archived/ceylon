@@ -6,7 +6,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -81,7 +81,7 @@ final class ConstrainedToClass implements .com.redhat.ceylon.compiler.java.runti
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -149,7 +149,7 @@ final class ConstrainedToClassSeq implements .com.redhat.ceylon.compiler.java.ru
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -224,7 +224,7 @@ final class ConstrainedToInterface implements .com.redhat.ceylon.compiler.java.r
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -292,7 +292,7 @@ final class ConstrainedToInterfaceSeq implements .com.redhat.ceylon.compiler.jav
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -367,7 +367,7 @@ final class ConstrainedToFunction implements .com.redhat.ceylon.compiler.java.ru
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -435,7 +435,7 @@ final class ConstrainedToFunctionSeq implements .com.redhat.ceylon.compiler.java
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -510,7 +510,7 @@ final class ConstrainedToValue implements .com.redhat.ceylon.compiler.java.runti
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -578,7 +578,7 @@ final class ConstrainedToValueSeq implements .com.redhat.ceylon.compiler.java.ru
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -653,7 +653,7 @@ final class ConstrainedToVariable implements .com.redhat.ceylon.compiler.java.ru
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -721,7 +721,7 @@ final class ConstrainedToVariableSeq implements .com.redhat.ceylon.compiler.java
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -796,7 +796,7 @@ final class ConstrainedToPackage implements .com.redhat.ceylon.compiler.java.run
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -864,7 +864,7 @@ final class ConstrainedToPackageSeq implements .com.redhat.ceylon.compiler.java.
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -939,7 +939,7 @@ final class ConstrainedToModule implements .com.redhat.ceylon.compiler.java.runt
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -1007,7 +1007,7 @@ final class ConstrainedToModuleSeq implements .com.redhat.ceylon.compiler.java.r
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -1082,7 +1082,7 @@ final class ConstrainedToImport implements .com.redhat.ceylon.compiler.java.runt
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.Final$annotation
+@.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
