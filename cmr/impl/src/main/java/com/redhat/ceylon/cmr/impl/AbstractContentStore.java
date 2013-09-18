@@ -33,6 +33,7 @@ public abstract class AbstractContentStore implements ContentStore, StructureBui
 
     private static final String CAR = ".car";
     private static final String JAR = ".jar";
+    private static final String JS = ".js";
     private static final String PROPERTIES = ".properties";
     private static final String SHA1 = ".sha1";
     private static final String SRC = ".src";
@@ -50,6 +51,7 @@ public abstract class AbstractContentStore implements ContentStore, StructureBui
         this.offline = offline;
         addSuffix(CAR);
         addSuffix(JAR);
+        addSuffix(JS);
         addSuffix(PROPERTIES);
         addSuffix(SHA1);
         addSuffix(SRC);
