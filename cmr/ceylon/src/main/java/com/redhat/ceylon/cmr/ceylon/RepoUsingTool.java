@@ -137,15 +137,11 @@ public abstract class RepoUsingTool implements Tool {
         return versionMap.values();
     }
 
-    protected static final int COMPILE_NONE = 0;
-    protected static final int COMPILE_JVM = 1;
-    protected static final int COMPILE_JS = 2;
-
     protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryVersion) throws IOException {
-        return checkModuleVersionsOrShowSuggestions(repoMgr, name, version, type, binaryVersion, COMPILE_NONE);
+        return checkModuleVersionsOrShowSuggestions(repoMgr, name, version, type, binaryVersion, false);
     }
     
-    protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryVersion, int compileFlags) throws IOException {
+    protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryVersion, boolean allowCompilation) throws IOException {
         if ("default".equals(name)) {
             return "";
         }
@@ -154,12 +150,12 @@ public abstract class RepoUsingTool implements Tool {
         if (version != null) {
             // Here we either have a single version or none
             if (versions.isEmpty()) {
-                if (compileFlags != COMPILE_NONE) {
+                if (allowCompilation) {
                     Collection<ModuleVersionDetails> srcVersions = getVersionFromSource(name);
                     if (!srcVersions.isEmpty() && version.equals(srcVersions.iterator().next().getVersion())) {
                         // There seems to be source code that has the proper version
                         // Let's see if we can compile it...
-                        if (runCompiler(name, compileFlags)) {
+                        if (runCompiler(name, type)) {
                             // All okay it seems, let's use this version
                             versions = srcVersions;
                         }
@@ -174,14 +170,14 @@ public abstract class RepoUsingTool implements Tool {
             }
         } else {
             // Here we can have any number of versions, including none
-            if ((versions.isEmpty() || onlyRemote(versions)) && (compileFlags != COMPILE_NONE)) {
+            if ((versions.isEmpty() || onlyRemote(versions)) && allowCompilation) {
                 // If there are no versions at all or only in remote repositories we
                 // first check if there's local code we could compile before giving up
                 Collection<ModuleVersionDetails> srcVersions = getVersionFromSource(name);
                 if (!srcVersions.isEmpty()) {
                     // There seems to be source code
                     // Let's see if we can compile it...
-                    if (runCompiler(name, compileFlags)) {
+                    if (runCompiler(name, type)) {
                         // All okay it seems, let's use this version
                         versions = srcVersions;
                     }
@@ -248,7 +244,7 @@ public abstract class RepoUsingTool implements Tool {
         return result;
     }
     
-    private boolean runCompiler(String name, int compileFlags) {
+    private boolean runCompiler(String name, ModuleQuery.Type type) {
         List<String> args = new ArrayList<String>();
         if (systemRepo != null) {
             args.add("--sysrep");
@@ -273,9 +269,9 @@ public abstract class RepoUsingTool implements Tool {
             }
         };
         String toolName;
-        if (compileFlags == COMPILE_JVM) {
+        if (type == ModuleQuery.Type.JVM) {
             toolName = "compile";
-        } else if (compileFlags == COMPILE_JS) {
+        } else if (type == ModuleQuery.Type.JS) {
             toolName = "compile-js";
         } else {
             throw new IllegalArgumentException("Unknown compile flags passed");
