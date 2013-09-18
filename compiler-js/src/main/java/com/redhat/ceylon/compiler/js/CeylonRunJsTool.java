@@ -317,7 +317,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
                 .buildManager();
         
         // TODO fill in the proper "binary" JS version below instead of "null"
-        version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), modname, version, ModuleQuery.Type.JS, null, COMPILE_JS);
+        version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), modname, version, ModuleQuery.Type.JS, null, true);
         if (version == null) {
             return;
         }
