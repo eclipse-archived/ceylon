@@ -2966,7 +2966,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <literal>import</literal> statement in the same compilation unit may 
             import declarations, as defined by <xref linkend="imports"/>.</para>
             
-            <programlisting>Package modelPackage = `package ceylon.language.model`;</programlisting>
+            <programlisting>Package modelPackage = `package ceylon.language.meta.model`;</programlisting>
             
             <para>A <emphasis>module reference expression</emphasis> is a module
             name, as defined by <xref linkend="modulenamesandversionidentifiers"/>, 

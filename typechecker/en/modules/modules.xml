@@ -254,8 +254,8 @@
     
             <screen>ceylon.language</screen>
             <screen>ceylon.language.assertion</screen>
-            <screen>ceylon.language.model</screen>
-            <screen>ceylon.language.model.declaration</screen>
+            <screen>ceylon.language.meta</screen>
+            <screen>ceylon.language.meta.declaration</screen>
             
             <para>belong to the module <literal>ceylon.language</literal>. The 
             packages:</para>

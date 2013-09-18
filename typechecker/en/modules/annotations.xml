@@ -140,7 +140,7 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para>a subtype of <literal>Declaration</literal> in
-                    <literal>ceylon.language.model.declaration</literal>,</para>
+                    <literal>ceylon.language.meta.declaration</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>an annotation type,</para>
@@ -213,7 +213,7 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para>a subtype of <literal>Declaration</literal> in
-                    <literal>ceylon.language.model.declaration</literal>,</para>
+                    <literal>ceylon.language.meta.declaration</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>an annotation type,</para>
@@ -234,12 +234,12 @@ shared deprecated</programlisting>
             which must be a legal annotation argument.</para>
             
             <para>Every annotation type must be a subtype of <literal>Annotation</literal> 
-            defined in the package <literal>ceylon.language.model</literal>.</para>
+            defined in the package <literal>ceylon.language</literal>.</para>
             
             <para>A <emphasis>constrained annotation type</emphasis> is an annotation type 
             that is a subtype of <literal>OptionalAnnotation</literal> or 
             <literal>SequencedAnnotation</literal> defined in the package 
-            <literal>ceylon.language.model</literal>.</para>
+            <literal>ceylon.language</literal>.</para>
             
             <itemizedlist>
                 <listitem>
