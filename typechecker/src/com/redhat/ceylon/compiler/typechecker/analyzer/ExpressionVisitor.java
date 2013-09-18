@@ -4896,6 +4896,14 @@ public class ExpressionVisitor extends Visitor {
             for (Tree.Expression f: occi.getExpressionList().getExpressions()) {
                 Tree.Term et = e.getTerm();
                 Tree.Term ft = f.getTerm();
+                boolean eneg = et instanceof Tree.NegativeOp;
+                boolean fneg = ft instanceof Tree.NegativeOp;
+                if (eneg) {
+                    et = ((Tree.NegativeOp) et).getTerm();
+                }
+                if (fneg) {
+                    ft = ((Tree.NegativeOp) ft).getTerm();
+                }
                 if (et instanceof Tree.Literal && ft instanceof Tree.Literal) {
                     String ftv = getLiteralText(ft);
                     String etv = getLiteralText(et);
@@ -4907,8 +4915,9 @@ public class ExpressionVisitor extends Visitor {
                         (!ftv.startsWith("$") && etv.startsWith("$")))) {
                         cci.addWarning("literal cases with mixed bases not yet supported");
                     }
-                    else if (etv.equals(ftv)) {
+                    else if (etv.equals(ftv) && eneg==fneg) {
                         cci.addError("literal cases must be disjoint: " +
+                                (eneg?"-":"") +
                                 etv.replaceAll("\\p{Cntrl}","?") + 
                                 " occurs in multiple cases");
                     }
@@ -4976,7 +4985,8 @@ public class ExpressionVisitor extends Visitor {
             List<ProducedType> list = new ArrayList<ProducedType>(es.size());
             for (Tree.Expression e: es) {
                 if (e.getTypeModel()!=null && 
-                        !(e.getTerm() instanceof Tree.Literal)) {
+                        !(e.getTerm() instanceof Tree.Literal) && 
+                        !(e.getTerm() instanceof Tree.NegativeOp)) {
                     addToUnion(list, e.getTypeModel());
                 }
             }
