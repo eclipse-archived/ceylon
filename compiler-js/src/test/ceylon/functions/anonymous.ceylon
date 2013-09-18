@@ -74,3 +74,5 @@ void testAnonymous() {
     check(i==1, "anonfunc defaulted param [1]");
   } else { fail("anonfunc defaulted param [2]"); }
 }
+
+shared interface LeaveThereHereForMetamodelTests{}
