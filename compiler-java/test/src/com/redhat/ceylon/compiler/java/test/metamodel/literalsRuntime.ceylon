@@ -1,6 +1,10 @@
 import ceylon.language.meta.model { Class }
 
 void literalsRuntime(){
+   literalsRuntime2<Integer>();
+}
+
+void literalsRuntime2<T>(){
     // make sure that literals work
     assert(`class LitClass`.name == "LitClass");
     assert(`LitClass`.declaration.name == "LitClass");
@@ -67,4 +71,7 @@ void literalsRuntime(){
 
     assert(`alias Alias`.name == "Alias");
     assert(is Class<LitClass,Nothing> aliasModel = `Alias`, aliasModel.declaration.name == "LitClass");
+    
+    assert(`given T`.name == "T");
+    assert(`T` == `Integer`);
 }

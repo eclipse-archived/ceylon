@@ -174,18 +174,23 @@ void literals<T>(){
     // Modules and packages
     Module m = `module com.redhat.ceylon.compiler.java.test.metamodel`;
     Package p = `package com.redhat.ceylon.compiler.java.test.metamodel`;
+    
+    TypeParameter tp = `given T`;
+    Type<Anything> tptype = `T`;
 }
 
 alias Alias => LitClass;
 
-class RelativeLiterals(shared String str = "a") {
+class RelativeLiterals<T>(shared String str = "a") {
     shared Integer integer = 0;
     shared class Inner(){}
-    shared void f(){
+    shared void f<G>(){
         value temp1 = `str`;
         value temp2 = `integer`;
-        value temp3 = `f`;
+        value temp3 = `f<Integer>`;
         value temp4 = `Inner`;
+        TypeParameter tp1 = `given T`;
+        TypeParameter tp2 = `given G`;
     }
 }
 
