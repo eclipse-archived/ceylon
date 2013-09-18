@@ -130,7 +130,7 @@ shared void switches() {
     check(testOptionalStringValues("David") == 2, "testOptionalStringValues 2");
     check(testOptionalStringValues("Tom") == 0, "testOptionalStringValues 3");
     check(testOptionalStringValues(null) == 3, "testOptionalStringValues 4");
-    check(testIntegerValues(-1) == -1, "testIntegerValues 1");
+    check(testIntegerValues(-1) == -1, "testIntegerValues -1");
     check(testIntegerValues(100) == 1, "testIntegerValues 1");
     check(testIntegerValues(1000) == 2, "testIntegerValues 2");
     check(testIntegerValues(666) == 0, "testIntegerValues 3");
