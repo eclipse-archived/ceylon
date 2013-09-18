@@ -1,6 +1,6 @@
 """The Ceylon metamodel open type and declaration package.
    
-   As described in the [ceylon.language.meta](../) documentation, this package contains all
+   As described in the [ceylon.language.meta](../index.html) documentation, this package contains all
    the types that represent Ceylon declarations and open types.
    
    ### Usage example
