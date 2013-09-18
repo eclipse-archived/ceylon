@@ -279,6 +279,7 @@ public abstract class RepoUsingTool implements Tool {
         ToolModel<Tool> model = pluginLoader.loadToolModel(toolName);
         Tool tool = pluginFactory.bindArguments(model, args);
         try {
+            msg("compiling").newline();
             tool.run();
         } catch (Exception e) {
             return false;
