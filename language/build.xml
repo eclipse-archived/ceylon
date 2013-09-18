@@ -268,8 +268,9 @@
     <target name="ceylon.language.doc">
         <ceylon-doc
             executable="${ceylon.compiler.loc}"
-        	src="${module.language.src}"
-        	out="${build.dist}">
+            src="${module.language.src}"
+            encoding="UTF-8"
+            out="${build.dist}">
             <module name="ceylon.language"/>
         </ceylon-doc>
     </target>
