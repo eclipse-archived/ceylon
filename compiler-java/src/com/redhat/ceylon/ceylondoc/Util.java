@@ -389,13 +389,18 @@ public class Util {
             String declName; 
             int indexOf = content.indexOf("|");
             if( indexOf == -1 ) {
-                customName = content;
+                customName = null;
                 declName = content;
             } else {
                 customName = content.substring(0, indexOf);
                 declName = content.substring(indexOf+1, content.length()); 
             }
-            String link = new LinkRenderer(linkRenderer).to(declName).useCustomText(customName).printWikiStyleLinks(true).getLink();
+            String link = new LinkRenderer(linkRenderer).
+                    to(declName).
+                    useCustomText(customName).
+                    printTypeParameters(false).
+                    printWikiStyleLinks(true).
+                    getLink();
             out.append(link);
         }
         

@@ -800,6 +800,11 @@ public class CeylonDocToolTest {
                 Pattern.compile("imported AliasA2 = <a class='link' href='a/A2.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single.a::A2'>AliasA2</a>"));
         
         assertMatchInFile(destDir, "StubClass.type.html", 
+                Pattern.compile("StubClassWithGenericTypeParams = <a class='link' href='StubClassWithGenericTypeParams.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClassWithGenericTypeParams'>StubClassWithGenericTypeParams</a>"));
+        assertMatchInFile(destDir, "StubClass.type.html", 
+                Pattern.compile("StubClassWithGenericTypeParams with custom name = <a class='link' href='StubClassWithGenericTypeParams.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClassWithGenericTypeParams'>custom with type params</a>"));
+        
+        assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("fullStubInterface = <a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("fullStubInterface.formalMethodFromStubInterface = <a class='link' href='StubInterface.type.html#formalMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface'>com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface</a>"));

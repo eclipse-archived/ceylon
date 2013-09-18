@@ -70,7 +70,7 @@ public class LinkRenderer {
                 ClassOrInterface clazz = (ClassOrInterface) declaration;
                 String clazzUrl = getUrl(clazz, null);
                 if (clazzUrl != null) {
-                    result = buildLinkElement(clazzUrl, clazz.getName(), "Go to " + clazz.getQualifiedNameString());
+                    result = buildLinkElement(clazzUrl, getLinkText(clazz), "Go to " + clazz.getQualifiedNameString());
 
                 } else {
                     result = buildSpanElementWithNameAndTooltip(declaration);
@@ -239,7 +239,7 @@ public class LinkRenderer {
         
         String url = getUrl(declContainer, decl);
         if( url != null ) {
-            return buildLinkElement(url, declName, "Go to " + decl.getQualifiedNameString());
+            return buildLinkElement(url, getLinkText(decl), "Go to " + decl.getQualifiedNameString());
         } else {
             return declName;
         }
@@ -377,6 +377,18 @@ public class LinkRenderer {
         return false;
     }
     
+    private String getLinkText(Declaration decl) {
+        String text;
+        if( customText != null  ) {
+            text = customText;
+        } else if( to instanceof String ) { 
+            text = (String) to;
+        } else {
+            text = decl.getName();
+        }
+        return text;
+    }
+
     private Package getPackage(Scope scope) {
         while (!(scope instanceof Package)) {
             scope = scope.getContainer();
@@ -470,11 +482,7 @@ public class LinkRenderer {
         	linkBuilder.append(" title='").append(toolTip).append("'");
         }
         linkBuilder.append(">");
-        if( customText != null ) {
-            linkBuilder.append(customText);
-        } else {
-            linkBuilder.append(text);
-        }
+        linkBuilder.append(text);
         linkBuilder.append("</a>");
         return linkBuilder.toString();
     }
@@ -484,11 +492,7 @@ public class LinkRenderer {
         spanBuilder.append("<span title='");
         spanBuilder.append(d.getQualifiedNameString());
         spanBuilder.append("'>");
-        if (customText != null) {
-            spanBuilder.append(customText);
-        } else {
-            spanBuilder.append(d.getName());
-        }
+        spanBuilder.append(getLinkText(d));
         spanBuilder.append("</span>");
         return spanBuilder.toString();
     }

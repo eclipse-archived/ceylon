@@ -149,7 +149,8 @@ shared class StubClass(
      1. unresolvable2 = [[unresolvable with custom name|unresolvable]]
      1. imported A1 = [[A1]]
      1. imported AliasA2 = [[AliasA2]]
-     
+     1. StubClassWithGenericTypeParams = [[StubClassWithGenericTypeParams]]
+     1. StubClassWithGenericTypeParams with custom name = [[custom with type params|StubClassWithGenericTypeParams]]
      
      Wiki-style links with full qualified name:
      
