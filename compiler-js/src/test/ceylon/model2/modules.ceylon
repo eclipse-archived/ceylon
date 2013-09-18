@@ -16,21 +16,21 @@ void modulesTests() {
         check(funmod.dependencies.find((Import imp) => imp.name=="check") exists,
             "functions/0.1 should depend on ceylon.language");
         check(funmod.members.size == 1, "functions/0.1 has 1 package");
-        check(funmod.annotations<Authors>().size == 1, "functions/0.1 has 1 annotations");
+        check(funmod.annotations<AuthorsAnnotation>().size == 1, "functions/0.1 has 1 annotations");
         if (exists pk = funmod.findPackage("functions")) {
             check(pk.name=="functions", "Package name should be functions");
-            check(pk.annotations<Shared>() nonempty, "Package should have annotations");
+            check(pk.annotations<SharedAnnotation>() nonempty, "Package should have annotations");
             //This is a FunctionDeclaration
             value helloFun = pk.getFunction("hello");
             if (exists helloFun) {
-                check(helloFun.annotations<Shared>() nonempty, "functions.hello should be shared");
+                check(helloFun.annotations<SharedAnnotation>() nonempty, "functions.hello should be shared");
             } else {
                 fail("Package should have function hello");
             }
             //TODO should this be visible?
             check(pk.getValue("lx") exists, "Package has value lx");
             check(pk.getMember<FunctionDeclaration>("repeat") exists, "Package has member repeat");
-            check(pk.members<ClassOrInterfaceDeclaration>().size > 3, "Package should have at least 3 functions");
+            check(pk.members<ClassOrInterfaceDeclaration>() nonempty, "Package should have at least 3 types, only has ``pk.members<ClassOrInterfaceDeclaration>().size``");
         } else {
             fail("Module functions/0.1 should have package 'functions'");
         }
