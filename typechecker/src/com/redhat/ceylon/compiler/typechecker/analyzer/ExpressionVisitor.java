@@ -4740,6 +4740,9 @@ public class ExpressionVisitor extends Visitor {
                         }
                     }
                     Tree.Term term = e.getTerm();
+                    if (term instanceof Tree.NegativeOp) {
+                        term = ((Tree.NegativeOp) term).getTerm();
+                    }
                     if (term instanceof Tree.Literal) {
                         if (term instanceof Tree.FloatLiteral) {
                             e.addError("literal case may not be a Float literal");
@@ -4756,7 +4759,7 @@ public class ExpressionVisitor extends Visitor {
                             checkAssignable(t, ut, e, "case must be identifiable or null");
                         }
                     }
-                    else {
+                    else if (term!=null) {
                         e.addError("case must be a literal value or refer to a toplevel object declaration");
                     }
                 }
