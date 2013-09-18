@@ -329,20 +329,13 @@ $init$AppliedValue();
 //ClassDefinition AppliedMethod at caca.ceylon (10:0-21:0)
 function AppliedMethod(tipo,fun,$$targs$$,$$appliedMethod){
     $init$AppliedMethod();
-    if ($$appliedMethod===undefined)$$appliedMethod=new AppliedMethod.$$;
+    if ($$appliedMethod===undefined)$$appliedMethod=function(x){return function(){return fun.apply(x,arguments);}};
     set_type_args($$appliedMethod,$$targs$$);
     Method$meta$model($$appliedMethod.$$targs$$===undefined?$$targs$$:{Arguments:$$appliedMethod.$$targs$$.Arguments,Type:$$appliedMethod.$$targs$$.Type,Container:$$appliedMethod.$$targs$$.Container},$$appliedMethod);
     $$appliedMethod.tipo=tipo;
     $$appliedMethod.fun=fun;
-    return $$appliedMethod;
-}
-AppliedMethod.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Container:{'var':'in'},Type:{'var':'out','def':{t:Anything}},Arguments:{'var':'in','satisfies':[{t:Sequential,a:{Element:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:Method$meta$model,a:{Arguments:'Arguments',Type:'Type',Container:'Container'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Method']};};
-exports.AppliedMethod=AppliedMethod;
-function $init$AppliedMethod(){
-    if (AppliedMethod.$$===undefined){
-        initTypeProto(AppliedMethod,'caca::AppliedMethod',Basic,Method$meta$model);
-        (function($$appliedMethod){
-            
+
+//This was copied from prototype style
             defineAttr($$appliedMethod,'declaration',function(){
               var $$appliedMethod=this;
               var mm = $$appliedMethod.fun.$$metamodel$$;
@@ -380,6 +373,16 @@ function $init$AppliedMethod(){
                 throw wrapexc(Exception(String$("unimplemented",13)),'92:75-92:107','caca/caca.ceylon');
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','typeArguments']};});
 
+
+    return $$appliedMethod;
+}
+AppliedMethod.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Container:{'var':'in'},Type:{'var':'out','def':{t:Anything}},Arguments:{'var':'in','satisfies':[{t:Sequential,a:{Element:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:Method$meta$model,a:{Arguments:'Arguments',Type:'Type',Container:'Container'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Method']};};
+exports.AppliedMethod=AppliedMethod;
+function $init$AppliedMethod(){
+    if (AppliedMethod.$$===undefined){
+        initTypeProto(AppliedMethod,'caca::AppliedMethod',Basic,Method$meta$model);
+        (function($$appliedMethod){
+//this area was moved inside AppliedMethod()            
         })(AppliedMethod.$$.prototype);
     }
     return AppliedMethod;
