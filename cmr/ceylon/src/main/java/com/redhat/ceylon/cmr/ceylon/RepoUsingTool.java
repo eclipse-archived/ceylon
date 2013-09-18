@@ -137,11 +137,15 @@ public abstract class RepoUsingTool implements Tool {
         return versionMap.values();
     }
 
-    protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryVersion) throws IOException {
-        return checkModuleVersionsOrShowSuggestions(repoMgr, name, version, type, binaryVersion, false);
-    }
+    protected static final int COMPILE_NONE = 0;
+    protected static final int COMPILE_JVM = 1;
+    protected static final int COMPILE_JS = 2;
 
-    protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryVersion, boolean allowCompilation) throws IOException {
+    protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryVersion) throws IOException {
+        return checkModuleVersionsOrShowSuggestions(repoMgr, name, version, type, binaryVersion, COMPILE_NONE);
+    }
+    
+    protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryVersion, int compileFlags) throws IOException {
         if ("default".equals(name)) {
             return "";
         }
@@ -150,12 +154,12 @@ public abstract class RepoUsingTool implements Tool {
         if (version != null) {
             // Here we either have a single version or none
             if (versions.isEmpty()) {
-                if (allowCompilation) {
+                if (compileFlags != COMPILE_NONE) {
                     Collection<ModuleVersionDetails> srcVersions = getVersionFromSource(name);
                     if (!srcVersions.isEmpty() && version.equals(srcVersions.iterator().next().getVersion())) {
                         // There seems to be source code that has the proper version
                         // Let's see if we can compile it...
-                        if (runCompiler(name)) {
+                        if (runCompiler(name, compileFlags)) {
                             // All okay it seems, let's use this version
                             versions = srcVersions;
                         }
@@ -170,14 +174,14 @@ public abstract class RepoUsingTool implements Tool {
             }
         } else {
             // Here we can have any number of versions, including none
-            if ((versions.isEmpty() || onlyRemote(versions)) && allowCompilation) {
+            if ((versions.isEmpty() || onlyRemote(versions)) && (compileFlags != COMPILE_NONE)) {
                 // If there are no versions at all or only in remote repositories we
                 // first check if there's local code we could compile before giving up
                 Collection<ModuleVersionDetails> srcVersions = getVersionFromSource(name);
                 if (!srcVersions.isEmpty()) {
                     // There seems to be source code
                     // Let's see if we can compile it...
-                    if (runCompiler(name)) {
+                    if (runCompiler(name, compileFlags)) {
                         // All okay it seems, let's use this version
                         versions = srcVersions;
                     }
@@ -244,7 +248,7 @@ public abstract class RepoUsingTool implements Tool {
         return result;
     }
     
-    private boolean runCompiler(String name) {
+    private boolean runCompiler(String name, int compileFlags) {
         List<String> args = new ArrayList<String>();
         if (systemRepo != null) {
             args.add("--sysrep");
@@ -268,7 +272,15 @@ public abstract class RepoUsingTool implements Tool {
                 return camelCaseToDashes(className.replaceAll("^(.*\\.)?Ceylon(.*)Tool$", "$2"));
             }
         };
-        ToolModel<Tool> model = pluginLoader.loadToolModel("compile");
+        String toolName;
+        if (compileFlags == COMPILE_JVM) {
+            toolName = "compile";
+        } else if (compileFlags == COMPILE_JS) {
+            toolName = "compile-js";
+        } else {
+            throw new IllegalArgumentException("Unknown compile flags passed");
+        }
+        ToolModel<Tool> model = pluginLoader.loadToolModel(toolName);
         Tool tool = pluginFactory.bindArguments(model, args);
         try {
             tool.run();
