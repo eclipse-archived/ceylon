@@ -2177,7 +2177,7 @@ public class StatementTransformer extends AbstractTransformer {
         for(Tree.Expression expr : expressions){
             JCExpression transformedExpression = expressionGen().transformExpression(expr);
             JCExpression test;
-            if (expr.getTerm() instanceof Tree.Literal) {
+            if (expr.getTerm() instanceof Tree.Literal || expr.getTerm() instanceof Tree.NegativeOp) {
                 test = make().Apply(null, makeSelect(selectorAlias.makeIdent(), "equals"), List.<JCExpression>of(transformedExpression));
                 if (optionalType) {
                     test = make().Binary(JCTree.AND, make().Binary(JCTree.NE, selectorAlias.makeIdent(), makeNull()), test);
