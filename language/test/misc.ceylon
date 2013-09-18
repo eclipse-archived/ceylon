@@ -45,7 +45,7 @@ void misc() {
     //Test empty varargs
     //see(); 
     by(); tagged();
-    join();
+    concatenate();
     ",".join{};
     StringBuilder().appendAll{};
     //LazyList<Nothing>(); LazyMap<Nothing,Nothing>(); LazySet<Nothing>();

@@ -155,13 +155,13 @@ void test_nullsingleton() {
     //}
 }
 
-void test_join() {
-    value l1 = { "join", 1,2,3};
+void test_concatenate() {
+    value l1 = { "concatenate", 1,2,3};
     value l2 = { 4,5,6 };
     value l3 = {7,8,9};
-    value joint = join(l1, l2, l3);
-    check(joint.size==l1.size+l2.size+l3.size, "join [1]");
-    check(join("aa", "bb", "cc").sequence=={'a', 'a', 'b', 'b', 'c', 'c'}, "join [2]");
+    value concatenated = concatenate(l1, l2, l3);
+    check(concatenated.size==l1.size+l2.size+l3.size, "concatenate [1]");
+    check(concatenate("aa", "bb", "cc").sequence=={'a', 'a', 'b', 'b', 'c', 'c'}, "concatenate [2]");
 }
 
 void test_zip() {
@@ -194,8 +194,8 @@ void test_max_min() {
     check(mx1==3, "max nonempty seq");
     // fails because of https://github.com/ceylon/ceylon-compiler/issues/953
     //Null mx2 = max({});
-    Integer? mx3 = max(join({},{1, 2, 3}));
-    check((mx3 else 10)==3, "max joined seq");
+    Integer? mx3 = max(concatenate({},{1, 2, 3}));
+    check((mx3 else 10)==3, "max concatenated seq");
     Integer? mx4 = max({1, 2, 3}.filter((Integer i) => i>0));
     check((mx4 else 10)==3, "max filtered seq");
     
@@ -203,8 +203,8 @@ void test_max_min() {
     check(mn1==1, "min nonempty seq");
     // fails because of https://github.com/ceylon/ceylon-compiler/issues/953
     //Null mn2 = min({});
-    Integer? mn3 = min(join({},{1, 2, 3}));
-    check((mn3 else 10)==1, "min joined seq");
+    Integer? mn3 = min(concatenate({},{1, 2, 3}));
+    check((mn3 else 10)==1, "min concatenated seq");
     Integer? mn4 = min({1, 2, 3}.filter((Integer i) => i>0));
     check((mn4 else 10)==1, "min filtered seq");
 }
@@ -540,7 +540,7 @@ shared void sequences() {
     }
 
     //More sequence-related functions
-    test_join();
+    test_concatenate();
     test_zip();
     test_exists_nonempty();
     test_max_min();

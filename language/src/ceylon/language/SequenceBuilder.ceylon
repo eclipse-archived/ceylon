@@ -3,7 +3,7 @@
  elements to the empty sequence. This class is mutable
  but threadsafe."
 see (`class SequenceAppender`, 
-     `function join`, 
+     `function concatenate`, 
      `class Singleton`)
 shared native class SequenceBuilder<Element>() {
     

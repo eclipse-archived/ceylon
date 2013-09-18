@@ -3,7 +3,7 @@
  no arguments, or if none of the arguments contains any
  elements, return the empty sequence."
 see (`class SequenceBuilder`)
-shared Element[] join<Element>(
-        "The iterable objects to join."
+shared Element[] concatenate<Element>(
+        "The iterable objects to concatenate."
         {Element*}* iterables) =>
                 [ for (it in iterables) for (val in it) val ];
