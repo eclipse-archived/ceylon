@@ -1,9 +1,9 @@
 "A file containing Ceylon source."
 ^(COMPILATION_UNIT
-    MODULE_DESCRIPTOR?
-    PACKAGE_DESCRIPTOR?
     COMPILER_ANNOTATION*
     IMPORT_LIST?
+    MODULE_DESCRIPTOR*
+    PACKAGE_DESCRIPTOR*
     DECLARATION*
     boolean literalsProcessed;)
 

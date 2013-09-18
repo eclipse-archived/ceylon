@@ -39,31 +39,32 @@ options {
 }
 
 compilationUnit returns [CompilationUnit compilationUnit]
-    : { $compilationUnit = new CompilationUnit(null); }
-      ( 
+    @init { $compilationUnit = new CompilationUnit(null);
+             ImportList importList = new ImportList(null);
+             $compilationUnit.setImportList(importList); }
+    : ( 
         ca1=compilerAnnotations
         SEMICOLON
         { $compilationUnit.getCompilerAnnotations().addAll($ca1.annotations); }
       )?
-      importList
-      { $compilationUnit.setImportList($importList.importList); }
-      (
+      ( 
+        importDeclaration 
+        { importList.addImport($importDeclaration.importDeclaration); }
+      |
         (compilerAnnotations annotations MODULE)=>
         moduleDescriptor 
-        { $compilationUnit.setModuleDescriptor($moduleDescriptor.moduleDescriptor); }
+        { $compilationUnit.addModuleDescriptor($moduleDescriptor.moduleDescriptor); }
       |
         (compilerAnnotations annotations PACKAGE)=>
         packageDescriptor
-        { $compilationUnit.setPackageDescriptor($packageDescriptor.packageDescriptor); }
+        { $compilationUnit.addPackageDescriptor($packageDescriptor.packageDescriptor); }
       |
-        ( 
-          ca2=compilerAnnotations declaration
-          { if ($declaration.declaration!=null)
-                $compilationUnit.addDeclaration($declaration.declaration); 
-            if ($declaration.declaration!=null)
-                $declaration.declaration.getCompilerAnnotations().addAll($ca2.annotations); } 
-        )*
-      )
+        ca2=compilerAnnotations declaration
+        { if ($declaration.declaration!=null)
+              $compilationUnit.addDeclaration($declaration.declaration); 
+          if ($declaration.declaration!=null)
+              $declaration.declaration.getCompilerAnnotations().addAll($ca2.annotations); } 
+      )*
       EOF
     ;
 
@@ -142,11 +143,6 @@ importModule returns [ImportModule importModule]
       SEMICOLON
       { $importModule.setEndToken($SEMICOLON); 
         expecting=-1; }
-    ;
-
-importList returns [ImportList importList]
-    : { $importList = new ImportList(null); } 
-      ( importDeclaration { $importList.addImport($importDeclaration.importDeclaration); } )*
     ;
 
 importDeclaration returns [Import importDeclaration]

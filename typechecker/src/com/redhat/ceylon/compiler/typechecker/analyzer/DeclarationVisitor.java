@@ -251,6 +251,33 @@ public class DeclarationVisitor extends Visitor {
         pkg.removeUnit(unit);
         pkg.addUnit(unit);
         super.visit(that);
+        Node firstNonImportNode = null;
+        for (Node node: that.getChildren()) {
+            if (!(node instanceof Tree.ImportList)) {
+                firstNonImportNode = node;
+            }
+        }
+        if (firstNonImportNode!=null) {
+            for (Tree.Import im: that.getImportList().getImports()) {
+                if (im.getStopIndex()>firstNonImportNode.getStartIndex()) {
+                    that.addError("import statement must occur before any declaration or descriptor");
+                }
+            }
+        }
+        boolean first=true;
+        for (Tree.ModuleDescriptor md: that.getModuleDescriptors()) {
+            if (!first) {
+                md.addError("there may be only one module descriptor for a module");
+            }
+            first=false;
+        }
+        first=true;
+        for (Tree.PackageDescriptor md: that.getPackageDescriptors()) {
+            if (!first) {
+                md.addError("there may be only one package descriptor for a module");
+            }
+            first=false;
+        }
     }
     
     @Override
@@ -850,7 +877,27 @@ public class DeclarationVisitor extends Visitor {
         return typeParameters;
     }
     
+    @Override
+    public void visit(Tree.ModuleDescriptor that) {
+        if (!unit.getFilename().equals("module.ceylon")) {
+            that.addError("module descriptor must occur in a compilation unit named module.ceylon");
+        }
+        super.visit(that);
+    }
+    
+    @Override
+    public void visit(Tree.PackageDescriptor that) {
+        if (!unit.getFilename().equals("package.ceylon")) {
+            that.addError("package descriptor must occur in a compilation unit named package.ceylon");
+        }
+        super.visit(that);
+    }
+    
     @Override public void visit(Tree.Declaration that) {
+        if (unit.getFilename().equals("module.ceylon") || 
+            unit.getFilename().equals("package.ceylon")) {
+            that.addError("declaration may not occur in a module or package descriptor file");
+        }
         Declaration model = that.getDeclarationModel();
         Declaration d = beginDeclaration(model);
         super.visit(that);
