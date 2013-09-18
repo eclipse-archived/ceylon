@@ -155,7 +155,7 @@ public abstract class RepoUsingTool implements Tool {
                     if (!srcVersions.isEmpty() && version.equals(srcVersions.iterator().next().getVersion())) {
                         // There seems to be source code that has the proper version
                         // Let's see if we can compile it...
-                        if (runCompiler(name, type)) {
+                        if (runCompiler(repoMgr, name, type)) {
                             // All okay it seems, let's use this version
                             versions = srcVersions;
                         }
@@ -177,7 +177,7 @@ public abstract class RepoUsingTool implements Tool {
                 if (!srcVersions.isEmpty()) {
                     // There seems to be source code
                     // Let's see if we can compile it...
-                    if (runCompiler(name, type)) {
+                    if (runCompiler(repoMgr, name, type)) {
                         // All okay it seems, let's use this version
                         versions = srcVersions;
                     }
@@ -244,7 +244,7 @@ public abstract class RepoUsingTool implements Tool {
         return result;
     }
     
-    private boolean runCompiler(String name, ModuleQuery.Type type) {
+    private boolean runCompiler(RepositoryManager repoMgr, String name, ModuleQuery.Type type) {
         List<String> args = new ArrayList<String>();
         if (systemRepo != null) {
             args.add("--sysrep");
@@ -281,6 +281,8 @@ public abstract class RepoUsingTool implements Tool {
         try {
             msg("compiling").newline();
             tool.run();
+            // Make sure we can find the newly created module
+            repoMgr.refresh(false);
         } catch (Exception e) {
             return false;
         }
