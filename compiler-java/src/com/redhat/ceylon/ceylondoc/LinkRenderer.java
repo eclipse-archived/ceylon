@@ -477,7 +477,13 @@ public class LinkRenderer {
   
     private String buildLinkElement(String url, String text, String toolTip) {
         StringBuilder linkBuilder = new StringBuilder();
-        linkBuilder.append("<a class='link' href='").append(url).append("'");
+        linkBuilder.append("<a ");
+        if( customText != null ) {
+            linkBuilder.append("class='link-custom-text'");
+        } else {
+            linkBuilder.append("class='link'");
+        }
+        linkBuilder.append(" href='").append(url).append("'");
         if (toolTip != null) {
         	linkBuilder.append(" title='").append(toolTip).append("'");
         }

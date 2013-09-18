@@ -495,7 +495,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             } else {
                 first = false;
             }
-            linkRenderer().to(target).useCustomText(target).useScope(decl).printAbbreviated(false).printTypeParameters(false).write();
+            linkRenderer().to(target).useScope(decl).printAbbreviated(false).printTypeParameters(false).write();
         }
         close("span");
         

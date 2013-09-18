@@ -779,7 +779,7 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("StubClass.StubInnerClass.innerMethod = <a class='link' href='StubClass.StubInnerClass.type.html#innerMethod' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.StubInnerClass.innerMethod'>StubClass.StubInnerClass.innerMethod</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("StubInterface with custom name = <a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>custom stub interface</a>"));
+                Pattern.compile("StubInterface with custom name = <a class='link-custom-text' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>custom stub interface</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("unresolvable1 = <span class='link-unresolvable'>\\[unresolvable\\]</span>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
@@ -802,14 +802,14 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("StubClassWithGenericTypeParams = <a class='link' href='StubClassWithGenericTypeParams.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClassWithGenericTypeParams'>StubClassWithGenericTypeParams</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("StubClassWithGenericTypeParams with custom name = <a class='link' href='StubClassWithGenericTypeParams.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClassWithGenericTypeParams'>custom with type params</a>"));
+                Pattern.compile("StubClassWithGenericTypeParams with custom name = <a class='link-custom-text' href='StubClassWithGenericTypeParams.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClassWithGenericTypeParams'>custom with type params</a>"));
         
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("fullStubInterface = <a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("fullStubInterface.formalMethodFromStubInterface = <a class='link' href='StubInterface.type.html#formalMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface'>com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("fullStubInterface with custom name = <a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>full custom stub interface</a>"));
+                Pattern.compile("fullStubInterface with custom name = <a class='link-custom-text' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>full custom stub interface</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("fullUnresolvable1 = <span class='link-unresolvable'>\\[unresolvable::Bar\\]</span>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
