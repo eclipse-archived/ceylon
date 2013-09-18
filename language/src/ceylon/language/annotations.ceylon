@@ -11,8 +11,9 @@ import ceylon.language.meta.declaration {
 shared final annotation class AnnotationAnnotation()
         satisfies OptionalAnnotation<AnnotationAnnotation, ClassDeclaration|FunctionDeclaration> {}
 
-"Annotation to mark a class as an annotation class, or a 
- method as an annotation method."
+"Annotation to mark a class as an *annotation class*, or a 
+ top-level function as an *annotation constructor*."
+see(`interface Annotation`)
 shared annotation AnnotationAnnotation annotation() => AnnotationAnnotation(); 
 
 "The annotation class for [[shared]]."

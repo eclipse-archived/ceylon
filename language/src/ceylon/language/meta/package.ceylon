@@ -1,7 +1,10 @@
 """The Ceylon metamodel base package.
    
-   The Ceylon metamodel allows you to dynamically inspect modules, packages, function, values and types,
-   as well as invoke functions and class initialisers, or read and write values.
+   The Ceylon metamodel allows you to: 
+   
+   * dynamically inspect modules, packages, functions, values and types, 
+   * invoke functions and class initialisers, or read and write values, and
+   * inspect the annotations on program elements.
    
    ### A little bit of terminology
    
@@ -95,6 +98,21 @@
      value into a metamodel closed type.
    - The [declaration](declaration/index.html) package contains all the declaration and open types.
    - The [model](model/index.html) package contains all the model and closed types.
+   
+   ### Inspecting annotations
+   
+   Constrained annotations can be inspected using the [[annotations]] 
+   function, like this:
+   
+       // Does the process declaration have the Shared annotation?
+       value isShared = annotations(`Shared`, `value process`) exists;
+   
+   or the related [[optionalAnnotation]] and [[sequencedAnnotations]] functions.
+   
+   Note that annotations are queried for via their 
+   [[ceylon.language::Annotation]] type, 
+   not by the annotation constructor which was used to annotate 
+   the program element.
    """
 by ("Gavin King", "Stephane Epardaud")
 shared package ceylon.language.meta;

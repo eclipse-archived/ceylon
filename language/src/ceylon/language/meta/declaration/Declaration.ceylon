@@ -2,7 +2,7 @@
  
  There are only two types of declarations:
  
- - [[AnnotatedDeclarations]] such as modules, packages, classes or functions, and
+ - [[AnnotatedDeclaration]]s such as modules, packages, classes or functions, and
  - [[TypeParameter]] declarations."
 shared interface Declaration of AnnotatedDeclaration
                               | TypeParameter {

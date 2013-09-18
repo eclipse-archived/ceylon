@@ -17,7 +17,8 @@ shared interface AnnotatedDeclaration of NestableDeclaration
     """The annotation instances of the given 
        annotation type on this declaration.
        
-       For example, you can list all the [[See|ceylon.language::See]] annotations on [[List|ceylon.language::List]]
+       For example, you can list all the [[See|ceylon.language::See]] 
+       annotations on [[List|ceylon.language::List]]
        with the following code:
        
            for(annot in `interface List`.annotations<See>()){
@@ -25,7 +26,11 @@ shared interface AnnotatedDeclaration of NestableDeclaration
                    print("See: ``elems``");
                }
            }
+       
+       Alternatively, you can use the [[ceylon.language.meta::annotations]] 
+       function.
     """
+    
     shared formal Annotation[] annotations<out Annotation>()
         given Annotation satisfies AnnotationType<Annotation>;
 }
