@@ -1,8 +1,8 @@
-import ceylon.language.meta.model { Class, ClosedType = Type }
+import ceylon.language.meta.model { ClassModel, ClosedType = Type }
 
 "Returns the closed type and model of a given instance. Since only classes
- can be instantiated, this will always be a [[Class]] model."
-shared native Class<Type,Nothing> type<out Type>(Type instance)
+ can be instantiated, this will always be a [[ClassModel]] model."
+shared native ClassModel<Type,Nothing> type<out Type>(Type instance)
     given Type satisfies Anything;
 
 "Functional equivalent to type literals. Allows you to get a closed type instance

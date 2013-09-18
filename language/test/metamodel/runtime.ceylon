@@ -223,6 +223,8 @@ void checkMemberTypes(){
     assert(exists innerClassType = containerClassType.getClassOrInterface<ContainerClass, Class<ContainerClass.InnerClass, []>>("InnerClass"));
     Anything o1 = innerClassType(containerClassInstance)();
     assert(is ContainerClass.InnerClass o1);
+    // make sure type doesn't throw at it
+    assert(type(o1) == innerClassType);
     assert(`class ContainerClass.InnerClass`.name == "InnerClass");
     assert(`class ContainerClass.InnerClass`.qualifiedName == "metamodel::ContainerClass.InnerClass");
 

@@ -20,10 +20,10 @@ public final class type_ {
     private type_() {}
     
     @TypeParameters(@TypeParameter(value = "Type", variance = Variance.OUT, satisfies = "ceylon.language::Anything"))
-    @TypeInfo("ceylon.language.meta.model::Class<Type,ceylon.language::Nothing>")
-    public static <Type> ceylon.language.meta.model.Class<? extends Type, ? super Sequential<? extends Object>> type(
+    @TypeInfo("ceylon.language.meta.model::ClassModel<Type,ceylon.language::Nothing>")
+    public static <Type> ceylon.language.meta.model.ClassModel<? extends Type, ? super Sequential<? extends Object>> type(
             @Ignore TypeDescriptor $reifiedType,
             @Name("instance") @TypeInfo("Type") Type instance) {
-        return (ceylon.language.meta.model.Class) Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(instance));
+        return (ceylon.language.meta.model.ClassModel) Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(instance));
     }
 }
