@@ -23,12 +23,13 @@ public abstract class AppliedMember<Type, Kind extends ceylon.language.meta.mode
     private ceylon.language.meta.model.Type<? extends Object> container;
     @Ignore
     protected final TypeDescriptor $reifiedKind;
+    // call it container to help subclasses not get confused
     @Ignore
-    protected final TypeDescriptor $reifiedType;
+    protected final TypeDescriptor $reifiedContainer;
 
     public AppliedMember(@Ignore TypeDescriptor $reifiedType, @Ignore TypeDescriptor $reifiedKind,
                          ceylon.language.meta.model.Type<? extends Object> container){
-        this.$reifiedType = $reifiedType;
+        this.$reifiedContainer = $reifiedType;
         this.$reifiedKind = $reifiedKind;
         this.container = container;
     }
@@ -86,6 +87,6 @@ public abstract class AppliedMember<Type, Kind extends ceylon.language.meta.mode
     @Ignore
     @Override
     public TypeDescriptor $getType() {
-        return TypeDescriptor.klass(AppliedMember.class, $reifiedType, $reifiedKind);
+        return TypeDescriptor.klass(AppliedMember.class, $reifiedContainer, $reifiedKind);
     }
 }

@@ -82,7 +82,7 @@ public class AppliedAttribute<Container, Type>
     @Ignore
     @Override
     public TypeDescriptor $getType() {
-        return TypeDescriptor.klass(AppliedAttribute.class, super.$reifiedType, $reifiedType);
+        return TypeDescriptor.klass(AppliedAttribute.class, super.$reifiedContainer, $reifiedType);
     }
 
     public static <ContainerType, ValueType> ceylon.language.meta.model.Attribute<ContainerType, ValueType> 

@@ -104,7 +104,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     @Ignore
     @Override
     public TypeDescriptor $getType() {
-        return TypeDescriptor.klass(AppliedMethod.class, super.$reifiedType, $reifiedType, $reifiedArguments);
+        return TypeDescriptor.klass(AppliedMethod.class, super.$reifiedContainer, $reifiedType, $reifiedArguments);
     }
     
     @Override
