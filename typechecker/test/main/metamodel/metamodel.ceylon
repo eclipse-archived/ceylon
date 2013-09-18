@@ -327,7 +327,7 @@ void meta() {
 
 void testPackagesModules() {
     @type:"Module" value m0 = `module ceylon.language`;
-    @type:"Package" value p0 = `package ceylon.language.model`;
+    @type:"Package" value p0 = `package ceylon.language.meta.model`;
     @type:"Package" value p1 = `package metamodel`;
     @error value m1 = `module ceylon.language.model`;
     @error value m2 = `module foo.bar`;

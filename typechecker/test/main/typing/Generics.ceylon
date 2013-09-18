@@ -528,7 +528,7 @@ class Generics() {
     @type:"String" genericMethod2(true then "hello");
     
     @type:"Iterable<String,Null>" coalesce{null, "hello"};
-    @type:"Sequential<String>" join({}, {"hello", "world"}, {"goodbye"});
+    @type:"Sequential<String>" concatenate({}, {"hello", "world"}, {"goodbye"});
     
     class ParamOuter<T>() {
         class Inner<Y>(){

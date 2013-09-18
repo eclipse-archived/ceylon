@@ -1,5 +1,3 @@
-import ceylon.language.model { Annotation }
-
 @error annotation class NonfinalAnnotation() 
         satisfies Annotation<NonfinalAnnotation> {}
 @error final annotation class GenericAnnotation<T>() 

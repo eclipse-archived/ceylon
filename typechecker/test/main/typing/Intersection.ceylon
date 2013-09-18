@@ -147,11 +147,11 @@ class Intersection() {
     
     Integer m1 = max([1, 2, 3]);
     Null m2 = max([]);
-    Integer? m3 = max(join([],[1, 2, 3]));
+    Integer? m3 = max(concatenate([],[1, 2, 3]));
     Integer? m4 = max({1, 2, 3}.filter((Integer i) => i>0));
     @type:"Integer" max([1, 2, 3]);
     @type:"Null" max([]);
-    @type:"Null|Integer" max(join([],[1, 2, 3]));
+    @type:"Null|Integer" max(concatenate([],[1, 2, 3]));
     @type:"Null|Integer" max({1, 2, 3}.filter((Integer i) => i>0));
     
     interface Multi<out X, out Y> {}

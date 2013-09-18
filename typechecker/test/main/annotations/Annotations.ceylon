@@ -1,11 +1,11 @@
-import ceylon.language.model { ... }
-import ceylon.language.model.declaration { 
+import ceylon.language.meta.declaration { 
     Declaration, 
     ClassDeclaration, 
     ValueDeclaration, 
     FunctionDeclaration, 
     AnnotatedDeclaration 
 }
+import ceylon.language.meta { annotations }
 
 final annotation class SeeThese(shared Declaration* declarations) satisfies Annotation<SeeThese> {}
 annotation SeeThese seethese(Declaration* declarations) => SeeThese(*declarations);
