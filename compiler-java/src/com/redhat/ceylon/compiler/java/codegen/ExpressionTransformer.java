@@ -57,6 +57,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Referenceable;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -76,6 +77,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionalParameterDecla
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
@@ -1023,71 +1025,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(declaration == null)
             return makeErroneous(expr, "Missing declaration");
         if(declaration.isToplevel()){
-            // toplevel method or attribute: we need to fetch them from their module/package
-            Package pkg = Decl.getPackageContainer(declaration.getContainer());
-
-            // get the package
-            JCExpression packageCall = makePackageLiteralCall(pkg);
-            
-            // now get the toplevel
-            String getter = Decl.isMethod(declaration) ? "getFunction" : "getValue";
-            JCExpression toplevelCall = make().Apply(null, makeSelect(packageCall, getter), 
-                                                     List.<JCExpression>of(ceylonLiteral(declaration.getName())));
-            
-            if(!expr.getWantsDeclaration()){
-                ListBuffer<JCExpression> closedTypeArgs = new ListBuffer<JCExpression>();
-                // expr is of type Function<Type,Arguments> or Value<Type> so we can get its type like that
-                JCExpression reifiedType = makeReifiedTypeArgument(expr.getTypeModel().getTypeArgumentList().get(0));
-                closedTypeArgs.append(reifiedType);
-                if(Decl.isMethod(declaration)){
-                    // expr is of type Function<Type,Arguments> so we can get its arguments type like that
-                    ProducedType argumentsType = typeFact().getCallableTuple(expr.getTypeModel());
-                    JCExpression reifiedArguments = makeReifiedTypeArgument(argumentsType);
-                    closedTypeArgs.append(reifiedArguments);
-                    if(expr.getTypeArgumentList() != null){
-                        JCExpression closedTypesExpr = getClosedTypesSequential(expr.getTypeArgumentList().getTypeModels());
-                        // must apply it
-                        closedTypeArgs.append(closedTypesExpr);
-                    }
-                }
-                toplevelCall = make().Apply(null, makeSelect(toplevelCall, "apply"), closedTypeArgs.toList());
-            }
-            // add cast
-            ProducedType exprType = expr.getTypeModel().resolveAliases();
-            JCExpression typeClass = makeJavaType(exprType, JT_NO_PRIMITIVES);
-            return make().TypeCast(typeClass, toplevelCall);
+            return makeTopLevelValueOrFunctionLiteral(expr);
         }else if(expr.getWantsDeclaration()){
-            // it's a member we get from its container declaration
-            // FIXME: other containers?
-            ClassOrInterface container = (ClassOrInterface) declaration.getContainer();
-            // use the generated class to get to the declaration literal
-            JCExpression classLiteral = makeUnerasedClassLiteral(container);
-            JCExpression metamodelCall = makeMetamodelInvocation("getOrCreateMetamodel", List.of(classLiteral), null);
-            JCExpression metamodelCast = makeJavaType(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("ClassOrInterfaceDeclaration")).getType(), JT_NO_PRIMITIVES);
-            metamodelCall = make().TypeCast(metamodelCast, metamodelCall);
-
-            String memberClassName;
-            if(declaration instanceof Class)
-                memberClassName = "ClassDeclaration";
-            else if(declaration instanceof Interface)
-                memberClassName = "InterfaceDeclaration";
-            else if(declaration instanceof Method)
-                memberClassName = "FunctionDeclaration";
-            else if(declaration instanceof Value){
-                if(((TypedDeclaration) declaration).isVariable())
-                    memberClassName = "VariableDeclaration";
-                else
-                    memberClassName = "ValueDeclaration";
-            }else{
-                return makeErroneous(expr, "declaration type not supported yet: "+declaration);
-            }
-            TypeDeclaration metamodelDecl = (TypeDeclaration) typeFact().getLanguageModuleDeclarationDeclaration(memberClassName);
-            JCExpression memberType = makeJavaType(metamodelDecl.getType());
-            JCExpression reifiedMemberType = makeReifiedTypeArgument(metamodelDecl.getType());
-            JCExpression memberCall = make().Apply(List.of(memberType), 
-                                                   makeSelect(metamodelCall, "getMemberDeclaration"), 
-                                                   List.of(reifiedMemberType, ceylonLiteral(declaration.getName())));
-            return memberCall;
+            return makeMemberValueOrFunctionDeclarationLiteral(expr, declaration);
         }else{
             // get its produced ref
             ProducedReference producedReference = expr.getTarget();
@@ -1135,7 +1075,93 @@ public class ExpressionTransformer extends AbstractTransformer {
             return memberCall;
         }
     }
+
+    private JCExpression makeMemberValueOrFunctionDeclarationLiteral(Node node, Declaration declaration) {
+        // it's a member we get from its container declaration
+        if(declaration.getContainer() instanceof ClassOrInterface == false)
+            return makeErroneous(node, "Unsupported type parameter container: "+declaration.getContainer());
+        
+        ClassOrInterface container = (ClassOrInterface) declaration.getContainer();
+        // use the generated class to get to the declaration literal
+        JCExpression metamodelCall = makeTypeDeclarationLiteral(container);
+        JCExpression metamodelCast = makeJavaType(typeFact().getLanguageModuleDeclarationTypeDeclaration("ClassOrInterfaceDeclaration").getType(), JT_NO_PRIMITIVES);
+        metamodelCall = make().TypeCast(metamodelCast, metamodelCall);
+
+        String memberClassName;
+        if(declaration instanceof Class)
+            memberClassName = "ClassDeclaration";
+        else if(declaration instanceof Interface)
+            memberClassName = "InterfaceDeclaration";
+        else if(declaration instanceof Method)
+            memberClassName = "FunctionDeclaration";
+        else if(declaration instanceof Value){
+            if(((TypedDeclaration) declaration).isVariable())
+                memberClassName = "VariableDeclaration";
+            else
+                memberClassName = "ValueDeclaration";
+        }else{
+            return makeErroneous(node, "declaration type not supported yet: "+declaration);
+        }
+        TypeDeclaration metamodelDecl = (TypeDeclaration) typeFact().getLanguageModuleDeclarationDeclaration(memberClassName);
+        JCExpression memberType = makeJavaType(metamodelDecl.getType());
+        JCExpression reifiedMemberType = makeReifiedTypeArgument(metamodelDecl.getType());
+        JCExpression memberCall = make().Apply(List.of(memberType), 
+                                               makeSelect(metamodelCall, "getMemberDeclaration"), 
+                                               List.of(reifiedMemberType, ceylonLiteral(declaration.getName())));
+        return memberCall;
+    }
+
+    private JCExpression makeTopLevelValueOrFunctionDeclarationLiteral(Declaration declaration) {
+        // toplevel method or attribute: we need to fetch them from their module/package
+        Package pkg = Decl.getPackageContainer(declaration.getContainer());
+
+        // get the package
+        JCExpression packageCall = makePackageLiteralCall(pkg);
+        
+        // now get the toplevel
+        String getter = Decl.isMethod(declaration) ? "getFunction" : "getValue";
+        JCExpression toplevelCall = make().Apply(null, makeSelect(packageCall, getter), 
+                                                 List.<JCExpression>of(ceylonLiteral(declaration.getName())));
+        
+        // add a cast for variable declarations
+        if(declaration instanceof Value && ((Value) declaration).isVariable()){
+            ProducedType exprType = typeFact().getLanguageModuleDeclarationTypeDeclaration("VariableDeclaration").getType();
+            JCExpression typeClass = makeJavaType(exprType, JT_NO_PRIMITIVES);
+            return make().TypeCast(typeClass, toplevelCall);
+        }
+        return toplevelCall;
+    }
     
+    private JCTree makeTopLevelValueOrFunctionLiteral(MemberLiteral expr) {
+        Declaration declaration = expr.getDeclaration();
+        JCExpression toplevelCall = makeTopLevelValueOrFunctionDeclarationLiteral(declaration);
+        
+        if(!expr.getWantsDeclaration()){
+            ListBuffer<JCExpression> closedTypeArgs = new ListBuffer<JCExpression>();
+            // expr is of type Function<Type,Arguments> or Value<Type> so we can get its type like that
+            JCExpression reifiedType = makeReifiedTypeArgument(expr.getTypeModel().getTypeArgumentList().get(0));
+            closedTypeArgs.append(reifiedType);
+            if(Decl.isMethod(declaration)){
+                // expr is of type Function<Type,Arguments> so we can get its arguments type like that
+                ProducedType argumentsType = typeFact().getCallableTuple(expr.getTypeModel());
+                JCExpression reifiedArguments = makeReifiedTypeArgument(argumentsType);
+                closedTypeArgs.append(reifiedArguments);
+                if(expr.getTypeArgumentList() != null){
+                    JCExpression closedTypesExpr = getClosedTypesSequential(expr.getTypeArgumentList().getTypeModels());
+                    // must apply it
+                    closedTypeArgs.append(closedTypesExpr);
+                }
+            }
+            toplevelCall = make().Apply(null, makeSelect(toplevelCall, "apply"), closedTypeArgs.toList());
+            // add cast
+            ProducedType exprType = expr.getTypeModel().resolveAliases();
+            JCExpression typeClass = makeJavaType(exprType, JT_NO_PRIMITIVES);
+            JCExpression rawTypeClass = makeJavaType(exprType, JT_NO_PRIMITIVES | JT_RAW);
+            return make().TypeCast(typeClass, make().TypeCast(rawTypeClass, toplevelCall));
+        }
+        return toplevelCall;
+    }
+
     private JCExpression makePackageLiteralCall(Package pkg) {
         // get the module
         Module module = pkg.getModule();
@@ -1195,11 +1221,32 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(expr);
         if(!expr.getWantsDeclaration()){
             return makeTypeLiteralCall(expr, expr.getType().getTypeModel(), true);
-        }else{
+        }else if(expr.getDeclaration() instanceof TypeParameter){
+            // we must get it from its container
+            Declaration declaration = expr.getDeclaration();
+            Scope container = declaration.getContainer();
+            if(container instanceof Declaration){
+                JCExpression containerExpr;
+                Declaration containerDeclaration = (Declaration) container;
+                if(containerDeclaration instanceof ClassOrInterface
+                        || containerDeclaration instanceof TypeAlias){
+                    JCExpression metamodelCall = makeTypeDeclarationLiteral((TypeDeclaration) containerDeclaration);
+                    JCExpression metamodelCast = makeJavaType(typeFact().getLanguageModuleDeclarationTypeDeclaration("GenericDeclaration").getType(), JT_NO_PRIMITIVES);
+                    containerExpr = make().TypeCast(metamodelCast, metamodelCall);
+                }else if(containerDeclaration.isToplevel()) {
+                    containerExpr = makeTopLevelValueOrFunctionDeclarationLiteral(containerDeclaration);
+                }else{
+                    containerExpr = makeMemberValueOrFunctionDeclarationLiteral(expr, containerDeclaration);
+                }
+                // now it must be a ClassOrInterfaceDeclaration or a FunctionDeclaration, both of which have the method we need
+                return at(expr).Apply(null, makeSelect(containerExpr, "getTypeParameterDeclaration"), List.of(ceylonLiteral(declaration.getName())));
+            }else{
+                return makeErroneous(expr, "Unsupported type parameter container: "+container);
+            }
+        }else if(expr.getDeclaration() instanceof ClassOrInterface
+                 || expr.getDeclaration() instanceof TypeAlias){
             // use the generated class to get to the declaration literal
-            // FIXME: other types of declarations?
-            JCExpression classLiteral = makeUnerasedClassLiteral((TypeDeclaration) expr.getDeclaration());
-            JCExpression metamodelCall = makeMetamodelInvocation("getOrCreateMetamodel", List.of(classLiteral), null);
+            JCExpression metamodelCall = makeTypeDeclarationLiteral((TypeDeclaration) expr.getDeclaration());
             ProducedType exprType = expr.getTypeModel().resolveAliases();
             // now cast if required
             if(!exprType.isExactly(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("NestableDeclaration")).getType())){
@@ -1207,7 +1254,14 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return make().TypeCast(type, metamodelCall);
             }
             return metamodelCall;
+        }else{
+            return makeErroneous(expr, "Unsupported declaration type: "+expr.getDeclaration());
         }
+    }
+
+    private JCExpression makeTypeDeclarationLiteral(TypeDeclaration declaration) {
+        JCExpression classLiteral = makeUnerasedClassLiteral(declaration);
+        return makeMetamodelInvocation("getOrCreateMetamodel", List.of(classLiteral), null);
     }
 
     public JCExpression transformStringExpression(Tree.StringTemplate expr) {
