@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -350,7 +349,10 @@ public class CeylonRunJsTool extends RepoUsingTool {
 
     private File getRepoDir(String modname, File file) {
         // A trippy way to get to the repo folder, but it works
-        int count = modname.split("\\.").length + 2;
+        int count = modname.split("\\.").length + 1;
+        if (!"default".equals(modname)) {
+            count++;
+        }
         for (int i=0; i < count; i++) {
             file = file.getParentFile();
         }
