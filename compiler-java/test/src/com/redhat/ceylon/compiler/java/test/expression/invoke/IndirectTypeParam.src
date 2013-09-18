@@ -147,7 +147,7 @@ final class indirectTypeParam_ {
             }
             
             private .ceylon.language.Sequential<? extends .java.lang.Object> $call$typed(.ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> iterables) {
-                return .ceylon.language.join_.<.java.lang.Object>join(.ceylon.language.Object.$TypeDescriptor, iterables);
+                return .ceylon.language.concatenate_.<.java.lang.Object>concatenate(.ceylon.language.Object.$TypeDescriptor, iterables);
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends X>> j2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends X>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, $reifiedX), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reifiedX, .ceylon.language.Null.$TypeDescriptor)), "X[]({X*}*)", (short)0){
@@ -218,7 +218,7 @@ final class indirectTypeParam_ {
             }
             
             private .ceylon.language.Sequential<? extends X> $call$typed(.ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>> iterables) {
-                return .ceylon.language.join_.<X>join($reifiedX, iterables);
+                return .ceylon.language.concatenate_.<X>concatenate($reifiedX, iterables);
             }
         };
     }

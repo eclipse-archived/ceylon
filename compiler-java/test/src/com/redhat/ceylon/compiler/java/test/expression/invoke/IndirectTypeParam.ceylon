@@ -37,6 +37,6 @@ void indirectTypeParam<X>() {
     function f3(Integer i)() => mpl<Integer>(i);
     f3(1)();
     
-    value j = join<Object>;
-    value j2 = join<X>;
+    value j = concatenate<Object>;
+    value j2 = concatenate<X>;
 }
