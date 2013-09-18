@@ -316,12 +316,10 @@ public class CeylonRunJsTool extends RepoUsingTool {
                 .cwd(cwd)
                 .buildManager();
         
-        if (!isDefault && version == null) {
-            // TODO fill in the proper "binary" JS version below instead of "null"
-            version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), modname, version, ModuleQuery.Type.JS, null);
-            if (version == null) {
-                return;
-            }
+        // TODO fill in the proper "binary" JS version below instead of "null"
+        version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), modname, version, ModuleQuery.Type.JS, null, COMPILE_JS);
+        if (version == null) {
+            return;
         }
         
         ArtifactContext ac = new ArtifactContext(modname, version, ".js");
