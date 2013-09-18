@@ -225,13 +225,14 @@ public class CeylonRunJsTool extends RepoUsingTool {
             func = fsb.toString();
         }
         final boolean isDefault = module.equals("default");
+        String moduleString = isDefault ? module : module +"/"+version;
         //The timeout is to have enough time to start reading on the process streams
-        final String eval = String.format("if(typeof setTimeout==='function'){setTimeout(function(){},50)};var __entry_point__=require('%s%s/%s%s').%s;if (__entry_point__===undefined)console.log('The specified method does not exist or is not shared in the module');else __entry_point__();",
+        final String eval = String.format("if(typeof setTimeout==='function'){setTimeout(function(){},50)};var __entry_point__=require('%s%s/%s%s').%s;if (__entry_point__===undefined)console.log('The specified method \"%s\" does not exist or is not shared in the %s module');else __entry_point__();",
                 module.replace(".", "/"),
                 isDefault ? "" : "/" + version,
                 module,
                 isDefault ? "" : "-" + version,
-                func);
+                func, func, moduleString);
         final ProcessBuilder proc;
         if (args != null && !args.isEmpty()) {
             args.add(0, node);
