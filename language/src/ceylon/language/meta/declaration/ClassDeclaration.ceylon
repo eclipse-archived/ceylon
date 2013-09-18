@@ -51,13 +51,13 @@ import ceylon.language.meta.model {
 shared interface ClassDeclaration
         satisfies ClassOrInterfaceDeclaration & FunctionalDeclaration {
     
-    "True if the class has an [[abstract|ceylon.language::Abstract]] annotation."
+    "True if the class has an [[abstract|ceylon.language::abstract]] annotation."
     shared formal Boolean abstract;
 
-    "True if the class has an [[abstract|ceylon.language::Abstract]] annotation."
+    "True if the class is an object class."
     shared formal Boolean anonymous;
 
-    "True if the class has a [[final|ceylon.language::Final]] annotation."
+    "True if the class has a [[final|ceylon.language::final]] annotation."
     shared formal Boolean final;
 
     "Applies the given closed type arguments to this toplevel class declaration in order to obtain a class model. 

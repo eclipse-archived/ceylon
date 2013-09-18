@@ -6,16 +6,16 @@ shared interface NestableDeclaration of FunctionOrValueDeclaration |
                                         AliasDeclaration
         satisfies AnnotatedDeclaration & TypedDeclaration {
 
-    "True if this declaration is annotated with [[actual|ceylon.language::Actual]]."
+    "True if this declaration is annotated with [[actual|ceylon.language::actual]]."
     shared formal Boolean actual;
 
-    "True if this declaration is annotated with [[formal|ceylon.language::Formal]]."
+    "True if this declaration is annotated with [[formal|ceylon.language::formal]]."
     shared formal Boolean formal;
 
-    "True if this declaration is annotated with [[default|ceylon.language::Default]]."
+    "True if this declaration is annotated with [[default|ceylon.language::default]]."
     shared formal Boolean default;
 
-    "True if this declaration is annotated with [[shared|ceylon.language::Shared]]."
+    "True if this declaration is annotated with [[shared|ceylon.language::shared]]."
     shared formal Boolean shared;
 
     "This declaration's package container."
