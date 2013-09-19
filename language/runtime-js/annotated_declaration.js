@@ -1,4 +1,4 @@
-//Add-on to AnnotatedDeclaration            //MethodDeclaration annotations at caca.ceylon (82:2-83:72)
+//Add-on to AnnotatedDeclaration
 AnnotatedDeclaration$meta$declaration.$$.prototype.annotations=function ($$$mptypes) {
     var $$openInterface=this;
     var ans = [];
