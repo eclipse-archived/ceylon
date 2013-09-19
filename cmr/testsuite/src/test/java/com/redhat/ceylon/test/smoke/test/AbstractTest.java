@@ -37,6 +37,7 @@ import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
+import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
@@ -163,6 +164,10 @@ public class AbstractTest {
             Assert.assertEquals(expectedVersion.getDoc(), version.getDoc());
             Assert.assertEquals(expectedVersion.getLicense(), version.getLicense());
             Assert.assertEquals(expectedVersion.getAuthors(), version.getAuthors());
+            Assert.assertEquals(expectedVersion.getDependencies(), version.getDependencies());
+            Assert.assertEquals(expectedVersion.getArtifactTypes(), version.getArtifactTypes());
+            Assert.assertEquals(expectedVersion.isRemote(), version.isRemote());
+            Assert.assertEquals(expectedVersion.getOrigin(), version.getOrigin());
         }
     }
 
@@ -217,21 +222,28 @@ public class AbstractTest {
             Assert.assertEquals(expectedResult.getLicense(), result.getLicense());
             Assert.assertEquals(expectedResult.getAuthors(), result.getAuthors());
             Assert.assertEquals(expectedResult.getVersions(), result.getVersions());
+            Assert.assertEquals(expectedResult.getDependencies(), result.getDependencies());
+            Assert.assertEquals(expectedResult.getArtifactTypes(), result.getArtifactTypes());
+            Assert.assertEquals(expectedResult.getMajorBinaryVersion(), result.getMajorBinaryVersion());
+            Assert.assertEquals(expectedResult.getMinorBinaryVersion(), result.getMinorBinaryVersion());
         }
     }
 
-    protected SortedSet<String> set(String... values) {
+    protected static SortedSet<String> set(String... values) {
         SortedSet<String> ret = new TreeSet<String>();
         Collections.addAll(ret, values);
         return ret;
     }
 
-    protected SortedSet<ModuleInfo> deps(String... values) {
+    protected static SortedSet<ModuleInfo> deps(ModuleInfo... values) {
         SortedSet<ModuleInfo> ret = new TreeSet<ModuleInfo>();
-        for (String name : values) {
-            ret.add(new ModuleInfo(name, "1.0", false, false));
-        }
+        Collections.addAll(ret, values);
         return ret;
     }
 
+    protected static SortedSet<ModuleVersionArtifact> types(ModuleVersionArtifact... values) {
+        SortedSet<ModuleVersionArtifact> ret = new TreeSet<ModuleVersionArtifact>();
+        Collections.addAll(ret, values);
+        return ret;
+    }
 }

@@ -2,6 +2,7 @@ package com.redhat.ceylon.cmr.api;
 
 import java.util.Arrays;
 import java.util.NavigableSet;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -25,6 +26,19 @@ public class ModuleVersionDetails {
         this.doc = doc;
         this.license = license;
         this.authors.addAll(Arrays.asList(by));
+    }
+
+    public ModuleVersionDetails(String version, String doc, String license, Set<String> authors, 
+            Set<ModuleInfo> dependencies, Set<ModuleVersionArtifact> artifactTypes,
+            boolean remote, String origin) {
+        this(version);
+        this.doc = doc;
+        this.license = license;
+        this.authors.addAll(authors);
+        this.dependencies.addAll(dependencies);
+        this.artifactTypes.addAll(artifactTypes);
+        this.remote = remote;
+        this.origin = origin;
     }
 
     public String getVersion() {

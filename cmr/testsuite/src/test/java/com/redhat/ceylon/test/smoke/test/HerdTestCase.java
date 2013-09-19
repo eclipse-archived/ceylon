@@ -22,6 +22,8 @@ import java.io.File;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -104,13 +106,53 @@ public class HerdTestCase extends AbstractTest {
         testComplete("ceylon", expected, getRepositoryManager());
     }
 
+    public final static String jsonDoc0_4 = "Contains everything required to parse and serialise JSON data.\n\nSample usage for parsing and accessing JSON:\n\n    String getAuthor(String json){\n        value parsedJson = parse(json);\n        if(is Object parsedJson){\n            if(is String author = parsedJson.get(\"author\")){\n                return author;\n            }\n        }\n        throw Exception(\"Invalid JSON data\");\n    }\n\nSample usage for generating JSON data:\n\n    String getJSON(){\n        value json = Object{\n            \"name\" -> \"Introduction to Ceylon\",\n            \"authors\" -> Array{\n                \"Stef Epardaud\",\n                \"Emmanuel Bernard\"\n            }\n        };\n        return json.string;\n    }\n\n";
+    public final static String jsonDoc0_5 = "Contains everything required to parse and serialise JSON data.\n\nSample usage for parsing and accessing JSON:\n\n    String getAuthor(String json){\n        value parsedJson = parse(json);\n        if(is String author = parsedJson.get(\"author\")){\n            return author;\n        }\n        throw Exception(\"Invalid JSON data\");\n    }\n\nOr if you're really sure that you should have a String value:\n\n    String getAuthor(String json){\n        value parsedJson = parse(json);\n        return parsedJson.getString(\"author\")){\n    }\n\nYou can iterate Json objects too::\n\n    {String*} getModules(String json){\n        value parsedJson = parse(json);\n        if(is Array modules = parsedJson.get(\"modules\")){\n            return { for (mod in modules) \n                       if(is Object mod, is String name = mod.get(\"name\")) \n                         name \n                   };\n        }\n        throw Exception(\"Invalid JSON data\");\n    }     \nSample usage for generating JSON data:\n\n    String getJSON(){\n        value json = Object {\n            \"name\" -> \"Introduction to Ceylon\",\n            \"authors\" -> Array {\n                \"Stef Epardaud\",\n                \"Emmanuel Bernard\"\n            }\n        };\n        return json.string;\n    }\n";
+    
+    public final static ModuleDetails jsonModuleDetails0_5 =
+            new ModuleDetails("ceylon.json", jsonDoc0_5, "Apache Software License", set("Stéphane Épardaud"), set("0.3.3", "0.4", "0.5"), 
+                              deps(new ModuleInfo("ceylon.collection", "0.5", false, false)), 
+                              set(".car", ".js", ".src"), 4, 0, true, "The Herd");
+    public final static ModuleDetails jsonModuleDetails0_5_js =
+            new ModuleDetails("ceylon.json", jsonDoc0_5, "Apache Software License", set("Stéphane Épardaud"), set("0.5"), 
+                              deps(new ModuleInfo("ceylon.collection", "0.5", false, false)), 
+                              set(".car", ".js", ".src"), 4, 0, true, "The Herd");
+
+    
     @Test
-    @Ignore("Required Herd running locally")
+//    @Ignore("Required Herd running locally")
     public void testHerdCompleteCompleteName() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0"), deps(), set(), null, null, true, "The Herd"),
+                jsonModuleDetails0_5,
         };
-        testComplete("ceylon.collection", expected, getRepositoryManager());
+        testComplete("ceylon.json", expected, getRepositoryManager());
+    }
+
+    @Test
+//  @Ignore("Required Herd running locally")
+    public void testHerdCompleteForJs() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                jsonModuleDetails0_5_js,
+        };
+        testComplete("ceylon.json", expected, getRepositoryManager(), Type.JS);
+    }
+
+    @Test
+//  @Ignore("Required Herd running locally")
+    public void testHerdCompleteForSrc() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                jsonModuleDetails0_5,
+        };
+        testComplete("ceylon.json", expected, getRepositoryManager(), Type.SRC);
+    }
+
+    @Test
+//  @Ignore("Required Herd running locally")
+    public void testHerdCompleteForAll() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                jsonModuleDetails0_5,
+        };
+        testComplete("ceylon.json", expected, getRepositoryManager(), Type.ALL);
     }
 
     @Test
@@ -132,12 +174,46 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    @Ignore("Required Herd running locally")
+//    @Ignore("Required Herd running locally")
     public void testHerdCompleteVersions() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
-                new ModuleVersionDetails("0.3.0", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", "Stéphane Épardaud"),
+                jsonVersionDetail0_3_3,
+                jsonVersionDetail0_4,
+                jsonVersionDetail0_5,
         };
-        testListVersions("ceylon.collection", null, expected);
+        testListVersions("ceylon.json", null, expected);
+    }
+
+    public static final ModuleVersionDetails jsonVersionDetail0_3_3 =                 
+            new ModuleVersionDetails("0.3.3", "A JSON parser / serialiser", "Apache Software License", set("Stéphane Épardaud"), 
+                    deps(new ModuleInfo("ceylon.collection", "0.3.3", false, false)), 
+                    types(new ModuleVersionArtifact(".car", 3, 0),
+                            new ModuleVersionArtifact(".src", null, null)),
+                    true, "The Herd (http://localhost:9000/test)");
+
+    public static final ModuleVersionDetails jsonVersionDetail0_4 =                 
+            new ModuleVersionDetails("0.4", jsonDoc0_4, "Apache Software License", set("Stéphane Épardaud"), 
+                    deps(new ModuleInfo("ceylon.collection", "0.4", false, false)), 
+                    types(new ModuleVersionArtifact(".car", 3, 0),
+                            new ModuleVersionArtifact(".src", null, null)),
+                    true, "The Herd (http://localhost:9000/test)");
+
+    public static final ModuleVersionDetails jsonVersionDetail0_5 =                 
+            new ModuleVersionDetails("0.5", jsonDoc0_5, "Apache Software License", set("Stéphane Épardaud"), 
+                    deps(new ModuleInfo("ceylon.collection", "0.5", false, false)), 
+                    types(new ModuleVersionArtifact(".car", 4, 0),
+                            new ModuleVersionArtifact(".js", null, null),
+                            new ModuleVersionArtifact(".src", null, null)),
+                    true, "The Herd (http://localhost:9000/test)");
+
+    
+    @Test
+//    @Ignore("Required Herd running locally")
+    public void testHerdCompleteVersionsComplete() throws Exception {
+        ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
+                jsonVersionDetail0_5,
+        };
+        testListVersions("ceylon.json", "0.5", expected);
     }
 
     @Test
@@ -190,6 +266,15 @@ public class HerdTestCase extends AbstractTest {
                 new ModuleDetails("ceylon.language", null, null, set(), set("0.1"), deps(), set(), null, null, true, "The Herd"),
         };
         testSearchResults("cey", Type.JVM, expected);
+    }
+    
+    @Test
+//    @Ignore("Required Herd running locally")
+    public void testHerdSearchFilteredComplete() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                jsonModuleDetails0_5,
+        };
+        testSearchResults("ceylon.json", Type.JVM, expected);
     }
 
     @Test

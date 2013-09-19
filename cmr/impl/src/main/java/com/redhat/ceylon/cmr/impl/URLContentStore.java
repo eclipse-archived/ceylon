@@ -339,6 +339,8 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         while(p.moveToOptionalOpenTag("module-version")){
             String module = null, version = null, doc = null, license = null;
             authors.clear();
+            dependencies.clear();
+            types.clear();
             
             while(p.moveToOptionalOpenTag()){
                 if(p.isOpenTag("module")){
@@ -352,15 +354,10 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     license = p.contents();
                 }else if(p.isOpenTag("authors")){
                     authors.add(p.contents());
-                }else if(p.isOpenTag("dependencies")){
-                    // TODO Implement retrieval of dependencies from Herd
-                    // dependencies.add(...);
-                }else if(p.isOpenTag("types")){
-                    // TODO Implement retrieval of types from Herd
-                    // types.add(...);
-                }else if(p.isOpenTag("binaryversion")){
-                    // TODO Implement retrieval of binary version numbers
-                    // (JS doesn't have this yet and the word "binary" is a misnomer really)
+                }else if(p.isOpenTag("dependency")){
+                    dependencies.add(parseDependency(p));
+                }else if(p.isOpenTag("artifact")){
+                    types.add(parseArtifact(p));
                 }else{
                     throw new RuntimeException("Unknown tag: "+p.tagName());
                 }
@@ -389,6 +386,59 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             p.checkCloseTag();
         }
         p.checkCloseTag();
+    }
+
+    private ModuleVersionArtifact parseArtifact(Parser p) {
+        String suffix = null;
+        Integer binaryMajor = null, binaryMinor = null;
+        while(p.moveToOptionalOpenTag()){
+            if(p.isOpenTag("suffix")){
+                suffix = p.contents();
+            }else if(p.isOpenTag("binaryMajorVersion")){
+                binaryMajor = parseInt(p.contents(), "binaryMajorVersion");
+            }else if(p.isOpenTag("binaryMinorVersion")){
+                binaryMinor = parseInt(p.contents(), "binaryMinorVersion");
+            }else{
+                throw new RuntimeException("Unknown tag: "+p.tagName());
+            }
+        }
+        if(suffix == null || suffix.isEmpty())
+            throw new RuntimeException("Missing required artifact suffix");
+        return new ModuleVersionArtifact(suffix, binaryMajor, binaryMinor);
+    }
+
+    private int parseInt(String string, String errorTag) {
+        try{
+            return Integer.parseInt(string);
+        }catch(NumberFormatException x){
+            throw new RuntimeException("Invalid "+errorTag+" value: "+string);
+        }
+    }
+
+    private ModuleInfo parseDependency(Parser p) {
+        String dependencyName = null, dependencyVersion = null;
+        boolean dependencyShared = false, dependencyOptional = false;
+        while(p.moveToOptionalOpenTag()){
+            if(p.isOpenTag("module")){
+                dependencyName = p.contents();
+            }else if(p.isOpenTag("version")){
+                dependencyVersion = p.contents();
+            }else if(p.isOpenTag("shared")){
+                dependencyShared = p.contents().equals("true");
+            }else if(p.isOpenTag("optional")){
+                dependencyOptional = p.contents().equals("true");
+            }else if(p.isOpenTag("maven")){
+                // ignore for now
+                p.contents();
+            }else{
+                throw new RuntimeException("Unknown tag: "+p.tagName());
+            }
+        }
+        if(dependencyName == null || dependencyName.isEmpty())
+            throw new RuntimeException("Missing required dependency module name");
+        if(dependencyVersion == null || dependencyVersion.isEmpty())
+            throw new RuntimeException("Missing required dependency module version");
+        return new ModuleInfo(dependencyName, dependencyVersion, dependencyOptional, dependencyShared);
     }
 
     @Override
@@ -437,6 +487,8 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             Integer majorBinVer = null, minorBinVer = null;
             authors.clear();
             versions.clear();
+            dependencies.clear();
+            types.clear();
             resultCount++;
             
             while(p.moveToOptionalOpenTag()){
@@ -450,15 +502,15 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     license = p.contents();
                 }else if(p.isOpenTag("authors")){
                     authors.add(p.contents());
-                }else if(p.isOpenTag("dependencies")){
-                    // TODO Implement retrieval of dependencies from Herd
-                    // dependencies.add(...);
-                }else if(p.isOpenTag("types")){
-                    // TODO Implement retrieval of types from Herd
-                    types.add(p.contents());
-                }else if(p.isOpenTag("binaryversion")){
-                    // TODO Implement retrieval of binary version numbers
-                    // (JS doesn't have this yet and the word "binary" is a misnomer really)
+                }else if(p.isOpenTag("dependency")){
+                    dependencies.add(parseDependency(p));
+                }else if(p.isOpenTag("artifact")){
+                    ModuleVersionArtifact artifact = parseArtifact(p);
+                    if(artifact.getSuffix().equals(".car")){
+                        majorBinVer = artifact.getMajorBinaryVersion();
+                        minorBinVer = artifact.getMinorBinaryVersion();
+                    }
+                    types.add(artifact.getSuffix());
                 }else{
                     throw new RuntimeException("Unknown tag: "+p.tagName());
                 }
