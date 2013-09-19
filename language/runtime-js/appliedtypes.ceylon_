@@ -1,11 +1,11 @@
 import ceylon.language.meta.model {
   ClosedType=Type, UnionType, IntersectionType,
-  Member, Interface, VariableAttribute, Class, ClassOrInterface, Attribute, Method, Value, Function,
+  Member, Interface, VariableAttribute, Class, ClassOrInterface, Attribute, Method, Value, Variable, Function,
   ClassModel,InterfaceModel
 }
 import ceylon.language.meta.declaration {
   ClassDeclaration, InterfaceDeclaration, ValueDeclaration, FunctionDeclaration,
-  TypeParameter
+  TypeParameter, VariableDeclaration
 }
 
 shared class AppliedClass<out Type, in Arguments>() satisfies Class<Type,Arguments>
@@ -50,7 +50,7 @@ shared class AppliedInterface<out Type>() satisfies Interface<Type>
 
 shared class AppliedValue<out Type>() satisfies Value<Type> {
   shared actual Type get() { throw Exception("Implement get"); }
-  shared actual ValueDeclaration declaration {throw Exception("Value.declaration"); }
+  shared actual default ValueDeclaration declaration {throw Exception("Value.declaration"); }
   shared actual ClosedType<Type> type { throw Exception("Value.type"); }
 
   shared actual ClosedType<Anything>? container { throw Exception("Class declaration"); }
@@ -95,7 +95,17 @@ shared class AppliedMethod<in Container, out Type=Anything, in Arguments=Nothing
 
 shared class AppliedAttribute<in Container, out Type=Anything>() satisfies Attribute<Container,Type> {
     shared actual ClassOrInterface<Anything>? container { throw Exception("unimplemented"); }
-    shared actual ClassOrInterface<Anything> declaringType { throw Exception("unimplemented"); }
+    shared actual default ClassOrInterface<Anything> declaringType { throw Exception("unimplemented"); }
     shared actual ClosedType<Type> type { throw Exception("unimplemented"); }
-    shared actual ValueDeclaration declaration { throw Exception("unimplemented"); }
+    shared actual default ValueDeclaration declaration { throw Exception("unimplemented"); }
+}
+
+shared class AppliedVariable<Type>() extends AppliedValue<Type>() satisfies Variable<Type> {
+  shared actual void set(Type newValue) { throw Exception("unimplemented"); }
+  shared actual default VariableDeclaration declaration { throw Exception("unimplemented"); }
+}
+shared class AppliedVariableAttribute<in Container, Type>() extends AppliedAttribute<Container,Type>()
+    satisfies VariableAttribute<Container,Type> {
+  shared actual VariableDeclaration declaration { throw Exception("unimplemented"); }
+  shared actual ClassOrInterface<Anything> declaringType { throw Exception("unimplemented"); }
 }
