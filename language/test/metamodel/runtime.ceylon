@@ -1176,6 +1176,7 @@ shared void run() {
     bug303();
     bug304();
     bug307();
+    bug308();
     // those were filed for the JVM compiler initially
     bugC1196test();
     bugC1197();
