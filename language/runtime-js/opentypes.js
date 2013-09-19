@@ -416,13 +416,6 @@ function $init$OpenClass(){
                 throw Exception();
             };$$openClass.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Class$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$m','apply']};};
             
-            //MethodDeclaration memberDeclarations at X (53:2-54:66)
-            $$openClass.memberDeclarations=function ($$$mptypes){
-                var $$openClass=this;
-                return getEmpty();
-            };
-            $$openClass.memberDeclarations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Kind'}},$ps:[],$cont:OpenClass,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$m','memberDeclarations']};};
-            
             //MethodDeclaration annotatedMemberDeclarations at X (55:2-56:66)
             $$openClass.annotatedMemberDeclarations=function ($$$mptypes){
                 var $$openClass=this;
@@ -548,13 +541,6 @@ function $init$OpenInterface(){
             $$openInterface.$apply=function $apply(types$16){
               return AppliedInterface(this.tipo,{Type:{t:this.tipo}});
             };$$openInterface.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Interface$meta,a:{Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$m','apply']};};
-            
-            //MethodDeclaration memberDeclarations at X (78:2-79:66)
-            $$openInterface.memberDeclarations=function ($$$mptypes){
-                var $$openInterface=this;
-                return getEmpty();
-            };
-            $$openInterface.memberDeclarations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Kind'}},$ps:[],$cont:OpenInterface,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$m','memberDeclarations']};};
             
             //MethodDeclaration annotatedMemberDeclarations at X (80:2-81:66)
             $$openInterface.annotatedMemberDeclarations=function ($$$mptypes){
