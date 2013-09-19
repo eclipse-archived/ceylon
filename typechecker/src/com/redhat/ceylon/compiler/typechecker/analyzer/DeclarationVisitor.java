@@ -261,7 +261,7 @@ public class DeclarationVisitor extends Visitor {
         if (firstNonImportNode!=null) {
             for (Tree.Import im: that.getImportList().getImports()) {
                 if (im.getStopIndex()>firstNonImportNode.getStartIndex()) {
-                    that.addError("import statement must occur before any declaration or descriptor");
+                    im.addError("import statement must occur before any declaration or descriptor");
                 }
             }
         }
