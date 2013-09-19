@@ -17,6 +17,7 @@ import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.OptionArgument;
@@ -304,8 +305,8 @@ public class CeylonRunJsTool extends RepoUsingTool {
             modname = module;
             version = "";
         } else {
-            version = moduleVersion(module);
-            modname = moduleName(module);
+            version = ModuleUtil.moduleVersion(module);
+            modname = ModuleUtil.moduleName(module);
         }
 
         //Create a repository manager to load the js module we're going to run
