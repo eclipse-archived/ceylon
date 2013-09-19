@@ -93,37 +93,64 @@ shared final annotation class NativeAnnotation()
 shared annotation NativeAnnotation native() => NativeAnnotation();
 
 "The annotation class for the [[doc]] annotation."
-shared final annotation class DocAnnotation(shared String description)
+shared final annotation class DocAnnotation(
+    "Documentation, in Markdown syntax, about the annotated element"
+    shared String description)
         satisfies OptionalAnnotation<DocAnnotation, Annotated> {}
 
 "Annotation to specify API documentation of a program
  element." 
-shared annotation DocAnnotation doc(String description) => DocAnnotation(description);
+shared annotation DocAnnotation doc(
+    "Documentation, in Markdown syntax, about the annotated element"
+    String description) => DocAnnotation(description);
 
-shared final annotation class SeeAnnotation(shared Declaration* programElements)
+shared final annotation class SeeAnnotation(
+    "The program elements being referred to."
+    shared Declaration* programElements)
         satisfies SequencedAnnotation<SeeAnnotation, Annotated> {}
 
 "Annotation to specify API references to other related 
  program elements."
-shared annotation SeeAnnotation see(Declaration* programElements) => SeeAnnotation(*programElements);
+shared annotation SeeAnnotation see(
+    "The program elements being referred to."
+    Declaration* programElements) => SeeAnnotation(*programElements);
 
 "The annotation class for [[by]]."
-shared final annotation class AuthorsAnnotation(shared String* authors)
+shared final annotation class AuthorsAnnotation(
+    "The authors, in Markdown syntax, of the annotated element"
+    shared String* authors)
         satisfies OptionalAnnotation<AuthorsAnnotation, Annotated> {}
 
 "Annotation to specify API authors."
-shared annotation AuthorsAnnotation by(String* authors) => AuthorsAnnotation(*authors);
+shared annotation AuthorsAnnotation by(
+    "The authors, in Markdown syntax, of the annotated element"
+    String* authors) => AuthorsAnnotation(*authors);
 
-shared final annotation class ThrownExceptionAnnotation(shared Declaration type, shared String when) 
+shared final annotation class ThrownExceptionAnnotation(
+    "The [[Exception]] type that this thrown."
+    shared Declaration type,
+    "A description, in Markdown syntax, of the circumstances that 
+     cause this exception to be thrown." 
+    shared String when) 
         satisfies SequencedAnnotation<ThrownExceptionAnnotation, ValueDeclaration|FunctionDeclaration|ClassDeclaration> {}
 
 "Annotation to mark a program element that throws an 
  exception."
-shared annotation ThrownExceptionAnnotation throws(Declaration type, String when="") => ThrownExceptionAnnotation(type, when);
+shared annotation ThrownExceptionAnnotation throws(
+    "The [[Exception]] type that this thrown."
+    Declaration type,
+    "A description, in Markdown syntax, of the circumstances that 
+     cause this exception to be thrown."
+    String when="") => ThrownExceptionAnnotation(type, when);
 
 "The annotation class for [[deprecated]]."
-shared final annotation class DeprecationAnnotation(shared String description)
+shared final annotation class DeprecationAnnotation(
+    "A description, in Markdown syntax, of why the element is deprecated, 
+     and what replacements are available."
+    shared String description)
         satisfies OptionalAnnotation<DeprecationAnnotation, Annotated> {
+    "A description, in Markdown syntax, of why the element is deprecated, 
+     and what replacements are available, or null."
     shared String? reason {
         if (description.empty) {
             return null;
@@ -134,22 +161,33 @@ shared final annotation class DeprecationAnnotation(shared String description)
 
 "Annotation to mark program elements which should not be 
  used anymore."
-shared annotation DeprecationAnnotation deprecated(String reason="") => DeprecationAnnotation(reason);
+shared annotation DeprecationAnnotation deprecated(
+    "A description, in Markdown syntax, of why the element is deprecated, 
+     and what replacements are available."
+    String reason="") => DeprecationAnnotation(reason);
 
 "The annotation class for [[tagged]]."
-shared final annotation class TagsAnnotation(shared String* tags)
+shared final annotation class TagsAnnotation(
+    "The tags, in plain text."
+    shared String* tags)
         satisfies OptionalAnnotation<TagsAnnotation, Annotated> {}
 
 "Annotation to categorize the API by tag." 
-shared annotation TagsAnnotation tagged(String* tags) => TagsAnnotation(*tags);
+shared annotation TagsAnnotation tagged(
+    "The tags, in plain text."
+    String* tags) => TagsAnnotation(*tags);
 
 "The annotation class for [[license]]."
-shared final annotation class LicenseAnnotation(shared String url) 
+shared final annotation class LicenseAnnotation(
+    "The URL of the license."
+    shared String url) 
         satisfies OptionalAnnotation<LicenseAnnotation, Module> {}
 
 "Annotation to specify the URL of the license of a module or 
  package." 
-shared annotation LicenseAnnotation license(String url) => LicenseAnnotation(url);
+shared annotation LicenseAnnotation license(
+    "The URL of the license."
+    String url) => LicenseAnnotation(url);
 
 "The annotation class for [[optional]]."
 shared final annotation class OptionalImportAnnotation() 
