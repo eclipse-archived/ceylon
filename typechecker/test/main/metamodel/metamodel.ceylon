@@ -1,3 +1,4 @@
+import ceylon.language.meta.model {Method}
 
 void test<T>() {
     @type:"ClassDeclaration" 
@@ -332,5 +333,10 @@ void testPackagesModules() {
     @error value m1 = `module ceylon.language.model`;
     @error value m2 = `module foo.bar`;
     @error value p2 = `package foo.bar.baz`;
+}
+
+void testMethodOfGeneric() {
+    Method<Integer, Integer, [Integer]> plus1 = `Summable<Integer>.plus`;
+    Method<Integer, Integer, [Integer]> plus2 = `Integer.plus`;
 }
 
