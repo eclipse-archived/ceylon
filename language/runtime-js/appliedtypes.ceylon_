@@ -5,7 +5,8 @@ import ceylon.language.meta.model {
 }
 import ceylon.language.meta.declaration {
   ClassDeclaration, InterfaceDeclaration, ValueDeclaration, FunctionDeclaration,
-  TypeParameter }
+  TypeParameter
+}
 
 shared class AppliedClass<out Type, in Arguments>() satisfies Class<Type,Arguments>
     given Type satisfies Object
@@ -85,9 +86,16 @@ shared class AppliedMethod<in Container, out Type=Anything, in Arguments=Nothing
 
     shared actual FunctionDeclaration declaration { throw Exception("unimplemented"); }
     shared actual ClosedType<Type> type { throw Exception("unimplemented"); }
-    shared actual ClassOrInterface<Anything> declaringClassOrInterface { throw Exception("unimplemented"); }
+    shared actual ClassOrInterface<Anything> declaringType { throw Exception("unimplemented"); }
 
     shared actual ClassOrInterface<Anything>? container { throw Exception("unimplemented"); }
 
     shared actual Map<TypeParameter, ClosedType<Anything>> typeArguments { throw Exception("unimplemented"); }
+}
+
+shared class AppliedAttribute<in Container, out Type=Anything>() satisfies Attribute<Container,Type> {
+    shared actual ClassOrInterface<Anything>? container { throw Exception("unimplemented"); }
+    shared actual ClassOrInterface<Anything> declaringType { throw Exception("unimplemented"); }
+    shared actual ClosedType<Type> type { throw Exception("unimplemented"); }
+    shared actual ValueDeclaration declaration { throw Exception("unimplemented"); }
 }
