@@ -237,19 +237,6 @@ public abstract class AppliedClassOrInterface<Type>
     }
 
     @Override
-    @TypeParameters({
-        @TypeParameter(value = "SubType"),
-        @TypeParameter(value = "Type")
-    })
-    @TypeInfo("ceylon.language.meta.model::VariableAttribute<SubType,Type>|ceylon.language::Null")
-    public <SubType, Type>
-        ceylon.language.meta.model.VariableAttribute<SubType, Type> getVariableAttribute(@Ignore TypeDescriptor $reifiedSubType, 
-                                                                                        @Ignore TypeDescriptor $reifiedType, 
-                                                                                        String name) {
-        return (ceylon.language.meta.model.VariableAttribute<SubType, Type>)getAttribute($reifiedSubType, $reifiedType, name);
-    }
-    
-    @Override
     public String toString() {
         return Metamodel.toTypeString(this);
     }

@@ -117,7 +117,7 @@ void checkMemberAttributes(){
     assert(exists obj = noParamsType.getAttribute<NoParams, NoParams>("obj"));
     assert(obj(noParamsInstance).get() === noParamsInstance);
 
-    assert(exists string2 = noParamsType.getVariableAttribute<NoParams, String>("str2"));
+    assert(is VariableAttribute<NoParams, String> string2 = noParamsType.getAttribute<NoParams, String>("str2"));
     assert(string2.declaration.variable);
     value string2Bound = string2(noParamsInstance);
     assert(string2Bound.get() == "a");
@@ -125,35 +125,35 @@ void checkMemberAttributes(){
     assert(string2Bound.get() == "b");
     assert(noParamsInstance.str2 == "b");
     
-    assert(exists integer2 = noParamsType.getVariableAttribute<NoParams, Integer>("integer2"));
+    assert(is VariableAttribute<NoParams, Integer> integer2 = noParamsType.getAttribute<NoParams, Integer>("integer2"));
     value integer2Bound = integer2(noParamsInstance);
     assert(integer2Bound.get() == 1);
     integer2Bound.set(2);
     assert(integer2Bound.get() == 2);
     assert(noParamsInstance.integer2 == 2);
 
-    assert(exists float2 = noParamsType.getVariableAttribute<NoParams, Float>("float2"));
+    assert(is VariableAttribute<NoParams, Float> float2 = noParamsType.getAttribute<NoParams, Float>("float2"));
     value float2Bound = float2(noParamsInstance);
     assert(float2Bound.get() == 1.2);
     float2Bound.set(2.1);
     assert(float2Bound.get() == 2.1);
     assert(noParamsInstance.float2 == 2.1);
     
-    assert(exists character2 = noParamsType.getVariableAttribute<NoParams, Character>("character2"));
+    assert(is VariableAttribute<NoParams, Character> character2 = noParamsType.getAttribute<NoParams, Character>("character2"));
     value character2Bound = character2(noParamsInstance);
     assert(character2Bound.get() == 'a');
     character2Bound.set('b');
     assert(character2Bound.get() == 'b');
     assert(noParamsInstance.character2 == 'b');
     
-    assert(exists boolean2 = noParamsType.getVariableAttribute<NoParams, Boolean>("boolean2"));
+    assert(is VariableAttribute<NoParams, Boolean> boolean2 = noParamsType.getAttribute<NoParams, Boolean>("boolean2"));
     value boolean2Bound = boolean2(noParamsInstance);
     assert(boolean2Bound.get() == true);
     boolean2Bound.set(false);
     assert(boolean2Bound.get() == false);
     assert(noParamsInstance.boolean2 == false);
     
-    assert(exists obj2 = noParamsType.getVariableAttribute<NoParams, Object>("obj2"));
+    assert(is VariableAttribute<NoParams, Object> obj2 = noParamsType.getAttribute<NoParams, Object>("obj2"));
     value obj2Bound = obj2(noParamsInstance);
     assert(obj2Bound.get() == 2);
     obj2Bound.set(3);
