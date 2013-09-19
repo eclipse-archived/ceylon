@@ -1,5 +1,5 @@
 /*Native Implementation of annotations() */
-function annotations$meta(anntype, progelem, $$targs$$) {
+function annotations$meta(anntype, progelem, $$$mptypes) {
   var mm = progelem.tipo?progelem.tipo.$$metamodel$$:progelem.$$metamodel$$;
   if (typeof(mm) === 'function') {
     mm = mm();
@@ -23,7 +23,7 @@ function annotations$meta(anntype, progelem, $$targs$$) {
       if (isOfType(anns[i], {t:anntype.tipo}))r.push(anns[i]);
     }
     return r.length==0?getEmpty():r.reifyCeylonType({Absent:{t:Null},Element:{t:ConstrainedAnnotation,
-      a:{Value:$$targs$$.Value,Values:$$targs$$.Values,ProgramElement:$$targs$$.ProgramElement}}});
+      a:{Value:$$$mptypes.Value,Values:$$$mptypes.Values,ProgramElement:$$$mptypes.ProgramElement}}});
   }
   return null;
 }
