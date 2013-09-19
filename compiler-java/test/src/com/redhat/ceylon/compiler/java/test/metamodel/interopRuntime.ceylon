@@ -1,4 +1,4 @@
-import ceylon.language.meta.model { Class, Attribute, Variable, Function }
+import ceylon.language.meta.model { Class, Attribute, Variable, Function, VariableAttribute }
 
 void interopRuntime(){
     Class<JavaType,[Boolean,Integer,Integer,Integer,Integer,Float,Float,Character,String,Object]> javaType = `JavaType`;
@@ -88,86 +88,86 @@ void interopRuntime(){
     //
     // properties
     
-    assert(exists booleanAttr = javaType.getVariableAttribute<JavaType,Boolean>("boolean"));
+    assert(is VariableAttribute<JavaType,Boolean> booleanAttr = javaType.getAttribute<JavaType,Boolean>("boolean"));
     assert(booleanAttr(instance).get() == true);
     booleanAttr(instance).set(true);
 
-    assert(exists byteAttr = javaType.getVariableAttribute<JavaType,Integer>("byte"));
+    assert(is VariableAttribute<JavaType,Integer> byteAttr = javaType.getAttribute<JavaType,Integer>("byte"));
     assert(byteAttr(instance).get() == 1);
     byteAttr(instance).set(1);
 
-    assert(exists shortAttr = javaType.getVariableAttribute<JavaType,Integer>("short"));
+    assert(is VariableAttribute<JavaType,Integer> shortAttr = javaType.getAttribute<JavaType,Integer>("short"));
     assert(shortAttr(instance).get() == 2);
     shortAttr(instance).set(2);
 
-    assert(exists intAttr = javaType.getVariableAttribute<JavaType,Integer>("int"));
+    assert(is VariableAttribute<JavaType,Integer> intAttr = javaType.getAttribute<JavaType,Integer>("int"));
     assert(intAttr(instance).get() == 3);
     intAttr(instance).set(3);
     
-    assert(exists longAttr = javaType.getVariableAttribute<JavaType,Integer>("long"));
+    assert(is VariableAttribute<JavaType,Integer>  longAttr = javaType.getAttribute<JavaType,Integer>("long"));
     assert(longAttr(instance).get() == 4);
     longAttr(instance).set(4);
 
-    assert(exists floatAttr = javaType.getVariableAttribute<JavaType,Float>("float"));
+    assert(is VariableAttribute<JavaType,Float>  floatAttr = javaType.getAttribute<JavaType,Float>("float"));
     assert(floatAttr(instance).get() == 1.0);
     floatAttr(instance).set(1.0);
 
-    assert(exists doubleAttr = javaType.getVariableAttribute<JavaType,Float>("double"));
+    assert(is VariableAttribute<JavaType,Float>  doubleAttr = javaType.getAttribute<JavaType,Float>("double"));
     assert(doubleAttr(instance).get() == 2.0);
     doubleAttr(instance).set(2.0);
 
-    assert(exists charAttr = javaType.getVariableAttribute<JavaType,Character>("char"));
+    assert(is VariableAttribute<JavaType,Character>  charAttr = javaType.getAttribute<JavaType,Character>("char"));
     assert(charAttr(instance).get() == 'a');
     charAttr(instance).set('a');
 
-    assert(exists stringAttr = javaType.getVariableAttribute<JavaType,String>("str"));
+    assert(is VariableAttribute<JavaType,String>  stringAttr = javaType.getAttribute<JavaType,String>("str"));
     assert(stringAttr(instance).get() == "a");
     stringAttr(instance).set("a");
 
-    assert(exists objectAttr = javaType.getVariableAttribute<JavaType,Object>("object"));
+    assert(is VariableAttribute<JavaType,Object> objectAttr = javaType.getAttribute<JavaType,Object>("object"));
     assert(objectAttr(instance).get() == "b");
     objectAttr(instance).set("b");
     
     //
     // fields
     
-    assert(exists booleanFieldAttr = javaType.getVariableAttribute<JavaType,Boolean>("booleanField"));
+    assert(is VariableAttribute<JavaType,Boolean> booleanFieldAttr = javaType.getAttribute<JavaType,Boolean>("booleanField"));
     assert(booleanFieldAttr(instance).get() == true);
     booleanFieldAttr(instance).set(true);
 
-    assert(exists byteFieldAttr = javaType.getVariableAttribute<JavaType,Integer>("byteField"));
+    assert(is VariableAttribute<JavaType,Integer> byteFieldAttr = javaType.getAttribute<JavaType,Integer>("byteField"));
     assert(byteFieldAttr(instance).get() == 1);
     byteFieldAttr(instance).set(1);
 
-    assert(exists shortFieldAttr = javaType.getVariableAttribute<JavaType,Integer>("shortField"));
+    assert(is VariableAttribute<JavaType,Integer> shortFieldAttr = javaType.getAttribute<JavaType,Integer>("shortField"));
     assert(shortFieldAttr(instance).get() == 2);
     shortFieldAttr(instance).set(2);
 
-    assert(exists intFieldAttr = javaType.getVariableAttribute<JavaType,Integer>("intField"));
+    assert(is VariableAttribute<JavaType,Integer> intFieldAttr = javaType.getAttribute<JavaType,Integer>("intField"));
     assert(intFieldAttr(instance).get() == 3);
     intFieldAttr(instance).set(3);
     
-    assert(exists longFieldAttr = javaType.getVariableAttribute<JavaType,Integer>("longField"));
+    assert(is VariableAttribute<JavaType,Integer> longFieldAttr = javaType.getAttribute<JavaType,Integer>("longField"));
     assert(longFieldAttr(instance).get() == 4);
     longFieldAttr(instance).set(4);
 
-    assert(exists floatFieldAttr = javaType.getVariableAttribute<JavaType,Float>("floatField"));
+    assert(is VariableAttribute<JavaType,Float> floatFieldAttr = javaType.getAttribute<JavaType,Float>("floatField"));
     assert(floatFieldAttr(instance).get() == 1.0);
     floatFieldAttr(instance).set(1.0);
 
-    assert(exists doubleFieldAttr = javaType.getVariableAttribute<JavaType,Float>("doubleField"));
+    assert(is VariableAttribute<JavaType,Float> doubleFieldAttr = javaType.getAttribute<JavaType,Float>("doubleField"));
     assert(doubleFieldAttr(instance).get() == 2.0);
     doubleFieldAttr(instance).set(2.0);
 
-    assert(exists charFieldAttr = javaType.getVariableAttribute<JavaType,Character>("charField"));
+    assert(is VariableAttribute<JavaType,Character> charFieldAttr = javaType.getAttribute<JavaType,Character>("charField"));
     assert(charFieldAttr(instance).get() == 'a');
     charFieldAttr(instance).set('a');
 
-    assert(exists stringFieldAttr = javaType.getVariableAttribute<JavaType,String>("stringField"));
+    assert(is VariableAttribute<JavaType,String> stringFieldAttr = javaType.getAttribute<JavaType,String>("stringField"));
     assert(stringFieldAttr(instance).get() == "a");
     stringFieldAttr(instance).set("a");
 
-    assert(exists objectFieldAttr = javaType.getVariableAttribute<JavaType,Object>("objectField"));
+    assert(is VariableAttribute<JavaType,Object> objectFieldAttr = javaType.getAttribute<JavaType,Object>("objectField"));
     assert(objectFieldAttr(instance).get() == "b");
     objectFieldAttr(instance).set("b");
 
