@@ -38,7 +38,6 @@ import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.impl.BytecodeUtils.ModuleInfoCallback;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
@@ -459,28 +458,18 @@ public abstract class AbstractRepository implements Repository {
                 }
                 try {
                     File file = artifact.getContent(File.class);
-                    if (file != null)
-                        BytecodeUtils.readModuleInfo(name, file, new ModuleInfoCallback() {
-                            @Override
-                            public void storeInfo(String doc,
-                                    String license,
-                                    String[] authors,
-                                    ModuleInfo[] dependencies,
-                                    String[] types,
-                                    Integer majorBinVersion,
-                                    Integer minorBinVersion) {
-                                newVersion.setDoc(doc);
-                                newVersion.setLicense(license);
-                                if (authors != null)
-                                    newVersion.getAuthors().addAll(Arrays.asList(authors));
-                                if (dependencies != null)
-                                    newVersion.getDependencies().addAll(Arrays.asList(dependencies));
-                                mva.setMajorBinaryVersion(majorBinVersion);
-                                mva.setMinorBinaryVersion(minorBinVersion);
-                                newVersion.setRemote(root.isRemote());
-                                newVersion.setOrigin(getDisplayString());
-                            }
-                        });
+                    if (file != null) {
+                        ModuleVersionDetails mvd = BytecodeUtils.readModuleInfo(name, file);
+                        newVersion.setDoc(mvd.getDoc());
+                        newVersion.setLicense(mvd.getLicense());
+                        newVersion.getAuthors().addAll(mvd.getAuthors());
+                        newVersion.getDependencies().addAll(mvd.getDependencies());
+                        ModuleVersionArtifact mva2 = mvd.getArtifactTypes().first();
+                        mva.setMajorBinaryVersion(mva2.getMajorBinaryVersion());
+                        mva.setMinorBinaryVersion(mva2.getMinorBinaryVersion());
+                        newVersion.setRemote(root.isRemote());
+                        newVersion.setOrigin(getDisplayString());
+                    }
                 } catch (Exception e) {
                     // bah
                 }
@@ -607,27 +596,18 @@ public abstract class AbstractRepository implements Repository {
             try {
                 File file = artifact.getContent(File.class);
                 if (file != null) {
-                    BytecodeUtils.readModuleInfo(moduleName, file, new ModuleInfoCallback() {
-                        @Override
-                        public void storeInfo(String doc2,
-                                String license2,
-                                String[] authors2,
-                                ModuleInfo[] dependencies2,
-                                String[] types2,
-                                Integer majorVer2,
-                                Integer minorVer2) {
-                            doc[0] = doc2;
-                            license[0] = license2;
-                            if (authors2 != null)
-                                authors.addAll(Arrays.asList(authors2));
-                            if (dependencies2 != null)
-                                dependencies.addAll(Arrays.asList(dependencies2));
-                            if (types2 != null)
-                                types.addAll(Arrays.asList(types2));
-                            majorVer[0] = majorVer2;
-                            minorVer[0] = minorVer2;
-                        }
-                    });
+                    ModuleVersionDetails mvd = BytecodeUtils.readModuleInfo(moduleName, file);
+                    doc[0] = mvd.getDoc();
+                    license[0] = mvd.getLicense();
+                    if (mvd.getAuthors() != null)
+                        authors.addAll(mvd.getAuthors());
+                    if (mvd.getDependencies() != null)
+                        dependencies.addAll(mvd.getDependencies());
+                    ModuleVersionArtifact mva = mvd.getArtifactTypes().first();
+                    if (mva.getSuffix() != null)
+                        types.add(mva.getSuffix());
+                    majorVer[0] = mva.getMajorBinaryVersion();
+                    minorVer[0] = mva.getMinorBinaryVersion();
                 }
             } catch (Exception e) {
                 // bah

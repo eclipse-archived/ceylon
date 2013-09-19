@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -38,6 +40,8 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.DependencyResolver;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.spi.Node;
 
 /**
@@ -47,16 +51,6 @@ import com.redhat.ceylon.cmr.spi.Node;
  */
 public final class BytecodeUtils implements DependencyResolver {
     static BytecodeUtils INSTANCE = new BytecodeUtils();
-
-    public static interface ModuleInfoCallback {
-        public void storeInfo(String doc,
-                String license,
-                String[] authors,
-                ModuleInfo[] dependencies,
-                String[] types,
-                Integer majorVersion,
-                Integer minorVersion);
-    }
 
     private BytecodeUtils() {
     }
@@ -146,11 +140,15 @@ public final class BytecodeUtils implements DependencyResolver {
         return new int[]{major, minor};
     }
 
-
     public static void readModuleInfo(String moduleName, File moduleArchive, ModuleInfoCallback callback) {
+        ModuleVersionDetails mvd = readModuleInfo(moduleName, moduleArchive);
+        callback.storeInfo(mvd);
+    }
+
+    public static ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive) {
         final AnnotationInstance moduleAnnotation = getAnnotation(moduleName, moduleArchive, MODULE_ANNOTATION);
         if (moduleAnnotation == null)
-            return;
+            return null;
         
         AnnotationValue doc = moduleAnnotation.value("doc");
         AnnotationValue license = moduleAnnotation.value("license");
@@ -160,33 +158,36 @@ public final class BytecodeUtils implements DependencyResolver {
         
         final AnnotationInstance ceylonAnnotation = getAnnotation(moduleName, moduleArchive, CEYLON_ANNOTATION);
         if (ceylonAnnotation == null)
-            return;
+            return null;
 
         AnnotationValue majorVer = ceylonAnnotation.value("major");
         AnnotationValue minorVer = ceylonAnnotation.value("minor");
+
+        ModuleVersionDetails mvd = new ModuleVersionDetails(null);
+        mvd.setDoc(doc != null ? doc.asString() : null);
+        mvd.setLicense(license != null ? license.asString() : null);
+        if (by != null) {
+            mvd.getAuthors().addAll(Arrays.asList(by.asStringArray()));
+        }
+        mvd.getDependencies().addAll(asModInfos(dependencies));
+        ModuleVersionArtifact mva = new ModuleVersionArtifact(type, majorVer != null ? majorVer.asInt() : null, minorVer != null ? minorVer.asInt() : null);
+        mvd.getArtifactTypes().add(mva);
         
-        callback.storeInfo(doc != null ? doc.asString() : null,
-                license != null ? license.asString() : null,
-                by != null ? by.asStringArray() : null,
-                dependencies != null ? asModInfoArray(dependencies) : null,
-                new String[] { type },
-                majorVer != null ? majorVer.asInt() : null,
-                minorVer != null ? minorVer.asInt() : null);
+        return mvd;
     }
 
-    private static ModuleInfo[] asModInfoArray(AnnotationValue dependencies) {
+    private static List<ModuleInfo> asModInfos(AnnotationValue dependencies) {
         AnnotationInstance[] deps = dependencies.asNestedArray();
-        ModuleInfo[] result = new ModuleInfo[deps.length];
-        int i = 0;
+        List<ModuleInfo> result = new ArrayList<ModuleInfo>(deps.length);
         for (AnnotationInstance dep : deps) {
             AnnotationValue name = dep.value("name");
             AnnotationValue version = dep.value("version");
             AnnotationValue export = dep.value("export");
             AnnotationValue optional = dep.value("optional");
             
-            result[i++] = new ModuleInfo(name.asString(), version.asString(),
+            result.add(new ModuleInfo(name.asString(), version.asString(),
                     (export != null) ? export.asBoolean() : false,
-                    (optional != null) ? optional.asBoolean() : false);
+                    (optional != null) ? optional.asBoolean() : false));
         }
         return result;
     }
@@ -210,7 +211,7 @@ public final class BytecodeUtils implements DependencyResolver {
         }
         AnnotationValue dependencies = moduleAnnotation.value("dependencies");
         if (dependencies != null) {
-            for (ModuleInfo dep : asModInfoArray(dependencies)) {
+            for (ModuleInfo dep : asModInfos(dependencies)) {
                 if (matches(dep.getModuleName(), query))
                     return true;
             }
