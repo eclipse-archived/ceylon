@@ -104,24 +104,6 @@ public abstract class RepoUsingTool implements Tool {
         }
         return rm;
     }
-
-    protected String moduleName(String moduleNameOptVersion) {
-        int p = moduleNameOptVersion.indexOf('/');
-        if (p == -1) {
-            return moduleNameOptVersion;
-        } else {
-            return moduleNameOptVersion.substring(0, p);
-        }
-    }
-    
-    protected String moduleVersion(String moduleNameOptVersion) {
-        int p = moduleNameOptVersion.indexOf('/');
-        if (p == -1 || (p == (moduleNameOptVersion.length() - 1))) {
-            return null;
-        } else {
-            return moduleNameOptVersion.substring(p + 1);
-        }
-    }
     
     protected Collection<ModuleVersionDetails> getModuleVersions(String name, String version, ModuleQuery.Type type, Integer binaryVersion) {
         return getModuleVersions(getRepositoryManager(), name, version, type, binaryVersion);
