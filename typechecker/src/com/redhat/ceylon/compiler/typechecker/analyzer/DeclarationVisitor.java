@@ -255,6 +255,7 @@ public class DeclarationVisitor extends Visitor {
         for (Node node: that.getChildren()) {
             if (!(node instanceof Tree.ImportList)) {
                 firstNonImportNode = node;
+                break;
             }
         }
         if (firstNonImportNode!=null) {
