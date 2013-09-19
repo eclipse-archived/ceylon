@@ -895,11 +895,11 @@ public class Unit {
         boolean variable = pr.getDeclaration().isVariable();
         if (pr.getQualifyingType() != null) {
             return getLanguageModuleModelTypeDeclaration(variable ? "VariableAttribute" : "Attribute")
-                    .getProducedType(null, asList(pr.getQualifyingType(), pr.getType()));
+                    .getProducedType(null, asList(pr.getQualifyingType(), denotableType(pr.getType())));
         }
         else {
             return getLanguageModuleModelTypeDeclaration(variable ? "Variable" : "Value")
-                    .getProducedType(null, asList(pr.getType()));
+                    .getProducedType(null, asList(denotableType(pr.getType())));
         }
     }
     

@@ -324,6 +324,8 @@ void meta() {
     value cd7 = `Foo<List>.Bar<Object>`;
     @error
     value cd8 = `Foo<Object>.Bar<List>`;
+    
+    @type:"Value<Basic>" value p = `process`; 
 }
 
 void testPackagesModules() {
