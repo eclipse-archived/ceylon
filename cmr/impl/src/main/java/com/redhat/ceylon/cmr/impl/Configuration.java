@@ -31,6 +31,7 @@ public class Configuration {
         resolvers.addResolver(PropertiesDependencyResolver.INSTANCE);
         resolvers.addResolver(XmlDependencyResolver.INSTANCE);
         resolvers.addResolver(BytecodeUtils.INSTANCE);
+        resolvers.addResolver(JSUtils.INSTANCE);
     }
 
     public static DependencyResolvers getResolvers() {
