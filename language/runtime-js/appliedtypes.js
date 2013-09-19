@@ -66,11 +66,6 @@ function $init$AppliedClass(){
                 throw wrapexc(Exception(String$("Class declaration",17)),'27:63-27:99','?');
             };$$clase.isExactly.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$m','isExactly']};};
 
-            defineAttr($$clase,'container',function(){
-                var $$clase=this;
-                throw wrapexc(Exception(String$("Class declaration",17)),'28:50-28:86','?');
-            },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Type$meta$model,a:{Type:{t:Anything}}}]},$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$at','container']};});
-
         })(AppliedClass.$$.prototype);
     }
     return AppliedClass;
@@ -300,8 +295,9 @@ function $init$AppliedValue(){
             };$$appliedValue.get.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:'Type',$ps:[],$cont:AppliedValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$m','get']};};
 
             defineAttr($$appliedValue,'type',function(){
-                var $$appliedValue=this;
-                throw wrapexc(Exception(String$("Value.type",10)),'53:40-53:69','?');
+                var $$atr=this;
+                var t = $atr.tipo.$$metamodel$$['$t'];
+                return (get_model(t.$$metamodel$$).$mt==='ifc'?AppliedInterface:AppliedClass)({Type:{t:t},Arguments:{t:Nothing}});
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Type$meta$model,a:{Type:'Type'}},$cont:AppliedValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$at','type']};});
 
             defineAttr($$appliedValue,'container',function(){
@@ -315,6 +311,40 @@ function $init$AppliedValue(){
 }
 exports.$init$AppliedValue$meta$model=$init$AppliedValue;
 $init$AppliedValue();
+
+//ClassDefinition AppliedVariable at X (103:0-106:0)
+function AppliedVariable(attr,$$targs$$,$$appliedVariable){
+    $init$AppliedVariable();
+    if ($$appliedVariable===undefined)$$appliedVariable=new AppliedVariable.$$;
+    set_type_args($$appliedVariable,$$targs$$);
+    AppliedValue(attr,{Type:$$appliedVariable.$$targs$$.Type},$$appliedVariable);
+    Variable$meta$model($$appliedVariable.$$targs$$===undefined?$$targs$$:{Type:$$appliedVariable.$$targs$$.Type},$$appliedVariable);
+    return $$appliedVariable;
+}
+AppliedVariable.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:AppliedValue,a:{Type:'Type'}},$tp:{Type:{}},satisfies:[{t:Variable$meta$model,a:{Type:'Type'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Variable']};};
+exports.AppliedVariable=AppliedVariable;
+function $init$AppliedVariable(){
+    if (AppliedVariable.$$===undefined){
+        initTypeProto(AppliedVariable,'ceylon.language.meta.model::AppliedVariable',AppliedValue,Variable$meta$model);
+        (function($$appliedVariable){
+            
+            //MethodDefinition set at X (104:2-104:76)
+            $$appliedVariable.set=function set(newValue$26){
+                var $$appliedVariable=this;
+                throw wrapexc(Exception(String$("unimplemented",13)),'104:42-104:74','?');
+            };$$appliedVariable.set.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Anything},$ps:[{$nm:'newValue',$mt:'prm',$t:'Type',$an:function(){return[];}}],$cont:AppliedVariable,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Variable','$m','set']};};
+            
+            //AttributeGetterDefinition declaration at X (105:2-105:92)
+            defineAttr($$appliedVariable,'declaration',function(){
+                var $$appliedVariable=this;
+                throw wrapexc(Exception(String$("unimplemented",13)),'105:58-105:90','?');
+            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:VariableDeclaration$meta$declaration},$cont:AppliedVariable,$an:function(){return[shared(),actual(),$default()];},d:['ceylon.language.meta.model','Variable','$at','declaration']};});
+        })(AppliedVariable.$$.prototype);
+    }
+    return AppliedVariable;
+}
+exports.$init$AppliedVariable=$init$AppliedVariable;
+$init$AppliedVariable();
 
 //ClassDefinition AppliedMethod at X (10:0-21:0)
 function AppliedMethod(tipo,fun,$$targs$$,$$appliedMethod){
@@ -338,25 +368,10 @@ function AppliedMethod(tipo,fun,$$targs$$,$$appliedMethod){
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:FunctionDeclaration$meta$declaration},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','declaration']};});
 
             defineAttr($$appliedMethod,'type',function(){
-                var $$appliedMethod=this;
-              return $$appliedMethod.fun.$$metamodel$$['$t'];
+                var $$atr=this;
+                var t = $atr.fun.$$metamodel$$['$t'];
+                return (get_model(t.$$metamodel$$).$mt==='ifc'?AppliedInterface:AppliedClass)({Type:{t:t},Arguments:{t:Nothing}});
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Type$meta$model,a:{Type:'Type'}},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','type']};});
-
-            defineAttr($$appliedMethod,'declaringType',function(){
-              var $$appliedMethod=this;
-              var mm = $$appliedMethod.tipo.$$metamodel$$;
-              if (typeof(mm)==='function') {
-                mm = mm();
-                $$appliedMethod.tipo.$$metamodel$$=mm;
-              }
-              var m2 = get_model(mm);
-              return (m2['$mt']==='cls'?OpenClass:OpenInterface)(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), $$appliedMethod.tipo);
-            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:ClassOrInterface$meta$model,a:{Type:{t:Anything}}},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','declaringType']};});
-
-            defineAttr($$appliedMethod,'container',function(){
-                var $$appliedMethod=this;
-                return $$appliedMethod.declaringClassOrInterface;
-            },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:ClassOrInterface$meta$model,a:{Type:{t:Anything}}}]},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','container']};});
 
             defineAttr($$appliedMethod,'typeArguments',function(){
                 var $$appliedMethod=this;
@@ -379,3 +394,68 @@ function $init$AppliedMethod(){
 }
 exports.$init$AppliedMethod$meta$model=$init$AppliedMethod;
 $init$AppliedMethod();
+
+//ClassDefinition AppliedAttribute at X (96:0-101:0)
+function AppliedAttribute(atr,$$targs$$,$$appliedAttribute){
+    $init$AppliedAttribute();
+    if ($$appliedAttribute===undefined)$$appliedAttribute=new AppliedAttribute.$$;
+    set_type_args($$appliedAttribute,$$targs$$);
+    Attribute$meta$model($$appliedAttribute.$$targs$$===undefined?$$targs$$:{Type:$$appliedAttribute.$$targs$$.Type,Container:$$appliedAttribute.$$targs$$.Container},$$appliedAttribute);
+    $$appliedAttribute.atr=atr;
+    return $$appliedAttribute;
+}
+AppliedAttribute.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Container:{'var':'in'},Type:{'var':'out','def':{t:Anything}}},satisfies:[{t:Attribute$meta$model,a:{Type:'Type',Container:'Container'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Attribute']};};
+exports.AppliedAttribute=AppliedAttribute;
+function $init$AppliedAttribute(){
+    if (AppliedAttribute.$$===undefined){
+        initTypeProto(AppliedAttribute,'ceylon.language.meta.model::AppliedAttribute',Basic,Attribute$meta$model);
+        (function($$appliedAttribute){
+            
+            //AttributeGetterDefinition type at X (99:4-99:76)
+            defineAttr($$appliedAttribute,'type',function(){
+                var $$atr=this;
+                var t = $atr.tipo.$$metamodel$$['$t'];
+                return (get_model(t.$$metamodel$$).$mt==='ifc'?AppliedInterface:AppliedClass)({Type:{t:t},Arguments:{t:Nothing}});
+            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Type$meta$model,a:{Type:'Type'}},$cont:AppliedAttribute,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Attribute','$at','type']};});
+            //AttributeGetterDefinition declaration at X (100:4-100:83)
+            defineAttr($$appliedAttribute,'declaration',function(){
+                var $$atr=this;
+                var mm = $$atr.tipo.$$metamodel$$;
+                if (typeof(mm)==='function') {
+                  mm=mm();
+                  $$atr.tipo.$$metamodel$$=mm;
+                }
+                var pkg = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
+                return ($$atr.set ? OpenVariable:OpenValue)(pkg, $atr.tipo);
+            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:ValueDeclaration$meta$declaration},$cont:AppliedAttribute,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Attribute','$at','declaration']};});
+        })(AppliedAttribute.$$.prototype);
+    }
+    return AppliedAttribute;
+}
+exports.$init$AppliedAttribute=$init$AppliedAttribute;
+$init$AppliedAttribute();
+
+
+
+//ClassDefinition AppliedVariableAttribute at X (107:0-111:0)
+function AppliedVariableAttribute(atr,$$targs$$,$$appliedVariableAttribute){
+    $init$AppliedVariableAttribute();
+    if ($$appliedVariableAttribute===undefined)$$appliedVariableAttribute=new AppliedVariableAttribute.$$;
+    set_type_args($$appliedVariableAttribute,$$targs$$);
+    AppliedAttribute(atr,{Type:$$appliedVariableAttribute.$$targs$$.Type,Container:$$appliedVariableAttribute.$$targs$$.Container},$$appliedVariableAttribute);
+    VariableAttribute$meta$model($$appliedVariableAttribute.$$targs$$===undefined?$$targs$$:{Type:$$appliedVariableAttribute.$$targs$$.Type,Container:$$appliedVariableAttribute.$$targs$$.Container},$$appliedVariableAttribute);
+    return $$appliedVariableAttribute;
+}
+AppliedVariableAttribute.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:AppliedAttribute,a:{Type:'Type',Container:'Container'}},$tp:{Container:{'var':'in'},Type:{}},satisfies:[{t:VariableAttribute$meta$model,a:{Type:'Type',Container:'Container'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','VariableAttribute']};};
+exports.AppliedVariableAttribute=AppliedVariableAttribute;
+function $init$AppliedVariableAttribute(){
+    if (AppliedVariableAttribute.$$===undefined){
+        initTypeProto(AppliedVariableAttribute,'ceylon.language.meta.model::AppliedVariableAttribute',AppliedAttribute,VariableAttribute$meta$model);
+        (function($$appliedVariableAttribute){
+
+        })(AppliedVariableAttribute.$$.prototype);
+    }
+    return AppliedVariableAttribute;
+}
+exports.$init$AppliedVariableAttribute=$init$AppliedVariableAttribute;
+$init$AppliedVariableAttribute();
