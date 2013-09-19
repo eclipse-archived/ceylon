@@ -46,11 +46,6 @@ function $init$AppliedClass(){
                 throw wrapexc(Exception(String$("unimplemented",13)),'19:54-19:86','?');
             };$$clase.getClassOrInterface.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Member$meta$model,a:{Type:'SubType',Kind:'Kind'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}},{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$an:function(){return[];}}],$cont:AppliedClass,$tp:{SubType:{},Kind:{'satisfies':[{t:ClassOrInterface$meta$model,a:{Type:{t:Anything}}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$m','getClassOrInterface']};};
 
-            $$clase.getVariableAttribute=function getVariableAttribute(name$7,$$$mptypes){
-                var $$clase=this;
-                throw wrapexc(Exception(String$("unimplemented",13)),'23:101-23:133','?');
-            };$$clase.getVariableAttribute.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:VariableAttribute$meta$model,a:{Type:'Type',Container:'SubType'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}}],$cont:AppliedClass,$tp:{SubType:{},Type:{}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$m','getVariableAttribute']};};
-
             $$clase.isTypeOf=function isTypeOf(instance$8){
                 var $$clase=this;
                 throw wrapexc(Exception(String$("Class declaration",17)),'25:54-25:90','?');
@@ -115,11 +110,6 @@ function $init$AppliedInterface(){
                 if(types$14===undefined){types$14=getEmpty();}
                 throw wrapexc(Exception(String$("unimplemented",13)),'40:54-40:86','?');
             };$$appliedInterface.getClassOrInterface.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Member$meta$model,a:{Type:'SubType',Kind:'Kind'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}},{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$an:function(){return[];}}],$cont:AppliedInterface,$tp:{SubType:{},Kind:{'satisfies':[{t:ClassOrInterface$meta$model,a:{Type:{t:Anything}}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Interface','$m','getClassOrInterface']};};
-
-            $$appliedInterface.getVariableAttribute=function getVariableAttribute(name$16,$$$mptypes){
-                var $$appliedInterface=this;
-                throw wrapexc(Exception(String$("unimplemented",13)),'42:101-42:133','?');
-            };$$appliedInterface.getVariableAttribute.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:VariableAttribute$meta$model,a:{Type:'Type',Container:'SubType'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}}],$cont:AppliedInterface,$tp:{SubType:{},Type:{}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Interface','$m','getVariableAttribute']};};
 
             $$appliedInterface.isTypeOf=function isTypeOf(instance$17){
                 var $$appliedInterface=this;
@@ -347,29 +337,28 @@ exports.$init$AppliedVariable=$init$AppliedVariable;
 $init$AppliedVariable();
 
 //ClassDefinition AppliedMethod at X (10:0-21:0)
-function AppliedMethod(tipo,fun,$$targs$$,$$appliedMethod){
+function AppliedMethod(tipo,$$targs$$,$$appliedMethod){
     $init$AppliedMethod();
-    if ($$appliedMethod===undefined)$$appliedMethod=function(x){return function(){return fun.apply(x,arguments);}};
+    if ($$appliedMethod===undefined)$$appliedMethod=function(x){return function(){return tipo.apply(x,arguments);}};
     set_type_args($$appliedMethod,$$targs$$);
     Method$meta$model($$appliedMethod.$$targs$$===undefined?$$targs$$:{Arguments:$$appliedMethod.$$targs$$.Arguments,Type:$$appliedMethod.$$targs$$.Type,Container:$$appliedMethod.$$targs$$.Container},$$appliedMethod);
     $$appliedMethod.tipo=tipo;
-    $$appliedMethod.fun=fun;
 
 //This was copied from prototype style
             defineAttr($$appliedMethod,'declaration',function(){
               var $$appliedMethod=this;
-              var mm = $$appliedMethod.fun.$$metamodel$$;
+              var mm = $$appliedMethod.tipo.$$metamodel$$;
               if (typeof(mm)==='function') {
                 mm = mm();
-                $$appliedMethod.fun.$$metamodel$$=mm;
+                $$appliedMethod.tipo.$$metamodel$$=mm;
               }
               var _pkg = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
-              return OpenFunction(_pkg, $$appliedMethod.fun);
+              return OpenFunction(_pkg, $$appliedMethod.tipo);
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:FunctionDeclaration$meta$declaration},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','declaration']};});
 
             defineAttr($$appliedMethod,'type',function(){
                 var $$atr=this;
-                var t = $atr.fun.$$metamodel$$['$t'];
+                var t = $atr.tipo.$$metamodel$$['$t'];
                 return (get_model(t.$$metamodel$$).$mt==='ifc'?AppliedInterface:AppliedClass)({Type:{t:t},Arguments:{t:Nothing}});
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Type$meta$model,a:{Type:'Type'}},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','type']};});
 
