@@ -226,7 +226,7 @@ function OpenValue(pkg, meta, that){
       that.meta=meta;
       if (meta['$mt']==='prm') {
         that.tipo={$$metamodel$$:meta};
-console.log("PENDIENTE!");
+        //TODO I think we need to do something else here
       } else {
         that.tipo=_findTypeFromModel(pkg,meta);
       }
