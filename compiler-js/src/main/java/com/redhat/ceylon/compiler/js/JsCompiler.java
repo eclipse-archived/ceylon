@@ -302,13 +302,18 @@ public class JsCompiler {
         Module mod = pu.getPackage().getModule();
         JsOutput jsout = output.get(mod);
         if (jsout==null) {
-            jsout = new JsOutput(mod, opts.getEncoding());
+            jsout = newJsOutput(mod);
             output.put(mod, jsout);
             if (opts.isModulify()) {
                 beginWrapper(jsout.getWriter());
             }
         }
         return jsout;
+    }
+
+    /** This exists solely so that the web IDE can override it and use a different JsOutput */
+    protected JsOutput newJsOutput(Module m) throws IOException {
+        return new JsOutput(m, opts.getEncoding());
     }
 
     /** Closes all output writers and puts resulting artifacts in the output repo. */

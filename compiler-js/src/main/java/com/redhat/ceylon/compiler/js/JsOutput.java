@@ -13,7 +13,7 @@ import java.util.Set;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 /** A container for things we need to keep per-module. */
-class JsOutput {
+public class JsOutput {
     private File outfile;
     private Writer writer;
     private final Set<String> s = new HashSet<String>();
