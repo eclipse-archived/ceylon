@@ -2623,7 +2623,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         if(invocation.handleBoxing)
             resultExpr = applyErasureAndBoxing(resultExpr, invocation.getReturnType(), 
-                    !invocation.unboxed, invocation.boxingStrategy, invocation.getReturnType());
+                    invocation.erased, !invocation.unboxed, invocation.boxingStrategy, invocation.getReturnType(), 0);
         return resultExpr;
     }
 
@@ -3005,7 +3005,9 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transformFunctional(Tree.Term expr,
             Functional functional) {
-        return CallableBuilder.methodReference(gen(), expr, functional.getParameterLists().get(0)).build();
+        return CallableBuilder.methodReference(gen(), expr, 
+                    functional.getParameterLists().get(0))
+                .build();
     }
 
     //

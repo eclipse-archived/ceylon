@@ -93,6 +93,7 @@ abstract class Invocation {
     private final ProducedType returnType;
     protected boolean handleBoxing;
     protected boolean unboxed;
+    protected boolean erased;
     protected BoxingStrategy boxingStrategy;
     private final Tree.Primary qmePrimary;
     private final boolean onValueType;
@@ -160,6 +161,10 @@ abstract class Invocation {
 
     public final void handleBoxing(boolean b) {
         handleBoxing = b;
+    }
+    
+    public final void setErased(boolean erased) {
+        this.erased = erased;
     }
 
     public final void setBoxingStrategy(BoxingStrategy boxingStrategy) {
@@ -771,6 +776,9 @@ class CallableInvocation extends DirectInvocation {
         setUnboxed(expr.getUnboxed());
         setBoxingStrategy(BoxingStrategy.BOXED);// Must be boxed because non-primitive return type
         handleBoxing(true);
+        if (producedReference.getDeclaration() instanceof TypedDeclaration) {
+            setErased(((TypedDeclaration)producedReference.getDeclaration()).getTypeErased());
+        }
         this.tempVars = tempVars;
     }
 
