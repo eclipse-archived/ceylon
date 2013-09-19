@@ -52,6 +52,13 @@ public class WebDAVContentStore extends URLContentStore {
     private volatile Sardine sardine;
     private boolean forcedAuthenticationForPutOnHerd = false;
 
+    /**
+     * For tests only!!!
+     */
+    public WebDAVContentStore(String root, Logger log, boolean offline, String apiVersion) {
+        super(root, log, offline, apiVersion);
+    }
+
     public WebDAVContentStore(String root, Logger log, boolean offline) {
         super(root, log, offline);
     }

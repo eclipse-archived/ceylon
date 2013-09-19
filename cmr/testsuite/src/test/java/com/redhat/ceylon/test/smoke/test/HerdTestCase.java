@@ -43,21 +43,26 @@ public class HerdTestCase extends AbstractTest {
     public void testDummy() {
     }
 
-    private RepositoryManager getRepositoryManager(File root, boolean offline) throws Exception {
+    private RepositoryManager getRepositoryManager(File root, boolean offline, String apiVersion) throws Exception {
         RepositoryManagerBuilder builder = getRepositoryManagerBuilder(root, offline);
-        WebDAVContentStore rcs = new WebDAVContentStore("http://localhost:9000/test", log, false);
+        WebDAVContentStore rcs = new WebDAVContentStore("http://localhost:9000/test", log, false, apiVersion);
         Repository repo = new DefaultRepository(rcs.createRoot());
         return builder.appendRepository(repo).buildRepository();
     }
 
+    protected RepositoryManager getRepositoryManagerApi1() throws Exception {
+        // only Herd
+        return getRepositoryManager(getFolders(), false, "1");
+    }
+
     protected RepositoryManager getRepositoryManager() throws Exception {
         // only Herd
-        return getRepositoryManager(getFolders(), false);
+        return getRepositoryManager(getFolders(), false, null);
     }
 
     protected RepositoryManager getDualRepositoryManager() throws Exception {
         // Herd + /repo
-        return getRepositoryManager(getRepositoryRoot(), false);
+        return getRepositoryManager(getRepositoryRoot(), false, null);
     }
 
     @Test
@@ -113,6 +118,9 @@ public class HerdTestCase extends AbstractTest {
             new ModuleDetails("ceylon.json", jsonDoc0_5, "Apache Software License", set("Stéphane Épardaud"), set("0.3.3", "0.4", "0.5"), 
                               deps(new ModuleInfo("ceylon.collection", "0.5", false, false)), 
                               set(".car", ".js", ".src"), 4, 0, true, "The Herd");
+    public final static ModuleDetails jsonModuleDetails0_5_Api1 =
+            new ModuleDetails("ceylon.json", jsonDoc0_5, "Apache Software License", set("Stéphane Épardaud"), set("0.3.3", "0.4", "0.5"), 
+                              deps(), set(), null, null, true, "The Herd");
     public final static ModuleDetails jsonModuleDetails0_5_js =
             new ModuleDetails("ceylon.json", jsonDoc0_5, "Apache Software License", set("Stéphane Épardaud"), set("0.5"), 
                               deps(new ModuleInfo("ceylon.collection", "0.5", false, false)), 
@@ -126,6 +134,15 @@ public class HerdTestCase extends AbstractTest {
                 jsonModuleDetails0_5,
         };
         testComplete("ceylon.json", expected, getRepositoryManager());
+    }
+
+    @Test
+//  @Ignore("Required Herd running locally")
+    public void testHerdCompleteCompleteNameApi1() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                jsonModuleDetails0_5_Api1,
+        };
+        testComplete("ceylon.json", expected, getRepositoryManagerApi1());
     }
 
     @Test
@@ -205,6 +222,11 @@ public class HerdTestCase extends AbstractTest {
                             new ModuleVersionArtifact(".js", null, null),
                             new ModuleVersionArtifact(".src", null, null)),
                     true, "The Herd (http://localhost:9000/test)");
+    public static final ModuleVersionDetails jsonVersionDetail0_5_Api1 =                 
+            new ModuleVersionDetails("0.5", jsonDoc0_5, "Apache Software License", set("Stéphane Épardaud"), 
+                    deps(), 
+                    types(),
+                    true, "The Herd (http://localhost:9000/test)");
 
     
     @Test
@@ -214,6 +236,15 @@ public class HerdTestCase extends AbstractTest {
                 jsonVersionDetail0_5,
         };
         testListVersions("ceylon.json", "0.5", expected);
+    }
+
+    @Test
+//  @Ignore("Required Herd running locally")
+    public void testHerdCompleteVersionsCompleteApi1() throws Exception {
+        ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
+                jsonVersionDetail0_5_Api1,
+        };
+        testListVersions("ceylon.json", "0.5", expected, getRepositoryManagerApi1());
     }
 
     @Test
@@ -275,6 +306,15 @@ public class HerdTestCase extends AbstractTest {
                 jsonModuleDetails0_5,
         };
         testSearchResults("ceylon.json", Type.JVM, expected);
+    }
+
+    @Test
+//  @Ignore("Required Herd running locally")
+    public void testHerdSearchFilteredCompleteApi1() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                jsonModuleDetails0_5_Api1,
+        };
+        testSearchResults("ceylon.json", Type.JVM, expected, getRepositoryManagerApi1());
     }
 
     @Test

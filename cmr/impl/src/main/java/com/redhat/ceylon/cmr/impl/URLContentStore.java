@@ -69,12 +69,21 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     private String herdCompleteModulesURL;
     private String herdCompleteVersionsURL;
     private String herdSearchModulesURL;
+    private String herdRequestedApi;
 
     protected URLContentStore(String root, Logger log, boolean offline) {
+        this(root, log, offline, null);
+    }
+    protected URLContentStore(String root, Logger log, boolean offline, String apiVersion) {
         super(log, offline);
         if (root == null)
             throw new IllegalArgumentException("Null root url");
         this.root = root;
+        this.herdRequestedApi = apiVersion != null ? apiVersion : "2";
+        if(apiVersion != null
+                && !apiVersion.equals("1")
+                && !apiVersion.equals("2"))
+            throw new IllegalArgumentException("Only Herd APIs 1 or 2 are supported: requested API "+apiVersion);
     }
 
     @Override
@@ -95,7 +104,8 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             return false;
         }
         try{
-            URL rootURL = getURL("");
+            // we support both API 1 and 2
+            URL rootURL = getURL("?version="+herdRequestedApi);
             HttpURLConnection con = (HttpURLConnection) rootURL.openConnection();
             try{
                 con.setRequestMethod("OPTIONS");
