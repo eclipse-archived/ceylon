@@ -140,11 +140,6 @@ public final class BytecodeUtils implements DependencyResolver {
         return new int[]{major, minor};
     }
 
-    public static void readModuleInfo(String moduleName, File moduleArchive, ModuleInfoCallback callback) {
-        ModuleVersionDetails mvd = readModuleInfo(moduleName, moduleArchive);
-        callback.storeInfo(mvd);
-    }
-
     public static ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive) {
         final AnnotationInstance moduleAnnotation = getAnnotation(moduleName, moduleArchive, MODULE_ANNOTATION);
         if (moduleAnnotation == null)

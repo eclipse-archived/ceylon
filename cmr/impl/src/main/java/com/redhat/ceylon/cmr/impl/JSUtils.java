@@ -84,11 +84,6 @@ public final class JSUtils implements DependencyResolver {
     }
 
 
-    public static void readModuleInfo(String moduleName, File moduleArchive, ModuleInfoCallback callback) {
-        ModuleVersionDetails mvd = readModuleInfo(moduleName, moduleArchive);
-        callback.storeInfo(mvd);
-    }
-    
     public static ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive) {
         ScriptEngine engine = null;
         try {
