@@ -1,6 +1,6 @@
 /*Native Implementation of annotations() */
 function annotations$meta(anntype, progelem, $$targs$$) {
-  var mm = progelem.tipo?progelem.tipo.$$metamodel$$:progelem.attr?progelem.attr.$$metamodel$$:progelem.$$metamodel$$;
+  var mm = progelem.tipo?progelem.tipo.$$metamodel$$:progelem.$$metamodel$$;
   if (typeof(mm) === 'function') {
     mm = mm();
   }
