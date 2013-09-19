@@ -1063,7 +1063,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 memberCall = make().Apply(null, makeSelect(typeCall, "getMethod"), arguments);
             }else if(declaration instanceof Value){
                 JCExpression reifiedTypeExpr = makeReifiedTypeArgument(producedReference.getType());
-                String getterName = ((TypedDeclaration) declaration).isVariable() ? "getVariableAttribute" : "getAttribute";
+                String getterName = "getAttribute";
                 memberCall = make().Apply(null, makeSelect(typeCall, getterName), List.of(reifiedContainerExpr, reifiedTypeExpr, 
                                                                                           ceylonLiteral(declaration.getName())));
             }else{
