@@ -128,7 +128,7 @@ public class HerdTestCase extends AbstractTest {
 
     
     @Test
-//    @Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCompleteName() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonModuleDetails0_5,
@@ -137,7 +137,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-//  @Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCompleteNameApi1() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonModuleDetails0_5_Api1,
@@ -146,7 +146,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-//  @Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteForJs() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonModuleDetails0_5_js,
@@ -155,7 +155,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-//  @Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteForSrc() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonModuleDetails0_5,
@@ -164,7 +164,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-//  @Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteForAll() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonModuleDetails0_5,
@@ -191,7 +191,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-//    @Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteVersions() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
                 jsonVersionDetail0_3_3,
@@ -230,7 +230,7 @@ public class HerdTestCase extends AbstractTest {
 
     
     @Test
-//    @Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteVersionsComplete() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
                 jsonVersionDetail0_5,
@@ -300,7 +300,7 @@ public class HerdTestCase extends AbstractTest {
     }
     
     @Test
-//    @Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredComplete() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonModuleDetails0_5,
@@ -309,7 +309,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-//  @Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredCompleteApi1() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonModuleDetails0_5_Api1,
