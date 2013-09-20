@@ -1,5 +1,7 @@
 class Generics() {
     
+    @error String<> stringWith0Args;
+    
     class Holder<X>(X x) {
         shared X held = x;
         shared X add(X x, X y) {

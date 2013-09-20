@@ -1205,6 +1205,14 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.TypeArgumentList that) {
+        super.visit(that);
+        if (that.getTypes().isEmpty()) {
+            that.addError("type argument list must have at least one type");
+        }
+    }
+    
+    @Override
     public void visit(Tree.PositionalArgumentList that) {
         super.visit(that);
         checkPositionalArguments(that.getPositionalArguments());
