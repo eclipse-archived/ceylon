@@ -921,7 +921,7 @@ public class Metamodel {
             String expectedString = className.replace("$1", expectedReifiedTypeString);
             throw new IncompatibleTypeException("Incompatible type: actual type of applied declaration is "+appliedString
                     +" is not compatible with expected type: "+expectedString+". Try passing the type argument explicitly with: "
-                    +methodName+"<"+appliedTypeString+">(), or using default type arguments with "+methodName+"<>()");
+                    +methodName+"<"+appliedTypeString+">()");
         }
     }
 
@@ -941,7 +941,7 @@ public class Metamodel {
             String expectedString = className.replace("$1", expectedReifiedTypeString1).replace("$2", expectedReifiedTypeString2);
             throw new IncompatibleTypeException("Incompatible type: actual type of applied declaration is "+appliedString
                     +" is not compatible with expected type: "+expectedString+". Try passing the type argument explicitly with: "
-                    +methodName+"<"+appliedTypeString1+","+appliedTypeString2+">(), or using default type arguments with "+methodName+"<>()");
+                    +methodName+"<"+appliedTypeString1+","+appliedTypeString2+">()");
         }
     }
 
@@ -966,7 +966,7 @@ public class Metamodel {
             String expectedString = className.replace("$1", expectedReifiedTypeString1).replace("$2", expectedReifiedTypeString2).replace("$3", expectedReifiedTypeString3);
             throw new IncompatibleTypeException("Incompatible type: actual type of applied declaration is "+appliedString
                     +" is not compatible with expected type: "+expectedString+". Try passing the type argument explicitly with: "
-                    +methodName+"<"+appliedTypeString1+","+appliedTypeString2+","+appliedTypeString3+">(), or using default type arguments with "+methodName+"<>()");
+                    +methodName+"<"+appliedTypeString1+","+appliedTypeString2+","+appliedTypeString3+">()");
         }
     }
 

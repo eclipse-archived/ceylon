@@ -439,35 +439,35 @@ void checkToplevelFunctions(){
     assert(pkg.members<NestableDeclaration>().find((Declaration decl) => decl.name == "fixedParams") exists);
 
     assert(exists f2 = pkg.getFunction("fixedParams"));
-    assert(is Function<Anything,[String, Integer, Float, Character, Boolean, Object, NoParams]> f2a = f2.apply<>());
+    assert(is Function<Anything,[String, Integer, Float, Character, Boolean, Object, NoParams]> f2a = f2.apply<Anything,Nothing>());
     f2a("a", 1, 1.2, 'a', true, noParamsInstance, noParamsInstance);
 
     assert(exists f3 = pkg.getFunction("typeParams"));
-    assert(is Function<String, [String, Integer]> f3a = f3.apply<>(stringType));
+    assert(is Function<String, [String, Integer]> f3a = f3.apply<Anything,Nothing>(stringType));
     assert(f3a("a", 1) == "a");
 
     assert(exists f4 = pkg.getFunction("getString"));
-    assert(is Function<String, []> f4a = f4.apply<>());
+    assert(is Function<String, []> f4a = f4.apply<Anything,Nothing>());
     assert(f4a() == "a");
 
     assert(exists f5 = pkg.getFunction("getInteger"));
-    assert(is Function<Integer, []> f5a = f5.apply<>());
+    assert(is Function<Integer, []> f5a = f5.apply<Anything,Nothing>());
     assert(f5a() == 1);
 
     assert(exists f6 = pkg.getFunction("getFloat"));
-    assert(is Function<Float, []> f6a = f6.apply<>());
+    assert(is Function<Float, []> f6a = f6.apply<Anything,Nothing>());
     assert(f6a() == 1.2);
 
     assert(exists f7 = pkg.getFunction("getCharacter"));
-    assert(is Function<Character, []> f7a = f7.apply<>());
+    assert(is Function<Character, []> f7a = f7.apply<Anything,Nothing>());
     assert(f7a() == 'a');
 
     assert(exists f8 = pkg.getFunction("getBoolean"));
-    assert(is Function<Boolean, []> f8a = f8.apply<>());
+    assert(is Function<Boolean, []> f8a = f8.apply<Anything,Nothing>());
     assert(f8a() == true);
     
     assert(exists f9 = pkg.getFunction("getObject"));
-    assert(is Function<Object, []> f9a = f9.apply<>());
+    assert(is Function<Object, []> f9a = f9.apply<Anything,Nothing>());
     assert(f9a() == 2);
 
     assert(exists f10 = pkg.getFunction("toplevelWithMultipleParameterLists"));
@@ -483,7 +483,7 @@ void checkToplevelFunctions(){
     //assert(exists f10pl2 = f10.parameterLists[1], exists f10p2 = f10pl2.first, "s" == f10p2.name);
 
     assert(exists f11 = pkg.getFunction("defaultedParams"));
-    assert(is Function<Anything,[Integer=, String=, Boolean=]> f11a = f11.apply<>());
+    assert(is Function<Anything,[Integer=, String=, Boolean=]> f11a = f11.apply<Anything,Nothing>());
     f11a();
     f11a(0);
     f11a(1, "b");
@@ -492,7 +492,7 @@ void checkToplevelFunctions(){
     assert(exists f12 = pkg.getFunction("defaultedParams2"));
     assert(f12.name == "defaultedParams2");
     assert(f12.qualifiedName == "metamodel::defaultedParams2");
-    assert(is Function<Anything,[Boolean, Integer=, Integer=, Integer=, Integer=]> f12a = f12.apply<>());
+    assert(is Function<Anything,[Boolean, Integer=, Integer=, Integer=, Integer=]> f12a = f12.apply<Anything,Nothing>());
     f12a(false);
     f12a(true, -1, -2, -3, -4);
     
@@ -506,7 +506,7 @@ void checkToplevelFunctions(){
     assert(exists f12p4 = f12.parameterDeclarations[4], f12p4.name == "d", f12p4.defaulted == true);
 
     assert(exists f13 = pkg.getFunction("variadicParams"));
-    assert(is Function<Anything,[Integer=, String*]> f13a = f13.apply<>());
+    assert(is Function<Anything,[Integer=, String*]> f13a = f13.apply<Anything,Nothing>());
     f13a();
     f13a(0);
     f13a(1, "a");
@@ -518,7 +518,7 @@ void checkToplevelFunctions(){
     assert(exists f13p1 = f13.parameterDeclarations[1], f13p1.name == "strings", f13p1.defaulted == false, f13p1.variadic == true);
 
     assert(exists f14 = pkg.getFunction("getAndTakeNoParams"));
-    assert(is Function<NoParams, [NoParams]> f14a = f14.apply<>());
+    assert(is Function<NoParams, [NoParams]> f14a = f14.apply<Anything,Nothing>());
     assert(f14a(noParamsInstance) == noParamsInstance);
 
     // private function
