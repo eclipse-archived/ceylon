@@ -8,10 +8,10 @@ shared interface VariableDeclaration
     shared actual Boolean variable => true;
 
     see(`function ValueDeclaration.apply`)
-    shared actual formal Variable<Type> apply<Type=Anything>();
+    shared actual formal Variable<Type> apply<Type>();
 
     see(`function ValueDeclaration.memberApply`)
-    shared actual formal VariableAttribute<Container, Type> memberApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType);
+    shared actual formal VariableAttribute<Container, Type> memberApply<Container, Type>(AppliedType<Container> containerType);
 
     "Returns the setter declaration for this variable.
      
