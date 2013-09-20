@@ -50,3 +50,9 @@ void printAll(String* strings) {}
 class F(String name) => Foo(name);
 
 shared Integer var() { return 5; }
+
+//Issue #249
+{Integer*} container249 = [object249.int];
+shared object object249{
+  shared Integer int = 1;
+}
