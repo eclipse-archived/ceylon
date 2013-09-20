@@ -28,11 +28,9 @@ import java.util.TreeSet;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ContentFinder;
-import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
-import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
@@ -283,18 +281,22 @@ public abstract class AbstractRepository implements Repository {
             if (file == null)
                 return false; // can't verify
 
-            int[] versions = BytecodeUtils.getBinaryVersions(module, file);
-            if (versions == null)
-                return false; // can't verify
-            if (lookup.getBinaryMajor() != null && versions[0] != lookup.getBinaryMajor())
-                return false;
-            if (lookup.getBinaryMinor() != null && versions[1] != lookup.getBinaryMinor())
-                return false;
-            return true;
+            String suffix = ArtifactContext.getSuffixFromNode(node);
+            ModuleInfoReader reader = getModuleInfoReader(suffix);
+            if (reader != null) {
+                int[] versions = reader.getBinaryVersions(module, file);
+                if (versions == null)
+                    return false; // can't verify
+                if (lookup.getBinaryMajor() != null && versions[0] != lookup.getBinaryMajor())
+                    return false;
+                if (lookup.getBinaryMinor() != null && versions[1] != lookup.getBinaryMinor())
+                    return false;
+                return true;
+            }
         } catch (Exception x) {
             // can't verify
-            return false;
         }
+        return false;
     }
 
     /*
@@ -359,39 +361,23 @@ public abstract class AbstractRepository implements Repository {
         if (moduleName.toLowerCase().contains(query.getName()))
             return true;
         // now search on the metadata
-        // this is easy for cars
-        if (query.getType() == Type.JVM) {
-            return matchFromCar(artifact, moduleName, query.getName());
-        }
-        // for now, for SRC and JS we will fall back to the JVM archive if present, though in the
-        // future we might try to load the metadata from the SRC or JS archives
-        String carName;
-        switch (query.getType()) {
-            case JS:
-                carName = name.substring(0, name.length() - ArtifactContext.JS.length()) + ArtifactContext.CAR;
-                break;
-            case SRC:
-                carName = name.substring(0, name.length() - ArtifactContext.SRC.length()) + ArtifactContext.CAR;
-                break;
-            default:
-                // shouldn't happen
-                return false;
-        }
-        Node carArtifact = versionNode.getChild(carName);
-        // did we find it?
-        if (carArtifact == null)
-            return false;
-        // try to match from the car
-        return matchFromCar(carArtifact, moduleName, query.getName());
+        Node infoArtifact = getBestInfoArtifact(versionNode);
+        return matchFromCar(infoArtifact, moduleName, query.getName());
     }
 
     private boolean matchFromCar(Node artifact, String moduleName, String query) {
         try {
             File file = artifact.getContent(File.class);
-            return file != null && BytecodeUtils.matchesModuleInfo(moduleName, file, query);
+            if (file != null) {
+                ModuleInfoReader reader = getModuleInfoReader(artifact);
+                if (reader != null) {
+                    return reader.matchesModuleInfo(moduleName, file, query);
+                }
+            }
         } catch (Exception e) {
-            return false;
+            // Ignore
         }
+        return false;
     }
 
     private boolean isArtifact(String name, String module, String version) {
@@ -441,9 +427,8 @@ public abstract class AbstractRepository implements Repository {
                 continue;
             // try every known suffix
             boolean found = false;
-            final ModuleVersionDetails newVersion = new ModuleVersionDetails(version);
+            ModuleVersionDetails mvd = new ModuleVersionDetails(version);
             for (String suffix : suffixes) {
-                final ModuleVersionArtifact mva = new ModuleVersionArtifact(suffix, null, null);
                 String artifactName = getArtifactName(name, version, suffix);
                 Node artifact = child.getChild(artifactName);
                 if (artifact == null)
@@ -452,28 +437,33 @@ public abstract class AbstractRepository implements Repository {
                 if (suffix.equals(ArtifactContext.CAR) && !checkBinaryVersion(name, artifact, lookup))
                     continue;
                 // we found the artifact: let's notify
-                if (!found) {
-                    result.addVersion(newVersion);
-                    found = true;
-                }
+                found = true;
+                // let's see if we can extract some information
                 try {
                     File file = artifact.getContent(File.class);
                     if (file != null) {
-                        ModuleVersionDetails mvd = BytecodeUtils.readModuleInfo(name, file);
-                        newVersion.setDoc(mvd.getDoc());
-                        newVersion.setLicense(mvd.getLicense());
-                        newVersion.getAuthors().addAll(mvd.getAuthors());
-                        newVersion.getDependencies().addAll(mvd.getDependencies());
-                        ModuleVersionArtifact mva2 = mvd.getArtifactTypes().first();
-                        mva.setMajorBinaryVersion(mva2.getMajorBinaryVersion());
-                        mva.setMinorBinaryVersion(mva2.getMinorBinaryVersion());
-                        newVersion.setRemote(root.isRemote());
-                        newVersion.setOrigin(getDisplayString());
+                        ModuleInfoReader reader = getModuleInfoReader(suffix);
+                        if (reader != null) {
+                            ModuleVersionDetails mvd2 = reader.readModuleInfo(name, file);
+                            if (mvd2.getDoc() != null) {
+                                mvd.setDoc(mvd2.getDoc());
+                            }
+                            if (mvd2.getLicense() != null) {
+                                mvd.setLicense(mvd2.getLicense());
+                            }
+                            mvd.getAuthors().addAll(mvd2.getAuthors());
+                            mvd.getDependencies().addAll(mvd2.getDependencies());
+                            mvd.getArtifactTypes().addAll(mvd2.getArtifactTypes());
+                        }
                     }
                 } catch (Exception e) {
                     // bah
                 }
-                newVersion.getArtifactTypes().add(mva);
+            }
+            if (found) {
+                mvd.setRemote(root.isRemote());
+                mvd.setOrigin(getDisplayString());
+                result.addVersion(mvd);
             }
         }
     }
@@ -553,6 +543,7 @@ public abstract class AbstractRepository implements Repository {
     private void addSearchResult(ModuleSearchResult result, String moduleName, Node namePart, Type type) {
         SortedSet<String> versions = new TreeSet<String>();
         String[] suffixes = type.getSuffixes();
+        String foundSuffix = null;
         for (Node child : namePart.getChildren()) {
             // Winner of the less aptly-named method
             boolean isFolder = !child.hasBinaries();
@@ -565,11 +556,12 @@ public abstract class AbstractRepository implements Repository {
             for (String suffix : suffixes) {
                 String artifactName = getArtifactName(moduleName, version, suffix);
                 Node artifact = child.getChild(artifactName);
-                if (artifact == null)
-                    continue;
-                // we found the artifact: store it
-                versions.add(version);
-                break;
+                if (artifact != null) {
+                    // we found the artifact: store it
+                    versions.add(version);
+                    foundSuffix = suffix;
+                    break;
+                }
             }
         }
         // sanity check
@@ -580,40 +572,57 @@ public abstract class AbstractRepository implements Repository {
         Node versionChild = namePart.getChild(latestVersion);
         if (versionChild == null)
             throw new RuntimeException("Assertion failed: we didn't find the version child for " + moduleName + "/" + latestVersion);
-        String artifactName = getArtifactName(moduleName, latestVersion, ArtifactContext.CAR);
-        Node artifact = versionChild.getChild(artifactName);
+        
+        Node artifact = getBestInfoArtifact(versionChild);
 
-        // we don't really have mutable captures yet :(
-        final String[] doc = new String[1];
-        final String[] license = new String[1];
-        final SortedSet<String> authors = new TreeSet<String>();
-        final SortedSet<ModuleInfo> dependencies = new TreeSet<ModuleInfo>();
-        final SortedSet<String> types = new TreeSet<String>();
-        final Integer[] majorVer = new Integer[1];
-        final Integer[] minorVer = new Integer[1];
-
+        ModuleVersionDetails mvd = null;
         if (artifact != null) {
             try {
                 File file = artifact.getContent(File.class);
                 if (file != null) {
-                    ModuleVersionDetails mvd = BytecodeUtils.readModuleInfo(moduleName, file);
-                    doc[0] = mvd.getDoc();
-                    license[0] = mvd.getLicense();
-                    if (mvd.getAuthors() != null)
-                        authors.addAll(mvd.getAuthors());
-                    if (mvd.getDependencies() != null)
-                        dependencies.addAll(mvd.getDependencies());
-                    ModuleVersionArtifact mva = mvd.getArtifactTypes().first();
-                    if (mva.getSuffix() != null)
-                        types.add(mva.getSuffix());
-                    majorVer[0] = mva.getMajorBinaryVersion();
-                    minorVer[0] = mva.getMinorBinaryVersion();
+                    ModuleInfoReader reader = getModuleInfoReader(artifact);
+                    if (reader != null) {
+                        mvd = reader.readModuleInfo(moduleName, file);
+                    }
                 }
             } catch (Exception e) {
                 // bah
             }
         }
+        if (mvd == null) {
+            // We didn't get any useful information, so we'll just create a dummy
+            mvd = new ModuleVersionDetails(latestVersion);
+        }
+        mvd.setRemote(root.isRemote());
+        mvd.setOrigin(getDisplayString());
 
-        result.addResult(moduleName, doc[0], license[0], authors, versions, dependencies, types, majorVer[0], minorVer[0], root.isRemote(), getDisplayString());
+        result.addResult(moduleName, mvd);
+    }
+    
+    private Node getBestInfoArtifact(Node versionNode) {
+        String moduleName = toModuleName(NodeUtils.firstParent(versionNode));
+        String version = versionNode.getLabel();
+        String artifactName = getArtifactName(moduleName, version, ArtifactContext.CAR);
+        Node artifact = versionNode.getChild(artifactName);
+        if (artifact == null) {
+            artifactName = getArtifactName(moduleName, version, ArtifactContext.JS);
+            artifact = versionNode.getChild(artifactName);
+        }
+        return artifact;
+    }
+    
+    private ModuleInfoReader getModuleInfoReader(Node infoNode) {
+        String suffix = ArtifactContext.getSuffixFromNode(infoNode);
+        return getModuleInfoReader(suffix);
+    }
+    
+    private ModuleInfoReader getModuleInfoReader(String suffix) {
+        if (ArtifactContext.CAR.equalsIgnoreCase(suffix)) {
+            return BytecodeUtils.INSTANCE;
+        } else if (ArtifactContext.JS.equalsIgnoreCase(suffix)) {
+            return JSUtils.INSTANCE;
+        } else {
+            return null;
+        }
     }
 }

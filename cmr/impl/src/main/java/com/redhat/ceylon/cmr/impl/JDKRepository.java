@@ -94,8 +94,14 @@ public class JDKRepository extends AbstractRepository {
             if (name == null)
                 name = "";
             for (String module : JDK_MODULES) {
-                if (module.startsWith(name))
-                    result.addResult(module, doc(module), null, EmptySet, FixedVersionSet, EmptyDependencySet, FixedTypeSet, null, null, false, JAVA_ORIGIN);
+                if (module.startsWith(name)) {
+                    ModuleVersionDetails mvd = new ModuleVersionDetails(JDK_VERSION);
+                    mvd.setDoc(doc(module));
+                    mvd.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
+                    mvd.setRemote(false);
+                    mvd.setOrigin(JAVA_ORIGIN);
+                    result.addResult(module, mvd);
+                }
             }
         }
 
@@ -144,7 +150,12 @@ public class JDKRepository extends AbstractRepository {
                     }
                     if (query.getStart() == null || found++ >= query.getStart()) {
                         // are we interested in this result or did we need to skip it?
-                        result.addResult(module, doc(module), null, EmptySet, FixedVersionSet, EmptyDependencySet, FixedTypeSet, null, null, false, JAVA_ORIGIN);
+                        ModuleVersionDetails mvd = new ModuleVersionDetails(JDK_VERSION);
+                        mvd.setDoc(doc(module));
+                        mvd.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
+                        mvd.setRemote(false);
+                        mvd.setOrigin(JAVA_ORIGIN);
+                        result.addResult(module, mvd);
                         // stop if we're done searching
                         if (query.getStart() != null
                                 && query.getCount() != null

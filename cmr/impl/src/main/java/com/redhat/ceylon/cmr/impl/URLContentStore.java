@@ -479,7 +479,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         SortedSet<String> authors = new TreeSet<String>();
         SortedSet<String> versions = new TreeSet<String>();
         SortedSet<ModuleInfo> dependencies = new TreeSet<ModuleInfo>();
-        SortedSet<String> types = new TreeSet<String>();
+        SortedSet<ModuleVersionArtifact> types = new TreeSet<ModuleVersionArtifact>();
 
         p.moveToOpenTag("results");
         String total = p.getAttribute("total");
@@ -494,7 +494,6 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         int resultCount = 0;
         while(p.moveToOptionalOpenTag("module")){
             String module = null, doc = null, license = null;
-            Integer majorBinVer = null, minorBinVer = null;
             authors.clear();
             versions.clear();
             dependencies.clear();
@@ -505,6 +504,9 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 if(p.isOpenTag("name")){
                     module = p.contents();
                 }else if(p.isOpenTag("versions")){
+                    // TODO This isn't really the way, we should have version tags
+                    // inside the "module" tag containing all the rest of the
+                    // information below
                     versions.add(p.contents());
                 }else if(p.isOpenTag("doc")){
                     doc = p.contents();
@@ -516,11 +518,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     dependencies.add(parseDependency(p));
                 }else if(p.isOpenTag("artifact")){
                     ModuleVersionArtifact artifact = parseArtifact(p);
-                    if(artifact.getSuffix().equals(".car")){
-                        majorBinVer = artifact.getMajorBinaryVersion();
-                        minorBinVer = artifact.getMinorBinaryVersion();
-                    }
-                    types.add(artifact.getSuffix());
+                    types.add(artifact);
                 }else{
                     throw new RuntimeException("Unknown tag: "+p.tagName());
                 }
@@ -530,7 +528,22 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             if(versions.isEmpty()){
                 log.debug("Ignoring result for " + module + " because it doesn't have a single version");
             }else{
-                result.addResult(module, doc, license, authors, versions, dependencies, types, majorBinVer, minorBinVer, true, HERD_ORIGIN);
+                // TODO See TODO above
+                for (String v : versions) {
+                    ModuleVersionDetails mvd = new ModuleVersionDetails(v);
+                    mvd.setDoc(doc);
+                    mvd.setLicense(license);
+                    mvd.getAuthors().addAll(authors);
+                    mvd.getDependencies().addAll(dependencies);
+                    mvd.getArtifactTypes().addAll(types);
+                    mvd.setRemote(true);
+                    if (isHerd()) {
+                        mvd.setOrigin(HERD_ORIGIN + " (" + getDisplayString() + ")");
+                    } else {
+                        mvd.setOrigin(getDisplayString());
+                    }
+                    result.addResult(module, mvd);
+                }
             }
             p.checkCloseTag();
         }

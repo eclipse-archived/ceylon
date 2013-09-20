@@ -462,17 +462,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
                         resultPagingInfo[repo++]++;
                     }
                     // merge it
-                    result.addResult(module,
-                            details.getDoc(),
-                            details.getLicense(),
-                            details.getAuthors(),
-                            details.getVersions(),
-                            details.getDependencies(),
-                            details.getArtifactTypes(),
-                            details.getMajorBinaryVersion(),
-                            details.getMinorBinaryVersion(),
-                            details.isRemote(),
-                            details.getOrigin());
+                    result.addResult(module, details);
                 }
             }
             // see if there are any records left in next pages
