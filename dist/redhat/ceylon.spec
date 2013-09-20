@@ -5,7 +5,7 @@
 %define section free
 
 %define major_version 0
-%define minor_version 5
+%define minor_version 6
 %define micro_version 0
 %define ceylon_home /usr/lib/ceylon/%{major_version}.%{minor_version}
 
@@ -77,6 +77,8 @@ popd
 
 
 %changelog
+* Fri Sep 20 2012 Stephane Epardaud <separdau@redhat.com> 0.6.0-0
+- Update for 0.6
 * Wed Mar 13 2013 Tako Schotanus <tschotan@redhat.com> 0.5.0-1
 - Removed references to ceylon-cp.sh that doesn't exist anymore
 * Wed Oct 31 2012 Tako Schotanus <tschotan@redhat.com> 0.5.0-0
