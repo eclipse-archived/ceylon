@@ -1765,8 +1765,10 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
         sa=sequencedArgument
         { if ($sa.sequencedArgument!=null) {
               for (PositionalArgument pa: $sa.sequencedArgument.getPositionalArguments())
-                  $positionalArgumentList.addPositionalArgument(pa); 
-              $positionalArgumentList.setEndToken($sa.sequencedArgument.getEndToken()); } }
+                  $positionalArgumentList.addPositionalArgument(pa);
+              //TODO: this is really nasty, PositionalArgumentList should have
+              //      or be a SequencedArgument, not copy its PositionalArguments!
+              $positionalArgumentList.setEndToken($sa.sequencedArgument.getMainEndToken()); } }
       )?
       RPAREN
       { $positionalArgumentList.setEndToken($RPAREN); }
