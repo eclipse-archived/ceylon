@@ -39,7 +39,8 @@ How to do a release of Ceylon.
 1. Do the release zip
     $ cd ceylon-dist
     ceylon-dist $ ant release
-1. Push the zip to https://github.com/ceylon/ceylon-dist/downloads
+1. Copy the zip to downloads.ceylon-lang.org:
+    $ scp ceylon-0.5.zip ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 
 # Build the Debian file
 
@@ -50,7 +51,8 @@ On a Debian system:
 1. Update the versions and rename some files in `debian/` to match the new version
 1. Package it
     ceylon-dist $ fakeroot ./debian/rules clean binary
-1. Push the .deb to https://github.com/ceylon/ceylon-dist/downloads
+1. Copy the zip to downloads.ceylon-lang.org:
+    $ scp ceylon-0.5.deb ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 
 # Build the RedHat file
 
@@ -71,17 +73,17 @@ WARNING: try those on for size before you run them, especially the `sudo` ones, 
 never copy and paste `sudo` commands!!! So read them carefully and type them by hand.
 
 1. Get the release
-       $ wget https://github.com/downloads/ceylon/ceylon-dist/ceylon-0.3.1.zip
-    $ unzip ceylon-0.3.1.zip
+       $ wget http://ceylon-lang.org/download/dist/1_0_Milestone5
+    $ unzip ceylon-0.5.zip
 1. Remove the old API
     $ sudo rm -rf /var/www/ceylonlang/documentation/1.0/api/ceylon/language
 1. Put the new API
-    $ sudo cp -r ceylon-0.3.1/repo/ceylon/language/0.3.1/module-doc /var/www/ceylonlang/documentation/1.0/api/ceylon/language
+    $ sudo cp -r ceylon-0.5/repo/ceylon/language/0.5/module-doc /var/www/ceylonlang/documentation/1.0/api/ceylon/language
     $ sudo chown -R webhook. /var/www/ceylonlang/documentation/1.0/api/ceylon/language
 1. Remove the old spec
     $ sudo rm -rf /var/www/ceylonlang/documentation/1.0/spec/{html,html_single,pdf,shared}
 1. Put the new spec
-    $ sudo cp -r ceylon-0.3.1/doc/en/* /var/www/ceylonlang/documentation/1.0/spec/
+    $ sudo cp -r ceylon-0.5/doc/en/* /var/www/ceylonlang/documentation/1.0/spec/
     $ sudo chown -R webhook. /var/www/ceylonlang/documentation/1.0/spec
     $ sudo mv /var/www/ceylonlang/documentation/1.0/spec/pdf/Ceylon\* /var/www/ceylonlang/documentation/1.0/spec/pdf/ceylon-language-specification.pdf
 
