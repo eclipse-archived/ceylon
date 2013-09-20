@@ -10,16 +10,14 @@ import java.util.TreeSet;
 public class ModuleSearchResult {
     
     public static class ModuleDetails {
-        private String name, license, doc;
-        private NavigableSet<String> authors = new TreeSet<String>();
-        private NavigableSet<String> versions = new TreeSet<String>(VersionComparator.INSTANCE);
-        private NavigableSet<ModuleInfo> dependencies = new TreeSet<ModuleInfo>();
-        private NavigableSet<String> artifactTypes = new TreeSet<String>();
-        private Integer majorBinaryVersion;
-        private Integer minorBinaryVersion;
-        private boolean remote;
-        private String origin;
+        private String name;
+        private NavigableSet<ModuleVersionDetails> versions = new TreeSet<ModuleVersionDetails>();
 
+        public ModuleDetails(String name) {
+            this.name = name;
+        }
+
+        // This should only be used by the tests!
         public ModuleDetails(String name,
                 String doc,
                 String license,
@@ -32,16 +30,20 @@ public class ModuleSearchResult {
                 boolean remote,
                 String origin) {
             this.name = name;
-            this.doc = toNull(doc);
-            this.license = toNull(license);
-            this.authors.addAll(authors);
-            this.versions.addAll(versions);
-            this.dependencies.addAll(dependencies);
-            this.artifactTypes.addAll(types);
-            this.majorBinaryVersion = majorBinaryVersion;
-            this.minorBinaryVersion = minorBinaryVersion;
-            this.remote = remote;
-            this.origin = origin;
+            for (String v : versions) {
+                ModuleVersionDetails mvd = new ModuleVersionDetails(v);
+                mvd.setDoc(toNull(doc));
+                mvd.setLicense(toNull(license));
+                mvd.getAuthors().addAll(authors);
+                mvd.getDependencies().addAll(dependencies);
+                for (String t : types) {
+                    ModuleVersionArtifact mva = new ModuleVersionArtifact(t, majorBinaryVersion, minorBinaryVersion);
+                    mvd.getArtifactTypes().add(mva);
+                }
+                mvd.setRemote(remote);
+                mvd.setOrigin(origin);
+                this.versions.add(mvd);
+            }
         }
 
         private String toNull(String str) {
@@ -49,69 +51,80 @@ public class ModuleSearchResult {
                 return null;
             return str;
         }
-
         public String getName() {
             return name;
         }
 
-        public String getLicense() {
-            return license;
-        }
-
-        public String getDoc() {
-            return doc;
-        }
-
-        public String getLastVersion() {
-            return versions.last();
-        }
-
-        public Integer getMajorBinaryVersion() {
-            return majorBinaryVersion;
-        }
-
-        public Integer getMinorBinaryVersion() {
-            return minorBinaryVersion;
-        }
-
-        public boolean isRemote() {
-            return remote;
-        }
-
-        public String getOrigin() {
-            return origin;
-        }
-
-        public NavigableSet<String> getAuthors() {
-            return authors;
-        }
-
-        public NavigableSet<String> getVersions() {
+        public NavigableSet<ModuleVersionDetails> getVersions() {
             return versions;
         }
 
-        public NavigableSet<ModuleInfo> getDependencies() {
-            return dependencies;
+        public ModuleVersionDetails getLastVersion() {
+            if (versions.isEmpty()) {
+                return null;
+            } else {
+                return versions.last();
+            }
         }
 
-        public NavigableSet<String> getArtifactTypes() {
-            return artifactTypes;
+        public String getLicense() {
+            return (getLastVersion() != null) ? getLastVersion().getLicense() : null;
+        }
+
+        public String getDoc() {
+            return (getLastVersion() != null) ? getLastVersion().getDoc() : null;
+        }
+
+        public Integer getMajorBinaryVersion() {
+            if (getLastVersion() != null && !getLastVersion().getArtifactTypes().isEmpty()) {
+                return getLastVersion().getArtifactTypes().first().getMajorBinaryVersion();
+            } else {
+                return null;
+            }
+        }
+
+        public Integer getMinorBinaryVersion() {
+            if (getLastVersion() != null && !getLastVersion().getArtifactTypes().isEmpty()) {
+                return getLastVersion().getArtifactTypes().first().getMinorBinaryVersion();
+            } else {
+                return null;
+            }
+        }
+
+        public boolean isRemote() {
+            return (getLastVersion() != null) ? getLastVersion().isRemote() : false;
+        }
+
+        public String getOrigin() {
+            return (getLastVersion() != null) ? getLastVersion().getOrigin() : null;
+        }
+
+        public NavigableSet<String> getAuthors() {
+            return (getLastVersion() != null) ? getLastVersion().getAuthors() : null;
+        }
+
+        public NavigableSet<ModuleInfo> getDependencies() {
+            return (getLastVersion() != null) ? getLastVersion().getDependencies() : null;
+        }
+
+        public NavigableSet<ModuleVersionArtifact> getArtifactTypes() {
+            return (getLastVersion() != null) ? getLastVersion().getArtifactTypes() : null;
         }
         
         @Override
         public String toString() {
             return "ModuleSearchResult ["
                     +"name: "+name
-                    +", license: "+license
-                    +", doc: "+doc
-                    +", authors: "+authors
-                    +", versions: "+versions
-                    +", deps: "+dependencies
+                    +", license: "+getLicense()
+                    +", doc: "+getDoc()
+                    +", authors: "+getAuthors()
+                    +", versions: "+getVersions()
+                    +", deps: "+getDependencies()
                     +", bin version: "
-                        +((majorBinaryVersion != null) ? majorBinaryVersion : "")
-                        +((minorBinaryVersion != null) ? "." + minorBinaryVersion : "")
-                    +", remote: "+remote
-                    +", origin: "+origin
+                        +((getMajorBinaryVersion() != null) ? getMajorBinaryVersion() : "")
+                        +((getMinorBinaryVersion() != null) ? "." + getMinorBinaryVersion() : "")
+                    +", remote: "+isRemote()
+                    +", origin: "+getOrigin()
                     +"]";
         }
     }
@@ -121,54 +134,30 @@ public class ModuleSearchResult {
     private long start;
     private boolean hasMoreResults;
 
-    public void addResult(String moduleName,
-            String doc,
-            String license,
-            SortedSet<String> authors,
-            SortedSet<String> versions,
-            SortedSet<ModuleInfo> dependencies,
-            SortedSet<String> artifactTypes,
-            Integer majorBinaryVersion,
-            Integer minorBinaryVersion,
-            boolean remote,
-            String origin) {
-        if(versions.isEmpty())
-            throw new RuntimeException("Empty versions");
-        if(results.containsKey(moduleName)){
+    public void addResult(String moduleName, ModuleDetails otherDetails) {
+        ModuleDetails details;
+        if (results.containsKey(moduleName)){
             // needs merge
-            ModuleDetails details = results.get(moduleName);
-            String newLastVersion = versions.last();
-            String oldLastVersion = details.getLastVersion();
-            // only update doc/license if the newest version is newer than the previous newest
-            if(VersionComparator.compareVersions(oldLastVersion, newLastVersion) == -1){
-                details.doc = doc;
-                details.license = license;
-                details.dependencies.clear();
-                details.dependencies.addAll(dependencies);
-                details.artifactTypes.clear();
-                details.artifactTypes.addAll(artifactTypes);
-                details.majorBinaryVersion = majorBinaryVersion;
-                details.minorBinaryVersion = minorBinaryVersion;
-                details.remote = remote;
-                details.origin = origin;
-            }
-            details.authors.addAll(authors);
-            details.versions.addAll(versions);
-        }else{
+            details = results.get(moduleName);
+        } else {
             // new module
-            results.put(moduleName, new ModuleDetails(
-                    moduleName,
-                    doc,
-                    license,
-                    authors,
-                    versions,
-                    dependencies,
-                    artifactTypes,
-                    majorBinaryVersion,
-                    minorBinaryVersion,
-                    remote,
-                    origin));
+            details = new ModuleDetails(moduleName);
+            results.put(moduleName, details);
         }
+        details.getVersions().addAll(otherDetails.getVersions());
+    }
+
+    public void addResult(String moduleName, ModuleVersionDetails mvd) {
+        ModuleDetails details;
+        if (results.containsKey(moduleName)){
+            // needs merge
+            details = results.get(moduleName);
+        } else {
+            // new module
+            details = new ModuleDetails(moduleName);
+            results.put(moduleName, details);
+        }
+        details.getVersions().add(mvd);
     }
 
     public Collection<ModuleDetails> getResults() {
