@@ -797,7 +797,13 @@ class CallableInvocation extends DirectInvocation {
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
         Parameter param = callableParameters.get(argIndex);
-        return tempVars ? gen.makeUnquotedIdent(Naming.getCallableTempVarName(param)) : gen.makeUnquotedIdent(param.getName());
+        
+        JCExpression result = tempVars ? gen.makeUnquotedIdent(Naming.getCallableTempVarName(param)) : gen.makeUnquotedIdent(param.getName());
+        if (isOnValueType() 
+                && CodegenUtil.getBoxingStrategy(getParameter(argIndex).getModel()) == BoxingStrategy.BOXED) {
+            result = gen.expressionGen().applyErasureAndBoxing(result, getArgumentType(argIndex), true, BoxingStrategy.UNBOXED, getArgumentType(argIndex));
+        }
+        return result;
     }
     @Override
     protected Parameter getParameter(int index) {
