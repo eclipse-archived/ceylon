@@ -26,8 +26,6 @@ import java.util.Set;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
-import sun.org.mozilla.javascript.NativeArray;
-
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.DependencyResolver;
@@ -121,28 +119,28 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
         if (obj == null) {
             return null;
         }
-        if (!(obj instanceof NativeArray)) {
-            throw new RuntimeException("Expected native JavaScript array");
+        if (!(obj instanceof Iterable)) {
+            throw new RuntimeException("Expected something Iterable");
         }
-        NativeArray array = (NativeArray)obj;
-        String[] result = new String[(int)array.getLength()];
-        for (int i = 0; i < array.getLength(); i++) {
-            result[i] = asString(array.get(i));
+        Iterable<Object> array = (Iterable)obj;
+        ArrayList<String> result = new ArrayList<String>();
+        for (Object o : array) {
+            result.add(asString(o));
         }
-        return result;
+        return result.toArray(new String[result.size()]);
     }
     
     private static List<ModuleInfo> asModInfos(Object obj) {
         if (obj == null) {
             return Collections.emptyList();
         }
-        if (!(obj instanceof NativeArray)) {
-            throw new RuntimeException("Expected native JavaScript array");
+        if (!(obj instanceof Iterable)) {
+            throw new RuntimeException("Expected something Iterable");
         }
-        NativeArray array = (NativeArray)obj;
-        List<ModuleInfo> result = new ArrayList<ModuleInfo>((int)array.getLength());
-        for (int i = 0; i < array.getLength(); i++) {
-            String module = asString(array.get(i));
+        Iterable<Object> array = (Iterable)obj;
+        List<ModuleInfo> result = new ArrayList<ModuleInfo>();
+        for (Object o : array) {
+            String module = asString(o);
             String name = ModuleUtil.moduleName(module);
             if (!"ceylon.language".equals(name)) {
                 result.add(new ModuleInfo(name, ModuleUtil.moduleVersion(module), false, false));
