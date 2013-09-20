@@ -24,7 +24,7 @@ shared Character firstLetter(String word) {
 
 "Group words in a text together on the basis of their first letter"
 shared Map<Character, {String+}> groupWordsByFirstLetter(String text) {
-    return group(text.split({ ' ', '.', ',', ';', '\n' }), firstLetter);
+    return group(text.split({ ' ', '.', ',', ';', '\n' }.contains), firstLetter);
 }
 
 "The runnable method of the module." 
