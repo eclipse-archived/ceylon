@@ -158,7 +158,7 @@ public final class BytecodeUtils implements DependencyResolver {
         AnnotationValue majorVer = ceylonAnnotation.value("major");
         AnnotationValue minorVer = ceylonAnnotation.value("minor");
 
-        ModuleVersionDetails mvd = new ModuleVersionDetails(null);
+        ModuleVersionDetails mvd = new ModuleVersionDetails(getVersionFromFilename(moduleName, moduleArchive.getName()));
         mvd.setDoc(doc != null ? doc.asString() : null);
         mvd.setLicense(license != null ? license.asString() : null);
         if (by != null) {
@@ -169,6 +169,15 @@ public final class BytecodeUtils implements DependencyResolver {
         mvd.getArtifactTypes().add(mva);
         
         return mvd;
+    }
+
+    private static String getVersionFromFilename(String moduleName, String name) {
+        if (!"default".equals(moduleName)) {
+            String type = ArtifactContext.getSuffixFromFilename(name);
+            return name.substring(moduleName.length() + 1, name.length() - type.length());
+        } else {
+            return "";
+        }
     }
 
     private static List<ModuleInfo> asModInfos(AnnotationValue dependencies) {
