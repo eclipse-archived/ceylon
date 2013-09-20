@@ -127,7 +127,7 @@ platforms to make sure it works:
 
 ### Linux
 
-- Ubuntu "precise" 12.04 (64 bit) JDK 1.7.0_03 (IcedTea), 
+- Ubuntu "quantal" 12.10 (64 bit) JDK 1.7.0_09 (IcedTea) Node 0.6.19
 - Fedora 17 (64 bit) JDK 1.7.0_09 (IcedTea)
 - Fedora 16 (64 bit), JDK 1.7.0_b147 (IcedTea)
 
@@ -138,7 +138,8 @@ platforms to make sure it works:
 
 ### OSX
 
-- OSX 10 Lion (10.7.3) JDK 1.7.0_05 (Oracle)
+- OSX 10 Lion (10.7.3) JDK 1.7.0_05 (Oracle) Node 0.6.19
+- OSX 10 Lion (10.8.5) JDK 1.7.0_40 (Oracle) Node 0.10.17
 
 ## License
 
