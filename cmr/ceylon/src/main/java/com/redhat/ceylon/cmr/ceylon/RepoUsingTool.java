@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.NavigableMap;
 import java.util.ResourceBundle;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
@@ -124,8 +126,19 @@ public abstract class RepoUsingTool implements Tool {
     }
     
     protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryVersion, boolean allowCompilation) throws IOException {
-        if ("default".equals(name)) {
-            return "";
+        if ("default".equals(name) || version != null) {
+            // If we have the default module or a version we first try it the quick way
+            ArtifactContext ac = new ArtifactContext(name, version, type.getSuffixes());
+            ac.setFetchSingleArtifact(true);
+            ac.setThrowErrorIfMissing(false);
+            ArtifactResult result = repoMgr.getArtifactResult(ac);
+            if (result != null) {
+                return (result.version() != null) ? result.version() : "";
+            }
+            if ("default".equals(name)) {
+                errorMsg("module.not.found", name, repoMgr.getRepositoriesDisplayString());
+                return null;
+            }
         }
         boolean suggested = false;
         Collection<ModuleVersionDetails> versions = getModuleVersions(repoMgr, name, version, type, binaryVersion);
