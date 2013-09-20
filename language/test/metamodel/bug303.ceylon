@@ -10,7 +10,7 @@ void bug303() {
     value attributeA = a.getAttribute<Bug303, String?>("nome");
     assert( is Attribute<Bug303, String?> attributeA); //works fine
 
-    value attributeB = a.getAttribute<>("nome");
+    value attributeB = a.getAttribute<Nothing, Anything>("nome");
     assert( is Attribute<Bug303, String?> attributeB); //assertion failed...
 
 }
