@@ -14,12 +14,12 @@
    
    They are efficiently iterable:
    
-     for (char in "hello world") { ... }
+       for (char in "hello world") { ... }
    
    They are `List`s of `Character`s:
    
        value char = "hello world"[5];
- 
+   
    They are ranged:
    
        String who = "hello world"[6...];
