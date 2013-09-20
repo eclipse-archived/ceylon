@@ -65,6 +65,10 @@ class MiMatrix(Integer gridSize) satisfies Matrix<Integer> {
             span(from, size);
 }
 
+shared void issue225_1(Integer|String content){}
+shared alias Issue225Alias => Integer|String;
+shared void issue225_2(Issue225Alias content){}
+
 void testAliasing() {
     print("testing type aliases");
     check(AliasingSubclass().aliasingSubclass(), "Aliased member class");
