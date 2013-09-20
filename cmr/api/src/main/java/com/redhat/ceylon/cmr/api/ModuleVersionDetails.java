@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class ModuleVersionDetails {
+public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
     private String version;
     private String doc;
     private String license;
@@ -17,6 +17,7 @@ public class ModuleVersionDetails {
     private NavigableSet<ModuleVersionArtifact> artifactTypes = new TreeSet<ModuleVersionArtifact>();
 
     public ModuleVersionDetails(String version) {
+        assert(version != null);
         this.version = version;
     }
 
@@ -46,6 +47,7 @@ public class ModuleVersionDetails {
     }
 
     public void setVersion(String version) {
+        assert(version != null);
         this.version = version;
     }
 
@@ -106,6 +108,41 @@ public class ModuleVersionDetails {
     public void setArtifactTypes(SortedSet<ModuleVersionArtifact> types) {
         this.artifactTypes.clear();
         this.artifactTypes.addAll(types);
+    }
+
+    
+    @Override
+    public int hashCode() {
+        // This only work well for versions within the same module!
+        return version.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        // This only work well for versions within the same module!
+        if (obj instanceof ModuleVersionDetails) {
+            return version.equals(((ModuleVersionDetails) obj).version);
+        }
+        return false;
+    }
+
+    @Override
+    public int compareTo(ModuleVersionDetails o) {
+        return VersionComparator.compareVersions(version, o.version);
+    }
+
+    @Override
+    public String toString() {
+        return "ModuleVersionDetails[ "
+                + "version: " + version
+                + ", doc: " + doc
+                + ", license: " + license
+                + ", by: " + authors
+                + ", deps: " + dependencies
+                + ", artifacts: " + artifactTypes
+                + ", remote: " + remote
+                + ", origin: " + origin
+                + "]";
     }
 
 }
