@@ -1159,22 +1159,30 @@ public class GenerateJsVisitor extends Visitor
         addToPrototype(that, c, that.getClassBody().getStatements());
 
         if (!addToPrototype) {
-            out("var ", names.name(d), "=", names.name(c), "(");
+            out("var ", names.name(d));
+            //If it's a property, create the object here
+            if (defineAsProperty(d)) {
+                out("=", names.name(c), "(");
+                if (!targs.isEmpty()) {
+                    TypeUtils.printTypeArguments(that, targs, this);
+                }
+                out(")");
+            }
+            endLine(true);
+        }
+
+        if (!defineAsProperty(d)) {
+            final String objvar = (addToPrototype ? "this.":"")+names.name(d);
+            out(function, names.getter(d), "()");
+            beginBlock();
+            //Create the object lazily
+            out("if (", objvar, "===undefined)", objvar, "=$init$", names.name(c), "()(");
             if (!targs.isEmpty()) {
                 TypeUtils.printTypeArguments(that, targs, this);
             }
             out(");");
             endLine();
-        }
-
-        if (!defineAsProperty(d)) {
-            out("var ", names.getter(d), "=function()");
-            beginBlock();
-            out("return ");
-            if (addToPrototype) {
-                out("this.");
-            }
-            out(names.name(d), ";");
+            out("return ", objvar, ";");
             endBlockNewLine();            
             
             if (addToPrototype || d.isShared()) {
