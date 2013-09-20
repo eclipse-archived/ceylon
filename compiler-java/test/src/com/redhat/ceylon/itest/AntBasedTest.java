@@ -127,7 +127,7 @@ public abstract class AntBasedTest {
                 search(child, matches);
             }
         } else {
-            if (file.getName().contains("ant")
+            if (file.getName().contains("-ant")
                     && file.getName().endsWith(".jar")) {
                 matches.add(file);
             }
@@ -144,7 +144,7 @@ public abstract class AntBasedTest {
                 throw new Exception("File specified by ceylon.ant.lib system property " + possibleResult.getAbsolutePath() + " does not exist");
             }
         }
-        File dist = new File(System.getProperty("build.dist", "build/dist"));
+        File dist = new File(System.getProperty("build.dist", "build/lib"));
         ArrayList<File> matches = new ArrayList<File>(1);
         search(dist, matches);
         if (matches.size() == 0) {
