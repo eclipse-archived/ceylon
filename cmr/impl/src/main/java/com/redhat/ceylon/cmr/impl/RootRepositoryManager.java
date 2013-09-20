@@ -72,6 +72,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                     // in theory we should not have nodes with null streams, but at least provide a helpful exception
                     if(inputStream == null)
                         throw new RepositoryException("Node "+node+" for repository "+this+" returned a null stream");
+                    context.setSuffixes(ArtifactContext.getSuffixFromNode(node)); // Make sure we'll have only one suffix
                     final File file = putContent(context, node, inputStream);
                     // we expect the remote nodes to support Ceylon module info                    
                     return new FileArtifactResult(this, context.getName(), context.getVersion(), file);

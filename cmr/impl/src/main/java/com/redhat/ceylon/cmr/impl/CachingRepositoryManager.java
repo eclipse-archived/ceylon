@@ -83,7 +83,7 @@ public class CachingRepositoryManager extends AbstractNodeRepositoryManager {
                 final boolean previous = context.isForceOperation();
                 context.setForceOperation(true);
                 try {
-                    context.setSuffixes(ArtifactContext.getSuffixFromNode(node));
+                    context.setSuffixes(ArtifactContext.getSuffixFromNode(node)); // Make sure we'll have only one suffix
                     caching.putArtifact(context, node.getInputStream());
                 } finally {
                     context.setForceOperation(previous);
