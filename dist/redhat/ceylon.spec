@@ -77,7 +77,7 @@ popd
 
 
 %changelog
-* Fri Sep 20 2012 Stephane Epardaud <separdau@redhat.com> 0.6.0-0
+* Fri Sep 20 2013 Stephane Epardaud <separdau@redhat.com> 0.6.0-0
 - Update for 0.6
 * Wed Mar 13 2013 Tako Schotanus <tschotan@redhat.com> 0.5.0-1
 - Removed references to ceylon-cp.sh that doesn't exist anymore
@@ -91,7 +91,7 @@ popd
 - Some changes to simplify the build process a bit
 * Mon May 14 2012 Stephane Epardaud <separdau@redhat.com> 0.3.0-0
 - Update for 0.3
-* Tue Mar 15 2012 Stephane Epardaud <separdau@redhat.com> 0.2.0-0
+* Thu Mar 15 2012 Stephane Epardaud <separdau@redhat.com> 0.2.0-0
 - Update for 0.2
 * Tue Dec 20 2011 Mladen Turk <mturk@redhat.com> 0.1.0-0
 - Initial build
