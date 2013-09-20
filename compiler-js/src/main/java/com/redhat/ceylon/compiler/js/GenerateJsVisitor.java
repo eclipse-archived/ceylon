@@ -290,11 +290,11 @@ public class GenerateJsVisitor extends Visitor
     }
 
     public void visit(Import that) {
-    	ImportableScope scope =
-    			that.getImportMemberOrTypeList().getImportList().getImportedScope();
-    	if (scope instanceof Package) {
-    		require(((Package) scope).getModule());
-    	}
+        ImportableScope scope =
+                that.getImportMemberOrTypeList().getImportList().getImportedScope();
+        if (scope instanceof Package && !((Package)scope).getModule().equals(that.getUnit().getPackage().getModule())) {
+            require(((Package) scope).getModule());
+        }
     }
 
     private void require(Module mod) {
@@ -2968,12 +2968,14 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Tells whether a declaration is in the specified package. */
-    boolean isImported(final Package p2, Declaration d) {
+    boolean isImported(final Package p2, final Declaration d) {
         if (d == null) {
             return false;
         }
         Package p1 = d.getUnit().getPackage();
-        return !p1.equals(p2);
+        if (p2 == null)return p1 != null;
+        if (p1.getModule()== null)return p2.getModule()!=null;
+        return !p1.getModule().equals(p2.getModule());
     }
 
     @Override
