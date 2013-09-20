@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -66,11 +67,11 @@ public class LinkRenderer {
         public String getSimpleDeclarationName(Declaration declaration, Unit unit) {
             String result = null;
             
-            if (declaration instanceof ClassOrInterface) {
-                ClassOrInterface clazz = (ClassOrInterface) declaration;
-                String clazzUrl = getUrl(clazz, null);
-                if (clazzUrl != null) {
-                    result = buildLinkElement(clazzUrl, getLinkText(clazz), "Go to " + clazz.getQualifiedNameString());
+            if (declaration instanceof ClassOrInterface || declaration instanceof NothingType) {
+                TypeDeclaration type = (TypeDeclaration) declaration;
+                String typeUrl = getUrl(type, null);
+                if (typeUrl != null) {
+                    result = buildLinkElement(typeUrl, getLinkText(type), "Go to " + type.getQualifiedNameString());
 
                 } else {
                     result = buildSpanElementWithNameAndTooltip(declaration);
@@ -341,8 +342,17 @@ public class LinkRenderer {
                 decl = ((Element) scope).getUnit().getImportedDeclaration(declName, null, false);
             }
 
-            if (decl == null && !isNested) {
+            if (decl == null && !isNested && !scope.getQualifiedNameString().equals("ceylon.language") ) {
                 decl = resolveDeclaration(scope.getContainer(), declName, isNested);
+            }
+            
+            if (decl == null && declName.equals("Nothing") && scope.getQualifiedNameString().equals("ceylon.language")) {
+                decl = new NothingType(((Package) scope).getUnit());
+            }
+        } else {
+            Package pkg = ceylonDocTool.getCurrentModule().getPackage("ceylon.language");
+            if (pkg != null) {
+                decl = resolveDeclaration(pkg, declName, isNested);
             }
         }
 

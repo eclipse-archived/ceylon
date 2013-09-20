@@ -61,12 +61,14 @@ import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
+import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -413,17 +415,17 @@ public class CeylonDocTool implements Tool {
         return includeSourceCode;
     }
     
-    public String getFileName(ClassOrInterface klass) {
+    public String getFileName(TypeDeclaration type) {
         // we need postfix, because objects can have same file name like classes/interfaces in not case-sensitive file systems
         String postfix;
-        if (klass instanceof Class && klass.isAnonymous()) {
+        if (type instanceof Class && type.isAnonymous()) {
             postfix = ".object";
         } else {
             postfix = ".type";
         }
 
         List<String> names = new LinkedList<String>();
-        Scope scope = klass;
+        Scope scope = type;
         while (scope instanceof TypeDeclaration) {
             names.add(0, ((TypeDeclaration) scope).getName());
             scope = scope.getContainer();
@@ -455,16 +457,16 @@ public class CeylonDocTool implements Tool {
         return folder;
     }
 
-    private File getFolder(ClassOrInterface klass) {
-        return getFolder(getPackage(klass));
+    private File getFolder(TypeDeclaration type) {
+        return getFolder(getPackage(type));
     }
 
     File getObjectFile(Object modPgkOrDecl) throws IOException {
         final File file;
-        if (modPgkOrDecl instanceof ClassOrInterface) {
-            ClassOrInterface klass = (ClassOrInterface)modPgkOrDecl;
-            String filename = getFileName(klass);
-            file = new File(getFolder(klass), filename);
+        if (modPgkOrDecl instanceof TypeDeclaration) {
+            TypeDeclaration type = (TypeDeclaration)modPgkOrDecl;
+            String filename = getFileName(type);
+            file = new File(getFolder(type), filename);
         } else if (modPgkOrDecl instanceof Module) {
             String filename = "index.html";
             file = new File(getOutputFolder((Module)modPgkOrDecl), filename);
@@ -726,11 +728,42 @@ public class CeylonDocTool implements Tool {
                 for (Declaration decl : pkg.getMembers()) {
                     doc(decl);
                 }
+                
+                if (pkg.getNameAsString().equals("ceylon.language")) {
+                    docNothingType(pkg);
+                }
             }
         } finally {
             rootWriter.close();
         }
         
+    }
+
+    private void docNothingType(Package pkg) throws IOException {
+        final Annotation nothingDoc = new Annotation();
+        nothingDoc.setName("doc");
+        nothingDoc.addPositionalArgment(
+                "The special type _Nothing_ represents: \n" +
+                " - the intersection of all types, or, equivalently \n" +
+                " - the empty set \n" +
+                "\n" +
+                "_Nothing_ is assignable to all other types, but has no instances. \n" +
+                "A reference to a member of an expression of type _Nothing_ is always an error, since there can never be a receiving instance. \n" +
+                "_Nothing_ is considered to belong to the module _ceylon.language_. However, it cannot be defined within the language. \n" +
+                "\n" +
+                "Because of the restrictions imposed by Ceylon's mixin inheritance model: \n" +
+                "- If X and Y are classes, and X is not a subclass of Y, and Y is not a subclass of X, then the intersection type X&Y is equivalent to _Nothing_. \n" +
+                "- If X is an interface, the intersection type X&Nothing is equivalent to _Nothing_. \n" +
+                "- If X&lt;T&gt; is invariant in its type parameter T, and the distinct types A and B do not involve type parameters, then X&lt;A&gt;&X&lt;B&gt; is equivalent to _Nothing_. \n");
+        
+        NothingType nothingType = new NothingType(pkg.getUnit()) {
+            @Override
+            public List<Annotation> getAnnotations() {
+                return Collections.singletonList(nothingDoc);
+            }
+        };
+        
+        doc(nothingType);
     }
 
     private void makeIndex(Module module) throws IOException {
@@ -788,12 +821,12 @@ public class CeylonDocTool implements Tool {
     }
 
     public void doc(Declaration decl) throws IOException {
-        if (decl instanceof ClassOrInterface) {
+        if (decl instanceof TypeDeclaration) {
             if (shouldInclude(decl)) {
                 Writer writer = openWriter(getObjectFile(decl));
                 try {
                     new ClassDoc(this, writer,
-                            (ClassOrInterface) decl,
+                            (TypeDeclaration) decl,
                             subclasses.get(decl),
                             satisfyingClassesOrInterfaces.get(decl)).generate();
                 } finally {

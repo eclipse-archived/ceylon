@@ -45,7 +45,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -54,7 +53,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public class ClassDoc extends ClassOrPackageDoc {
 
-    private ClassOrInterface klass;
+    private TypeDeclaration klass;
     private List<Method> methods;
     private List<TypedDeclaration> attributes;
     private List<ClassOrInterface> subclasses;
@@ -88,7 +87,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         }
     };
 
-    public ClassDoc(CeylonDocTool tool, Writer writer, ClassOrInterface klass, List<ClassOrInterface> subclasses, List<ClassOrInterface> satisfyingClassesOrInterfaces) throws IOException {
+    public ClassDoc(CeylonDocTool tool, Writer writer, TypeDeclaration klass, List<ClassOrInterface> subclasses, List<ClassOrInterface> satisfyingClassesOrInterfaces) throws IOException {
         super(tool.getModule(klass), tool, writer);
         
         this.klass = klass;

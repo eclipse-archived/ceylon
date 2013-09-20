@@ -34,6 +34,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
+import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -381,7 +382,7 @@ public abstract class CeylonDoc extends Markup {
                 }            
             }
             
-            if (decl instanceof TypeAlias) {
+            if (decl instanceof TypeAlias || decl instanceof NothingType) {
                 icons.add("icon-type-alias");
             }
         }

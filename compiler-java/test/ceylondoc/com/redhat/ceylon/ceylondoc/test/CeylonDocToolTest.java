@@ -409,6 +409,7 @@ public class CeylonDocToolTest {
         File destDir = getOutputDir(tool, module);
         
         assertFileExists(destDir, "index.html");
+        assertFileExists(destDir, "Nothing.type.html");
     }
 
     @Test
@@ -612,7 +613,7 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<div class='throws section'><span class='title'>Throws: </span><ul><li>"));        
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<span class='link-unresolvable'>OverflowException</span><p>if the number is too large to be represented as an integer</p>"));        
+                Pattern.compile("<span title='ceylon.language::OverflowException'>OverflowException</span><p>if the number is too large to be represented as an integer</p>"));        
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<a class='link' href='StubException.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubException'>StubException</a><p><code>when</code> with <strong>WIKI</strong> syntax</p>"));
     }
