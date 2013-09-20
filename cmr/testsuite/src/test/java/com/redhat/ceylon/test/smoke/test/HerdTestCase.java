@@ -239,7 +239,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-//  @Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteVersionsCompleteApi1() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
                 jsonVersionDetail0_5_Api1,
