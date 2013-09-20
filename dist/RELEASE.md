@@ -73,8 +73,7 @@ WARNING: try those on for size before you run them, especially the `sudo` ones, 
 never copy and paste `sudo` commands!!! So read them carefully and type them by hand.
 
 1. Get the release
-       $ wget http://ceylon-lang.org/download/dist/1_0_Milestone5
-    $ unzip ceylon-0.5.zip
+    $ unzip /var/www/downloads.ceylonlang/cli/ceylon-0.6.zip
 1. Remove the old API
     $ sudo rm -rf /var/www/ceylonlang/documentation/1.0/api/ceylon/language
 1. Put the new API
@@ -83,7 +82,7 @@ never copy and paste `sudo` commands!!! So read them carefully and type them by 
 1. Remove the old spec
     $ sudo rm -rf /var/www/ceylonlang/documentation/1.0/spec/{html,html_single,pdf,shared}
 1. Put the new spec
-    $ sudo cp -r ceylon-0.5/doc/en/* /var/www/ceylonlang/documentation/1.0/spec/
+    $ sudo cp -r ceylon-0.5/doc/en/spec/* /var/www/ceylonlang/documentation/1.0/spec/
     $ sudo chown -R webhook. /var/www/ceylonlang/documentation/1.0/spec
     $ sudo mv /var/www/ceylonlang/documentation/1.0/spec/pdf/Ceylon\* /var/www/ceylonlang/documentation/1.0/spec/pdf/ceylon-language-specification.pdf
 
