@@ -343,6 +343,8 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getRepositoryManager();
 
         ModuleDetails[] expected = new ModuleDetails[]{
+                hello,
+                moduletest
         };
         testComplete("", expected, manager, ModuleQuery.Type.JS);
     }
