@@ -321,6 +321,7 @@ public class SmokeTestCase extends AbstractTest {
     public final static ModuleDetails older_jar = new ModuleDetails("older-jar", null, null, set(), set("12-b3"), deps(), set(), null, null, false, null);
     public final static ModuleDetails org_jboss_acme = new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps(), set(), null, null, false, null);
     public final static ModuleDetails test_jar = new ModuleDetails("test-jar", null, null, set(), set("0.1"), deps(), set(), null, null, false, null);
+    public final static ModuleDetails jsonly = new ModuleDetails("jsonly", null, null, set(), set("1.0.0"), deps(), set(".js"), null, null, false, null);
 
     @Test
     public void testCompleteEmpty() throws Exception {
@@ -344,6 +345,7 @@ public class SmokeTestCase extends AbstractTest {
 
         ModuleDetails[] expected = new ModuleDetails[]{
                 hello,
+                jsonly,
                 moduletest
         };
         testComplete("", expected, manager, ModuleQuery.Type.JS);
