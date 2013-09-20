@@ -42,8 +42,8 @@ import com.redhat.ceylon.common.ModuleUtil;
  *
  * @author <a href="mailto:tako@ceylon-lang.org">Tako Schotanus</a>
  */
-public final class JSUtils implements DependencyResolver {
-    static JSUtils INSTANCE = new JSUtils();
+public final class JSUtils implements DependencyResolver, ModuleInfoReader {
+    public static JSUtils INSTANCE = new JSUtils();
 
     private JSUtils() {
     }
@@ -67,7 +67,7 @@ public final class JSUtils implements DependencyResolver {
         return null;
     }
 
-    public static int[] getBinaryVersions(String moduleName, File moduleArchive) {
+    public int[] getBinaryVersions(String moduleName, File moduleArchive) {
         int major = 0;
         int minor = 0;
         
@@ -84,7 +84,7 @@ public final class JSUtils implements DependencyResolver {
     }
 
 
-    public static ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive) {
+    public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive) {
         ScriptEngine engine = null;
         try {
             engine = new ScriptEngineManager().getEngineByName("JavaScript");
@@ -148,7 +148,25 @@ public final class JSUtils implements DependencyResolver {
         return result;
     }
 
-    public static boolean matchesModuleInfo(String moduleName, File moduleArchive, String query) {
+    public boolean matchesModuleInfo(String moduleName, File moduleArchive, String query) {
+        ModuleVersionDetails mvd = readModuleInfo(moduleName, moduleArchive);
+        if (mvd.getDoc() != null && matches(mvd.getDoc(), query))
+            return true;
+        if (mvd.getLicense() != null && matches(mvd.getLicense(), query))
+            return true;
+        for (String author : mvd.getAuthors()) {
+            if (matches(author, query))
+                return true;
+        }
+        for (ModuleInfo dep : mvd.getDependencies()) {
+            if (matches(dep.getModuleName(), query))
+                return true;
+        }
         return false;
     }
+
+    private static boolean matches(String string, String query) {
+        return string.toLowerCase().contains(query);
+    }
+
 }

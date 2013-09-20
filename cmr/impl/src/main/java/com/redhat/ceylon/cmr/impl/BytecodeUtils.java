@@ -49,8 +49,8 @@ import com.redhat.ceylon.cmr.spi.Node;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public final class BytecodeUtils implements DependencyResolver {
-    static BytecodeUtils INSTANCE = new BytecodeUtils();
+public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader {
+    public static BytecodeUtils INSTANCE = new BytecodeUtils();
 
     private BytecodeUtils() {
     }
@@ -74,7 +74,7 @@ public final class BytecodeUtils implements DependencyResolver {
      * @param jarFile    the module jar file
      * @return module info list
      */
-    public static Set<ModuleInfo> readModuleInformation(final String moduleName, final File jarFile) {
+    private static Set<ModuleInfo> readModuleInformation(final String moduleName, final File jarFile) {
         final AnnotationInstance ai = getAnnotation(moduleName, jarFile, MODULE_ANNOTATION);
         if (ai == null)
             return null;
@@ -128,7 +128,8 @@ public final class BytecodeUtils implements DependencyResolver {
         return index.getClassByName(moduleClassName);
     }
 
-    public static int[] getBinaryVersions(String moduleName, File moduleArchive) {
+    @Override
+    public int[] getBinaryVersions(String moduleName, File moduleArchive) {
         final AnnotationInstance ceylonAnnotation = getAnnotation(moduleName, moduleArchive, CEYLON_ANNOTATION);
         if (ceylonAnnotation == null)
             return null;
@@ -140,7 +141,8 @@ public final class BytecodeUtils implements DependencyResolver {
         return new int[]{major, minor};
     }
 
-    public static ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive) {
+    @Override
+    public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive) {
         final AnnotationInstance moduleAnnotation = getAnnotation(moduleName, moduleArchive, MODULE_ANNOTATION);
         if (moduleAnnotation == null)
             return null;
@@ -196,7 +198,8 @@ public final class BytecodeUtils implements DependencyResolver {
         return result;
     }
     
-    public static boolean matchesModuleInfo(String moduleName, File moduleArchive, String query) {
+    @Override
+    public boolean matchesModuleInfo(String moduleName, File moduleArchive, String query) {
         final AnnotationInstance moduleAnnotation = getAnnotation(moduleName, moduleArchive, MODULE_ANNOTATION);
         if (moduleAnnotation == null)
             return false;
