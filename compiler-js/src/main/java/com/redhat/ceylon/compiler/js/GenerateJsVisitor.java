@@ -880,23 +880,8 @@ public class GenerateJsVisitor extends Visitor
 
         if (satisfiedTypes != null) {
             for (StaticType satType : satisfiedTypes.getTypes()) {
-                TypeDeclaration tdec = satType.getTypeModel().getDeclaration();
-                if (tdec.isAlias()) {
-                    tdec = tdec.getExtendedTypeDeclaration();
-                }
                 String fname = typeFunctionName(satType, true);
-                //Actually it could be "if not in same module"
-                if (!JsCompiler.compilingLanguageModule && declaredInCL(tdec)) {
-                    out(",", fname);
-                } else {
-                    int idx = fname.lastIndexOf('.');
-                    if (idx > 0) {
-                        fname = fname.substring(0, idx+1) + "$init$" + fname.substring(idx+1);
-                    } else {
-                        fname = "$init$" + fname;
-                    }
-                    out(",", fname, "()");
-                }
+                out(",", fname);
             }
         }
 
@@ -933,6 +918,7 @@ public class GenerateJsVisitor extends Visitor
         endLine();
     }
 
+    /** Returns the name of the type or its $init$ function if it's local. */
     private String typeFunctionName(StaticType type, boolean removeAlias) {
         TypeDeclaration d = type.getTypeModel().getDeclaration();
         if (removeAlias && d.isAlias()) {
@@ -940,7 +926,16 @@ public class GenerateJsVisitor extends Visitor
         }
         boolean inProto = opts.isOptimize()
                 && (type.getScope().getContainer() instanceof TypeDeclaration);
-        return memberAccessBase(type, d, false, qualifiedPath(type, d, inProto));
+        String tfn = memberAccessBase(type, d, false, qualifiedPath(type, d, inProto));
+        if (removeAlias && !isImported(type.getUnit().getPackage(), d)) {
+            int idx = tfn.lastIndexOf('.');
+            if (idx > 0) {
+                tfn = tfn.substring(0, idx+1) + "$init$" + tfn.substring(idx+1) + "()";
+            } else {
+                tfn = "$init$" + tfn + "()";
+            }
+        }
+        return tfn;
     }
 
     private void addToPrototype(Node node, ClassOrInterface d, List<Statement> statements) {
