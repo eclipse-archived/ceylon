@@ -309,9 +309,10 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             return "jvm";
         case SRC:
             return "source";
+        case CODE:
         case ALL:
             // TODO Implement retrieval of various types at at time
-            return "jvm";
+            return "all";
         default:
             throw new RuntimeException("Missing enum case handling");
         }
