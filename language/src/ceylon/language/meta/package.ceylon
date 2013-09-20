@@ -47,7 +47,7 @@
    literals:
    
    - <code>\`module ceylon.file\`</code> returns the [[Module|ceylon.language.meta.declaration::Module]] 
-     declaration which corresponds to the `ceylon.file\`</code> module you imported in your module descriptor.
+     declaration which corresponds to the `ceylon.file` module you imported in your module descriptor.
    - <code>\`package ceylon.language.meta\`</code> returns the [[Package|ceylon.language.meta.declaration::Package]]
      declaration from your current module imports.
    - <code>\`interface List\`</code> returns the [[InterfaceDeclaration|ceylon.language.meta.declaration::InterfaceDeclaration]] 
