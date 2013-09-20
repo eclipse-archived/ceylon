@@ -160,7 +160,9 @@ $(document).ready(function() {
     }
     $('#filterDropdown').show();
     
-    initFilterKeyboardShortcuts();
+    // disabled for now, F is in collision with jump to functions shortcut, and this feature isn't used much
+    // initFilterKeyboardShortcuts();
+    
     initFilterActionAll();
     initFilterActionNone();
     initFilterActionMore();

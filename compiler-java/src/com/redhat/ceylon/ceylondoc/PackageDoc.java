@@ -136,10 +136,10 @@ public class PackageDoc extends ClassOrPackageDoc {
             writeSubNavBarLink("#section-aliases", "Aliases", 'l', "Jump to aliases");
         }
         if (!attributes.isEmpty()) {
-            writeSubNavBarLink("#section-attributes", "Attributes", 'A', "Jump to attributes");
+            writeSubNavBarLink("#section-attributes", "Values", 'V', "Jump to values");
         }
         if (!methods.isEmpty()) {
-            writeSubNavBarLink("#section-methods", "Methods", 'M', "Jump to methods");
+            writeSubNavBarLink("#section-methods", "Functions", 'F', "Jump to functions");
         }
         if (!interfaces.isEmpty()) {
             writeSubNavBarLink("#section-interfaces", "Interfaces", 'I', "Jump to interfaces");
@@ -177,7 +177,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         if (attributes.isEmpty()) {
             return;
         }
-        openTable("section-attributes", "Attributes", 2, true);
+        openTable("section-attributes", "Values", 2, true);
         for (MethodOrValue v : attributes) {
             doc(v);
         }
@@ -188,7 +188,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         if (methods.isEmpty()) {
             return;
         }
-        openTable("section-methods", "Methods", 2, true);
+        openTable("section-methods", "Functions", 2, true);
         for (Method m : methods) {
             doc(m);
         }
@@ -235,9 +235,11 @@ public class PackageDoc extends ClassOrPackageDoc {
             registerKeyboardShortcut('l', "#section-aliases");
         } 
         if (!attributes.isEmpty()) {
+            registerKeyboardShortcut('v', "#section-attributes");
             registerKeyboardShortcut('a', "#section-attributes");
         } 
         if (!methods.isEmpty()) {
+            registerKeyboardShortcut('f', "#section-methods");
             registerKeyboardShortcut('m', "#section-methods");
         }
         if (!interfaces.isEmpty()) {

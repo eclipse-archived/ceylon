@@ -162,9 +162,14 @@ public abstract class CeylonDoc extends Markup {
         writeKeyboardShortcutInfo("o", "Jump to module documentation");
         writeKeyboardShortcutInfo("p", "Jump to package documentation");
         writeKeyboardShortcutInfo("l", "Jump to aliases");
-        writeKeyboardShortcutInfo("a", "Jump to attributes");
         writeKeyboardShortcutInfo("n", "Jump to initializer");
-        writeKeyboardShortcutInfo("m", "Jump to methods");
+        if( getFromObject() instanceof Module || getFromObject() instanceof Package ) {
+            writeKeyboardShortcutInfo("v", "Jump to values");
+            writeKeyboardShortcutInfo("f", "Jump to functions");
+        } else {
+            writeKeyboardShortcutInfo("a", "Jump to attributes");
+            writeKeyboardShortcutInfo("m", "Jump to methods");
+        }
         writeKeyboardShortcutInfo("i", "Jump to interfaces");
         writeKeyboardShortcutInfo("c", "Jump to classes");
         writeKeyboardShortcutInfo("e", "Jump to exceptions");
