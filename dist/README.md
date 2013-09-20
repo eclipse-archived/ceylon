@@ -1,6 +1,6 @@
 # Ceylon distribution
 
-This is the Milestone 6 "Transmogrifier" release of the Ceylon command line tools (version 
+This is the Milestone 6 "Virtual Boy" release of the Ceylon command line tools (version 
 0.6). This is a pre-release version of the platform for review by the community.
 
 Ceylon is a programming language for writing large programs in a team environment. 
@@ -181,4 +181,6 @@ Julien Ponge, Julien Viet, Pete Muir, Nicolas Leroux, Brett Cannon,
 Geoffrey De Smet, Guillaume Lours, Gunnar Morling, Jeff Parsons, 
 Jesse Sightler, Oleg Kulikov, Raimund Klein, Sergej Koščejev, 
 Chris Marshall, Simon Thum, Maia Kozheva, Shelby, Aslak Knutsen, 
-Fabien Meurisse, Paco Soberón, sjur, Xavier Coulon.
+Fabien Meurisse, Paco Soberón, sjur, Xavier Coulon, Akber Choudhry,
+Ari Kast, Dan Allen, Deniz Türkoglu, F. Meurisse, Jean-Charles Roger,
+Johannes Lehmann.
