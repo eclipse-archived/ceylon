@@ -143,7 +143,10 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
         List<ModuleInfo> result = new ArrayList<ModuleInfo>((int)array.getLength());
         for (int i = 0; i < array.getLength(); i++) {
             String module = asString(array.get(i));
-            result.add(new ModuleInfo(ModuleUtil.moduleName(module), ModuleUtil.moduleVersion(module), false, false));
+            String name = ModuleUtil.moduleName(module);
+            if (!"ceylon.language".equals(name)) {
+                result.add(new ModuleInfo(name, ModuleUtil.moduleVersion(module), false, false));
+            }
         }
         return result;
     }
