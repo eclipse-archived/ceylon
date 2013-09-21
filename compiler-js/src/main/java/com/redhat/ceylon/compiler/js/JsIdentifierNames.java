@@ -99,6 +99,7 @@ public class JsIdentifierNames {
         reservedWords.add("with");
         reservedWords.add("apply");
         reservedWords.add("call");
+        reservedWords.add("Date");
 
         // The names of the following members also have to be escaped to avoid
         // collisions with members of native JavaScript classes in the
