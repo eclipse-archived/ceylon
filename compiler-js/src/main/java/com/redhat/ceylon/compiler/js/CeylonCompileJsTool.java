@@ -21,6 +21,7 @@ import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.loader.JsModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 
 @Summary("Compiles Ceylon source code to JavaScript and directly produces " +
@@ -345,7 +346,8 @@ public class CeylonCompileJsTool extends RepoUsingTool {
                             File middir = f.getParentFile();
                             while (middir != null && !middir.getAbsolutePath().equals(root.getAbsolutePath())) {
                                 if (new File(middir, "module.ceylon").exists()) {
-                                    String _f = middir.getAbsolutePath().substring(root.getAbsolutePath().length()+1).replace(File.separator, ".");
+                                    String _f = middir.getAbsolutePath().substring(root.getAbsolutePath().length()+1).replace(
+                                            File.separatorChar, '.');
                                     modfilters.add(_f);
                                     if (opts.isVerbose()) {
                                         System.out.println("Adding to module filters: " + _f);
@@ -355,14 +357,14 @@ public class CeylonCompileJsTool extends RepoUsingTool {
                             }
                         }
                     }
-                }
-            }
+                } //f!= null
+            } //loop over files
 
             for (File root : roots) {
                 tcb.addSrcDirectory(root);
             }
             if (!modfilters.isEmpty()) {
-                ArrayList<String> _modfilters = new ArrayList<String>();
+                ArrayList<String> _modfilters = new ArrayList<String>(modfilters.size());
                 _modfilters.addAll(modfilters);
                 tcb.setModuleFilters(_modfilters);
             }
@@ -375,6 +377,13 @@ public class CeylonCompileJsTool extends RepoUsingTool {
         tcb.usageWarnings(false);
 
         typeChecker = tcb.getTypeChecker();
+        if (!onlyFiles.isEmpty()) {
+            for (PhasedUnit pu : typeChecker.getPhasedUnits().getPhasedUnits()) {
+                if (!onlyFiles.contains(pu.getUnitFile().getPath())) {
+                    typeChecker.getPhasedUnits().removePhasedUnitForRelativePath(pu.getPathRelativeToSrcDir());
+                }
+            }
+        }
         t1=System.nanoTime();
         typeChecker.process();
         
