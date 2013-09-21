@@ -1733,6 +1733,8 @@ public class GenerateJsVisitor extends Visitor
 
     /** Generate runtime metamodel info for an attribute declaration or definition. */
     private void generateAttributeMetamodel(Tree.TypedDeclaration that, final boolean addGetter, final boolean addSetter) {
+        //No need to define all this for local values
+        if (that.getScope() instanceof Method)return;
         Declaration d = that.getDeclarationModel();
         if (d instanceof Setter) d = ((Setter)d).getGetter();
         final String pname = names.getter(d);
