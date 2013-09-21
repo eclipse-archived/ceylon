@@ -1,15 +1,15 @@
 How to do a release of Ceylon.
 
-# Before
+# Before (the code)
 
-1. Find every occurence of the previous version `0.3.1` and turn it into `0.3.2`
+1. Find every occurence of the previous version `0.5` and turn it into `0.6`
   - Beware that in ceylon-runtime you need to rename some folders whose name is the version number, and `module.xml` contents.
-1. Find every occurence of the previous code name `Analytical Engine` and turn it into the new one
-1. If required, bump `AbstractTransformer.BINARY_MAJOR_VERSION` and all the `@Ceylon(major = X)` annotations in `ceylon.language`
+2. Find every occurence of the previous code name `Analytical Engine` and turn it into the new one
+3. If required, bump `AbstractTransformer.BINARY_MAJOR_VERSION` and all the `@Ceylon(major = X)` annotations in `ceylon.language`
    and the compiler tests' `.src` files
   - Note that most likely you'll need a new Herd as well (good luck)
 
-# The release process
+# Before (requirements & testing)
 
 1. Make sure the following projects are up-to-date or at the proper version
   - ceylon-spec
@@ -19,28 +19,31 @@ How to do a release of Ceylon.
   - ceylon-module-resolver
   - ceylon-runtime
   - ceylon-dist
-1. Make sure you're running Java 7
-1. Run all the compiler tests in Eclipse
+2. Make sure you're running Java 7
+3. Run all the compiler tests in Eclipse
   - Concurrent tests
   - Integration tests
   - CeylonDoc tests
-1. Make a test distribution
+4. Make a test distribution
     $ cd ceylon-dist
-    ceylon-dist $ ant clean siblings package
-1. Run the language tests
+    ceylon-dist $ ant clean publish-all
+5. Run the language tests
     $ cd ceylon.language
     ceylon.language $ ant test
-1. Check that you can compile the SDK
+6. Check that you can compile the SDK
     $ cd ceylon-sdk
     ceylon-sdk $ ant clean compile test
+
+# The release
+
 1. Tag every project
-    $ git tag 0.5
+    $ git tag 0.6
     $ git push --tags
-1. Do the release zip
+2. Do the release zip
     $ cd ceylon-dist
     ceylon-dist $ ant release
-1. Copy the zip to downloads.ceylon-lang.org:
-    $ scp ceylon-0.5.zip ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
+3. Copy the zip to downloads.ceylon-lang.org:
+    $ scp ceylon-0.6.zip ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 
 # Build the Debian file
 
@@ -48,22 +51,24 @@ On a Debian system:
 
 1. Add a new changelog entry:
     ceylon-dist $ dch -i
-1. Update the versions and rename some files in `debian/` to match the new version
-1. Package it
+2. Update the versions and rename some files in `debian/` to match the new version
+3. Package it
     ceylon-dist $ fakeroot ./debian/rules clean binary
-1. Copy the zip to downloads.ceylon-lang.org:
-    $ scp ceylon-0.5.deb ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
+4. Copy the zip to downloads.ceylon-lang.org:
+    $ scp ceylon-0.6.deb ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 
 # Build the RedHat file
 
-Ask Tako ;)
+1. Follow the steps in the README in the `redhat` folder
+2. Copy the rpm to downloads.ceylon-lang.org:
+    $ scp ceylon-0.6-noarch.rpm ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 
 # Update the web site
 
 1. Update the downloads page
-1. Update the `.htaccess` page
-1. Update the pages that mention the latest release
-1. Write a blog post
+2. Update the `.htaccess` page
+3. Update the pages that mention the latest release
+4. Write a blog post
 
 # Update the API docs and spec
 
@@ -74,15 +79,15 @@ never copy and paste `sudo` commands!!! So read them carefully and type them by 
 
 1. Get the release
     $ unzip /var/www/downloads.ceylonlang/cli/ceylon-0.6.zip
-1. Remove the old API
+2. Remove the old API
     $ sudo rm -rf /var/www/ceylonlang/documentation/1.0/api/ceylon/language
-1. Put the new API
-    $ sudo cp -r ceylon-0.5/repo/ceylon/language/0.5/module-doc /var/www/ceylonlang/documentation/1.0/api/ceylon/language
+3. Put the new API
+    $ sudo cp -r ceylon-0.6/repo/ceylon/language/0.6/module-doc /var/www/ceylonlang/documentation/1.0/api/ceylon/language
     $ sudo chown -R webhook. /var/www/ceylonlang/documentation/1.0/api/ceylon/language
-1. Remove the old spec
+4. Remove the old spec
     $ sudo rm -rf /var/www/ceylonlang/documentation/1.0/spec/{html,html_single,pdf,shared}
-1. Put the new spec
-    $ sudo cp -r ceylon-0.5/doc/en/spec/* /var/www/ceylonlang/documentation/1.0/spec/
+5. Put the new spec
+    $ sudo cp -r ceylon-0.6/doc/en/spec/* /var/www/ceylonlang/documentation/1.0/spec/
     $ sudo chown -R webhook. /var/www/ceylonlang/documentation/1.0/spec
     $ sudo mv /var/www/ceylonlang/documentation/1.0/spec/pdf/Ceylon\* /var/www/ceylonlang/documentation/1.0/spec/pdf/ceylon-language-specification.pdf
 
