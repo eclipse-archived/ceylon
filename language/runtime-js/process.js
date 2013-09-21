@@ -9,19 +9,19 @@ initTypeProto(languageClass, "ceylon.language::language", $init$Basic());
 var lang$proto=languageClass.$$.prototype;
 defineAttr(lang$proto, 'version', function() {
     return String$("0.6",3);
-},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','version']});
+},undefined,{$t:{t:String$}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','version']});
 defineAttr(lang$proto, 'majorVersion', function(){ return 0; },undefined,
-  {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','majorVersion']});
+  {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','majorVersion']});
 defineAttr(lang$proto, 'minorVersion', function(){ return 6; },undefined,
-  {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','minorVersion']});
+  {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','minorVersion']});
 defineAttr(lang$proto, 'releaseVersion', function(){ return 0; },undefined,
-  {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','releaseVersion']});
+  {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','releaseVersion']});
 defineAttr(lang$proto, 'versionName', function(){ return String$("Transmogrifier",14); },undefined,
-  {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','versionName']});
+  {$t:{t:String$}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','versionName']});
 defineAttr(lang$proto, 'majorVersionBinary', function(){ return 5; },undefined,
-  {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','majorVersionBinary']});
+  {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','majorVersionBinary']});
 defineAttr(lang$proto, 'minorVersionBinary', function(){ return 0; },undefined,
-  {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','minorVersionBinary']});
+  {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','minorVersionBinary']});
 var languageString = String$("language", 8);
 defineAttr(lang$proto, 'string', function() {
     return languageString;
@@ -108,6 +108,9 @@ if (typeof navigator !== "undefined") {
     }
     if (navigator.platform !== undefined) {
         properties["os.name"] = String$(navigator.platform);
+    }
+    if (navigator.userLanguage||navigator.browserLanguage||navigator.language) {
+        properties["user.locale"]=String$(navigator.userLanguage||navigator.browserLanguage||navigator.language);
     }
 }
 if (typeof process !== "undefined") {
@@ -203,7 +206,7 @@ if ((typeof process !== "undefined") && (process.exit !== undefined)) {
 var processString = String$("process", 7);
 defineAttr(process$proto, 'string', function() {
     return processString;
-},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
+},undefined,{$t:{t:String$},$cont:process$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
 defineAttr(process$proto, 'vm', function() {
     if (typeof process !== "undefined" && process.execPath && process.execPath.match(/node(\.exe)?$/)) {
         return String$("node.js", 7);
@@ -211,22 +214,28 @@ defineAttr(process$proto, 'vm', function() {
         return String$("Browser", 7);
     }
     return String$("Unknown JavaScript environment", 30);
-},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','process','$at','vm']});
+},undefined,{$t:{t:String$},$cont:process$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','process','$at','vm']});
 defineAttr(process$proto, 'vmVersion', function() {
     if (typeof process !== "undefined" && typeof process.version === 'string') {
         return String$(process.version);
     }
     return String$("Unknown");
-},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','process','$at','vmVersion']});
+},undefined,{$t:{t:String$},$cont:process$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','process','$at','vmVersion']});
 defineAttr(process$proto, 'os',function() {
     if (typeof process !== "undefined" && typeof process.platform === 'string') {
         return String$(process.platform);
     }
     return String$("Unknown");
-},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','process','$at','os']});
+},undefined,{$t:{t:String$},$cont:process$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','process','$at','os']});
 defineAttr(process$proto, 'osVersion', function() {
     return String$("Unknown");
 },undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','process','$at','osVersion']});
+defineAttr(process$proto, 'timezoneOffset', function(){
+  return new Date().getTimezoneOffset()*60000;
+},undefined,{$t:{t:Integer}, $cont:process$proto, $an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','process','$at','timezoneOffset']});
+defineAttr(process$proto, 'locale', function(){
+  return properties["user.locale"] || String$("Unknown",7);
+},undefined,{$t:{t:String$}, $cont:process$proto, $an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','process','$at','locale']});
 
 var process$ = processClass();
 function getProcess() { return process$; }
