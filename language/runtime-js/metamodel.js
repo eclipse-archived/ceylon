@@ -19,7 +19,7 @@ exports.type$meta=type$meta;
 
 function typeLiteral$meta($$targs$$) {
   if ($$targs$$ === undefined || $$targs$$.Type === undefined) {
-    throw Exception("Missing type argument 'Type' " + require('util').inspect($$targs$$));
+    throw Exception("Missing type argument 'Type' " + /*require('util').inspect(*/$$targs$$);
   } else if ($$targs$$.Type.$$metamodel$$ == undefined) {
     //closed type
     var t = $$targs$$.Type.t
@@ -28,7 +28,7 @@ function typeLiteral$meta($$targs$$) {
     } else if (t === 'u' || t === 'i') {
       return t === 'u' ? applyUnionType($$targs$$.Type) : applyIntersectionType($$targs$$.Type);
     } else if (t.$$metamodel$$ === undefined) {
-      throw Exception("JS Interop not supported / incomplete metamodel for " + require('util').inspect(t));
+      throw Exception("JS Interop not supported / incomplete metamodel for " + /*require('util').inspect(*/t);
     } else {
       var mm = t.$$metamodel$$;
       if (typeof(mm)==='function') {
@@ -74,7 +74,7 @@ function typeLiteral$meta($$targs$$) {
     }
     console.log("typeLiteral<" + t.getT$name() + "> (open type)");
   }
-  throw Exception("typeLiteral UNIMPLEMENTED for " + require('util').inspect($$targs$$));
+  throw Exception("typeLiteral UNIMPLEMENTED for " + /*require('util').inspect(*/$$targs$$);
 }
 typeLiteral$meta.$$metamodel$$={$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language.meta','typeLiteral']};
 exports.typeLiteral$meta=typeLiteral$meta;
