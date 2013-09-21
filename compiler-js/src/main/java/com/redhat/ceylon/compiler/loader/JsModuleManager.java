@@ -16,7 +16,9 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
+import com.redhat.ceylon.compiler.js.CeylonRunJsException;
 import com.redhat.ceylon.compiler.js.CompilerErrorException;
+import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -71,17 +73,13 @@ public class JsModuleManager extends ModuleManager {
                 return;
             }
             if (js.exists() && js.isFile() && js.canRead()) {
-                try {
-                    if (JsModuleManagerFactory.isVerbose()) {
-                        System.out.println("Loading metamodel from " + js);
-                    }
-                    Map<String,Object> model = loadMetamodel(js);
-                    if (model != null) {
-                        loadModuleFromMap(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies,
-                                forCompiledModule, model);
-                    }
-                } catch (IOException ex) {
-                    //nothing to do here, will attempt reading .src
+                if (JsModuleManagerFactory.isVerbose()) {
+                    System.out.println("Loading metamodel from " + js);
+                }
+                Map<String,Object> model = loadMetamodel(js);
+                if (model != null) {
+                    loadModuleFromMap(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies,
+                            forCompiledModule, model);
                 }
             }
         }
@@ -166,22 +164,26 @@ public class JsModuleManager extends ModuleManager {
 
     /** Find the metamodel declaration in a js file, parse it as a Map and return it. */
     @SuppressWarnings("unchecked")
-    public static Map<String,Object> loadMetamodel(File jsFile) throws IOException {
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(jsFile));
+    public static Map<String,Object> loadMetamodel(File jsFile) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(jsFile))) {
             String line = reader.readLine();
             while ((line = reader.readLine()) != null) {
                 if ((line.startsWith("var $$METAMODEL$$=")) && line.endsWith("};")) {
                     line = line.substring(line.indexOf("{"), line.length()-1);
-                    return (Map<String,Object>)JSONValue.parse(line);
+                    Map<String,Object> model = (Map<String,Object>)JSONValue.parse(line);
+                    if (!model.containsKey("$mod-bin")) {
+                        throw new CeylonRunJsException("The JS module " + jsFile +
+                                " is not compatible with the current version of ceylon-js");
+                    } else if (!model.get("$mod-bin").toString().equals(JsCompiler.BINARY_VERSION)) {
+                        throw new CompilerErrorException(String.format("This JavaScript module has binary version %s incompatible with the compiler version %s",
+                                model.get("$mod-bin"), JsCompiler.BINARY_VERSION));
+                    }
+                    return model;
                 }
             }
             throw new CompilerErrorException("Can't find metamodel definition in " + jsFile.getAbsolutePath());
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
+        } catch (IOException ex) {
+            throw new CompilerErrorException("Error loading model from " + jsFile);
         }
     }
 
