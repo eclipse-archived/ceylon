@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
@@ -70,6 +71,7 @@ public class MetamodelGenerator {
         this.module = module;
         model.put("$mod-name", module.getNameAsString());
         model.put("$mod-version", module.getVersion());
+        model.put("$mod-bin", JsCompiler.BINARY_VERSION);
         if (!module.getImports().isEmpty()) {
             ArrayList<String> imps = new ArrayList<String>(module.getImports().size());
             for (ModuleImport mi : module.getImports()) {
