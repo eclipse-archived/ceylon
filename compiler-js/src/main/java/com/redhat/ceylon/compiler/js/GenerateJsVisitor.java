@@ -872,7 +872,7 @@ public class GenerateJsVisitor extends Visitor
         out(clAlias, initFuncName, "(", names.name(d), ",'", qns, "'");
 
         if (extendedType != null) {
-            String fname = typeFunctionName(extendedType.getType(), false);
+            String fname = typeFunctionName(extendedType.getType(), !extendedType.getType().getDeclarationModel().isMember());
             out(",", fname);
         } else if (!isInterface) {
             out(",", clAlias, "Basic");
