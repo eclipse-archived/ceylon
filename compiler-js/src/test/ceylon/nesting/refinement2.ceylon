@@ -65,6 +65,13 @@ shared class SubRef51() extends SubRef5() {
     }
 }
 
+shared class Issue60() extends Issue60Abs() {
+  shared class Inner60() extends Inner60Abs(){}
+}
+shared abstract class Issue60Abs(){
+  shared class Inner60Abs(){}
+}
+
 void testRefinement2() {
     value c1 = Y2("y2").SubRef1(99).Inner("with parm");
     check(className(c1) == "nesting::Y2.SubRef1.Inner", "classname is " + className(c1));
