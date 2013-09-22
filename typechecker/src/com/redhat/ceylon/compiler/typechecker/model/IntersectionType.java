@@ -54,7 +54,7 @@ public class IntersectionType extends TypeDeclaration {
             }
         }
         if (sts.isEmpty()) {
-            return unit.getAnythingDeclaration().getType();
+            return unit.getType(unit.getAnythingDeclaration());
         }
         else if (sts.size()==1) {
             return sts.get(0).getType();

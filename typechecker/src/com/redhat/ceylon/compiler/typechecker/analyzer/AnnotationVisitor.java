@@ -45,7 +45,7 @@ public class AnnotationVisitor extends Visitor {
                     !ptd.equals(unit.getCharacterDeclaration()) &&
                     !ptd.equals(unit.getIterableDeclaration()) &&
                     !ptd.equals(unit.getSequentialDeclaration()) &&
-                    !pt.isSubtypeOf(unit.getDeclarationDeclaration().getType())) {
+                    !pt.isSubtypeOf(unit.getType(unit.getDeclarationDeclaration()))) {
                 return true;
             }
             if (ptd.equals(unit.getIterableDeclaration()) ||

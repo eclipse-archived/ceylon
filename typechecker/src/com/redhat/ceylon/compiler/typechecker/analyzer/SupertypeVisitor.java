@@ -65,7 +65,7 @@ public class SupertypeVisitor extends Visitor {
             		if (!l.isEmpty()) {
             			etn.addError("inheritance is circular: definition of " + 
             					d.getName() + " is recursive, involving " + typeList(l));
-            			d.setExtendedType(unit.getBasicDeclaration().getType());
+            			d.setExtendedType(unit.getType(unit.getBasicDeclaration()));
             			d.getBrokenSupertypes().add(t);
             			errors = true;
             		}
@@ -85,7 +85,7 @@ public class SupertypeVisitor extends Visitor {
                         "could not canonicalize the intersection of all supertypes of " +
                         d.getName());
                 d.getSatisfiedTypes().clear();
-                d.setExtendedType(unit.getBasicDeclaration().getType());
+                d.setExtendedType(unit.getType(unit.getBasicDeclaration()));
                 return;
             }
             if (stn!=null) {

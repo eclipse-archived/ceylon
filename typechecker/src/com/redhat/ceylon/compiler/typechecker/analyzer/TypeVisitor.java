@@ -571,7 +571,7 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.OptionalType that) {
         super.visit(that);
         List<ProducedType> types = new ArrayList<ProducedType>(2);
-        types.add(unit.getNullDeclaration().getType());
+        types.add(unit.getType(unit.getNullDeclaration()));
         ProducedType dt = that.getDefiniteType().getTypeModel();
         if (dt!=null) types.add(dt);
         UnionType ut = new UnionType(unit);
