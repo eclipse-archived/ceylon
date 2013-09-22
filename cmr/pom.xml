@@ -26,7 +26,7 @@
     </modules>
 
     <properties>
-        <version.ceylon.common>0.6</version.ceylon.common>
+        <version.ceylon.common>0.6.1</version.ceylon.common>
         <version.jboss.jandex>1.0.3.Final</version.jboss.jandex>
         <version.sardine.webdav>314</version.sardine.webdav>
         <version.shrinkwrap.resolver>2.0.0-alpha-7</version.shrinkwrap.resolver>
