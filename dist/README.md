@@ -1,7 +1,7 @@
 # Ceylon distribution
 
-This is the Milestone 6 "Virtual Boy" release of the Ceylon command line tools (version 
-0.6). This is a pre-release version of the platform for review by the community.
+This is the 1.0.beta "Virtual Boy" release of the Ceylon command line tools (version 
+0.6.1). This is a pre-release version of the platform for review by the community.
 
 Ceylon is a programming language for writing large programs in a team environment. 
 The language is elegant, highly readable, extremely typesafe, and makes it easy to 
