@@ -137,7 +137,7 @@ public class JsCompiler {
         		}
         	}
         }
-        types = new TypeUtils(tc.getPhasedUnits().getPhasedUnits().iterator().next().getPackage().getModule().getLanguageModule());
+        types = new TypeUtils(tc.getContext().getModules().getLanguageModule());
     }
 
     private boolean isURL(String path) {
