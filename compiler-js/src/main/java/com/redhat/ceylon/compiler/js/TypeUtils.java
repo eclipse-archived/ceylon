@@ -389,11 +389,14 @@ public class TypeUtils {
                 _tuple = _tuple.getTypeArgumentList().get(2);
             } else if (sequential.equals(_tuple.getDeclaration())) {
                 metamodelTypeNameOrList(gen.getCurrentPackage(), _tuple.getTypeArgumentList().get(0), gen);
-                _tuple = _tuple.getTypeArgumentList().get(0);
-            } else {
-                System.out.println("WARNING! Tuple is actually " + _tuple.getProducedTypeQualifiedName() + ", " + _tuple.getClass().getName());
+                _tuple = empty.getType();
+            }
+            //TODO: handle Sequence, for nonempty variadic parameters!!
+            //TODO: handle union types for defaulted parameters
+            else {
+                System.out.println("WARNING! Tuple is actually " + _tuple.getProducedTypeQualifiedName() + ", " + _tuple.getDeclaration().getName());
                 if (pos > 100) {
-                    System.exit(1);
+                    return;
                 }
             }
             gen.out("}");
