@@ -8,7 +8,7 @@ languageClass.$$metamodel$$={$nm:'languageClass',$mt:'cls',$ps:[],$an:function()
 initTypeProto(languageClass, "ceylon.language::language", $init$Basic());
 var lang$proto=languageClass.$$.prototype;
 defineAttr(lang$proto, 'version', function() {
-    return String$("0.6",3);
+    return String$("0.6.1",3);
 },undefined,{$t:{t:String$}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','version']});
 defineAttr(lang$proto, 'majorVersion', function(){ return 0; },undefined,
   {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','majorVersion']});

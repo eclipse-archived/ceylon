@@ -748,7 +748,7 @@ void checkEqualityAndHash(){
     assert(m1Decl.hash == m1Decl.hash);
     assert(m1Decl != m2Decl);
     assert(m1Decl.hash != m2Decl.hash);
-    assert(m1Decl.string == "module ceylon.language/0.6");
+    assert(m1Decl.string == "module ceylon.language/0.6.1");
     
     assert(exists tp1Decl = `class TypeParams`.getTypeParameterDeclaration("T"));
     assert(exists tp2Decl = `class ParameterisedContainerClass`.getTypeParameterDeclaration("Outer"));
