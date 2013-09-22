@@ -22,8 +22,8 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="com.redhat.ceylon.common" slot="0.6">
+<module xmlns="urn:jboss:module:1.0" name="com.redhat.ceylon.common" slot="0.6.1">
     <resources>
-        <resource-root path="com.redhat.ceylon.common-0.6.jar"/>
+        <resource-root path="com.redhat.ceylon.common-0.6.1.jar"/>
     </resources>
 </module>
