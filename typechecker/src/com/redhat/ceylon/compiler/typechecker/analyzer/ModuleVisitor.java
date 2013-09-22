@@ -75,7 +75,10 @@ public class ModuleVisitor extends Visitor {
                 that.addError("missing module name");
             }
             else if (name.get(0).equals(Module.DEFAULT_MODULE_NAME)) {
-                that.getImportPath().addError("default is a reserved module name");
+                that.getImportPath().addError("reserved module name: default");
+            }
+            else if (name.size()==1 && name.get(0).equals("ceylon")) {
+                that.getImportPath().addError("reserved module name: ceylon");
             }
             else {
                 mainModule = moduleManager.getOrCreateModule(name, version);
@@ -118,7 +121,10 @@ public class ModuleVisitor extends Visitor {
                 that.addError("missing package name");
             }
             else if (name.get(0).equals(Module.DEFAULT_MODULE_NAME)) {
-                that.getImportPath().addError("default is a reserved module name");
+                that.getImportPath().addError("reserved module name: default");
+            }
+            else if (name.size()==1 && name.get(0).equals("ceylon")) {
+                that.getImportPath().addError("reserved module name: ceylon");
             }
             else {
                 that.getImportPath().setModel(pkg);
@@ -169,8 +175,19 @@ public class ModuleVisitor extends Visitor {
             }
             else if (name.get(0).equals(Module.DEFAULT_MODULE_NAME)) {
             	if (that.getImportPath()!=null) {
-            		node.addError("default is a reserved module name");
+            		node.addError("reserved module name: default");
             	}
+            }
+            else if (name.size()==1 && name.get(0).equals("ceylon")) {
+                if (that.getImportPath()!=null) {
+                    node.addError("reserved module name: ceylon");
+                }
+            }
+            else if (name.size()>1 && name.get(0).equals("ceylon")
+                    && name.get(1).equals("language")) {
+                if (that.getImportPath()!=null) {
+                    node.addError("the language module is imported implicitly");
+                }
             }
             else {
                 Module importedModule = moduleManager.getOrCreateModule(name,version);
