@@ -79,6 +79,7 @@ public class Util {
      */
     public static ProducedType producedType(TypeDeclaration declaration, 
             ProducedType typeArgument) {
+        if (declaration==null) return null;
         return declaration.getProducedType(null, singletonList(typeArgument));
     }
 
@@ -88,6 +89,7 @@ public class Util {
      */
     public static ProducedType producedType(TypeDeclaration declaration, 
             ProducedType... typeArguments) {
+        if (declaration==null) return null;
         return declaration.getProducedType(null, asList(typeArguments));
     }
 

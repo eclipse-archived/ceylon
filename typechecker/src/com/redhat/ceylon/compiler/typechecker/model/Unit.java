@@ -5,7 +5,6 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersectio
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
-import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -461,8 +460,8 @@ public class Unit {
     
     public ProducedType getTupleType(List<ProducedType> elemTypes, 
     		boolean variadic, boolean atLeastOne, int firstDefaulted) {
-    	ProducedType result = getEmptyDeclaration().getType();
-    	ProducedType union = getNothingDeclaration().getType();
+    	ProducedType result = getType(getEmptyDeclaration());
+    	ProducedType union = getType(getNothingDeclaration());
     	int last = elemTypes.size()-1;
     	for (int i=last; i>=0; i--) {
     		ProducedType elemType = elemTypes.get(i);
@@ -477,7 +476,7 @@ public class Unit {
     					union, elemType, result);
     			if (firstDefaulted>=0 && i>=firstDefaulted) {
     				result = unionType(result, 
-    						getEmptyDeclaration().getType(), this);
+    				        getType(getEmptyDeclaration()), this);
     			}
     		}
     	}
@@ -486,7 +485,7 @@ public class Unit {
     
     public ProducedType getEmptyType(ProducedType pt) {
         return pt==null ? null :
-            unionType(pt, getEmptyDeclaration().getType(), this);
+            unionType(pt, getType(getEmptyDeclaration()), this);
         /*else if (isEmptyType(pt)) {
             //Null|Null|T == Null|T
             return pt;
@@ -508,12 +507,12 @@ public class Unit {
     public ProducedType getPossiblyNoneType(ProducedType pt) {
         return pt==null ? null :
             unionType(pt, producedType(getSequentialDeclaration(),
-                    getAnythingDeclaration().getType()), this);
+                    getType(getAnythingDeclaration())), this);
     }
     
     public ProducedType getOptionalType(ProducedType pt) {
         return pt==null ? null :
-            unionType(pt, getNullDeclaration().getType(), this);
+            unionType(pt, getType(getNullDeclaration()), this);
         /*else if (isOptionalType(pt)) {
             //Null|Null|T == Null|T
             return pt;
@@ -542,7 +541,7 @@ public class Unit {
     
     public ProducedType getIterableType(ProducedType et) {
         return producedType(getIterableDeclaration(), et, 
-        		getNullDeclaration().getType());
+                getType(getNullDeclaration()));
     }
 
     public ProducedType getNonemptyIterableType(ProducedType et) {
@@ -642,7 +641,7 @@ public class Unit {
     }
 
     public ProducedType getDefiniteType(ProducedType pt) {
-        return intersectionType(getObjectDeclaration().getType(), 
+        return intersectionType(getType(getObjectDeclaration()), 
                 pt, pt.getDeclaration().getUnit());
         /*if (pt.getDeclaration().equals(getAnythingDeclaration())) {
             return getObjectDeclaration().getType();
@@ -691,9 +690,9 @@ public class Unit {
     public boolean isOptionalType(ProducedType pt) {
         //must have non-empty intersection with Null
         //and non-empty intersection with Value
-        return !intersectionType(getNullDeclaration().getType(), pt, this)
+        return !intersectionType(getType(getNullDeclaration()), pt, this)
                         .isNothing() &&
-               !intersectionType(getObjectDeclaration().getType(), pt, this)
+               !intersectionType(getType(getObjectDeclaration()), pt, this)
                         .isNothing();
     }
     
@@ -702,7 +701,7 @@ public class Unit {
         return isSequentialType(getDefiniteType(pt)) &&
         //must have non-empty intersection with Empty
         //and non-empty intersection with Sequence<Nothing>
-               !intersectionType(getEmptyDeclaration().getType(), pt, this)
+               !intersectionType(getType(getEmptyDeclaration()), pt, this)
                         .isNothing() &&
                !intersectionType(getSequenceType(getNothingDeclaration().getType()), pt, this)
                         .isNothing();
@@ -835,12 +834,16 @@ public class Unit {
     
     public List<ProducedType> getCallableArgumentTypes(ProducedType t){
         ProducedType tuple = getCallableTuple(t);
-        if(tuple != null)
+        if (tuple == null) {
+            return Collections.emptyList();
+        }
+        else {
             return getTupleElementTypes(tuple);
-        return Collections.emptyList();
+        }
     }
     
     public ProducedType getCallableTuple(ProducedType t) {
+        if (t==null) return null;
         ProducedType ct = t.getSupertype(getCallableDeclaration());
         if (ct!=null) {
             List<ProducedType> typeArgs = ct.getTypeArgumentList();
@@ -852,6 +855,7 @@ public class Unit {
     }
     
     public ProducedType getCallableReturnType(ProducedType t){
+        if (t==null) return null;
         ProducedType ct = t.getSupertype(getCallableDeclaration());
         if (ct!=null) {
             List<ProducedType> typeArgs = ct.getTypeArgumentList();
@@ -894,12 +898,14 @@ public class Unit {
     public ProducedType getValueMetatype(ProducedTypedReference pr) {
         boolean variable = pr.getDeclaration().isVariable();
         if (pr.getQualifyingType() != null) {
-            return getLanguageModuleModelTypeDeclaration(variable ? "VariableAttribute" : "Attribute")
-                    .getProducedType(null, asList(pr.getQualifyingType(), denotableType(pr.getType())));
+            return producedType(getLanguageModuleModelTypeDeclaration(variable ? 
+                        "VariableAttribute" : "Attribute"),
+                    pr.getQualifyingType(), denotableType(pr.getType()));
         }
         else {
-            return getLanguageModuleModelTypeDeclaration(variable ? "Variable" : "Value")
-                    .getProducedType(null, asList(denotableType(pr.getType())));
+            return producedType(getLanguageModuleModelTypeDeclaration(variable ? 
+                        "Variable" : "Value"),
+                    denotableType(pr.getType()));
         }
     }
     
@@ -913,12 +919,12 @@ public class Unit {
         }
         else {
             if (pr.getQualifyingType() != null) {
-                return getLanguageModuleModelTypeDeclaration("Method")
-                        .getProducedType(null, asList(pr.getQualifyingType(), returnType, parameterTuple));
+                return producedType(getLanguageModuleModelTypeDeclaration("Method"),
+                        pr.getQualifyingType(), returnType, parameterTuple);
             }
             else {
-                return getLanguageModuleModelTypeDeclaration("Function")
-                        .getProducedType(null, asList(returnType, parameterTuple));
+                return producedType(getLanguageModuleModelTypeDeclaration("Function"),
+                        returnType, parameterTuple);
             }
         }
     }
@@ -936,37 +942,32 @@ public class Unit {
         	parameterTuple = new NothingType(this).getType();
         }
         if (literalType.getDeclaration().isMember()) {
-            return getLanguageModuleModelTypeDeclaration("MemberClass")
-                    .getProducedType(null, asList(literalType.getQualifyingType(), 
-                    		literalType, parameterTuple));
+            return producedType(getLanguageModuleModelTypeDeclaration("MemberClass"),
+                    literalType.getQualifyingType(), literalType, parameterTuple);
         }
         else {
-            return getLanguageModuleModelTypeDeclaration("Class")
-                    .getProducedType(null, asList(literalType, parameterTuple));
+            return producedType(getLanguageModuleModelTypeDeclaration("Class"),
+                    literalType, parameterTuple);
         }
     }
     
     public ProducedType getInterfaceMetatype(ProducedType literalType) {
         if (literalType.getDeclaration().isMember()) {
-            return getLanguageModuleModelTypeDeclaration("MemberInterface")
-                    .getProducedType(null, asList(literalType.getQualifyingType(), 
-                    		literalType));
+            return producedType(getLanguageModuleModelTypeDeclaration("MemberInterface"),
+                    literalType.getQualifyingType(), literalType);
         }
         else {
-            return getLanguageModuleModelTypeDeclaration("Interface")
-                    .getProducedType(null, asList(literalType));
+            return producedType(getLanguageModuleModelTypeDeclaration("Interface"), literalType);
         }
     }
 
     public ProducedType getTypeMetaType(ProducedType literalType) {
         TypeDeclaration declaration = literalType.getDeclaration();
         if (declaration instanceof UnionType) {
-            return producedType(getLanguageModuleModelTypeDeclaration("UnionType"), 
-            		literalType);
+            return producedType(getLanguageModuleModelTypeDeclaration("UnionType"), literalType);
         }
         else if (declaration instanceof IntersectionType) {
-            return producedType(getLanguageModuleModelTypeDeclaration("IntersectionType"), 
-            		literalType);
+            return producedType(getLanguageModuleModelTypeDeclaration("IntersectionType"), literalType);
         }
         else {
             return producedType(getLanguageModuleModelTypeDeclaration("Type"), literalType);
@@ -999,41 +1000,45 @@ public class Unit {
                 firstDefaulted);
     }
     
+    public ProducedType getType(TypeDeclaration td) {
+        return td==null ? new UnknownType(this).getType() : td.getType();
+    }
+    
     public ProducedType getPackageDeclarationType() {
-        return getLanguageModuleDeclarationTypeDeclaration("Package").getType();
+        return getType(getLanguageModuleDeclarationTypeDeclaration("Package"));
     }
     
     public ProducedType getModuleDeclarationType() {
-        return getLanguageModuleDeclarationTypeDeclaration("Module").getType();
+        return getType(getLanguageModuleDeclarationTypeDeclaration("Module"));
     }
     
     public ProducedType getImportDeclarationType() {
-        return getLanguageModuleDeclarationTypeDeclaration("Import").getType();
+        return getType(getLanguageModuleDeclarationTypeDeclaration("Import"));
     }
     
     public ProducedType getClassDeclarationType() {
-        return getLanguageModuleDeclarationTypeDeclaration("ClassDeclaration").getType();
+        return getType(getLanguageModuleDeclarationTypeDeclaration("ClassDeclaration"));
     }
     
     public ProducedType getInterfaceDeclarationType() {
-        return getLanguageModuleDeclarationTypeDeclaration("InterfaceDeclaration").getType();
+        return getType(getLanguageModuleDeclarationTypeDeclaration("InterfaceDeclaration"));
     }
     
     public ProducedType getAliasDeclarationType() {
-        return getLanguageModuleDeclarationTypeDeclaration("AliasDeclaration").getType();
+        return getType(getLanguageModuleDeclarationTypeDeclaration("AliasDeclaration"));
     }
     
     public ProducedType getTypeParameterDeclarationType() {
-        return getLanguageModuleDeclarationTypeDeclaration("TypeParameter").getType();
+        return getType(getLanguageModuleDeclarationTypeDeclaration("TypeParameter"));
     }
     
     public ProducedType getFunctionDeclarationType() {
-        return getLanguageModuleDeclarationTypeDeclaration("FunctionDeclaration").getType();
+        return getType(getLanguageModuleDeclarationTypeDeclaration("FunctionDeclaration"));
     }
     
     public ProducedType getValueDeclarationType(TypedDeclaration value) {
         String name = value.isVariable() ? "VariableDeclaration" : "ValueDeclaration";
-        return getLanguageModuleDeclarationTypeDeclaration(name).getType();
+        return getType(getLanguageModuleDeclarationTypeDeclaration(name));
     }
     
     public TypeDeclaration getAnnotationDeclaration() {

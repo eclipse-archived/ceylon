@@ -4715,7 +4715,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void setLiteralType(Tree.Atom that, TypeDeclaration languageType) {
-        that.setTypeModel(languageType.getType());
+        that.setTypeModel(unit.getType(languageType));
     }
     
     @Override
@@ -5617,7 +5617,10 @@ public class ExpressionVisitor extends Visitor {
 
     private ProducedType defaultType() {
         TypeDeclaration ut = new UnknownType(unit);
-        ut.setExtendedType(unit.getAnythingDeclaration().getType());
+        Class ad = unit.getAnythingDeclaration();
+        if (ad!=null) {
+            ut.setExtendedType(ad.getType());
+        }
         return ut.getType();
     }
     
