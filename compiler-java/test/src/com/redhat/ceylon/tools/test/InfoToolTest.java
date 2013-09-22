@@ -26,6 +26,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
@@ -54,7 +55,7 @@ public class InfoToolTest {
     public void testModuleVersion() throws Exception {
         ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
         Assert.assertNotNull(model);
-        CeylonInfoTool tool = pluginFactory.bindArguments(model, Collections.<String>singletonList("ceylon.language/0.6"));
+        CeylonInfoTool tool = pluginFactory.bindArguments(model, Collections.<String>singletonList("ceylon.language/"+Versions.CEYLON_VERSION_NUMBER));
     }
     
     @Test

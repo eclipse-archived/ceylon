@@ -15,7 +15,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
 	<classpathentry kind="lib" path="lib/markdownpapers-core-1.2.7.jar"/>
 	<classpathentry kind="lib" path="lib/txtmark-0.8-c0dcd373ce.jar"/>
-	<classpathentry kind="lib" path="/ceylon.language/ide-dist/ceylon.language-0.6.car" sourcepath="/ceylon.language"/>
+	<classpathentry kind="lib" path="/ceylon.language/ide-dist/ceylon.language-0.6.1.car" sourcepath="/ceylon.language"/>
 	<classpathentry kind="lib" path="/ceylon-runtime/lib/jboss-modules.jar" sourcepath="/jboss-modules/src/main/java"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -56,6 +56,7 @@ import com.redhat.ceylon.ceylondoc.Util;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -442,7 +443,7 @@ public class CeylonDocToolTest {
         tool.makeDoc();
         
         for(String moduleName : fullModuleNames){
-            Module module = makeModule(moduleName, "0.6");
+            Module module = makeModule(moduleName, Versions.CEYLON_VERSION_NUMBER);
             File destDir = getOutputDir(tool, module);
 
             assertFileExists(destDir, "index.html");
@@ -482,9 +483,9 @@ public class CeylonDocToolTest {
         Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);
         
         // now we need to zip it up
-        File jarFolder = new File(dir, "ceylon/net/0.6");
+        File jarFolder = new File(dir, "ceylon/net/0.6.1");
         jarFolder.mkdirs();
-        File jarFile = new File(jarFolder, "ceylon.net-0.6.car");
+        File jarFile = new File(jarFolder, "ceylon.net-0.6.1.car");
         // now jar it up
         JarOutputStream outputStream = new JarOutputStream(new FileOutputStream(jarFile));
         for(String name : fileNames){

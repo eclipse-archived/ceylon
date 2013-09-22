@@ -6,5 +6,5 @@ module com.redhat.ceylon.compiler.java.test.annotations.modules.c '0.1' {
     optional import com.redhat.ceylon.compiler.java.test.annotations.modules.b '0.1';
     
     "module name with a dash"
-    import 'com.redhat.ceylon.module-resolver' '0.6';
+    import 'com.redhat.ceylon.module-resolver' '0.6.1';
 }
