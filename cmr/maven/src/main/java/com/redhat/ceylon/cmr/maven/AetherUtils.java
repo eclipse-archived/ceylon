@@ -197,9 +197,17 @@ public class AetherUtils {
         ConfiguredResolverSystemFactory<MavenResolverSystem, ConfigurableMavenResolverSystem> factory = Resolvers.configure(ConfigurableMavenResolverSystem.class, classLoader);
 
         MavenResolverSystem resolver;
-        if (settingsXml.startsWith("classpath:"))
-            resolver = factory.fromClassloaderResource(settingsXml.substring(10));
-        else
+        if (settingsXml.startsWith("classpath:")){
+            // Stef: for some reason, Aether will use the context class loader even though we gave it the
+            // right one, so reset it just for Aether, otherwise the context class loader will be used.
+            ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+            Thread.currentThread().setContextClassLoader(classLoader);
+            try{
+                resolver = factory.fromClassloaderResource(settingsXml.substring(10));
+            }finally{
+                Thread.currentThread().setContextClassLoader(contextClassLoader);
+            }
+        }else
             resolver = factory.fromFile(settingsXml);
         
         resolver.offline(offline);
