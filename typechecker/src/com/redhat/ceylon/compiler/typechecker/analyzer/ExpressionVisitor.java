@@ -826,7 +826,7 @@ public class ExpressionVisitor extends Visitor {
         if (!sv.isFormal() && !sv.isDefault()
                 && !sv.isShortcutRefinement()) { //this condition is here to squash a dupe message
             bme.addError("inherited attribute may not be assigned in initializer and is neither formal nor default so may not be refined: " + 
-                    RefinementVisitor.message(sv));
+                    RefinementVisitor.message(sv), 510);
         }
         else if (sv.isVariable()) {
             bme.addError("inherited attribute may not be assigned in initializer and is variable so may not be refined by non-variable: " + 
