@@ -1782,7 +1782,6 @@ public class GenerateJsVisitor extends Visitor
 
     private void generateAttributeGetter(AnyAttribute attributeNode, MethodOrValue decl,
                 SpecifierOrInitializerExpression expr, String param) {
-        if (attributeNode != null && attributeNode.getErrors() != null && !attributeNode.getErrors().isEmpty())return;
         final String varName = names.name(decl);
         final boolean initVal = expr != null && decl.isToplevel();
         out("var ", varName);
