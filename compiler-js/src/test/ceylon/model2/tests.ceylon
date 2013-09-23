@@ -24,7 +24,7 @@ void literals<T>() {
     Method<String,String,[Integer]> finitial = `String.initial`;
     Method<Iterable<String>,Iterable<String>,[Integer]> ftaking = `Iterable<String>.taking`;
     FunctionDeclaration fdecl = `function Iterable.taking`;
-    value taking1 = fdecl.bindAndApply({1,2,3,4,5});
+    /*value taking1 = fdecl.bindAndApply({1,2,3,4,5});
     check(!taking1 is Function<String,[String]>, "taking1 is NOT String(String)");
     check(!taking1 is Function<{Integer*},[String]>, "taking1 is NOT {Integer*}(String)");
     if (is Function<Iterable<Integer>,[Integer]> taking1) {
@@ -49,7 +49,7 @@ void literals<T>() {
       }
     } else {
       fail("Iterable should have value 'cycled'");
-    }
+    }*/
 }
 
 class Example1(){}
