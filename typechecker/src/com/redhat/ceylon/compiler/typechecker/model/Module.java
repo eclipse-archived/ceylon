@@ -78,31 +78,27 @@ public class Module
      * and all shared packages belonging to 
      * modules transitively imported by this
      * module. 
-     * 
-     * TODO: Currently this method is broken 
-     * because it is not fully recursive but we
-     * can easily fix that.  
      */
     public List<Package> getAllPackages() {
         List<Package> list = new ArrayList<Package>();
         list.addAll(getPackages());
-        Set<String> alreadyScannedModules = new HashSet<String>();
-        alreadyScannedModules.add(getNameAsString());
-        addSharedPackagesOfTransitiveDependencies(list, alreadyScannedModules);
+        new HashSet<String>().add(getNameAsString());
+        addSharedPackagesOfTransitiveDependencies(list, new HashSet<String>());
         return list;
     }
     
-    private void addSharedPackagesOfTransitiveDependencies(List<Package> listToAddIn, Set<String> alreadyScannedModules) {
-        for (ModuleImport mi: imports) {
+    private void addSharedPackagesOfTransitiveDependencies(List<Package> list, 
+            Set<String> alreadyScannedModules) {
+        for (ModuleImport mi: getImports()) {
             Module importedModule = mi.getModule();
-            if (! alreadyScannedModules.contains(importedModule.getNameAsString())) {
-                alreadyScannedModules.add(importedModule.getNameAsString());
+            if (alreadyScannedModules.add(importedModule.getNameAsString())) {
                 for (Package p: importedModule.getPackages()) {
                     if (p.isShared()) {
-                        listToAddIn.add(p);
+                        list.add(p);
                     }
                 }
-                importedModule.addSharedPackagesOfTransitiveDependencies(listToAddIn, alreadyScannedModules);
+                importedModule.addSharedPackagesOfTransitiveDependencies(list, 
+                        alreadyScannedModules);
             }
         }
     }
