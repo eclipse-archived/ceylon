@@ -2454,30 +2454,23 @@ public class GenerateJsVisitor extends Visitor
 
     // Make sure fromTerm is compatible with toTerm by boxing it when necessary
     private int boxStart(Term fromTerm) {
-        boolean fromNative = isNative(fromTerm);
-        boolean toNative = false;
-        ProducedType fromType = fromTerm.getTypeModel();
-        return boxUnboxStart(fromNative, fromType, toNative);
+        return boxUnboxStart(fromTerm, false);
     }
 
     // Make sure fromTerm is compatible with toTerm by boxing or unboxing it when necessary
     int boxUnboxStart(Term fromTerm, Term toTerm) {
-        boolean fromNative = isNative(fromTerm);
-        boolean toNative = isNative(toTerm);
-        ProducedType fromType = fromTerm.getTypeModel();
-        return boxUnboxStart(fromNative, fromType, toNative);
+        return boxUnboxStart(fromTerm, isNative(toTerm));
     }
 
     // Make sure fromTerm is compatible with toDecl by boxing or unboxing it when necessary
     int boxUnboxStart(Term fromTerm, com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration toDecl) {
-        boolean fromNative = isNative(fromTerm);
-        boolean toNative = isNative(toDecl);
-        ProducedType fromType = fromTerm.getTypeModel();
-        return boxUnboxStart(fromNative, fromType, toNative);
+        return boxUnboxStart(fromTerm, isNative(toDecl));
     }
 
-    int boxUnboxStart(boolean fromNative, ProducedType fromType, boolean toNative) {
+    int boxUnboxStart(Term fromTerm, boolean toNative) {
         // Box the value
+        final boolean fromNative = isNative(fromTerm);
+        final ProducedType fromType = fromTerm.getTypeModel();
         final String fromTypeName = TypeUtils.isUnknown(fromType) ? "UNKNOWN" : fromType.getProducedTypeQualifiedName();
         if (fromNative != toNative || fromTypeName.startsWith("ceylon.language::Callable<")) {
             if (fromNative) {
