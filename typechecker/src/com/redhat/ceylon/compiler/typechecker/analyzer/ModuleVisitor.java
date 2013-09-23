@@ -71,7 +71,10 @@ public class ModuleVisitor extends Visitor {
         if (phase==Phase.SRC_MODULE) {
             String version = getVersionString(that.getVersion());
             List<String> name = getNameAsList(that.getImportPath());
-            if (name.isEmpty()) {
+            if (pkg.getNameAsString().isEmpty()) {
+                that.addError("module descriptor encountered in root source directory");
+            }
+            else if (name.isEmpty()) {
                 that.addError("missing module name");
             }
             else if (name.get(0).equals(Module.DEFAULT_MODULE_NAME)) {
@@ -117,7 +120,10 @@ public class ModuleVisitor extends Visitor {
         super.visit(that);
         if (phase==Phase.REMAINING) {
             List<String> name = getNameAsList(that.getImportPath());
-            if (name.isEmpty()) {
+            if (pkg.getNameAsString().isEmpty()) {
+                that.addError("package descriptor encountered in root source directory");
+            }
+            else if (name.isEmpty()) {
                 that.addError("missing package name");
             }
             else if (name.get(0).equals(Module.DEFAULT_MODULE_NAME)) {
