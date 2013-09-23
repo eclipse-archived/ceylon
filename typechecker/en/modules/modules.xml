@@ -242,7 +242,8 @@
             this case, <literal>hibernate.org</literal>). The namespace
             <literal>ceylon</literal> is reserved for Ceylon SDK modules. The 
             namespace <literal>java</literal> is reserved for modules 
-            belonging to the Java SDK.</para>
+            belonging to the Java SDK. The namespace <literal>default</literal>
+            is reserved for the default module.</para>
             
             <para>It is highly recommended, but not required, that every 
             user-written module have at least three identifiers in its name. 
@@ -704,6 +705,10 @@ shared package org.hibernate.query;</programlisting>
             legacy module repositories existing outside the Ceylon ecosystem.</para>
             
             <comment><para>Note: this enables interoperation with Maven.</para></comment>
+            
+            <comment><para>Note: in Ceylon 1.0 it is illegal to explicitly import the
+            module <literal>ceylon.language</literal>. The language module is always
+            implicitly imported.</para></comment>
             
             <para>The string literal after the imported module name specifies the version 
             of the imported module.</para>
