@@ -3526,6 +3526,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 qualExpr = primaryExpr;
             }
             
+            qualExpr = addQualifierForObjectMembersOfInterface(expr, decl,
+                    qualExpr);
+            
             qualExpr = addInterfaceImplAccessorIfRequired(qualExpr, expr, decl);
 
             if (qualExpr == null && needDollarThis(expr)) {
@@ -3568,6 +3571,32 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         return result;
+    }
+
+    /**
+     * §3.2.2 Every interface is a subtype of c.l.Object, so 
+     * within an Interface {@code string} means {@code $this.toString()}
+     * @param expr
+     * @param decl
+     * @param qualExpr
+     * @return
+     */
+    // Interface we must use $this's implementation of equals, hash and string
+    private JCExpression addQualifierForObjectMembersOfInterface(
+            Tree.StaticMemberOrTypeExpression expr, Declaration decl,
+            JCExpression qualExpr) {
+        if (expr instanceof BaseMemberExpression
+                && qualExpr == null
+                && typeFact().getObjectDeclaration().equals(Decl.getClassOrInterfaceContainer(decl))) {
+            Scope scope = expr.getScope();
+            while (Decl.isLocalNotInitializerScope(scope)) {
+                scope = scope.getContainer();
+            }
+            if (scope instanceof Interface) {
+                qualExpr = naming.makeQuotedThis();
+            }
+        }
+        return qualExpr;
     }
 
     /**
