@@ -1,12 +1,12 @@
 #!/bin/sh
 
-VERSION=0.6
+VERSION=0.6.1
 
 set -e
 
 case "$1" in
 configure)
-	update-alternatives --install /usr/bin/ceylon ceylon /usr/share/ceylon/$VERSION/bin/ceylon 06000
+	update-alternatives --install /usr/bin/ceylon ceylon /usr/share/ceylon/$VERSION/bin/ceylon 06100
 	# Remove old symlinks
 	for command in ceylon-js ceylonc ceylonc-js ceylond ceylon-import-jar
 	do

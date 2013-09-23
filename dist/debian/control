@@ -1,4 +1,4 @@
-Source: ceylon-0.6
+Source: ceylon-0.6.1
 Section: unknown
 Priority: extra
 Maintainer: Stephane Epardaud <stephane@lunatech.com>
@@ -6,7 +6,7 @@ Build-Depends: debhelper (>= 7), ant
 Standards-Version: 3.8.3
 Homepage: http://ceylon-lang.org
 
-Package: ceylon-0.6
+Package: ceylon-0.6.1
 Architecture: all
 Depends: ${misc:Depends}, java-runtime
 Description: Ceylon language
