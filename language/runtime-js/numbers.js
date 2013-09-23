@@ -83,6 +83,12 @@ defineAttr(JSNum$proto, 'negativeValue', function() {
 defineAttr(JSNum$proto, 'positiveValue', function() {
     return this.float$ ? this : this.valueOf();
 },undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Invertable','$at','positiveValue']});
+defineAttr(JSNum$proto, 'negative', function(){
+  return this.float$ ? this < 0.0 : this.valueOf() < 0;
+},undefined,{$t:{t:Boolean$},$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Number','$at','negative']});
+defineAttr(JSNum$proto, 'positive', function(){
+  return this.float$ ? this > 0.0 : this.valueOf() > 0;
+},undefined,{$t:{t:Boolean$},$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Number','$at','positive']});
 JSNum$proto.equals = function(other) { return (typeof(other)==='number' || other.constructor===Number) && other==this.valueOf(); }
 JSNum$proto.compare = function(other) {
     var value = this.valueOf();

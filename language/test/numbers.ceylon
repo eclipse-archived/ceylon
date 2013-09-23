@@ -33,6 +33,8 @@ shared void numbers() {
     check(2*-3==-6, "natural times integer");
     check(-1*1.5==-1.5, "integer times float");
     check(-1.5*+2==-3.0, "integer times float");
+    check(1.positive, "1.positive");
+    check((-1).negative, "-1.negative");
     
     Object? obj(Object? x) { return x; }
     check(obj(1+1)  is Integer, "natural addition");
