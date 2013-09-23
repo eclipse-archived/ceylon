@@ -85,7 +85,18 @@ public class Module
         List<Package> list = new ArrayList<Package>();
         list.addAll(packages);
         for (ModuleImport mi: imports) {
-            list.addAll(mi.getModule().getSharedPackages());
+            Module m = mi.getModule();
+            list.addAll(m.getSharedPackages());
+            //TODO: make this fully recursive, but check
+            //      for circular module dependencies
+            for (ModuleImport mi2: m.getImports()) {
+                if (mi2.isExport()) {
+                    Module m2 = mi2.getModule();
+                    if (m2!=this) {
+                        list.addAll(m2.getSharedPackages());
+                    }
+                }
+            }
         }
         return list;
     }
