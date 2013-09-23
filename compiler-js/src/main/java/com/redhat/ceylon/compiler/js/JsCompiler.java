@@ -256,7 +256,7 @@ public class JsCompiler {
                         }
                     }
                 }
-            } else {
+            } else if(!tc.getPhasedUnits().getPhasedUnits().isEmpty()){
                 final List<PhasedUnit> units = tc.getPhasedUnits().getPhasedUnits();
                 PhasedUnit lastUnit = units.get(0);
                 for (String path : files) {
@@ -289,6 +289,8 @@ public class JsCompiler {
                         }
                     }
                 }
+            }else{
+                System.err.println("No source units found to compile");
             }
         } finally {
             finish();
