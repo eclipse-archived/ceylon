@@ -5,7 +5,13 @@ public class Versions {
     // The current version is Ceylon 0.6.1 "Virtual Boy"
     // This comment is here so this file will show up in searches for the current version number
     
+    //****************************************************************************************************
     // WARNING Don't forget to update ceylon.language/runtime-js/process.js when you change anything here!
+    // WARNING Don't forget to update ceylon.language/runtime-js/process.js when you change anything here!
+    // WARNING Don't forget to update ceylon.language/runtime-js/process.js when you change anything here!
+    // WARNING Don't forget to update ceylon.language/runtime-js/process.js when you change anything here!
+    // This includes version NAMES and NUMBERS but NOT the JVM binary version!
+    //****************************************************************************************************
 
     public static final int CEYLON_VERSION_MAJOR = 0;
     public static final int CEYLON_VERSION_MINOR = 6;
