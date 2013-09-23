@@ -51,16 +51,6 @@ public class Module
         return packages;
     }
 
-    public List<Package> getSharedPackages() {
-        List<Package> list = new ArrayList<Package>();
-        for (Package p: packages) {
-        	if (p.isShared()) {
-        		list.add(p);
-        	}
-        }
-        return list;
-    }
-
     public List<ModuleImport> getImports() {
         return imports;
     }
@@ -80,20 +70,38 @@ public class Module
     public void setVersion(String version) {
         this.version = version;
     }
-
+    
+    /**
+     * Get all packages belonging to this module
+     * and all shared packages belonging to 
+     * modules transitively imported by this
+     * module. 
+     * 
+     * TODO: Currently this method is broken 
+     * because it is not fully recursive but we
+     * can easily fix that.  
+     */
     public List<Package> getAllPackages() {
         List<Package> list = new ArrayList<Package>();
-        list.addAll(packages);
+        list.addAll(getPackages());
         for (ModuleImport mi: imports) {
             Module m = mi.getModule();
-            list.addAll(m.getSharedPackages());
+            for (Package p: m.getPackages()) {
+                if (p.isShared()) {
+                    list.add(p);
+                }
+            }
             //TODO: make this fully recursive, but check
             //      for circular module dependencies
             for (ModuleImport mi2: m.getImports()) {
                 if (mi2.isExport()) {
                     Module m2 = mi2.getModule();
                     if (m2!=this) {
-                        list.addAll(m2.getSharedPackages());
+                        for (Package p: m2.getPackages()) {
+                            if (p.isShared()) {
+                                list.add(p);
+                            }
+                        }
                     }
                 }
             }
