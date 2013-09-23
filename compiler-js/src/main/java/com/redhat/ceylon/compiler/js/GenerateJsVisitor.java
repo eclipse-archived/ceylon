@@ -19,6 +19,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.ImportableScope;
@@ -1781,10 +1782,16 @@ public class GenerateJsVisitor extends Visitor
 
     private void generateAttributeGetter(AnyAttribute attributeNode, MethodOrValue decl,
                 SpecifierOrInitializerExpression expr, String param) {
+        if (attributeNode != null && attributeNode.getErrors() != null && !attributeNode.getErrors().isEmpty())return;
         final String varName = names.name(decl);
+        final boolean initVal = expr != null && decl.isToplevel();
         out("var ", varName);
         if (expr != null) {
-            out("=");
+            if (initVal) {
+                out(";function $valinit$", varName, "(){if (", varName, "===undefined)", varName, "=");
+            } else {
+                out("=");
+            }
             int boxType = boxStart(expr.getExpression().getTerm());
             if (dynblock > 0 && TypeUtils.isUnknown(expr.getExpression().getTypeModel()) && !TypeUtils.isUnknown(decl.getType())) {
                 TypeUtils.generateDynamicCheck(expr.getExpression(), decl.getType(), this);
@@ -1807,6 +1814,9 @@ public class GenerateJsVisitor extends Visitor
                 TypeUtils.printTypeArguments(expr, expr.getExpression().getTypeModel().getTypeArguments(), this);
             }
             boxUnboxEnd(boxType);
+            if (initVal) {
+                out(";return ", varName, ";};$valinit$", varName, "()");
+            }
         } else if (param != null) {
             out("=", param);
         }
@@ -1828,7 +1838,11 @@ public class GenerateJsVisitor extends Visitor
                     if (isLate) {
                         generateUnitializedAttributeReadCheck(varName, names.name(decl));
                     }
-                    out("return ", varName, ";}");
+                    if (initVal) {
+                        out("return $valinit$", varName, "();}");
+                    } else {
+                        out("return ", varName, ";}");
+                    }
                     if (decl.isVariable() || isLate) {
                         final String par = names.createTempVariable(decl.getName());
                         out(",function(", par, "){");
@@ -1850,7 +1864,12 @@ public class GenerateJsVisitor extends Visitor
                     endLine();
                 }
                 else {
-                    out(function, names.getter(decl),"(){return ", varName, ";}");
+                    out(function, names.getter(decl),"(){return ");
+                    if (initVal) {
+                        out("$valinit$", varName, "();}");
+                    } else {
+                        out(varName, ";}");
+                    }
                     endLine();
                     shareGetter(decl);
                 }
@@ -3050,11 +3069,6 @@ public class GenerateJsVisitor extends Visitor
             return true;
         }
         return false;
-    }
-
-    private boolean declaredInCL(Declaration decl) {
-        return decl.getUnit().getPackage().getQualifiedNameString()
-                .startsWith("ceylon.language");
     }
 
     @Override
