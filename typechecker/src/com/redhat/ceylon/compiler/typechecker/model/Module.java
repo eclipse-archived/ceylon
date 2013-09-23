@@ -5,8 +5,10 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVers
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class Module 
@@ -84,29 +86,25 @@ public class Module
     public List<Package> getAllPackages() {
         List<Package> list = new ArrayList<Package>();
         list.addAll(getPackages());
+        Set alreadyScannedModules = new HashSet();
+        alreadyScannedModules.add(this);
+        addSharedPackagesOfTransitiveDependencies(list, alreadyScannedModules);
+        return list;
+    }
+    
+    private void addSharedPackagesOfTransitiveDependencies(List<Package> listToAddIn, Set<String> alreadyScannedModules) {
         for (ModuleImport mi: imports) {
-            Module m = mi.getModule();
-            for (Package p: m.getPackages()) {
-                if (p.isShared()) {
-                    list.add(p);
-                }
-            }
-            //TODO: make this fully recursive, but check
-            //      for circular module dependencies
-            for (ModuleImport mi2: m.getImports()) {
-                if (mi2.isExport()) {
-                    Module m2 = mi2.getModule();
-                    if (m2!=this) {
-                        for (Package p: m2.getPackages()) {
-                            if (p.isShared()) {
-                                list.add(p);
-                            }
-                        }
+            Module importedModule = mi.getModule();
+            if (! alreadyScannedModules.contains(importedModule.getNameAsString())) {
+                alreadyScannedModules.add(importedModule.getNameAsString());
+                for (Package p: importedModule.getPackages()) {
+                    if (p.isShared()) {
+                        listToAddIn.add(p);
                     }
                 }
+                importedModule.addSharedPackagesOfTransitiveDependencies(listToAddIn, alreadyScannedModules);
             }
         }
-        return list;
     }
     
     public Map<String, DeclarationWithProximity> getAvailableDeclarations(String startingWith) {
