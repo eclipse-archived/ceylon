@@ -48,6 +48,11 @@ public class CeylonRunJsAntTask extends CeylonAntTask {
     public void addConfiguredRep(Repo repo) {
         reposet.addConfiguredRepo(repo);
     }
+    
+    public void addConfiguredReposet(RepoSet reposet){
+        this.reposet.addConfiguredRepoSet(reposet);
+    }
+
     protected Set<Repo> getRepositories() {
         return reposet.getRepos();
     }
