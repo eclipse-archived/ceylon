@@ -3020,7 +3020,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(Return that) {
         out("return ");
-        if (dynblock > 0 && TypeUtils.isUnknown(that.getExpression().getTypeModel())) {
+        if (that.getExpression() != null && dynblock > 0 && TypeUtils.isUnknown(that.getExpression().getTypeModel())) {
             TypeUtils.generateDynamicCheck(that.getExpression(), that.getExpression().getTypeModel(), this);
             endLine(true);
             return;
