@@ -19,11 +19,14 @@
  */
 package com.redhat.ceylon.compiler.java.test.issues;
 
+import java.util.List;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
+import com.redhat.ceylon.compiler.java.test.ErrorCollector;
 
 public class IssuesTest_1000_1499 extends CompilerTest {
 
@@ -528,5 +531,11 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     @Test
     public void testBug1313() {
         compareWithJavaSource("bug13xx/Bug1313");
+    }
+    
+    @Test
+    public void testBug1315() {
+        compile("bug13xx/bug1315/bug1315_1.ceylon");
+        compile("bug13xx/bug1315/bug1315_2.ceylon");
     }
 }
