@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -52,11 +54,12 @@ public class TypeHierarchyVisitor extends Visitor {
             return declaration.getName();
         }
     }
-
+    
     @Override
     public void visit(Tree.ObjectDefinition that) {
-        super.visit(that);
         final Value value = that.getDeclarationModel();
+        validateMemberRefinement(that, value.getType().getDeclaration());
+        super.visit(that);
         //an object definition is always concrete
         List<Type> orderedTypes = sortDAGAndBuildMetadata(value.getTypeDeclaration(), that);
         checkForFormalsNotImplemented(that, orderedTypes);
@@ -66,8 +69,9 @@ public class TypeHierarchyVisitor extends Visitor {
 
     @Override
     public void visit(Tree.ObjectArgument that) {
-        super.visit(that);
         final Value value = that.getDeclarationModel();
+        validateMemberRefinement(that, value.getType().getDeclaration());
+        super.visit(that);
         //an object definition is always concrete
         List<Type> orderedTypes = sortDAGAndBuildMetadata(value.getTypeDeclaration(), that);
         checkForFormalsNotImplemented(that, orderedTypes);
@@ -77,8 +81,9 @@ public class TypeHierarchyVisitor extends Visitor {
 
     @Override
     public void visit(Tree.ClassOrInterface that) {
-        super.visit(that);
         final ClassOrInterface classOrInterface = that.getDeclarationModel();
+        validateMemberRefinement(that, classOrInterface);
+        super.visit(that);
         if (!classOrInterface.isAlias()) {
             boolean concrete = !classOrInterface.isAbstract() && !classOrInterface.isFormal() && !classOrInterface.isNative();
             List<Type> orderedTypes = sortDAGAndBuildMetadata(classOrInterface, that);
@@ -405,4 +410,72 @@ public class TypeHierarchyVisitor extends Visitor {
         }
         return type;
     }
+    
+    private void validateMemberRefinement(Tree.StatementOrArgument that, 
+            TypeDeclaration td) {
+        if (!td.isInconsistentType()) {
+            List<ProducedType> supertypes = td.getType().getSupertypes();
+            Set<String> errors = new HashSet<String>();
+            for (ProducedType st: supertypes) {
+                if (td instanceof ClassOrInterface && 
+                        !((ClassOrInterface) td).isAbstract() &&
+                        !((ClassOrInterface) td).isAlias()) {
+                    for (Declaration d: st.getDeclaration().getMembers()) {
+                        if (d.isShared() && isResolvable(d) && 
+                                !errors.contains(d.getName())) {
+                            Declaration r = td.getMember(d.getName(), null, false);
+                            if (r==null || !r.refines(d) && 
+                                    //squash bogus error when there is a dupe declaration
+                                    !r.getContainer().equals(td)) {
+                                //TODO: This seems to dupe some checks that are already 
+                                //      done in TypeHierarchyVisitor, resulting in
+                                //      multiple errors
+                                //TODO: figure out which other declaration causes the
+                                //      problem and display it to the user!
+                                if (r==null) {
+                                    that.addError("member " + d.getName() +
+                                            " is inherited ambiguously by " + td.getName() +
+                                            " from " + st.getDeclaration().getName() +  
+                                            " and another unrelated supertype");
+                                }
+                                else {
+                                    //TODO: I'm not really certain that the following
+                                    //      condition is correct, we really should 
+                                    //      check that the other declaration is a Java
+                                    //      interface member (see the TODO above)
+                                    if (!(d.getUnit().getPackage().getModule().isJava() &&
+                                            r.getUnit().getPackage().getModule().isJava() &&
+                                            r.isInterfaceMember() &&
+                                            d.isClassMember())) {
+                                        that.addError("member " + d.getName() + 
+                                                " is inherited ambiguously by " + td.getName() +
+                                                " from " + st.getDeclaration().getName() +  
+                                                " and another subtype of " + ((TypeDeclaration) r.getContainer()).getName() + 
+                                                " and so must be refined by " + td.getName(), 350);
+                                    }
+                                }
+                                errors.add(d.getName());
+                            }
+                            /*else if (!r.getContainer().equals(td)) { //the case where the member is actually declared by the current type is handled by checkRefinedTypeAndParameterTypes()
+                                //TODO: I think this case never occurs, because getMember() always
+                                //      returns null in the case of an ambiguity
+                                List<ProducedType> typeArgs = new ArrayList<ProducedType>();
+                                if (d instanceof Generic) {
+                                    for (TypeParameter refinedTypeParam: ((Generic) d).getTypeParameters()) {
+                                        typeArgs.add(refinedTypeParam.getType());
+                                    }
+                                }
+                                ProducedType t = td.getType().getTypedReference(r, typeArgs).getType();
+                                ProducedType it = st.getTypedReference(d, typeArgs).getType();
+                                checkAssignable(t, it, that, "type of member " + d.getName() + 
+                                        " must be assignable to all types inherited from instantiations of " +
+                                        st.getDeclaration().getName());
+                            }*/
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

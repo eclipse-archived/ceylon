@@ -938,7 +938,7 @@ public class ExpressionVisitor extends Visitor {
         //bme.setTypeModel(v.getType());
         that.setRefinement(true);
         that.setDeclaration(m);
-        if(that.getScope() instanceof Specification){
+        if (that.getScope() instanceof Specification){
             ((Specification) that.getScope()).setDeclaration(m);
         }
     }

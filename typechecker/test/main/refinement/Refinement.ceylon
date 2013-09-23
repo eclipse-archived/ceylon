@@ -286,3 +286,11 @@ class ExtendsWithPrivate()
         satisfies OtherPrivate {
     String message = "goodbye";
 }
+
+interface AbstractThing {
+    string => "bar";
+    hash => 3;
+}
+@error class ConcreteThing() 
+        satisfies AbstractThing {
+}

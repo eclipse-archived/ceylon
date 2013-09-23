@@ -23,6 +23,15 @@ public abstract class TypeDeclaration extends Declaration
     private List<TypeParameter> typeParameters = emptyList();
     private ProducedType selfType;
     private List<ProducedType> brokenSupertypes = new ArrayList<ProducedType>(1);
+    private boolean inconsistentType;
+    
+    public boolean isInconsistentType() {
+        return inconsistentType;
+    }
+    
+    public void setInconsistentType(boolean inconsistentType) {
+        this.inconsistentType = inconsistentType;
+    }
     
     @Override
     protected TypeDeclaration clone() {
