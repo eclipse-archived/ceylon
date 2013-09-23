@@ -218,12 +218,24 @@ public class CeylonRunJsTool extends RepoUsingTool {
         }
 
         //Rename func
-        if (func.indexOf('.') > 0) {
-            final StringBuilder fsb = new StringBuilder();
-            final int lastDot = func.lastIndexOf('.');
-            fsb.append(func.substring(lastDot+1)).append('$');
-            fsb.append(func.substring(0,lastDot).replaceAll("\\.", "\\$"));
-            func = fsb.toString();
+        if (func.startsWith("::")) {
+            func = func.substring(2);
+        } else if (func.indexOf('.') > 0 || func.indexOf("::") > 0) {
+            //Given a fully qualified name such as a.b.c.run, remove the module path first
+            //then change what remains to run$subpackages i.e. module a.b then run$c
+            if (func.contains("::")) {
+                func = func.replace("::", ".");
+            }
+            if (func.startsWith(module)) {
+                func = func.substring(module.length()+1);
+            }
+            if (func.indexOf('.') > 0) {
+                final StringBuilder fsb = new StringBuilder();
+                final int lastDot = func.lastIndexOf('.');
+                fsb.append(func.substring(lastDot+1)).append('$');
+                fsb.append(func.substring(0,lastDot).replaceAll("\\.", "\\$"));
+                func = fsb.toString();
+            }
         }
         final boolean isDefault = module.equals("default");
         String moduleString = isDefault ? module : module +"/"+version;
