@@ -1807,7 +1807,7 @@ public class GenerateJsVisitor extends Visitor
                 } else {
                     //Type of value must be Callable
                     //And the Args Type Parameters is a Tuple
-                    types.encodeTupleAsParameterListForRuntime(decl.getType(), this);
+                    types.encodeTupleAsParameterListForRuntime(expr.getExpression().getTypeModel(), this);
                 }
                 out(",");
                 TypeUtils.printTypeArguments(expr, expr.getExpression().getTypeModel().getTypeArguments(), this);
