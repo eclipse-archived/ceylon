@@ -89,12 +89,28 @@ interface ConcreteString2 {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public void presentYourself();
     
+    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.ActualAnnotation$annotation
+    @.ceylon.language.DefaultAnnotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("default")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public .java.lang.String toString();
     
+    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.ActualAnnotation$annotation
+    @.ceylon.language.DefaultAnnotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("default")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public int hashCode();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2.class);
@@ -110,14 +126,34 @@ final class ConcreteString2$impl {
     public void presentYourself() {
         if ($this.equals($this)) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "equals(this)"));
+        if (3L == $this.hashCode()) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "3 == hash"));
+        if ("bar".equals($this.toString())) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"bar\" == string"));
     }
     
+    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.ActualAnnotation$annotation
+    @.ceylon.language.DefaultAnnotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("default")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .java.lang.String toString() {
         return "bar";
     }
     
+    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.ActualAnnotation$annotation
+    @.ceylon.language.DefaultAnnotation$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("default")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final int hashCode() {
         return (int)3L;
     }
@@ -145,9 +181,15 @@ class ConcreteStringC2 implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String toString() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteString2$this.toString();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public final int hashCode() {
+        return (int)$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteString2$this.hashCode();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
