@@ -1520,7 +1520,7 @@ public class GenerateJsVisitor extends Visitor
             out(");");
         }
         else {
-            out("var ", names.getter(d), "=function()");
+            out(function, names.getter(d), "()");
             super.visit(that);
             endLine();
             if (!shareGetter(d)) { out(";"); }
@@ -1676,7 +1676,7 @@ public class GenerateJsVisitor extends Visitor
                     outerSelf(d);
                     out(",'", names.name(d), "',function(){return ");
                 } else {
-                    out("var ", names.getter(d), "=function(){return ");                    
+                    out(function, names.getter(d), "(){return ");
                 }
                 int boxType = boxStart(specInitExpr.getExpression().getTerm());
                 specInitExpr.getExpression().visit(this);
@@ -1718,7 +1718,7 @@ public class GenerateJsVisitor extends Visitor
                 if (addSetter) {
                     final String varName = names.name(d);
                     String paramVarName = names.createTempVariable(d.getName());
-                    out("var ", names.setter(d), "=function(", paramVarName, "){");
+                    out(function, names.setter(d), "(", paramVarName, "){");
                     if (isLate) {
                         generateImmutableAttributeReassignmentCheck(varName, names.name(d));
                     }
@@ -1819,7 +1819,7 @@ public class GenerateJsVisitor extends Visitor
                 endLine();
             }
         } else {
-            if (isCaptured(decl)) {
+            if (isCaptured(decl) || decl.isToplevel()) {
                 final boolean isLate = decl.isLate();
                 if (defineAsProperty(decl)) {
                     out(clAlias, "defineAttr(");
@@ -1850,7 +1850,7 @@ public class GenerateJsVisitor extends Visitor
                     endLine();
                 }
                 else {
-                    out("var ", names.getter(decl),"=function(){return ", varName, ";};");
+                    out(function, names.getter(decl),"(){return ", varName, ";}");
                     endLine();
                     shareGetter(decl);
                 }
