@@ -393,4 +393,10 @@ public class StructureTest2 extends CompilerTest {
     public void testCncInterfaceQualifiedMembers(){
         compareWithJavaSource("concrete/InterfaceQualifiedMembers");
     }
+    
+    @Test
+    public void testCncString(){
+        compareWithJavaSource("concrete/ConcreteString");
+        run("com.redhat.ceylon.compiler.java.test.structure.concrete.concreteString");
+    }
 }
