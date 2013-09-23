@@ -86,8 +86,8 @@ public class Module
     public List<Package> getAllPackages() {
         List<Package> list = new ArrayList<Package>();
         list.addAll(getPackages());
-        Set alreadyScannedModules = new HashSet();
-        alreadyScannedModules.add(this);
+        Set<String> alreadyScannedModules = new HashSet<String>();
+        alreadyScannedModules.add(getNameAsString());
         addSharedPackagesOfTransitiveDependencies(list, alreadyScannedModules);
         return list;
     }
