@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -172,13 +173,20 @@ public class InvocationGenerator {
                 }
                 Declaration bmed = ((Tree.StaticMemberOrTypeExpression)typeArgSource).getDeclaration();
                 if (bmed instanceof Functional) {
+                    //If there are fewer arguments than there are parameters...
                     if (((Functional) bmed).getParameterLists().get(0).getParameters().size()
-                            > argList.getPositionalArguments().size()
-                            // has no comprehension
-                            && (argList.getPositionalArguments().isEmpty()
-                                || argList.getPositionalArguments().get(argList.getPositionalArguments().size()-1)
-                                instanceof Tree.Comprehension == false)) {
-                        gen.out("undefined,");
+                            > argList.getPositionalArguments().size()) {
+                        //It could be because all args will be sequenced/defaulted...
+                        if (argList.getPositionalArguments().isEmpty()) {
+                            gen.out("undefined,");
+                        } else {
+                            //Or because the last argument is a comprehension or a spread
+                            Tree.PositionalArgument parg = argList.getPositionalArguments().get(
+                                    argList.getPositionalArguments().size()-1);
+                            if (!(parg instanceof Tree.Comprehension || parg instanceof Tree.SpreadArgument)) {
+                                gen.out("undefined,");
+                            }
+                        }
                     }
                     if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
                         Map<TypeParameter, ProducedType> invargs = TypeUtils.matchTypeParametersWithArguments(
@@ -278,7 +286,7 @@ public class InvocationGenerator {
             boolean first=true;
             boolean opened=false;
             ProducedType sequencedType=null;
-            for (Tree.PositionalArgument arg: args) {
+            for (Tree.PositionalArgument arg : args) {
                 Tree.Expression expr;
                 Parameter pd = arg.getParameter();
                 if (pd == null)gen.out("/*NULL PARAM!*/");
@@ -354,12 +362,35 @@ public class InvocationGenerator {
                     if (arg instanceof Tree.SpreadArgument) {
                         TypedDeclaration td = pd == null ? null : pd.getModel();
                         int boxType = gen.boxUnboxStart(expr.getTerm(), td);
-                        arg.visit(gen);
                         if (boxType == 4) {
+                            arg.visit(gen);
                             gen.out(",");
                             describeMethodParameters(expr.getTerm());
                             gen.out(",");
                             TypeUtils.printTypeArguments(arg, arg.getTypeModel().getTypeArguments(), gen);
+                        } else if (pd == null || pd.isSequenced()) {
+                            arg.visit(gen);
+                        } else {
+                            arg.visit(gen);
+                            gen.out(".get(0)");
+                            //Find out if there are more params
+                            final ParameterList moreParams;
+                            if (pd.getDeclaration() instanceof Method) {
+                                moreParams = ((Method)pd.getDeclaration()).getParameterLists().get(0);
+                            } else {
+                                moreParams = ((com.redhat.ceylon.compiler.typechecker.model.Class)pd.getDeclaration()).getParameterList();
+                            }
+                            boolean found = false;
+                            int c = 1;
+                            for (Parameter restp : moreParams.getParameters()) {
+                                if (found) {
+                                    gen.out(",");
+                                    arg.visit(gen);
+                                    gen.out(".get(", Integer.toString(c++), ")");
+                                } else {
+                                    found = restp.equals(pd);
+                                }
+                            }
                         }
                         gen.boxUnboxEnd(boxType);
                     } else {
@@ -445,7 +476,7 @@ public class InvocationGenerator {
             gen.getTypeUtils().encodeTupleAsParameterListForRuntime(term.getTypeModel(), gen);
             return;
         } else {
-            gen.out("/*Callable EXPR of type ", term.getClass().getName(), "*/");
+            gen.out("/*WARNING Callable EXPR of type ", term.getClass().getName(), "*/");
         }
         if (_m == null) {
             gen.out("[]");
