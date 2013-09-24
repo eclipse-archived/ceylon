@@ -17,5 +17,5 @@
 by("The Ceylon Team")
 license("http://www.apache.org/licenses/LICENSE-2.0")
 module com.example.withmodule '1.0.0' {
-    import ceylon.collection '0.6';
+    import ceylon.collection '0.6.1';
 }
