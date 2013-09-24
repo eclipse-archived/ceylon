@@ -386,7 +386,7 @@ public class InvocationGenerator {
                                 if (found) {
                                     gen.out(",");
                                     arg.visit(gen);
-                                    gen.out(".get(", Integer.toString(c++), ")");
+                                    gen.out(".get(", Integer.toString(c++), ")||undefined");
                                 } else {
                                     found = restp.equals(pd);
                                 }
