@@ -225,15 +225,22 @@ public class CeylonDocTool implements Tool {
     }
     
     @OptionArgument(longName="link", argumentName="dir-or-url")
-    @Description("The URL or path of a module repository containing documentation for external dependencies." +
+    @Description("The URL or path of a module repository containing " +
+            "documentation for external dependencies." +
     		"\n\n" +
-    		"Parameter must be one of supported protocols (http://, https:// or file://) or path to directory. " +
-            "Parameter can be prefixed with module name pattern, separated by a '=' character, determine for which external modules will be use." +
+    		"The URL must use one of the supported protocols " +
+    		"(http://, https:// or file://) or be a path to a directory. " +
+            "The argument can start with a module name prefix, " +
+            "separated from the URL by a `=` character, so that only " +
+            "those external modules " +
+            "whose name begins with the prefix will be linked using that URL.\n" +
+            "Can be specified multiple times." +
             "\n\n" +
             "Examples:\n" +
             "\n" +
             "    --link https://modules.ceylon-lang.org/\n" +
-            "    --link ceylon.math=https://modules.ceylon-lang.org/\n")
+            "    --link ceylon.math=https://modules.ceylon-lang.org/\n"+
+            "    --link com.example=http://example.com/ceylondoc/")
     public void setLinks(List<String> linkArgs) {
         this.links = new ArrayList<String>();
         if( linkArgs != null ) {
@@ -370,7 +377,7 @@ public class CeylonDocTool implements Tool {
     }
     
     @OptionArgument(longName="out", argumentName="dir-or-url")
-    @Description("The URL of the module repository where output should be published (default: `./out`")
+    @Description("The URL of the module repository where output should be published (default: `./out`)")
     public void setOutputRepository(String outputRepository) {
         this.outputRepository = outputRepository;
     }
