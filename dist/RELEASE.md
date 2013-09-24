@@ -91,3 +91,8 @@ never copy and paste `sudo` commands!!! So read them carefully and type them by 
     $ sudo chown -R webhook. /var/www/ceylonlang/documentation/1.0/spec
     $ sudo mv /var/www/ceylonlang/documentation/1.0/spec/pdf/Ceylon\* /var/www/ceylonlang/documentation/1.0/spec/pdf/ceylon-language-specification.pdf
 
+# Update the brew formula for ceylon
+
+1. Fork it on https://github.com/mxcl/homebrew
+2. Update the file `Library/Formula/ceylon.rb`
+3. Make a pull-request
