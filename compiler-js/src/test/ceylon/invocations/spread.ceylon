@@ -26,6 +26,9 @@ Integer spread3(Integer a, Integer *b) {
 Integer spread4(Integer a, Integer b, Integer c) {
   return a+b+c;
 }
+Integer spread5(Integer a, Integer b, Integer c, Integer d=20) {
+  return a+b+c-d;
+}
 
 void testSpread() {
   value ints = [8,9,10];
@@ -41,4 +44,5 @@ void testSpread() {
   check(spread2{2,3,for (i in ints) i*10}==275, "spread [10]");
   check(spread3(1,*ints)==28, "spread [11]");
   check(spread4(*ints)==27, "spread [12]");
+  check(spread5(*ints)==7, "spread [13]");
 }
