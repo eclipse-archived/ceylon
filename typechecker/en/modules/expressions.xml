@@ -555,6 +555,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>A <emphasis>static value reference</emphasis> is a static 
             expression that references an attribute declaration.</para>
             
+            <programlisting>List&lt;Anything&gt;.size</programlisting>
+            
             <para>The type of a static value reference expression for an attribute 
             whose realization is of type <literal>X</literal>, and with qualifying 
             type <literal>T</literal>, is <literal>X(T)</literal>.</para>
@@ -571,6 +573,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             expression that references something&mdash;a method or member 
             class&mdash;that can be <emphasis>invoked</emphasis> or 
             <emphasis>instantiated</emphasis>.</para>
+            
+            <programlisting>List&lt;String&gt;.filter</programlisting>
             
             <para>The type of a static callable reference expression for a method
             or member class whose realization has callable type <literal>C</literal>, 
