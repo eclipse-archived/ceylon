@@ -932,4 +932,10 @@ public class ModelLoaderTest extends CompilerTest {
         Assert.assertFalse(ReflectionUtils.isOverridingMethod(VisibilitySubClass.class.getDeclaredMethod("priv")));
         Assert.assertTrue(ReflectionUtils.isOverridingMethod(AbstractReceiveListener.class.getDeclaredMethod("handleEvent", WebSocketChannel.class)));
     }
+    
+    @Test
+    public void loadPublicJavaClassWithPackageConstructor(){
+        compile("PublicJavaClassWithPackageConstructor.java");
+        compile("publicjavaclasswithpackageconstructortest.ceylon");
+    }
 }
