@@ -18,7 +18,7 @@ defineAttr(lang$proto, 'releaseVersion', function(){ return 1; },undefined,
   {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','releaseVersion']});
 defineAttr(lang$proto, 'versionName', function(){ return String$("Virtual Boy",11); },undefined,
   {$t:{t:String$}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','versionName']});
-defineAttr(lang$proto, 'majorVersionBinary', function(){ return 0; },undefined,
+defineAttr(lang$proto, 'majorVersionBinary', function(){ return 5; },undefined,
   {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','majorVersionBinary']});
 defineAttr(lang$proto, 'minorVersionBinary', function(){ return 0; },undefined,
   {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','language','$at','minorVersionBinary']});
