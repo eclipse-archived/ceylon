@@ -19,7 +19,6 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
-import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.ImportableScope;
@@ -386,10 +385,10 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void initSelf(Block block) {
-        initSelf(block.getScope());
+        initSelf(block.getScope(), false);
     }
-    private void initSelf(Scope scope) {
-        if ((prototypeOwner != null) &&
+    private void initSelf(Scope scope, boolean force) {
+        if (force || (scope != null && prototypeOwner == scope.getContainer()) &&
                     ((scope instanceof MethodOrValue)
                      || (scope instanceof TypeDeclaration)
                      || (scope instanceof Specification))) {
@@ -1416,7 +1415,7 @@ public class GenerateJsVisitor extends Visitor
                 out(names.name(container), "$defs$", pd.getName(), "=function");
                 params.visit(this);
                 out("{");
-                initSelf(container);
+                initSelf(container, false);
                 out("return ");
                 if (param instanceof ParameterDeclaration &&
                         ((ParameterDeclaration)param).getTypedDeclaration() instanceof MethodDeclaration) {
@@ -1920,7 +1919,7 @@ public class GenerateJsVisitor extends Visitor
                     out(clAlias, "defineAttr(", names.self(outer), ",'", names.name(d),
                             "',function()");
                     beginBlock();
-                    initSelf(that.getScope());
+                    initSelf(that.getScope(), true);
                     out("return ");
                     Expression expr = that.getSpecifierOrInitializerExpression().getExpression();
                     int boxType = boxStart(expr.getTerm());
@@ -1939,7 +1938,7 @@ public class GenerateJsVisitor extends Visitor
                                 super.visit(setterDef);
                             } else {
                                 out("{");
-                                initSelf(that.getScope());
+                                initSelf(that.getScope(), true);
                                 out("return ");
                                 setterDef.getSpecifierExpression().visit(this);
                                 out(";}");
@@ -2723,7 +2722,7 @@ public class GenerateJsVisitor extends Visitor
                     out(names.getter(bmeDecl), "=function()");
                 }
                 beginBlock();
-                if (outer != null) { initSelf(specStmt.getScope()); }
+                if (outer != null) { initSelf(specStmt.getScope(), true); }
                 out ("return ");
                 specStmt.getSpecifierExpression().visit(this);
                 out(";");
@@ -2791,7 +2790,7 @@ public class GenerateJsVisitor extends Visitor
                         }
                         out(paramNames.toString());
                         out("){");
-                        initSelf(moval.getContainer());
+                        initSelf(moval.getContainer(), false);
                         for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : ((Method) moval).getParameterLists().get(0).getParameters()) {
                             if (p.isDefaulted()) {
                                 out("if (", names.name(p), "===undefined)", names.name(p),"=");
@@ -4166,7 +4165,7 @@ public class GenerateJsVisitor extends Visitor
             @Override
             public void completeFunction() {
                 beginBlock();
-                if (paramLists.size() == 1) { initSelf(scope); }
+                if (paramLists.size() == 1) { initSelf(scope, false); }
                 initParameters(paramLists.get(paramLists.size()-1),
                         scope instanceof TypeDeclaration ? (TypeDeclaration)scope : null, null);
                 visitStatements(block.getStatements());
@@ -4180,7 +4179,7 @@ public class GenerateJsVisitor extends Visitor
             @Override
             public void completeFunction() {
                 beginBlock();
-                if (paramLists.size() == 1) { initSelf(scope); }
+                if (paramLists.size() == 1) { initSelf(scope, false); }
                 initParameters(paramLists.get(paramLists.size()-1),
                         null, scope instanceof Method ? (Method)scope : null);
                 out("return ");
@@ -4259,7 +4258,7 @@ public class GenerateJsVisitor extends Visitor
                 paramList.visit(this);
                 if (count == 0) {
                     beginBlock();
-                    initSelf(scope);
+                    initSelf(scope, false);
                     Scope parent = scope == null ? null : scope.getContainer();
                     initParameters(paramList, parent instanceof TypeDeclaration ? (TypeDeclaration)parent : null,
                             scope instanceof Method ? (Method)scope:null);
