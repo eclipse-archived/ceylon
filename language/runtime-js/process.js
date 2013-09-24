@@ -208,7 +208,7 @@ defineAttr(process$proto, 'string', function() {
     return processString;
 },undefined,{$t:{t:String$},$cont:process$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
 defineAttr(process$proto, 'vm', function() {
-    if (typeof process !== "undefined" && process.execPath && process.execPath.match(/node(\.exe)?$/)) {
+    if (typeof process !== "undefined" && process.execPath && process.execPath.match(/node(js)?(\.exe)?$/)) {
         return String$("node.js", 7);
     } else if (typeof window === 'object') {
         return String$("Browser", 7);
