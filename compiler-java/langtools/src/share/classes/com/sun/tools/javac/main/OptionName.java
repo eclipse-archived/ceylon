@@ -67,6 +67,7 @@ public enum OptionName {
     D("-d"),
     CEYLONOUT("-out"),
     CEYLONOFFLINE("-offline"),
+    CEYLONCONTINUE("-continue"),
     S("-s"),
     IMPLICIT("-implicit:"),
     ENCODING("-encoding"),
