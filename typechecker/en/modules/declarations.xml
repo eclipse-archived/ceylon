@@ -363,9 +363,6 @@ TypeConstraints?
     Address* addresses;
 }</programlisting>
         
-        <comment><para>TODO: are parameters really allowed to be <literal>variable</literal>?
-        Currently the typechecker rejects this, but it's hard to see why it should.</para></comment>
-        
         <para>A parameter declaration may only occur in a parameter list, or directly, as
         defined by <xref linkend="blockstructure"/>, in the body of a class or function. A 
         parameter declaration may not occur directly in the body of a getter or in a body of 
