@@ -290,7 +290,8 @@ shared interface Iterable<out Element, out Absent=Null>
                 shared actual Iterator<Element> iterator() {
                     value iter = outer.iterator();
                     variable value i=0;
-                    while (i++<skip && !iter.next() is Finished) {}
+                    while (i++<skip && 
+                            !iter.next() is Finished) {}
                     return iter;
                 }
             }
@@ -360,15 +361,12 @@ shared interface Iterable<out Element, out Absent=Null>
                 object iterator satisfies Iterator<Element> {
                     variable Boolean alive = true;
                     actual shared Element|Finished next() {
-                        if (alive) {
-                            value next = iter.next();
-                            if (!is Finished next) {
-                                if (take(next)) {
-                                    return next;
-                                }
-                                else {
-                                    alive = false;
-                                }
+                        if (alive, !is Finished next = iter.next()) {
+                            if (take(next)) {
+                                return next;
+                            }
+                            else {
+                                alive = false;
                             }
                         }
                         return finished;
@@ -427,10 +425,9 @@ shared interface Iterable<out Element, out Absent=Null>
             Boolean selecting(Element element)) {
         variable value count=0;
         for (elem in this) {
-            if (exists elem) {
-                if (selecting(elem)) {
-                    count++;
-                }
+            if (exists elem, 
+                selecting(elem)) {
+                count++;
             }
         }
         return count;
@@ -469,9 +466,11 @@ shared interface Iterable<out Element, out Absent=Null>
                             i++;
                             next = iter.next();
                         }
-                        if (!is Finished n=next, exists n) {
+                        assert (exists n = next);
+                        if (!is Finished n) {
                             return i++->n;
-                        } else {
+                        }
+                        else {
                             return finished;
                         }
                     }
