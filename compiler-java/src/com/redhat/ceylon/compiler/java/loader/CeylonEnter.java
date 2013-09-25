@@ -309,10 +309,13 @@ public class CeylonEnter extends Enter {
         modelLoader.loadPackageDescriptors();
         // at this point, abort if we had any errors logged
         collectTreeErrors(false);
-        // if we didn't have any errors, we can go on, none were logged so they can't be re-logged and duplicated
-        // later on
-        if(log.nerrors > 0)
-            throw new Abort();
+        // check if we abort on errors or not
+        if (options.get(OptionName.CEYLONCONTINUE) == null) {
+            // if we didn't have any errors, we can go on, none were logged so
+            // they can't be re-logged and duplicated later on
+            if(log.nerrors > 0)
+                throw new Abort();
+        }
     }
     
     public void completeCeylonTrees(List<JCCompilationUnit> trees){
