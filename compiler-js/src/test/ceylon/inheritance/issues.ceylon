@@ -16,6 +16,10 @@ void testIssues() {
     Object i266_2 = Issue266_2();
     check(i266_2 is Issue266i<String|Integer>, "Issue 266 [3]");
     check(i266_2 is Issue266i<String>, "Issue 266 [4]");
+    Object i266_3 = Issue266_3();
+    check(i266_3 is Issue266i<Issue266i<String>&Issue266two>, "Issue 266 [5]");
+    Object i266_4 = Issue266_4();
+    check(i266_4 is Issue266i<Issue266three>, "Issue 266 [6]");
 }
 
 class Issue231_1(shared actual String string) {}
@@ -26,3 +30,7 @@ class Issue231_2(string) {
 interface Issue266i<Parm> {}
 class Issue266() satisfies Issue266i<String|Integer>{}
 class Issue266_2() satisfies Issue266i<String>{}
+interface Issue266two{}
+interface Issue266three satisfies Issue266i<String>&Issue266two{}
+class Issue266_3() satisfies Issue266i<Issue266three> {}
+class Issue266_4() satisfies Issue266i<Issue266i<String>&Issue266two> {}
