@@ -34,6 +34,7 @@ import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Hidden;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
@@ -146,6 +147,7 @@ public class CeylonCompileTool extends RepoUsingTool {
     private String out;
     private List<String> module = Collections.emptyList();
     private boolean d;
+    private boolean continueOnErrors;
     private List<String> javac = Collections.emptyList();
     private String user;
     private String pass;
@@ -170,6 +172,13 @@ public class CeylonCompileTool extends RepoUsingTool {
     @Description("Disables the default module repositories and source directory.")
     public void setDisableDefaultRepos(boolean d) {
         this.d = d;
+    }
+    
+    @Hidden
+    @Option(longName="continue-on-errors")
+    @Description("Set to continue compiling even when errors are found.")
+    public void setContinueOnErrors(boolean continueOnErrors) {
+        this.continueOnErrors = continueOnErrors;
     }
     
     @OptionArgument(argumentName="url")
@@ -266,6 +275,10 @@ public class CeylonCompileTool extends RepoUsingTool {
         
         if (d) {
             arguments.add("-d");
+        }
+        
+        if (continueOnErrors) {
+            arguments.add("-continue");
         }
         
         if (offline) {
