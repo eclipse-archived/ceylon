@@ -1381,7 +1381,8 @@ public final class String
 
     @Override
     public String getRest() {
-        return span(Integer.instance(1), null);
+//        return spanFrom(Integer.instance(1));
+        return instance(value.isEmpty() ? value : value.substring(1));
     }
 
     @Ignore
