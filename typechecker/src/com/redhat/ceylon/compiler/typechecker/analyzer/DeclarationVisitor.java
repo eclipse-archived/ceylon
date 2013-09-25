@@ -692,9 +692,9 @@ public class DeclarationVisitor extends Visitor {
         if (v.isFormal()) {
             that.addError("parameters may not be annotated formal", 1312);
         }
-        if (v.isVariable()) {
-            that.addError("parameter may not be annotated variable");
-        }
+//        if (v.isVariable()) {
+//            that.addError("parameter may not be annotated variable");
+//        }
     }
 
     @Override
