@@ -612,7 +612,7 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     List<JCStatement> transform(Tree.Assertion ass) {
-        return new AssertCondList(ass).getResult();        
+        return new AssertCondList(ass).getResult();
     }
     
     class AssertCondList extends BlockCondList {
@@ -706,7 +706,7 @@ public class StatementTransformer extends AbstractTransformer {
                         make().Binary(JCTree.NE, messageSb.makeIdent(), makeNull()), 
                         throw_, null));
             }
-            return result.toList();   
+            return result.toList();
         }
 
         private JCStatement transformCommonElse(Cond cond, java.util.List<Condition> rest) {
