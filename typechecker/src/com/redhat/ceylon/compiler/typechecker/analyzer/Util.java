@@ -454,7 +454,7 @@ public class Util {
             Tree.MemberLiteral ml = (Tree.MemberLiteral) t;
             if(ml.getType() != null){
                 String qualifier = toString(ml.getType());
-                if(qualifier != null)
+                if(qualifier != null && ml.getIdentifier()!=null)
                     return qualifier + "." + ml.getIdentifier().getText();
                 return null;
             }
