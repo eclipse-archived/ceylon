@@ -36,6 +36,10 @@ shared native object process {
         write(newline); 
     }
     
+    "Flush the standard output of the 
+     virtual machine process."
+    shared native void flush();
+    
     "Print a string to the standard error of the 
      virtual machine process."
     shared native void writeError(String string);
@@ -46,6 +50,10 @@ shared native object process {
         writeError(line);
         writeError(newline);
     }
+    
+    "Flush the standard error of the 
+     virtual machine process."
+    shared native void flushError();
     
     "Read a line of input text from the standard input 
      of the virtual machine process."

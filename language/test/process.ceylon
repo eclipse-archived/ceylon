@@ -20,8 +20,10 @@ void testProcess() {
     check(process.newline.contains('\n'), "process.newline");
     process.write("write");
     process.writeLine(" and writeLine");
+    process.flush();
     process.writeError("writeError");
     process.writeErrorLine(" and writeErrorLine");
+    process.flushError();
     print("Process VM ``process.vm`` version ``process.vmVersion`` on ``process.os`` v``process.osVersion``");
     check(process.milliseconds > 0, "process.milliseconds");
     check(process.nanoseconds > 0, "process.milliseconds");

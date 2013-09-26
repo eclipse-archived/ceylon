@@ -220,12 +220,20 @@ public final class process_ {
         java.lang.System.out.print(s);
     }
     
+    public void flush() {
+        java.lang.System.out.flush();
+    }
+    
     public void writeErrorLine(@Name("line") java.lang.String s) {
         java.lang.System.err.println(s);
     }
     
     public void writeError(@Name("string") java.lang.String s) {
         java.lang.System.err.print(s);
+    }
+    
+    public void flushError() {
+        java.lang.System.err.flush();
     }
     
     public java.lang.String readLine() {
