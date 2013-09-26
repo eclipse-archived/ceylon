@@ -691,17 +691,18 @@ String result = middleObject.string;</programlisting>
              
              <itemizedlist>
                  <listitem>
-                     <para>the resource expression, if any, is evaluated, and then 
-                     <literal>open()</literal> is called on the resulting resource 
-                     instance, then</para>
+                     <para>the resource expressions, if any, are evaluated in the order
+                     the occur, and then <literal>open()</literal> is called on each 
+                     resulting resource instance, in the same order, then</para>
                  </listitem>
                  <listitem>
                      <para>the <literal>try</literal> block is executed, then</para>
                  </listitem>
                  <listitem>
-                     <para><literal>close()</literal> is called on the resource 
-                     instance, if any, with the exception that propagated out of 
-                     the <literal>try</literal> block, if any, then</para>
+                     <para><literal>close()</literal> is called on the resource instances, 
+                     if any, in the reverse order that the resource expressions occur, 
+                     with the exception that propagated out of the <literal>try</literal> 
+                     block, if any, then</para>
                  </listitem>
                  <listitem>
                      <para>if an exception did propagate out of the <literal>try</literal> 
@@ -710,8 +711,9 @@ String result = middleObject.string;</programlisting>
                      then</para>
                  </listitem>
                  <listitem>
-                     <para>the <literal>finally</literal> block, if any, is 
-                     executed.</para>
+                     <para>the <literal>finally</literal> block, if any, is executed, 
+                     even in the case where an exception propagates out of the whole
+                     construct.</para>
                  </listitem>
              </itemizedlist>
              
