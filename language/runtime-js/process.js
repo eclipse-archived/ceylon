@@ -184,6 +184,8 @@ if ((typeof process !== "undefined") && (process.stderr !== undefined)) {
     process$proto.writeErrorLine = process$proto.writeLine;    
 }
 
+process$proto.flush = function(){}
+process$proto.flushError=function(){}
 process$proto.readLine = function() {
     return String$("", 0);//TODO
 }
