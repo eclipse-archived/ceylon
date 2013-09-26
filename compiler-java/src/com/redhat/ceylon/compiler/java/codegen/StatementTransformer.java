@@ -690,6 +690,7 @@ public class StatementTransformer extends AbstractTransformer {
             if (definitelyNotSatisfied(conditions)) {
                 return List.<JCTree.JCStatement>of(makeThrowAssertionFailure(conditions.get(0)));
             }
+            at(this.ass);
             List<JCStatement> stmts = transformList(conditions);
             ListBuffer<JCStatement> result = ListBuffer.lb();
             if (isMulti()) {
@@ -745,6 +746,7 @@ public class StatementTransformer extends AbstractTransformer {
         }
 
         private JCStatement makeThrowAssertionFailure(Condition condition) {
+            at(condition);
             AssertionExceptionMessageBuilder msg = new AssertionExceptionMessageBuilder(null);
             msg.appendViolatedCondition(condition);
             msg.prependAssertionDoc(ass);
