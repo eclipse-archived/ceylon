@@ -78,7 +78,7 @@ public abstract class LazyModuleManager extends ModuleManager {
                     // allows more than we do, such as having direct imports of the same module with different versions
                     // as long as they are not reexported, but we don't support that since they all go in the same
                     // classpath (direct imports of compiled modules)
-                    String error = "Trying to import or compile two different versions of the same module: "+
+                    String error = "source code imports two different versions of the same module: "+
                             module.getNameAsString()+" ("+module.getVersion()+" and "+loadedModule.getVersion()+")";
                     addErrorToModule(dependencyTree.getFirst(), error);
                     return;

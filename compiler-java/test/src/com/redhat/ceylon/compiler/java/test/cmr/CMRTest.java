@@ -678,7 +678,7 @@ public class CMRTest extends CompilerTest {
         Assert.assertEquals(Boolean.FALSE, result);
         
         compareErrors(collector.get(Diagnostic.Kind.ERROR), 
-                new CompilerError(20, "Trying to import or compile two different versions of the same module: a (1 and 2)"));
+                new CompilerError(20, "source code imports two different versions of the same module: a (1 and 2)"));
     }
 
     @Test
