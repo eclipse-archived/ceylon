@@ -2769,7 +2769,15 @@ annotations returns [AnnotationList annotationList]
       )?
       (
         annotation 
-        { $annotationList.addAnnotation($annotation.annotation); }
+        { $annotationList.addAnnotation($annotation.annotation); 
+          new com.redhat.ceylon.compiler.typechecker.tree.Visitor() { 
+              public void visit(StringLiteral that) {
+                  if (that.getToken().getType()==VERBATIM_STRING)
+                      that.getToken().setType(AVERBATIM_STRING);
+                  else
+                      that.getToken().setType(ASTRING_LITERAL);
+              }
+          }.visit($annotation.annotation); }
       )*
     ;
 
