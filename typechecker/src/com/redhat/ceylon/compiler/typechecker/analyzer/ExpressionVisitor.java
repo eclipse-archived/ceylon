@@ -5652,7 +5652,8 @@ public class ExpressionVisitor extends Visitor {
                 that.setWantsDeclaration(true);
                 if (that instanceof Tree.ClassLiteral) {
                     if (!(d instanceof Class)) {
-                        that.getType().addError("not a class");
+                        that.getType().addError("referenced declaration is not a not a class" +
+                                getDeclarationReferenceSuggestion(d));
                     }
                     else {
 //                        checkNonlocal(that, d);
@@ -5661,19 +5662,22 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else if (that instanceof Tree.InterfaceLiteral) {
                     if (!(d instanceof Interface)) {
-                        that.getType().addError("not an interface");
+                        that.getType().addError("referenced declaration is not a not an interface" +
+                                getDeclarationReferenceSuggestion(d));
                     }
                     that.setTypeModel(unit.getInterfaceDeclarationType());
                 }
                 else if (that instanceof Tree.AliasLiteral) {
                     if (!(d instanceof TypeAlias)) {
-                        that.getType().addError("not a type alias");
+                        that.getType().addError("referenced declaration is not a not a type alias" +
+                                getDeclarationReferenceSuggestion(d));
                     }
                     that.setTypeModel(unit.getAliasDeclarationType());
                 }
                 else if (that instanceof Tree.TypeParameterLiteral) {
                     if (!(d instanceof TypeParameter)) {
-                        that.getType().addError("not a type parameter");
+                        that.getType().addError("referenced declaration is not a not a type parameter" +
+                                getDeclarationReferenceSuggestion(d));
                     }
                     that.setTypeModel(unit.getTypeParameterDeclarationType());
                 }
@@ -5752,7 +5756,8 @@ public class ExpressionVisitor extends Visitor {
                 checkNonlocal(that, result);
             }
             else {
-                that.getIdentifier().addError("not a value");
+                that.getIdentifier().addError("referenced declaration is not a value" + 
+                        getDeclarationReferenceSuggestion(result));
             }
             if (that.getBroken()) {
                 that.addError("keyword object may not appear here: " +
@@ -5766,7 +5771,8 @@ public class ExpressionVisitor extends Visitor {
                 checkNonlocal(that, result);
             }
             else {
-                that.getIdentifier().addError("not a function");
+                that.getIdentifier().addError("referenced declaration is not a function" + 
+                        getDeclarationReferenceSuggestion(result));
             }
             that.setWantsDeclaration(true);
             that.setTypeModel(unit.getFunctionDeclarationType());
@@ -5775,6 +5781,29 @@ public class ExpressionVisitor extends Visitor {
             checkNonlocal(that, result);
             setMetamodelType(that, result);
         }
+    }
+
+    private String getDeclarationReferenceSuggestion(Declaration result) {
+        String name = ": " + result.getName(unit);
+        if (result instanceof Method) {
+            return name + " is a function";
+        }
+        else if (result instanceof Value) {
+            return name + " is a value";
+        }
+        else if (result instanceof Class) {
+            return name + " is a class";
+        }
+        else if (result instanceof Interface) {
+            return name + " is an interface";
+        }
+        else if (result instanceof TypeAlias) {
+            return name + " is a type alias";
+        }
+        else if (result instanceof TypeParameter) {
+            return name + " is a type parameter";
+        }
+        return "";
     }
 
     private void setMetamodelType(Tree.MemberLiteral that, Declaration result) {
