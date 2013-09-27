@@ -91,6 +91,7 @@ import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
+import com.sun.tools.javac.util.Position;
 
 /**
  * This transformer deals with class/interface declarations
@@ -2027,6 +2028,7 @@ public class ClassTransformer extends AbstractTransformer {
                     if (daoTransformation != null && (daoTransformation instanceof DaoCompanion == false || body != null)) {
                         DaoBody daoTrans = (body == null) ? daoAbstract : daoThis;
                         MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, methodModel);
+                        overloadBuilder.location(null);
                         MethodDefinitionBuilder overloadedMethod = new DefaultedArgumentMethod(daoTrans, methodModel)
                             .makeOverload(
                                 overloadBuilder, 
@@ -2406,6 +2408,7 @@ public class ClassTransformer extends AbstractTransformer {
                         }
                         initedVars = true;
                         JCExpression defaultValueMethodName = naming.makeDefaultedParamMethod(overloaded.makeDefaultArgumentValueMethodQualifier(), parameterModel);
+                        at(null);
                         defaultArgument = make().Apply(makeTypeArguments(overloaded), 
                                 defaultValueMethodName, 
                                 ListBuffer.<JCExpression>lb().appendList(args).toList());
@@ -2658,7 +2661,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         @Override
         protected void resultType(MethodDefinitionBuilder overloadBuilder) {
-            overloadBuilder.resultType(method, 0);            
+            overloadBuilder.resultType(method, 0);
         }
 
         @Override

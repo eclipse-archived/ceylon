@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
@@ -85,6 +86,9 @@ public class MethodDefinitionBuilder {
     private boolean built = false;
 
     private JCExpression defaultValue;
+
+    private boolean haveLocation = false;
+    private Node location;
 
     public static MethodDefinitionBuilder method(AbstractTransformer gen, Method method) {
         return new MethodDefinitionBuilder(gen, false, gen.naming.selector(method));
@@ -152,12 +156,20 @@ public class MethodDefinitionBuilder {
         return result;
     }
     
+    public MethodDefinitionBuilder location(Node at) {
+        this.haveLocation = true;
+        this.location = at;
+        return this;
+    }
+    
     public JCTree.JCMethodDecl build() {
         if (built) {
             throw new IllegalStateException();
         }
         built = true;
-        
+        if (haveLocation) {
+            gen.at(location);
+        }
         ListBuffer<JCVariableDecl> params = ListBuffer.lb();
         for (ParameterDefinitionBuilder pdb : this.params) {
             if (!Annotations.includeModel(this.annotationFlags)) {

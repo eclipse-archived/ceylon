@@ -137,6 +137,15 @@ public abstract class AbstractTransformer implements Transformation {
         javaPositionsRetriever = positionsRetriever;
     }
     
+    public int position(Node node) {
+        if (node == null || node.getToken() == null) {
+            return Position.NOPOS;
+        } else {
+            Token token = node.getToken();
+            return getMap().getPosition(token.getLine(), token.getCharPositionInLine());
+        }
+    }
+    
     @Override
     public Factory at(Node node) {
         if (node == null) {
@@ -183,6 +192,12 @@ public abstract class AbstractTransformer implements Transformation {
     public SavedPosition savePosition(int at) {
         SavedPosition saved = new SavedPosition(make.pos);
         make.at(at);
+        return saved;
+    }
+    
+    public SavedPosition savePosition(Node node) {
+        SavedPosition saved = new SavedPosition(make.pos);
+        at(node);
         return saved;
     }
     

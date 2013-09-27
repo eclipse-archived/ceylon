@@ -2629,6 +2629,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private JCExpression transformInvocation(Invocation invocation, CallBuilder callBuilder,
             TransformedInvocationPrimary transformedPrimary) {
+        invocation.location(callBuilder);
         if(invocation.getQmePrimary() != null 
                 && isJavaArray(invocation.getQmePrimary().getTypeModel())
                 && transformedPrimary.selector != null
@@ -2655,6 +2656,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         Tree.QualifiedTypeExpression qte = (Tree.QualifiedTypeExpression)invocation.getPrimary();
         Declaration declaration = qte.getDeclaration();
+        invocation.location(callBuilder);
         if (!Strategy.generateInstantiator(declaration)) {
             JCExpression qualifier;
             JCExpression qualifierType;
@@ -2706,6 +2708,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression resultExpr;
         Tree.BaseTypeExpression type = (Tree.BaseTypeExpression)invocation.getPrimary();
         Declaration declaration = type.getDeclaration();
+        invocation.location(callBuilder);
         if (Strategy.generateInstantiator(declaration)) {
             resultExpr = callBuilder
                     .typeArguments(List.<JCExpression>nil())

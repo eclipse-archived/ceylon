@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
@@ -42,6 +43,9 @@ public class CallBuilder {
     private final ListBuffer<JCStatement> statements = ListBuffer.<JCStatement>lb();
     private boolean voidMethod;
     
+    private boolean haveLocation = false;
+    private Node location;
+    
     private CallBuilder(AbstractTransformer gen) {
         this.gen = gen;
     }
@@ -51,6 +55,12 @@ public class CallBuilder {
         return builder;
     }
 
+    public CallBuilder location(Node at) {
+        haveLocation = true;
+        this.location = at;
+        return this;
+    }
+    
     public CallBuilder arrayRead(JCExpression expr) {
         this.methodOrClass = expr;
         this.instantiateQualfier = null;
@@ -199,6 +209,9 @@ public class CallBuilder {
         } else {
             newEncl = this.instantiateQualfier != null ? this.instantiateQualfier.expression : null;
             arguments = ExpressionAndType.toExpressionList(this.argumentsAndTypes);
+        }
+        if (haveLocation) {
+            gen.at(this.location);
         }
         switch (kind) {
         case APPLY:

@@ -266,6 +266,10 @@ abstract class Invocation {
         return false;
     }
 
+    public void location(CallBuilder callBuilder) {
+        callBuilder.location(getNode());
+    }
+
 }
 
 abstract class SimpleInvocation extends Invocation {
@@ -508,6 +512,11 @@ class IndirectInvocation extends SimpleInvocation {
         }
         return gen.expressionGen().transformArg(this, argIndex);
     }
+    
+    @Override
+    public void location(CallBuilder callBuilder) {
+        callBuilder.location(((Tree.InvocationExpression)getNode()).getPositionalArgumentList());
+    }
 
 }
 
@@ -693,6 +702,11 @@ class PositionalInvocation extends DirectInvocation {
     protected boolean hasDefaultArgument(int ii) {
         return getParameters().get(ii).isDefaulted();
     }
+    
+    @Override
+    public void location(CallBuilder callBuilder) {
+        callBuilder.location(positional);
+    }
 }
 
 /**
@@ -817,6 +831,11 @@ class CallableInvocation extends DirectInvocation {
     protected ProducedType getArgumentType(int argIndex) {
         return callableParameters.get(argIndex).getType();
     }
+    
+    @Override
+    public void location(CallBuilder callBuilder) {
+        callBuilder.location(null);
+    }
 }
 
 /**
@@ -873,6 +892,11 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
     @Override
     protected Expression getArgumentExpression(int argIndex) {
         throw new RuntimeException("I override getTransformedArgumentExpression(), so should never be called");
+    }
+    
+    @Override
+    public void location(CallBuilder callBuilder) {
+        callBuilder.location(null);
     }
 }
 
@@ -1414,5 +1438,10 @@ class NamedArgumentInvocation extends Invocation {
             result = callVarName.makeIdent();
         }
         return new TransformedInvocationPrimary(result, actualPrimExpr.selector);
+    }
+    
+    @Override
+    public void location(CallBuilder callBuilder) {
+        callBuilder.location(namedArgumentList);
     }
 }
