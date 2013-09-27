@@ -45,6 +45,20 @@ public class LiteralVisitor extends Visitor {
     public void visit(StringLiteral that) {
         int type = that.getToken().getType();
         String text = that.getText();
+        if (type==AVERBATIM_STRING ||
+                type==ASTRING_LITERAL) {
+                Matcher m = DOC_LINK_PATTERN.matcher(text);
+                while (m.find()) {
+                    String group = m.group();
+                    int start = that.getStartIndex()+m.start();
+                    int end = that.getStartIndex()+m.end();
+                    CommonToken token = new CommonToken(ASTRING_LITERAL, group);
+                    token.setStartIndex(start);
+                    token.setStopIndex(end-1);
+                    token.setTokenIndex(that.getToken().getTokenIndex());
+                    that.addDocLink(new Tree.DocLink(token));
+                }
+            }
         if (type!=STRING_MID && 
             type!=STRING_END) {
             indent = getIndentPosition(that);
@@ -78,16 +92,6 @@ public class LiteralVisitor extends Visitor {
         if (type!=STRING_MID && 
             type!=STRING_START) {
             indent = 0;
-        }
-        if (type==AVERBATIM_STRING ||
-            type==ASTRING_LITERAL) {
-            Matcher m = DOC_LINK_PATTERN.matcher(result);
-            while (m.find()) {
-                CommonToken token = new CommonToken(ASTRING_LITERAL, m.group());
-                token.setStartIndex(m.start()+1);
-                token.setStopIndex(m.end());
-                that.addDocLink(new Tree.DocLink(token));
-            }
         }
     }
 
@@ -212,8 +216,9 @@ public class LiteralVisitor extends Visitor {
     }
     
     private static void interpolateEscapes(final StringBuilder result, Node node) {
-        Matcher m = CHARACTER_ESCAPE_PATTERN.matcher(result);
-        while (m.find()) {
+        Matcher m;
+        int start=0;
+        while ((m = CHARACTER_ESCAPE_PATTERN.matcher(result)).find(start)) {
             String hex = m.group(2);
             String name = m.group(3);
             if (name!=null) {
@@ -288,6 +293,7 @@ public class LiteralVisitor extends Visitor {
                 }
                 result.replace(m.start(), m.end(), Character.toString(ch));
             }
+            start = m.start()+1;
         }
     }
     
