@@ -5652,7 +5652,7 @@ public class ExpressionVisitor extends Visitor {
                 that.setWantsDeclaration(true);
                 if (that instanceof Tree.ClassLiteral) {
                     if (!(d instanceof Class)) {
-                        that.getType().addError("referenced declaration is not a not a class" +
+                        that.getType().addError("referenced declaration is not a class" +
                                 getDeclarationReferenceSuggestion(d));
                     }
                     else {
@@ -5662,21 +5662,21 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else if (that instanceof Tree.InterfaceLiteral) {
                     if (!(d instanceof Interface)) {
-                        that.getType().addError("referenced declaration is not a not an interface" +
+                        that.getType().addError("referenced declaration is not an interface" +
                                 getDeclarationReferenceSuggestion(d));
                     }
                     that.setTypeModel(unit.getInterfaceDeclarationType());
                 }
                 else if (that instanceof Tree.AliasLiteral) {
                     if (!(d instanceof TypeAlias)) {
-                        that.getType().addError("referenced declaration is not a not a type alias" +
+                        that.getType().addError("referenced declaration is not a type alias" +
                                 getDeclarationReferenceSuggestion(d));
                     }
                     that.setTypeModel(unit.getAliasDeclarationType());
                 }
                 else if (that instanceof Tree.TypeParameterLiteral) {
                     if (!(d instanceof TypeParameter)) {
-                        that.getType().addError("referenced declaration is not a not a type parameter" +
+                        that.getType().addError("referenced declaration is not a type parameter" +
                                 getDeclarationReferenceSuggestion(d));
                     }
                     that.setTypeModel(unit.getTypeParameterDeclarationType());
