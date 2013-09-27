@@ -36,6 +36,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class JsCompiler {
@@ -192,7 +193,8 @@ public class JsCompiler {
     protected boolean stopOnError() {
         errCount = 0;
         for (Message err : unitErrors) {
-            if (err instanceof AnalysisError) {
+            if (err instanceof AnalysisError ||
+                err instanceof UnexpectedError) {
                 errCount++;
             }
             errors.add(err);
