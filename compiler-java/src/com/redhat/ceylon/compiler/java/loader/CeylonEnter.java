@@ -53,6 +53,7 @@ import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
+import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -489,7 +490,7 @@ public class CeylonEnter extends Enter {
                     logError(getPosition(node), "ceylon", err.getMessage());
                 }
                 @Override
-                protected void out(AnalysisWarning err) {
+                protected void out(UnsupportedError err) {
                     Node node = getIdentifyingNode(err.getTreeNode());
                     if (allowWarnings) {
                         logWarning(getPosition(node), "ceylon", err.getMessage());
@@ -526,7 +527,7 @@ public class CeylonEnter extends Enter {
                 @Override
                 protected void out(AnalysisError err) {}
                 @Override
-                protected void out(AnalysisWarning err) {}
+                protected void out(UnsupportedError err) {}
                 @Override
                 protected void out(Node that, String message) {}
             });
