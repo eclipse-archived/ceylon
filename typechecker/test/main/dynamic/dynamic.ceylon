@@ -252,3 +252,9 @@ void worserefinement() {
         }
     }
 }
+
+shared void printVariadic(dynamic args) {
+     dynamic {
+          printVaradic(*args);
+     }
+}

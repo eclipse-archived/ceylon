@@ -2805,10 +2805,12 @@ public class ExpressionVisitor extends Visitor {
         if (e!=null) {
             ProducedType t = e.getTypeModel();
             if (t!=null) {
-                if (!unit.isIterableType(t)) {
-                    e.addError("spread argument is not iterable: " + 
-                            t.getProducedTypeName(unit) + 
-                            " is not a subtype of Iterable");
+                if (!isTypeUnknown(t)) {
+                    if (!unit.isIterableType(t)) {
+                        e.addError("spread argument is not iterable: " + 
+                                t.getProducedTypeName(unit) + 
+                                " is not a subtype of Iterable");
+                    }
                 }
                 that.setTypeModel(t);
             }
