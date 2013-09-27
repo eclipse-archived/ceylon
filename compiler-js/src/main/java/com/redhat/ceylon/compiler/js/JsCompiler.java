@@ -77,7 +77,7 @@ public class JsCompiler {
             Unit u = that.getImportModel().getDeclaration().getUnit();
             if ((u.getFilename() != null && !u.getFilename().endsWith(".ceylon"))
                     || u.getPackage().getModule().isJava()) {
-                that.addError("cannot import Java declarations in Javascript");
+                that.addUnexpectedError("cannot import Java declarations in Javascript");
             }
             super.visit(that);
         }
@@ -85,7 +85,7 @@ public class JsCompiler {
         public void visit(Tree.ImportModule that) {
             if (hasErrors(that)) return;
             if (((Module)that.getImportPath().getModel()).isJava()) {
-                that.getImportPath().addError("cannot import Java modules in Javascript");
+                that.getImportPath().addUnexpectedError("cannot import Java modules in Javascript");
             }
             super.visit(that);
         }
@@ -96,7 +96,7 @@ public class JsCompiler {
                 Unit u = that.getDeclaration().getUnit();
                 if ((u.getFilename() != null && !u.getFilename().endsWith(".ceylon"))
                         || (u.getPackage() != null && u.getPackage().getModule() != null && u.getPackage().getModule().isJava())) {
-                    that.addError("cannot call Java declarations in Javascript");
+                    that.addUnexpectedError("cannot call Java declarations in Javascript");
                 }
             }
             super.visit(that);
@@ -108,7 +108,7 @@ public class JsCompiler {
                 Unit u = that.getDeclaration().getUnit();
                 if ((u.getFilename() != null && !u.getFilename().endsWith(".ceylon"))
                         || (u.getPackage() != null && u.getPackage().getModule() != null && u.getPackage().getModule().isJava())) {
-                    that.addError("cannot call Java declarations in Javascript");
+                    that.addUnexpectedError("cannot call Java declarations in Javascript");
                 }
             }
             super.visit(that);
