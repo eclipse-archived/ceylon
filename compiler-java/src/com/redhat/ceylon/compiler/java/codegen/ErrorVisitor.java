@@ -20,7 +20,7 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.Util;
-import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
+import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
@@ -64,7 +64,7 @@ public class ErrorVisitor extends Visitor implements NaturalVisitor {
         if (allowWarnings) {
             // skip warnings
             for(Message message : that.getErrors()){
-                if(!(message instanceof AnalysisWarning)
+                if(!(message instanceof UnsupportedError)
                         && !(message instanceof UsageWarning))
                     return true;
             }
