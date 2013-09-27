@@ -193,13 +193,13 @@ public class PhasedUnit {
             for (int i=0; i<fn.length(); i = fn.offsetByCodePoints(i, 1)) {
                 int cp = fn.codePointAt(i);
                 if (cp>127) {
-                    compilationUnit.addFilenameWarning("source file name has non-ASCII characters: " + fn);
+                    compilationUnit.addUsageWarning("source file name has non-ASCII characters: " + fn);
                 }
             }
             for (Unit u: unit.getPackage().getUnits()) {
                 if (!u.equals(unit) && 
                         u.getFilename().equalsIgnoreCase(unit.getFilename())) {
-                    compilationUnit.addFilenameWarning("source file names differ only by case: " +
+                    compilationUnit.addUsageWarning("source file names differ only by case: " +
                             unit.getFilename() + " and " + u.getFilename());
                 }
             }

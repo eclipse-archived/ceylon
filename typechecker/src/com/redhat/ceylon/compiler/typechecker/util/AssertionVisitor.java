@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
-import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
+import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
@@ -176,7 +176,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             loc(err));
     }
 
-    protected void out(AnalysisWarning err) {
+    protected void out(UnsupportedError err) {
         warnings++;
         System.out.println(
             "warning [" + 
@@ -237,9 +237,9 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
                     else if (err instanceof AnalysisError) {
                         out( (AnalysisError) err );
                     }
-                    else if (err instanceof AnalysisWarning) {
-                        if (includeWarnings()) {
-                            out( (AnalysisWarning) err );
+                    else if (err instanceof UnsupportedError) {
+                        if (includeUnsupportedErrors()) {
+                            out( (UnsupportedError) err );
                         }
                     } 
                     else if (err instanceof UsageWarning) {
@@ -263,7 +263,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         }
     }
     
-    protected boolean includeWarnings() {
+    protected boolean includeUnsupportedErrors() {
         return true;
     }
     

@@ -30,7 +30,7 @@ public class TypeCheckerBuilder {
     private final VFS vfs = new VFS();
     private boolean verifyDependencies = true;
     private AssertionVisitor assertionVisitor = new AssertionVisitor() { 
-        @Override protected boolean includeWarnings() {
+        @Override protected boolean includeUnsupportedErrors() {
             return false;
         }
     };

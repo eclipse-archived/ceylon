@@ -1199,6 +1199,7 @@ public class DeclarationVisitor extends Visitor {
         scope = s;
     }*/
     
+    @Override
     public void visit(Tree.Annotation that) {
         super.visit(that);
         that.getPrimary().setScope(pkg);

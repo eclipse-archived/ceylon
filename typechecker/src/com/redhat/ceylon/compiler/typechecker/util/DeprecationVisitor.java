@@ -33,4 +33,11 @@ public class DeprecationVisitor extends Visitor {
         			d.getName());
         }
     }
+
+    @Override
+    public void visit(Tree.CompilerAnnotation that) {
+        super.visit(that);
+        that.addUsageWarning("compiler annotations are an unsupported language feature");
+    }
+    
 }
