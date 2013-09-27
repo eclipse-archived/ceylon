@@ -367,7 +367,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.SatisfiesCondition that) {
         super.visit(that);
-        that.addWarning("satisfies conditions not yet supported");
+        that.addUnsupportedError("satisfies conditions not yet supported");
     }
     
     @Override public void visit(Tree.ExistsOrNonemptyCondition that) {
@@ -1249,7 +1249,7 @@ public class ExpressionVisitor extends Visitor {
                 int aps = apl.getParameters().size();
                 if (cps!=aps) {
                     that.getParameterList()
-                            .addWarning("wrong number of initializer parameters declared by class alias: " + 
+                            .addUnsupportedError("wrong number of initializer parameters declared by class alias: " + 
                                     alias.getName());
                 }
                 
@@ -1270,7 +1270,7 @@ public class ExpressionVisitor extends Visitor {
                     if (pal!=null) {
                         List<PositionalArgument> pas = pal.getPositionalArguments();
                         if (cps!=pas.size()) {
-                            pal.addWarning("wrong number of arguments for aliased class: " + 
+                            pal.addUnsupportedError("wrong number of arguments for aliased class: " + 
                                             alias.getName() + " has " + cps + " parameters");
                         }
                         for (int i=0; i<pas.size() && i<cps && i<aps; i++) {
@@ -1279,20 +1279,20 @@ public class ExpressionVisitor extends Visitor {
                             Parameter cparam = cpl.getParameters().get(i);
                             if (pa instanceof Tree.ListedArgument) {
                                 if (cparam.isSequenced()) {
-                                    pa.addWarning("argument to variadic parameter of aliased class must be spread");
+                                    pa.addUnsupportedError("argument to variadic parameter of aliased class must be spread");
                                 }
                                 Tree.Expression e = ((Tree.ListedArgument) pa).getExpression();
                                 checkAliasArg(aparam, e);
                             }
                             else if (pa instanceof Tree.SpreadArgument) {
                                 if (!cparam.isSequenced()) {
-                                    pa.addWarning("argument to non-variadic parameter of aliased class may not be spread");
+                                    pa.addUnsupportedError("argument to non-variadic parameter of aliased class may not be spread");
                                 }
                                 Tree.Expression e = ((Tree.SpreadArgument) pa).getExpression();
                                 checkAliasArg(aparam, e);
                             }
                             else if (pa!=null) {
-                                pa.addWarning("argument to parameter or aliased class must be listed or spread");
+                                pa.addUnsupportedError("argument to parameter or aliased class must be listed or spread");
                             }
                         }
                     }
@@ -1308,12 +1308,12 @@ public class ExpressionVisitor extends Visitor {
             if (term instanceof Tree.BaseMemberExpression) {
                 Declaration d = ((Tree.BaseMemberExpression)term).getDeclaration();
                 if (d!=null && !d.equals(p)) {
-                    e.addWarning("argument must be a parameter reference to " +
+                    e.addUnsupportedError("argument must be a parameter reference to " +
                             p.getName());
                 }
             }
             else {
-                e.addWarning("argument must be a parameter reference to " +
+                e.addUnsupportedError("argument must be a parameter reference to " +
                             p.getName());
             }
         }
@@ -1550,7 +1550,7 @@ public class ExpressionVisitor extends Visitor {
                 checkAssignable(et, unit.getType(unit.getExceptionDeclaration()), 
                         e, "thrown expression must be an exception");
                 if (et.getDeclaration().isParameterized()) {
-                    e.addWarning("parameterized types in throw not yet supported");
+                    e.addUnsupportedError("parameterized types in throw not yet supported");
                 }
             }
         }
@@ -3706,12 +3706,12 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.Extends that) {
         super.visit(that);
-        that.addWarning("extends operator not yet supported");
+        that.addUnsupportedError("extends operator not yet supported");
     }
     
     @Override public void visit(Tree.Satisfies that) {
         super.visit(that);
-        that.addWarning("satisfies operator not yet supported");
+        that.addUnsupportedError("satisfies operator not yet supported");
     }
     
     @Override public void visit(Tree.InOp that) {
@@ -4669,10 +4669,10 @@ public class ExpressionVisitor extends Visitor {
                         "catch type must be an exception type");
                 TypeDeclaration d = vt.getTypeModel().getDeclaration();
                 if (d instanceof IntersectionType) {
-                    vt.addWarning("intersection types in catch not yet supported");
+                    vt.addUnsupportedError("intersection types in catch not yet supported");
                 }
                 else if (d.isParameterized()) {
-                    vt.addWarning("parameterized types in catch not yet supported");
+                    vt.addUnsupportedError("parameterized types in catch not yet supported");
                 }
             }
         }
@@ -4770,7 +4770,7 @@ public class ExpressionVisitor extends Visitor {
     @Override
     public void visit(Tree.SatisfiesCase that) {
         super.visit(that);
-        that.addWarning("satisfies cases are not yet supported");
+        that.addUnsupportedError("satisfies cases are not yet supported");
     }
     
     @Override
@@ -4913,7 +4913,7 @@ public class ExpressionVisitor extends Visitor {
                         (!ftv.startsWith("#") && etv.startsWith("#")) ||
                         (ftv.startsWith("$") && !etv.startsWith("$")) ||
                         (!ftv.startsWith("$") && etv.startsWith("$")))) {
-                        cci.addWarning("literal cases with mixed bases not yet supported");
+                        cci.addUnsupportedError("literal cases with mixed bases not yet supported");
                     }
                     else if (etv.equals(ftv) && eneg==fneg) {
                         cci.addError("literal cases must be disjoint: " +
@@ -5274,7 +5274,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 if (td.isParameterized() &&
                         type.getSupertype(unit.getExceptionDeclaration())!=null) {
-                    et.addWarning("generic exception types not yet supported");
+                    et.addUnsupportedError("generic exception types not yet supported");
                 }
             }
         }

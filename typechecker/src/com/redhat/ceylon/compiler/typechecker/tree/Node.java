@@ -8,7 +8,7 @@ import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
-import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
+import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
@@ -207,8 +207,8 @@ public abstract class Node {
         errors.add( new UnexpectedError(this, message) );
     }
     
-    public void addWarning(String message) {
-        errors.add( new AnalysisWarning(this, message) );
+    public void addUnsupportedError(String message) {
+        errors.add( new UnsupportedError(this, message) );
     }
 
     public void addUsageWarning(String message) {

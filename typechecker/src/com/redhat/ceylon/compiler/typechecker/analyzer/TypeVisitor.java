@@ -1115,17 +1115,17 @@ public class TypeVisitor extends Visitor {
                 }
                 if (td instanceof TypeParameter) {
             		if (foundTypeParam) {
-            			st.addWarning("type parameter upper bounds are not yet supported in combination with other bounds");
+            			st.addUnsupportedError("type parameter upper bounds are not yet supported in combination with other bounds");
             		}
             		else if (std instanceof TypeParameter) {
                 		if (foundClass||foundInterface) {
-                			st.addWarning("type parameter upper bounds are not yet supported in combination with other bounds");
+                			st.addUnsupportedError("type parameter upper bounds are not yet supported in combination with other bounds");
                 		}
                 		foundTypeParam = true;
                 	}
             		else if (std instanceof Class) {
                 		if (foundClass) {
-                            st.addWarning("multiple class upper bounds are not yet supported");
+                            st.addUnsupportedError("multiple class upper bounds are not yet supported");
                 		}
                 		foundClass = true;
                 	}

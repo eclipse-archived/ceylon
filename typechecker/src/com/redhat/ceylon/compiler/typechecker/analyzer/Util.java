@@ -273,7 +273,7 @@ public class Util {
         	addTypeUnknownError(node, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-        	node.addWarning(message + message(type, " is not assignable to ", 
+        	node.addUnsupportedError(message + message(type, " is not assignable to ", 
         			supertype, node.getUnit()));
         }
     }

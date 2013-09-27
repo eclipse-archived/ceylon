@@ -318,7 +318,7 @@ public class DeclarationVisitor extends Visitor {
         //TODO: is this still necessary??
         if (c.isClassOrInterfaceMember() && 
                 c.getContainer() instanceof TypedDeclaration) {
-            that.addWarning("nested classes of inner classes are not yet supported");
+            that.addUnsupportedError("nested classes of inner classes are not yet supported");
         }
         if (c.isAbstract() && c.isFinal()) {
             that.addError("class may not be both abstract and final: " + 
@@ -351,7 +351,7 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.InterfaceDefinition that) {
         super.visit(that);
         if (that.getAdaptedTypes()!=null) {
-            that.addWarning("introductions are not yet supported");
+            that.addUnsupportedError("introductions are not yet supported");
         }
     }
     
@@ -847,7 +847,7 @@ public class DeclarationVisitor extends Visitor {
         }
         else {
             Tree.ParameterList pl = that.getParameterLists().get(0);
-            pl.addWarning("variables with parameter lists are not yet supported");
+            pl.addUnsupportedError("variables with parameter lists are not yet supported");
             if (that.getType() instanceof Tree.ValueModifier) {
                 that.getType().addError("variables with parameters may not be declared using the keyword value");
             }
@@ -1126,13 +1126,13 @@ public class DeclarationVisitor extends Visitor {
         exitScope(o);
 
         if ( that.getAbstractedType()!=null ) {
-            that.addWarning("lower bound type constraints are not yet supported");
+            that.addUnsupportedError("lower bound type constraints are not yet supported");
         }
         /*if ( that.getCaseTypes()!=null ) {
             that.addWarning("enumerated type constraints are not yet supported");
         }*/
         if ( that.getParameterList()!=null ) {
-            that.addWarning("parameter bounds are not yet supported");
+            that.addUnsupportedError("parameter bounds are not yet supported");
             that.getParameterList().getModel().setFirst(true);
             p.addParameterList(that.getParameterList().getModel());
         }
@@ -1173,7 +1173,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.SatisfiesCondition that) {
         super.visit(that);
-        that.addWarning("satisfies conditions are not yet supported");
+        that.addUnsupportedError("satisfies conditions are not yet supported");
     }
     
     /*@Override
