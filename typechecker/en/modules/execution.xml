@@ -692,7 +692,7 @@ String result = middleObject.string;</programlisting>
              <itemizedlist>
                  <listitem>
                      <para>the resource expressions, if any, are evaluated in the order
-                     the occur, and then <literal>open()</literal> is called on each 
+                     they occur, and then <literal>open()</literal> is called on each 
                      resulting resource instance, in the same order, then</para>
                  </listitem>
                  <listitem>
