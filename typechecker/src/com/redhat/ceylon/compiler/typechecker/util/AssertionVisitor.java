@@ -234,14 +234,14 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
                     else if (err instanceof ParseError) {
                         out( that, (ParseError) err );
                     }
-                    else if (err instanceof AnalysisError) {
-                        out( (AnalysisError) err );
-                    }
                     else if (err instanceof UnsupportedError) {
                         if (includeUnsupportedErrors()) {
                             out( (UnsupportedError) err );
                         }
                     } 
+                    else if (err instanceof AnalysisError) {
+                        out( (AnalysisError) err );
+                    }
                     else if (err instanceof UsageWarning) {
                         if (usageWarnings) {
                             out( (UsageWarning) err );
