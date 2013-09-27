@@ -362,7 +362,7 @@ public class JsCompiler {
     public int printErrors(PrintStream out) {
         int count = 0;
         for (Message err: errors) {
-            if (err instanceof AnalysisWarning && !(err instanceof AnalysisError)) {
+            if (err instanceof UsageWarning) {
                 out.print("warning");
             } else {
                 out.print("error");
