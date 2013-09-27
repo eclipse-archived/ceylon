@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.ASTRING_LITERAL;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.AVERBATIM_STRING;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_END;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_MID;
@@ -12,6 +13,7 @@ import static java.lang.Integer.parseInt;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -27,6 +29,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public class LiteralVisitor extends Visitor {
 	
     private int indent;
+    static final Pattern DOC_LINK_PATTERN = Pattern.compile("\\[\\[([^\"`|\\[\\]]*\\|)?(((\\w|\\.)+)::)?(\\w+)(\\.(\\w+))?\\]\\]");
+    private static Pattern CHARACTER_ESCAPE_PATTERN = Pattern.compile("\\\\(\\{#([^}]*)\\}|\\{([^}^#]*)\\}|(.))");
+    
     
     @Override
     public void visit(CompilationUnit that) {
@@ -40,10 +45,12 @@ public class LiteralVisitor extends Visitor {
     public void visit(StringLiteral that) {
         int type = that.getToken().getType();
         String text = that.getText();
-        if (type!=STRING_MID && type!=STRING_END) {
+        if (type!=STRING_MID && 
+            type!=STRING_END) {
             indent = getIndentPosition(that);
         }
-        if (type==VERBATIM_STRING || type==AVERBATIM_STRING) {
+        if (type==VERBATIM_STRING || 
+            type==AVERBATIM_STRING) {
             text = text.substring(3,text.length()-(text.endsWith("\"\"\"")?3:0));
         }
         else if (type==STRING_MID) {
@@ -63,12 +70,24 @@ public class LiteralVisitor extends Visitor {
         if (!allTrimmed) {
             that.addError("multiline string content should align with start of string: string begins at character position " + indent, 6000);
         }
-        if (type!=VERBATIM_STRING && type!=AVERBATIM_STRING) {
+        if (type!=VERBATIM_STRING && 
+            type!=AVERBATIM_STRING) {
             interpolateEscapes(result, that);
         }
         that.setText(result.toString());
-        if (type!=STRING_MID && type!=STRING_START) {
+        if (type!=STRING_MID && 
+            type!=STRING_START) {
             indent = 0;
+        }
+        if (type==AVERBATIM_STRING ||
+            type==ASTRING_LITERAL) {
+            Matcher m = DOC_LINK_PATTERN.matcher(result);
+            while (m.find()) {
+                CommonToken token = new CommonToken(ASTRING_LITERAL, m.group());
+                token.setStartIndex(m.start()+1);
+                token.setStopIndex(m.end());
+                that.addDocLink(new Tree.DocLink(token));
+            }
         }
     }
 
@@ -192,12 +211,9 @@ public class LiteralVisitor extends Visitor {
         return correctlyIndented;
     }
     
-    private static Pattern re = Pattern.compile("\\\\(\\{#([^}]*)\\}|\\{([^}^#]*)\\}|(.))");
-    
     private static void interpolateEscapes(final StringBuilder result, Node node) {
-        Matcher m;
-        int start=0;
-        while ((m = re.matcher(result)).find(start)) {
+        Matcher m = CHARACTER_ESCAPE_PATTERN.matcher(result);
+        while (m.find()) {
             String hex = m.group(2);
             String name = m.group(3);
             if (name!=null) {
@@ -272,7 +288,6 @@ public class LiteralVisitor extends Visitor {
                 }
                 result.replace(m.start(), m.end(), Character.toString(ch));
             }
-            start = m.start()+1;
         }
     }
     

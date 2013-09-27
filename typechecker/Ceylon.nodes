@@ -774,8 +774,15 @@
 ^(NATURAL_LITERAL:LITERAL)
 ^(FLOAT_LITERAL:LITERAL)
 ^(CHAR_LITERAL:LITERAL)
-^(STRING_LITERAL:LITERAL)
+^(STRING_LITERAL:LITERAL
+    DOC_LINK*)
 ^(QUOTED_LITERAL:LITERAL)
+
+"A wiki-style link in a documentation string"
+^(DOC_LINK
+   Package pkg;
+   Declaration base;
+   Declaration qualified;)
 
 "A reference to the current instance."
 ^(abstract SELF_EXPRESSION:ATOM)

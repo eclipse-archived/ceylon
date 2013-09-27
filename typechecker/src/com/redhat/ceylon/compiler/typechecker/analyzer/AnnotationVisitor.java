@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.LiteralVisitor.DOC_LINK_PATTERN;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
 import static com.redhat.ceylon.compiler.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 
@@ -7,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -94,19 +94,15 @@ public class AnnotationVisitor extends Visitor {
             }
         }
         if (se!=null) {
-            checkAnnotationArgument(a, se.getExpression(), pt, false);
+            checkAnnotationArgument(a, se.getExpression(), pt);
         }
     }
     
-    private void checkAnnotationArgument(Functional a, Tree.Expression e, ProducedType pt,
-            boolean isDocAnnotation) {
+    private void checkAnnotationArgument(Functional a, Tree.Expression e, ProducedType pt) {
         if (e!=null) {
             Tree.Term term = e.getTerm();
             if (term instanceof Tree.Literal) {
                 //ok
-                if (isDocAnnotation && term instanceof Tree.StringLiteral) {
-                    checkWikiRefs(term);
-                }
             }
             else if (term instanceof Tree.NegativeOp && 
                     ((Tree.NegativeOp) term).getTerm() instanceof Tree.Literal) {
@@ -122,7 +118,7 @@ public class AnnotationVisitor extends Visitor {
                         if (arg instanceof Tree.ListedArgument){
                             Tree.Expression expression = ((Tree.ListedArgument) arg).getExpression();
                             if (expression!=null) {
-                                checkAnnotationArgument(a, expression, arg.getTypeModel(), isDocAnnotation);
+                                checkAnnotationArgument(a, expression, arg.getTypeModel());
                             }
                         }
                         else {
@@ -138,7 +134,7 @@ public class AnnotationVisitor extends Visitor {
                         if (arg instanceof Tree.ListedArgument){
                             Tree.Expression expression = ((Tree.ListedArgument) arg).getExpression();
                             if (expression!=null) {
-                                checkAnnotationArgument(a, expression, arg.getTypeModel(), isDocAnnotation);
+                                checkAnnotationArgument(a, expression, arg.getTypeModel());
                             }
                         }
                         else {
@@ -171,39 +167,6 @@ public class AnnotationVisitor extends Visitor {
         }
     }
 
-    static final String LINK_PATTERN = "\\[\\[([^\"`|\\[\\]]*\\|)?(((\\w|\\.)+)::)?(\\w+)(\\.(\\w+))?\\]\\]";
-    
-    static void checkWikiRefs(Tree.Term term) {
-        //TODO: copy/pasted from RenameRefactoring, 
-        //      move to a utility class
-        final Pattern wikiRef = Pattern.compile(LINK_PATTERN);
-        Matcher m = wikiRef.matcher(term.getToken().getText());
-        while (m.find()) {
-            String pgroup = m.group(3);
-            String tgroup = m.group(5);
-            String mgroup = m.group(7);
-            Declaration base;
-            if (pgroup==null) {
-                base = term.getScope().getMemberOrParameter(term.getUnit(), 
-                        tgroup, null, false);
-            }
-            else {
-                Package pack = term.getUnit().getPackage().getModule()
-                        .getPackage(pgroup);
-                base = pack==null ? null : pack.getDirectMember(tgroup, null, false);
-            }
-            if (base==null) {
-                term.addUsageWarning("declaration does not exist: " + tgroup);
-            }
-            if (base instanceof TypeDeclaration && mgroup!=null) {
-                Declaration qualified = ((TypeDeclaration) base).getMember(mgroup, null, false);
-                if (qualified==null) {
-                    term.addUsageWarning("member declaration does not exist: " + mgroup);
-                }
-            }
-        }
-    }
-    
     @Override 
     public void visit(Tree.PackageDescriptor that) {
         super.visit(that);
@@ -403,7 +366,7 @@ public class AnnotationVisitor extends Visitor {
                                 || !((Tree.BaseMemberExpression)primary).getDeclaration().isAnnotation())) {
                     term.addError("annotation constructor must return a newly-instantiated annotation");
                 }
-                checkAnnotationArguments(a, ie, false);
+                checkAnnotationArguments(a, ie);
             }
             else {
                 term.addError("annotation constructor must return a newly-instantiated annotation");
@@ -411,15 +374,14 @@ public class AnnotationVisitor extends Visitor {
         }
     }
 
-    private void checkAnnotationArguments(Functional a, Tree.InvocationExpression ie, 
-            boolean isDocAnnotation) {
+    private void checkAnnotationArguments(Functional a, Tree.InvocationExpression ie) {
         Tree.PositionalArgumentList pal = ie.getPositionalArgumentList();
         Tree.NamedArgumentList nal = ie.getNamedArgumentList();
         if (pal!=null) {
-            checkPositionalArguments(a, pal.getPositionalArguments(), isDocAnnotation);
+            checkPositionalArguments(a, pal.getPositionalArguments());
         }
         if (nal!=null) {
-            checkNamedArguments(a, nal, isDocAnnotation);
+            checkNamedArguments(a, nal);
             if (nal.getSequencedArgument()!=null) {
                 nal.getSequencedArgument().addError("illegal annotation argument");
 //                checkPositionlArgument(a, nal.getSequencedArgument().getPositionalArguments());
@@ -427,15 +389,14 @@ public class AnnotationVisitor extends Visitor {
         }
     }
 
-    private void checkNamedArguments(Functional a, Tree.NamedArgumentList nal, 
-            boolean isDocAnnotation) {
+    private void checkNamedArguments(Functional a, Tree.NamedArgumentList nal) {
         for (Tree.NamedArgument na: nal.getNamedArguments()) {
             if (na!=null) {
                 if (na instanceof Tree.SpecifiedArgument) {
                     Tree.SpecifierExpression se = ((Tree.SpecifiedArgument) na).getSpecifierExpression();
                     if (se!=null && na.getParameter()!=null) {
                         checkAnnotationArgument(a, se.getExpression(),
-                                na.getParameter().getType(), isDocAnnotation);
+                                na.getParameter().getType());
                     }
                 }
                 else {
@@ -445,17 +406,16 @@ public class AnnotationVisitor extends Visitor {
         }
     }
 
-    private void checkPositionalArguments(Functional a, List<Tree.PositionalArgument> pal,
-            boolean isDocAnnotation) {
+    private void checkPositionalArguments(Functional a, List<Tree.PositionalArgument> pal) {
         for (Tree.PositionalArgument pa: pal) {
             if (pa!=null && pa.getParameter()!=null) {
                 if (pa instanceof Tree.ListedArgument) {
                     checkAnnotationArgument(a, ((Tree.ListedArgument) pa).getExpression(),
-                            pa.getParameter().getType(), isDocAnnotation);
+                            pa.getParameter().getType());
                 }
                 else if (pa instanceof Tree.SpreadArgument) {
                     checkAnnotationArgument(a, ((Tree.SpreadArgument) pa).getExpression(),
-                            pa.getParameter().getType(), isDocAnnotation);
+                            pa.getParameter().getType());
                 }
                 else {
                     pa.addError("illegal annotation argument");
@@ -465,9 +425,46 @@ public class AnnotationVisitor extends Visitor {
     }
     
     @Override 
-    public void visit(Tree.AnonymousAnnotation that) {
+    public void visit(Tree.DocLink that) {
         super.visit(that);
-        checkWikiRefs(that.getStringLiteral());
+        Matcher m = DOC_LINK_PATTERN.matcher(that.getToken().getText());
+        while (m.find()) {
+            String pgroup = m.group(3);
+            String tgroup = m.group(5);
+            String mgroup = m.group(7);
+            Declaration base;
+            if (pgroup==null) {
+                base = that.getScope().getMemberOrParameter(that.getUnit(), 
+                        tgroup, null, false);
+            }
+            else {
+                Package pack = that.getUnit().getPackage().getModule()
+                        .getPackage(pgroup);
+                if (pack==null) {
+                    base = null;
+                    that.addUsageWarning("package does not exist: " + pgroup);
+                }
+                else {
+                    that.setPkg(pack);
+                    base = pack.getDirectMember(tgroup, null, false);
+                }
+            }
+            if (base==null) {
+                that.addUsageWarning("declaration does not exist: " + tgroup);
+            }
+            else {
+                that.setBase(base);
+            }
+            if (base instanceof TypeDeclaration && mgroup!=null) {
+                Declaration qualified = ((TypeDeclaration) base).getMember(mgroup, null, false);
+                if (qualified==null) {
+                    that.addUsageWarning("member declaration does not exist: " + mgroup);
+                }
+                else {
+                    that.setQualified(qualified);
+                }
+            }
+        }
     }
     
     @Override 
@@ -482,19 +479,9 @@ public class AnnotationVisitor extends Visitor {
                 that.getPrimary().addError("not an annotation constructor");
             }
             else {
-                checkAnnotationArguments(null, (Tree.InvocationExpression) that, 
-                        isDocAnnotation(dec));
+                checkAnnotationArguments(null, (Tree.InvocationExpression) that);
             }
         }
-    }
-    
-    private static boolean isDocAnnotation(Declaration dec) {
-        String tdn = dec.getQualifiedNameString();
-        return tdn.equals("ceylon.language::doc") ||
-                tdn.equals("ceylon.language::by") ||
-                tdn.equals("ceylon.language::throws") ||
-                tdn.equals("ceylon.language::deprecated") ||
-                tdn.equals("ceylon.language::license");
     }
     
     private static ProducedType qualifyingType(Declaration d) {
