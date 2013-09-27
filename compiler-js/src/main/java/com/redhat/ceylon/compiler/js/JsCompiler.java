@@ -191,7 +191,6 @@ public class JsCompiler {
     /** Indicates if compilation should stop, based on whether there were errors
      * in the last compilation unit and the stopOnErrors flag is set. */
     protected boolean stopOnError() {
-        errCount = 0;
         for (Message err : unitErrors) {
             if (err instanceof AnalysisError ||
                 err instanceof UnexpectedError) {
@@ -206,6 +205,7 @@ public class JsCompiler {
      * @return true is compilation was successful (0 errors/warnings), false otherwise. */
     public boolean generate() throws IOException {
         errors.clear();
+        errCount = 0;
         output.clear();
         try {
             if (opts.isVerbose()) {
