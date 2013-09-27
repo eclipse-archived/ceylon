@@ -1,13 +1,11 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.LiteralVisitor.DOC_LINK_PATTERN;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
 import static com.redhat.ceylon.compiler.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -427,46 +425,58 @@ public class AnnotationVisitor extends Visitor {
     @Override 
     public void visit(Tree.DocLink that) {
         super.visit(that);
-        Matcher m = DOC_LINK_PATTERN.matcher(that.getToken().getText());
-        while (m.find()) {
-            String pgroup = m.group(3);
-            String tgroup = m.group(5);
-            String mgroup = m.group(7);
-            Declaration base;
-            if (pgroup==null) {
-                base = that.getScope().getMemberOrParameter(that.getUnit(), 
-                        tgroup, null, false);
+        String text = that.getText();
+        int scopeIndex = text.indexOf("::");
+        String packageName = scopeIndex<0 ? 
+                null : text.substring(0, scopeIndex);
+        String path = scopeIndex<0 ? 
+                text : text.substring(scopeIndex+2);
+        String[] names = path.split("\\.");
+        Declaration base;
+        if (packageName==null) {
+            base = that.getScope().getMemberOrParameter(that.getUnit(), 
+                    names[0], null, false);
+        }
+        else {
+            Package pack = that.getUnit().getPackage().getModule()
+                    .getPackage(packageName);
+            if (pack==null) {
+                base = null;
+                that.addUsageWarning("package does not exist: " + packageName);
             }
             else {
-                Package pack = that.getUnit().getPackage().getModule()
-                        .getPackage(pgroup);
-                if (pack==null) {
-                    base = null;
-                    that.addUsageWarning("package does not exist: " + pgroup);
+                that.setPkg(pack);
+                base = pack.getDirectMember(names[0], null, false);
+            }
+        }
+        if (base==null) {
+            that.addUsageWarning("declaration does not exist: " + names[0]);
+        }
+        else {
+            that.setBase(base);
+            if (names.length>1) {
+                that.setQualified(new ArrayList<Declaration>(names.length-1));
+            }
+            for (int i=1; i<names.length; i++) {
+                if (base instanceof TypeDeclaration) {
+                    Declaration qualified = ((TypeDeclaration) base).getMember(names[i], null, false);
+                    if (qualified==null) {
+                        that.addUsageWarning("member declaration does not exist: " + names[i]);
+                        break;
+                    }
+                    else {
+                        that.getQualified().add(qualified);
+                        base = qualified;
+                    }
                 }
                 else {
-                    that.setPkg(pack);
-                    base = pack.getDirectMember(tgroup, null, false);
-                }
-            }
-            if (base==null) {
-                that.addUsageWarning("declaration does not exist: " + tgroup);
-            }
-            else {
-                that.setBase(base);
-            }
-            if (base instanceof TypeDeclaration && mgroup!=null) {
-                Declaration qualified = ((TypeDeclaration) base).getMember(mgroup, null, false);
-                if (qualified==null) {
-                    that.addUsageWarning("member declaration does not exist: " + mgroup);
-                }
-                else {
-                    that.setQualified(qualified);
+                    that.addUsageWarning("not a type declaration: " + base.getName());
+                    break;
                 }
             }
         }
     }
-    
+
     @Override 
     public void visit(Tree.Annotation that) {
         super.visit(that);

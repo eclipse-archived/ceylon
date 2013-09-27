@@ -782,7 +782,7 @@
 ^(DOC_LINK
    Package pkg;
    Declaration base;
-   Declaration qualified;)
+   List<Declaration> qualified;)
 
 "A reference to the current instance."
 ^(abstract SELF_EXPRESSION:ATOM)

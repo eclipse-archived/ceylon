@@ -29,7 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public class LiteralVisitor extends Visitor {
 	
     private int indent;
-    static final Pattern DOC_LINK_PATTERN = Pattern.compile("\\[\\[([^\"`|\\[\\]]*\\|)?(((\\w|\\.)+)::)?(\\w+)(\\.(\\w+))?\\]\\]");
+    static final Pattern DOC_LINK_PATTERN = Pattern.compile("\\[\\[([^\"`|\\[\\]]*\\|)?((((\\w|\\.)+)::)?(\\w+)(\\.(\\w+))*)\\]\\]");
     private static Pattern CHARACTER_ESCAPE_PATTERN = Pattern.compile("\\\\(\\{#([^}]*)\\}|\\{([^}^#]*)\\}|(.))");
     
     
@@ -46,19 +46,19 @@ public class LiteralVisitor extends Visitor {
         int type = that.getToken().getType();
         String text = that.getText();
         if (type==AVERBATIM_STRING ||
-                type==ASTRING_LITERAL) {
-                Matcher m = DOC_LINK_PATTERN.matcher(text);
-                while (m.find()) {
-                    String group = m.group();
-                    int start = that.getStartIndex()+m.start();
-                    int end = that.getStartIndex()+m.end();
-                    CommonToken token = new CommonToken(ASTRING_LITERAL, group);
-                    token.setStartIndex(start);
-                    token.setStopIndex(end-1);
-                    token.setTokenIndex(that.getToken().getTokenIndex());
-                    that.addDocLink(new Tree.DocLink(token));
-                }
+            type==ASTRING_LITERAL) {
+            Matcher m = DOC_LINK_PATTERN.matcher(text);
+            while (m.find()) {
+                String group = m.group(2);
+                int start = that.getStartIndex()+m.start(2);
+                int end = that.getStartIndex()+m.end(2);
+                CommonToken token = new CommonToken(ASTRING_LITERAL, group);
+                token.setStartIndex(start);
+                token.setStopIndex(end-1);
+                token.setTokenIndex(that.getToken().getTokenIndex());
+                that.addDocLink(new Tree.DocLink(token));
             }
+        }
         if (type!=STRING_MID && 
             type!=STRING_END) {
             indent = getIndentPosition(that);
