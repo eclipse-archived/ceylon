@@ -14,7 +14,7 @@ class MyCollection() satisfies Collection<Character> {
     shared actual MyCollection clone { return MyCollection(); }
 }
 class MyComparable() satisfies Comparable<MyComparable> {
-    value p = process.milliseconds;
+    value p = system.milliseconds;
     shared actual Comparison compare(MyComparable other) {
         return p <=> other.p;
     }

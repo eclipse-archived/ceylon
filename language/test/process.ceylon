@@ -12,22 +12,22 @@ shared void testProcess() {
     Anything argPresent = process.namedArgumentPresent("");
     check(argPresent is Boolean, "process.namedArgumentPresent");
     check(!process.namedArgumentValue("") exists, "process.namedArgumentValue");
-    String? filesep = process.propertyValue("file.separator");
+    String? filesep = operatingSystem.pathSeparator;
     if (exists filesep) {
-        check((filesep=="/")||(filesep=="\\"), "process.propertyValue");
+        check((filesep=="/")||(filesep=="\\"), "operatingSystem.pathSeparator");
     } else {
         fail("process.propertyValue (null)");
     }
-    check(process.newline.contains('\n'), "process.newline");
+    check(operatingSystem.newline.contains('\n'), "operatingSystem.newline");
     process.write("write");
     process.writeLine(" and writeLine");
     process.flush();
     process.writeError("writeError");
     process.writeErrorLine(" and writeErrorLine");
     process.flushError();
-    print("Process VM ``process.vm`` version ``process.vmVersion`` on ``process.os`` v``process.osVersion``");
-    check(process.milliseconds > 0, "process.milliseconds");
-    check(process.nanoseconds > 0, "process.milliseconds");
+    print("Process VM ``machine.name`` version ``machine.version`` on ``operatingSystem.name`` v``operatingSystem.version``");
+    check(system.milliseconds > 0, "machine.milliseconds");
+    check(system.nanoseconds > 0, "machine.milliseconds");
 
     //language object
     check(language.version=="1.0.0", "language.version");
