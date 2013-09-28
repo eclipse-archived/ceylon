@@ -123,16 +123,6 @@ shared final class Range<Element>(first, last)
         return super.by(step);
     }
     
-    "Determines if the range includes the given object."
-    shared actual Boolean contains(Object element) {
-        if (is Element element) {
-            return containsElement(element);
-        }
-        else {
-            return false;
-        }
-    }
-    
     shared actual Integer count(Boolean selecting(Element element)) {
         variable value e = first;
         variable value c = 0;
@@ -145,10 +135,15 @@ shared final class Range<Element>(first, last)
         return c;
     }
     
-    "Determines if the range includes the given value."
-    shared Boolean containsElement(Element x) =>
-            decreasing then x<=first && x>=last
-                    else x>=first && x<=last;
+    "Determines if the range includes the given object."
+    shared actual Boolean contains(Object element) {
+        if (is Element element) {
+            return containsElement(element);
+        }
+        else {
+            return false;
+        }
+    }
     
     shared actual Boolean occurs(Anything element) {
         if (is Element element) {
@@ -159,14 +154,24 @@ shared final class Range<Element>(first, last)
         }
     }
     
+    "Determines if the range includes the given value."
+    shared Boolean containsElement(Element x) =>
+            decreasing then x<=first && x>=last
+                    else x>=first && x<=last;
+    
     shared actual Boolean includes(List<Anything> sublist) {
         if (is Range<Element> sublist) {
-            return first<=sublist.first<=last &&
-                    first<=sublist.last<=last;
+            return includesRange(sublist);
         }
         else {
             return super.includes(sublist);
         }
+    }
+    
+    "Determines if this range includes the given range."
+    shared Boolean includesRange(Range<Element> sublist) {
+        return first<=sublist.first<=last &&
+                first<=sublist.last<=last;
     }
     
     "Determines if two ranges are the same by comparing

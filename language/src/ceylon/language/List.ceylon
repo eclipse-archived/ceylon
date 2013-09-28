@@ -277,7 +277,7 @@ shared interface List<out Element>
              }
          }
          else {
-             return elem exists;
+             return !elem exists;
          }
     }
         
@@ -289,6 +289,9 @@ shared interface List<out Element>
          }
          return false;
     }
+    
+    shared actual default Boolean contains(Object element) 
+            => occurs(element);
         
     "The indexes in this list at which the given element 
      occurs."
