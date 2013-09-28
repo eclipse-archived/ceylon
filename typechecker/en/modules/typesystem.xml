@@ -618,6 +618,25 @@
             
         </section>
         
+        <section id="principaltyping">
+            <title>Principal typing</title>
+            
+            <para>An expression, as defined in <xref linkend="expressions"/>, occurring at a 
+            certain location, may be <emphasis>assignable</emphasis> to a type. In this case, 
+            every evaluation of the expression at runtime produces an instance of a class that 
+            is a subtype of the type, or results in a thrown exception, as defined in 
+            <xref linkend="execution"/>.</para>
+            
+            <para>Given an expression occurring at a certain location, a type <literal>T</literal>
+            is the <emphasis>principal type</emphasis> of the expression if, given any type
+            <literal>U</literal> to which the expression is assignable, <literal>T</literal> 
+            is a subtype of <literal>U</literal>. Thus, the principal type is the "most precise"
+            type for the expression. The type system guarantees that every expression has a 
+            principal type. Thus, we refer uniquely to <emphasis>the type of an expression</emphasis>, 
+            meaning its principal type at the location at which it occurs.</para>
+            
+        </section>
+        
         <section id="typeexpressions">
             <title>Type expressions</title>
         
