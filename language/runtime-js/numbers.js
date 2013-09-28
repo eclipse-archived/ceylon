@@ -156,13 +156,6 @@ defineAttr(JSNum$proto, 'size', function(){ return 53; },
 defineAttr(JSNum$proto, 'magnitude', function(){ return Math.abs(this); },
   undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Number','$at','magnitude']});
 
-//-(2^53-1)
-var $minIntegerValue = Integer(-9007199254740991);
-function getMinIntegerValue() { return $minIntegerValue; }
-//(2^53-3) => ((2^53)-2 is NaN)
-var $maxIntegerValue = Integer(9007199254740989);
-function getMaxIntegerValue() { return $maxIntegerValue; }
-
 function $parseFloat(s) { return Float(parseFloat(s)); }
 
 defineAttr(JSNum$proto, 'undefined', function(){ return isNaN(this); },
@@ -185,6 +178,4 @@ getInfinity.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','infinity']};
 exports.Integer=Integer;
 exports.Float=Float;
 exports.getInfinity=getInfinity;
-exports.getMinIntegerValue=getMinIntegerValue;
-exports.getMaxIntegerValue=getMaxIntegerValue;
 exports.parseFloat=$parseFloat;

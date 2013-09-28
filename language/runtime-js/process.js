@@ -145,9 +145,6 @@ process$proto.propertyValue = function(name) {
     return (value !== undefined) ? value : null;
 }
 
-defineAttr(process$proto, 'newline', function(){ return linesep; },undefined,
-  {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','process','$at','newline']});
-
 if ((typeof process !== "undefined") && (process.stdout !== undefined)) {
     process$proto.write = function(string) {
         process.stdout.write(string.valueOf());
@@ -190,13 +187,6 @@ process$proto.readLine = function() {
     return String$("", 0);//TODO
 }
 
-defineAttr(process$proto, 'milliseconds', function() {
-    return Date.now();
-},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','process','$at','milliseconds']});
-defineAttr(process$proto, 'nanoseconds', function() {
-    return Date.now()*1000000;
-},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','process','$at','nanoseconds']});
-
 if ((typeof process !== "undefined") && (process.exit !== undefined)) {
     process$proto.exit = function(code) {
         process.exit(code);
@@ -209,36 +199,119 @@ var processString = String$("process", 7);
 defineAttr(process$proto, 'string', function() {
     return processString;
 },undefined,{$t:{t:String$},$cont:process$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
-defineAttr(process$proto, 'vm', function() {
+
+
+var process$ = processClass();
+function getProcess() { return process$; }
+exports.getProcess=getProcess;
+
+// system
+
+function systemClass() {
+    var proc = new systemClass.$$;
+    Basic(proc);
+    return proc;
+}
+systemClass.$$metamodel$$={$nm:'systemClass',$mt:'cls',$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','system']};
+initTypeProto(systemClass, "ceylon.language::system", $init$Basic());
+var system$proto = systemClass.$$.prototype;
+
+defineAttr(system$proto, 'milliseconds', function() {
+    return Date.now();
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','system','$at','milliseconds']});
+defineAttr(system$proto, 'nanoseconds', function() {
+    return Date.now()*1000000;
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','system','$at','nanoseconds']});
+defineAttr(system$proto, 'timezoneOffset', function(){
+  return new Date().getTimezoneOffset()*60000;
+},undefined,{$t:{t:Integer}, $cont:system$proto, $an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','system','$at','timezoneOffset']});
+defineAttr(system$proto, 'locale', function(){
+  return properties["user.locale"] || String$("Unknown",7);
+},undefined,{$t:{t:String$}, $cont:system$proto, $an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','system','$at','locale']});
+var systemString = String$("system", 7);
+defineAttr(system$proto, 'string', function() {
+    return systemString;
+},undefined,{$t:{t:String$},$cont:system$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
+
+var system$ = systemClass();
+function getSystem() { return system$; }
+exports.getSystem=getSystem;
+
+// machine
+
+function machineClass() {
+    var proc = new machineClass.$$;
+    Basic(proc);
+    return proc;
+}
+machineClass.$$metamodel$$={$nm:'machineClass',$mt:'cls',$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','machine']};
+initTypeProto(machineClass, "ceylon.language::machine", $init$Basic());
+var machine$proto = machineClass.$$.prototype;
+
+defineAttr(machine$proto, 'name', function() {
     if (typeof process !== "undefined" && process.execPath && process.execPath.match(/node(js)?(\.exe)?$/)) {
         return String$("node.js", 7);
     } else if (typeof window === 'object') {
         return String$("Browser", 7);
     }
     return String$("Unknown JavaScript environment", 30);
-},undefined,{$t:{t:String$},$cont:process$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','process','$at','vm']});
-defineAttr(process$proto, 'vmVersion', function() {
+},undefined,{$t:{t:String$},$cont:machine$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','machine','$at','name']});
+defineAttr(machine$proto, 'version', function() {
     if (typeof process !== "undefined" && typeof process.version === 'string') {
         return String$(process.version);
     }
     return String$("Unknown");
-},undefined,{$t:{t:String$},$cont:process$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','process','$at','vmVersion']});
-defineAttr(process$proto, 'os',function() {
+},undefined,{$t:{t:String$},$cont:machine$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','machine','$at','version']});
+defineAttr(machine$proto, 'integerSize', function() {
+    return 53;
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','machine','$at','integerSize']});
+var $minIntegerValue = Integer(-9007199254740991); //-(2^53-1)
+defineAttr(machine$proto, 'minIntegerValue', function() {
+    return $minIntegerValue;
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','machine','$at','minIntegerValue']});
+var $maxIntegerValue = Integer(9007199254740989); //(2^53-3) => ((2^53)-2 is NaN)
+defineAttr(machine$proto, 'maxIntegerValue', function() {
+    return $maxIntegerValue;
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','machine','$at','maxIntegerValue']});
+var machineString = String$("machine", 7);
+defineAttr(machine$proto, 'string', function() {
+    return machineString;
+},undefined,{$t:{t:String$},$cont:machine$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
+
+var machine$ = machineClass();
+function getMachine() { return machine$; }
+exports.getMachine=getMachine;
+
+// operatingSystem
+
+function operatingSystemClass() {
+    var proc = new operatingSystemClass.$$;
+    Basic(proc);
+    return proc;
+}
+operatingSystemClass.$$metamodel$$={$nm:'operatingSystemClass',$mt:'cls',$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','operatingSystem']};
+initTypeProto(operatingSystemClass, "ceylon.language::operatingSystem", $init$Basic());
+var operatingSystem$proto = operatingSystemClass.$$.prototype;
+
+defineAttr(operatingSystem$proto, 'name',function() {
     if (typeof process !== "undefined" && typeof process.platform === 'string') {
         return String$(process.platform);
     }
     return String$("Unknown");
-},undefined,{$t:{t:String$},$cont:process$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','process','$at','os']});
-defineAttr(process$proto, 'osVersion', function() {
+},undefined,{$t:{t:String$},$cont:operatingSystem$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','operatingSystem','$at','name']});
+defineAttr(operatingSystem$proto, 'version', function() {
     return String$("Unknown");
-},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','process','$at','osVersion']});
-defineAttr(process$proto, 'timezoneOffset', function(){
-  return new Date().getTimezoneOffset()*60000;
-},undefined,{$t:{t:Integer}, $cont:process$proto, $an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','process','$at','timezoneOffset']});
-defineAttr(process$proto, 'locale', function(){
-  return properties["user.locale"] || String$("Unknown",7);
-},undefined,{$t:{t:String$}, $cont:process$proto, $an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','process','$at','locale']});
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','operatingSystem','$at','version']});
+defineAttr(operatingSystem$proto, 'newline', function(){ return linesep; },undefined,
+  {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','operatingSystem','$at','newline']});
+defineAttr(operatingSystem$proto, 'pathSeparator', function(){ return pathsep; },undefined,
+  {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','operatingSystem','$at','pathSeparator']});
+var operatingSystemString = String$("operatingSystem", 7);
+defineAttr(operatingSystem$proto, 'string', function() {
+    return operatingSystemString;
+},undefined,{$t:{t:String$},$cont:operatingSystem$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
 
-var process$ = processClass();
-function getProcess() { return process$; }
-exports.getProcess=getProcess;
+var operatingSystem$ = operatingSystemClass();
+function getOperatingSystem() { return operatingSystem$; }
+exports.getOperatingSystem=getOperatingSystem;
+
