@@ -355,7 +355,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <synopsis>ValueExpression: Primary | OperatorExpression</synopsis>
         
-        <synopsis>Expression: ValueExpression | FunctionExpression</synopsis>
+        <synopsis>Expression: ValueExpression | FunctionExpression | OperatorInvocation | OperatorStyleMemberExpression</synopsis>
         
         <para>Parentheses are used for grouping:</para>
         
@@ -1308,6 +1308,42 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             arguments in named argument lists.</para>
             </comment>
         
+        </section>
+        
+        <section id="operatorstylememberexpressions">
+            <title>Operator-style expressions</title>
+            
+            <para>An member expression or a method invocation with a single positional 
+            argument may be written using an <emphasis>operator-style</emphasis> syntax.
+            This syntax has an extremely low precedence, just above the precedence of 
+            the assignment operator, is not associative, and does not form a legal 
+            expression statement.</para>
+            
+            <programlisting>0..max by step</programlisting>
+            
+            <para>In an <emphasis>operator-style invocation expression</emphasis>, the 
+            invoked method name and optional type arguments occur in an infix location 
+            between two expressions. The first expression is interpreted as the receiver 
+            expression, and the second expression is interpreted as a positional argument 
+            to the first parameter of the method.</para> 
+            
+            <synopsis>OperatorStyleInvocation: ValueExpression MemberName TypeArguments? Expression</synopsis>
+
+            <para>The semantics of this syntax are identical to ordinary invocation 
+            expressions, as defined in <xref linkend="invocationexpressions"/>.</para>
+            
+            <para>In an <emphasis>operator-style member expression</emphasis>, the 
+            member name and optional type arguments occur in a postfix location after
+            an expression. The expression is interpreted as the receiver expression.</para> 
+            
+            <synopsis>OperatorStyleMemberExpression: ValueExpression MemberName TypeArguments?</synopsis>
+            
+            <para>The semantics of this syntax are identical to ordinary member expression,
+            as defined in <xref linkend="memberexpressions"/>.</para>
+                        
+            <comment><para>TODO: Should we rather use this syntax as a sugar for invocation
+            of a toplevel function?</para></comment>
+            
         </section>
         
    </section>
