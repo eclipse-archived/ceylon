@@ -21,6 +21,8 @@ shared final class Entry<out Key, out Item>(key, item)
     "The value associated with the key."
     shared Item item;
     
+    shared [Key,Item] pair => [key,item];
+    
     "Determines if this entry is equal to the given
      entry. Two entries are equal if they have the same
      key and the same value."
