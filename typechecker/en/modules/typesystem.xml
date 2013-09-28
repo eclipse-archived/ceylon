@@ -1463,10 +1463,11 @@ Item item = comp of Item;</programlisting>
             
             <comment><para>Note: since the visibility rules are purely lexical in nature, it is 
             legal for a member expression occurring in the body of a class or interface to have 
-            a receiver expression other than <literal>this</literal> and refer to an 
-            un-<literal>shared</literal> member of the class or interface. In this special case, 
-            the member is treated as if it were <literal>shared</literal> for the purposes of the 
-            following variance validation rules.</para></comment> 
+            a receiver expression other that is not a self-reference, as defined in 
+            <xref linkend="selfreferences"/>, and refer to an un-<literal>shared</literal> member 
+            of the class or interface. In this special case, the member is treated as if it were 
+            <literal>shared</literal> for the purposes of the following variance validation 
+            rules.</para></comment> 
             
             <itemizedlist>
                 <listitem>

@@ -3907,7 +3907,9 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 that.setDeclaration(member);
-                boolean selfReference = p instanceof Tree.This ||
+                boolean selfReference = 
+                        p instanceof Tree.This ||
+                        p instanceof Tree.Outer ||
                         p instanceof Tree.Super;
                 checkQualifiedVisibility(that, member, name, container,
                         selfReference);
