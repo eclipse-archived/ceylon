@@ -425,6 +425,26 @@ String result = middleObject.string;</programlisting>
             
         </section>
         
+        <section id="executionofexpressionandspecificationstatements">
+            <title>Execution of expression and specification statements</title>
+            
+            <para>When an expression statement is executed, the expression is evaluated.</para>
+            
+            <para>When a non-lazy specification statement is executed, the specified 
+            expression is evaluated, and the resulting value assigned to the specified
+            reference within the current frame or current instance associated with the 
+            body to which the specified reference belongs.</para>
+            
+            <para>When a lazy specification statement is executed, the specified
+            expression is associated with the specified reference within the current 
+            frame or current instance associated with the body to which the specified
+            reference belongs. Subsequent evaluation or invocation of the reference
+            for this current frame or current instance may result in evaluation of the 
+            specified expression, in which case the expression is evaluated within this 
+            current frame or current instance.</para>
+            
+        </section>
+        
         <section id="executionofcontroldirectives">
             <title>Execution of control directives</title>
             
@@ -505,7 +525,7 @@ String result = middleObject.string;</programlisting>
    </section>
    
    <section id="executionofcontrolstructures">
-        <title>Execution of control structures, control directives, and assertions</title>
+        <title>Execution of control structures and assertions</title>
         
         <para>Control structures, as specified in <xref linkend="controlstructures"/>, are 
         used to organize conditional and repetitive code within a body. Assertions are 
