@@ -675,3 +675,11 @@ abstract class WithoutConstraint<in T>()
         of WithAnythingArg {}
 class WithAnythingArg() extends WithoutConstraint<Anything>() {}
 
+class Covariant<out T>(T t) {
+    void f(T t) {}
+    f(t);
+    class Inner() {
+        outer.f(t);
+    }
+}
+
