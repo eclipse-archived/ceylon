@@ -1206,7 +1206,12 @@ public class TypeVisitor extends Visitor {
         		TypeDeclaration ctd = type.getDeclaration();
         		if (ctd!=null) {
         			if (ctd instanceof UnionType || ctd instanceof IntersectionType) {
-        				st.addError("case type must be a class, interface, or self type");
+        			    if (td instanceof TypeParameter) {
+        			        st.addError("enumerated bound must be a class or interface type");
+        			    }
+        			    else {
+        			        st.addError("case type must be a class, interface, or self type");
+        			    }
         			}
         			else if (ctd.equals(td)) {
         				st.addError("directly enumerates itself: " + td.getName());
@@ -1231,7 +1236,12 @@ public class TypeVisitor extends Visitor {
         				}
         			}
         			else if (!(ctd instanceof ClassOrInterface)) {
-        				st.addError("case type must be a class, interface, or self type");
+                        if (td instanceof TypeParameter) {
+                            st.addError("enumerated bound must be a class or interface type");
+                        }
+                        else {
+                            st.addError("case type must be a class, interface, or self type");
+                        }
         				continue;
         			}
         			list.add(type);
