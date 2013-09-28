@@ -10,7 +10,7 @@ shared native object machine  {
     "Returns the version of the virtual machine this process is running on."
     shared native String version;
     
-    shared native Integer integerSize = 0.size;
+    shared native Integer integerSize;
     
     "The minimum `Integer` value that can be represented by the runtime.
      

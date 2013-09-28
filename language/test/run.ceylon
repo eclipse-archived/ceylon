@@ -43,6 +43,12 @@ shared void run() {
     comprehensions();
     print("Process");
     testProcess();
+    print("Machine");
+    testMachine();
+    print("Operating System");
+    testOperatingSystem();
+    print("System");
+    testSystem();
     print("Tuples");
     tuples();
     testCurries();
