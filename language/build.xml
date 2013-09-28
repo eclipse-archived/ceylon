@@ -219,10 +219,12 @@
                 <include name="ceylon/language/identityHash_.java"/>
                 <exclude name="ceylon/language/Integer.ceylon"/>
                 <include name="ceylon/language/Integer.java"/>
-                <include name="ceylon/language/minIntegerValue_.java"/>
-                <include name="ceylon/language/maxIntegerValue_.java"/>
                 <exclude name="ceylon/language/language.ceylon"/>
                 <include name="ceylon/language/language_.java"/>
+                <exclude name="ceylon/language/machine.ceylon"/>
+                <include name="ceylon/language/machine_.java"/>
+                <exclude name="ceylon/language/operatingSystem.ceylon"/>
+                <include name="ceylon/language/operatingSystem_.java"/>
                 <exclude name="ceylon/language/process.ceylon"/>
                 <include name="ceylon/language/process_.java"/>
                 <exclude name="ceylon/language/integerRangeByIterable.ceylon"/>
@@ -230,6 +232,8 @@
                 <exclude name="ceylon/language/SequenceBuilder.ceylon"/>
                 <include name="ceylon/language/SequenceBuilder.java"/>
                 <include name="ceylon/language/SequenceAppender.java"/>
+                <exclude name="ceylon/language/system.ceylon"/>
+                <include name="ceylon/language/system_.java"/>
                 <exclude name="ceylon/language/internalSort.ceylon"/>
                 <include name="ceylon/language/internalSort_.java"/>
                 <exclude name="ceylon/language/String.ceylon"/>

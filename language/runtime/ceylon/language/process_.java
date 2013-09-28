@@ -1,8 +1,6 @@
 package ceylon.language;
 
 import java.io.IOException;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -12,8 +10,6 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon(major = 6) @Object
 public final class process_ {
-	
-    java.lang.String newline = System.lineSeparator();
 
     /*@Ignore
     private static final class PropertiesMap implements Map<String, String> {
@@ -247,14 +243,6 @@ public final class process_ {
         }
     }
     
-    public long getMilliseconds() {
-    	return System.currentTimeMillis();
-    }
-    
-    public long getNanoseconds() {
-        return System.nanoTime();
-    }
-    
     public void exit(long code) {
     	System.exit((int) code);
     }
@@ -337,45 +325,6 @@ public final class process_ {
             java.lang.String property = System.getProperty(name);
             return property==null ? null : String.instance(property);
         }
-    }
-    
-    public java.lang.String getNewline() {
-        return newline;
-    }
-    
-    public java.lang.String getVm() {
-        return "jvm";
-    }
-    
-    public java.lang.String getVmVersion() {
-        return System.getProperty("java.specification.version");
-    }
-    
-    public java.lang.String getOs() {
-        java.lang.String os = System.getProperty("os.name").toLowerCase();
-        if (os.indexOf("win") >= 0) {
-            return "windows";
-        } else if (os.indexOf("mac") >= 0) {
-            return "mac";
-        } else if (os.indexOf("linux") >= 0) {
-            return "linux";
-        } else if (os.indexOf("nix") >= 0 || os.indexOf("sunos") >= 0) {
-            return "unix";
-        } else {
-            return "other";
-        }
-    }
-    
-    public java.lang.String getOsVersion() {
-        return System.getProperty("os.version");
-    }
-    
-    public java.lang.String getLocale() {
-        return Locale.getDefault().toLanguageTag();
-    }
-    
-    public int getTimezoneOffset() {
-        return TimeZone.getDefault().getOffset(getMilliseconds());
     }
     
     @Override
