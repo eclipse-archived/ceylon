@@ -27,7 +27,7 @@ shared void printAll({Anything*} values,
             process.write(stringify(val));
         }
     }
-    process.write(process.newline);
+    process.write(operatingSystem.newline);
 }
 
 String stringify(Anything val) => val?.string else "<null>";

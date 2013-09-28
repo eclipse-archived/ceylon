@@ -20,11 +20,3 @@ shared native final class Integer(Integer integer)
     "The UTF-32 character with this UCS code point."
     shared native Character character;
 }
-
-"The maximum `Integer` value that can be represented
- by the backend"
-shared native Integer maxIntegerValue;
-
-"The minimum `Integer` value that can be represented
- by the backend"
-shared native Integer minIntegerValue;

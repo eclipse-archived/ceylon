@@ -31,7 +31,7 @@ throws (`class AssertionException`,
 shared Integer? parseInteger(String string, Integer radix = 10) {
     assert (radix >= minRadix, radix <= maxRadix); 
     variable Integer ii = 0;
-    Integer max = minIntegerValue / radix;
+    Integer max = machine.minIntegerValue / radix;
     Boolean negative;
     if (exists char = string[ii]) {
         if (char == '-') {
@@ -46,7 +46,7 @@ shared Integer? parseInteger(String string, Integer radix = 10) {
     } else {
         return null;
     }
-    Integer limit = negative then minIntegerValue else -maxIntegerValue;
+    Integer limit = negative then machine.minIntegerValue else -machine.maxIntegerValue;
     Integer length = string.size;
     variable Integer result = 0;
     variable Integer sep = -1;
