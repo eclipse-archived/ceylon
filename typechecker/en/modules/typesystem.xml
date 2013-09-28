@@ -1202,10 +1202,10 @@ alias Y => List<X>;]]></programlisting>
             
             <synopsis>CaseType: MemberName | PrimaryType</synopsis>
                                
-            <para>If an interface of <literal>abstract</literal> class has exactly one 
-            case, and it is a type parameter of the interface of <literal>abstract</literal> 
+            <para>If an interface or <literal>abstract</literal> class has exactly one 
+            case, and it is a type parameter of the interface or <literal>abstract</literal> 
             class, or of the immediately containing type, if any, then that type parameter 
-            is a self type of the interface of <literal>abstract</literal> class, and:</para> 
+            is a self type of the interface or <literal>abstract</literal> class, and:</para> 
             
             <itemizedlist>
                 <listitem>
@@ -1236,7 +1236,7 @@ alias Y => List<X>;]]></programlisting>
             <programlisting>Comparable&lt;Item&gt; comp = ... ;
 Item item = comp of Item;</programlisting>
         
-            <para>Otherwise, an interface of <literal>abstract</literal> class may have 
+            <para>Otherwise, an interface or <literal>abstract</literal> class may have 
             multiple cases, and each case must be either:</para>
             
             <itemizedlist>
@@ -1707,9 +1707,11 @@ Item item = comp of Item;</programlisting>
                 -->
             </itemizedlist>
             
-            <para>The types listed in an enumerated bound must be mutually disjoint.</para>
+            <para>The types listed in an enumerated bound must be mutually disjoint, and each
+            type must be a class or interface type.</para>
             
-            <comment><para>TODO: should we allow unions in upper bounds?</para></comment>
+            <comment><para>TODO: Should we allow unions in upper bounds? Should we allow 
+            intersections in enumerated bounds?</para></comment>
             
             <para>A single <literal>given</literal> clause may specify multiple constraints
             on a certain type parameter. For example, it may specify multiple upper bounds
