@@ -1266,33 +1266,35 @@ public class ExpressionVisitor extends Visitor {
                 //temporary restrictions
                 if (that.getClassSpecifier()!=null) {
                     Tree.InvocationExpression ie = that.getClassSpecifier().getInvocationExpression();
-                    Tree.PositionalArgumentList pal = ie.getPositionalArgumentList();
-                    if (pal!=null) {
-                        List<PositionalArgument> pas = pal.getPositionalArguments();
-                        if (cps!=pas.size()) {
-                            pal.addUnsupportedError("wrong number of arguments for aliased class: " + 
-                                            alias.getName() + " has " + cps + " parameters");
-                        }
-                        for (int i=0; i<pas.size() && i<cps && i<aps; i++) {
-                            Tree.PositionalArgument pa = pas.get(i);
-                            Parameter aparam = apl.getParameters().get(i);
-                            Parameter cparam = cpl.getParameters().get(i);
-                            if (pa instanceof Tree.ListedArgument) {
-                                if (cparam.isSequenced()) {
-                                    pa.addUnsupportedError("argument to variadic parameter of aliased class must be spread");
-                                }
-                                Tree.Expression e = ((Tree.ListedArgument) pa).getExpression();
-                                checkAliasArg(aparam, e);
+                    if (ie!=null) {
+                        Tree.PositionalArgumentList pal = ie.getPositionalArgumentList();
+                        if (pal!=null) {
+                            List<PositionalArgument> pas = pal.getPositionalArguments();
+                            if (cps!=pas.size()) {
+                                pal.addUnsupportedError("wrong number of arguments for aliased class: " + 
+                                        alias.getName() + " has " + cps + " parameters");
                             }
-                            else if (pa instanceof Tree.SpreadArgument) {
-                                if (!cparam.isSequenced()) {
-                                    pa.addUnsupportedError("argument to non-variadic parameter of aliased class may not be spread");
+                            for (int i=0; i<pas.size() && i<cps && i<aps; i++) {
+                                Tree.PositionalArgument pa = pas.get(i);
+                                Parameter aparam = apl.getParameters().get(i);
+                                Parameter cparam = cpl.getParameters().get(i);
+                                if (pa instanceof Tree.ListedArgument) {
+                                    if (cparam.isSequenced()) {
+                                        pa.addUnsupportedError("argument to variadic parameter of aliased class must be spread");
+                                    }
+                                    Tree.Expression e = ((Tree.ListedArgument) pa).getExpression();
+                                    checkAliasArg(aparam, e);
                                 }
-                                Tree.Expression e = ((Tree.SpreadArgument) pa).getExpression();
-                                checkAliasArg(aparam, e);
-                            }
-                            else if (pa!=null) {
-                                pa.addUnsupportedError("argument to parameter or aliased class must be listed or spread");
+                                else if (pa instanceof Tree.SpreadArgument) {
+                                    if (!cparam.isSequenced()) {
+                                        pa.addUnsupportedError("argument to non-variadic parameter of aliased class may not be spread");
+                                    }
+                                    Tree.Expression e = ((Tree.SpreadArgument) pa).getExpression();
+                                    checkAliasArg(aparam, e);
+                                }
+                                else if (pa!=null) {
+                                    pa.addUnsupportedError("argument to parameter or aliased class must be listed or spread");
+                                }
                             }
                         }
                     }
