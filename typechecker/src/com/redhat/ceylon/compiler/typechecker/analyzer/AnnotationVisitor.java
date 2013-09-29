@@ -432,10 +432,12 @@ public class AnnotationVisitor extends Visitor {
         String path = scopeIndex<0 ? 
                 text : text.substring(scopeIndex+2);
         String[] names = path.split("\\.");
-        Declaration base;
+        Declaration base = null;
         if (packageName==null) {
-            base = that.getScope().getMemberOrParameter(that.getUnit(), 
+            if (names.length > 0) {
+                base = that.getScope().getMemberOrParameter(that.getUnit(), 
                     names[0], null, false);
+            }
         }
         else {
             Package pack = that.getUnit().getPackage().getModule()
@@ -446,7 +448,9 @@ public class AnnotationVisitor extends Visitor {
             }
             else {
                 that.setPkg(pack);
-                base = pack.getDirectMember(names[0], null, false);
+                if (names.length >0) {
+                    base = pack.getDirectMember(names[0], null, false);
+                }
             }
         }
         if (base==null) {
