@@ -179,15 +179,15 @@ shared annotation TagsAnnotation tagged(
 
 "The annotation class for [[license]]."
 shared final annotation class LicenseAnnotation(
-    "The URL of the license."
-    shared String url) 
+    "The name, text, or URL of the license."
+    shared String description) 
         satisfies OptionalAnnotation<LicenseAnnotation, Module> {}
 
 "Annotation to specify the URL of the license of a module or 
  package." 
 shared annotation LicenseAnnotation license(
-    "The URL of the license."
-    String url) => LicenseAnnotation(url);
+    "The name, text, or URL of the license."
+    String description) => LicenseAnnotation(description);
 
 "The annotation class for [[optional]]."
 shared final annotation class OptionalImportAnnotation() 
