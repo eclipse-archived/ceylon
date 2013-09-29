@@ -45,34 +45,34 @@ void testSystem() {
     // basically just test if everything can be called without error
     print("system[milliseconds:``system.milliseconds``ms,nanoseconds:``system.nanoseconds``ns," +
            "timezoneOffset:``system.timezoneOffset``ms, locale: ``system.locale``]");
-    check(system.milliseconds > 0, "machine.milliseconds");
-    check(system.nanoseconds > 0, "machine.milliseconds");
+    check(system.milliseconds > 0, "system.milliseconds");
+    check(system.nanoseconds > 0, "system.milliseconds");
     Integer timezoneOffset = system.timezoneOffset;
-    check(timezoneOffset >= -(12 * 3600 * 1000), "timezoneOffset min value");
-    check(timezoneOffset <= (14 * 3600 * 1000), "timezoneOffset max value");
+    check(timezoneOffset >= -(12 * 3600 * 1000), "system.timezoneOffset min value");
+    check(timezoneOffset <= (14 * 3600 * 1000), "system.timezoneOffset max value");
     check(system.locale.size > 0, "system.locale");
 }
 
-void testMachine() {
+void testRuntime() {
     // basically just test if everything can be called without error
-    print("machine[name: ``machine.name``, version: ``machine.version``]");
-    check(machine.name.size > 0, "machine.name");
-    check(machine.version.size > 0, "machine.version");
-    if (machine.name == "jvm") {
-        check(machine.integerSize == 64, "jvm machine.integerSize");
-    } else if (machine.name in {"node.js", "Browser"}) {
-        check(machine.integerSize == 53, "js machine.integerSize");
+    print("runtime[name: ``runtime.name``, version: ``runtime.version``]");
+    check(runtime.name.size > 0, "runtime.name");
+    check(runtime.version.size > 0, "runtime.version");
+    if (runtime.name == "jvm") {
+        check(runtime.integerSize == 64, "jvm runtime.integerSize");
+    } else if (runtime.name in {"node.js", "Browser"}) {
+        check(runtime.integerSize == 53, "js runtime.integerSize");
     } else {
-        fail("UNKNOWN BACKEND ``machine.name`` - please add tests for this backend");
+        fail("UNKNOWN BACKEND ``runtime.name`` - please add tests for this runtime");
     }
-    if (machine.integerSize == 64) {
-        check(machine.minIntegerValue == -9223372036854775808, "jvm machine.minIntegerValue");
-        check(machine.maxIntegerValue == 9223372036854775807, "jvm machine.maxIntegerValue");
-    } else if (machine.integerSize == 53) {
-        check(machine.minIntegerValue == -9007199254740991, "js machine.minIntegerValue");
-        check(machine.maxIntegerValue == 9007199254740989, "js machine.maxIntegerValue");
+    if (runtime.integerSize == 64) {
+        check(runtime.minIntegerValue == -9223372036854775808, "jvm runtime.minIntegerValue");
+        check(runtime.maxIntegerValue == 9223372036854775807, "jvm runtime.maxIntegerValue");
+    } else if (runtime.integerSize == 53) {
+        check(runtime.minIntegerValue == -9007199254740991, "js runtime.minIntegerValue");
+        check(runtime.maxIntegerValue == 9007199254740989, "js runtime.maxIntegerValue");
     } else {
-        fail("UNKNOWN INTEGER SIZE `` 0.size `` - please add number tests for this platform");
+        fail("UNKNOWN INTEGER SIZE `` 0.size `` - please add number tests for this runtime");
     }
 }
 

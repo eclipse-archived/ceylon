@@ -9,12 +9,10 @@ shared native object system {
     "The elapsed time in nanoseconds since an arbitrary starting point."
     shared native Integer nanoseconds;
     
-    "Returns the offset from UTC, in milliseconds, of the default timezone for
-     this virtual machine."
+    "Returns the offset from UTC, in milliseconds, of the default timezone for this system."
     shared native Integer timezoneOffset;
     
-    "Returns the IETF language tag representing the default locale for this
-     virtual machine."
+    "Returns the IETF language tag representing the default locale for this system."
     shared native String locale;
     
     shared actual String string => "system";

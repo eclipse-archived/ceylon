@@ -221,8 +221,8 @@
                 <include name="ceylon/language/Integer.java"/>
                 <exclude name="ceylon/language/language.ceylon"/>
                 <include name="ceylon/language/language_.java"/>
-                <exclude name="ceylon/language/machine.ceylon"/>
-                <include name="ceylon/language/machine_.java"/>
+                <exclude name="ceylon/language/runtime.ceylon"/>
+                <include name="ceylon/language/runtime_.java"/>
                 <exclude name="ceylon/language/operatingSystem.ceylon"/>
                 <include name="ceylon/language/operatingSystem_.java"/>
                 <exclude name="ceylon/language/process.ceylon"/>

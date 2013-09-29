@@ -237,50 +237,50 @@ var system$ = systemClass();
 function getSystem() { return system$; }
 exports.getSystem=getSystem;
 
-// machine
+// runtime
 
-function machineClass() {
-    var proc = new machineClass.$$;
+function runtimeClass() {
+    var proc = new runtimeClass.$$;
     Basic(proc);
     return proc;
 }
-machineClass.$$metamodel$$={$nm:'machineClass',$mt:'cls',$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','machine']};
-initTypeProto(machineClass, "ceylon.language::machine", $init$Basic());
-var machine$proto = machineClass.$$.prototype;
+runtimeClass.$$metamodel$$={$nm:'runtimeClass',$mt:'cls',$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','runtime']};
+initTypeProto(runtimeClass, "ceylon.language::runtime", $init$Basic());
+var runtime$proto = runtimeClass.$$.prototype;
 
-defineAttr(machine$proto, 'name', function() {
+defineAttr(runtime$proto, 'name', function() {
     if (typeof process !== "undefined" && process.execPath && process.execPath.match(/node(js)?(\.exe)?$/)) {
         return String$("node.js", 7);
     } else if (typeof window === 'object') {
         return String$("Browser", 7);
     }
     return String$("Unknown JavaScript environment", 30);
-},undefined,{$t:{t:String$},$cont:machine$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','machine','$at','name']});
-defineAttr(machine$proto, 'version', function() {
+},undefined,{$t:{t:String$},$cont:runtime$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','runtime','$at','name']});
+defineAttr(runtime$proto, 'version', function() {
     if (typeof process !== "undefined" && typeof process.version === 'string') {
         return String$(process.version);
     }
     return String$("Unknown");
-},undefined,{$t:{t:String$},$cont:machine$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','machine','$at','version']});
-defineAttr(machine$proto, 'integerSize', function() {
+},undefined,{$t:{t:String$},$cont:runtime$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','runtime','$at','version']});
+defineAttr(runtime$proto, 'integerSize', function() {
     return 53;
-},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','machine','$at','integerSize']});
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','runtime','$at','integerSize']});
 var $minIntegerValue = Integer(-9007199254740991); //-(2^53-1)
-defineAttr(machine$proto, 'minIntegerValue', function() {
+defineAttr(runtime$proto, 'minIntegerValue', function() {
     return $minIntegerValue;
-},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','machine','$at','minIntegerValue']});
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','runtime','$at','minIntegerValue']});
 var $maxIntegerValue = Integer(9007199254740989); //(2^53-3) => ((2^53)-2 is NaN)
-defineAttr(machine$proto, 'maxIntegerValue', function() {
+defineAttr(runtime$proto, 'maxIntegerValue', function() {
     return $maxIntegerValue;
-},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','machine','$at','maxIntegerValue']});
-var machineString = String$("machine", 7);
-defineAttr(machine$proto, 'string', function() {
-    return machineString;
-},undefined,{$t:{t:String$},$cont:machine$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','runtime','$at','maxIntegerValue']});
+var runtimeString = String$("runtime", 7);
+defineAttr(runtime$proto, 'string', function() {
+    return runtimeString;
+},undefined,{$t:{t:String$},$cont:runtime$proto,$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
 
-var machine$ = machineClass();
-function getMachine() { return machine$; }
-exports.getMachine=getMachine;
+var runtime$ = runtimeClass();
+function getRuntime() { return runtime$; }
+exports.getRuntime=getRuntime;
 
 // operatingSystem
 

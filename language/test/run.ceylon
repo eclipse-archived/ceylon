@@ -43,8 +43,8 @@ shared void run() {
     comprehensions();
     print("Process");
     testProcess();
-    print("Machine");
-    testMachine();
+    print("Runtime");
+    testRuntime();
     print("Operating System");
     testOperatingSystem();
     print("System");

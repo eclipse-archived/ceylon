@@ -214,7 +214,7 @@ shared void types() {
     //if (is String[]? seq) {} else { fail("sequence type 3"); }
     //if (is Integer[] seq) { fail("sequence type 4 (required reified gens)"); } else {}
     
-    if (machine.name == "jvm") {
+    if (runtime.name == "jvm") {
         check(className(1)=="ceylon.language.Integer", "natural classname");
         check(className(1.0)=="ceylon.language.Float", "float classname");
         check("ceylon.language.String" == className("hello"), "string classname [1] " + className("hello"));
@@ -223,7 +223,7 @@ shared void types() {
         check(className(1->"hello").startsWith("ceylon.language.Entry"), "entry classname");
         check(className(true)=="ceylon.language.true_", "true classname");
         check(className(false)=="ceylon.language.false_", "false classname");
-    } else if (machine.name in {"node.js", "Browser"}) {
+    } else if (runtime.name in {"node.js", "Browser"}) {
         check(className(1)=="ceylon.language::Integer", "natural classname");
         check(className(1.0)=="ceylon.language::Float", "float classname");
         check("ceylon.language::String" == className("hello"), "string classname [1] " + className("hello"));
@@ -233,7 +233,7 @@ shared void types() {
         check(className(true)=="ceylon.language::true", "true classname");
         check(className(false)=="ceylon.language::false", "false classname");
     } else {
-        fail("Missing className tests for ``machine.name`` backend");
+        fail("Missing className tests for ``runtime.name`` runtime");
     }
     //from ceylon-js
     value pair = TypesPair("hello", "world");

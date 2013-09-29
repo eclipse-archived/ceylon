@@ -5,11 +5,11 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 
 @Ceylon(major = 5) @Object
-public final class machine_ {
+public final class runtime_ {
     
-    private static final machine_ value = new machine_();
+    private static final runtime_ value = new runtime_();
     
-    public static machine_ $get() {
+    public static runtime_ $get() {
         return value;
     }
 
@@ -17,7 +17,7 @@ public final class machine_ {
     
 	private final Integer minIntegerValue = Integer.instance(Long.MIN_VALUE);
 	
-    private machine_() {}
+    private runtime_() {}
 	
 
     public java.lang.String getName() {
@@ -42,6 +42,6 @@ public final class machine_ {
     
     @Override
     public java.lang.String toString() {
-    	return "machine [" + getName() + " / " + getVersion() + "]";
+    	return "runtime [" + getName() + " / " + getVersion() + "]";
     }
 }
