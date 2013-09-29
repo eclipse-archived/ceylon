@@ -29,7 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public class LiteralVisitor extends Visitor {
 	
     private int indent;
-    static final Pattern DOC_LINK_PATTERN = Pattern.compile("\\[\\[([^\"`|\\[\\]]*\\|)?((((\\w|\\.)+)::)?(\\w+)(\\.(\\w+))*)\\]\\]");
+    static final Pattern DOC_LINK_PATTERN = Pattern.compile("\\[\\[([^\"`|\\[\\]]*\\|)?((((\\w|\\.)+)::)?(\\w*)(\\.(\\w*))*)\\]\\]");
     private static Pattern CHARACTER_ESCAPE_PATTERN = Pattern.compile("\\\\(\\{#([^}]*)\\}|\\{([^}^#]*)\\}|(.))");
     
     
