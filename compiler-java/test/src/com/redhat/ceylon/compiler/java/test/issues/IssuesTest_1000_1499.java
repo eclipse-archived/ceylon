@@ -39,8 +39,10 @@ import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
+
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
+
 
 public class IssuesTest_1000_1499 extends CompilerTest {
 

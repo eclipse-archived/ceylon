@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.java.test.cmr.CMRTestHTTP;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest2;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest3;
+import com.redhat.ceylon.compiler.java.test.fordebug.TraceTests;
 import com.redhat.ceylon.compiler.java.test.interop.InteropTest;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_0000_0499;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_0500_0999;
@@ -92,7 +93,8 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     CompilerToolsTests.class,
     // FIXME Disabled: it does not run currently in parallel
     // TopLevelToolTest.class,
-    AntToolTests.class
+    AntToolTests.class,
+    TraceTests.class
 })
 public class ConcurrentTests {
 }

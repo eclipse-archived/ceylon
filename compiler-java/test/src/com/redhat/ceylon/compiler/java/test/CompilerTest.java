@@ -46,7 +46,7 @@ import javax.tools.DiagnosticListener;
 import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Before;
 
@@ -323,7 +323,7 @@ public abstract class CompilerTest {
         Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
     }
 
-    private String readFile(File file) {
+    protected String readFile(File file) {
         try{
             Reader reader = new FileReader(file);
             StringBuilder strbuf = new StringBuilder();
@@ -355,7 +355,7 @@ public abstract class CompilerTest {
         }
     }
 
-    private String normalizeLineEndings(String txt) {
+    protected String normalizeLineEndings(String txt) {
         String result = txt.replaceAll("\r\n", "\n"); // Windows
         result = result.replaceAll("\r", "\n"); // Mac (OS<=9)
         return result;
@@ -494,14 +494,7 @@ public abstract class CompilerTest {
 
     private NonCachingURLClassLoader getClassLoader(String main,
             ModuleWithArtifact... modules) throws MalformedURLException {
-        @SuppressWarnings("deprecation")
-        List<URL> urls = new ArrayList<URL>(modules.length);
-        for (ModuleWithArtifact module : modules) {
-            File car = module.file;
-            Assert.assertTrue(car + " does not exist", car.exists());
-            URL url = car.toURL();
-            urls.add(url);
-        }
+        List<URL> urls = getClassPathAsUrls(modules);
         System.err.println("Running " + main +" with classpath" + urls);
         NonCachingURLClassLoader loader = new NonCachingURLClassLoader(urls.toArray(new URL[urls.size()]));
         // set up the runtime module system
@@ -511,6 +504,27 @@ public abstract class CompilerTest {
             Metamodel.loadModule(module.module, module.version, makeArtifactResult(module.file), loader);
         }
         return loader;
+    }
+    
+    @SuppressWarnings("deprecation")
+    protected List<URL> getClassPathAsUrls(ModuleWithArtifact... modules)
+            throws MalformedURLException {
+        List<File> files = getClassPathAsFiles(modules);
+        List<URL> urls = new ArrayList<URL>(files.size());
+        for (File file : files) {
+            urls.add(file.toURL());
+        }
+        return urls;
+    }
+    
+    protected List<File> getClassPathAsFiles(ModuleWithArtifact... modules) {
+        List<File> files = new ArrayList<File>(modules.length);
+        for (ModuleWithArtifact module : modules) {
+            File car = module.file;
+            Assert.assertTrue(car + " does not exist", car.exists());
+            files.add(car);
+        }
+        return files;
     }
 
     public static class NonCachingURLClassLoader extends URLClassLoader {
