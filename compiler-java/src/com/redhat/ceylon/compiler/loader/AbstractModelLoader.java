@@ -2407,15 +2407,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             List<AnnotationMirror> annotationTree, 
             AnnotatedMirror dpm) {
         List<Short> argumentCodes = (List<Short>)annotationInvocationAnnotation.getValue(CEYLON_ANNOTATION_INSTANTIATION_ARGUMENTS_MEMBER);
-        for (int ii = 0; ii < argumentCodes.size(); ii++) {
-            short code = argumentCodes.get(ii);
-            AnnotationArgument argument = new AnnotationArgument();
-            Parameter classParameter = ai.getParameters().get(ii);
-            argument.setParameter(classParameter);
-            path.add(argument);
-            argument.setTerm(loadAnnotationArgumentTerm(path, method, ai, classParameter, annotationTree, dpm, code));
-            path.remove(path.size()-1);
-            ai.getAnnotationArguments().add(argument);
+        if(argumentCodes != null){
+            for (int ii = 0; ii < argumentCodes.size(); ii++) {
+                short code = argumentCodes.get(ii);
+                AnnotationArgument argument = new AnnotationArgument();
+                Parameter classParameter = ai.getParameters().get(ii);
+                argument.setParameter(classParameter);
+                path.add(argument);
+                argument.setTerm(loadAnnotationArgumentTerm(path, method, ai, classParameter, annotationTree, dpm, code));
+                path.remove(path.size()-1);
+                ai.getAnnotationArguments().add(argument);
+            }
         }
     }
     
