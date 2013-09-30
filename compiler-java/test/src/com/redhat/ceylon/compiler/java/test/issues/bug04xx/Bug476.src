@@ -223,6 +223,11 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
+    public boolean contains(final .java.lang.Object element) {
+        return $ceylon$language$List$this.contains(element);
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrences(final .java.lang.Object element) {
         return $ceylon$language$List$this.occurrences(element);
     }
@@ -276,11 +281,6 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     @.java.lang.Override
     public boolean getEmpty() {
         return $ceylon$language$Collection$this.getEmpty();
-    }
-    
-    @.java.lang.Override
-    public boolean contains(final .java.lang.Object element) {
-        return $ceylon$language$Collection$this.contains(element);
     }
     protected final .ceylon.language.Iterable$impl<T, .java.lang.Object> $ceylon$language$Iterable$this;
     
