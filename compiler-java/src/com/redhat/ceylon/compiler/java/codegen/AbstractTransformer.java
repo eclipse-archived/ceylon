@@ -38,6 +38,7 @@ import org.antlr.runtime.Token;
 import com.redhat.ceylon.ceylondoc.Util;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
+import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.TypeFactory;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
@@ -78,6 +79,7 @@ import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.Factory;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
+import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
@@ -3286,5 +3288,26 @@ public abstract class AbstractTransformer implements Transformation {
         return make().TypeApply(make().QualIdent(syms().classType.tsym),
                 List.<JCExpression>of(make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), 
                             makeJavaType(upperBound))));
+    }
+
+    /**
+     * If this value is for the hash attribute, turn its long value into an int value by applying (int)(e ^ (e >>> 32))
+     */
+    public JCExpression convertToIntIfHashAttribute(Declaration model, JCExpression value) {
+        if(CodegenUtil.isHashAttribute(model)){
+            return convertToIntForHashAttribute(value);
+        }
+        return value;
+    }
+
+    /**
+     * Turn this long value into an int value by applying (int)(e ^ (e >>> 32))
+     */
+    public JCExpression convertToIntForHashAttribute(JCExpression value) {
+        SyntheticName tempName = naming.temp("hash");
+        JCExpression type = make().Type(syms().longType);
+        JCBinary combine = make().Binary(JCTree.BITXOR, makeUnquotedIdent(tempName.getName()), 
+                make().Binary(JCTree.USR, makeUnquotedIdent(tempName.getName()), makeInteger(32)));
+        return make().TypeCast(syms().intType, makeLetExpr(tempName, null, type, value, combine));
     }
 }

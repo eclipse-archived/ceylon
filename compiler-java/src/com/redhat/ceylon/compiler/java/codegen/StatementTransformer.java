@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -1956,6 +1957,8 @@ public class StatementTransformer extends AbstractTransformer {
                 // we can cast to TypedDeclaration here because return with expressions are only in Method or Value
                 TypedDeclaration declaration = (TypedDeclaration)ret.getDeclaration();
                 returnExpr = expressionGen().transformExpression(declaration, expr.getTerm());
+                // make sure all returns from hash are properly turned into ints
+                returnExpr = convertToIntIfHashAttribute(declaration, returnExpr);
             } finally {
                 noExpressionlessReturn = prevNoExpressionlessReturn;
             }

@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Specification;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
@@ -53,11 +54,12 @@ class CodegenUtil {
         return "hash".equals(name) || "string".equals(name);
     }
 
-    static boolean isSmall(TypedDeclaration declaration) {
-        return "hash".equals(declaration.getName());
+    public static boolean isHashAttribute(Declaration model) {
+        return model instanceof Value
+                && Decl.withinClassOrInterface(model)
+                && model.isShared()
+                && "hash".equals(model.getName());
     }
-
-
 
     static boolean isUnBoxed(Term node){
         return node.getUnboxed();

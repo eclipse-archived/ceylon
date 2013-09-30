@@ -20,11 +20,10 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -74,6 +73,7 @@ public class AttributeDefinitionBuilder {
     private ListBuffer<JCAnnotation> modelAnnotations;
     private ListBuffer<JCAnnotation> userAnnotations;
     private ListBuffer<JCAnnotation> userAnnotationsSetter;
+    private boolean isHash;
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, 
             String javaClassName, String attrName, String fieldName, boolean toplevel, boolean indirect) {
@@ -84,10 +84,15 @@ public class AttributeDefinitionBuilder {
         if (!CodegenUtil.isUnBoxed(nonWideningTypedRef.getDeclaration())) {
             typeFlags |= AbstractTransformer.JT_NO_PRIMITIVES;
         }
-        
+        this.isHash = CodegenUtil.isHashAttribute((MethodOrValue) attrType);
         this.attrTypedDecl = attrType;
-        this.attrType = owner.makeJavaType(nonWideningType, typeFlags);
-        this.attrTypeRaw = owner.makeJavaType(nonWideningType, AbstractTransformer.JT_RAW);
+        // make sure we generate int getters for hash
+        if(this.isHash){
+            this.attrType = this.attrTypeRaw = owner.make().Type(owner.syms().intType);
+        }else{
+            this.attrType = owner.makeJavaType(nonWideningType, typeFlags);
+            this.attrTypeRaw = owner.makeJavaType(nonWideningType, AbstractTransformer.JT_RAW);
+        }
         this.owner = owner;
         this.javaClassName = javaClassName;
         if (javaClassName != null) {
@@ -301,6 +306,9 @@ public class AttributeDefinitionBuilder {
         if (toplevel || late) {
             returnExpr = owner.make().Indexed(returnExpr, owner.make().Literal(0));
         }
+        // make sure we turn hash long to int properly
+        if(isHash)
+            returnExpr = owner.convertToIntForHashAttribute(returnExpr);
         JCReturn returnValue = owner.make().Return(returnExpr);
         List<JCStatement> stmts;
         

@@ -1987,6 +1987,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             type = obtainType(methodMirror.getReturnType(), methodMirror, klass, Decl.getModuleContainer(klass), VarianceLocation.INVARIANT,
                               "getter '"+methodName+"'", klass);
         value.setType(type);
+        // special case for hash attributes which we want to pretend are of type long internally
+        if(value.isShared() && methodName.equals("hash"))
+            type.setUnderlyingType("long");
         value.setUncheckedNullType((!isCeylon && !methodMirror.getReturnType().isPrimitive()) || isUncheckedNull(methodMirror));
         type.setRaw(isRaw(Decl.getModuleContainer(klass), methodMirror.getReturnType()));
 

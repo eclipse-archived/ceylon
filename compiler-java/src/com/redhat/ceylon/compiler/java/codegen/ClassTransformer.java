@@ -1187,7 +1187,11 @@ public class ClassTransformer extends AbstractTransformer {
                 || ((member instanceof Method || member instanceof Value) && !Decl.isUnboxedVoid(member)) 
                 || (member instanceof Method && Strategy.useBoxedVoid((Method)member))) {
             explicitReturn = true;
-            if (typedMember instanceof ProducedTypedReference) {
+            if(CodegenUtil.isHashAttribute(member)){
+                // delegates for hash attributes are int
+                concreteWrapper.resultType(null, make().Type(syms().intType));
+                returnType = typedMember.getType();
+            }else if (typedMember instanceof ProducedTypedReference) {
                 ProducedTypedReference typedRef = (ProducedTypedReference) typedMember;
                 concreteWrapper.resultTypeNonWidening(typedRef, typedMember.getType(), 0);
                 // FIXME: this is redundant with what we computed in the previous line in concreteWrapper.resultTypeNonWidening
@@ -1723,6 +1727,7 @@ public class ClassTransformer extends AbstractTransformer {
                 JCExpression expr = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), 
                         CodegenUtil.getBoxingStrategy(declarationModel), 
                         nonWideningType);
+                expr = convertToIntIfHashAttribute(declarationModel, expr);
                 builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(expr))));
             } else {
                 JCExpression accessor = naming.makeQualifiedName(

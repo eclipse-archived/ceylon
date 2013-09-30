@@ -57,7 +57,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PostfixOperatorExpressio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PowerOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PrefixOperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
@@ -294,28 +293,9 @@ public abstract class BoxingVisitor extends Visitor {
     }
     
     @Override
-    public void visit(SpecifierStatement that) {
-        super.visit(that);
-        underlyingType(that.getBaseMemberExpression());
-    }
-
-    @Override
     public void visit(AssignOp that) {
         super.visit(that);
         propagateFromTerm(that, that.getLeftTerm());
-        underlyingType(that.getLeftTerm());
-    }
-
-    private void underlyingType(Tree.Term term) {
-        if (term instanceof Tree.MemberOrTypeExpression) {
-            Tree.MemberOrTypeExpression leftTerm = (Tree.MemberOrTypeExpression)term;
-            TypedDeclaration decl = (TypedDeclaration) leftTerm.getDeclaration();
-            if (decl != null && CodegenUtil.isSmall(decl)) {
-                ProducedType expectedType = decl.getTypeDeclaration().getType();
-                expectedType.setUnderlyingType("int");
-                leftTerm.setTypeModel(expectedType);
-            }
-        }
     }
 
     @Override

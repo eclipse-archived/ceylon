@@ -29,10 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
-import com.redhat.ceylon.compiler.typechecker.model.Specification;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -257,11 +254,6 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         boxAttribute(declaration);
         rawTypedDeclaration(declaration);
         setErasureState(declaration);
-        if (declaration.getContainer() instanceof TypeDeclaration 
-                && CodegenUtil.isSmall(declaration)
-                && declaration.getType() != null) {
-            declaration.getType().setUnderlyingType("int");
-        }
     }
     
     @Override
