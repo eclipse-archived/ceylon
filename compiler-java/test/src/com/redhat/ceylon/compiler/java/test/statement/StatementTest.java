@@ -718,7 +718,7 @@ public class StatementTest extends CompilerTest {
     @Test
     public void testDynBlock(){
         assertErrors("dynamic/Dynamic",
-                new CompilerError(22, "Dynamic not yet supported on the JVM"),
+                new CompilerError(22, "dynamic is not yet supported on this platform"),
                 new CompilerError(26, "value type could not be inferred"));
     }
 }

@@ -179,14 +179,14 @@ public class ExpressionTest extends CompilerTest {
     public void testLitNumericLiteral(){
         compareWithJavaSource("literal/NumericLiteral");
         assertErrors("literal/NumericLiteralErrors",
-                new CompilerError(24, "Literal outside representable range"),
-                new CompilerError(25, "Literal outside representable range"),
-                new CompilerError(27, "Literal so large it is indistinguishable from infinity"),
-                new CompilerError(28, "Literal so large it is indistinguishable from infinity"),
-                new CompilerError(29, "Literal so small it is indistinguishable from zero"),
-                new CompilerError(30, "Literal so small it is indistinguishable from zero"),
-                new CompilerError(34, "Invalid hexadecimal literal: more than 64 bits"),
-                new CompilerError(36, "Invalid binary literal: more than 64 bits")
+                new CompilerError(24, "literal outside representable range: 9223372036854775808 is too large to be represented as an Integer"),
+                new CompilerError(25, "literal outside representable range: -9223372036854775809 is too large to be represented as an Integer"),
+                new CompilerError(27, "literal so large it is indistinguishable from infinity: 1.7976931348623159E308 (use infinity)"),
+                new CompilerError(28, "literal so large it is indistinguishable from infinity: 1.7976931348623159E308 (use infinity)"),
+                new CompilerError(29, "literal so small it is indistinguishable from zero: 2.0E-324 (use 0.0)"),
+                new CompilerError(30, "literal so small it is indistinguishable from zero: 2.0E-324 (use 0.0)"),
+                new CompilerError(34, "invalid hexadecimal literal: #CAFEBABECAFEBABE1 has more than 64 bits"),
+                new CompilerError(36, "invalid binary literal: $11011101110111011101110111011101110111011101110111011101110111011 has more than 64 bits")
         );
         assertErrors("literal/NumericLiteralParserErrors",
                 new CompilerError(23, "incorrect syntax: no viable alternative at character '-'"),
@@ -330,7 +330,7 @@ public class ExpressionTest extends CompilerTest {
         compile("instantiation/AvoidBackwardBranchWithSuper.ceylon");
         // We're testing that we get a vaguely helpful error message
         assertErrors("instantiation/AvoidBackwardBranchWithSuperInner",
-                new CompilerError(2, "Use of expressions which imply a loop (or other backward branch) in the invocation of a super class initializer are currently only supported on top level classes"));
+                new CompilerError(2, "compiler bug: use of expressions which imply a loop (or other backward branch) in the invocation of a super class initializer are currently only supported on top level classes"));
     }
     
     // Operators

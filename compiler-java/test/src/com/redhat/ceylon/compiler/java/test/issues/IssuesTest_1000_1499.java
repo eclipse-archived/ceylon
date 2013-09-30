@@ -339,10 +339,10 @@ public class IssuesTest_1000_1499 extends CompilerTest {
         compareWithJavaSource("bug11xx/Bug1185");
         run("com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1185");
         assertErrors("bug11xx/Bug1185_errors",
-                new CompilerError(3, "Literal outside representable range"),
-                new CompilerError(4, "Literal outside representable range"),
-                new CompilerError(5, "Invalid hexadecimal literal: more than 64 bits"),
-                new CompilerError(6, "Invalid hexadecimal literal: more than 64 bits")
+                new CompilerError(3, "literal outside representable range: 9223372036854775808 is too large to be represented as an Integer"),
+                new CompilerError(4, "literal outside representable range: -9223372036854775809 is too large to be represented as an Integer"),
+                new CompilerError(5, "invalid hexadecimal literal: #10000000000000000 has more than 64 bits"),
+                new CompilerError(6, "invalid binary literal: $10000000000000000000000000000000000000000000000000000000000000000 has more than 64 bits")
         );
     }
     
