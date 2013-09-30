@@ -14,3 +14,4 @@ samples/helloworld/modules
 /JDTClasses/
 /build
 test/trace/com/redhat/ceylon/compiler/java/test/trace/**/*.class
+test/trace/com/redhat/ceylon/compiler/java/test/trace/*.class
