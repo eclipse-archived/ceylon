@@ -1,0 +1,381 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
+
+class Bug1334_1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1334_1() {
+    }
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmphash1 = 23L;
+            }
+            returning $ceylontmphash1 ^ $ceylontmphash1 >>> 32;
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_1();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_1.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_1.class);
+}
+class Bug1334_2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1334_2() {
+        this.hash = 23L;
+    }
+    private final long hash;
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmphash2 = hash;
+            }
+            returning $ceylontmphash2 ^ $ceylontmphash2 >>> 32;
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_2();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_2.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_2.class);
+}
+class Bug1334_3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1334_3() {
+        this.hash = 23L;
+    }
+    private final long hash;
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmphash3 = hash;
+            }
+            returning $ceylontmphash3 ^ $ceylontmphash3 >>> 32;
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_3();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_3.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_3.class);
+}
+class Bug1334_4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1334_4() {
+    }
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmphash5 = 23L;
+            }
+            returning $ceylontmphash5 ^ $ceylontmphash5 >>> 32;
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_4();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_4.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_4.class);
+}
+class Bug1334_5 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1334_5() {
+    }
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmphash7 = 23L;
+            }
+            returning $ceylontmphash7 ^ $ceylontmphash7 >>> 32;
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_5();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_5.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_5.class);
+}
+class Bug1334_6 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1334_6(final long hash) {
+        this.hash = hash;
+    }
+    private final long hash;
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmphash8 = hash;
+            }
+            returning $ceylontmphash8 ^ $ceylontmphash8 >>> 32;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_6.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_6.class);
+}
+class Bug1334_7 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1334_7() {
+        (
+            let
+            {
+                long $ceylontmp$hash$10 = .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_7.$init$hash();
+                this($ceylontmp$hash$10);
+            }
+            returning null;
+        );
+    }
+    
+    Bug1334_7(final long hash) {
+        this.hash = hash;
+    }
+    private final long hash;
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmphash9 = hash;
+            }
+            returning $ceylontmphash9 ^ $ceylontmphash9 >>> 32;
+        );
+    }
+    
+    static long $init$hash() {
+        return 23L;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_7();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_7.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_7.class);
+}
+class Bug1334_8 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1334_8(final long hash) {
+        this.hash = hash;
+    }
+    private final long hash;
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmphash11 = hash;
+            }
+            returning $ceylontmphash11 ^ $ceylontmphash11 >>> 32;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_8.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_8.class);
+}
+class Bug1334_9 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1334_9() {
+        (
+            let
+            {
+                long $ceylontmp$hash$12 = .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_9.$init$hash();
+                this($ceylontmp$hash$12);
+            }
+            returning null;
+        );
+    }
+    
+    Bug1334_9(final long hash) {
+        this.hash = hash;
+    }
+    
+    static long $init$hash() {
+        return 23L;
+    }
+    private final long hash;
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmphash13 = hash;
+            }
+            returning $ceylontmphash13 ^ $ceylontmphash13 >>> 32;
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_9();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_9.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_9.class);
+}
+class Bug1334_6_2 extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_6 {
+    
+    Bug1334_6_2(final long h) {
+        super(h);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_6_2.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_6_2.class);
+}
+class Bug1334_10 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1334_10() {
+        this.hash = 23L;
+    }
+    private long hash;
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmphash14 = hash;
+            }
+            returning $ceylontmphash14 ^ $ceylontmphash14 >>> 32;
+        );
+    }
+    
+    public final void setHash(final long hash) {
+        this.hash = hash;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_10();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_10.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_10.class);
+}
+interface Bug1334_11 {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_11$impl $com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1334_11$impl();
+    
+    @.java.lang.Override
+    public int hashCode();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_11.class);
+}
+final class Bug1334_11$impl {
+    
+    Bug1334_11$impl(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_11 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_11 $this;
+    
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmphash19 = 23L;
+            }
+            returning $ceylontmphash19 ^ $ceylontmphash19 >>> 32;
+        );
+    }
+}
+class Bug1334_12 extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_11 {
+    
+    Bug1334_12() {
+        super();
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1334_11$this = new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_11$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_11$impl $com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1334_11$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_11$impl $com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1334_11$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1334_11$this;
+    }
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1334_11$this.hashCode();
+    }
+    
+    @.java.lang.Override
+    public final boolean equals(final .java.lang.Object o) {
+        return false;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_12();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_12.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_12.class);
+}
