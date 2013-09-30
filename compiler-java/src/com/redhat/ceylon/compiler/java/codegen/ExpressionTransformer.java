@@ -324,10 +324,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (v.hasResult()) {
                     result = v.getSingleResult();
                     if (result == null) {
-                        result = makeErroneous(term, "Visitor yielded multiple results");
+                        result = makeErroneous(term, "compiler bug: visitor yielded multiple results");
                     }
                 } else {
-                    result = makeErroneous(term, "Visitor didn't yield a result");
+                    result = makeErroneous(term, "compiler bug: visitor didn't yield a result");
                 }
             } finally {
                 v.classBuilder = prevClassBuilder;
@@ -357,7 +357,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     if (isAnything(model.getType())) {
                         body = body.append(make().Return(makeNull()));
                     } else {
-                        body = body.append(make().Return(makeErroneous(functionArg.getBlock(), "non-void method doesn't definitely return")));
+                        body = body.append(make().Return(makeErroneous(functionArg.getBlock(), "compiler bug: non-void method does not definitely return")));
                     }
                 }
             } else {
@@ -911,9 +911,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         // Don't need to handle the negative infinity and negative zero cases 
         // because Ceylon Float literals have no sign
         if (value == Double.POSITIVE_INFINITY) {
-            throw new ErroneousException(literal, "Literal so large it is indistinguishable from infinity");
+            throw new ErroneousException(literal, "literal so large it is indistinguishable from infinity: "+ literal.getText() + " (use infinity)");
         } else if (value == 0.0 && !literal.getText().equals("0.0")) {
-            throw new ErroneousException(literal, "Literal so small it is indistinguishable from zero");
+            throw new ErroneousException(literal, "literal so small it is indistinguishable from zero: " + literal.getText() + " (use 0.0)");
         }
         return value;
     }
@@ -924,15 +924,15 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     static private long literalValue(Tree.NaturalLiteral literal, String text) throws ErroneousException {
         if(text.startsWith("#")){
-            return literalValue(literal, 16, "Invalid hexadecimal literal: more than 64 bits");
+            return literalValue(literal, 16, "invalid hexadecimal literal: " + text + " has more than 64 bits");
         }
         if(text.startsWith("$")){
-            return literalValue(literal, 2, "Invalid binary literal: more than 64 bits");
+            return literalValue(literal, 2, "invalid binary literal: " + text + " has more than 64 bits");
         }
         try {
             return Long.parseLong(text);
         } catch (NumberFormatException e) {
-            throw new ErroneousException(literal, "Literal outside representable range");
+            throw new ErroneousException(literal, "literal outside representable range: " + text + " is too large to be represented as an Integer");
         }
         
     }
@@ -1023,7 +1023,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         Declaration declaration = expr.getDeclaration();
         if(declaration == null)
-            return makeErroneous(expr, "Missing declaration");
+            return makeErroneous(expr, "compiler bug: missing declaration");
         if(declaration.isToplevel()){
             return makeTopLevelValueOrFunctionLiteral(expr);
         }else if(expr.getWantsDeclaration()){
@@ -1079,7 +1079,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression makeMemberValueOrFunctionDeclarationLiteral(Node node, Declaration declaration) {
         // it's a member we get from its container declaration
         if(declaration.getContainer() instanceof ClassOrInterface == false)
-            return makeErroneous(node, "Unsupported type parameter container: "+declaration.getContainer());
+            return makeErroneous(node, "compiler bug: " + declaration.getContainer() + " is not a supported type parameter container");
         
         ClassOrInterface container = (ClassOrInterface) declaration.getContainer();
         // use the generated class to get to the declaration literal
@@ -1100,7 +1100,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             else
                 memberClassName = "ValueDeclaration";
         }else{
-            return makeErroneous(node, "declaration type not supported yet: "+declaration);
+            return makeErroneous(node, "compiler bug: " + declaration + " is not a supported declaration literal");
         }
         TypeDeclaration metamodelDecl = (TypeDeclaration) typeFact().getLanguageModuleDeclarationDeclaration(memberClassName);
         JCExpression memberType = makeJavaType(metamodelDecl.getType());
@@ -1241,7 +1241,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // now it must be a ClassOrInterfaceDeclaration or a FunctionDeclaration, both of which have the method we need
                 return at(expr).Apply(null, makeSelect(containerExpr, "getTypeParameterDeclaration"), List.of(ceylonLiteral(declaration.getName())));
             }else{
-                return makeErroneous(expr, "Unsupported type parameter container: "+container);
+                return makeErroneous(expr, "compiler bug: " + container + " is not a supported type parameter container");
             }
         }else if(expr.getDeclaration() instanceof ClassOrInterface
                  || expr.getDeclaration() instanceof TypeAlias){
@@ -1255,7 +1255,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             return metamodelCall;
         }else{
-            return makeErroneous(expr, "Unsupported declaration type: "+expr.getDeclaration());
+            return makeErroneous(expr, "compiler bug: " + expr.getDeclaration() + " is an unsupported declaration type");
         }
     }
 
@@ -1308,7 +1308,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             SequencedArgument sequencedArgument = value.getSequencedArgument();
             java.util.List<Tree.PositionalArgument> list = sequencedArgument.getPositionalArguments();
             if(list.isEmpty())
-                return makeErroneous(value, "Empty iterable literal with sequenced arguments: "+value);
+                return makeErroneous(value, "compiler bug: empty iterable literal with sequenced arguments: "+value);
             ProducedType seqElemType = typeFact().getIteratedType(value.getTypeModel());
             seqElemType = wrapInOptionalForInterop(seqElemType, expectedType);
             return makeIterable(sequencedArgument, seqElemType, 0);
@@ -1377,7 +1377,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         : typeFact().getSequenceType(elementType);
                 tail = comprehensionAsSequential(comp, expectedType);
             } else {
-                return makeErroneous(expr, "Unexpected tuple argument");
+                return makeErroneous(expr, "compiler bug: " + expr.getNodeType() + " is not a supported tuple argument");
             }
         }
         
@@ -1506,7 +1506,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         OperatorTranslation operator = Operators.getOperator(op.getClass());
         if (operator == null) {
-            return makeErroneous(op, "unhandled operator: " + op.getClass());
+            return makeErroneous(op, "compiler bug: " + op.getClass() + " is an unhandled operator class");
         }
 
         if(operator.getOptimisationStrategy(op, this).useJavaOperator()){
@@ -1601,7 +1601,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.LogicalOp op) {
         OperatorTranslation operator = Operators.getOperator(op.getClass());
         if(operator == null){
-            return makeErroneous(op, "Not supported yet: "+op.getNodeType());
+            return makeErroneous(op, "compiler bug: " + op.getNodeType() + " is not a supported logical operator");
         }
         // Both terms are Booleans and can't be erased to anything
         JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED, null);
@@ -1752,7 +1752,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, ProducedType leftType, ProducedType rightType) {
         OperatorTranslation operator = Operators.getOperator(op.getClass());
         if (operator == null) {
-            return makeErroneous(op, "unhandled operator: " + op.getClass());
+            return makeErroneous(op, "compiler bug: " + op.getClass() +" is an unhandled operator");
         }
         OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(op, this);
 
@@ -1790,9 +1790,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         OperatorTranslation actualOperator = originalOperator;
         if (loseComparison) {
             actualOperator = Operators.OperatorTranslation.BINARY_COMPARE;
-            if (actualOperator == null) {
-                return makeErroneous(rightTerm, "Null OperatorTranslation");
-            }
         }
 
         List<JCExpression> args = List.of(right);
@@ -1822,7 +1819,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(final Tree.ArithmeticAssignmentOp op){
         final AssignmentOperatorTranslation operator = Operators.getAssignmentOperator(op.getClass());
         if(operator == null){
-            return makeErroneous(op, "Not supported yet: "+op.getNodeType());
+            return makeErroneous(op, "compiler bug: "+op.getNodeType() + " is not a supported arithmetic assignment operator");
         }
 
         // see if we can optimise it
@@ -1870,7 +1867,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(final Tree.BitwiseAssignmentOp op){
         final AssignmentOperatorTranslation operator = Operators.getAssignmentOperator(op.getClass());
         if(operator == null){
-            return makeErroneous(op, "Not supported yet: "+op.getNodeType());
+            return makeErroneous(op, "compiler bug: "+op.getNodeType() +" is not a supported bitwise assignment operator");
         }
     	
         ProducedType valueType = op.getLeftTerm().getTypeModel();
@@ -1887,7 +1884,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(final Tree.LogicalAssignmentOp op){
         final AssignmentOperatorTranslation operator = Operators.getAssignmentOperator(op.getClass());
         if(operator == null){
-            return makeErroneous(op, "Not supported yet: "+op.getNodeType());
+            return makeErroneous(op, "compiler bug: "+op.getNodeType() + " is not a supported logical assignment operator");
         }
         
         // optimise if we can
@@ -1920,7 +1917,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.PostfixOperatorExpression expr) {
         OperatorTranslation operator = Operators.getOperator(expr.getClass());
         if(operator == null){
-            return makeErroneous(expr, "Not supported yet: "+expr.getNodeType());
+            return makeErroneous(expr, "compiler bug "+expr.getNodeType() + " is not yet supported");
         }
         
         OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(expr, this);
@@ -2025,7 +2022,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // $tmpV
             result = make().Ident(varVName);
         }else{
-            return makeErroneous(term, "Not supported yet");
+            return makeErroneous(term, "compiler bug: " + term.getNodeType() + " is not supported yet");
         }
         // e?.attr++ is probably not legal
         // a[i]++ is not for M1 but will be:
@@ -2042,7 +2039,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(final Tree.PrefixOperatorExpression expr) {
         final OperatorTranslation operator = Operators.getOperator(expr.getClass());
         if(operator == null){
-            return makeErroneous(expr, "Not supported yet: "+expr.getNodeType());
+            return makeErroneous(expr, "compiler bug: "+expr.getNodeType() + " is not supported yet");
         }
         
         OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(expr, this);
@@ -2158,7 +2155,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // return, with the box type we asked for
             result = make().Ident(varVName);
         }else{
-            return makeErroneous(operator, "Not supported yet");
+            return makeErroneous(operator, "compiler bug: " + term.getNodeType() + " is not a supported assign and return operator");
         }
         // OP(e?.attr) is probably not legal
         // OP(a[i]) is not for M1 but will be:
@@ -2195,7 +2192,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         param.getParameterModel().getType());
             }
         } else {
-            expr = makeErroneous(param, "No defaulted");
+            expr = makeErroneous(param, "compiler bug: no default parameter value method");
         }
         //needDollarThis = false;
         return expr;
@@ -2344,7 +2341,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                             boxingStrategy);
                     exprAndType = new ExpressionAndType(iterableToSequential(exprAndType.expression), exprAndType.type);
                 } else {
-                    exprAndType = new ExpressionAndType(makeErroneous(invocation.getNode(), "Unexpected spread argument"), makeErroneous(invocation.getNode(), "Unexpected spread argument"));
+                    exprAndType = new ExpressionAndType(makeErroneous(invocation.getNode(), "compiler bug: unexpected spread argument"), makeErroneous(invocation.getNode(), "compiler bug: unexpected spread argument"));
                 }
             } else if (!invocation.isParameterSequenced(argIndex)
                     // if it's sequenced, Java and there's no spread at all, pass it along
@@ -2640,7 +2637,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             else if(transformedPrimary.selector.equals("set"))
                 callBuilder.arrayWrite(transformedPrimary.expr);
             else
-                return makeErroneous(invocation.getNode(), "Compiler bug: don't know what to do with array selector: "+transformedPrimary.selector);
+                return makeErroneous(invocation.getNode(), "compiler bug: extraneous array selector: "+transformedPrimary.selector);
         } else if (invocation.isOnValueType()) {
             JCExpression primTypeExpr = makeJavaType(invocation.getQmePrimary().getTypeModel(), JT_NO_PRIMITIVES | JT_VALUE_TYPE);
             callBuilder.invoke(naming.makeQuotedQualIdent(primTypeExpr, transformedPrimary.selector));
@@ -2818,7 +2815,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
             java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
             if(paramLists.isEmpty()){
-                classBuilder.superCall(at(extendedType).Exec(makeErroneous(extendedType, "Super class is missing parameter list")));
+                classBuilder.superCall(at(extendedType).Exec(makeErroneous(extendedType, "compiler bug: super class " + primaryDeclaration.getName() + " is missing parameter list")));
                 return;
             }
             SuperInvocation builder = new SuperInvocation(this,
@@ -2905,12 +2902,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (!subclass.isToplevel()) {
                 for (ExpressionAndType argument : superArgumentsAndTypes) {
                     argMethodCalls.append(makeErroneous(backwardBranchWithUninitialized, "" +
-                    		"Use of expressions which imply a loop (or other backward branch) " +
-                    		"in the invocation of a super class initializer are currently only " +
-                    		"supported on top level classes"));
+                            "compiler bug: use of expressions which imply a loop (or other backward branch) " +
+                            "in the invocation of a super class initializer are currently only " +
+                            "supported on top level classes"));
                 }
                 return argMethodCalls.toList();
-            }            
+            }
             
             for (ExpressionAndType argument : superArgumentsAndTypes) {
                 SyntheticName argMethodName = naming.synthetic("super$arg$"+argumentNum);
@@ -3073,7 +3070,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     (Class)member, 
                     producedReference).build();
         } else {
-            return makeErroneous(expr, "Member reference of " + expr + " not supported yet");
+            return makeErroneous(expr, "compiler bug: member reference of " + expr + " not supported yet");
         }
     }
     
@@ -3224,7 +3221,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberOrTypeExpression expr) {
         if(expr.getTarget() == null)
-            return makeErroneous(expr, "null target");
+            return makeErroneous(expr, "compiler bug: " + expr.getDeclaration().getName() + " has a null target");
         // consider package qualifiers as non-prefixed, we always qualify them anyways, this is
         // only useful for the typechecker resolving
         Primary primary = expr.getPrimary();
@@ -3324,7 +3321,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             }
         } else {
-            result = makeErroneous(superOfQualifiedExpr, "Unhandled case in widen(): " + (inheritedFrom == null ? "null" : inheritedFrom.getClass().getName()));
+            result = makeErroneous(superOfQualifiedExpr, "compiler bug: " + (inheritedFrom == null ? "null" : inheritedFrom.getClass().getName()) + " is an unhandled case in widen()");
         }
         return result;
     }
@@ -3401,7 +3398,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // do not throw, an error will already have been reported
         Declaration decl = expr.getDeclaration();
         if (decl == null) {
-            return makeErroneous(expr, "Null declaration");
+            return makeErroneous(expr, "compiler bug: expression with no declaration");
         }
         
         // Try to find the original declaration, in case we have conditionals that refine the type of objects without us
@@ -3789,7 +3786,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 args = List.of(start, end);
             } else {
                 method = "unknown";
-                args = List.<JCExpression>of(makeErroneous(range, "unhandled range"));
+                args = List.<JCExpression>of(makeErroneous(range, "compiler bug: unhandled range"));
             }
 
             // Because tuple open span access has the type of the indexed element
@@ -3805,7 +3802,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     at(access);
                     safeAccess = makeUtilInvocation("tuple_"+method, args.prepend(lhs), null);
                 }else{
-                    safeAccess = makeErroneous(access, "Failed assumption from the compiler backend: only the spanFrom method should be specialised for Tuples. This is likely a compiler bug, please report it.");
+                    safeAccess = makeErroneous(access, "compiler bug: only the spanFrom method should be specialised for Tuples");
                 }
             }else{
                 // make a "lhs.<method>(start, end)" call
@@ -3890,7 +3887,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // Nothing to do here
             expr = null;
         } else {
-            return makeErroneous(op, "Not supported yet: "+op.getNodeType());
+            return makeErroneous(op, "compiler bug: "+op.getNodeType() + " is not yet supported");
         }
         return transformAssignment(op, leftTerm, expr, rhs);
     }
@@ -4046,7 +4043,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         at(excc);
                         clause = null;
                     } else {
-                        return makeErroneous(clause, "No support for comprehension clause of type " + clause.getClass().getName());
+                        return makeErroneous(clause, "compiler bug: comprehension clausees of type " + clause.getClass().getName() + " are not yet supported");
                     }
                     idx++;
                     if (itemVar != null) prevItemVar = itemVar;
@@ -4073,7 +4070,7 @@ public class ExpressionTransformer extends AbstractTransformer {
          */
         private JCMethodDecl makeNextMethod(ProducedType iteratedType) {
             if (valueCaptures.isEmpty()) {
-                valueCaptures.append(make().Exec(makeErroneous(this.comp, "Nothing captured")));
+                valueCaptures.append(make().Exec(makeErroneous(this.comp, "compiler bug: nothing captured")));
             }
             List<JCStatement> of = valueCaptures.append(make().Return(transformExpression(excc.getExpression(), BoxingStrategy.BOXED, iteratedType))).toList();
             JCStatement stmt = make().If(
@@ -4287,7 +4284,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 fieldNames.add(kdec.getName());
                 fieldNames.add(vdec.getName());
             } else {
-                error = makeErroneous(fcl, "No support yet for iterators of type " + fcl.getForIterator().getClass().getName());
+                error = makeErroneous(fcl, "compiler bug: iterators of type " + fcl.getForIterator().getNodeType() + " not yet suuported");
                 return null;
             }
             fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), itemVar.suffixedBy("$exhausted").asName(),
@@ -4596,7 +4593,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 result.append(wrapperAnnotation);
             } else {
                 if (annotations.size() > 1) {
-                    makeErroneous(annotationList, "Multiple occurances of non-sequenced annotation class " + annotationClass.getQualifiedNameString());
+                    makeErroneous(annotationList, "compiler bug: multiple occurances of non-sequenced annotation class " + annotationClass.getQualifiedNameString());
                 }
                 result.appendList(annotations);
             }
@@ -4656,7 +4653,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (ref != null) {
             return make().Literal(ref);
         }
-        return makeErroneous(literal, "unhandled meta literal: " + (literal == null ? "null" : literal.getClass().getName()));
+        return makeErroneous(literal, "compiler bug: " + literal.getNodeType() + " is not a supported meta literal");
     }
 
     public static Referenceable getMetaLiteralReferenceable(Tree.MetaLiteral ml) {

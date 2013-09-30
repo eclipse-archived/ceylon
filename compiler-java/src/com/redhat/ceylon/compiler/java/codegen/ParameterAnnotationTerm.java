@@ -86,7 +86,7 @@ public class ParameterAnnotationTerm extends AnnotationTerm implements Annotatio
                 }
             }
         }
-        return exprGen.makeErroneous(null, "Not implemented yet");
+        return exprGen.makeErroneous(null, "compiler bug: not implemented yet");
     }
 
     @Override

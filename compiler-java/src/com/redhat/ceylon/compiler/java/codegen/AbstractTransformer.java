@@ -1208,7 +1208,8 @@ public abstract class AbstractTransformer implements Transformation {
         return makeJavaType(producedType, 0);
     }
 
-    JCExpression makeJavaType(ProducedType type, final int flags) {
+    JCExpression makeJavaType(final ProducedType ceylonType, final int flags) {
+        ProducedType type = ceylonType;
         if(type == null
                 || type.getDeclaration() instanceof UnknownType)
             return make().Erroneous();
@@ -1373,7 +1374,7 @@ public abstract class AbstractTransformer implements Transformation {
                 jt = makeQuotedFQIdent(simpleType.getUnderlyingType());
         }
         
-        return (jt != null) ? jt : makeErroneous(null, "Null result from makeJavaType()");
+        return (jt != null) ? jt : makeErroneous(null, "compiler bug: the java type corresponding to " + ceylonType + " could not be computed");
     }
 
     public boolean isJavaArray(ProducedType type) {
@@ -1399,19 +1400,19 @@ public abstract class AbstractTransformer implements Transformation {
 
     private JCExpression getJavaArrayElementType(ProducedType type, int flags) {
         if(type == null)
-            return makeErroneous(null, "Compiler bug: type is not a Java array: " + type);
+            return makeErroneous(null, "compiler bug: "+ type + " is not a java array");
         type = simplifyType(type);
         if(type == null || type.getDeclaration() instanceof Class == false)
-            return makeErroneous(null, "Compiler bug: type is not a Java array: " + type);
+            return makeErroneous(null, "compiler bug: " + type + " is not a java array");
         Class c = (Class) type.getDeclaration();
         String name = c.getQualifiedNameString();
         if(name.equals("java.lang::ObjectArray")){
             // fetch its type parameter
             if(type.getTypeArgumentList().size() != 1)
-                return makeErroneous(null, "Compiler bug: missing parameter type to Java ObjectArray: " + type);
+                return makeErroneous(null, "compiler bug: " + type + " is missing parameter type to java ObjectArray");
             ProducedType elementType = type.getTypeArgumentList().get(0);
             if(elementType == null)
-                return makeErroneous(null, "Compiler bug: null parameter type to Java ObjectArray: " + type);
+                return makeErroneous(null, "compiler bug: " + type + " has null parameter type to java ObjectArray");
             return make().TypeArray(makeJavaType(elementType, flags | JT_TYPE_ARGUMENT));
         }else if(name.equals("java.lang::ByteArray")){
             return make().TypeArray(make().TypeIdent(TypeTags.BYTE));
@@ -1430,7 +1431,7 @@ public abstract class AbstractTransformer implements Transformation {
         }else if(name.equals("java.lang::CharArray")){
             return make().TypeArray(make().TypeIdent(TypeTags.CHAR));
         }else {
-            return makeErroneous(null, "Compiler bug: unknown Java array type: " + type);
+            return makeErroneous(null, "compiler bug: " + type + " is an unknown java array type");
         }
     }
 
@@ -2554,7 +2555,7 @@ public abstract class AbstractTransformer implements Transformation {
             if(arg instanceof Tree.SpreadArgument || arg instanceof Tree.Comprehension){
                 // make sure we only have spread/comprehension as last
                 if(i != 0){
-                    jcExpression = makeErroneous(arg, "Spread or comprehension argument is not last in sequence literal");
+                    jcExpression = makeErroneous(arg, "compiler bug: spread or comprehension argument is not last in sequence literal");
                 }else{
                     ProducedType type = typeFact().getIterableType(seqElemType);
                     spread = true;
@@ -2571,7 +2572,7 @@ public abstract class AbstractTransformer implements Transformation {
                 // always boxed since we stuff them into a sequence
                 jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, seqElemType);
             }else{
-                jcExpression = makeErroneous(arg, "Unknown argument type: " + arg);
+                jcExpression = makeErroneous(arg, "compiler bug: " + arg.getNodeType() + " is not a supported sequenced argument");
             }
             // the last iterable goes first if spread
             if(i == 0 && spread)

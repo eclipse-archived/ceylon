@@ -2164,11 +2164,11 @@ public class StatementTransformer extends AbstractTransformer {
                 last = transformCaseIs(selectorAlias, caseClause, (IsCase)caseItem, last, switchClause.getExpression().getTypeModel());
             } else if (caseItem instanceof SatisfiesCase) {
                 // TODO Support for 'case (satisfies ...)' is not implemented yet
-                return make().Exec(makeErroneous(caseItem, "switch/satisfies not implemented yet"));
+                return make().Exec(makeErroneous(caseItem, "compiler bug: switch/satisfies not implemented yet"));
             } else if (caseItem instanceof MatchCase) {
                 last = transformCaseMatch(selectorAlias, caseClause, (MatchCase)caseItem, last, isOptional(exprType));
             } else {
-                return make().Exec(makeErroneous(caseItem, "unknown switch case clause: "+caseItem));
+                return make().Exec(makeErroneous(caseItem, "compiler bug: unknown switch case clause: "+caseItem));
             }
         }
         return at(stmt).Block(0, List.of(selector, last));

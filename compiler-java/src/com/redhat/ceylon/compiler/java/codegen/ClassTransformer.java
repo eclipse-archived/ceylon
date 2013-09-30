@@ -466,7 +466,7 @@ public class ClassTransformer extends AbstractTransformer {
             defaultLiteral = expressionGen().makeMetaLiteralStringLiteralForAnnotation((Tree.TypeLiteral) term);
         }
         if (defaultLiteral == null) {
-            defaultLiteral = makeErroneous(p, "Unsupported defaulted parameter expression");
+            defaultLiteral = makeErroneous(p, "compiler bug: " + p.getParameterModel().getName() + " has an unsupported defaulted parameter expression");
         }
         return defaultLiteral;
     }
@@ -494,7 +494,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         if (type == null) {
-            type = makeErroneous(parameter, "Unsupported annotation parameter type");
+            type = makeErroneous(parameter, "compiler bug: " + parameter.getParameterModel().getName() + " has an unsupported annotation parameter type");
         }
         return type;
     }
@@ -2203,7 +2203,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (Decl.isUnboxedVoid(model)) {
                 body = body.append(make().Return(makeNull()));
             } else {
-                body = body.append(make().Return(makeErroneous(block, "non-void method doesn't definitely return")));
+                body = body.append(make().Return(makeErroneous(block, "compiler bug: non-void method doesn't definitely return")));
             }
         }
         return body;
@@ -2415,7 +2415,7 @@ public class ClassTransformer extends AbstractTransformer {
                     } else if (Strategy.hasEmptyDefaultArgument(parameterModel)) {
                         defaultArgument = makeEmptyAsSequential(true);
                     } else {
-                        defaultArgument = makeErroneous(null, "Unsupported default argument");
+                        defaultArgument = makeErroneous(null, "compiler bug: parameter " + parameterModel.getName() + " has an unsupported default value");
                     }
                     Naming.SyntheticName varName = naming.temp("$"+parameterModel.getName()+"$");
                     ProducedType paramType = overloaded.parameterType(parameterModel);

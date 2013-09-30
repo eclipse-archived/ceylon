@@ -133,7 +133,7 @@ class AnnotationInvocationVisitor extends Visitor {
             // and defaulting an argument
             return null;
         } else {
-            return exprGen.makeErroneous(errorNode, "No result when transforming annotation");
+            return exprGen.makeErroneous(errorNode, "compiler bug: no result when transforming annotation");
         }
         
     }
@@ -150,17 +150,17 @@ class AnnotationInvocationVisitor extends Visitor {
         if (primary instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression ctor = (Tree.BaseMemberExpression)primary;
             if (!Decl.isAnnotationConstructor(ctor.getDeclaration())) {
-                append(exprGen.makeErroneous(primary, "Not an annotation constructor"));
+                append(exprGen.makeErroneous(primary, "compiler bug: " + ctor.getDeclaration().getName() + " is not an annotation constructor"));
             }
             append(transformConstructor(exprGen, invocation));
         } else if (primary instanceof Tree.BaseTypeExpression) {
             Tree.BaseTypeExpression bte = (Tree.BaseTypeExpression)primary;    
             if (!Decl.isAnnotationClass(bte.getDeclaration())) {
-                append(exprGen.makeErroneous(primary, "Not an annotation class"));
+                append(exprGen.makeErroneous(primary, "compiler bug: " + bte.getDeclaration().getName() + " is not an annotation class"));
             }
             append(transformInstantiation(exprGen, invocation));
         } else {
-            append(exprGen.makeErroneous(primary, "Not an annotation constructor or annotation class"));
+            append(exprGen.makeErroneous(primary, "compiler bug: primary is not an annotation constructor or annotation class"));
         }        
     }
     
@@ -241,7 +241,7 @@ class AnnotationInvocationVisitor extends Visitor {
         
         for (Parameter classParameter : unbound) {
             appendArgument(args, classParameter, 
-                exprGen.makeErroneous(invocation, "Unbound annotation class parameter " + classParameter.getName()));
+                exprGen.makeErroneous(invocation, "compiler bug: unbound annotation class parameter " + classParameter.getName()));
         }
         ListBuffer<JCExpression> assignments = ListBuffer.<JCExpression>lb();
         for (Map.Entry<Parameter, ListBuffer<JCExpression>> entry : args.entrySet()) {
@@ -310,7 +310,7 @@ class AnnotationInvocationVisitor extends Visitor {
                 }
             } else if (invocation.getNamedArgumentList() != null) {
                 if (parameterArgument.isSpread()) {
-                    visitor.append(exprGen.makeErroneous(invocation, "Spread argument with named invocation not supported"));
+                    visitor.append(exprGen.makeErroneous(invocation, "compiler bug: spread argument with named invocation not supported"));
                 } else {
                     boolean found = false;
                     for (Tree.NamedArgument na : invocation.getNamedArgumentList().getNamedArguments()) {
@@ -355,7 +355,7 @@ class AnnotationInvocationVisitor extends Visitor {
             }
         }
         if (defaultedCtorParam == null) {
-            append(exprGen.makeErroneous(invocation, "Couldn't find defaulted parameter for " + anno.getConstructorDeclaration().getName()));
+            append(exprGen.makeErroneous(invocation, "compiler bug: defaulted parameter " + anno.getConstructorDeclaration().getName() + " could not be found"));
             return;
         }
         
@@ -389,7 +389,7 @@ class AnnotationInvocationVisitor extends Visitor {
             memberName = exprGen.naming.makeUnquotedIdent(
             Naming.selector(parameter.getModel(), Naming.NA_ANNOTATION_MEMBER));
         } else {
-            memberName = exprGen.makeErroneous(errorNode, "null parameter in makeArgument");
+            memberName = exprGen.makeErroneous(errorNode, "compiler bug: null parameter in makeArgument");
         }
         return exprGen.make().Assign(memberName, expr);
     }
@@ -450,7 +450,7 @@ class AnnotationInvocationVisitor extends Visitor {
     }
     
     public void visit(Tree.Term term) {
-        append(exprGen.makeErroneous(term, "Unable to use that kind of term " + term.getClass().getSimpleName()));
+        append(exprGen.makeErroneous(term, "compiler bug: " + term.getNodeType() + " is an unsupported term in an annotation invocation"));
     }
     
     public void visit(Tree.NegativeOp term) {
@@ -458,7 +458,7 @@ class AnnotationInvocationVisitor extends Visitor {
                 || term.getTerm() instanceof Tree.FloatLiteral) {
             append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, expectedType()));
         } else {
-            append(exprGen.makeErroneous(term, "Unable to use that kind of term " + term.getClass().getSimpleName()));
+            append(exprGen.makeErroneous(term, "compiler bug: " + term.getNodeType() + " is an unsupported term in an annotation invocation"));
         }
     }
     
@@ -556,7 +556,7 @@ class AnnotationInvocationVisitor extends Visitor {
     }
     
     public void visit(Tree.PositionalArgument arg) {
-        append(exprGen.makeErroneous(arg, "Unable to find use that kind of positional argument"));
+        append(exprGen.makeErroneous(arg, "compiler bug: " + arg.getNodeType() + " is an unsupported positional argument in an annotation invocation"));
     }
     
     public void visit(Tree.ListedArgument arg) {
@@ -564,7 +564,7 @@ class AnnotationInvocationVisitor extends Visitor {
     }
     
     public void visit(Tree.NamedArgument arg) {
-        append(exprGen.makeErroneous(arg, "Unable to find use that kind of named argument"));
+        append(exprGen.makeErroneous(arg, "compiler bug: " + arg.getNodeType() + " is an unsupported named argument in an annotation invocation"));
     }
     
     public void visit(Tree.SpecifiedArgument arg) {

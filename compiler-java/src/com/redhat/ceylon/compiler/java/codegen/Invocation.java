@@ -1199,7 +1199,7 @@ class NamedArgumentInvocation extends Invocation {
                     if (gen.isAnything(model.getType())) {
                         body = body.append(gen.make().Return(gen.makeNull()));
                     } else {
-                        body = body.append(gen.make().Return(gen.makeErroneous(methodArg.getBlock(), "non-void method doesn't definitely return")));
+                        body = body.append(gen.make().Return(gen.makeErroneous(methodArg.getBlock(), "compiler bug: non-void method does not definitely return")));
                     }
                 }
             } else {
@@ -1282,7 +1282,7 @@ class NamedArgumentInvocation extends Invocation {
             if (tree instanceof JCStatement) {
                 result.append((JCStatement)tree);
             } else {
-                result.append(gen.make().Exec(gen.makeErroneous(namedArg, "Attempt to put a non-statement in a Let")));
+                result.append(gen.make().Exec(gen.makeErroneous(namedArg, "compiler bug: attempt to put a non-statement in a let")));
             }
         }
         return result;
@@ -1341,10 +1341,10 @@ class NamedArgumentInvocation extends Invocation {
                                 argExpr = gen.makeSelect(varBaseName.suffixedBy("$this$").makeIdent(), "length");
                                 hasDefaulted |= true;
                             }else{
-                                argExpr = gen.makeErroneous(this.getNode(), "parameter to copyTo method of Java array type not supported: "+param.getName());
+                                argExpr = gen.makeErroneous(this.getNode(), "compiler bug: argument to copyTo method of java array type not supported: "+param.getName());
                             }
                         }else{
-                            argExpr = gen.makeErroneous(this.getNode(), "virtual method of Java array type not supported: "+getPrimaryDeclaration());
+                            argExpr = gen.makeErroneous(this.getNode(), "compiler bug: virtual method of java array type not supported: "+getPrimaryDeclaration());
                         }
                     }else{
                         argExpr = makeDefaultedArgumentMethodCall(param);
@@ -1357,7 +1357,7 @@ class NamedArgumentInvocation extends Invocation {
                     // FIXME: deal with this erasure bug later
                     argExpr = gen.make().TypeCast(gen.makeJavaType(gen.typeFact().getIterableDeclaration().getType(), AbstractTransformer.JT_RAW), gen.makeEmpty());
                 } else {
-                    argExpr = gen.makeErroneous(this.getNode(), "Missing argument, and parameter is not defaulted");
+                    argExpr = gen.makeErroneous(this.getNode(), "compiler bug: missing argument, and parameter is not defaulted");
                 }
                 appendDefaulted(param, argExpr);
             }

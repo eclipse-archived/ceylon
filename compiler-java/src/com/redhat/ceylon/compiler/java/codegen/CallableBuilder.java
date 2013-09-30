@@ -461,7 +461,7 @@ public class CallableBuilder {
                 return null;
             }
             if (usedBody) {
-                body = List.<JCStatement>of(gen.make().Exec(gen.makeErroneous(null, "AST reuse")));
+                body = List.<JCStatement>of(gen.make().Exec(gen.makeErroneous(null, "compiler bug: tree reuse detected")));
             }
             usedBody = true;
             ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
@@ -1494,7 +1494,7 @@ public class CallableBuilder {
         } else if (Strategy.hasEmptyDefaultArgument(defaultedParam)) {
             return gen.makeEmptyAsSequential(true);
         } else {
-            return gen.makeErroneous(forwardCallTo, "Not a defaulted parameter");
+            return gen.makeErroneous(forwardCallTo, "compiler bug: " + defaultedParam.getName() + " is not a defaulted parameter");
         }
     }
 
