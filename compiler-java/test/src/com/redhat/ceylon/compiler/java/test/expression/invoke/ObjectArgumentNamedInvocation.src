@@ -25,18 +25,24 @@ public final class objectArgumentNamedInvocation_ {
                     
                     private o_() {
                         super();
-                        this.hash = (int)0L;
+                        this.hash = 0L;
                     }
                     
                     @.java.lang.Override
                     public final boolean equals(final .java.lang.Object other) {
                         return false;
                     }
-                    private final int hash;
+                    private final long hash;
                     
                     @.java.lang.Override
                     public final int hashCode() {
-                        return hash;
+                        return (int)(
+                            let
+                            {
+                                long $ceylontmphash1 = hash;
+                            }
+                            returning $ceylontmphash1 ^ $ceylontmphash1 >>> 32;
+                        );
                     }
                     
                     @.java.lang.Override

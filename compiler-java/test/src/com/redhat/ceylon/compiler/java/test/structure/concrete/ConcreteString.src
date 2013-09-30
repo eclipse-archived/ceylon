@@ -61,7 +61,13 @@ class ConcreteStringC implements .com.redhat.ceylon.compiler.java.runtime.model.
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final int hashCode() {
-        return (int)2L;
+        return (int)(
+            let
+            {
+                long $ceylontmphash4 = 2L;
+            }
+            returning $ceylontmphash4 ^ $ceylontmphash4 >>> 32;
+        );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -155,7 +161,13 @@ final class ConcreteString2$impl {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final int hashCode() {
-        return (int)3L;
+        return (int)(
+            let
+            {
+                long $ceylontmphash11 = 3L;
+            }
+            returning $ceylontmphash11 ^ $ceylontmphash11 >>> 32;
+        );
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
@@ -189,7 +201,13 @@ class ConcreteStringC2 implements .com.redhat.ceylon.compiler.java.runtime.model
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final int hashCode() {
-        return (int)$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteString2$this.hashCode();
+        return (int)(
+            let
+            {
+                long $ceylontmphash13 = $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteString2$this.hashCode();
+            }
+            returning $ceylontmphash13 ^ $ceylontmphash13 >>> 32;
+        );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

@@ -3,13 +3,19 @@ package com.redhat.ceylon.compiler.java.test.issues.bug04xx;
 abstract class Bug475 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug475() {
-        this.hash = (int)((.ceylon.language.Integer).ceylon.language.nothing_.$get()).longValue();
+        this.hash = ((.ceylon.language.Integer).ceylon.language.nothing_.$get()).longValue();
     }
-    private final int hash;
+    private final long hash;
     
     @.java.lang.Override
     public final int hashCode() {
-        return hash;
+        return (int)(
+            let
+            {
+                long $ceylontmphash0 = hash;
+            }
+            returning $ceylontmphash0 ^ $ceylontmphash0 >>> 32;
+        );
     }
     
     @.java.lang.Override

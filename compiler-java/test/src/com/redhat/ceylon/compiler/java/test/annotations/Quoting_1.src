@@ -32,7 +32,7 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     Quoting(.com.redhat.ceylon.compiler.java.test.annotations.Quoting$annotation anno) {
-        this(anno.string(), anno.toString(), (int)anno.hash(), anno.hashCode());
+        this(anno.string(), anno.toString(), anno.hash(), anno.hashCode());
     }
     
     Quoting(@.com.redhat.ceylon.compiler.java.metadata.Name("string")
@@ -41,7 +41,7 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String toString, @.com.redhat.ceylon.compiler.java.metadata.Name("hash")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final int hash, @.com.redhat.ceylon.compiler.java.metadata.Name("hashCode")
+    final long hash, @.com.redhat.ceylon.compiler.java.metadata.Name("hashCode")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long hashCode) {
         this.string = string;
@@ -76,7 +76,7 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         return toString;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private final int hash;
+    private final long hash;
     
     @.ceylon.language.SharedAnnotation$annotation
     @.ceylon.language.ActualAnnotation$annotation
@@ -86,7 +86,13 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final int hashCode() {
-        return hash;
+        return (int)(
+            let
+            {
+                long $ceylontmphash0 = hash;
+            }
+            returning $ceylontmphash0 ^ $ceylontmphash0 >>> 32;
+        );
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final long hashCode;
@@ -188,7 +194,7 @@ final class quoting_ {
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::Quoting")
     static .com.redhat.ceylon.compiler.java.test.annotations.Quoting quoting() {
-        return new .com.redhat.ceylon.compiler.java.test.annotations.Quoting("", "", (int)-1L, 0L);
+        return new .com.redhat.ceylon.compiler.java.test.annotations.Quoting("", "", -1L, 0L);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -223,6 +229,6 @@ final class quoting2_ {
     final long hash, @.com.redhat.ceylon.compiler.java.metadata.Name("hashCode")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long hashCode) {
-        return new .com.redhat.ceylon.compiler.java.test.annotations.Quoting(string, toString, (int)hash, hashCode);
+        return new .com.redhat.ceylon.compiler.java.test.annotations.Quoting(string, toString, hash, hashCode);
     }
 }

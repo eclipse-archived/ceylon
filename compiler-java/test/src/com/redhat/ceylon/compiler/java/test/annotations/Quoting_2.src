@@ -9,7 +9,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
         @.com.redhat.ceylon.compiler.java.test.annotations.Quoting$annotation(
                 string = "",
                 $toString = "",
-                hash = (int)-2L,
+                hash = -2L,
                 $hashCode = 0L)})
 class Quoting_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

@@ -13,7 +13,7 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(.ceylon.language.Integer.$TypeDescriptor, $reifiedT, this);
         this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reifiedT), this);
         this.string = ((.ceylon.language.String).ceylon.language.nothing_.$get()).toString();
-        this.hash = (int)1L;
+        this.hash = 1L;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     protected final .ceylon.language.List$impl<T> $ceylon$language$List$this;
@@ -370,11 +370,17 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     public final .java.lang.String toString() {
         return string;
     }
-    private final int hash;
+    private final long hash;
     
     @.java.lang.Override
     public final int hashCode() {
-        return hash;
+        return (int)(
+            let
+            {
+                long $ceylontmphash0 = hash;
+            }
+            returning $ceylontmphash0 ^ $ceylontmphash0 >>> 32;
+        );
     }
     
     @.java.lang.Override

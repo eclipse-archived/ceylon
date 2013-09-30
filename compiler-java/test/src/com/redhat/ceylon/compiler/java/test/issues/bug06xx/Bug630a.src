@@ -42,7 +42,13 @@ final class Bug630$impl {
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630 $this;
     
     public final int hashCode() {
-        return (int)42L;
+        return (int)(
+            let
+            {
+                long $ceylontmphash2 = 42L;
+            }
+            returning $ceylontmphash2 ^ $ceylontmphash2 >>> 32;
+        );
     }
     
     public boolean equals(final .java.lang.Object other) {

@@ -6,7 +6,7 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Null.$TypeDescriptor, this);
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Null.$TypeDescriptor, this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
-        this.hash = (int)((.ceylon.language.Integer).ceylon.language.nothing_.$get()).longValue();
+        this.hash = ((.ceylon.language.Integer).ceylon.language.nothing_.$get()).longValue();
     }
     protected final .ceylon.language.Iterable$impl<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object> $ceylon$language$Iterable$this;
     
@@ -211,11 +211,17 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     public final boolean equals(final .java.lang.Object that) {
         return ((.ceylon.language.Boolean).ceylon.language.nothing_.$get()).booleanValue();
     }
-    private final int hash;
+    private final long hash;
     
     @.java.lang.Override
     public final int hashCode() {
-        return hash;
+        return (int)(
+            let
+            {
+                long $ceylontmphash0 = hash;
+            }
+            returning $ceylontmphash0 ^ $ceylontmphash0 >>> 32;
+        );
     }
     
     @.java.lang.Override
@@ -246,10 +252,10 @@ final class bug626f_ {
         final .ceylon.language.Sequential<? extends .java.lang.Object> temp = (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> $arg$0$0 = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug626().getSequence();
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
+                .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> $arg$1$0 = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug626().getSequence();
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
             }
-            returning .ceylon.language.concatenate_.<.java.lang.Object>concatenate($arg$0$reified$0, $arg$0$0);
+            returning .ceylon.language.concatenate_.<.java.lang.Object>concatenate($arg$1$reified$0, $arg$1$0);
         );
     }
 }

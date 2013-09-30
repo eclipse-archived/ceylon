@@ -22,14 +22,14 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
     
     private bug1286_objectDefinition_() {
         super();
-        this.hash = (int)0L;
+        this.hash = 0L;
         (
             let
             {
                 
-                final class $setterArgument$1 implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+                final class $setterArgument$2 implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
                     
-                    private $setterArgument$1() {
+                    private $setterArgument$2() {
                     }
                     
                     public .java.lang.String $get() {
@@ -55,9 +55,9 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                         return "";
                     }
                 }
-                final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> $setterArgument$1 = new $setterArgument$1();
-                final .java.lang.String $arg$0$0 = $setterArgument$1.$get();
-                .ceylon.language.Callable $arg$0$1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+                final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> $setterArgument$2 = new $setterArgument$2();
+                final .java.lang.String $arg$1$0 = $setterArgument$2.$get();
+                .ceylon.language.Callable $arg$1$1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call() {
@@ -88,15 +88,21 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                     
                     private objectArgument_() {
                         super();
-                        this.hash = (int)0L;
+                        this.hash = 0L;
                         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$objectArgument$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$objectArgument$Consumer_).ceylon.language.nothing_.$get();
                         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$objectArgument$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$objectArgument$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$objectArgument$Consumer_)times1;
                     }
-                    private final int hash;
+                    private final long hash;
                     
                     @.java.lang.Override
                     public final int hashCode() {
-                        return hash;
+                        return (int)(
+                            let
+                            {
+                                long $ceylontmphash3 = hash;
+                            }
+                            returning $ceylontmphash3 ^ $ceylontmphash3 >>> 32;
+                        );
                     }
                     
                     @.java.lang.Override
@@ -126,17 +132,23 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(objectArgument_.class);
                     }
                 }
-                final objectArgument_ $arg$0$2 = new objectArgument_();
-                m$priv($arg$0$0, $arg$0$1, $arg$0$2);
+                final objectArgument_ $arg$1$2 = new objectArgument_();
+                m$priv($arg$1$0, $arg$1$1, $arg$1$2);
             }
             returning null;
         );
     }
-    private final int hash;
+    private final long hash;
     
     @.java.lang.Override
     public final int hashCode() {
-        return hash;
+        return (int)(
+            let
+            {
+                long $ceylontmphash0 = hash;
+            }
+            returning $ceylontmphash0 ^ $ceylontmphash0 >>> 32;
+        );
     }
     
     @.java.lang.Override
@@ -179,7 +191,7 @@ final class bug1286_method_ {
         return (
             let
             {
-                .java.lang.Object $arg$2$0 = (
+                .java.lang.Object $arg$4$0 = (
                     let
                     {
                         
@@ -187,15 +199,21 @@ final class bug1286_method_ {
                             
                             private objectArgument_() {
                                 super();
-                                this.hash = (int)0L;
+                                this.hash = 0L;
                                 final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method$5$bug1286_method$6$bug1286_method$7$objectArgument$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method$5$bug1286_method$6$bug1286_method$7$objectArgument$Consumer_).ceylon.language.nothing_.$get();
                                 final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method$5$bug1286_method$6$bug1286_method$7$objectArgument$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method$5$bug1286_method$6$bug1286_method$7$objectArgument$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method$5$bug1286_method$6$bug1286_method$7$objectArgument$Consumer_)times1;
                             }
-                            private final int hash;
+                            private final long hash;
                             
                             @.java.lang.Override
                             public final int hashCode() {
-                                return hash;
+                                return (int)(
+                                    let
+                                    {
+                                        long $ceylontmphash6 = hash;
+                                    }
+                                    returning $ceylontmphash6 ^ $ceylontmphash6 >>> 32;
+                                );
                             }
                             
                             @.java.lang.Override
@@ -225,12 +243,12 @@ final class bug1286_method_ {
                                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(objectArgument_.class);
                             }
                         }
-                        final objectArgument_ $arg$3$0 = new objectArgument_();
+                        final objectArgument_ $arg$5$0 = new objectArgument_();
                     }
-                    returning .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method_.bug1286_method($arg$3$0);
+                    returning .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method_.bug1286_method($arg$5$0);
                 );
             }
-            returning .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method_.bug1286_method($arg$2$0);
+            returning .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method_.bug1286_method($arg$4$0);
         );
     }
 }
@@ -246,7 +264,7 @@ class Bug1286_initializer implements .com.redhat.ceylon.compiler.java.runtime.mo
         (
             let
             {
-                .java.lang.Object $arg$4$0 = (
+                .java.lang.Object $arg$7$0 = (
                     let
                     {
                         
@@ -254,15 +272,21 @@ class Bug1286_initializer implements .com.redhat.ceylon.compiler.java.runtime.mo
                             
                             private objectArgument_() {
                                 super();
-                                this.hash = (int)0L;
+                                this.hash = 0L;
                                 final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer$Bug1286_initializer$1$Bug1286_initializer$2$objectArgument$Consumer<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer$Bug1286_initializer$1$Bug1286_initializer$2$objectArgument$Consumer).ceylon.language.nothing_.$get();
                                 final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer$Bug1286_initializer$1$Bug1286_initializer$2$objectArgument$Consumer<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer$Bug1286_initializer$1$Bug1286_initializer$2$objectArgument$Consumer<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer$Bug1286_initializer$1$Bug1286_initializer$2$objectArgument$Consumer)times1;
                             }
-                            private final int hash;
+                            private final long hash;
                             
                             @.java.lang.Override
                             public final int hashCode() {
-                                return hash;
+                                return (int)(
+                                    let
+                                    {
+                                        long $ceylontmphash9 = hash;
+                                    }
+                                    returning $ceylontmphash9 ^ $ceylontmphash9 >>> 32;
+                                );
                             }
                             
                             @.java.lang.Override
@@ -292,12 +316,12 @@ class Bug1286_initializer implements .com.redhat.ceylon.compiler.java.runtime.mo
                                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(objectArgument_.class);
                             }
                         }
-                        final objectArgument_ $arg$5$0 = new objectArgument_();
+                        final objectArgument_ $arg$8$0 = new objectArgument_();
                     }
-                    returning .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method_.bug1286_method($arg$5$0);
+                    returning .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method_.bug1286_method($arg$8$0);
                 );
             }
-            returning .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method_.bug1286_method($arg$4$0);
+            returning .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method_.bug1286_method($arg$7$0);
         );
     }
     
@@ -400,15 +424,21 @@ final class bug1286_getterSetter_ {
             
             private objectDefinition_() {
                 super();
-                this.hash = (int)0L;
+                this.hash = 0L;
                 final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$3$objectDefinition$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$3$objectDefinition$Consumer_).ceylon.language.nothing_.$get();
                 final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$3$objectDefinition$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$3$objectDefinition$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$3$objectDefinition$Consumer_)times1;
             }
-            private final int hash;
+            private final long hash;
             
             @.java.lang.Override
             public final int hashCode() {
-                return hash;
+                return (int)(
+                    let
+                    {
+                        long $ceylontmphash10 = hash;
+                    }
+                    returning $ceylontmphash10 ^ $ceylontmphash10 >>> 32;
+                );
             }
             
             @.java.lang.Override

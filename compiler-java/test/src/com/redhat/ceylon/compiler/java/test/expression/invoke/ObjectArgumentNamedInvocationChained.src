@@ -58,7 +58,7 @@ public final class objectArgumentNamedInvocationChained_ {
                             private o_() {
                                 super();
                                 this.string = "Foo";
-                                this.hash = (int)0L;
+                                this.hash = 0L;
                             }
                             @.com.redhat.ceylon.compiler.java.metadata.Ignore
                             private final .java.lang.String string;
@@ -87,7 +87,7 @@ public final class objectArgumentNamedInvocationChained_ {
                                 return false;
                             }
                             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                            private final int hash;
+                            private final long hash;
                             
                             @.ceylon.language.SharedAnnotation$annotation
                             @.ceylon.language.ActualAnnotation$annotation
@@ -97,7 +97,13 @@ public final class objectArgumentNamedInvocationChained_ {
                             @.java.lang.Override
                             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                             public final int hashCode() {
-                                return hash;
+                                return (int)(
+                                    let
+                                    {
+                                        long $ceylontmphash2 = hash;
+                                    }
+                                    returning $ceylontmphash2 ^ $ceylontmphash2 >>> 32;
+                                );
                             }
                             
                             @.java.lang.Override
@@ -120,7 +126,7 @@ public final class objectArgumentNamedInvocationChained_ {
                     private o_() {
                         super();
                         this.string = "Bar";
-                        this.hash = (int)0L;
+                        this.hash = 0L;
                     }
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     private final .java.lang.String string;
@@ -149,7 +155,7 @@ public final class objectArgumentNamedInvocationChained_ {
                         return false;
                     }
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    private final int hash;
+                    private final long hash;
                     
                     @.ceylon.language.SharedAnnotation$annotation
                     @.ceylon.language.ActualAnnotation$annotation
@@ -159,7 +165,13 @@ public final class objectArgumentNamedInvocationChained_ {
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                     public final int hashCode() {
-                        return hash;
+                        return (int)(
+                            let
+                            {
+                                long $ceylontmphash3 = hash;
+                            }
+                            returning $ceylontmphash3 ^ $ceylontmphash3 >>> 32;
+                        );
                     }
                     
                     @.java.lang.Override

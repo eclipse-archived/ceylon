@@ -12,7 +12,13 @@ class SatisfiesErasure implements .com.redhat.ceylon.compiler.java.runtime.model
     
     @.java.lang.Override
     public final int hashCode() {
-        return (int)0L;
+        return (int)(
+            let
+            {
+                long $ceylontmphash1 = 0L;
+            }
+            returning $ceylontmphash1 ^ $ceylontmphash1 >>> 32;
+        );
     }
     
     @.java.lang.Override

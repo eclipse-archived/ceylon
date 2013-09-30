@@ -4,7 +4,7 @@ class Bug269 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     Bug269() {
         this.string = "";
-        this.hash = (int)0L;
+        this.hash = 0L;
     }
     private final .java.lang.String string;
     
@@ -12,11 +12,17 @@ class Bug269 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     public final .java.lang.String toString() {
         return string;
     }
-    private final int hash;
+    private final long hash;
     
     @.java.lang.Override
     public final int hashCode() {
-        return hash;
+        return (int)(
+            let
+            {
+                long $ceylontmphash0 = hash;
+            }
+            returning $ceylontmphash0 ^ $ceylontmphash0 >>> 32;
+        );
     }
     
     public static void main(.java.lang.String[] args) {
@@ -44,7 +50,13 @@ class Bug269_2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     @.java.lang.Override
     public final int hashCode() {
         .ceylon.language.print_.print(.ceylon.language.Integer.instance(this.hashCode()));
-        return (int)0L;
+        return (int)(
+            let
+            {
+                long $ceylontmphash2 = 0L;
+            }
+            returning $ceylontmphash2 ^ $ceylontmphash2 >>> 32;
+        );
     }
     
     public static void main(.java.lang.String[] args) {

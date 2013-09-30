@@ -27,7 +27,13 @@ class EqualsHashOverriding implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public final int hashCode() {
-        return .ceylon.language.String.hashCode(getS$priv());
+        return (int)(
+            let
+            {
+                long $ceylontmphash4 = .ceylon.language.String.hashCode(getS$priv());
+            }
+            returning $ceylontmphash4 ^ $ceylontmphash4 >>> 32;
+        );
     }
     
     @.java.lang.Override
@@ -39,13 +45,19 @@ class EqualsHashOverriding implements .com.redhat.ceylon.compiler.java.runtime.m
 class EqualsHashOverriding2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     EqualsHashOverriding2(final .java.lang.String s) {
-        this.hash = (int)0L;
+        this.hash = 0L;
     }
-    private final int hash;
+    private final long hash;
     
     @.java.lang.Override
     public final int hashCode() {
-        return hash;
+        return (int)(
+            let
+            {
+                long $ceylontmphash5 = hash;
+            }
+            returning $ceylontmphash5 ^ $ceylontmphash5 >>> 32;
+        );
     }
     
     @.java.lang.Override
@@ -57,13 +69,19 @@ class EqualsHashOverriding2 implements .com.redhat.ceylon.compiler.java.runtime.
 class EqualsHashOverriding3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     EqualsHashOverriding3(final .java.lang.String s) {
-        hash = (int)0L;
+        hash = 0L;
     }
-    private final int hash;
+    private final long hash;
     
     @.java.lang.Override
     public final int hashCode() {
-        return hash;
+        return (int)(
+            let
+            {
+                long $ceylontmphash6 = hash;
+            }
+            returning $ceylontmphash6 ^ $ceylontmphash6 >>> 32;
+        );
     }
     
     @.java.lang.Override
