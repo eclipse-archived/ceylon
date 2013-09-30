@@ -461,13 +461,18 @@ public class ExpressionTransformer extends AbstractTransformer {
                         result = make().TypeCast(rawType, result);
                         // expr is now raw
                         exprIsRaw = true;
+                        // let's not add another downcast if we got a cast: one is enough
+                        downCast = false;
                     }
 
                     // if the expr is not raw, we need a cast
                     // if the expr is raw:
                     //  don't even try making an actual cast if there are bounded type parameters in play, because going raw is much safer
                     //  also don't try making the cast if the expected type is raw because anything goes
-                    if(!exprIsRaw || (!expectedTypeHasConstrainedTypeParameters && !expectedTypeIsRaw)){
+                    if(!exprIsRaw 
+                            || (!expectedTypeHasConstrainedTypeParameters && !expectedTypeIsRaw)
+                            // make sure that downcasts get at least one cast
+                            || downCast){
                         // Do the actual cast
                         JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT);
                         result = make().TypeCast(targetType, result);
