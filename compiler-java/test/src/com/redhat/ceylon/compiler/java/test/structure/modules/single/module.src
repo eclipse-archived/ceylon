@@ -10,7 +10,7 @@ package com.redhat.ceylon.compiler.java.test.structure.modules.single;
         dependencies = {})
 @.ceylon.language.DocAnnotation$annotation(description = "Bla bla.")
 @.ceylon.language.AuthorsAnnotation$annotation(authors = "Stef FroMage")
-@.ceylon.language.LicenseAnnotation$annotation(url = "http://www.gnu.org/licenses/gpl.html")
+@.ceylon.language.LicenseAnnotation$annotation(description = "http://www.gnu.org/licenses/gpl.html")
 final class module_ {
     
     private module_() {

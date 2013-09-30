@@ -10,7 +10,7 @@ package com.redhat.ceylon.compiler.java.test.annotations.modules.a;
         dependencies = {})
 @.ceylon.language.DocAnnotation$annotation(description = "Module A doc")
 @.ceylon.language.AuthorsAnnotation$annotation(authors = "Tom")
-@.ceylon.language.LicenseAnnotation$annotation(url = "http://www.apache.org/licenses/LICENSE-2.0.html")
+@.ceylon.language.LicenseAnnotation$annotation(description = "http://www.apache.org/licenses/LICENSE-2.0.html")
 @.ceylon.language.TagsAnnotation$annotation(tags = {
         "test",
         "annotations"})
