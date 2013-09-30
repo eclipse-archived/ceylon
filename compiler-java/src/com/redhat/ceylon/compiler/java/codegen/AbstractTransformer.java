@@ -3023,6 +3023,7 @@ public abstract class AbstractTransformer implements Transformation {
 
     JCTypeParameter makeTypeParameter(TypeParameter declarationModel) {
         TypeParameter typeParameterForBounds = declarationModel;
+        java.util.List<ProducedType> satisfiedTypesForBounds = declarationModel.getSatisfiedTypes();
         // special case for method refinenement where Java doesn't let us refine the parameter bounds
         if(declarationModel.getContainer() instanceof Method){
             Method method = (Method) declarationModel.getContainer();
@@ -3036,13 +3037,23 @@ public abstract class AbstractTransformer implements Transformation {
                     // ignore smaller index than size since the typechecker would have found the error
                     TypeParameter refinedTP = refinedMethod.getTypeParameters().get(index);
                     if(!haveSameBounds(declarationModel, refinedTP)){
+                        // find the right instantiation of that type parameter
+                        TypeDeclaration methodContainer = (TypeDeclaration) method.getContainer();
+                        TypeDeclaration refinedMethodContainer = (TypeDeclaration) refinedMethod.getContainer();
+                        // find the supertype that gave us that method and its type arguments
+                        Map<TypeParameter, ProducedType> typeArguments = methodContainer.getType().getSupertype(refinedMethodContainer).getTypeArguments();
+                        satisfiedTypesForBounds = new ArrayList<ProducedType>(refinedTP.getSatisfiedTypes().size());
+                        for(ProducedType satisfiedType : refinedTP.getSatisfiedTypes()){
+                            // substitute the refined type parameter bounds with the right type arguments
+                            satisfiedTypesForBounds.add(satisfiedType.substitute(typeArguments));
+                        }
                         typeParameterForBounds = refinedTP;
                     }
                 }
             }
         }
         return makeTypeParameter(declarationModel.getName(), 
-                typeParameterForBounds.getSatisfiedTypes(),
+                satisfiedTypesForBounds,
                 typeParameterForBounds.isCovariant(),
                 typeParameterForBounds.isContravariant());
     }
