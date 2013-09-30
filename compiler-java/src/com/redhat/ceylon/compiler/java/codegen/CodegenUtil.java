@@ -217,9 +217,16 @@ class CodegenUtil {
             // Parameters in a refined class are not considered refinements themselves
             // We have in find the refined attribute
             Class c = (Class)decl.getContainer();
-            if (c.isAlias()) {
+            boolean isAlias = c.isAlias();
+            boolean isActual = c.isActual();
+            // aliases and actual classes actually do refine their extended type parameters so the same rules apply wrt
+            // boxing and stuff
+            if (isAlias || isActual) {
                 int index = c.getParameterList().getParameters().indexOf(findParamForDecl(((TypedDeclaration)decl)));
-                while (c.isAlias()) {
+                // ATM we only consider aliases if we're looking at aliases, and same for actual, not mixing the two.
+                // Note(Stef): not entirely sure about that one, what about aliases of actual classes?
+                while ((isAlias && c.isAlias())
+                        || (isActual && c.isActual())) {
                     c = c.getExtendedTypeDeclaration();
                 }
                 // be safe
@@ -229,6 +236,7 @@ class CodegenUtil {
                     return null;
                 decl = c.getParameterList().getParameters().get(index).getModel();
             }
+
             Declaration refinedDecl = c.getRefinedMember(decl.getName(), null, false);//?? elipses=false??
             if(refinedDecl != null && refinedDecl != decl) {
                 return getTopmostRefinedDeclaration(refinedDecl, methodOverrides);
