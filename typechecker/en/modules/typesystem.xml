@@ -1322,6 +1322,12 @@ Item item = comp of Item;</programlisting>
                     <literal>Y</literal> is an interface,</para>
                 </listitem>
                 <listitem>
+                    <para><literal>X</literal> is an anonymous class or an instantiation 
+                    of a <literal>final</literal> class and <literal>Y</literal> is an 
+                    instantiation of a class of interface, and <literal>X</literal> 
+                    does not inherit <literal>Y</literal>,</para>
+                </listitem>
+                <listitem>
                     <para><literal>X</literal> is an anonymous class or a <literal>final</literal> 
                     class with no type parameters and <literal>Y</literal> is a type in 
                     which no type parameter reference occurs, and <literal>X</literal> 
