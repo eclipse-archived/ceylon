@@ -430,12 +430,20 @@ TypeConstraints?
         <section id="defaultedparameters">
             <title>Defaulted parameters</title>
             
-            <para>A defaulted parameter is a value or callable parameter that specifies a 
-            default argument.</para>
+            <para>A defaulted parameter is a value or callable parameter that specifies an 
+            expression that produces a <emphasis>default argument</emphasis>. A defaulted 
+            parameter may be either:</para>
             
-            <para>A defaulted parameter in a parameter list may be a parameter declaration, 
-            together with a default argument, or the name of a non-variadic parameter 
-            declared in the body of the function or class, together with its default argument.</para>
+            <itemizedlist>
+                <listitem>
+                    <para>a non-variadic parameter declaration, together with a default 
+                    argument expression, or</para> 
+                </listitem>
+                <listitem>
+                    <para>the name of a non-variadic parameter declared in the body of the 
+                    function or class, together with its default argument expression.</para> 
+                </listitem>
+            </itemizedlist>
             
             <synopsis>Defaulted: ValueParameter Specifier | CallableParameter LazySpecifier | MemberName Specifier</synopsis>
             
@@ -446,8 +454,18 @@ TypeConstraints?
             <synopsis>Specifier: "=" Expression</synopsis>
             <synopsis>LazySpecifier: "=&gt;" Expression</synopsis>
             
+            <para>The default argument expression may involve other parameters declared 
+            earlier in the parameter list or lists. It may not involve parameters declared 
+            later in the parameter list or lists.</para>
+            
+            <para>The default argument expression may not involve an assignment, compound
+            assignment, increment, or decrement operator.</para>
+            
             <para>Defaulted parameters must occur after required parameters in the parameter 
             list.</para>
+            
+            <para>For a function with multiple parameter lists, defaulted parameters may 
+            only occur in the first parameter list.</para>
             
             <programlisting>(Product product, Integer quantity=1, Price pricing(Product p) => p.price)</programlisting>
             
@@ -460,10 +478,11 @@ TypeConstraints?
             specify a default argument. Instead, it inherits the default argument, if any, of 
             the corresponding parameter of the method it refines.</para>
             
-            <para>If two parameter lists are almost identical, differing only in that the first 
-            parameter of one list is defaulted, and the first parameter of the second list is 
-            not defaulted, and <literal>P</literal> is the the type of the second parameter list 
-            then the type of the first parameter list is <literal>[]|P</literal>.</para>
+            <para>If two parameter lists are almost identical, differing only in that the 
+            first parameter of one list is defaulted, and the first parameter of the second 
+            list is not defaulted, and <literal>P</literal> is the the type of the second 
+            parameter list then the type of the first parameter list is 
+            <literal>[]|P</literal>.</para>
             
             <!--
             <para>If the declared type of the parameter is an optional type (a subtype of
@@ -503,9 +522,6 @@ TypeConstraints?
             formed by prepending <literal>x</literal> to the first parameter list is 
             <literal>Tuple&lt;X|Y,X,P&gt;</literal>, or <literal>[]|Tuple&lt;X|Y,X,P&gt;</literal> 
             if <literal>x</literal> is defaulted.</para>
-            
-            <!--para>A parameter may not be be declared <literal>variable</literal>, and 
-            may not be assigned to within the body of the method or class.</para-->
             
         </section>
         
@@ -567,6 +583,9 @@ TypeConstraints?
             <para>The variadic parameter must be the last parameter in a parameter list. A
             variadic parameter may not have a default argument. A variadic parameter declared
             <literal>T+</literal> may not occur in a parameter list with defaulted parameters.</para>
+            
+            <para>For a function with multiple parameter lists, a variadic parameters may 
+            only occur in the first parameter list.</para>
             
             <programlisting>(Name name, Organization? org=null, Address* addresses)</programlisting>
             
