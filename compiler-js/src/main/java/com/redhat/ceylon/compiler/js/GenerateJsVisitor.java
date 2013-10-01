@@ -17,7 +17,6 @@ import java.util.Stack;
 import org.antlr.runtime.CommonToken;
 
 import com.redhat.ceylon.compiler.Options;
-import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -881,7 +880,8 @@ public class GenerateJsVisitor extends Visitor
                     (opts.isOptimize() && (getSuperMemberScope(extendedType.getType()) != null))
                         ? ".call(this," : "(");
 
-            invoker.generatePositionalArguments(argList, argList.getPositionalArguments(), false, false);
+            invoker.generatePositionalArguments(extendedType.getInvocationExpression().getPrimary(),
+                    argList, argList.getPositionalArguments(), false, false);
             if (argList.getPositionalArguments().size() > 0) {
                 out(",");
             }
@@ -2592,7 +2592,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(PositionalArgumentList that) {
-        invoker.generatePositionalArguments(that, that.getPositionalArguments(), false, false);
+        invoker.generatePositionalArguments(null, that, that.getPositionalArguments(), false, false);
     }
 
     /** Box a term, visit it, unbox it. */
