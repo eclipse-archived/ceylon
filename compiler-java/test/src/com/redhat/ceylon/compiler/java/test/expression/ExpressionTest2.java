@@ -516,6 +516,10 @@ public class ExpressionTest2 extends CompilerTest {
         compareWithJavaSource("invoke/MultipleParameterLists");
         compareWithJavaSource("invoke/MultipleParameterLists_call");
     }
+    @Test
+    public void testInvMultipleParameterListsWithVariableParameters(){
+        compareWithJavaSource("invoke/MultipleParameterListsWithVariableParameters");
+    }
     
     @Test
     public void testAvoidBackwardBranchWithVarargs(){
