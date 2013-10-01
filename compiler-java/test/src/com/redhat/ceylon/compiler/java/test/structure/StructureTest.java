@@ -430,6 +430,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("method/MethodWithVarargs");
     }
     @Test
+    public void testMthMethodWithVariableParameter(){
+        compareWithJavaSource("method/MethodWithVariableParameter");
+    }
+    @Test
     public void testMthPublicMethod(){
         compareWithJavaSource("method/PublicMethod");
     }

@@ -1,0 +1,120 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class MethodWithVariableParameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    MethodWithVariableParameter() {
+    }
+    
+    private final void methodWithVariableParameter$priv(long i) {
+        i = 0L;
+        (
+            let
+            {
+                long $ceylontmpop0 = i;
+                i = $ceylontmpop0 + 1;
+            }
+            returning $ceylontmpop0;
+        );
+        (
+            let
+            {
+                long $ceylontmpop1 = i + 1L;
+                i = $ceylontmpop1;
+            }
+            returning $ceylontmpop1;
+        );
+    }
+    
+    private final void methodWithHiddenVariableParameter$priv(long i) {
+        i = 0L;
+        (
+            let
+            {
+                long $ceylontmpop2 = i;
+                i = $ceylontmpop2 + 1;
+            }
+            returning $ceylontmpop2;
+        );
+        (
+            let
+            {
+                long $ceylontmpop3 = i + 1L;
+                i = $ceylontmpop3;
+            }
+            returning $ceylontmpop3;
+        );
+    }
+    
+    private final void methodWithVariableParameterCaptured$priv(final long i$) {
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(i$);
+        
+        final class fn_ {
+            
+            private fn_() {
+            }
+            
+            void fn() {
+                i_.ref = 0L;
+                (
+                    let
+                    {
+                        long $ceylontmpop4 = i_.ref;
+                        i_.ref = $ceylontmpop4 + 1;
+                    }
+                    returning $ceylontmpop4;
+                );
+                (
+                    let
+                    {
+                        long $ceylontmpop5 = i_.ref + 1L;
+                        i_.ref = $ceylontmpop5;
+                    }
+                    returning $ceylontmpop5;
+                );
+            }
+        }
+        final fn_ fn = new fn_();
+    }
+    
+    private final void methodWithHiddenVariableParameterCaptured$priv(final long i$) {
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(i$);
+        
+        final class fn_ {
+            
+            private fn_() {
+            }
+            
+            void fn() {
+                i_.ref = 0L;
+                (
+                    let
+                    {
+                        long $ceylontmpop6 = i_.ref;
+                        i_.ref = $ceylontmpop6 + 1;
+                    }
+                    returning $ceylontmpop6;
+                );
+                (
+                    let
+                    {
+                        long $ceylontmpop7 = i_.ref + 1L;
+                        i_.ref = $ceylontmpop7;
+                    }
+                    returning $ceylontmpop7;
+                );
+            }
+        }
+        final fn_ fn = new fn_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithVariableParameter();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithVariableParameter.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithVariableParameter.class);
+}
