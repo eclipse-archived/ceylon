@@ -151,6 +151,14 @@ shared void test() {
     } catch (Exception ex) {
         check("dynamic" in ex.message, "leak test 2");
     }
+    value tuple = [1,"2", '3'];
+    dynamic {
+      dynamic issue270 = value{0,0};
+      issue270.push(*tuple);
+      check(issue270.length==5, "dynamic spread #270 [1]");
+      issue270.push(*issue270);
+      check(issue270.length==6, "dynamic spread #270 [2]");
+    }
     results();
 }
 
