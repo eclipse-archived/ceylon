@@ -202,6 +202,7 @@ public class GenerateJsVisitor extends Visitor
     final ConditionGenerator conds;
     private final InvocationGenerator invoker;
     private final List<CommonToken> tokens;
+    private final ErrorVisitor errVisitor = new ErrorVisitor();
     private int dynblock;
 
     private final class SuperVisitor extends Visitor {
@@ -579,14 +580,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(ClassDeclaration that) {
         //Don't even bother with nodes that have errors
-        if (that.getErrors() != null && !that.getErrors().isEmpty()) {
-            //But warnings are ok
-            for (Message err : that.getErrors()) {
-                if (!(err instanceof UsageWarning)) {
-                    return;
-                }
-            }
-        }
+        if (errVisitor.hasErrors(that))return;
         Class d = that.getDeclarationModel();
         if (opts.isOptimize() && d.isClassOrInterfaceMember()) return;
         comment(that);
@@ -650,7 +644,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(InterfaceDeclaration that) {
         //Don't even bother with nodes that have errors
-        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
+        if (errVisitor.hasErrors(that))return;
         Interface d = that.getDeclarationModel();
         if (opts.isOptimize() && d.isClassOrInterfaceMember()) return;
         //It's pointless declaring interface aliases outside of classes/interfaces
@@ -691,7 +685,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(InterfaceDefinition that) {
         //Don't even bother with nodes that have errors
-        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
+        if (errVisitor.hasErrors(that))return;
         if (!(opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember())) {
             interfaceDefinition(that);
         }
@@ -745,7 +739,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(ClassDefinition that) {
         //Don't even bother with nodes that have errors
-        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
+        if (errVisitor.hasErrors(that))return;
         if (!(opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember())) {
             classDefinition(that);
         }
@@ -1249,7 +1243,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(ObjectDefinition that) {
         //Don't even bother with nodes that have errors
-        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
+        if (errVisitor.hasErrors(that))return;
         Value d = that.getDeclarationModel();
         if (!(opts.isOptimize() && d.isClassOrInterfaceMember())) {
             objectDefinition(that);
@@ -1415,7 +1409,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(MethodDeclaration that) {
         //Don't even bother with nodes that have errors
-        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
+        if (errVisitor.hasErrors(that))return;
         methodDeclaration(null, that);
     }
     
@@ -1477,7 +1471,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(MethodDefinition that) {
         Method d = that.getDeclarationModel();
         //Don't even bother with nodes that have errors
-        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
+        if (errVisitor.hasErrors(that))return;
         if (!((opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember()) || isNative(d))) {
             comment(that);
             initDefaultedParameters(that.getParameterLists().get(0), d);
@@ -2243,13 +2237,6 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(Tree.BaseMemberExpression that) {
-        if (that.getErrors() != null && !that.getErrors().isEmpty()) {
-            if (that.getErrors().size() == 1 && "evaluates nothing".equals(that.getErrors().get(0).getMessage())) {
-                out(clAlias, "getNothing()");
-            }
-            //Don't even bother processing a node with errors
-            return;
-        }
         Declaration decl = that.getDeclaration();
         if (decl != null) {
             String name = decl.getName();
@@ -2570,7 +2557,6 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(BaseTypeExpression that) {
-        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
         Declaration d = that.getDeclaration();
         if (d == null && isInDynamicBlock()) {
             //It's a native js type but will be wrapped in dyntype() call
@@ -2687,7 +2673,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(final ObjectArgument that) {
         //Don't even bother with nodes that have errors
-        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
+        if (errVisitor.hasErrors(that))return;
         final Class c = (Class)that.getDeclarationModel().getTypeDeclaration();
 
         out("(function()");
@@ -4064,7 +4050,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(TryCatchStatement that) {
-        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
+        if (errVisitor.hasErrors(that))return;
         List<Resource> resources = that.getTryClause().getResourceList() == null ? null :
             that.getTryClause().getResourceList().getResources();
         if (resources != null && resources.isEmpty()) {
@@ -4672,7 +4658,6 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(MemberLiteral that) {
-        if (!that.getErrors().isEmpty())return;
         if (that.getWantsDeclaration()) {
             generateOpenType(that);
         } else {
