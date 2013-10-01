@@ -105,7 +105,7 @@ assert (semaphore&identical;s); //assertion never fails</programlisting>
             to emit bytecode or compiled JavaScript that produces a new instance of certain 
             types in the module <literal>ceylon.language</literal> without execution of the 
             initializer of the class, whenever any expression is evaluated. These types are: 
-            any of the the built-in numeric types, <literal>Character</literal>, 
+            <literal>Integer</literal>, <literal>Float</literal>, <literal>Character</literal>, 
             <literal>Range</literal>, <literal>Entry</literal>, <literal>String</literal>, 
             <literal>Array</literal>, and <literal>Tuple</literal>. Furthermore, it is permitted 
             to use such a newly-produced instance as the value of the expression, as long as the 
@@ -1122,9 +1122,9 @@ String result = middleObject.string;</programlisting>
             
             <para>As a special exception to the rules, the compiler is permitted to optimize 
             certain operations upon certain types in the module <literal>ceylon.language</literal>. 
-            These types are: any of the the built-in numeric types, <literal>Character</literal>, 
-            <literal>Range</literal>, <literal>Entry</literal>, <literal>String</literal>, 
-            <literal>Array</literal>, and <literal>Tuple</literal>.</para>
+            These types are: <literal>Integer</literal>, <literal>Float</literal>, 
+            <literal>Character</literal>, <literal>Range</literal>, <literal>Entry</literal>, 
+            <literal>String</literal>, <literal>Array</literal>, and <literal>Tuple</literal>.</para>
             
             <para>Thus, the tables in the previous chapter define semantics only. The compiler 
             may emit bytecode or compiled JavaScript that produces the same value at runtime as 
