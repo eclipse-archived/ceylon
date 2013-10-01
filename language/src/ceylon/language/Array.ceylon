@@ -5,7 +5,7 @@
  This class is provided primarily to support interoperation 
  with Java, and for some performance-critical low-level 
  programming tasks."
-shared final native class Array<Element>() 
+shared final native class Array<Element>({Element*} elements) 
         extends Object()
         satisfies List<Element> &
                   Cloneable<Array<Element>> &
@@ -46,6 +46,7 @@ shared final native class Array<Element>()
 "Create an array containing the given elements. If no
  elements are provided, create an empty array of the
  given element type."
+deprecated("use the constructor of [[Array]]")
 shared native Array<Element> array<Element>({Element*} elements);
 
 "Create an array of the specified size, populating every 

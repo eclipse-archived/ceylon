@@ -51,6 +51,13 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     @Ignore
     private TypeDescriptor $reifiedElement;
 
+    public Array(@Ignore TypeDescriptor $reifiedElement, 
+            @Name("elements")
+            @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
+            final ceylon.language.Iterable<? extends Element,? extends java.lang.Object> elements) {
+        this($reifiedElement, Util.collectIterable(elements).toArray());
+    }
+    
     private Array(@Ignore TypeDescriptor $reifiedElement, java.lang.Object array) {
         assert(array.getClass().isArray());
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
