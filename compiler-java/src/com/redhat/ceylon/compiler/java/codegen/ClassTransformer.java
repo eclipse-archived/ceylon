@@ -91,7 +91,6 @@ import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
-import com.sun.tools.javac.util.Position;
 
 /**
  * This transformer deals with class/interface declarations
@@ -607,6 +606,12 @@ public class ClassTransformer extends AbstractTransformer {
             adb.modifiers(classGen().transformAttributeGetSetDeclFlags(decl.getModel(), false));
             adb.userAnnotations(annotations);
             classBuilder.attribute(adb);
+            if (value.isVariable()) {
+                AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, decl.getName(), decl.getModel());
+                setter.modifiers(classGen().transformAttributeGetSetDeclFlags(decl.getModel(), false));
+                setter.userAnnotations(annotations);
+                classBuilder.attribute(setter);
+            }
         } else if (decl.isHidden()
                         // TODO Isn't this always true here? We know this is a parameter to a Class
                         && (decl.getDeclaration() instanceof TypeDeclaration)) {
@@ -621,10 +626,14 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
 
+    private int transformClassParameterDeclFlags(Parameter param) {
+        return param.getModel().isVariable() ? 0 : FINAL;
+    }
+    
     private void makeFieldForParameter(ClassDefinitionBuilder classBuilder,
             Parameter decl) {
         MethodOrValue model = decl.getModel();
-        classBuilder.defs(make().VarDef(make().Modifiers(FINAL | PRIVATE, makeAtIgnore()), names().fromString(decl.getName()), 
+        classBuilder.defs(make().VarDef(make().Modifiers(transformClassParameterDeclFlags(decl) | PRIVATE, makeAtIgnore()), names().fromString(decl.getName()), 
                 classGen().transformClassParameterType(decl), null));
         
         classBuilder.init(make().Exec(make().Assign(
@@ -633,7 +642,6 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
     private void transformParameter(ClassDefinitionBuilder classBuilder, Parameter param, List<JCAnnotation> annotations) {
-        String name = param.getName();
         JCExpression type = classGen().transformClassParameterType(param);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(this, param);
         pdb.aliasName(Naming.getAliasedParameterName(param));
@@ -641,11 +649,14 @@ public class ClassTransformer extends AbstractTransformer {
         pdb.defaulted(param.isDefaulted());
         pdb.functional(param.getModel() instanceof Method);
         pdb.type(type, makeJavaTypeAnnotations(param.getModel()));
-        pdb.modifiers(FINAL);
+        pdb.modifiers(transformClassParameterDeclFlags(param));
         if (!(param.getModel().isShared() || param.getModel().isCaptured())) {
             // We load the model for shared parameters from the corresponding member
             pdb.modelAnnotations(param.getModel().getAnnotations());
             pdb.userAnnotations(annotations);
+        }
+        if (pdb.requiresBoxedVariableDecl()) {
+            classBuilder.init(pdb.buildBoxedVariableDecl());
         }
         classBuilder.parameter(pdb);
     }

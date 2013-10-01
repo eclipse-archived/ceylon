@@ -91,7 +91,7 @@ public class ParameterDefinitionBuilder {
         ParameterDefinitionBuilder pdb = new ParameterDefinitionBuilder(gen, parameter.getName());
         if (parameter.getModel().isCaptured()
                 && parameter.getModel().isVariable()
-                && !parameter.getModel().isClassOrInterfaceMember()
+                && (!parameter.getModel().isClassOrInterfaceMember() || Decl.isLocalToInitializer(parameter.getModel()))
                 && !parameter.isHidden()) {
             pdb.boxedVariable = parameter.getModel();
         }
