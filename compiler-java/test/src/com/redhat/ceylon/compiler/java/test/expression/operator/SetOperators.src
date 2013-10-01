@@ -191,7 +191,7 @@ public class SetOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
 }
 class SetOperatorsSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    SetOperatorsSuper(final .ceylon.language.Set<? extends .ceylon.language.Integer> a$, final .ceylon.language.Set<? extends .ceylon.language.Integer> b$) {
+    SetOperatorsSuper(.ceylon.language.Set<? extends .ceylon.language.Integer> a$, .ceylon.language.Set<? extends .ceylon.language.Integer> b$) {
         this.a = a$;
         this.b = b$;
         this.sync = getA();
