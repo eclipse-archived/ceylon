@@ -878,12 +878,11 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     @Ignore 
     public Sequential<? extends Element> getSequence() {
         int len = java.lang.reflect.Array.getLength(array);
-        java.lang.Object[] arr;
+        java.lang.Object[] arr = new java.lang.Object[len];
         if (array instanceof java.lang.Object[]) {
-            arr = (java.lang.Object[]) array;
+            System.arraycopy((java.lang.Object[]) array, 0, arr, 0, len);
         }
         else {
-            arr = new java.lang.Object[len];
             for (int i=0; i<len; i++) {
                 arr[i] = java.lang.reflect.Array.get(array, i);
             }
