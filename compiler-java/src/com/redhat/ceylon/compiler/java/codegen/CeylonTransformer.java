@@ -46,6 +46,7 @@ import com.sun.tools.javac.tree.JCTree.JCImport;
 import com.sun.tools.javac.tree.JCTree.JCModifiers;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -264,16 +265,8 @@ public class CeylonTransformer extends AbstractTransformer {
         
         // For captured local variable Values, use a VariableBox
         if (Decl.isBoxedVariable(declarationModel)) {
-            List<JCExpression> args = initialValue != null ? List.of(initialValue) : List.<JCExpression>nil();
-            JCExpression newBox = make().NewClass(
-                    null, List.<JCExpression>nil(), 
-                    makeVariableBoxType(declarationModel), args, null);
-            JCTree.JCVariableDecl var = make().VarDef(
-                    make().Modifiers(FINAL), 
-                    names().fromString(attrClassName), 
-                    makeVariableBoxType(declarationModel),
-                    newBox);
-            return List.<JCTree>of(var);
+            return List.<JCTree>of(makeVariableBoxDecl(
+                    attrClassName, initialValue, declarationModel));
         }
         
         // For late-bound getters we only generate a declaration

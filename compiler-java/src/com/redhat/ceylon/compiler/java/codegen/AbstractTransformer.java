@@ -460,7 +460,7 @@ public abstract class AbstractTransformer implements Transformation {
      * Creates a {@code VariableBox<T>}, {@code VariableBoxBoolean}, 
      * {@code VariableBoxLong} etc depending on the given declaration model.
      */
-    protected JCExpression makeVariableBoxType(TypedDeclaration declarationModel) {
+    private JCExpression makeVariableBoxType(TypedDeclaration declarationModel) {
         JCExpression boxClass;
         boolean unboxed = CodegenUtil.isUnBoxed(declarationModel);
         if (unboxed && isCeylonBoolean(declarationModel.getType())) {
@@ -479,6 +479,24 @@ public abstract class AbstractTransformer implements Transformation {
                             makeJavaType(declarationModel.getType(), flags)));
         }
         return boxClass;
+    }
+    
+    /**
+     * Makes a final {@code VariableBox<T>} (or {@code VariableBoxBoolean}, 
+     * {@code VariableBoxLong}, etc) variable decl, so that a variable can 
+     * be captured.
+     */
+    JCVariableDecl makeVariableBoxDecl(String varName, JCExpression parameterName, TypedDeclaration declarationModel) {
+        List<JCExpression> args = parameterName != null ? List.<JCExpression>of(parameterName) : List.<JCExpression>nil();
+        JCExpression newBox = make().NewClass(
+                null, List.<JCExpression>nil(), 
+                makeVariableBoxType(declarationModel), args, null);
+        JCTree.JCVariableDecl var = make().VarDef(
+                make().Modifiers(FINAL), 
+                names().fromString(varName),
+                makeVariableBoxType(declarationModel),
+                newBox);
+        return var;
     }
     
     /** 
