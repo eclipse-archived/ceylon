@@ -574,7 +574,7 @@ public class ClassDefinitionBuilder {
     }
 
     private ParameterDefinitionBuilder makeReifiedParameter(String descriptorName) {
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, descriptorName);
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(gen, descriptorName);
         pdb.type(gen.makeTypeDescriptorType(), List.<JCAnnotation>nil());
         pdb.modifiers(FINAL);
         if(!isCompanion)

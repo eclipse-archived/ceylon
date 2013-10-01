@@ -118,7 +118,7 @@ public class AttributeDefinitionBuilder {
             .modelAnnotations(attrType.getAnnotations())
             .resultType(this.attrType, attrType);
         
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(owner, attrName);
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(owner, attrName);
         pdb.modifiers(Flags.FINAL);
         
         pdb.aliasName(attrName);
@@ -257,7 +257,7 @@ public class AttributeDefinitionBuilder {
     }
     
     private void generateValueConstructor(MethodDefinitionBuilder methodDefinitionBuilder) {
-        ParameterDefinitionBuilder paramBuilder = ParameterDefinitionBuilder.instance(owner, fieldName).type(attrType, null);
+        ParameterDefinitionBuilder paramBuilder = ParameterDefinitionBuilder.systemParameter(owner, fieldName).type(attrType, null);
         JCTree.JCAssign init = owner.make().Assign(owner.makeQualIdent(owner.makeUnquotedIdent("this"), fieldName), owner.makeUnquotedIdent(fieldName));
         methodDefinitionBuilder.parameter(paramBuilder).body(owner.make().Exec(init));
     }

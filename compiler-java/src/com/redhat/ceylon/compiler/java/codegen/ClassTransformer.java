@@ -233,7 +233,7 @@ public class ClassTransformer extends AbstractTransformer {
         annoCtor.ignoreModelAnnotations();
         // constructors are never final
         annoCtor.modifiers(transformClassDeclFlags(klass) & ~FINAL);
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(this, "anno");
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, "anno");
         pdb.type(makeJavaType(klass.getType(), JT_ANNOTATION), null);
         annoCtor.parameter(pdb);
         
@@ -280,7 +280,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 .ignoreModelAnnotations()
                                 .modifiers(PRIVATE | STATIC)
                                 .resultType(null, makeJavaType(typeFact().getSequentialType(iteratedType)))
-                                .parameter(ParameterDefinitionBuilder.instance(this, array.getName())
+                                .parameter(ParameterDefinitionBuilder.systemParameter(this, array.getName())
                                         .type(make().TypeArray(makeJavaType(iteratedType, JT_ANNOTATION)), null))
                                 .body(stmts.toList()));
                 } else if (isCeylonMetamodelDeclaration(iteratedType)) {
@@ -635,7 +635,7 @@ public class ClassTransformer extends AbstractTransformer {
     private void transformParameter(ClassDefinitionBuilder classBuilder, Parameter param, List<JCAnnotation> annotations) {
         String name = param.getName();
         JCExpression type = classGen().transformClassParameterType(param);
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(this, name);
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(this, name);
         pdb.aliasName(Naming.getAliasedParameterName(param));
         pdb.sequenced(param.isSequenced());
         pdb.defaulted(param.isDefaulted());
@@ -1370,7 +1370,7 @@ public class ClassTransformer extends AbstractTransformer {
         if(typeParameterList != null)
             ctor.reifiedTypeParameters(typeParameterListModel(typeParameterList));
         ctor.modifiers(model.isShared() ? PUBLIC : 0);
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(this, "$this");
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(this, "$this");
         pdb.type(makeJavaType(thisType), null);
         // ...initialize the $this field from a ctor parameter...
         ctor.parameter(pdb);

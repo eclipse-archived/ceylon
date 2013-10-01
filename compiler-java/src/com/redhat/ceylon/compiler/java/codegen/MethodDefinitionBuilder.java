@@ -114,7 +114,7 @@ public class MethodDefinitionBuilder {
     public static MethodDefinitionBuilder main(AbstractTransformer gen) {
         MethodDefinitionBuilder mdb = new MethodDefinitionBuilder(gen, false, "main")
             .modifiers(PUBLIC | STATIC);
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(mdb.gen, "args");
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(mdb.gen, "args");
         pdb.type(gen.make().TypeArray(gen.make().Type(gen.syms().stringType)), List.<JCAnnotation>nil());
         return mdb.parameter(pdb);
     }
@@ -304,7 +304,7 @@ public class MethodDefinitionBuilder {
             String name, String aliasedName, 
             Parameter decl, TypedDeclaration nonWideningDecl, ProducedType nonWideningType, 
             int flags, boolean canWiden) {
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, name);
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(gen, name);
         pdb.modifiers(modifiers);
         pdb.modelAnnotations(modelAnnotations);
         pdb.userAnnotations(userAnnotations);
@@ -499,7 +499,7 @@ public class MethodDefinitionBuilder {
     
     private MethodDefinitionBuilder reifiedTypeParameter(String name) {
         String descriptorName = gen.naming.getTypeArgumentDescriptorName(name);
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, descriptorName);
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(gen, descriptorName);
         pdb.type(gen.makeTypeDescriptorType(), List.<JCAnnotation>nil());
         pdb.modifiers(FINAL);
         if(!Annotations.includeModel(this.annotationFlags))

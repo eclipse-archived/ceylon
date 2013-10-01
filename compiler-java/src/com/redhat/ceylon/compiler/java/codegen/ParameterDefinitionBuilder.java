@@ -60,7 +60,29 @@ public class ParameterDefinitionBuilder {
         this.name = name;
     }
     
-    static ParameterDefinitionBuilder instance(AbstractTransformer gen, String name) {
+    /**
+     * Creates a builder for a parameter lacking a Parameter model, but which 
+     * doesn't count as an 
+     * {@linkplain #implicitParameter(AbstractTransformer, String) implicit} 
+     * parameter.
+     */
+    static ParameterDefinitionBuilder systemParameter(AbstractTransformer gen, String name) {
+        return new ParameterDefinitionBuilder(gen, name);
+    }
+    
+    /** 
+     * Creates a builder for an implicit parameter 
+     * (a reified type parameter, or a $this parameter for a companion class)
+     */
+    static ParameterDefinitionBuilder implicitParameter(AbstractTransformer gen, String name) {
+        return new ParameterDefinitionBuilder(gen, name);
+    }
+    
+    /** 
+     * Creates a builder for a explicit parameter (anything for which there's 
+     * a Parameter model).
+     */
+    static ParameterDefinitionBuilder explicitParameter(AbstractTransformer gen, String name) {
         return new ParameterDefinitionBuilder(gen, name);
     }
 

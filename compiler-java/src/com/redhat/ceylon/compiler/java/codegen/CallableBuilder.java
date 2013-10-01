@@ -1352,7 +1352,7 @@ public class CallableBuilder {
         // add all parameters
         int i=0;
         for(Parameter param : paramLists.getParameters()){
-            ParameterDefinitionBuilder parameterBuilder = ParameterDefinitionBuilder.instance(gen, param.getName());
+            ParameterDefinitionBuilder parameterBuilder = ParameterDefinitionBuilder.systemParameter(gen, param.getName());
             JCExpression paramType = gen.makeJavaType(parameterTypes.get(i));
             parameterBuilder.type(paramType, null);
             methodBuilder.parameter(parameterBuilder);
@@ -1380,7 +1380,7 @@ public class CallableBuilder {
         if ((flags & Flags.VARARGS) != 0) {
             type = gen.make().TypeArray(type);
         }
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, getParamName(ii));
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(gen, getParamName(ii));
         pdb.modifiers(Flags.FINAL | flags);
         pdb.type(type, null);
         return pdb;
@@ -1395,7 +1395,7 @@ public class CallableBuilder {
         // $call$var()'s variadic parameter is *always* erasred to Sequential
         // even if it's a Variadic+ parameter
         JCExpression type = gen.makeJavaType(gen.typeFact().getSequentialType(iteratedType), AbstractTransformer.JT_RAW);
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, getParamName(ii));
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(gen, getParamName(ii));
         pdb.modifiers(Flags.FINAL | flags);
         pdb.type(type, null);
         return pdb;
