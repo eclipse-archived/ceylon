@@ -89,14 +89,18 @@ public class ParameterDefinitionBuilder {
      */
     static ParameterDefinitionBuilder explicitParameter(AbstractTransformer gen, Parameter parameter) {
         ParameterDefinitionBuilder pdb = new ParameterDefinitionBuilder(gen, parameter.getName());
-        if (parameter.getModel().isCaptured()
-                && parameter.getModel().isVariable()
-                && (!parameter.getModel().isClassOrInterfaceMember() || Decl.isLocalToInitializer(parameter.getModel()))
-                && !parameter.isHidden()) {
+        if (isBoxedVariableParameter(parameter)) {
             pdb.boxedVariable = parameter.getModel();
         }
         
         return pdb;
+    }
+
+    static boolean isBoxedVariableParameter(Parameter parameter) {
+        return parameter.getModel().isCaptured()
+                && parameter.getModel().isVariable()
+                && (!parameter.getModel().isClassOrInterfaceMember() || Decl.isLocalToInitializer(parameter.getModel()))
+                && !parameter.isHidden();
     }
 
     public ParameterDefinitionBuilder modifiers(long mods) {

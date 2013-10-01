@@ -468,7 +468,7 @@ public class CallableBuilder {
             int a = 0;
             for(Parameter param : paramLists.getParameters()){
                 // don't read default parameter values for forwarded calls
-                stmts.append(makeDowncastOrDefaultVar(getCallableTempVarName(param, null), param, a, arity, null));
+                makeDowncastOrDefaultVar(stmts, getCallableTempVarName(param, null), param, a, arity, null);
                 a++;
             }
             return makeCallMethod(stmts.appendList(body).toList(), arity);
@@ -497,7 +497,7 @@ public class CallableBuilder {
                     // don't read default parameter values for forwarded calls
                     if(forwardCallTo != null && arity == a)
                         break;
-                    stmts.append(makeDowncastOrDefaultVar(getCallableTempVarName(param, forwardCallTo), param, a, arity, forwardCallTo));
+                    makeDowncastOrDefaultVar(stmts, getCallableTempVarName(param, forwardCallTo), param, a, arity, forwardCallTo);
                     a++;
                 }
             }
@@ -550,8 +550,8 @@ public class CallableBuilder {
             int a = 0;
             for(Parameter param : paramLists.getParameters()){
                 // don't read default parameter values for forwarded calls
-                stmts.append(makeDowncastOrDefaultVar(
-                        getCallableTempVarName(param, null), param, a, arity, null));
+                makeDowncastOrDefaultVar(stmts,
+                        getCallableTempVarName(param, null), param, a, arity, null);
                 a++;
             }
             // chain to n param typed method
@@ -733,8 +733,8 @@ public class CallableBuilder {
                     }
                     if (a < getMinimumArguments()) {
                         // append the downcast parameter
-                        stmts.append(makeDowncastOrDefaultVar(
-                                getCallableTempVarName(param, forwardCallTo), param, a, arity, forwardCallTo));
+                        makeDowncastOrDefaultVar(stmts, 
+                                getCallableTempVarName(param, forwardCallTo), param, a, arity, forwardCallTo);
                         args.append(getCallableTempVarName(param, forwardCallTo).makeIdent());
                     } else {
                         break;
@@ -747,8 +747,8 @@ public class CallableBuilder {
                         a = makeSequencedArgument(arity, stmts, args, a);
                     } else {
                         SyntheticName name = getCallableTempVarName(param, forwardCallTo);
-                        stmts.append(makeDowncastOrDefaultVar(
-                                name, param, a, arity, forwardCallTo));
+                        makeDowncastOrDefaultVar(stmts,
+                                name, param, a, arity, forwardCallTo);
                         args.append(name.makeIdent());
                     }
                 }
@@ -761,8 +761,8 @@ public class CallableBuilder {
                     // don't read default parameter values for forwarded calls
                     if(param.isSequenced())
                         break;
-                    stmts.append(makeDowncastOrDefaultVar(
-                            getCallableTempVarName(param, forwardCallTo), param, a, arity, forwardCallTo));
+                    makeDowncastOrDefaultVar(stmts,
+                            getCallableTempVarName(param, forwardCallTo), param, a, arity, forwardCallTo);
                     args.append(getCallableTempVarName(param, forwardCallTo).makeIdent());
                     a++;
                 }
@@ -781,8 +781,8 @@ public class CallableBuilder {
                     for (int j = getMinimumParameters(); j < arity; j++) {
                         Parameter param = paramLists.getParameters().get(Math.min(j, numParams-1));
                         if (arity < numParams - 1) {
-                            stmts.append(makeDowncastOrDefaultVar(
-                                    getCallableTempVarName(param, forwardCallTo), param, j, arity, forwardCallTo));
+                            makeDowncastOrDefaultVar(stmts,
+                                    getCallableTempVarName(param, forwardCallTo), param, j, arity, forwardCallTo);
                         } else {
                             varargs.append(gen.make().Ident(makeParamName(gen, j)));
                         }
@@ -798,8 +798,8 @@ public class CallableBuilder {
                     }
                     SyntheticName vname = getCallableTempVarName(getVariadicParameter(), forwardCallTo).suffixedBy("$");
                     args.append(vname.makeIdent());
-                    stmts.append(makeVar(variadicParameter, getVariadicType(), 
-                            forwardCallTo, vname, varargsSequence));
+                    makeVar(stmts, variadicParameter, getVariadicType(), 
+                            forwardCallTo, vname, varargsSequence);
                 }
                 // /THE OLD CODE
             }
@@ -816,8 +816,8 @@ public class CallableBuilder {
             for (; a < arity; a++) {
                 Parameter param1 = paramLists.getParameters().get(Math.min(a, numParams-1));
                 if (arity < numParams - 1) {
-                    stmts.append(makeDowncastOrDefaultVar(
-                            getCallableTempVarName(param1, forwardCallTo), param1, a, arity, forwardCallTo));
+                    makeDowncastOrDefaultVar(stmts,
+                            getCallableTempVarName(param1, forwardCallTo), param1, a, arity, forwardCallTo);
                 } else {
                     varargs.append(gen.make().Ident(makeParamName(gen, a)));
                 }
@@ -831,8 +831,8 @@ public class CallableBuilder {
             }
             SyntheticName vname = getCallableTempVarName(getVariadicParameter(), forwardCallTo).suffixedBy("$");
             args.append(vname.makeIdent());
-            stmts.append(makeVar(getVariadicParameter(), getVariadicType(), 
-                    forwardCallTo, vname, varargsSequence));
+            makeVar(stmts, getVariadicParameter(), getVariadicType(), 
+                    forwardCallTo, vname, varargsSequence);
             return a;
         }
 
@@ -865,8 +865,8 @@ public class CallableBuilder {
             for (; a < arity; a++) {
                 Parameter param1 = paramLists.getParameters().get(Math.min(a, numParams-1));
                 if (arity < numParams - 1) {
-                    stmts.append(makeDowncastOrDefaultVar(
-                            getCallableTempVarName(param1, forwardCallTo), param1, a, arity, forwardCallTo));
+                    makeDowncastOrDefaultVar(stmts, 
+                            getCallableTempVarName(param1, forwardCallTo), param1, a, arity, forwardCallTo);
                 } else {
                     varargs.append(gen.make().Ident(makeParamName(gen, a)));
                 }
@@ -880,8 +880,8 @@ public class CallableBuilder {
             }
             SyntheticName vname = getCallableTempVarName(getVariadicParameter(), forwardCallTo).suffixedBy("$");
             args.append(vname.makeIdent());
-            stmts.append(makeVar(getVariadicParameter(), getVariadicType(), 
-                    forwardCallTo, vname, varargsSequence));
+            makeVar(stmts, getVariadicParameter(), getVariadicType(), 
+                    forwardCallTo, vname, varargsSequence);
             return a;
         }
         
@@ -935,8 +935,8 @@ public class CallableBuilder {
                     for (; a < getMinimumArguments()-1; a++) {
                         Parameter param = paramLists.getParameters().get(a);
                         SyntheticName name = getCallableTempVarName(param, forwardCallTo);
-                        stmts.append(makeDowncastOrDefaultVar(
-                                name, param, a, arity, forwardCallTo));
+                        makeDowncastOrDefaultVar(stmts, 
+                                name, param, a, arity, forwardCallTo);
                         args.append(name.makeIdent());
                     }
                     for (; a < numParams-1; a++) {
@@ -951,8 +951,8 @@ public class CallableBuilder {
                                 parameterTypes.get(a), 
                                 true, true, BoxingStrategy.UNBOXED, 
                                 parameterTypes.get(a), 0);
-                        stmts.append(makeVar(param, parameterTypes.get(a),
-                                forwardCallTo, name, get));
+                        makeVar(stmts, param, parameterTypes.get(a),
+                                forwardCallTo, name, get);
                         args.append(name.makeIdent());
                     }
                     // Get the rest of the sequential using spanFrom()
@@ -966,15 +966,15 @@ public class CallableBuilder {
                             parameterTypes.get(a), 
                             true, true, BoxingStrategy.UNBOXED, 
                             parameterTypes.get(a), 0);
-                    stmts.append(makeVar(param, parameterTypes.get(a),
-                            forwardCallTo, name, spanFrom));
+                    makeVar(stmts, param, parameterTypes.get(a),
+                            forwardCallTo, name, spanFrom);
                     args.append(name.makeIdent());
                 } else if (arity1 == numParams) {
                     for (int a= 0; a < numParams; a++) {
                         Parameter param = paramLists.getParameters().get(a);
                         SyntheticName name = getCallableTempVarName(param, forwardCallTo);
-                        stmts.append(makeDowncastOrDefaultVar(
-                                name, param, a, arity, forwardCallTo));
+                        makeDowncastOrDefaultVar(stmts, 
+                                name, param, a, arity, forwardCallTo);
                         args.append(name.makeIdent());
                     }
                 } else if (arity1 < numParams) {
@@ -988,8 +988,8 @@ public class CallableBuilder {
                         }
                         if (a < getMinimumArguments()) {
                             // append the downcast parameter
-                            stmts.append(makeDowncastOrDefaultVar(
-                                    getCallableTempVarName(param, forwardCallTo), param, a, arity, forwardCallTo));
+                            makeDowncastOrDefaultVar(stmts, 
+                                    getCallableTempVarName(param, forwardCallTo), param, a, arity, forwardCallTo);
                             args.append(getCallableTempVarName(param, forwardCallTo).makeIdent());
                         } else {
                             break;
@@ -1001,8 +1001,8 @@ public class CallableBuilder {
                             args.append(gen.makeEmptyAsSequential(true));
                         } else {
                             SyntheticName name = getCallableTempVarName(param, forwardCallTo);
-                            stmts.append(makeDowncastOrDefaultVar(
-                                    name, param, a, arity, forwardCallTo));
+                            makeDowncastOrDefaultVar(stmts,
+                                    name, param, a, arity, forwardCallTo);
                             args.append(name.makeIdent());
                         }
                     }
@@ -1015,8 +1015,8 @@ public class CallableBuilder {
                             break;
                         }
                         SyntheticName name = getCallableTempVarName(param, forwardCallTo);
-                        stmts.append(makeDowncastOrDefaultVar(
-                                name, param, a, arity, forwardCallTo));
+                        makeDowncastOrDefaultVar(stmts,
+                                name, param, a, arity, forwardCallTo);
                         args.append(name.makeIdent());
                     }
                     ListBuffer<JCExpression> variadicElements = ListBuffer.lb();
@@ -1048,9 +1048,9 @@ public class CallableBuilder {
                             && a == getMinimumArguments()*/) {
                         break;
                     }
-                    stmts.append(makeDowncastOrDefaultVar(
+                    makeDowncastOrDefaultVar(stmts,
                             getCallableTempVarName(param, forwardCallTo),
-                            param, a, arity1, forwardCallTo));
+                            param, a, arity1, forwardCallTo);
                     args.append(getCallableTempVarName(param, forwardCallTo).makeIdent());
                     a++;
                 }
@@ -1417,17 +1417,18 @@ public class CallableBuilder {
      *     Bar bar = $$bar(**previous-args**);
      * </pre>
      */
-    protected JCVariableDecl makeDowncastOrDefaultVar(
+    protected void makeDowncastOrDefaultVar(
+            ListBuffer<JCStatement> stmts,
             Naming.SyntheticName name,
             final Parameter param, 
             final int a, final int arity, Tree.Term forwardCallTo) {
         JCExpression varInitialExpression = makeDowncastOrDefault(param, a, arity, forwardCallTo);
-        JCVariableDecl var = makeVar(param, parameterTypes.get(a), forwardCallTo,
+        makeVar(stmts, param, parameterTypes.get(a), forwardCallTo,
                 name, varInitialExpression);
-        return var;
     }
 
-    protected JCVariableDecl makeVar(final Parameter param, ProducedType parameterType,
+    protected final void makeVar(ListBuffer<JCStatement> stmts,
+            final Parameter param, ProducedType parameterType,
             Tree.Term forwardCallTo, Naming.SyntheticName name, JCExpression expr) {
         // store it in a local var
         int flags = 0;
@@ -1442,11 +1443,14 @@ public class CallableBuilder {
         // See https://github.com/ceylon/ceylon-compiler/issues/1005
         if(forwardCallTo != null)
             flags |= AbstractTransformer.JT_RAW;
-        JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(Flags.FINAL), 
+        JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(param.getModel().isVariable() ? 0 : Flags.FINAL), 
                 name.asName(), 
                 gen.makeJavaType(parameterType, flags),
                 expr);
-        return var;
+        stmts.append(var);
+        if (ParameterDefinitionBuilder.isBoxedVariableParameter(param)) {
+            stmts.append(gen.makeVariableBoxDecl(Naming.getAttrClassName(param.getModel(), 0), name.makeIdent(), param.getModel()));
+        }
     }
 
     protected JCExpression makeDowncastOrDefault(final Parameter param,
