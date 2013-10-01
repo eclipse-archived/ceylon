@@ -1,7 +1,10 @@
 package com.redhat.ceylon.compiler.java.loader;
 
+import java.util.List;
+
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
@@ -91,6 +94,10 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                             && ((Tree.QualifiedMemberExpression)that).getPrimary().getTypeModel().getDeclaration().equals(d.getContainer())) {
                         ((MethodOrValue)d).setCaptured(true);
                     }
+                    
+                    if (isCapturableMplParameter(d)) {
+                        ((MethodOrValue)d).setCaptured(true);
+                    }
                 } else if (Decl.isValue(d) || Decl.isGetter(decl)) {
                     Value v = (Value) d;
                     v.setCaptured(true);
@@ -107,6 +114,31 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                 }*/
             }
         }
+    }
+
+    /**
+     * Because methods with MPL use nested anonymous AbstractCallables
+     * if the declaration is a parameter in all but the last parameter list
+     * it should be captured.
+     */
+    private boolean isCapturableMplParameter(Declaration d) {
+        if (!(d instanceof MethodOrValue)) {
+            return false;
+        }
+        com.redhat.ceylon.compiler.typechecker.model.Parameter param = ((MethodOrValue)d).getInitializerParameter();
+        if (param == null) {
+            return false;
+        }
+        Declaration paramDecl = param.getDeclaration();
+        if (paramDecl instanceof Functional) {
+            List<com.redhat.ceylon.compiler.typechecker.model.ParameterList> parameterLists = ((Functional)paramDecl).getParameterLists();
+            for (int i = 0; i < parameterLists.size()-1; i++) {
+                if (parameterLists.get(i).getParameters().contains(param)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     
     @Override
@@ -126,10 +158,12 @@ public class MethodOrValueReferenceVisitor extends Visitor {
 
     @Override public void visit(Tree.Declaration that) {
         Declaration dm = that.getDeclarationModel();
-        if (dm==declaration.getContainer() 
+        if (dm==declaration.getContainer()
                 || dm==declaration
                 || (dm instanceof Setter && ((Setter) dm).getGetter()==declaration)) {
-            inCapturingScope = false;
+            if (!isCapturableMplParameter(declaration)) {
+                inCapturingScope = false;
+            }
         }
         super.visit(that);
     }
