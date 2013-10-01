@@ -3468,10 +3468,15 @@ public class ExpressionTransformer extends AbstractTransformer {
                                 && primaryExpr == null
                                 && withinSuperInvocation.getDeclarationModel() == decl.getContainer());
                 if (mustUseField){
-                    if(decl instanceof FieldValue)
+                    if(decl instanceof FieldValue) {
                         selector = ((FieldValue)decl).getRealName();
-                    else
+                    } else if (isWithinSuperInvocation()
+                            && ((Value)decl).isVariable()
+                            && ((Value)decl).isCaptured()) {
+                        selector = Naming.getAliasedParameterName(((Value)decl).getInitializerParameter());
+                    } else {
                         selector = decl.getName();
+                    }
                 } else {
                     // invoke the getter, using the Java interop form of Util.getGetterName because this is the only case
                     // (Value inside a Class) where we might refer to JavaBean properties
@@ -3954,6 +3959,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER | Naming.NA_MEMBER | Naming.NA_SETTER), rhs);
             } else if (Decl.isLocalNotInitializer(decl)) {
                 lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER);
+            } else if (isWithinSuperInvocation()
+                    && decl.isCaptured()
+                    && decl.isVariable()) {
+                lhs = naming.makeUnquotedIdent(Naming.getAliasedParameterName(((Value)decl).getInitializerParameter()));
+                result = at(op).Assign(lhs, rhs);
             }
         } else {
             result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT), rhs);
