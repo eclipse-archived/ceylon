@@ -72,6 +72,10 @@ public class StructureTest2 extends CompilerTest {
         compareWithJavaSource("toplevel/ToplevelMethodWithDefaultedParams");
     }
     @Test
+    public void testTopToplevelFunctionWithVariableParameter(){
+        compareWithJavaSource("toplevel/ToplevelFunctionWithVariableParameter");
+    }
+    @Test
     public void testTopToplevelObject(){
         compareWithJavaSource("toplevel/ToplevelObject");
     }
