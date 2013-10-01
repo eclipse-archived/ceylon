@@ -25,7 +25,7 @@ class Sub135_5() extends Super135() {
 class NewAlias1(x) {
     shared Integer x;
 }
-class NewAlias2() => NewAlias1(5);
+//unsupported: class NewAlias2() => NewAlias1(5);
 
 void bug135() {
     Sub135_1().Inner135();
@@ -33,5 +33,5 @@ void bug135() {
     Sub135_3().Inner135();
     Sub135_4().Inner135();
     Sub135_5().Inner135();
-    check(NewAlias2().x == 5, "New type alias syntax");
+    //check(NewAlias2().x == 5, "New type alias syntax");
 }
