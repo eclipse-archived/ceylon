@@ -120,7 +120,9 @@ public class InvocationGenerator {
                         ProducedType callableArgs = callable.getTypeArgumentList().get(1).minus(
                                 gen.getTypeUtils().empty.getType());
                         //This is the type of the first argument
-                        ProducedType argtype = callableArgs.getTypeArgumentList().get(1);
+                        boolean isSequenced = !gen.getTypeUtils().tuple.equals(callableArgs.getDeclaration());
+                        ProducedType argtype = callableArgs.getTypeArgumentList().get(
+                                isSequenced ? 0 : 1);
                         Parameter p = null;
                         int c = 0;
                         for (Tree.PositionalArgument arg : argList.getPositionalArguments()) {
@@ -132,9 +134,9 @@ public class InvocationGenerator {
                                 v.setContainer(that.getPositionalArgumentList().getScope());
                                 v.setType(argtype);
                                 p.setModel(v);
-                                if (callableArgs == null) {
+                                if (callableArgs == null || isSequenced) {
                                     p.setSequenced(true);
-                                } else {
+                                } else if (!isSequenced) {
                                     ProducedType next = callableArgs.getTypeArgumentList().get(2);
                                     if (next.getSupertype(gen.getTypeUtils().tuple) == null) {
                                         //It's not a tuple, so no more regular parms. It can be:
@@ -144,7 +146,8 @@ public class InvocationGenerator {
                                         if (next.getDeclaration() instanceof UnionType) {
                                             //empty|tuple
                                             callableArgs = next.minus(gen.getTypeUtils().empty.getType());
-                                            argtype = callableArgs.getTypeArgumentList().get(1);
+                                            isSequenced = !gen.getTypeUtils().tuple.equals(callableArgs.getDeclaration());
+                                            argtype = callableArgs.getTypeArgumentList().get(isSequenced ? 0 : 1);
                                         } else {
                                             //we'll bet on sequential (if it's empty we don't care anyway)
                                             argtype = next;
