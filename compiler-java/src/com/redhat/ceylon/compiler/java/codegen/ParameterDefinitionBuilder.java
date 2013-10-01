@@ -20,6 +20,7 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -82,8 +83,8 @@ public class ParameterDefinitionBuilder {
      * Creates a builder for a explicit parameter (anything for which there's 
      * a Parameter model).
      */
-    static ParameterDefinitionBuilder explicitParameter(AbstractTransformer gen, String name) {
-        return new ParameterDefinitionBuilder(gen, name);
+    static ParameterDefinitionBuilder explicitParameter(AbstractTransformer gen, Parameter parameter) {
+        return new ParameterDefinitionBuilder(gen, parameter.getName());
     }
 
     public ParameterDefinitionBuilder modifiers(long mods) {

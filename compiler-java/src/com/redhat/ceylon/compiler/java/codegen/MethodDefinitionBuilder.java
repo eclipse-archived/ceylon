@@ -304,7 +304,7 @@ public class MethodDefinitionBuilder {
             String name, String aliasedName, 
             Parameter decl, TypedDeclaration nonWideningDecl, ProducedType nonWideningType, 
             int flags, boolean canWiden) {
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(gen, name);
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(gen, decl);
         pdb.modifiers(modifiers);
         pdb.modelAnnotations(modelAnnotations);
         pdb.userAnnotations(userAnnotations);

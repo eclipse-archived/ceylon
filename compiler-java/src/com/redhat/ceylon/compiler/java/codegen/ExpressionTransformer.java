@@ -2940,7 +2940,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 for (Parameter parameter : classParameters) {
                     // TODO Boxed type of parameter?!?!?
                     JCExpression paramType = classGen().transformClassParameterType(parameter);
-                    argMethod.parameter(ParameterDefinitionBuilder.explicitParameter(this, parameter.getName())
+                    argMethod.parameter(ParameterDefinitionBuilder.explicitParameter(this, parameter)
                             .type(paramType, null));
                 }
                 argMethod.body(make().Return(argument.expression));

@@ -635,7 +635,7 @@ public class ClassTransformer extends AbstractTransformer {
     private void transformParameter(ClassDefinitionBuilder classBuilder, Parameter param, List<JCAnnotation> annotations) {
         String name = param.getName();
         JCExpression type = classGen().transformClassParameterType(param);
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(this, name);
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(this, param);
         pdb.aliasName(Naming.getAliasedParameterName(param));
         pdb.sequenced(param.isSequenced());
         pdb.defaulted(param.isDefaulted());
