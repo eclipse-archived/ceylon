@@ -20,8 +20,10 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.sun.tools.javac.code.Flags;
+import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -56,6 +58,8 @@ public class ParameterDefinitionBuilder {
 
     private boolean functional;
 
+    private MethodOrValue boxedVariable;
+
     private ParameterDefinitionBuilder(AbstractTransformer gen, String name) {
         this.gen = gen;
         this.name = name;
@@ -84,7 +88,15 @@ public class ParameterDefinitionBuilder {
      * a Parameter model).
      */
     static ParameterDefinitionBuilder explicitParameter(AbstractTransformer gen, Parameter parameter) {
-        return new ParameterDefinitionBuilder(gen, parameter.getName());
+        ParameterDefinitionBuilder pdb = new ParameterDefinitionBuilder(gen, parameter.getName());
+        if (parameter.getModel().isCaptured()
+                && parameter.getModel().isVariable()
+                && !parameter.getModel().isClassOrInterfaceMember()
+                && !parameter.isHidden()) {
+            pdb.boxedVariable = parameter.getModel();
+        }
+        
+        return pdb;
     }
 
     public ParameterDefinitionBuilder modifiers(long mods) {
@@ -198,9 +210,24 @@ public class ParameterDefinitionBuilder {
         if(Annotations.includeIgnore(annotationFlags)){
             annots = annots.appendList(gen.makeAtIgnore());
         }
-        Name name = gen.names().fromString(aliasedName != null ? aliasedName : this.name);
+        Name name = gen.names().fromString(getJavaParameterName());
         return gen.make().VarDef(gen.make().Modifiers(modifiers | Flags.PARAMETER, annots.toList()), 
                 name, type, null);   
+    }
+
+    private String getJavaParameterName() {
+        return aliasedName != null ? aliasedName : this.name;
+    }
+    
+    public boolean requiresBoxedVariableDecl() {
+        return boxedVariable != null;
+    }
+    
+    public JCVariableDecl buildBoxedVariableDecl() {
+        return gen.makeVariableBoxDecl(
+                Naming.getAttrClassName(boxedVariable, 0), 
+                gen.naming.makeUnquotedIdent(getJavaParameterName()), 
+                boxedVariable);
     }
     
     public String toString() {

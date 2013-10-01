@@ -197,7 +197,12 @@ public class MethodDefinitionBuilder {
         }
     }
 
-    private JCBlock makeBody(ListBuffer<JCStatement> body2) {
+    private JCBlock makeBody(ListBuffer<JCStatement> body) {
+        for (ParameterDefinitionBuilder pdb : params) {
+            if (pdb.requiresBoxedVariableDecl()) {
+                body.prepend(pdb.buildBoxedVariableDecl());
+            }
+        }
         return (!isAbstract && (body != null) && ((modifiers & ABSTRACT) == 0)) ? gen.make().Block(0, body.toList()) : null;
     }
 
