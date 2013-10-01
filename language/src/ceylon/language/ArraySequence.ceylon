@@ -2,7 +2,7 @@
  native array type. Where possible copying of the underlying 
  array is avoided."
 see (`class SequenceBuilder`, `class SequenceAppender`)
-shared native class ArraySequence<out Element>({Element+} elements) 
+shared final native class ArraySequence<out Element>({Element+} elements) 
         satisfies Sequence<Element> {
     
     shared native actual Element last;
