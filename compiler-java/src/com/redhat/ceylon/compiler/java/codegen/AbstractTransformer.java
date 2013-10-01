@@ -456,6 +456,31 @@ public abstract class AbstractTransformer implements Transformation {
         return make().VarDef(make().Modifiers(mods), varName.asName(), typeExpr, valueExpr);
     }
     
+    /**
+     * Creates a {@code VariableBox<T>}, {@code VariableBoxBoolean}, 
+     * {@code VariableBoxLong} etc depending on the given declaration model.
+     */
+    protected JCExpression makeVariableBoxType(TypedDeclaration declarationModel) {
+        JCExpression boxClass;
+        boolean unboxed = CodegenUtil.isUnBoxed(declarationModel);
+        if (unboxed && isCeylonBoolean(declarationModel.getType())) {
+            boxClass = make().Type(syms().ceylonVariableBoxBooleanType);
+        } else if (unboxed && isCeylonInteger(declarationModel.getType())) {
+            boxClass = make().Type(syms().ceylonVariableBoxLongType);
+        } else if (unboxed && isCeylonFloat(declarationModel.getType())) {
+            boxClass = make().Type(syms().ceylonVariableBoxDoubleType);
+        } else if (unboxed && isCeylonCharacter(declarationModel.getType())) {
+            boxClass = make().Type(syms().ceylonVariableBoxIntType);
+        } else {
+            boxClass = make().Ident(syms().ceylonVariableBoxType.tsym);
+            int flags = unboxed ? 0 : JT_TYPE_ARGUMENT;
+            boxClass = make().TypeApply(boxClass, 
+                    List.<JCExpression>of(
+                            makeJavaType(declarationModel.getType(), flags)));
+        }
+        return boxClass;
+    }
+    
     /** 
      * Creates a {@code ( let var1=expr1,var2=expr2,...,varN=exprN in varN; )}
      * or a {@code ( let var1=expr1,var2=expr2,...,varN=exprN,exprO in exprO; )}

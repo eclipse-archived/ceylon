@@ -267,11 +267,11 @@ public class CeylonTransformer extends AbstractTransformer {
             List<JCExpression> args = initialValue != null ? List.of(initialValue) : List.<JCExpression>nil();
             JCExpression newBox = make().NewClass(
                     null, List.<JCExpression>nil(), 
-                    makeVariableBox(declarationModel), args, null);
+                    makeVariableBoxType(declarationModel), args, null);
             JCTree.JCVariableDecl var = make().VarDef(
                     make().Modifiers(FINAL), 
                     names().fromString(attrClassName), 
-                    makeVariableBox(declarationModel), 
+                    makeVariableBoxType(declarationModel),
                     newBox);
             return List.<JCTree>of(var);
         }
@@ -372,31 +372,6 @@ public class CeylonTransformer extends AbstractTransformer {
             }
         }
         return initialValue;
-    }
-
-    /**
-     * Creates a {@code VariableBox<T>}, {@code VariableBoxBoolean}, 
-     * {@code VariableBoxLong} etc depending on the given declaration model.
-     */
-    private JCExpression makeVariableBox(TypedDeclaration declarationModel) {
-        JCExpression boxClass;
-        boolean unboxed = CodegenUtil.isUnBoxed(declarationModel);
-        if (unboxed && isCeylonBoolean(declarationModel.getType())) {
-            boxClass = make().Type(syms().ceylonVariableBoxBooleanType);
-        } else if (unboxed && isCeylonInteger(declarationModel.getType())) {
-            boxClass = make().Type(syms().ceylonVariableBoxLongType);
-        } else if (unboxed && isCeylonFloat(declarationModel.getType())) {
-            boxClass = make().Type(syms().ceylonVariableBoxDoubleType);
-        } else if (unboxed && isCeylonCharacter(declarationModel.getType())) {
-            boxClass = make().Type(syms().ceylonVariableBoxIntType);
-        } else {
-            boxClass = make().Ident(syms().ceylonVariableBoxType.tsym);
-            int flags = unboxed ? 0 : JT_TYPE_ARGUMENT;
-            boxClass = make().TypeApply(boxClass, 
-                    List.<JCExpression>of(
-                            makeJavaType(declarationModel.getType(), flags)));
-        }
-        return boxClass;
     }
 
     public JCExpression transformAttributeGetter(
