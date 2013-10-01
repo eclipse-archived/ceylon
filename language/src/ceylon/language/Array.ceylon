@@ -39,7 +39,7 @@ shared final native class Array<Element>()
          copy the first element."
         Integer destinationPosition = 0, 
         "The number of elements to copy."
-        Integer length = size);
+        Integer length = size-sourcePosition);
     
 }
 

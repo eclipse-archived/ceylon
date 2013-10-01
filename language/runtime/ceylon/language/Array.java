@@ -913,32 +913,198 @@ public final class Array<Element> implements List<Element>, ReifiedType {
 
     @Ignore
     public int copyTo$length(Element[] destination, int sourcePosition, int destinationPosition){
-        return java.lang.reflect.Array.getLength(array);
+        return java.lang.reflect.Array.getLength(array)-sourcePosition;
     }
 
     @Ignore
     public void copyTo(Array<Element> destination){
-        System.arraycopy(array, 0, destination.array, 0, (int)getSize());
+        copyTo(destination, 0, 0);
     }
 
     @Ignore
-    public void copyTo(Array<Element> destination, 
-                       int sourcePosition){
-        System.arraycopy(array, sourcePosition, destination.array, 0, (int)getSize());
+    public void copyTo(Array<Element> destination, int sourcePosition){
+        copyTo(destination, sourcePosition, 0);
     }
 
     @Ignore
-    public void copyTo(Array<Element> destination, 
-                       int sourcePosition, 
-                       int destinationPosition){
-        System.arraycopy(array, sourcePosition, destination.array, destinationPosition, (int)getSize());
+    public void copyTo(Array<Element> destination, int sourcePosition, int destinationPosition){
+        copyTo(destination, sourcePosition, destinationPosition, 
+                java.lang.reflect.Array.getLength(array)-sourcePosition);
     }
 
     public void copyTo(@Name("destination") Array<Element> destination, 
                        @Name("sourcePosition") @Defaulted int sourcePosition, 
                        @Name("destinationPosition") @Defaulted int destinationPosition, 
                        @Name("length") @Defaulted int length){
-        System.arraycopy(array, sourcePosition, destination.array, destinationPosition, length);
+        if (array instanceof java.lang.Object[] && 
+                    destination.array instanceof java.lang.Object[] ||
+            array instanceof boolean[] && destination.array instanceof boolean[] ||
+            array instanceof int[] && destination.array instanceof int[] ||
+            array instanceof long[] && destination.array instanceof long[] ||
+            array instanceof float[] && destination.array instanceof float[] ||
+            array instanceof double[] && destination.array instanceof double[] ||
+            array instanceof char[] && destination.array instanceof char[] ||
+            array instanceof byte[] && destination.array instanceof byte[] ||
+            array instanceof short[] && destination.array instanceof short[]) {
+                System.arraycopy(array, sourcePosition, destination.array, 
+                        destinationPosition, length);
+        }
+        else {
+            for (int i=0; i<length; i++) {
+                int desti = i+destinationPosition;
+                int sourcei = i+sourcePosition;
+                if (destination.array instanceof double[]) {
+                    double[] target = (double[]) destination.array;
+                    if (array instanceof float[]) {
+                        target[desti] = ((float[]) array)[sourcei];
+                    }
+                    else if (array instanceof Object[]) {
+                        target[desti] = ((Float) ((java.lang.Object[]) array)[sourcei]).value;
+                    }
+                    else {
+                        throw new ArrayStoreException();
+                    }
+                }
+                else if (destination.array instanceof float[]) {
+                    float[] target = (float[]) destination.array;
+                    if (array instanceof double[]) {
+                        target[desti] = (float) ((double[]) array)[sourcei];
+                    }
+                    else if (array instanceof Object[]) {
+                        target[desti] = (float) ((Float) ((java.lang.Object[]) array)[sourcei]).value;
+                    }
+                    else {
+                        throw new ArrayStoreException();
+                    }
+                }
+                else if (destination.array instanceof long[]) {
+                    long[] target = (long[]) destination.array;
+                    if (array instanceof int[]) {
+                        target[desti] = ((int[]) array)[sourcei];
+                    }
+                    else if (array instanceof short[]) {
+                        target[desti] = ((short[]) array)[sourcei];
+                    }
+                    else if (array instanceof byte[]) {
+                        target[desti] = ((byte[]) array)[sourcei];
+                    }
+                    else if (array instanceof Object[]) {
+                        target[desti] = ((Integer) ((java.lang.Object[]) array)[sourcei]).value;
+                    }
+                    else {
+                        throw new ArrayStoreException();
+                    }
+                }
+                else if (destination.array instanceof int[]) {
+                    int[] target = (int[]) destination.array;
+                    if (array instanceof long[]) {
+                        target[desti] = (int) ((long[]) array)[sourcei];
+                    }
+                    else if (array instanceof short[]) {
+                        target[desti] = ((short[]) array)[sourcei];
+                    }
+                    else if (array instanceof byte[]) {
+                        target[desti] = ((byte[]) array)[sourcei];
+                    }
+                    else if (array instanceof Object[]) {
+                        target[desti] = (int) ((Integer) ((java.lang.Object[]) array)[sourcei]).value;
+                    }
+                    else if (array instanceof char[]) {
+                        target[desti] = ((char[]) array)[sourcei];
+                    }
+                    else {
+                        throw new ArrayStoreException();
+                    }
+                }
+                else if (destination.array instanceof short[]) {
+                    short[] target = (short[]) destination.array;
+                    if (array instanceof long[]) {
+                        target[desti] = (short) ((long[]) array)[sourcei];
+                    }
+                    else if (array instanceof int[]) {
+                        target[desti] = (short) ((int[]) array)[sourcei];
+                    }
+                    else if (array instanceof byte[]) {
+                        target[desti] = ((byte[]) array)[sourcei];
+                    }
+                    else if (array instanceof Object[]) {
+                        target[desti] = (short) ((Integer) ((java.lang.Object[]) array)[sourcei]).value;
+                    }
+                    else {
+                        throw new ArrayStoreException();
+                    }
+                }
+                else if (destination.array instanceof byte[]) {
+                    byte[] target = (byte[]) destination.array;
+                    if (array instanceof long[]) {
+                        target[desti] = (byte) ((long[]) array)[sourcei];
+                    }
+                    else if (array instanceof int[]) {
+                        target[desti] = (byte) ((int[]) array)[sourcei];
+                    }
+                    else if (array instanceof short[]) {
+                        target[desti] = (byte) ((short[]) array)[sourcei];
+                    }
+                    else if (array instanceof Object[]) {
+                        target[desti] = (byte) ((Integer) ((java.lang.Object[]) array)[sourcei]).value;
+                    }
+                    else {
+                        throw new ArrayStoreException();
+                    }
+                }
+                else if (destination.array instanceof boolean[]) {
+                    boolean[] target = (boolean[]) destination.array;
+                    if (array instanceof Object[]) {
+                        target[desti] = (boolean) ((Boolean) ((java.lang.Object[]) array)[sourcei]).booleanValue();
+                    }
+                    else {
+                        throw new ArrayStoreException();
+                    }
+                }
+                else if (destination.array instanceof char[]) {
+                    char[] target = (char[]) destination.array;
+                    if (array instanceof Object[]) {
+                        target[desti] = (char) ((Character) ((java.lang.Object[]) array)[sourcei]).codePoint;
+                    }
+                    else if (array instanceof int[]) {
+                        target[desti] = (char) ((int[]) array)[sourcei];
+                    }
+                    else {
+                        throw new ArrayStoreException();
+                    }
+                }
+                else {
+                    java.lang.Object[] target = (java.lang.Object[]) destination.array;
+                    if (array instanceof long[]) {
+                        target[desti] = Integer.instance(((long[])array)[sourcei]);
+                    }
+                    if (array instanceof int[]) {
+                        target[desti] = Integer.instance(((int[])array)[sourcei]);
+                    }
+                    if (array instanceof short[]) {
+                        target[desti] = Integer.instance(((short[])array)[sourcei]);
+                    }
+                    if (array instanceof byte[]) {
+                        target[desti] = Integer.instance(((byte[])array)[sourcei]);
+                    }
+                    if (array instanceof double[]) {
+                        target[desti] = Float.instance(((double[])array)[sourcei]);
+                    }
+                    if (array instanceof float[]) {
+                        target[desti] = Float.instance(((float[])array)[sourcei]);
+                    }
+                    if (array instanceof boolean[]) {
+                        target[desti] = Boolean.instance(((boolean[])array)[sourcei]);
+                    }
+                    if (array instanceof char[]) {
+                        target[desti] = Character.instance(((char[])array)[sourcei]);
+                    }
+                    else {
+                        target[desti] = ((java.lang.Object[]) array)[sourcei];
+                    }
+                }
+            }
+        }
     }
     
     @Override
