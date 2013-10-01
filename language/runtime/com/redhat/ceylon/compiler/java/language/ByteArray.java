@@ -65,12 +65,12 @@ public final class ByteArray implements ReifiedType {
 
     @Ignore
     public static void copyTo(byte[] array, byte[] destination, int sourcePosition){
-        System.arraycopy(array, sourcePosition, destination, 0, array.length);
+        System.arraycopy(array, sourcePosition, destination, 0, array.length-sourcePosition);
     }
 
     @Ignore
     public static void copyTo(byte[] array, byte[] destination, int sourcePosition, int destinationPosition){
-        System.arraycopy(array, sourcePosition, destination, destinationPosition, array.length);
+        System.arraycopy(array, sourcePosition, destination, destinationPosition, array.length-sourcePosition);
     }
 
     @Ignore
