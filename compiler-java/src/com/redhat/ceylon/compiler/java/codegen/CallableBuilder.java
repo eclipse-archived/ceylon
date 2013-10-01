@@ -1200,15 +1200,6 @@ public class CallableBuilder {
                     callTyped);
         }
         useTransformation(tx);
-        /*
-        FixedArityCallableTransformation tx;
-        if (requiresCallTypedMethod()) {
-            tx = new FixedArityCallableTransformation(new CallMethodDelegatingCallTyped(), new CallTypedMethod(stmts));
-        } else {
-            tx = new FixedArityCallableTransformation(new CallMethodWithGivenBody(stmts), null);
-        }
-        useTransformation(tx);
-        */
         return this;
     }
     
@@ -1384,10 +1375,6 @@ public class CallableBuilder {
         pdb.modifiers(Flags.FINAL | flags);
         pdb.type(type, null);
         return pdb;
-        /*
-        return gen.make().VarDef(gen.make().Modifiers(Flags.FINAL | Flags.PARAMETER | flags), 
-                makeParamName(gen, ii), type, null);
-                */
     }
     
     private ParameterDefinitionBuilder makeCallableVaryParam(long flags, int ii) {
@@ -1399,10 +1386,6 @@ public class CallableBuilder {
         pdb.modifiers(Flags.FINAL | flags);
         pdb.type(type, null);
         return pdb;
-        /*
-        return gen.make().VarDef(gen.make().Modifiers(Flags.FINAL | Flags.PARAMETER | flags), 
-                makeParamName(gen, ii), type, null);
-                */
     }
     
     /**
