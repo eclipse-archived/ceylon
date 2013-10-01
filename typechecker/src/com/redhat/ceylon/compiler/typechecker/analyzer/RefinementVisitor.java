@@ -67,7 +67,7 @@ public class RefinementVisitor extends Visitor {
                 if (tp!=null) {
                     Parameter p = tp.getParameterModel();
                     if (p.getModel()!=null) {
-                        checkVisibility(tp, td, p.getModel().getType(), "declaration");
+                        checkVisibility(tp, td, p.getModel().getType());
                     }
                 }
             }
@@ -83,7 +83,7 @@ public class RefinementVisitor extends Visitor {
                 if (tp!=null) {
                     Parameter p = tp.getParameterModel();
                     if (p.getModel()!=null) {
-                        checkVisibility(tp, td, p.getModel().getType(), "declaration");
+                        checkVisibility(tp, td, p.getModel().getType());
                     }
                 }
             }
@@ -105,12 +105,13 @@ public class RefinementVisitor extends Visitor {
     }
 
     private static boolean checkModuleVisibility(Declaration member, ProducedType pt) {
-        if(!inExportedScope(member))
-            return true;
-        Module declarationModule = getModule(member);
-        if(declarationModule == null)
-            return true;
-        return isCompletelyVisibleFromOtherModules(member, pt, declarationModule);
+        if (inExportedScope(member)) {
+            Module declarationModule = getModule(member);
+            if (declarationModule!=null) {
+                return isCompletelyVisibleFromOtherModules(member, pt, declarationModule);
+            }
+        }
+        return true;
     }
 
     private static boolean isCompletelyVisibleFromOtherModules(Declaration member, ProducedType pt, Module thisModule) {
@@ -284,21 +285,20 @@ public class RefinementVisitor extends Visitor {
 
     @Override public void visit(Tree.TypedDeclaration that) {
         TypedDeclaration td = that.getDeclarationModel();
-        checkVisibility(that, td, td.getType(), "declaration");
+        checkVisibility(that, td, td.getType());
         super.visit(that);
     }
 
     private void checkVisibility(Node that, Declaration td, 
-            ProducedType type, String typeName) {
+            ProducedType type) {
         if (type!=null) {
+            Node typeNode = getTypeErrorNode(that);
             if (!isCompletelyVisible(td, type)) {
-                that.addError("type of " + typeName + 
-                        " is not visible everywhere declaration is visible: " + 
+                typeNode.addError("type of declaration is not visible everywhere declaration is visible: " + 
                         td.getName(), 711);
             }
             if (!checkModuleVisibility(td, type)) {
-                that.addError("type occurs in a " + typeName + 
-                        " that is visible outside this module," +
+                typeNode.addError("type occurs in a declaration that is visible outside this module," +
                         " but comes from an imported module that is not re-exported: "+ 
                         td.getName(), 712);
             }
@@ -480,13 +480,7 @@ public class RefinementVisitor extends Visitor {
         ProducedReference refiningMember = ci.getType().getTypedReference(dec, typeArgs);
         Declaration refinedMemberDec = refinedMember.getDeclaration();
 		Declaration refiningMemberDec = refiningMember.getDeclaration();
-		Node typeNode = that;
-		if (that instanceof Tree.TypedDeclaration) {
-			Tree.Type type = ((Tree.TypedDeclaration) that).getType();
-			if (type!=null) {
-				typeNode = type;
-			}
-		}
+		Node typeNode = getTypeErrorNode(that);
 		if (refinedMemberDec instanceof TypedDeclaration && 
 				refiningMemberDec instanceof TypedDeclaration && 
         		((TypedDeclaration) refinedMemberDec).isDynamicallyTyped()) {
@@ -530,6 +524,16 @@ public class RefinementVisitor extends Visitor {
                        refiningParamLists.get(i), refinedParamLists.get(i));
            }
         }
+    }
+
+    private static Node getTypeErrorNode(Node that) {
+		if (that instanceof Tree.TypedDeclaration) {
+			Tree.Type type = ((Tree.TypedDeclaration) that).getType();
+			if (type!=null) {
+				return type;
+			}
+		}
+        return that;
     }
 
     private void checkRefinedMemberTypeAssignable(ProducedReference refiningMember, 
