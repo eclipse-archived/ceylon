@@ -7,7 +7,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,7 +51,7 @@ public class Stitcher {
         }
     }
 
-    private static void compileLanguageModule(List<String> sources, PrintWriter writer, String clmod)
+    private static void compileLanguageModule(List<String> sources, Writer writer, String clmod)
             throws IOException {
         final File clSrcDir = new File("../ceylon.language/src/ceylon/language/");
         final File clSrcDirJs = new File("../ceylon.language/runtime-js");
@@ -105,7 +106,8 @@ public class Stitcher {
                     String jsline = null;
                     while ((jsline = jsr.readLine()) != null) {
                         if (!jsline.contains("=require('")) {
-                            writer.println(jsline);
+                            writer.write(jsline);
+                            writer.write("\n");
                         }
                     }
                 } finally {
@@ -118,7 +120,7 @@ public class Stitcher {
         }
     }
 
-    private static void stitch(File infile, PrintWriter writer, List<String> sourceFiles) throws IOException {
+    private static void stitch(File infile, Writer writer, List<String> sourceFiles) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(infile), "UTF-8"));
         try {
             String line = null;
@@ -146,17 +148,17 @@ public class Stitcher {
                             }
                             pu.getCompilationUnit().visit(mmg);
                         }
-                        writer.print("var $$METAMODEL$$=");
+                        writer.write("var $$METAMODEL$$=");
                         clModel = JSONObject.toJSONString(mmg.getModel());
-                        writer.print(clModel);
-                        writer.println(";");
-                        writer.println("exports.$$METAMODEL$$=function(){return $$METAMODEL$$;};");
+                        writer.write(clModel);
+                        writer.write(";\nexports.$$METAMODEL$$=function(){return $$METAMODEL$$;};\n");
                         writer.flush();
                     } else if (line.equals("//#COMPILED")) {
                         System.out.println("Compiling language module sources");
                         compileLanguageModule(sourceFiles, writer, clModel);
                     } else if (!line.endsWith("//IGNORE")) {
-                        writer.println(line);
+                        writer.write(line);
+                        writer.write("\n");
                     }
                 }
             }
@@ -196,7 +198,7 @@ public class Stitcher {
                 }
             } finally {
             }
-            try (PrintWriter writer = new PrintWriter(outfile, "UTF-8")) {
+            try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(outfile), "UTF-8")) {
                 stitch(infile, writer, clsrc);
             } finally {
                 ShaSigner.sign(outfile, new JULLogger(), true);
