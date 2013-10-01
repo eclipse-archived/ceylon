@@ -485,12 +485,15 @@ public abstract class AbstractTransformer implements Transformation {
      * Makes a final {@code VariableBox<T>} (or {@code VariableBoxBoolean}, 
      * {@code VariableBoxLong}, etc) variable decl, so that a variable can 
      * be captured.
+     * @param init The initial value 
+     * @param The (value/parameter) declaration which is being accessed through the box.
      */
-    JCVariableDecl makeVariableBoxDecl(String varName, JCExpression parameterName, TypedDeclaration declarationModel) {
-        List<JCExpression> args = parameterName != null ? List.<JCExpression>of(parameterName) : List.<JCExpression>nil();
+    JCVariableDecl makeVariableBoxDecl(JCExpression init, TypedDeclaration declarationModel) {
+        List<JCExpression> args = init != null ? List.<JCExpression>of(init) : List.<JCExpression>nil();
         JCExpression newBox = make().NewClass(
                 null, List.<JCExpression>nil(), 
                 makeVariableBoxType(declarationModel), args, null);
+        String varName = naming.getVariableBoxName(declarationModel);
         JCTree.JCVariableDecl var = make().VarDef(
                 make().Modifiers(FINAL), 
                 names().fromString(varName),

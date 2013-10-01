@@ -1013,8 +1013,12 @@ public class Naming implements LocalId {
         } else if ((namingOptions & NA_WRAPPER_UNQUOTED) != 0) {
             expr = makeQualIdent(expr, getRealName(decl, namingOptions & (NA_GETTER | NA_SETTER | NA_WRAPPER_UNQUOTED)));
         } else if ((namingOptions & NA_Q_LOCAL_INSTANCE) != 0) {
-            expr = makeQualIdent(expr, getAttrClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
-        }
+            if (decl.isCaptured() && decl.isVariable()) {
+                expr = makeQualIdent(expr, getVariableBoxName(decl));
+            } else {
+                expr = makeQualIdent(expr, getAttrClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
+            }
+        } 
         if((namingOptions & NA_WRAPPER_WITH_THIS) != 0){
             expr = makeQualIdent(expr, "this");
         }
@@ -1056,6 +1060,14 @@ public class Naming implements LocalId {
     
     private static String getQuotedClassName(Declaration decl, int namingOptions) {
         return getRealName(decl, namingOptions);
+    }
+    
+    String getVariableBoxName(TypedDeclaration declaration) {
+        return declaration.getName();
+    }
+    
+    JCExpression makeVariableBoxName(TypedDeclaration declaration) {
+        return makeUnquotedIdent(getVariableBoxName(declaration));
     }
     
     /** Include the member part of the typed declaration (e.g. the method name) */

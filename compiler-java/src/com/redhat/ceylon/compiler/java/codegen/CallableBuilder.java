@@ -1311,7 +1311,8 @@ public class CallableBuilder {
     
     private Naming.SyntheticName getCallableTempVarName(Parameter param, Tree.Term forwardCallTo) {
         // prefix them with $$ if we only forward, otherwise we need them to have the proper names
-        return gen.naming.synthetic(forwardCallTo != null ? Naming.getCallableTempVarName(param) : param.getName());
+        return gen.naming.synthetic(forwardCallTo != null ? Naming.getCallableTempVarName(param) : 
+            param.getModel().isCaptured() ? Naming.getAliasedParameterName(param) : param.getName());
     }
     
 
@@ -1432,7 +1433,7 @@ public class CallableBuilder {
                 expr);
         stmts.append(var);
         if (ParameterDefinitionBuilder.isBoxedVariableParameter(param)) {
-            stmts.append(gen.makeVariableBoxDecl(Naming.getAttrClassName(param.getModel(), 0), name.makeIdent(), param.getModel()));
+            stmts.append(gen.makeVariableBoxDecl(name.makeIdent(), param.getModel()));
         }
     }
 

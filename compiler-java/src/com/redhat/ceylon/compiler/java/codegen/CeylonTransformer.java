@@ -266,7 +266,7 @@ public class CeylonTransformer extends AbstractTransformer {
         // For captured local variable Values, use a VariableBox
         if (Decl.isBoxedVariable(declarationModel)) {
             return List.<JCTree>of(makeVariableBoxDecl(
-                    attrClassName, initialValue, declarationModel));
+                    initialValue, declarationModel));
         }
         
         // For late-bound getters we only generate a declaration

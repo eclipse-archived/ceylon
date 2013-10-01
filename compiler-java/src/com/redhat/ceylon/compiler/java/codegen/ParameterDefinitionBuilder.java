@@ -229,7 +229,6 @@ public class ParameterDefinitionBuilder {
     
     public JCVariableDecl buildBoxedVariableDecl() {
         return gen.makeVariableBoxDecl(
-                Naming.getAttrClassName(boxedVariable, 0), 
                 gen.naming.makeUnquotedIdent(getJavaParameterName()), 
                 boxedVariable);
     }

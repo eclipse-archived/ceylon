@@ -3956,7 +3956,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (variable && (decl.isCaptured() || decl.isShared())) {
             // must use the qualified setter
             if (Decl.isBoxedVariable(decl)) {
-                result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER | Naming.NA_MEMBER | Naming.NA_SETTER), rhs);
+                result = at(op).Assign(naming.makeName(decl, Naming.NA_Q_LOCAL_INSTANCE | Naming.NA_MEMBER | Naming.NA_SETTER), rhs);
             } else if (Decl.isLocalNotInitializer(decl)) {
                 lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER);
             } else if (isWithinSuperInvocation()
