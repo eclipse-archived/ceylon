@@ -876,8 +876,19 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     
     @Override 
     @Ignore 
-    public Sequential<? extends Element> getSequence() { 
-        return $ceylon$language$Iterable$this.getSequence(); 
+    public Sequential<? extends Element> getSequence() {
+        int len = java.lang.reflect.Array.getLength(array);
+        java.lang.Object[] arr;
+        if (array instanceof java.lang.Object[]) {
+            arr = (java.lang.Object[]) array;
+        }
+        else {
+            arr = new java.lang.Object[len];
+            for (int i=0; i<len; i++) {
+                arr[i] = java.lang.reflect.Array.get(array, i);
+            }
+        }
+        return new ArraySequence<Element>($reifiedElement, arr, 0, len, true); 
     }
 
     @Override @SuppressWarnings("rawtypes")
