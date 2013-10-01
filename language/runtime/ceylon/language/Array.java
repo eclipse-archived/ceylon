@@ -962,7 +962,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                         target[desti] = ((Float) ((java.lang.Object[]) array)[sourcei]).value;
                     }
                     else {
-                        throw new AssertionException("unexpected array types in copyTo(");
+                        throw new AssertionException("unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof float[]) {
@@ -974,7 +974,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                         target[desti] = (float) ((Float) ((java.lang.Object[]) array)[sourcei]).value;
                     }
                     else {
-                        throw new AssertionException("unexpected array types in copyTo(");
+                        throw new AssertionException("unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof long[]) {
@@ -992,7 +992,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                         target[desti] = ((Integer) ((java.lang.Object[]) array)[sourcei]).value;
                     }
                     else {
-                        throw new AssertionException("unexpected array types in copyTo(");
+                        throw new AssertionException("unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof int[]) {
@@ -1013,7 +1013,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                         target[desti] = ((char[]) array)[sourcei];
                     }
                     else {
-                        throw new AssertionException("unexpected array types in copyTo(");
+                        throw new AssertionException("unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof short[]) {
@@ -1031,7 +1031,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                         target[desti] = (short) ((Integer) ((java.lang.Object[]) array)[sourcei]).value;
                     }
                     else {
-                        throw new AssertionException("unexpected array types in copyTo(");
+                        throw new AssertionException("unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof byte[]) {
@@ -1049,7 +1049,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                         target[desti] = (byte) ((Integer) ((java.lang.Object[]) array)[sourcei]).value;
                     }
                     else {
-                        throw new AssertionException("unexpected array types in copyTo(");
+                        throw new AssertionException("unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof boolean[]) {
@@ -1058,7 +1058,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                         target[desti] = (boolean) ((Boolean) ((java.lang.Object[]) array)[sourcei]).booleanValue();
                     }
                     else {
-                        throw new AssertionException("unexpected array types in copyTo(");
+                        throw new AssertionException("unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof char[]) {
@@ -1070,7 +1070,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                         target[desti] = (char) ((int[]) array)[sourcei];
                     }
                     else {
-                        throw new AssertionException("unexpected array types in copyTo(");
+                        throw new AssertionException("unexpected array types in copyTo()");
                     }
                 }
                 else {
@@ -1078,29 +1078,29 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                     if (array instanceof long[]) {
                         target[desti] = Integer.instance(((long[])array)[sourcei]);
                     }
-                    if (array instanceof int[]) {
+                    else if (array instanceof int[]) {
                         target[desti] = Integer.instance(((int[])array)[sourcei]);
                     }
-                    if (array instanceof short[]) {
+                    else if (array instanceof short[]) {
                         target[desti] = Integer.instance(((short[])array)[sourcei]);
                     }
-                    if (array instanceof byte[]) {
+                    else if (array instanceof byte[]) {
                         target[desti] = Integer.instance(((byte[])array)[sourcei]);
                     }
-                    if (array instanceof double[]) {
+                    else if (array instanceof double[]) {
                         target[desti] = Float.instance(((double[])array)[sourcei]);
                     }
-                    if (array instanceof float[]) {
+                    else if (array instanceof float[]) {
                         target[desti] = Float.instance(((float[])array)[sourcei]);
                     }
-                    if (array instanceof boolean[]) {
+                    else if (array instanceof boolean[]) {
                         target[desti] = Boolean.instance(((boolean[])array)[sourcei]);
                     }
-                    if (array instanceof char[]) {
+                    else if (array instanceof char[]) {
                         target[desti] = Character.instance(((char[])array)[sourcei]);
                     }
                     else {
-                        throw new AssertionException("unexpected array types in copyTo(");
+                        throw new AssertionException("unexpected array types in copyTo()");
                     }
                 }
             }
