@@ -147,6 +147,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/InitializerVarargs");
     }
     @Test
+    public void testKlsWithVariableParameter(){
+        compareWithJavaSource("klass/ClassWithVariableParameter");
+    }
+    @Test
     public void testKlsInnerClass(){
         compareWithJavaSource("klass/InnerClass");
     }
