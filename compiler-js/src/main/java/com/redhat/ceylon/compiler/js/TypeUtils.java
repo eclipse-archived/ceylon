@@ -379,27 +379,39 @@ public class TypeUtils {
         ProducedType _tuple = targs.get(1);
         gen.out("[");
         int pos = 1;
-        while (!(empty.equals(_tuple.getDeclaration()) || _tuple.getDeclaration() instanceof TypeParameter)) {
+        TypeDeclaration tdecl = _tuple.getDeclaration();
+        while (!(empty.equals(tdecl) || tdecl instanceof TypeParameter)) {
             if (pos > 1) gen.out(",");
             gen.out("{", MetamodelGenerator.KEY_NAME, ":'p", Integer.toString(pos++), "',");
             gen.out(MetamodelGenerator.KEY_METATYPE, ":'", MetamodelGenerator.METATYPE_PARAMETER, "',");
             gen.out(MetamodelGenerator.KEY_TYPE, ":");
-            if (tuple.equals(_tuple.getDeclaration())) {
-                metamodelTypeNameOrList(gen.getCurrentPackage(), _tuple.getTypeArgumentList().get(1), gen);
-                _tuple = _tuple.getTypeArgumentList().get(2);
-            } else if (sequential.equals(_tuple.getDeclaration())) {
+            if (tuple.equals(tdecl) || tdecl.getCaseTypeDeclarations() != null && tdecl.getCaseTypeDeclarations().contains(tuple)) {
+                if (tuple.equals(tdecl)) {
+                    metamodelTypeNameOrList(gen.getCurrentPackage(), _tuple.getTypeArgumentList().get(1), gen);
+                    _tuple = _tuple.getTypeArgumentList().get(2);
+                } else {
+                    //Handle union types for defaulted parameters
+                    outputMetamodelTypeList(gen.getCurrentPackage(), _tuple, gen);
+                    for (ProducedType mt : _tuple.getCaseTypes()) {
+                        if (tuple.equals(mt.getDeclaration())) {
+                            _tuple = mt.getTypeArgumentList().get(2);
+                            break;
+                        }
+                    }
+                }
+            } else if (tdecl.inherits(sequential)) {
+                //Handle Sequence, for nonempty variadic parameters
                 metamodelTypeNameOrList(gen.getCurrentPackage(), _tuple.getTypeArgumentList().get(0), gen);
                 _tuple = empty.getType();
             }
-            //TODO: handle Sequence, for nonempty variadic parameters!!
-            //TODO: handle union types for defaulted parameters
             else {
-                System.out.println("WARNING! Tuple is actually " + _tuple.getProducedTypeQualifiedName() + ", " + _tuple.getDeclaration().getName());
+                gen.out("\n/*WARNING! Tuple is actually ", _tuple.getProducedTypeQualifiedName(), ", ", tdecl.getName(),"*/");
                 if (pos > 100) {
                     return;
                 }
             }
             gen.out("}");
+            if (_tuple != null) tdecl = _tuple.getDeclaration();
         }
         gen.out("]");
     }
