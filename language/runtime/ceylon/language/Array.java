@@ -901,7 +901,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                 arr[i] = (Element) java.lang.reflect.Array.get(array, i);
             }
         }
-        return new ArraySequence<Element>($reifiedElement, arr, 0, len, true); 
+        return new ArraySequence<Element>($reifiedElement, arr, 0, len, false);
     }
 
     @Override @SuppressWarnings("rawtypes")
