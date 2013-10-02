@@ -61,5 +61,22 @@ class Parameters() {
     @error value b1 = String({Character*} chars2);
     @error print(print(Any val1));
     @error value b2 = print(Any val2);
+    
+    void assigns1(
+            variable Integer i, 
+            @error Integer j=i++, 
+            @error Integer k=(--i)*2, 
+            @error Integer l=1+(i=0)) {}
+    
+    @error void assigns2(i, j=i++) {
+        variable Integer i; 
+        Integer j;
+    }
+    
+    @error void refsforward(i, j=k) {
+        variable Integer i; 
+        Integer j;
+        Integer k = 0;
+    }
 
 }

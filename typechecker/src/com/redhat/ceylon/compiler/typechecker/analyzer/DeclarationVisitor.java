@@ -656,6 +656,39 @@ public class DeclarationVisitor extends Visitor {
         parameterList.getParameters().add(p);
     }
 
+    @Override
+    public void visit(Tree.Parameter that) {
+        super.visit(that);
+        Tree.SpecifierOrInitializerExpression sie = null;
+        if (that instanceof Tree.ParameterDeclaration) {
+            Tree.TypedDeclaration td = ((Tree.ParameterDeclaration) that).getTypedDeclaration();
+            if (td instanceof Tree.AttributeDeclaration) {
+                sie = ((Tree.AttributeDeclaration) td).getSpecifierOrInitializerExpression();
+            }
+            else if (td instanceof Tree.MethodDeclaration) {
+                sie = ((Tree.MethodDeclaration) td).getSpecifierExpression();
+            }
+        }
+        else if (that instanceof Tree.InitializerParameter) {
+            sie = ((Tree.InitializerParameter) that).getSpecifierExpression();
+        }
+        if (sie!=null) {
+            new Visitor() {
+                public void visit(Tree.AssignmentOp that) {
+                    that.addError("assignment may not occur in default argument expression");
+                }
+                @Override
+                public void visit(Tree.PostfixOperatorExpression that) {
+                    that.addError("postfix increment or decrement may not occur in default argument expression");
+                }
+                @Override
+                public void visit(Tree.PrefixOperatorExpression that) {
+                    that.addError("prefix increment or decrement may not occur in default argument expression");
+                }
+            }.visit(sie);
+        }
+    }
+    
     private static Tree.SpecifierOrInitializerExpression getSpecifier(
             Tree.ValueParameterDeclaration that) {
         return ((Tree.AttributeDeclaration) that.getTypedDeclaration())
