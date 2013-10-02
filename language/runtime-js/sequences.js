@@ -1,9 +1,16 @@
-function Array$($$targs$$) {
-    var that = new Array$.$$;
-    List({Element:$$targs$$.Element}, that);
-    return that;
+function Array$(elems,$$targs$$) {
+    var e=[];
+    if (!(elems === null || elems === undefined)) {
+        var iter=elems.iterator();
+        var item;while((item=iter.next())!==getFinished()) {
+            e.push(item);
+        }
+    }
+    e.$$targs$$=$$targs$$;
+    List({Element:$$targs$$.Element}, e);
+    return e;
 }
-Array$.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract(),native()];},mod:$$METAMODEL$$,d:['ceylon.language','Array']};
+Array$.$$metamodel$$={$ps:[],$an:function(){return[shared(),final(),native()];},mod:$$METAMODEL$$,d:['ceylon.language','Array']};
 
 initExistingType(Array$, Array, 'ceylon.language::Array', Object$,
         Cloneable, Ranged, $init$List());
@@ -139,15 +146,7 @@ Array$proto.longerThan.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','It
 
 exports.ArrayList=ArrayList;
 exports.array=function(elems, $$$ptypes) {
-    var e=[];
-    if (!(elems === null || elems === undefined)) {
-        var iter=elems.iterator();
-        var item;while((item=iter.next())!==getFinished()) {
-            e.push(item);
-        }
-    }
-    e.$$targs$$=$$$ptypes;
-    return e;
+    return Array$(elems, $$$ptypes);
 }
 exports.array.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','array']};
 
