@@ -29,10 +29,9 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.CMRException;
 import com.redhat.ceylon.common.tool.Argument;
+import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
-import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
-import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.tools.ModuleSpec;
 
@@ -45,21 +44,20 @@ import com.redhat.ceylon.tools.ModuleSpec;
         "`com.example.foobar/1.2.0`.\n" +
         "\n" +
         "`<jar-file>` is the name of the Jar file to import.")
-public class CeylonImportJarTool implements Tool {
+public class CeylonImportJarTool extends CeylonBaseTool {
 
     private ModuleSpec module;
     private String out;
     private String user;
     private String pass;
     private String jarFile;
-    private boolean verbose;
     private Logger log = new CMRLogger();
     private String descriptor;
 
     public CeylonImportJarTool() {
     }
     
-    CeylonImportJarTool(String moduleSpec, String out, String user, String pass, String jarFile, boolean verbose){
+    CeylonImportJarTool(String moduleSpec, String out, String user, String pass, String jarFile, String verbose){
         setModuleSpec(moduleSpec);
         this.out = out;
         this.user = user;
@@ -83,16 +81,6 @@ public class CeylonImportJarTool implements Tool {
     @Description("Sets the password for use with an authenticated output repository.")
     public void setPass(String pass) {
         this.pass = pass;
-    }
-
-    public boolean isVerbose() {
-        return verbose;
-    }
-    
-    @Option
-    @Description("Produce verbose output.")
-    public void setVerbose(boolean verbose) {
-        this.verbose = verbose;
     }
 
     public String getOut() {
@@ -225,7 +213,7 @@ public class CeylonImportJarTool implements Tool {
 
         @Override
         public void debug(String str) {
-            if(verbose)
+            if(verbose != null)
                 System.err.println(ImportJarMessages.msg("log.debug", str));
         }
     }

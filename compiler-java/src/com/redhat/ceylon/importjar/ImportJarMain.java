@@ -34,7 +34,7 @@ public class ImportJarMain {
         String user = null,pass = null;
         String moduleSpec = null;
         String jarFile = null;
-        boolean verbose = false;
+        String verbose = null;
         
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
@@ -51,7 +51,7 @@ public class ImportJarMain {
                 System.err.println(ImportJarMessages.msg("error.optionDnotSupported"));
                 exit(SC_ARGS);
             } else if ("-debug".equals(arg)) {
-                verbose = true;
+                verbose = "all";
             } else if ("-out".equals(arg)) {
                 if (argsLeft <= 0) {
                     optionMissingArgument(arg);

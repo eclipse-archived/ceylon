@@ -152,8 +152,6 @@ public class CeylonCompileTool extends RepoUsingTool {
     private String user;
     private String pass;
     private String encoding;
-    private boolean verbose = false;
-    private String verboseFlags = "";
 
     public CeylonCompileTool() {
         super(CeylonCompileMessages.RESOURCE_BUNDLE);
@@ -217,14 +215,13 @@ public class CeylonCompileTool extends RepoUsingTool {
     }
     
     @Option
-    @OptionArgument(argumentName="flags")
+    @OptionArgument(argumentName = "flags")
     @Description("Produce verbose output. " +
-    		"If no `flags` are given then be verbose about everything, " +
-    		"otherwise just be vebose about the flags which are present. " +
-    		"Allowed flags include: `loader`, `ast`, `code`, `cmr`, `benchmark`.")
-    public void setVerbose(String verboseFlags) {
-        this.verbose = true;
-        this.verboseFlags = verboseFlags;
+            "If no `flags` are given then be verbose about everything, " +
+            "otherwise just be verbose about the flags which are present. " +
+            "Allowed flags include: `all`, `loader`, `ast`, `code`, `cmr`, `benchmark`.")
+    public void setVerbose(String verbose) {
+        super.setVerbose(verbose);
     }
     
     @OptionArgument(argumentName="option")
@@ -285,11 +282,11 @@ public class CeylonCompileTool extends RepoUsingTool {
             arguments.add("-offline");
         }
         
-        if (verbose) {
-            if (verboseFlags == null || verboseFlags.isEmpty()) {
+        if (verbose != null) {
+            if (verbose.isEmpty()) {
                 arguments.add("-verbose");
             } else {
-                arguments.add("-verbose:" + verboseFlags);
+                arguments.add("-verbose:" + verbose);
             }
         }
         
@@ -352,7 +349,7 @@ public class CeylonCompileTool extends RepoUsingTool {
             arguments.add(moduleSpec);
         }
         
-        if (verbose) {
+        if (verbose != null) {
             System.out.println(arguments);
             System.out.flush();
         }

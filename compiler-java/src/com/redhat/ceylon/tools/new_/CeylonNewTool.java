@@ -35,19 +35,18 @@ import java.util.Set;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
+import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Hidden;
-import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Rest;
 import com.redhat.ceylon.common.tool.Subtool;
 import com.redhat.ceylon.common.tool.Summary;
-import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.ToolModel;
 
 @Summary("Generates new ceylon projects")
 @Description("Generates a new project, prompting for information as necessary")
-public class CeylonNewTool implements Tool {
+public class CeylonNewTool extends CeylonBaseTool {
 
     private ToolModel<CeylonNewTool> model;
     
@@ -56,8 +55,6 @@ public class CeylonNewTool implements Tool {
     private File from = new File(System.getProperty(Constants.PROP_CEYLON_HOME_DIR), "templates");
     
     private Map<String, String> rest = new HashMap<String, String>();
-    
-    private boolean verbose = false;
     
     public void setToolModel(ToolModel<CeylonNewTool> model) {
         this.model = model;
@@ -72,16 +69,6 @@ public class CeylonNewTool implements Tool {
     @OptionArgument(argumentName="dir")
     public void setFrom(File from) {
         this.from = from;
-    }
-    
-    public boolean getVerbose() {
-        return verbose;
-    }
-    
-    @Hidden
-    @Option
-    public void setVerbose(boolean verbose) {
-        this.verbose = verbose;
     }
     
     @Rest
@@ -176,7 +163,7 @@ public class CeylonNewTool implements Tool {
     }
     
     private void log(Object msg) {
-        if (verbose) {
+        if (verbose != null) {
             System.out.println(msg);
         }
     }
