@@ -18,16 +18,8 @@ public final class array_ {
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language::Array<Element>")
     public static <Element> Array<Element> array(@Ignore final TypeDescriptor $reifiedElement, 
-    @Name("elements")
-    @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
-    final ceylon.language.Iterable<? extends Element,? extends java.lang.Object> elements) {
-        return array($reifiedElement, null, elements);
-    }
-    
-    @Ignore
-    public static <Element> Array<Element> array(
-            final TypeDescriptor $reifiedElement, 
-            final Class typeClass,
+            @Name("elements")
+            @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
             final ceylon.language.Iterable<? extends Element,? extends java.lang.Object> elements) {
         return new Array<Element>($reifiedElement, elements);
     }

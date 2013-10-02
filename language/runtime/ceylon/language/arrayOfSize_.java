@@ -18,19 +18,11 @@ public final class arrayOfSize_ {
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language::Array<Element>")
     public static <Element> Array<Element> arrayOfSize(@Ignore final TypeDescriptor $reifiedElement, 
-    @Name("size")
-    @TypeInfo("ceylon.language::Integer")
-    final long size,
-    @Name("element")
-    @TypeInfo("Element")
-    final Element element) {
-        return arrayOfSize($reifiedElement, null, size, element);
-    }
-    
-    @Ignore
-    public static <Element> Array<Element> arrayOfSize(TypeDescriptor $reifiedElement, 
-            final Class typeClass,
+            @Name("size")
+            @TypeInfo("ceylon.language::Integer")
             final long size,
+            @Name("element")
+            @TypeInfo("Element")
             final Element element) {
         return new Array<Element>($reifiedElement, (int)size, element);
     }
