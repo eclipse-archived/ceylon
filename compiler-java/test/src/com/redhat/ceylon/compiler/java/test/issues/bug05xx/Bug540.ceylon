@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 @noanno
-Array<Integer> arr1 = array([1, 2, 3]);
+Array<Integer> arr1 = Array([1, 2, 3]);
 @noanno
-Array<Integer> arr3 = array{1, 2, 3};
+Array<Integer> arr3 = Array{1, 2, 3};

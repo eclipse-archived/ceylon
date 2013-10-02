@@ -19,6 +19,6 @@
  */
 @noanno
 shared void bug671() {
-    value a6 = array<Integer?> { 1 };
+    value a6 = Array<Integer?> { 1 };
     a6.set(0,null);
 }

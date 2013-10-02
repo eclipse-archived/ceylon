@@ -55,6 +55,6 @@ public final class bug640gen_ {
     }
     
     public static <T>void bug640gen(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.SequenceBuilder<T> sb) {
-        final .ceylon.language.Array<T> x = .ceylon.language.array_.<T>array($reifiedT, sb.getSequence());
+        final .ceylon.language.Array<T> x = new .ceylon.language.Array<T>($reifiedT, sb.getSequence());
     }
 }

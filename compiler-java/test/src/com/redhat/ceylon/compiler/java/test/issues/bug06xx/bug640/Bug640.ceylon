@@ -30,5 +30,5 @@ shared void bug640() {
 }
 @noanno
 shared void bug640gen<T>(SequenceBuilder<T> sb) {
-    value x = array(sb.sequence);
+    value x = Array(sb.sequence);
 }

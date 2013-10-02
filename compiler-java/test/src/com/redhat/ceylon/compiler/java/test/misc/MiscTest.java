@@ -111,7 +111,7 @@ public class MiscTest extends CompilerTest {
             }   
         };
         String[] extras = new String[]{
-                "array", "arrayOfSize", "false", "infinity",
+                "arrayOfSize", "false", "infinity",
                 "parseFloat", "true", "integerRangeByIterable", "unflatten"
         };
         String[] modelExtras = new String[]{

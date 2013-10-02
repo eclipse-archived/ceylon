@@ -19,5 +19,5 @@
  */
 @noanno
 shared void mangledToplevelMethod() {
-    value arr = array({});
+    value arr = Array({});
 }
