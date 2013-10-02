@@ -59,8 +59,6 @@ public class CeylonRunTool extends RepoUsingTool {
 
     private String moduleNameOptVersion;
     private String run;
-    private boolean verbose = false;
-    private String verboseFlags = "";
     private List<String> args = Collections.emptyList();
 
     public CeylonRunTool() {
@@ -87,11 +85,10 @@ public class CeylonRunTool extends RepoUsingTool {
     @OptionArgument(argumentName = "flags")
     @Description("Produce verbose output. " +
             "If no `flags` are given then be verbose about everything, " +
-            "otherwise just be vebose about the flags which are present. " +
-            "Allowed flags include: `cmr`.")
-    public void setVerbose(String verboseFlags) {
-        this.verbose = true;
-        this.verboseFlags = verboseFlags;
+            "otherwise just be verbose about the flags which are present. " +
+            "Allowed flags include: `all`, `loader`, `cmr`.")
+    public void setVerbose(String verbose) {
+        super.setVerbose(verbose);
     }
 
     @Override
@@ -99,6 +96,9 @@ public class CeylonRunTool extends RepoUsingTool {
         ArrayList<String> argList = new ArrayList<String>();
 
         String ceylonVersion = System.getProperty(Constants.PROP_CEYLON_SYSTEM_VERSION);
+        if (ceylonVersion == null) {
+            ceylonVersion = Versions.CEYLON_VERSION_NUMBER;
+        }
         
         String sysRep;
         if (systemRepo != null) {
@@ -116,11 +116,11 @@ public class CeylonRunTool extends RepoUsingTool {
             argList.add("-offline");
         }
 
-        if (verbose) {
-            if (verboseFlags == null || verboseFlags.isEmpty()) {
+        if (verbose != null) {
+            if (verbose.isEmpty()) {
                 argList.add("-verbose");
             } else {
-                argList.add("-verbose:" + verboseFlags);
+                argList.add("-verbose:" + verbose);
             }
         }
 
