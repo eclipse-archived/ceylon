@@ -466,19 +466,14 @@ TypeConstraints?
             
             <programlisting>(Product product, Integer quantity=1, Price pricing(Product p) => p.price)</programlisting>
             
-            <para>The type of the default argument expression of a value parameter must be 
-            assignable to the declared type of the parameter. The type of the default argument
-            expression of a callable parameter must be assignable to the return type of the
-            callable parameter.</para>
-            
-            <para>A parameter of a method or class annotated <literal>actual</literal> may not 
-            specify a default argument. Instead, it inherits the default argument, if any, of 
-            the corresponding parameter of the method it refines.</para>
+            <para>A parameter of a method or class annotated <literal>actual</literal> may 
+            not specify a default argument. Instead, it inherits the default argument, if 
+            any, of the corresponding parameter of the method it refines.</para>
             
             <para>If two parameter lists are almost identical, differing only in that the 
             first parameter of one list is defaulted, and the first parameter of the second 
-            list is not defaulted, and <literal>P</literal> is the the type of the second 
-            parameter list then the type of the first parameter list is 
+            list is required, and <literal>P</literal> is the the type of the second 
+            parameter list, then the type of the first parameter list is 
             <literal>[]|P</literal>.</para>
             
             <comment><para>Note: in Ceylon 1.0, for a function with multiple parameter lists, 
@@ -526,7 +521,9 @@ TypeConstraints?
             </itemizedlist>
             
             <para>The default argument expression, if any, for a callable parameter is 
-            specified using an ordinary <literal>=</literal> specifier.</para> 
+            specified using an ordinary <literal>=</literal> specifier. The type of the 
+            default argument expression must be assignable to the declared type of the 
+            value parameter.</para> 
             
             <programlisting>(String label, Anything() onClick)</programlisting>
             
@@ -563,7 +560,9 @@ TypeConstraints?
             </itemizedlist>
             
             <para>The default argument expression, if any, for a callable parameter is 
-            specified using a lazy <literal>=&gt;</literal> specifier.</para> 
+            specified using a lazy <literal>=&gt;</literal> specifier. The type of the 
+            default argument expression must be assignable to the return type of the 
+            callable parameter.</para> 
             
             <programlisting>(String label, void onClick())</programlisting>
             
