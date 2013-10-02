@@ -22,6 +22,7 @@ import java.io.IOException;
 import javax.annotation.PostConstruct;
 
 import com.redhat.ceylon.common.tool.Argument;
+import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
@@ -41,7 +42,7 @@ import com.redhat.ceylon.common.tool.Tool;
 "\n" +
 "    ceylon config list"
 )
-public class CeylonConfigTool implements Tool {
+public class CeylonConfigTool extends CeylonBaseTool {
     
     private Tool action;
     
