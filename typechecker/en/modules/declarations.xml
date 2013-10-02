@@ -464,9 +464,6 @@ TypeConstraints?
             <para>Defaulted parameters must occur after required parameters in the parameter 
             list.</para>
             
-            <para>For a function with multiple parameter lists, defaulted parameters may 
-            only occur in the first parameter list.</para>
-            
             <programlisting>(Product product, Integer quantity=1, Price pricing(Product p) => p.price)</programlisting>
             
             <para>The type of the default argument expression of a value parameter must be 
@@ -483,6 +480,10 @@ TypeConstraints?
             list is not defaulted, and <literal>P</literal> is the the type of the second 
             parameter list then the type of the first parameter list is 
             <literal>[]|P</literal>.</para>
+            
+            <comment><para>Note: in Ceylon 1.0, for a function with multiple parameter lists, 
+            defaulted parameters may only occur in the first parameter list. This restriction
+            will be removed.</para></comment>
             
             <!--
             <para>If the declared type of the parameter is an optional type (a subtype of
@@ -509,19 +510,27 @@ TypeConstraints?
             <para>A value parameter may be declared using the keyword <literal>dynamic</literal> 
             in place of the parameter type. Such a parameter has no type.</para>
             
-            <para>An argument to a value parameter must be an expression whose type is
-            assignable to the type of the value parameter.</para>
+            <para>If a value parameter <literal>x</literal> has type <literal>X</literal>, 
+            and a parameter list has type <literal>P</literal> with the principal instantiation 
+            <literal>Sequential&lt;Y&gt;</literal>, then the type of a new parameter list 
+            formed by prepending <literal>x</literal> to the first parameter list is:</para>
+            
+            <itemizedlist>
+            <listitem>
+                <para><literal>Tuple&lt;X|Y,X,P&gt;</literal>, or </para>
+            </listitem>
+            <listitem>
+                <para><literal>[]|Tuple&lt;X|Y,X,P&gt;</literal> if <literal>x</literal> is 
+                defaulted.</para>
+            </listitem>
+            </itemizedlist>
+            
+            <para>The default argument expression, if any, for a callable parameter is 
+            specified using an ordinary <literal>=</literal> specifier.</para> 
             
             <programlisting>(String label, Anything() onClick)</programlisting>
             
             <programlisting>({Value*} values, Comparison(Value,Value) by)</programlisting>
-            
-            <para>If a value parameter <literal>x</literal> has type <literal>X</literal>, 
-            and a parameter list has type <literal>P</literal> with the principal instantiation 
-            <literal>Sequential&lt;Y&gt;</literal>, then the type of a new parameter list 
-            formed by prepending <literal>x</literal> to the first parameter list is 
-            <literal>Tuple&lt;X|Y,X,P&gt;</literal>, or <literal>[]|Tuple&lt;X|Y,X,P&gt;</literal> 
-            if <literal>x</literal> is defaulted.</para>
             
         </section>
         
@@ -535,21 +544,30 @@ TypeConstraints?
             
             <synopsis>CallableParameter: Annotations (Type | "void") MemberName Parameters+</synopsis>
             
-            <para>An argument to a callable parameter must be an expression whose type 
-            is assignable to the callable type of the callable parameter.</para>
+            <para>If a callable parameter <literal>f</literal> has callable type 
+            <literal>Callable&lt;X,A&gt;</literal>, as specified below in 
+            <xref linkend="callabletypeoffunction"/>, and a parameter list has type 
+            <literal>P</literal> with the principal instantiation 
+            <literal>Sequential&lt;Y&gt;</literal>, then the type of a new parameter list 
+            formed by prepending <literal>f</literal> to the first parameter list is:</para>
+            
+            <itemizedlist>
+            <listitem>
+                <para><literal>Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal>, 
+                or</para>
+            </listitem>
+            <listitem>
+                <para><literal>[]|Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> 
+                if <literal>f</literal> is defaulted.</para>
+            </listitem>
+            </itemizedlist>
+            
+            <para>The default argument expression, if any, for a callable parameter is 
+            specified using a lazy <literal>=&gt;</literal> specifier.</para> 
             
             <programlisting>(String label, void onClick())</programlisting>
             
             <programlisting>({Value*} values, Comparison by(Value x, Value y))</programlisting>
-            
-            <para>If a callable parameter <literal>f</literal> has callable type 
-            <literal>Callable&lt;X,A&gt;</literal>, and a parameter list has type 
-            <literal>P</literal> with the principal instantiation 
-            <literal>Sequential&lt;Y&gt;</literal>, then the type of a new parameter list 
-            formed by prepending <literal>f</literal> to the first parameter list is 
-            <literal>Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> 
-            or <literal>[]|Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> 
-            if <literal>f</literal> is defaulted.</para>
             
         </section>
         
@@ -584,9 +602,6 @@ TypeConstraints?
             variadic parameter may not have a default argument. A variadic parameter declared
             <literal>T+</literal> may not occur in a parameter list with defaulted parameters.</para>
             
-            <para>For a function with multiple parameter lists, a variadic parameters may 
-            only occur in the first parameter list.</para>
-            
             <programlisting>(Name name, Organization? org=null, Address* addresses)</programlisting>
             
             <programlisting>(Float+ floats)</programlisting>
@@ -595,6 +610,10 @@ TypeConstraints?
             <literal>T*</literal> is <literal>[T*]</literal> The type of a parameter list 
             containing just a variadic parameter of type <literal>T+</literal> is 
             <literal>[T+]</literal>.</para>
+            
+            <comment><para>Note: in Ceylon 1.0, for a function with multiple parameter lists, 
+            a variadic parameters may only occur in the first parameter list. This restriction
+            will be removed.</para></comment>
             
         </section>
         
