@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.junit.After;
 import org.junit.Before;
 
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.ConfigParser;
 
@@ -17,7 +18,7 @@ public abstract class AbstractConfigTest {
     public void setup() throws IOException {
         delete(testDir);
         testDir.mkdirs();
-        userDir = System.getProperty("ceylon.user.dir");
+        userDir = System.getProperty(Constants.PROP_CEYLON_USER_DIR);
         System.setProperty("ceylon.user.dir", testDir.getAbsolutePath());
     }
     
@@ -28,9 +29,9 @@ public abstract class AbstractConfigTest {
     @After
     public void teardown() {
         if (userDir == null) {
-            System.getProperties().remove("ceylon.user.dir");
+            System.getProperties().remove(Constants.PROP_CEYLON_USER_DIR);
         } else {
-            System.setProperty("ceylon.user.dir", userDir);
+            System.setProperty(Constants.PROP_CEYLON_USER_DIR, userDir);
         }
     }
     

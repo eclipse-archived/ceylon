@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 
 /**
@@ -301,7 +302,7 @@ public class Repositories {
     }
     
     public File getSystemRepoDir() {
-        String ceylonSystemRepo = System.getProperty("ceylon.system.repo");
+        String ceylonSystemRepo = System.getProperty(Constants.PROP_CEYLON_SYSTEM_REPO);
         if (ceylonSystemRepo != null) {
             return new File(ceylonSystemRepo);
         } else {
@@ -314,7 +315,7 @@ public class Repositories {
     }
     
     public File getUserRepoDir() {
-        String ceylonUserRepo = System.getProperty("ceylon.user.repo");
+        String ceylonUserRepo = System.getProperty(Constants.PROP_CEYLON_USER_REPO);
         if (ceylonUserRepo != null) {
             return new File(ceylonUserRepo);
         } else {
@@ -324,7 +325,7 @@ public class Repositories {
     }
     
     public File getCacheRepoDir() {
-        String ceylonUserRepo = System.getProperty("ceylon.cache.repo");
+        String ceylonUserRepo = System.getProperty(Constants.PROP_CEYLON_CACHE_REPO);
         if (ceylonUserRepo != null) {
             return new File(ceylonUserRepo);
         } else {

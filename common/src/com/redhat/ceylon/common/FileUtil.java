@@ -70,7 +70,7 @@ public class FileUtil {
      */
     public static File getSystemConfigDir() throws IOException {
         File configDir = null;
-        String ceylonConfigDir = System.getProperty("ceylon.config.dir");
+        String ceylonConfigDir = System.getProperty(Constants.PROP_CEYLON_CONFIG_DIR);
         if (ceylonConfigDir != null) {
             configDir = new File(ceylonConfigDir);
         } else {
@@ -95,7 +95,7 @@ public class FileUtil {
      * system property
      */
     public static File getInstallDir() {
-        String ceylonHome = System.getProperty("ceylon.home");
+        String ceylonHome = System.getProperty(Constants.PROP_CEYLON_HOME_DIR);
         if (ceylonHome != null) {
             return new File(ceylonHome);
         } else {
@@ -116,7 +116,7 @@ public class FileUtil {
      * system property then defaulting to {@link getDefaultUserDir}.
      */
     public static File getUserDir() {
-        String ceylonUserDir = System.getProperty("ceylon.user.dir");
+        String ceylonUserDir = System.getProperty(Constants.PROP_CEYLON_USER_DIR);
         if (ceylonUserDir != null) {
             return new File(ceylonUserDir);
         } else {
