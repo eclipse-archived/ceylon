@@ -309,28 +309,24 @@ class AnnotationInvocationVisitor extends Visitor {
                     }
                 }
             } else if (invocation.getNamedArgumentList() != null) {
-                if (parameterArgument.isSpread()) {
-                    visitor.append(exprGen.makeErroneous(invocation, "compiler bug: spread argument with named invocation not supported"));
-                } else {
-                    boolean found = false;
-                    for (Tree.NamedArgument na : invocation.getNamedArgumentList().getNamedArguments()) {
-                        Parameter parameter = na.getParameter();
-                        int parameterIndex = anno.indexOfConstructorParameter(parameter);
-                        if (parameterIndex == argumentIndex) {
-                            visitor.transformArgument(na);
-                            found = true;
-                            break;
-                        }
+                boolean found = false;
+                for (Tree.NamedArgument na : invocation.getNamedArgumentList().getNamedArguments()) {
+                    Parameter parameter = na.getParameter();
+                    int parameterIndex = anno.indexOfConstructorParameter(parameter);
+                    if (parameterIndex == argumentIndex) {
+                        visitor.transformArgument(na);
+                        found = true;
+                        break;
                     }
-                    if (!found) {
-                        if (sp.isDefaulted()) {
-                            visitor.makeDefaultExpr(invocation, parameterArgument, sp);
-                        } else if (sp.isSequenced()) {
-                            visitor.appendBuiltArray(visitor.startArray());
-                        }else {
-                            visitor.append(exprGen.makeErroneous(invocation, "Unable to find argument"));
-                        }
-                    }    
+                }
+                if (!found) {
+                    if (sp.isDefaulted()) {
+                        visitor.makeDefaultExpr(invocation, parameterArgument, sp);
+                    } else if (sp.isSequenced()) {
+                        visitor.appendBuiltArray(visitor.startArray());
+                    }else {
+                        visitor.append(exprGen.makeErroneous(invocation, "Unable to find argument"));
+                    }
                 }
             }
         } else if (term instanceof LiteralAnnotationTerm) {
