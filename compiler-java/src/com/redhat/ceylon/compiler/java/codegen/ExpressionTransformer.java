@@ -39,7 +39,6 @@ import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.Cond;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.CondList;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
-import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -2236,30 +2235,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
-    private boolean needsTypeInfoArgument(Declaration primaryDeclaration) {
-        if (primaryDeclaration instanceof LazyMethod) {
-            if ("ceylon.language".equals(primaryDeclaration.getContainer().getQualifiedNameString())) {
-                String name = primaryDeclaration.getName();
-                return ("array".equals(name) || "arrayOfSize".equals(name));
-            }
-        }
-        return false;
-    }
-
-    private JCExpression makeTypeInfoArgument(Tree.BaseMemberExpression primary) {
-        ProducedType type = primary.getTypeArguments().getTypeModels().get(0);
-        ProducedType simpleType = simplifyType(type);
-        JCExpression typeExpr;
-        if (simpleType.getDeclaration() instanceof TypeParameter
-                || typeFact().isUnion(simpleType)
-                || typeFact().isIntersection(simpleType)) {
-            return makeNull();
-        } else {
-            typeExpr = makeJavaType(type, JT_RAW | JT_NO_PRIMITIVES);
-            return makeSelect(typeExpr, "class");
-        }
-    }
-    
     private final List<ExpressionAndType> transformArgumentList(Invocation invocation, TransformedInvocationPrimary transformedPrimary, CallBuilder callBuilder) {
         return transformArguments(invocation, transformedPrimary, callBuilder);   
     }
@@ -2298,9 +2273,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(primaryDeclaration instanceof Class == false
                 || !isJavaArray(((Class) primaryDeclaration).getType())){
             invocation.addReifiedArguments(result);
-        }
-        if (needsTypeInfoArgument(primaryDeclaration)) {
-            result.add(new ExpressionAndType(makeTypeInfoArgument((Tree.BaseMemberExpression) primary), make().Type(syms().classType)));
         }
         if (!(primary instanceof Tree.BaseTypeExpression)
                 && !(primary instanceof Tree.QualifiedTypeExpression)
