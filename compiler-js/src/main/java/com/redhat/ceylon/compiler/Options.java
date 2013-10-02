@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Options {
     private boolean modulify = true;
     private boolean indent = true;
     private boolean comment = true;
-    private boolean verbose;
+    private String verbose;
     private boolean profile;
     private boolean help;
     private boolean version;
@@ -32,7 +33,7 @@ public class Options {
 
     public Options(List<String> repositories, List<String> sourceDirectories, String systemRepository,
             String outputRepository, final String username, final String password,
-            boolean protoStyle, boolean wrapModules, boolean useIndent, boolean useComments, boolean verbosity,
+            boolean protoStyle, boolean wrapModules, boolean useIndent, boolean useComments, String verbosity,
             boolean showTimes, boolean fromStdin, boolean generateSrcArchive,
             String srcEncoding, boolean offlineMode) {
         repos = repositories;
@@ -73,7 +74,7 @@ public class Options {
             args.remove("-nocomments");
             args.remove("-compact");
         }
-        opts.verbose = findOption("-verbose", args, true);
+        opts.verbose = (findOption("-verbose", args, true)) ? "" : null;
         opts.offline = findOption("-offline", args, true);
         opts.profile = findOption("-profile", args, true);
         opts.stdin = findOption("--", args, true);
@@ -214,7 +215,7 @@ public class Options {
     public boolean isComment() {
         return comment;
     }
-    public boolean isVerbose() {
+    public String getVerbose() {
         return verbose;
     }
     public boolean isProfile() {
@@ -247,6 +248,27 @@ public class Options {
     /** Tells whether to generate the .src archive (default true). */
     public boolean isGenerateSourceArchive() {
         return gensrc;
+    }
+    
+    // Returns true if --verbose or --verbose=all has been passed on the command line
+    public boolean isVerbose() {
+        return hasVerboseFlag("");
+    }
+
+    // Returns true if one of the argument passed matches one of the flags given to
+    // --verbose=... on the command line or if one of the flags is "all"
+    public boolean hasVerboseFlag(String flag) {
+        if (verbose == null) {
+            return false;
+        }
+        if (verbose.isEmpty()) {
+            return true;
+        }
+        List<String> lst = Arrays.asList(verbose.split(","));
+        if (lst.contains("all")) {
+            return true;
+        }
+        return lst.contains(flag);
     }
 
 }

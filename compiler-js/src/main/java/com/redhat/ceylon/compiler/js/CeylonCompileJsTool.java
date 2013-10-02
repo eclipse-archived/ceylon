@@ -33,7 +33,6 @@ public class CeylonCompileJsTool extends RepoUsingTool {
     private boolean modulify = true;
     private boolean indent = true;
     private boolean comments = false;
-    private boolean verbose = false;
     private boolean skipSrc = false;
 
     private String user = null;
@@ -115,16 +114,6 @@ public class CeylonCompileJsTool extends RepoUsingTool {
         this.comments = !nocomments;
     }
 
-    public boolean isVerbose() {
-        return verbose;
-    }
-
-    @Option
-    @Description("Print messages while compiling")
-    public void setVerbose(boolean verbose) {
-        this.verbose = verbose;
-    }
-
     public String getUser() {
         return user;
     }
@@ -192,29 +181,29 @@ public class CeylonCompileJsTool extends RepoUsingTool {
     @Override
     public void run() throws Exception {
         final Options opts = new Options(getRepos(), getSrc(), systemRepo, getOut(), getUser(), getPass(), isOptimize(),
-                isModulify(), isIndent(), isComments(), isVerbose(), isProfile(), false, !skipSrc, encoding, offline);
+                isModulify(), isIndent(), isComments(), getVerbose(), isProfile(), false, !skipSrc, encoding, offline);
         run(opts, files);
     }
 
-    private static void addFilesToCompilationSet(File dir, List<String> onlyFiles, boolean verbose) {
+    private static void addFilesToCompilationSet(Options opts, File dir, List<String> onlyFiles) {
         for (File e : dir.listFiles()) {
             String n = e.getName().toLowerCase();
             if (e.isFile() && (n.endsWith(".ceylon") || n.endsWith(".js"))) {
-                if (verbose) {
+                if (opts.isVerbose()) {
                     System.out.println("Adding to compilation set: " + e.getPath());
                 }
                 if (!onlyFiles.contains(e.getPath())) {
                     onlyFiles.add(e.getPath());
                 }
             } else if (e.isDirectory()) {
-                addFilesToCompilationSet(e, onlyFiles, verbose);
+                addFilesToCompilationSet(opts, e, onlyFiles);
             }
         }
     }
 
     public static void run(Options opts, List<String> files) throws IOException {
         final TypeChecker typeChecker;
-        if (opts.isVerbose()) {
+        if (opts.hasVerboseFlag("cmr")) {
             System.out.printf("Using repositories: %s%n", opts.getRepos());
         }
         final RepositoryManager repoman = CeylonUtils.repoManager()
@@ -324,7 +313,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
                         if (opts.isVerbose()) {
                             System.out.println("Adding to module filters: " + filedir);
                         }
-                        addFilesToCompilationSet(f, onlyFiles, opts.isVerbose());
+                        addFilesToCompilationSet(opts, f, onlyFiles);
                         modfilters.add(filedir);
                         f = null;
                     }
@@ -396,7 +385,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
             throw new CompilerErrorException(String.format("%d errors.", count));
         }
         t4=System.nanoTime();
-        if (opts.isProfile() || opts.isVerbose()) {
+        if (opts.isProfile() || opts.hasVerboseFlag("benchmark")) {
             System.err.println("PROFILING INFORMATION");
             System.err.printf("TypeChecker creation:   %6d nanos%n", t1-t0);
             System.err.printf("TypeChecker processing: %6d nanos%n", t2-t1);
@@ -405,5 +394,4 @@ public class CeylonCompileJsTool extends RepoUsingTool {
             System.out.println("Compilation finished.");
         }
     }
-
 }
