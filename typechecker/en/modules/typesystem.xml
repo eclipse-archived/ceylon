@@ -143,7 +143,7 @@
     <literal>Class&lt;Renderer,String(Object)&gt;</literal>-->
         
     <para>It's important that there is always a unique "best" answer to questions
-    like this in Ceylon. The "best" answer is called the <emphasis>principal type
+    like these in Ceylon. The "best" answer is called the <emphasis>principal type
     of an expression</emphasis>. Every other type to which the expression is 
     assignable is a supertype of the principal type.</para>
     
