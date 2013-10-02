@@ -638,7 +638,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         classBuilder.init(make().Exec(make().Assign(
                 naming.makeQualifiedName(naming.makeThis(), model, Naming.NA_IDENT), 
-                naming.makeName(model, Naming.NA_IDENT))));
+                naming.makeName(model, Naming.NA_IDENT_PARAMETER_ALIASED))));
     }
     
     private void transformParameter(ClassDefinitionBuilder classBuilder, Parameter param, List<JCAnnotation> annotations) {

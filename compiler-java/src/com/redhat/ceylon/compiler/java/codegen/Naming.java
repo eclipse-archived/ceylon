@@ -929,7 +929,14 @@ public class Naming implements LocalId {
     private JCExpression addMemberName(JCExpression expr, TypedDeclaration decl, int namingOptions) {
         if ((namingOptions & NA_IDENT) != 0) {
             Assert.not((namingOptions & NA_GETTER | NA_SETTER) == 0);
-            expr = makeQualIdent(expr, this.getVarMapper().get(decl));
+            String name;
+            if ((namingOptions & __NA_IDENT_PARAMETER_ALIASED) != 0) {
+                name = Naming.getAliasedParameterName((MethodOrValue)decl);
+            } else {
+                name = this.getVarMapper().get(decl);
+                
+            }
+            expr = makeQualIdent(expr, name);
         } else if ((namingOptions & NA_SETTER) != 0) {
             Assert.not(decl instanceof Method, "A method has no setter");
             expr = makeQualIdent(expr, getSetterName(decl));
@@ -1080,6 +1087,10 @@ public class Naming implements LocalId {
     /** Add "$" to the end of the method name */
     static final int NA_CANONICAL_METHOD = 1<<11;
 
+    private static final int __NA_IDENT_PARAMETER_ALIASED = 1<<12;
+    static final int NA_IDENT_PARAMETER_ALIASED = NA_IDENT | __NA_IDENT_PARAMETER_ALIASED;
+    
+    
     /**
      * Returns the name of the Java method/field for the given declaration 
      * @param decl The declaration
