@@ -4,11 +4,11 @@ void comprehensions() {
   value s2 = [ for (w in {"hello", "world"}) for (c in w) if (c in "hw") c.uppercased ];
   value s3 = [ for (c in "hello") c.string ];
   //simple invocation
-  check(array{for (c in "hello") c.string}==array{"h", "e", "l", "l", "o"}, "comprehensions 1");
+  check(Array{for (c in "hello") c.string}==Array{"h", "e", "l", "l", "o"}, "comprehensions 1");
   //named arg invocation - not callable anymore with a comprehension
   /*check(array {
     for (c in "hello") c.string
-  } == array("h", "e", "l", "l", "o"), "comprehensions 2");*/
+  } == Array("h", "e", "l", "l", "o"), "comprehensions 2");*/
   check(s1=={ "h", "e", "l", "l", "o", "w", "o", "r", "l", "d" }, "comprehensions 3");
   check(s2=={ 'H', 'W' }, "comprehensions 4");
   check(s3=={ "h", "e", "l", "l", "o" }, "comprehensions 5");
@@ -24,7 +24,7 @@ void comprehensions() {
   check([for (x in {"a", "", "c"}) if (!x.empty) x.uppercased]=={"A", "C"}, "comprehensions w/nonempty 2");
   check([for (x in {1,2,"3.1",4}) if (is String x) x.reversed]=={"1.3"}, "comprehensions w/is 1");
   check([for (x in {1.1,2.2,3,4.4}) if (is Integer i=x) i*2]=={6}, "comprehensions w/is 2");
-  check(array{for (k->v in entries(["a","b","c","d","e"])) if (k%2==0) v.uppercased}==array({"A","C","E"}), "key-value comprehensions");
+  check(Array{for (k->v in entries(["a","b","c","d","e"])) if (k%2==0) v.uppercased}==Array({"A","C","E"}), "key-value comprehensions");
   // comprehension nested inside comprehension
   check([for(i in 1..2)[for(j in 1..2)"``i``,``j``"]]==[["1,1","1,2"],["2,1","2,2"]], "nested comprehension ``[for(i in 1..2)[for(j in 1..2)"``i``,``j``"]]`` instead of {{1,1,1,2},{2,1,2,2}}");
 

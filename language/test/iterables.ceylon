@@ -156,7 +156,7 @@ void testIterables() {
     check({1,2,3,4,5}.count((Integer x) => x%2==0)==2, "Sequence.count");
     check({for (i in 1..10) i}.count(greaterThan(7))==3, "Iterable.count (greaterThan)");
     check({for (i in 1..10) i}.count(lessThan(7))==6, "Iterable.count (lessThan)");
-    check(array{1,2,3,4,5}.count((Integer x) => x%2==1)==3, "Array.count");
+    check(Array{1,2,3,4,5}.count((Integer x) => x%2==1)==3, "Array.count");
     check("AbcdEfghIjklmnOp".count((Character c) => c.uppercase)==4, "String.count");
     check(Singleton(1).count(equalTo(1))==1, "Singleton.count (equalTo)");
 
@@ -164,7 +164,7 @@ void testIterables() {
     check((1..10).coalesced == 1..10, "Range.coalesced");
     check({1,2,3,null,4,5}.coalesced.sequence=={1,2,3,4,5}, "Sequence.coalesced");
     check(String({for (c in "HoLa") c.uppercase then c else null}.coalesced.sequence)=="HL", "Iterable.coalesced");
-    check(array{1,2,3,null,5}.coalesced.sequence=={1,2,3,5}, "Array.coalesced");
+    check(Array{1,2,3,null,5}.coalesced.sequence=={1,2,3,5}, "Array.coalesced");
     check(Singleton("X").coalesced==Singleton("X"), "Singleton.coalesced [1]");
     check("ABC".coalesced=="ABC", "String.coalesced");
     check({}.coalesced=={}, "Empty.coalesced");
@@ -173,7 +173,7 @@ void testIterables() {
         check(k+1==v, "Range.indexed");
     }
     check({"a", "b", "c"}.indexed.sequence=={0->"a", 1->"b", 2->"c"}, "Sequence.indexed");
-    check(array{0, 1, 2}.indexed.sequence=={0->0, 1->1, 2->2}, "Array.indexed");
+    check(Array{0, 1, 2}.indexed.sequence=={0->0, 1->1, 2->2}, "Array.indexed");
     check(Singleton("A").indexed.sequence=={0->"A"}, "Singleton.indexed");
     check({}.indexed=={}, "Empty.indexed");
     check({for (c in "abc") c}.indexed.sequence=={0->'a', 1->'b', 2->'c'}, "Iterable.indexed");
@@ -201,8 +201,8 @@ void testIterables() {
     check("abc".chain({1,2}).sequence=={'a', 'b', 'c', 1, 2}, "String.chain");
     check("".chain(Singleton(1)).sequence=={1}, "\"\".chain");
     check({}.chain({1,2})=={1,2}, "Empty.chain");
-    check(array([]).chain({1,2}).sequence==[1,2], "EmptyArray.chain");
-    check(array{1,2}.chain({3,4}).sequence=={1,2,3,4}, "NonemptyArray.chain");
+    check(Array([]).chain({1,2}).sequence==[1,2], "EmptyArray.chain");
+    check(Array{1,2}.chain({3,4}).sequence=={1,2,3,4}, "NonemptyArray.chain");
     check(Singleton(1).chain(Singleton(2)).chain(Singleton("3")).sequence=={1,2,"3"}, "Singletons.chain");
     
     check({}.following("a").sequence=={"a"}, "Sequence.following(a) ``{}.following("a")``");

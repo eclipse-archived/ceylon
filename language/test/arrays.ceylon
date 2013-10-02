@@ -38,7 +38,7 @@ void testArrays() {
     if (exists i=a7[0]) {
         fail("array.set (null) 2");
     }
-    check(Array{1,2,3}.reversed==array{3,2,1}, "Array.reversed");
+    check(Array{1,2,3}.reversed==Array{3,2,1}, "Array.reversed");
     
     for (ii in 0:3) {
         a3.set(ii, 5);
