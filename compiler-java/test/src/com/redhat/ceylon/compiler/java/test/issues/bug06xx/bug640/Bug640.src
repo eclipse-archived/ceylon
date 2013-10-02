@@ -15,7 +15,7 @@ public final class bug640_ {
                         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept(),
                         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept()});
             }
-            returning .ceylon.language.array_.<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept>array($arg$0$reified$0, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept.class, $arg$0$0);
+            returning new .ceylon.language.Array<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept>($arg$0$reified$0, $arg$0$0);
         );
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept().accepts(.com.redhat.ceylon.compiler.java.language.arrays_.$get().<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept>toObjectArray(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept.class), x));
         final .ceylon.language.Array<.ceylon.language.String> y = (
@@ -27,7 +27,7 @@ public final class bug640_ {
                         .ceylon.language.String.instance("noot"),
                         .ceylon.language.String.instance("mies")});
             }
-            returning .ceylon.language.array_.<.ceylon.language.String>array($arg$1$reified$0, .ceylon.language.String.class, $arg$1$0);
+            returning new .ceylon.language.Array<.ceylon.language.String>($arg$1$reified$0, $arg$1$0);
         );
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept().strings(.com.redhat.ceylon.compiler.java.language.arrays_.$get().toJavaStringArray(y));
         final .ceylon.language.Array<.ceylon.language.Integer> z = (
@@ -39,7 +39,7 @@ public final class bug640_ {
                         .ceylon.language.Integer.instance(2L),
                         .ceylon.language.Integer.instance(3L)});
             }
-            returning .ceylon.language.array_.<.ceylon.language.Integer>array($arg$2$reified$0, .ceylon.language.Integer.class, $arg$2$0);
+            returning new .ceylon.language.Array<.ceylon.language.Integer>($arg$2$reified$0, $arg$2$0);
         );
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept().longs(.com.redhat.ceylon.compiler.java.language.arrays_.$get().toLongArray(z));
     }
@@ -55,6 +55,6 @@ public final class bug640gen_ {
     }
     
     public static <T>void bug640gen(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.SequenceBuilder<T> sb) {
-        final .ceylon.language.Array<T> x = .ceylon.language.array_.<T>array($reifiedT, null, sb.getSequence());
+        final .ceylon.language.Array<T> x = .ceylon.language.array_.<T>array($reifiedT, sb.getSequence());
     }
 }

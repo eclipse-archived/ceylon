@@ -21,11 +21,11 @@ import java.lang { ObjectArray, LongArray, arrays }
 
 @noanno
 shared void bug640() {
-    value x = array { Accept(), Accept(), Accept() };
+    value x = Array { Accept(), Accept(), Accept() };
     Accept().accepts(arrays.toObjectArray(x));
-    value y = array { "aap", "noot", "mies" };
+    value y = Array { "aap", "noot", "mies" };
     Accept().strings(arrays.toJavaStringArray(y));
-    value z = array { 1, 2, 3 };
+    value z = Array { 1, 2, 3 };
     Accept().longs(arrays.toLongArray(z));
 }
 @noanno
