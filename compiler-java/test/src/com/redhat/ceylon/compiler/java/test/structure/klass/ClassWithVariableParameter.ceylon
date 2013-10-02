@@ -81,3 +81,12 @@ class ClassWithHiddenVariableParameterCaptured(i) {
     }
     fn();
 }
+@noanno
+class ClassWithVariableParameterCapturedInitSub(variable Integer i) extends ClassWithVariableParameterCapturedInit(i++){
+    void fn() {
+        i = 0;
+        i++;
+        i+=1;
+    }
+    fn();
+}
