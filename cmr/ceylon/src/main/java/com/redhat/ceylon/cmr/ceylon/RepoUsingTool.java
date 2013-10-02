@@ -18,6 +18,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.ModuleDescriptorReader;
+import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
@@ -28,7 +29,7 @@ import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 
-public abstract class RepoUsingTool implements Tool {
+public abstract class RepoUsingTool extends CeylonBaseTool {
     protected List<URI> repo;
     protected String systemRepo;
     protected boolean offline;
