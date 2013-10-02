@@ -200,7 +200,7 @@ public class CeylonTool implements Tool {
             version(System.out);
             return SC_OK;
         } else {
-            return new CeylonTool().bootstrap(false, args);
+            return new CeylonTool().bootstrap(args);
         }
     }
 
@@ -216,17 +216,52 @@ public class CeylonTool implements Tool {
      * @return The exit code
      * @throws Exception
      */
-    public int bootstrap(String[] args) throws Exception {
-        return bootstrap(false, args);
+    int bootstrap(String... args) throws Exception {
+        int result = setup(args);
+        if (result == SC_OK) {
+            result = execute();
+        }
+        return result;
     }
-    
-    int bootstrap(boolean recursive, String... args) throws Exception {
+
+    public int setup(String... args) throws Exception {
         int result;
         Exception error = null;
         try {
             ToolModel<CeylonTool> model = getToolModel("");
             List<String> myArgs = rearrangeArgs(args);
             getPluginFactory().bindArguments(model, this, myArgs);
+            result = SC_OK;
+        } catch (NoSuchToolException e) {
+            error = e;
+            result = SC_NO_SUCH_TOOL;
+        } catch (ModelException e) {
+            error = e;
+            result = SC_TOOL_CREATION;
+        } catch (OptionArgumentException e) {
+            error = e;
+            result = SC_ARGS;
+        } catch (FatalToolError e) {
+            error = e;
+            result = SC_TOOL_BUG;
+        } catch (ToolError e) {
+            error = e;
+            result = SC_TOOL_ERROR;
+        } catch (Exception e) {
+            error = e;
+            result = SC_TOOL_EXCEPTION;
+        }
+        if (error != null) {
+            Usage.handleException(this, getToolName(), error);
+        }
+        System.out.flush();
+        return result;
+    }
+
+    public int execute() throws Exception {
+        int result;
+        Exception error = null;
+        try {
             run();
             result = SC_OK;
         } catch (NoSuchToolException e) {
@@ -248,7 +283,7 @@ public class CeylonTool implements Tool {
             error = e;
             result = SC_TOOL_EXCEPTION;
         }
-        if (!recursive && error != null) {
+        if (error != null) {
             Usage.handleException(this, getToolName(), error);
         }
         System.out.flush();
@@ -268,7 +303,7 @@ public class CeylonTool implements Tool {
         }
     }
 
-    Tool getTool() {
+    public Tool getTool() {
         Tool tool = null;
         final ToolModel<?> model = getToolModel(getToolName());
         if (model == null) {
