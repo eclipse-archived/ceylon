@@ -1,6 +1,5 @@
 package com.redhat.ceylon.launcher;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Method;
@@ -11,6 +10,8 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.redhat.ceylon.common.Constants;
 
 public class Launcher {
     private static volatile CeylonClassLoader ceylonClassLoader;
@@ -25,13 +26,13 @@ public class Launcher {
         // If the --sysrep option was set on the command line we set the corresponding system property
         String ceylonSystemRepo = getArgument(args, "--sysrep", false);
         if (ceylonSystemRepo != null) {
-            System.setProperty("ceylon.system.repo", ceylonSystemRepo);
+            System.setProperty(Constants.PROP_CEYLON_SYSTEM_REPO, ceylonSystemRepo);
         }
 
         // If the --ceylonversion option was set on the command line we set the corresponding system property
         String ceylonSystemVersion = getArgument(args, "--ceylonversion", false);
         if (ceylonSystemVersion != null) {
-            System.setProperty("ceylon.system.version", ceylonSystemVersion);
+            System.setProperty(Constants.PROP_CEYLON_SYSTEM_VERSION, ceylonSystemVersion);
         }
 
         CeylonClassLoader loader = getClassLoader();
@@ -84,8 +85,8 @@ public class Launcher {
 
         // Set some important system properties
         System.setProperty("ceylon.home", LauncherUtil.determineHome().getAbsolutePath());
-        System.setProperty("ceylon.system.repo", LauncherUtil.determineRepo().getAbsolutePath());
-        System.setProperty("ceylon.system.version", LauncherUtil.determineSystemVersion());
+        System.setProperty(Constants.PROP_CEYLON_SYSTEM_REPO, LauncherUtil.determineRepo().getAbsolutePath());
+        System.setProperty(Constants.PROP_CEYLON_SYSTEM_VERSION, LauncherUtil.determineSystemVersion());
 
         return ceylonClassLoader;
     }

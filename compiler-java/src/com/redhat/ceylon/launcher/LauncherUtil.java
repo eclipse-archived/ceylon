@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
 
 public class LauncherUtil {
@@ -16,10 +17,10 @@ public class LauncherUtil {
         // Determine the Ceylon home/install folder
         File ceylonHome;
         // First try the ceylon.home system property
-        String ceylonHomeStr = System.getProperty("ceylon.home");
+        String ceylonHomeStr = System.getProperty(Constants.PROP_CEYLON_HOME_DIR);
         if (ceylonHomeStr == null) {
             // Second try the CEYLON_HOME environment variable
-            ceylonHomeStr = System.getenv("CEYLON_HOME");
+            ceylonHomeStr = System.getenv(Constants.ENV_CEYLON_HOME_DIR);
         }
         if (ceylonHomeStr == null) {
             // Then try to deduce it from the location of the current JAR file
@@ -43,7 +44,7 @@ public class LauncherUtil {
     public static File determineRepo() throws URISyntaxException {
         // Determine the Ceylon system repository folder
         File ceylonRepo;
-        String ceylonSystemRepo = System.getProperty("ceylon.system.repo");
+        String ceylonSystemRepo = System.getProperty(Constants.PROP_CEYLON_SYSTEM_REPO);
         if (ceylonSystemRepo != null) {
             ceylonRepo = new File(ceylonSystemRepo);
         } else {
@@ -55,7 +56,7 @@ public class LauncherUtil {
     public static File determineLibs() throws URISyntaxException {
         // Determine the Ceylon system library folder
         File ceylonLib;
-        String ceylonSystemRepo = System.getProperty("ceylon.system.libs");
+        String ceylonSystemRepo = System.getProperty(Constants.PROP_CEYLON_SYSLIBS_DIR);
         if (ceylonSystemRepo != null) {
             ceylonLib = new File(ceylonSystemRepo);
         } else {
@@ -66,7 +67,7 @@ public class LauncherUtil {
     
     public static String determineSystemVersion() {
         // Determine the Ceylon system/language/runtime version
-        String ceylonSystemVersion = System.getProperty("ceylon.system.version");
+        String ceylonSystemVersion = System.getProperty(Constants.PROP_CEYLON_SYSTEM_VERSION);
         if (ceylonSystemVersion == null) {
             // Second try the constant defined in Versions
             ceylonSystemVersion = Versions.CEYLON_VERSION_NUMBER;

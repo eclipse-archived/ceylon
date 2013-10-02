@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -52,7 +53,7 @@ public class CeylonNewTool implements Tool {
     
     private Project project;
     
-    private File from = new File(System.getProperty("ceylon.home"), "templates");
+    private File from = new File(System.getProperty(Constants.PROP_CEYLON_HOME_DIR), "templates");
     
     private Map<String, String> rest = new HashMap<String, String>();
     
@@ -71,6 +72,10 @@ public class CeylonNewTool implements Tool {
     @OptionArgument(argumentName="dir")
     public void setFrom(File from) {
         this.from = from;
+    }
+    
+    public boolean getVerbose() {
+        return verbose;
     }
     
     @Hidden
@@ -126,7 +131,7 @@ public class CeylonNewTool implements Tool {
         Environment env = new Environment();
         // TODO Tidy up how we create and what's in this initial environment
         env.put("base.dir", project.getDirectory().getAbsolutePath());
-        env.put("ceylon.home", System.getProperty("ceylon.home"));
+        env.put("ceylon.home", System.getProperty(Constants.PROP_CEYLON_HOME_DIR));
         //env.put("ceylon.system.repo", System.getProperty("ceylon.system.repo"));
         env.put("ceylon.version.number", Versions.CEYLON_VERSION_NUMBER);
         env.put("ceylon.version.major", Integer.toString(Versions.CEYLON_VERSION_MAJOR));
