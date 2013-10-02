@@ -29,6 +29,7 @@ import org.jboss.modules.ModuleLoader;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -97,13 +98,13 @@ public class CeylonRunTool extends RepoUsingTool {
     public void run() throws IOException {
         ArrayList<String> argList = new ArrayList<String>();
 
-        String ceylonVersion = System.getProperty("ceylon.system.version");
+        String ceylonVersion = System.getProperty(Constants.PROP_CEYLON_SYSTEM_VERSION);
         
         String sysRep;
         if (systemRepo != null) {
             sysRep = systemRepo;
         } else {
-            sysRep = System.getProperty("ceylon.system.repo");
+            sysRep = System.getProperty(Constants.PROP_CEYLON_SYSTEM_REPO);
         }
 
         if (run != null) {

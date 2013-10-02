@@ -47,6 +47,7 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
 
 /**
@@ -74,7 +75,7 @@ public class CeylonModuleLoader extends ModuleLoader {
     private static final Set<String> JDK_MODULE_NAMES;
 
     static {
-        final String defaultVersion = System.getProperty("ceylon.version", Versions.CEYLON_VERSION_NUMBER);
+        final String defaultVersion = System.getProperty(Constants.PROP_CEYLON_SYSTEM_VERSION, Versions.CEYLON_VERSION_NUMBER);
         LANGUAGE = ModuleIdentifier.create("ceylon.language", defaultVersion);
         COMMON = ModuleIdentifier.create("com.redhat.ceylon.common", defaultVersion);
         CMR = ModuleIdentifier.create("com.redhat.ceylon.module-resolver", defaultVersion);
