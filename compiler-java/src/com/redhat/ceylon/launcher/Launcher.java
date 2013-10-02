@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
@@ -51,24 +52,41 @@ public class Launcher {
         }
         System.setProperty("env.class.path", classPath.toString());
 
-        boolean verbose = hasArgument(args, "--verbose") && getArgument(args, "--verbose", true) == null;
-        initGlobalLogger(verbose);
-
-        if (verbose) {
-            System.err.println("INFO: Ceylon home directory is '" + LauncherUtil.determineHome() + "'");
-            for (File f : cp) {
-                System.err.println("INFO: path = " + f + " (" + (f.exists() ? "OK" : "Not found!") + ")");
-            }
-        }
-
-        // Find the proper class and method to execute
+        // Find the main tool class
+        String verbose = null;
         Class<?> mainClass = loader.loadClass("com.redhat.ceylon.tools.CeylonTool");
-        Method mainMethod = mainClass.getMethod("start", args.getClass());
+        
+        // Set up the arguments for the tool
+        Object mainTool = mainClass.newInstance();
+        Method setupMethod = mainClass.getMethod("setup", args.getClass());
+        Integer result = (Integer)setupMethod.invoke(mainTool, (Object)args);
+        if (result == 0 /* SC_OK */) {
+            try {
+                Method toolGetter = mainClass.getMethod("getTool");
+                Object tool = toolGetter.invoke(mainTool);
+                Method verboseGetter = tool.getClass().getMethod("getVerbose");
+                verbose = (String)verboseGetter.invoke(tool);
+            } catch (Exception ex) {
+                // Probably doesn't have a --verbose option
+            }
+            
+            //boolean verbose = hasArgument(args, "--verbose") && getArgument(args, "--verbose", true) == null;
+            initGlobalLogger(verbose);
 
-        // Invoke the actual ceylon tool
-        Object result = mainMethod.invoke(null, (Object)args);
+            if (hasVerboseFlag(verbose, "loader")) {
+                Logger log = Logger.getLogger("");
+                log.info("Ceylon home directory is '" + LauncherUtil.determineHome() + "'");
+                for (File f : cp) {
+                    log.info("path = " + f + " (" + (f.exists() ? "OK" : "Not found!") + ")");
+                }
+            }
 
-        return ((Integer)result).intValue();
+            // And finally execute the tool
+            Method execMethod = mainClass.getMethod("execute");
+            result = (Integer)execMethod.invoke(mainTool);
+        }
+        
+        return result.intValue();
     }
 
     public static CeylonClassLoader getClassLoader() throws MalformedURLException, FileNotFoundException, URISyntaxException {
@@ -119,7 +137,7 @@ public class Launcher {
         return null;
     }
 
-    private static void initGlobalLogger(boolean verbose) {
+    private static void initGlobalLogger(String verbose) {
         try {
             //if no log Manager specified use JBoss LogManager
             String logManager = System.getProperty("java.util.logging.manager");
@@ -136,12 +154,12 @@ public class Launcher {
                 // formatter has to be in the boot class path. This way it doesn't.
                 if (handler instanceof ConsoleHandler) {
                     handler.setFormatter(CeylonLogFormatter.INSTANCE);
-                    if (verbose) {
+                    if (verbose != null) {
                         handler.setLevel(Level.ALL);
                     }
                 }
             }
-            if (verbose) {
+            if (verbose != null) {
                 //TODO do not configure root logger, make it flags aware
                 Logger logger = Logger.getLogger("");
                 logger.setLevel(Level.ALL);
@@ -155,5 +173,21 @@ public class Launcher {
         } catch (Throwable ex) {
             System.err.println("Warning: log configuration failed: " + ex.getMessage());
         }
+    }
+
+    // Returns true if one of the argument passed matches one of the flags given to
+    // --verbose=... on the command line or if one of the flags is "all"
+    private static boolean hasVerboseFlag(String verbose, String flag) {
+        if (verbose == null) {
+            return false;
+        }
+        if (verbose.isEmpty()) {
+            return true;
+        }
+        List<String> lst = Arrays.asList(verbose.split(","));
+        if (lst.contains("all")) {
+            return true;
+        }
+        return lst.contains(flag);
     }
 }
