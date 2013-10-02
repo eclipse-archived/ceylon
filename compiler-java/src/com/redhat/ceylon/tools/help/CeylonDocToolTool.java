@@ -34,14 +34,14 @@ import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 
 import com.redhat.ceylon.common.tool.Argument;
+import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
-import com.redhat.ceylon.common.tool.Tool;
-import com.redhat.ceylon.common.tool.ToolLoader;
-import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tool.ToolLoader;
+import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.Tools;
 import com.redhat.ceylon.common.tool.WordWrap;
 import com.redhat.ceylon.tools.help.model.Doc;
@@ -57,7 +57,7 @@ import com.redhat.ceylon.tools.help.model.Visitor;
 "* `ceylon help` For generating help about ceylon tools at the command line\n" +
 "* `ceylon doc` For generating API documentation about ceylon modules\n"
 )
-public class CeylonDocToolTool implements Tool {
+public class CeylonDocToolTool extends CeylonBaseTool {
 
     
     public static enum Format {
