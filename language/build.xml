@@ -196,7 +196,6 @@
                 <include name="ceylon/language/Array.java"/>
                 <exclude name="ceylon/language/ArraySequence.ceylon"/>
                 <include name="ceylon/language/ArraySequence.java"/>
-                <include name="ceylon/language/array_.java"/>
                 <include name="ceylon/language/arrayOfSize_.java"/>
                 <exclude name="ceylon/language/Boolean.ceylon"/>
                 <include name="ceylon/language/Boolean.java"/>
