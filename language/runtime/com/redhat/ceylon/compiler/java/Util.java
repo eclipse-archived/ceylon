@@ -14,7 +14,6 @@ import ceylon.language.Ranged;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
-import ceylon.language.meta.declaration.AnnotatedDeclaration;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;

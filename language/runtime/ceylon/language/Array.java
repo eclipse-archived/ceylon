@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import static java.util.Arrays.copyOfRange;
+
 import java.util.Arrays;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -29,45 +31,121 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
     "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::Array<Element>>"
 })
 public final class Array<Element> implements List<Element>, ReifiedType {
+    
     @Ignore
-    protected final ceylon.language.Category$impl $ceylon$language$Category$this;
+    protected final Category$impl $ceylon$language$Category$this;
     @Ignore
-    protected final ceylon.language.Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$this;
+    protected final Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$this;
     @Ignore
-    protected final ceylon.language.Container$impl<Element,java.lang.Object> $ceylon$language$Container$this;
+    protected final Container$impl<Element,java.lang.Object> $ceylon$language$Container$this;
     @Ignore
-    protected final ceylon.language.Collection$impl<Element> $ceylon$language$Collection$this;
+    protected final Collection$impl<Element> $ceylon$language$Collection$this;
     @Ignore
-    protected final ceylon.language.List$impl<Element> $ceylon$language$List$this;
+    protected final List$impl<Element> $ceylon$language$List$this;
     @Ignore
-    protected final ceylon.language.Correspondence$impl<Integer,Element> $ceylon$language$Correspondence$this;
+    protected final Correspondence$impl<Integer,Element> $ceylon$language$Correspondence$this;
     @Ignore
-    protected final ceylon.language.Ranged$impl<Integer,List<Element>> $ceylon$language$Ranged$this;
+    protected final Ranged$impl<Integer,List<Element>> $ceylon$language$Ranged$this;
     @Ignore
-    protected final ceylon.language.Cloneable$impl $ceylon$language$Cloneable$this;
+    protected final Cloneable$impl<? extends Array<Element>> $ceylon$language$Cloneable$this;
 
     private final java.lang.Object array;
     
     @Ignore
     private TypeDescriptor $reifiedElement;
 
-    public Array(@Ignore TypeDescriptor $reifiedElement, 
+    @Ignore
+    public Array(final TypeDescriptor $reifiedElement, int size, Element element) {
+        this($reifiedElement, createArray($reifiedElement, size, element));
+    }
+    
+    public Array(@Ignore final TypeDescriptor $reifiedElement, 
             @Name("elements")
             @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
             final ceylon.language.Iterable<? extends Element,? extends java.lang.Object> elements) {
-        this($reifiedElement, Util.collectIterable(elements).toArray());
+        this($reifiedElement, createArray($reifiedElement, elements));
+    }
+
+    private static <Element> java.lang.Object createArray(
+            final TypeDescriptor $reifiedElement,
+            final ceylon.language.Iterable<? extends Element, ? extends java.lang.Object> elements) {
+        java.util.List<Element> list = Util.collectIterable(elements);
+        if ($reifiedElement instanceof TypeDescriptor.Class) {
+            TypeDescriptor.Class clazz = (TypeDescriptor.Class) $reifiedElement;
+            if (clazz.getKlass().equals(Integer.class)) {
+                long[] array = new long[list.size()];
+                for (int i=0; i<array.length; i++) {
+                    array[i] = ((Integer) list.get(i)).value;
+                }
+                return array;
+            }
+            if (clazz.getKlass().equals(Float.class)) {
+                double[] array = new double[list.size()];
+                for (int i=0; i<array.length; i++) {
+                    array[i] = ((Float) list.get(i)).value;
+                }
+                return array;
+            }
+            if (clazz.getKlass().equals(Character.class)) {
+                int[] array = new int[list.size()];
+                for (int i=0; i<array.length; i++) {
+                    array[i] = ((Character) list.get(i)).codePoint;
+                }
+                return array;
+            }
+            if (clazz.getKlass().equals(Boolean.class)) {
+                boolean[] array = new boolean[list.size()];
+                for (int i=0; i<array.length; i++) {
+                    array[i] = ((Boolean) list.get(i)).booleanValue();
+                }
+                return array;
+            }
+        }
+        return list.toArray();
+    }
+    
+    private static <Element> java.lang.Object createArray(
+            final TypeDescriptor $reifiedElement,
+            final int size, Element element) {
+        if ($reifiedElement instanceof TypeDescriptor.Class) {
+            TypeDescriptor.Class clazz = (TypeDescriptor.Class) $reifiedElement;
+            if (clazz.getKlass().equals(Integer.class)) {
+                long[] array = new long[size];
+                Arrays.fill(array, ((Integer) element).value); 
+                return array;
+            }
+            if (clazz.getKlass().equals(Float.class)) {
+                double[] array = new double[size];
+                Arrays.fill(array, ((Float) element).value); 
+                return array;
+            }
+            if (clazz.getKlass().equals(Character.class)) {
+                int[] array = new int[size];
+                Arrays.fill(array, ((Character) element).codePoint); 
+                return array;
+            }
+            if (clazz.getKlass().equals(Boolean.class)) {
+                boolean[] array = new boolean[size];
+                Arrays.fill(array, ((Boolean) element).booleanValue()); 
+                return array;
+            }
+        }
+        java.lang.Object[] array = new java.lang.Object[size];
+        Arrays.fill(array, element);
+        return array;
     }
     
     private Array(@Ignore TypeDescriptor $reifiedElement, java.lang.Object array) {
         assert(array.getClass().isArray());
-        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,java.lang.Object>($reifiedElement, Null.$TypeDescriptor, this);
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,java.lang.Object>($reifiedElement, Null.$TypeDescriptor, this);
-        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Element>($reifiedElement, this);
-        this.$ceylon$language$List$this = new ceylon.language.List$impl<Element>($reifiedElement, this);
-        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<Integer,Element>(Integer.$TypeDescriptor, $reifiedElement, this);
-        this.$ceylon$language$Ranged$this = new ceylon.language.Ranged$impl<Integer,List<Element>>(Integer.$TypeDescriptor, TypeDescriptor.klass(Array.class, $reifiedElement), (Ranged)this);
-        this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(TypeDescriptor.klass(Array.class, $reifiedElement), (Array)this);
+        this.$ceylon$language$Category$this = new Category$impl(this);
+        this.$ceylon$language$Container$this = new Container$impl<Element,java.lang.Object>($reifiedElement, Null.$TypeDescriptor, this);
+        this.$ceylon$language$Iterable$this = new Iterable$impl<Element,java.lang.Object>($reifiedElement, Null.$TypeDescriptor, this);
+        this.$ceylon$language$Collection$this = new Collection$impl<Element>($reifiedElement, this);
+        this.$ceylon$language$List$this = new List$impl<Element>($reifiedElement, this);
+        this.$ceylon$language$Correspondence$this = new Correspondence$impl<Integer,Element>(Integer.$TypeDescriptor, $reifiedElement, this);
+        this.$ceylon$language$Ranged$this = new Ranged$impl<Integer,List<Element>>(Integer.$TypeDescriptor, 
+                TypeDescriptor.klass(Array.class, $reifiedElement), (Ranged<Integer, ? extends List<Element>>)this);
+        this.$ceylon$language$Cloneable$this = new Cloneable$impl(TypeDescriptor.klass(Array.class, $reifiedElement), this);
         this.array = array;
         this.$reifiedElement = $reifiedElement;
     }
@@ -110,12 +188,14 @@ public final class Array<Element> implements List<Element>, ReifiedType {
 
     @Ignore
     @Override
-    public Ranged$impl<Integer,List<? extends Element>> $ceylon$language$Ranged$impl(){
-        return (Ranged$impl)$ceylon$language$Ranged$this;
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public Ranged$impl $ceylon$language$Ranged$impl(){
+        return $ceylon$language$Ranged$this;
     }
 
     @Ignore
     @Override
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public Cloneable$impl $ceylon$language$Cloneable$impl(){
         return $ceylon$language$Cloneable$this;
     }
@@ -191,131 +271,19 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         }
         return new Array<Boolean>(Boolean.$TypeDescriptor, array);
     }
-
-    @Ignore
-    public static <T> Array<T> instance(TypeDescriptor $reifiedT, T[] array) {
-        if (array == null) {
-            return null;
-        }
-        return new Array<T>($reifiedT, array);
-    }
-
-    @Ignore
-    public static <T> Array<T> instance(TypeDescriptor $reifiedT, java.lang.Object array) {
-        if (array == null) {
-            return null;
-        }
-        return new Array<T>($reifiedT, array);
-    }
-
-    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public static <T> Array<T> instance(TypeDescriptor $reifiedT, java.lang.Class typeClass, Iterable<? extends T, ? extends java.lang.Object> elements) {
-        if (typeClass == null) {
-            typeClass = java.lang.Object.class;
-        }
-        if (typeClass == int.class) {
-            return (Array<T>) instance(Util.toIntArray((Iterable<? extends Integer, ? extends java.lang.Object>) elements));
-        } else if (typeClass == long.class) {
-            return (Array<T>) instance(Util.toLongArray((Iterable<? extends Integer, ? extends java.lang.Object>) elements));
-        } else if (typeClass == byte.class) {
-            return (Array<T>) instance(Util.toByteArray((Iterable<? extends Integer, ? extends java.lang.Object>) elements));
-        } else if (typeClass == short.class) {
-            return (Array<T>) instance(Util.toShortArray((Iterable<? extends Integer, ? extends java.lang.Object>) elements));
-        } else if (typeClass == float.class) {
-            return (Array<T>) instance(Util.toFloatArray((Iterable<? extends Float, ? extends java.lang.Object>) elements));
-        } else if (typeClass == double.class) {
-            return (Array<T>) instance(Util.toDoubleArray((Iterable<? extends Float, ? extends java.lang.Object>) elements));
-        } else if (typeClass == boolean.class) {
-            return (Array<T>) instance(Util.toBooleanArray((Iterable<? extends Boolean, ? extends java.lang.Object>) elements));
-        } else if (typeClass == char.class) {
-            return (Array<T>) instance(Util.toCharArray((Iterable<? extends Character, ? extends java.lang.Object>) elements));
-        } else {
-            return (Array<T>) instance($reifiedT, (T[]) Util.toArray(elements, typeClass));
-        }
-    }
-
-    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public static <T> Array<T> instance(TypeDescriptor $reifiedT, java.lang.Class typeClass, int size, T element) {
-        if (typeClass == null) {
-            typeClass = java.lang.Object.class;
-        }
-        if (typeClass == int.class) {
-            int[] arr = new int[size];
-            if (element != null) {
-                Arrays.fill(arr, (int)((Integer)element).longValue());
-            }
-            return (Array<T>) instance(arr);
-        } else if (typeClass == long.class) {
-            long[] arr = new long[size];
-            if (element != null) {
-                Arrays.fill(arr, ((Integer)element).longValue());
-            }
-            return (Array<T>) instance(arr);
-        } else if (typeClass == byte.class) {
-            byte[] arr = new byte[size];
-            if (element != null) {
-                Arrays.fill(arr, (byte)((Integer)element).longValue());
-            }
-            return (Array<T>) instance(arr);
-        } else if (typeClass == short.class) {
-            short[] arr = new short[size];
-            if (element != null) {
-                Arrays.fill(arr, (short)((Integer)element).longValue());
-            }
-            return (Array<T>) instance(arr);
-        } else if (typeClass == float.class) {
-            float[] arr = new float[size];
-            if (element != null) {
-                Arrays.fill(arr, (float)((Float)element).doubleValue());
-            }
-            return (Array<T>) instance(arr);
-        } else if (typeClass == double.class) {
-            double[] arr = new double[size];
-            if (element != null) {
-                Arrays.fill(arr, ((Float)element).doubleValue());
-            }
-            return (Array<T>) instance(arr);
-        } else if (typeClass == boolean.class) {
-            boolean[] arr = new boolean[size];
-            if (element != null) {
-                Arrays.fill(arr, ((Boolean)element).booleanValue());
-            }
-            return (Array<T>) instance(arr);
-        } else if (typeClass == char.class) {
-            char[] arr = new char[size];
-            if (element != null) {
-             // FIXME: this is invalid
-                Arrays.fill(arr, (char)((Character)element).intValue());
-            }
-            return (Array<T>) instance(arr);
-        } else {
-            T[] arr = (T[]) java.lang.reflect.Array.newInstance(typeClass, size);
-            if (element != null) {
-                Arrays.fill(arr, element);
-            }
-            return (Array<T>) instance($reifiedT, arr);
-        }
-    }
-
-    /*@Override
-    @TypeInfo("ceylon.language::Null|Element")
-    public Element getFirst() {
-        if (getEmpty()) {
-            return null;
-        } else {
-            return unsafeItem(0);
-        }
-    }*/
-
+    
     @Override
     public Array<? extends Element> spanFrom(@Name("from") Integer from) {
         return span(from, Integer.instance(getSize()));
     }
+    
     @Override
     public Array<? extends Element> spanTo(@Name("to") Integer to) {
-        return (Array<? extends Element>) (to.value < 0 ? empty_.$get() : span(Integer.instance(0), to));
+        return span(Integer.instance(0), to);
     }
-
+    
+    private static final java.lang.Object[] EMPTY_ARRAY = new java.lang.Object[0];
+    
     @Override
     public Array<? extends Element> span(@Name("from") Integer from,
             @Name("to") Integer to) {
@@ -325,8 +293,9 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         long lastIndex = getLastIndex().longValue();
         java.lang.Class<?> typeClass = array.getClass().getComponentType();
         if (fromIndex>lastIndex) {
-            return Array.instance($reifiedElement, typeClass, null);
-        } else {
+            return new Array<Element>($reifiedElement, EMPTY_ARRAY);
+        }
+        else {
             boolean revert = toIndex<fromIndex;
             if (revert) {
                 long _tmp = toIndex;
@@ -335,23 +304,32 @@ public final class Array<Element> implements List<Element>, ReifiedType {
             }
             Array<Element> rval;
             if (typeClass == char.class) {
-                rval = new Array<Element>($reifiedElement, Arrays.copyOfRange((char[])array, (int)fromIndex, (int)toIndex+1));
+                rval = new Array<Element>($reifiedElement, 
+                        copyOfRange((char[])array, (int)fromIndex, (int)toIndex+1));
             } else if (typeClass == byte.class) {
-                rval = new Array<Element>($reifiedElement, Arrays.copyOfRange((byte[])array, (int)fromIndex, (int)toIndex+1));
+                rval = new Array<Element>($reifiedElement, 
+                        copyOfRange((byte[])array, (int)fromIndex, (int)toIndex+1));
             } else if (typeClass == short.class) {
-                rval = new Array<Element>($reifiedElement, Arrays.copyOfRange((short[])array, (int)fromIndex, (int)toIndex+1));
+                rval = new Array<Element>($reifiedElement, 
+                        copyOfRange((short[])array, (int)fromIndex, (int)toIndex+1));
             } else if (typeClass == int.class) {
-                rval = new Array<Element>($reifiedElement, Arrays.copyOfRange((int[])array, (int)fromIndex, (int)toIndex+1));
+                rval = new Array<Element>($reifiedElement, 
+                        copyOfRange((int[])array, (int)fromIndex, (int)toIndex+1));
             } else if (typeClass == long.class) {
-                rval = new Array<Element>($reifiedElement, Arrays.copyOfRange((long[])array, (int)fromIndex, (int)toIndex+1));
+                rval = new Array<Element>($reifiedElement, 
+                        copyOfRange((long[])array, (int)fromIndex, (int)toIndex+1));
             } else if (typeClass == float.class) {
-                rval = new Array<Element>($reifiedElement, Arrays.copyOfRange((float[])array, (int)fromIndex, (int)toIndex+1));
+                rval = new Array<Element>($reifiedElement, 
+                        copyOfRange((float[])array, (int)fromIndex, (int)toIndex+1));
             } else if (typeClass == double.class) {
-                rval = new Array<Element>($reifiedElement, Arrays.copyOfRange((double[])array, (int)fromIndex, (int)toIndex+1));
+                rval = new Array<Element>($reifiedElement, 
+                        copyOfRange((double[])array, (int)fromIndex, (int)toIndex+1));
             } else if (typeClass == boolean.class) {
-                rval = new Array<Element>($reifiedElement, Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)toIndex+1));
+                rval = new Array<Element>($reifiedElement, 
+                        copyOfRange((boolean[])array, (int)fromIndex, (int)toIndex+1));
             } else {
-                rval = new Array<Element>($reifiedElement, Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)toIndex+1));
+                rval = new Array<Element>($reifiedElement, 
+                        copyOfRange((java.lang.Object[])array, (int)fromIndex, (int)toIndex+1));
             }
             return revert ? rval.getReversed() : rval;
         }
@@ -366,26 +344,36 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         long lastIndex = getLastIndex().longValue();
         java.lang.Class<?> typeClass = array.getClass().getComponentType();
         if (fromIndex>lastIndex||resultLength<=0) {
-            return Array.instance($reifiedElement, typeClass, null);
+            return new Array<Element>($reifiedElement, EMPTY_ARRAY);
         } else {
+            long resultFromIndex = fromIndex + resultLength;
             if (typeClass == char.class) {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((char[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new Array<Element>($reifiedElement, 
+                        copyOfRange((char[])array, (int)fromIndex, (int)resultFromIndex));
             } else if (typeClass == byte.class) {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((byte[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new Array<Element>($reifiedElement, 
+                        copyOfRange((byte[])array, (int)fromIndex, (int)resultFromIndex));
             } else if (typeClass == short.class) {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((short[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new Array<Element>($reifiedElement, 
+                        copyOfRange((short[])array, (int)fromIndex, (int)resultFromIndex));
             } else if (typeClass == int.class) {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((int[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new Array<Element>($reifiedElement, 
+                        copyOfRange((int[])array, (int)fromIndex, (int)resultFromIndex));
             } else if (typeClass == long.class) {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((long[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new Array<Element>($reifiedElement, 
+                        copyOfRange((long[])array, (int)fromIndex, (int)resultFromIndex));
             } else if (typeClass == float.class) {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((float[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new Array<Element>($reifiedElement, 
+                        copyOfRange((float[])array, (int)fromIndex, (int)resultFromIndex));
             } else if (typeClass == double.class) {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((double[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new Array<Element>($reifiedElement, 
+                        copyOfRange((double[])array, (int)fromIndex, (int)resultFromIndex));
             } else if (typeClass == boolean.class) {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new Array<Element>($reifiedElement, 
+                        copyOfRange((boolean[])array, (int)fromIndex, (int)resultFromIndex));
             } else {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new Array<Element>($reifiedElement, 
+                        copyOfRange((java.lang.Object[])array, (int)fromIndex, (int)resultFromIndex));
             }
         }
     }
@@ -482,7 +470,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         } else if (typeClass == boolean.class) {
             return (Element) Boolean.instance(((boolean[])array)[index]);
         } else {
-            return ((Element[])array)[index];
+            return (Element) ((java.lang.Object[])array)[index];
         }
     }
 
@@ -516,7 +504,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
             } else if (typeClass == boolean.class) {
                 ((boolean[])array)[idx] = ((Boolean)element).booleanValue();
             } else {
-                ((Element[])array)[idx] = element;
+                ((java.lang.Object[])array)[idx] = element;
             }
         }
     }
@@ -673,27 +661,37 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     
     @Override
     public Array<? extends Element> getRest() {
-        if (getSize() < 2) {
-            return array_.<Element>array($reifiedElement);
+        long size = getSize();
+        if (size < 2) {
+            return new Array<Element>($reifiedElement, EMPTY_ARRAY);
         } else {
             if (array instanceof char[]) {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((char[])array, 1, (int)getSize()));
+                return new Array<Element>($reifiedElement, 
+                        copyOfRange((char[])array, 1, (int)size));
             } else if (array instanceof byte[]) {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((byte[])array, 1, (int)getSize()));
+                return new Array<Element>($reifiedElement, 
+                        copyOfRange((byte[])array, 1, (int)size));
             } else if (array instanceof short[]) {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((short[])array, 1, (int)getSize()));
+                return new Array<Element>($reifiedElement, 
+                        copyOfRange((short[])array, 1, (int)size));
             } else if (array instanceof int[]) {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((int[])array, 1, (int)getSize()));
+                return new Array<Element>($reifiedElement, 
+                        copyOfRange((int[])array, 1, (int)size));
             } else if (array instanceof long[]) {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((long[])array, 1, (int)getSize()));
+                return new Array<Element>($reifiedElement, 
+                        copyOfRange((long[])array, 1, (int)size));
             } else if (array instanceof float[]) {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((float[])array, 1, (int)getSize()));
+                return new Array<Element>($reifiedElement, 
+                        copyOfRange((float[])array, 1, (int)size));
             } else if (array instanceof double[]) {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((double[])array, 1, (int)getSize()));
+                return new Array<Element>($reifiedElement, 
+                        copyOfRange((double[])array, 1, (int)size));
             } else if (array instanceof boolean[]) {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((boolean[])array, 1, (int)getSize()));
+                return new Array<Element>($reifiedElement, 
+                        copyOfRange((boolean[])array, 1, (int)size));
             } else {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((Element[])array, 1, (int)getSize()));
+                return new Array<Element>($reifiedElement, 
+                        copyOfRange((java.lang.Object[])array, 1, (int)size));
             }
         }
     }
@@ -701,13 +699,19 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     @Override
     @Annotations({ @Annotation("actual") })
     public Element getFirst() {
-        return unsafeItem(0);
+        if (getSize()>0) {
+            return unsafeItem(0);
+        }
+        else {
+            return null;
+        }
     }
+    
     @Override
     @Annotations({ @Annotation("actual") })
     public Element getLast() {
-        final long s = getSize();
-        return s > 0 ? unsafeItem((int)s-1) : null;
+        final long size = getSize();
+        return size > 0 ? unsafeItem((int)size-1) : null;
     }
 
     @Override
@@ -773,12 +777,12 @@ public final class Array<Element> implements List<Element>, ReifiedType {
             return new Array<Element>($reifiedElement, rev);
         }
 
-        Element[] __a = (Element[])array;
+        java.lang.Object[] __a = (java.lang.Object[])array;
         java.lang.Object[] rev = new java.lang.Object[__a.length];
         for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
             rev[i] = __a[j];
         }
-        return new Array<Element>($reifiedElement, (Element[])rev);
+        return new Array<Element>($reifiedElement, (java.lang.Object[])rev);
     }
 
     @Override @Ignore
@@ -867,9 +871,8 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     @Override @Ignore public <Other,Absent>Iterable chain(@Ignore TypeDescriptor $reifiedOther, @Ignore TypeDescriptor $reifiedOtherAbsent, Iterable<? extends Other, ? extends Absent> other) {
         return $ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
     }
-    @SuppressWarnings("rawtypes")
     @Override @Ignore 
-    public <Other> Iterable following(@Ignore TypeDescriptor $reifiedOther, Other other) {
+    public <Other> Iterable<?,?> following(@Ignore TypeDescriptor $reifiedOther, Other other) {
         return $ceylon$language$Iterable$this.following($reifiedOther, other);
     }
     @Override @Ignore
@@ -899,12 +902,12 @@ public final class Array<Element> implements List<Element>, ReifiedType {
 
     @Override @SuppressWarnings("rawtypes")
     @Annotations({ @Annotation("actual") })
-    public <Other> Sequence<Other> withLeading(@Ignore TypeDescriptor $reifiedOther, Other e) {
+    public <Other> Sequence withLeading(@Ignore TypeDescriptor $reifiedOther, Other e) {
         return $ceylon$language$List$this.withLeading($reifiedOther, e);
     }
     @Override @SuppressWarnings("rawtypes")
     @Annotations({ @Annotation("actual") })
-    public <Other> Sequence<Other> withTrailing(@Ignore TypeDescriptor $reifiedOther, Other e) {
+    public <Other> Sequence withTrailing(@Ignore TypeDescriptor $reifiedOther, Other e) {
         return $ceylon$language$List$this.withTrailing($reifiedOther, e);
     }
 

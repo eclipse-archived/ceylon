@@ -10,14 +10,14 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
-@Method
+@Method @Deprecated
 public final class array_ {
-
+    
     private array_() {}
     
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language::Array<Element>")
-    public static <Element> Array<Element> array(@Ignore TypeDescriptor $reifiedElement, 
+    public static <Element> Array<Element> array(@Ignore final TypeDescriptor $reifiedElement, 
     @Name("elements")
     @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
     final ceylon.language.Iterable<? extends Element,? extends java.lang.Object> elements) {
@@ -25,20 +25,11 @@ public final class array_ {
     }
     
     @Ignore
-    public static <Element> Array<Element> array(TypeDescriptor $reifiedElement, 
-            Class typeClass,
+    public static <Element> Array<Element> array(
+            final TypeDescriptor $reifiedElement, 
+            final Class typeClass,
             final ceylon.language.Iterable<? extends Element,? extends java.lang.Object> elements) {
-        return Array.<Element>instance($reifiedElement, typeClass, elements);
+        return new Array<Element>($reifiedElement, elements);
     }
     
-    @Ignore
-    public static <Element> Array<Element> array(TypeDescriptor $reifiedElement) {
-        return Array.<Element>instance($reifiedElement, (Class)null, 0, null);
-    }
-    
-    @Ignore
-    public static <Element> Array<Element> array(TypeDescriptor $reifiedElement, Class typeClass) {
-        return Array.<Element>instance($reifiedElement, typeClass, 0, null);
-    }
-            
 }
