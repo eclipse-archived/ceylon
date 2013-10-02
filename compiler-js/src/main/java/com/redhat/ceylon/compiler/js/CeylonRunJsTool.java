@@ -17,6 +17,7 @@ import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -190,7 +191,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
     }
 
     private static String getCeylonRepo() {
-        return getFromEnv("CEYLON_REPO", "ceylon.system.repo");
+        return getFromEnv("CEYLON_REPO", Constants.PROP_CEYLON_SYSTEM_REPO);
     }
 
     private static String getFromEnv(String env, String prop){
