@@ -8,9 +8,9 @@ class BoxedLocalVariable<T> implements .com.redhat.ceylon.compiler.java.runtime.
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     public .java.lang.Object m2(final T t) {
-        final VariableBox<T> t2_ = new VariableBox<T>();
-        t2_.ref = t;
-        t2_.ref = t2_.ref;
+        final VariableBox<T> t2 = new VariableBox<T>();
+        t2.ref = t;
+        t2.ref = t2.ref;
         
         final class t3$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<T> {
             
@@ -18,7 +18,7 @@ class BoxedLocalVariable<T> implements .com.redhat.ceylon.compiler.java.runtime.
             }
             
             public T $get() {
-                return t2_.ref;
+                return t2.ref;
             }
         }
         final .com.redhat.ceylon.compiler.java.language.Getter<T> t3$getter_ = new t3$getter_();
@@ -43,9 +43,9 @@ class BoxedLocalVariable_sub extends .com.redhat.ceylon.compiler.java.test.expre
     
     @.java.lang.Override
     public final .java.lang.Object m2(final .ceylon.language.String t) {
-        final VariableBox<.java.lang.String> t2_ = new VariableBox<.java.lang.String>();
-        t2_.ref = t.toString();
-        t2_.ref = t2_.ref;
+        final VariableBox<.java.lang.String> t2 = new VariableBox<.java.lang.String>();
+        t2.ref = t.toString();
+        t2.ref = t2.ref;
         
         final class t3$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
             
@@ -53,7 +53,7 @@ class BoxedLocalVariable_sub extends .com.redhat.ceylon.compiler.java.test.expre
             }
             
             public .java.lang.String $get() {
-                return t2_.ref;
+                return t2.ref;
             }
         }
         final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> t3$getter_ = new t3$getter_();

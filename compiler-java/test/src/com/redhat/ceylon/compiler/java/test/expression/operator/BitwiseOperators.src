@@ -251,9 +251,9 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     private final void unboxedLocalGetters$priv() {
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong n1_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong n2_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i1_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong n1 = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong n2 = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i1 = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
         
         final class getterN1$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
@@ -261,7 +261,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
             }
             
             public long $get() {
-                return n1_.ref;
+                return n1.ref;
             }
         }
         final .com.redhat.ceylon.compiler.java.language.GetterLong getterN1$getter_ = new getterN1$getter_();
@@ -273,7 +273,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
             private long value;
             
             public void $set(final long getterN1) {
-                n1_.ref = getterN1;
+                n1.ref = getterN1;
             }
         }
         final getterN1$setter_ getterN1$setter_ = new getterN1$setter_();
@@ -284,7 +284,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
             }
             
             public long $get() {
-                return n2_.ref;
+                return n2.ref;
             }
         }
         final .com.redhat.ceylon.compiler.java.language.GetterLong getterN2$getter_ = new getterN2$getter_();
@@ -296,7 +296,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
             private long value;
             
             public void $set(final long getterN2) {
-                n2_.ref = getterN2;
+                n2.ref = getterN2;
             }
         }
         final getterN2$setter_ getterN2$setter_ = new getterN2$setter_();
@@ -307,7 +307,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
             }
             
             public long $get() {
-                return i1_.ref;
+                return i1.ref;
             }
         }
         final .com.redhat.ceylon.compiler.java.language.GetterLong getterI1$getter_ = new getterI1$getter_();
@@ -319,7 +319,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
             private long value;
             
             public void $set(final long getterI1) {
-                i1_.ref = getterI1;
+                i1.ref = getterI1;
             }
         }
         final getterI1$setter_ getterI1$setter_ = new getterI1$setter_();

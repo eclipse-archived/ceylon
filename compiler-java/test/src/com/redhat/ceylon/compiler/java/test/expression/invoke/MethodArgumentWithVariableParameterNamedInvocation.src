@@ -53,8 +53,8 @@ final class methodArgumentWithVariableParameter_fn_ {
                     
                     @.java.lang.Override
                     public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
-                        long y = ((.ceylon.language.Integer)$param$0).longValue();
-                        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong y_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(y);
+                        long y$ = ((.ceylon.language.Integer)$param$0).longValue();
+                        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong y = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(y$);
                         
                         final class fn_ {
                             
@@ -62,24 +62,24 @@ final class methodArgumentWithVariableParameter_fn_ {
                             }
                             
                             long fn() {
-                                y_.ref = 0L;
+                                y.ref = 0L;
                                 (
                                     let
                                     {
-                                        long $ceylontmpop4 = y_.ref;
-                                        y_.ref = $ceylontmpop4 + 1;
+                                        long $ceylontmpop4 = y.ref;
+                                        y.ref = $ceylontmpop4 + 1;
                                     }
                                     returning $ceylontmpop4;
                                 );
                                 (
                                     let
                                     {
-                                        long $ceylontmpop5 = y_.ref + 1L;
-                                        y_.ref = $ceylontmpop5;
+                                        long $ceylontmpop5 = y.ref + 1L;
+                                        y.ref = $ceylontmpop5;
                                     }
                                     returning $ceylontmpop5;
                                 );
-                                return y_.ref;
+                                return y.ref;
                             }
                         }
                         final fn_ fn = new fn_();

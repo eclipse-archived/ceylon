@@ -46,7 +46,7 @@ class MethodWithVariableParameter implements .com.redhat.ceylon.compiler.java.ru
     }
     
     private final void methodWithVariableParameterCaptured$priv(final long i$) {
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(i$);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(i$);
         
         final class fn_ {
             
@@ -54,20 +54,20 @@ class MethodWithVariableParameter implements .com.redhat.ceylon.compiler.java.ru
             }
             
             void fn() {
-                i_.ref = 0L;
+                i.ref = 0L;
                 (
                     let
                     {
-                        long $ceylontmpop4 = i_.ref;
-                        i_.ref = $ceylontmpop4 + 1;
+                        long $ceylontmpop4 = i.ref;
+                        i.ref = $ceylontmpop4 + 1;
                     }
                     returning $ceylontmpop4;
                 );
                 (
                     let
                     {
-                        long $ceylontmpop5 = i_.ref + 1L;
-                        i_.ref = $ceylontmpop5;
+                        long $ceylontmpop5 = i.ref + 1L;
+                        i.ref = $ceylontmpop5;
                     }
                     returning $ceylontmpop5;
                 );
@@ -77,7 +77,7 @@ class MethodWithVariableParameter implements .com.redhat.ceylon.compiler.java.ru
     }
     
     private final void methodWithHiddenVariableParameterCaptured$priv(final long i$) {
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(i$);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(i$);
         
         final class fn_ {
             
@@ -85,20 +85,20 @@ class MethodWithVariableParameter implements .com.redhat.ceylon.compiler.java.ru
             }
             
             void fn() {
-                i_.ref = 0L;
+                i.ref = 0L;
                 (
                     let
                     {
-                        long $ceylontmpop6 = i_.ref;
-                        i_.ref = $ceylontmpop6 + 1;
+                        long $ceylontmpop6 = i.ref;
+                        i.ref = $ceylontmpop6 + 1;
                     }
                     returning $ceylontmpop6;
                 );
                 (
                     let
                     {
-                        long $ceylontmpop7 = i_.ref + 1L;
-                        i_.ref = $ceylontmpop7;
+                        long $ceylontmpop7 = i.ref + 1L;
+                        i.ref = $ceylontmpop7;
                     }
                     returning $ceylontmpop7;
                 );

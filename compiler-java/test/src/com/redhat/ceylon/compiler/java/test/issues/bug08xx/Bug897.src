@@ -11,7 +11,7 @@ class Bug897 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     public final void bar() {
         long index = 0L;
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong captured_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(m$priv(index));
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong captured = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(m$priv(index));
         
         final class foo_ {
             
@@ -19,7 +19,7 @@ class Bug897 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             }
             
             long foo() {
-                return captured_.ref;
+                return captured.ref;
             }
         }
         final foo_ foo = new foo_();

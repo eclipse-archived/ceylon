@@ -33,7 +33,7 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
     }
     
     private final void m2$priv() {
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong m_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong m = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
         
         final class innerGetterSetter$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
@@ -41,7 +41,7 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
             }
             
             public long $get() {
-                return m_.ref;
+                return m.ref;
             }
         }
         final .com.redhat.ceylon.compiler.java.language.GetterLong innerGetterSetter$getter_ = new innerGetterSetter$getter_();
@@ -57,7 +57,7 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
                     let
                     {
                         long $ceylontmpop0 = innerGetterSetter;
-                        m_.ref = $ceylontmpop0;
+                        m.ref = $ceylontmpop0;
                     }
                     returning $ceylontmpop0;
                 );

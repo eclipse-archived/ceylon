@@ -6,7 +6,7 @@ final class bug607mth_ {
     }
     
     static void bug607mth(final .java.lang.String arg1, .java.lang.String arg2, final .java.lang.String arg3$) {
-        final VariableBox<.java.lang.String> arg3_ = new VariableBox<.java.lang.String>(arg3$);
+        final VariableBox<.java.lang.String> arg3 = new VariableBox<.java.lang.String>(arg3$);
         arg2 = "foo";
         
         final class cap_ {
@@ -15,7 +15,7 @@ final class bug607mth_ {
             }
             
             void cap() {
-                arg3_.ref = "bar";
+                arg3.ref = "bar";
             }
         }
         final cap_ cap = new cap_();
@@ -27,7 +27,7 @@ class Bug607cls implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     private final void mth$priv(final .java.lang.String arg1, .java.lang.String arg2, final .java.lang.String arg3$) {
-        final VariableBox<.java.lang.String> arg3_ = new VariableBox<.java.lang.String>(arg3$);
+        final VariableBox<.java.lang.String> arg3 = new VariableBox<.java.lang.String>(arg3$);
         arg2 = "bar";
         
         final class cap_ {
@@ -36,7 +36,7 @@ class Bug607cls implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             }
             
             void cap() {
-                arg3_.ref = "bar";
+                arg3.ref = "bar";
             }
         }
         final cap_ cap = new cap_();

@@ -8,8 +8,8 @@ class MethodLocalAssign implements .com.redhat.ceylon.compiler.java.runtime.mode
     private final void m$priv() {
         boolean b = true;
         b = false;
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxBoolean b1_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxBoolean(true);
-        b1_.ref = false;
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxBoolean b1 = new .com.redhat.ceylon.compiler.java.language.VariableBoxBoolean(true);
+        b1.ref = false;
         
         final class b2$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterBoolean {
             
@@ -17,7 +17,7 @@ class MethodLocalAssign implements .com.redhat.ceylon.compiler.java.runtime.mode
             }
             
             public boolean $get() {
-                return b1_.ref;
+                return b1.ref;
             }
         }
         final .com.redhat.ceylon.compiler.java.language.GetterBoolean b2$getter_ = new b2$getter_();
@@ -29,7 +29,7 @@ class MethodLocalAssign implements .com.redhat.ceylon.compiler.java.runtime.mode
             private boolean value;
             
             public void $set(final boolean b2) {
-                b1_.ref = b2;
+                b1.ref = b2;
             }
         }
         final b2$setter_ b2$setter_ = new b2$setter_();
