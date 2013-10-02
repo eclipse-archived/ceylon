@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
 public class Bug1135 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public Bug1135() {
-        this.listeners = .ceylon.language.array_.<.ceylon.language.Callable<? extends .java.lang.Object>>array(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Callable.class, (.ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.$get());
+        this.listeners = .ceylon.language.array_.<.ceylon.language.Callable<? extends .java.lang.Object>>array(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), (.ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.$get());
     }
     
     final class Listener {

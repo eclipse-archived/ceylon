@@ -6,6 +6,6 @@ final class bug657_ {
     }
     
     static <T>.ceylon.language.Array<T> bug657(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final long size, final T elem) {
-        return .ceylon.language.arrayOfSize_.<T>arrayOfSize(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, $reifiedT), null, size, elem);
+        return .ceylon.language.arrayOfSize_.<T>arrayOfSize(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, $reifiedT), size, elem);
     }
 }
