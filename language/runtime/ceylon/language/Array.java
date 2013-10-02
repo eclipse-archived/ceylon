@@ -100,6 +100,8 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                 }
                 return array;
             }
+            Element[] array = (Element[])java.lang.reflect.Array.newInstance(clazz.getKlass(), list.size());
+            return list.toArray(array);
         }
         return list.toArray();
     }
@@ -129,6 +131,9 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                 Arrays.fill(array, ((Boolean) element).booleanValue()); 
                 return array;
             }
+            Element[] array = (Element[])java.lang.reflect.Array.newInstance(clazz.getKlass(), size);
+            Arrays.fill(array, element);
+            return array;
         }
         java.lang.Object[] array = new java.lang.Object[size];
         Arrays.fill(array, element);
@@ -777,12 +782,12 @@ public final class Array<Element> implements List<Element>, ReifiedType {
             return new Array<Element>($reifiedElement, rev);
         }
 
-        java.lang.Object[] __a = (java.lang.Object[])array;
-        java.lang.Object[] rev = new java.lang.Object[__a.length];
+        Element[] __a = (Element[])array;
+        Element[] rev = (Element[])java.lang.reflect.Array.newInstance(__a.getClass().getComponentType(),__a.length);
         for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
             rev[i] = __a[j];
         }
-        return new Array<Element>($reifiedElement, (java.lang.Object[])rev);
+        return new Array<Element>($reifiedElement, (Element[])rev);
     }
 
     @Override @Ignore
@@ -888,13 +893,12 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     @Ignore 
     public Sequential<? extends Element> getSequence() {
         int len = java.lang.reflect.Array.getLength(array);
-        java.lang.Object[] arr = new java.lang.Object[len];
+        Element[] arr = (Element[])java.lang.reflect.Array.newInstance(array.getClass().getComponentType(), len);
         if (array instanceof java.lang.Object[]) {
-            System.arraycopy((java.lang.Object[]) array, 0, arr, 0, len);
-        }
-        else {
+            System.arraycopy(array, 0, arr, 0, len);
+        } else {
             for (int i=0; i<len; i++) {
-                arr[i] = java.lang.reflect.Array.get(array, i);
+                arr[i] = (Element) java.lang.reflect.Array.get(array, i);
             }
         }
         return new ArraySequence<Element>($reifiedElement, arr, 0, len, true); 
