@@ -33,8 +33,7 @@ import com.redhat.ceylon.compiler.java.test.TestModule;
 @RunWith(CeylonModuleRunner.class)
 @TestModule(
     srcDirectory="../ceylon.language/test",
-    module="metamodel",
-    testLoader=LanguageMetamodelLoader.class)
+    module="metamodel")
 public class LanguageMetamodelSuite {
 
 }

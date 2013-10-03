@@ -33,8 +33,7 @@ import com.redhat.ceylon.compiler.java.test.TestModule;
 @RunWith(CeylonModuleRunner.class)
 @TestModule(
     srcDirectory="../ceylon.language/test",
-    module="default",
-    testLoader=LanguageLoader.class)
+    module="default")
 public class LanguageSuite {
 
 }

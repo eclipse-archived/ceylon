@@ -34,8 +34,7 @@ import com.redhat.ceylon.compiler.java.test.TestModule;
 @TestModule(
     srcDirectory="../ceylon.language/test",
     module="annotations",
-    dependencies={"metamodel"},
-    testLoader=LanguageAnnotationsLoader.class)
+    dependencies={"metamodel"})
 public class LanguageAnnotationsSuite {
 
 }
