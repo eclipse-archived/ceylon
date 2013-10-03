@@ -124,7 +124,7 @@ public abstract class AppliedClassOrInterface<Type>
 
     @Override
     @TypeInfo("ceylon.language.meta.model::ClassModel<ceylon.language::Anything,ceylon.language::Nothing>|ceylon.language::Null")
-    public ceylon.language.meta.model.ClassModel<? extends Object, ? extends Object> getExtendedType() {
+    public ceylon.language.meta.model.ClassModel<? extends Object, ? super Sequential<? extends Object>> getExtendedType() {
         checkInit();
         return superclass;
     }
