@@ -611,3 +611,59 @@ final class ec_callableWithBonds_ {
         return (.ceylon.language.Callable).ceylon.language.nothing_.get_();
     }
 }
+class Bug1327 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1327() {
+    }
+    
+    private final <Arguments extends .ceylon.language.Sequential<? extends .ceylon.language.String>>Arguments foo$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedArguments, final Arguments args) {
+        return args;
+    }
+    
+    private final void m$priv() {
+        final .ceylon.language.Empty e1 = (.ceylon.language.Empty)(.java.lang.Object)<.ceylon.language.Sequential<? extends .ceylon.language.String>>foo$priv(.ceylon.language.Empty.$TypeDescriptor, (.ceylon.language.Sequential).ceylon.language.empty_.$get());
+        final .ceylon.language.Empty e2 = (.ceylon.language.Empty)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.erasure.bug1327_foo_.<.ceylon.language.Sequential<? extends .ceylon.language.String>>bug1327_foo(.ceylon.language.Empty.$TypeDescriptor, (.ceylon.language.Sequential).ceylon.language.empty_.$get());
+        final .ceylon.language.Empty e3 = (.ceylon.language.Empty)(.java.lang.Object)new .com.redhat.ceylon.compiler.java.test.expression.erasure.Bug1327_2<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor).<.ceylon.language.Sequential<? extends .ceylon.language.Integer>>foo(.ceylon.language.Empty.$TypeDescriptor, (.ceylon.language.Sequential).ceylon.language.empty_.$get());
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.erasure.Bug1327();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.Bug1327.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.Bug1327.class);
+}
+class Bug1327_2<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1327_2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+        this.$reifiedElement = $reifiedElement;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
+    
+    public final <Arguments extends .ceylon.language.Sequential<? extends Element>>Arguments foo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedArguments, final Arguments args) {
+        return args;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.erasure.Bug1327_2(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.Bug1327_2.class, $reifiedElement);
+    }
+}
+public final class bug1327_foo_ {
+    
+    private bug1327_foo_() {
+    }
+    
+    public static <Arguments extends .ceylon.language.Sequential<? extends .ceylon.language.String>>Arguments bug1327_foo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedArguments, final Arguments args) {
+        return args;
+    }
+}

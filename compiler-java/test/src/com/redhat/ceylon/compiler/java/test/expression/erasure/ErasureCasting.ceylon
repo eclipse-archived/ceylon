@@ -281,3 +281,30 @@ Callable<Callable<Result,FirstArgs>,SecondArgs> ec_callableWithBonds<Result,Firs
 {
     return nothing;
 }
+
+@noanno
+class Bug1327(){
+    Arguments foo<Arguments>(Arguments args)
+            given Arguments satisfies String[] {
+        return args;
+    }
+    void m(){
+        Empty e1 = foo([]);
+        Empty e2 = bug1327_foo([]);
+        Empty e3 = Bug1327_2<Integer>().foo([]);
+    }
+}
+
+@noanno
+class Bug1327_2<Element>(){
+    shared Arguments foo<Arguments>(Arguments args)
+            given Arguments satisfies Element[] {
+        return args;
+    }
+}
+
+@noanno
+shared Arguments bug1327_foo<Arguments>(Arguments args)
+        given Arguments satisfies String[] {
+    return args;
+}
