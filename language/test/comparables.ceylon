@@ -5,7 +5,8 @@ class C(Float f) satisfies Comparable<C> {
     shared actual String string = "C(`` f.string ``)";
 }
 
-void comparables() {
+@test
+shared void comparables() {
     C[] cs = [ C(0.0), C(1.0), C(-2.0) ];
     Comparable<C>[] comparables = cs;
     for (c in comparables) {

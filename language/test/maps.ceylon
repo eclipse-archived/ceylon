@@ -24,7 +24,8 @@ class MapTest<Key, Item>(<Key->Item>* entry)
     }
 }
 
-void testMaps() {
+@test
+shared void testMaps() {
     value m1 = MapTest<Integer, String>(1->"A", 2->"B", 3->"C", 4->"B");
     check(m1.count((Entry<Integer,String> x) => x.key==2)==1, "Map.count(2->B) is `` m1.count((Entry<Integer,String> x) => x.key==2) `` instead of 1");
     check(m1.count((Entry<Integer,String> x) => x.key==100)==0, "Map.count 2");

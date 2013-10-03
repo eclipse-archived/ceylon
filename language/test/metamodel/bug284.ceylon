@@ -6,7 +6,8 @@ class Bug284(){
     shared Integer attr = 2;
 }
 
-void bug284() {
+@test
+shared void bug284() {
     value b = `Bug284`;
     assert(is MemberClass<Bug284, Bug284.Inner, [String]> ic = b.getClassOrInterface<Nothing,ClassOrInterface<Anything>>("Inner"));
     assert(exists m = b.getMethod<Nothing,Anything,Nothing>("method"));

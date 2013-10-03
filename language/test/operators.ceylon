@@ -27,7 +27,8 @@ class Rectangle(width, height) satisfies Scalable<Float,Rectangle> {
     }
 }
 
-void operators() {
+@test
+shared void operators() {
     String? maybe = "hello";
     String? maybeNot = null;
     check(maybe?.uppercased exists, "?.");

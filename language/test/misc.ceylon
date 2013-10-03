@@ -1,7 +1,8 @@
+@test
 by()
 //see()
 tagged()
-void misc() {
+shared void misc() {
     
     function stringify(Character* chars) {
         StringBuilder sb = StringBuilder();

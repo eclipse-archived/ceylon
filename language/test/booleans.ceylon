@@ -1,3 +1,4 @@
+@test
 shared void booleans() {
     check(true==true, "boolean equals");
     check(true===true, "boolean identical");

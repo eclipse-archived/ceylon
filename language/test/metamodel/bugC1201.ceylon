@@ -5,7 +5,8 @@ shared class BugC1201Person(name) {
     string=>name;
 }
 
-void bugC1201() {
+@test
+shared void bugC1201() {
     value p = `BugC1201Person`;
     p("Me");
     value person = BugC1201Person("Gavin");

@@ -126,7 +126,8 @@ class MyCorrespondence() satisfies Correspondence<Integer, Character> {
     shared actual Character? get(Integer k) { return a[k]; }
 }
 
-void testSatisfaction() {
+@test
+shared void testSatisfaction() {
     value category = MyCategory();
     check(5 in category, "Category.contains [1]");
     check(!20 in category, "Category.contains [2]");

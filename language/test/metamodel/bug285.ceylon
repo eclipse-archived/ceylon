@@ -4,7 +4,8 @@ class Bug285(){
     shared Integer attr = 2;
 }
 
-void bug285() {
+@test
+shared void bug285() {
     value b = `Bug285`;
     assert(!b.getAttribute("Inner") exists);
     assert(!b.getAttribute("method") exists);

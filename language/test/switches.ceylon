@@ -78,6 +78,7 @@ Integer testAnyValues(Anything val) {
     else { return 0; }
 }
 
+@test
 shared void switches() {
     value enums = [1, 2.0];
     //is cases

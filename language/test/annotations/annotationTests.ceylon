@@ -87,7 +87,8 @@ Class<EnumeratedVariadic,[]> enumeratedVariadicAnnotation = `EnumeratedVariadic`
 Class<DeprecationAnnotation,[String]> deprecatedAnnotation = `DeprecationAnnotation`;
 Class<OptionalImportAnnotation,[]> optAnnotation = `OptionalImportAnnotation`;
 
-void checkAToplevelAttributeAnnotations() {
+@test
+shared void checkAToplevelAttributeAnnotations() {
     //shared
     assert(annotations(sharedAnnotation, aToplevelAttributeDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aToplevelAttributeDecl) exists);
@@ -148,7 +149,8 @@ void checkAToplevelAttributeAnnotations() {
         ev2 == smaller);
 }
 
-void checkAToplevelGetterSetterAnnotations() {
+@test
+shared void checkAToplevelGetterSetterAnnotations() {
     //shared
     assert(annotations(sharedAnnotation, aToplevelGetterSetterDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aToplevelGetterSetterDecl) exists);
@@ -177,7 +179,8 @@ void checkAToplevelGetterSetterAnnotations() {
     assert(see.first.programElements.contains(`value aToplevelAttribute`));
 }
 
-void checkAToplevelFunctionAnnotations() {
+@test
+shared void checkAToplevelFunctionAnnotations() {
     //shared
     assert(annotations(sharedAnnotation, aToplevelFunctionDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aToplevelFunctionDecl) exists);
@@ -210,7 +213,8 @@ void checkAToplevelFunctionAnnotations() {
             pseq.seq== "aToplevelFunction.parameter 1");
 }
 
-void checkAToplevelObjectAnnotations() {
+@test
+shared void checkAToplevelObjectAnnotations() {
     
     //shared
     assert(annotations(sharedAnnotation, aToplevelObjectDecl) exists);
@@ -233,7 +237,8 @@ void checkAToplevelObjectAnnotations() {
         seq2.first.seq == "aToplevelObject 1");
 }
 
-void checkAClass() {
+@test
+shared void checkAClass() {
     //shared
     assert(annotations(sharedAnnotation, aClassDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aClassDecl) exists);
@@ -273,7 +278,8 @@ void checkAClass() {
             pseq2.seq== "AClass.parameter 2");
 }
 
-void checkAAbstractClass() {
+@test
+shared void checkAAbstractClass() {
     //shared
     assert(annotations(sharedAnnotation, aAbstractClassDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aAbstractClassDecl) exists);
@@ -373,7 +379,8 @@ void checkAAbstractClass() {
     omdoc.description == "AAbstractClass.objectMember");
 }
 
-void checkAInterface() {
+@test
+shared void checkAInterface() {
     assert(is Interface<AInterface> iface = aInterfaceDecl.apply<AInterface>());
     //shared
     assert(annotations(sharedAnnotation, aInterfaceDecl) exists);
@@ -564,7 +571,8 @@ void checkAInterface() {
     
 }
 
-void checkModuleAndImports() {
+@test
+shared void checkModuleAndImports() {
     value m = aPackage.container;
     assert(exists moddoc = annotations(docAnnotation, m));
     assert(moddoc.description == "Some module doc");
@@ -582,7 +590,8 @@ void checkModuleAndImports() {
     
 }
 
-void checkPackage() {
+@test
+shared void checkPackage() {
     value p = aPackage;
     assert(! annotations(sharedAnnotation, p) exists);
     assert(! annotations(docAnnotation, p) exists);
@@ -711,7 +720,8 @@ void checkPackage() {
 
 }
 
-void checkMetamodelRefs() {
+@test
+shared void checkMetamodelRefs() {
     value decls = annotations(`Decl`, `class MetamodelRefs`);
     
     assert(exists d0 = decls[0],
@@ -839,7 +849,8 @@ void checkMetamodelRefs() {
         `class AClassAlias` == d29.decl);
 }
 
-void checkAClassAlias() {
+@test
+shared void checkAClassAlias() {
     assert(exists acadoc = annotations(docAnnotation, `class AClassAlias`),
             acadoc.description == "AClassAlias");
     /* TODO #1298 

@@ -1,4 +1,5 @@
-void characters() {
+@test
+shared void characters() {
     value c = 'a';
     check(c.lowercase, "lowercase char");
     check(!c.uppercase, "lowercase char");

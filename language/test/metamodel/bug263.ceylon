@@ -3,7 +3,8 @@ final annotation class Bug263Annotation(shared actual String string)
 
 annotation Bug263Annotation bug263annotation(String s) => Bug263Annotation(s);
 
+@test
 bug263annotation("hello")
-void bug263() {
+shared void bug263() {
     print(`function bug263`.annotations<Bug263Annotation>());
 }

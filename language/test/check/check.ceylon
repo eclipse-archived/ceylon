@@ -32,6 +32,7 @@ shared void results() {
 
 shared Integer assertionCount() { return assertions; }
 
+@test
 shared void test() {
     //This is as good a place as any to test new 'assert' keyword
     String? ms = "x";

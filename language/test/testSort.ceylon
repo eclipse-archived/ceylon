@@ -1,3 +1,4 @@
+@test
 shared void testSort() {
     // disabled: see https://github.com/ceylon/ceylon-compiler/issues/953
     //check(!sort {} nonempty, "sort()");

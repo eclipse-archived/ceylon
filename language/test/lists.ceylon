@@ -12,7 +12,8 @@ class TestList<Element>(Element* elems) satisfies List<Element> {
     shared actual TestList<Element> clone => TestList(*elems);
 }
 
-void lists() {
+@test
+shared void lists() {
     value a = TestList(1,2,3,4);
     value b = LazyList({1,2,3,4,5,6,7,8});
     check(LazyList({}).size==0, "empty LazyList()");

@@ -73,7 +73,8 @@ void test_foreach() {
     check(sum==15, "for/else with iterator");
 }
 
-void iterators() {
+@test
+shared void iterators() {
     variable value i=0;
     for (s in Pair("hello", "world")) {
         if (i==0) { check(s=="hello", "iterator iteration"); }

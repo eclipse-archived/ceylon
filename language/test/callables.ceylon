@@ -8,7 +8,8 @@ class TestCallable(String what) {
   }
 }
 
-void callables() {
+@test
+shared void callables() {
   value seq = {"Hello", "World"};
   check(testCallable("Hello".initial)=="H", "higher-class 1");
   value ini1 = "Hello".initial;

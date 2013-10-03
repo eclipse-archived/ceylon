@@ -307,6 +307,7 @@ shared void arraySequence() {
     check(abc.segment(3, 3)=={}, "abc.segment(3,3)");
 }
 
+@test
 shared void sequences() {
     arraySequence();
     value builder = SequenceBuilder<String>();

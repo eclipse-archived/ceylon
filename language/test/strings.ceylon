@@ -18,6 +18,7 @@ void compareIterables<T>(Iterable<T> aIterable, Iterable<T> bIterable, String me
     check(b == finished, "``message``: Iterator B not empty: extra '``b``'");
 }
 
+@test
 shared void strings() {
     value hello = "hello";
     

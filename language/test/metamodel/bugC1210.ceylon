@@ -1,3 +1,4 @@
-void bugC1210() {
+@test
+shared void bugC1210() {
     value im = `function Iterable.map`;
 }

@@ -1,4 +1,5 @@
-void testProcess() {
+@test
+shared void testProcess() {
     // basically just test if everything can be called without error
     Anything args = process.arguments;
     if (is Anything[] args) {

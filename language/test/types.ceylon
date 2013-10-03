@@ -92,8 +92,8 @@ interface TypeTestI4 {}
 class TypeTestC1() satisfies TypeTestI1&TypeTestI2{}
 class TypeTestC3() satisfies TypeTestI3{}
 
-
-void types() {
+@test
+shared void types() {
     Anything bool = true;
     Anything entry = 1->2;
     Anything nothing = null;

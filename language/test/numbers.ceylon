@@ -1,3 +1,4 @@
+@test
 shared void numbers() {
     check(1==1, "natural equals");
     check(1!=2, "natural not equals");

@@ -8,7 +8,8 @@ class Bug258(String name){
     }
 }
 
-void bug258(){
+@test
+shared void bug258(){
     value objectEquals = `Object.equals`;
     assert (objectEquals("foo")("foo"));
     assert (!objectEquals("foo")("bar"));

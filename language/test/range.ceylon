@@ -1,4 +1,5 @@
-void testRange() {
+@test
+shared void testRange() {
     // TODO RangeOp
     
     // SegmentOp

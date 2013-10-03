@@ -9,7 +9,8 @@ class Proto2<out Element>(element)
     shared actual Proto2<Element> clone { return Proto2(element); }
 }
 
-void clones() {
+@test
+shared void clones() {
     value prot = Prototype("hello");
     check(prot===prot.clone, "clone");
     value p2 = Proto2(5);

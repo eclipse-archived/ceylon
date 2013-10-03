@@ -4,7 +4,9 @@ import ceylon.language.meta { type }
 class Bug303() {
     shared variable String? nome = "Diego";
 }
-void bug303() {
+
+@test
+shared void bug303() {
     value a = `Bug303`;
 
     value attributeA = a.getAttribute<Bug303, String?>("nome");

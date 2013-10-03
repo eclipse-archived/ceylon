@@ -1,5 +1,6 @@
 //#20
-void spansegments() {
+@test
+shared void spansegments() {
   value one9 = "123456789";
   check((1..20).span(5,3).sequence=={6,5,4}, "Backward span [1] ``(1..20).span(5,3).sequence``");
   check([1,2,3,4,5,6,7,8,9].span(5,3)=={6,5,4}, "Backward span [2] ``[1,2,3,4,5,6,7,8,9].span(5,3)``");

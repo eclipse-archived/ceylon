@@ -36,7 +36,8 @@ class MyResource(Integer err) satisfies Closeable {
     }
 }
 
-void exceptions() {
+@test
+shared void exceptions() {
     variable Boolean caught=false;
     try {
         throw MyException();

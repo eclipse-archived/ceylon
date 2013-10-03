@@ -1,4 +1,5 @@
-void testIterables() {
+@test
+shared void testIterables() {
     value s1 = { 1, 2, 3, 4, 5 };
     value s2 = { "Hello", "World" };
     //Map

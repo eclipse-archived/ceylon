@@ -78,7 +78,8 @@ class SetTest<Element>(Element* element) extends Object()
     }
 }
 
-void testSets() {
+@test
+shared void testSets() {
     value s1 = SetTest<Integer>(1, 2, 3);
     value es = SetTest<Nothing>();
     check(s1.count((Integer x) => x==2)==1, "Set.count 1");

@@ -29,7 +29,8 @@ void test_entries_function() {
     check(1->"a" != 1->"b", "entry.equals [2]");
 }
 
-void entriesAndRanges() {
+@test
+shared void entriesAndRanges() {
     
 /*Entry<Integer,String> entry {
     item="hello";

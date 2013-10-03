@@ -1,4 +1,5 @@
-void tuples() {
+@test
+shared void tuples() {
     [Integer,String,Singleton<Character>] returnTuple(Integer a, String b, Singleton<Character> c) {
         return [a,b,c];
     }

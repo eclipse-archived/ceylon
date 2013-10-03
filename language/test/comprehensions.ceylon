@@ -1,4 +1,5 @@
-void comprehensions() {
+@test
+shared void comprehensions() {
   //Used in initializers
   value s1 = [ for (w in {"hello", "world"}) for (c in w) c.string ];
   value s2 = [ for (w in {"hello", "world"}) for (c in w) if (c in "hw") c.uppercased ];

@@ -9,7 +9,8 @@ class Foo<out T>(T t) given T satisfies Object {
     }
 }
 
-void equality() {
+@test
+shared void equality() {
     check(Foo(1)==Foo(1), "Foo(1)==Foo(1)");
     check(Foo("hi")==Foo("hi"), "Foo(hi)==Foo(hi)");
     check(Foo(1)!=Foo(2), "Foo(1)!=Foo(2)");

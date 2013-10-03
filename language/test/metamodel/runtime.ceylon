@@ -17,7 +17,8 @@ import ceylon.language.meta.declaration {
     covariant, contravariant, invariant
 }
 
-void checkConstructors(){
+@test
+shared void checkConstructors(){
     // no parameters
     value noParamsType = type(NoParams());
     assert(is Class<NoParams, []> noParamsType);
@@ -91,7 +92,8 @@ void checkConstructors(){
     }
 }
 
-void checkMemberAttributes(){
+@test
+shared void checkMemberAttributes(){
     value noParamsInstance = NoParams();
     value noParamsType = type(noParamsInstance);
     assert(is Class<NoParams, []> noParamsType);
@@ -176,7 +178,8 @@ void checkMemberAttributes(){
     }
 }
 
-void checkMemberFunctions(){
+@test
+shared void checkMemberFunctions(){
     value noParamsInstance = NoParams();
     value noParamsType = type(noParamsInstance);
     assert(is Class<NoParams, []> noParamsType);
@@ -217,7 +220,8 @@ void checkMemberFunctions(){
     }
 }
 
-void checkMemberTypes(){
+@test
+shared void checkMemberTypes(){
     value containerClassInstance = ContainerClass();
     value containerClassType = type(containerClassInstance);
     assert(is Class<ContainerClass, []> containerClassType);
@@ -261,7 +265,8 @@ void checkMemberTypes(){
     assert(exists isbSatisfiedType = `ContainerClass.InnerSubClass`.satisfiedTypes[0], isbSatisfiedType == `ContainerClass.InnerInterface`);
 }
 
-void checkUntypedFunctionToAppliedFunction(){
+@test
+shared void checkUntypedFunctionToAppliedFunction(){
     value noParamsInstance = NoParams();
     value noParamsType = type(noParamsInstance);
     assert(is Class<NoParams, []> noParamsType);
@@ -279,7 +284,8 @@ void checkUntypedFunctionToAppliedFunction(){
     assert(is NoParams o3);
 }
 
-void checkHierarchy(){
+@test
+shared void checkHierarchy(){
     value noParamsAppliedType = type(NoParams());
     
     assert(is Class<Anything,[]> noParamsAppliedType);
@@ -310,7 +316,8 @@ void checkHierarchy(){
     assert(!anythingType.declaration.extendedType exists);
 }
 
-void checkPackageAndModule(){
+@test
+shared void checkPackageAndModule(){
     value noParamsAppliedType = type(NoParams());
     
     assert(is Class<Anything,[]> noParamsAppliedType);
@@ -340,7 +347,8 @@ void checkPackageAndModule(){
     assert(exists modPackage = mod.members[0], modPackage === pkg);
 }
 
-void checkToplevelAttributes(){
+@test
+shared void checkToplevelAttributes(){
     value noParamsAppliedType = type(NoParams());
     
     assert(is Class<Anything,[]> noParamsAppliedType);
@@ -425,7 +433,8 @@ void checkToplevelAttributes(){
     assert(privateToplevelAttributeModel.get() == "a");
 }
 
-void checkToplevelFunctions(){
+@test
+shared void checkToplevelFunctions(){
     value noParamsInstance = NoParams();
     value noParamsAppliedType = type(noParamsInstance);
     assert(is Class<String, [String]> stringType = type("foo"));
@@ -526,7 +535,8 @@ void checkToplevelFunctions(){
     assert(privateToplevelFunctionModel() == "b");
 }
 
-void checkModules(){
+@test
+shared void checkModules(){
     assert(modules.list.size >= 2);
     assert(exists languageModule = modules.find("ceylon.language", language.version));
     assert(languageModule.name == "ceylon.language", languageModule.version == language.version);
@@ -542,7 +552,8 @@ void checkModules(){
     assert(exists p3 = thisModule.findImportedPackage("metamodel"), p3 == `package metamodel`);
 }
 
-void checkObjectDeclaration(){
+@test
+shared void checkObjectDeclaration(){
     // get it via its package
     value noParamsClass = type(NoParams());
     value pkg = noParamsClass.declaration.containingPackage;
@@ -559,7 +570,8 @@ void checkObjectDeclaration(){
     assert(!is Class<Anything, []> topLevelObjectClass);
 }
 
-void checkAliases(){
+@test
+shared void checkAliases(){
     // get it via its package
     value pkg = `package metamodel`;
     assert(exists aliasDeclaration = pkg.getAlias("TypeAliasToClass"));
@@ -603,7 +615,8 @@ void checkAliases(){
             secondUnion.declaration.name == "String");
 }
 
-void checkTypeParameters(){
+@test
+shared void checkTypeParameters(){
     value tpTest = `class TypeParameterTest`;
     assert(tpTest.typeParameterDeclarations.size == 3);
     
@@ -643,7 +656,8 @@ void checkTypeParameters(){
     assert(tpToplevelMethodTPType.declaration.name == "T");
 }
 
-void checkClassOrInterfaceCaseTypes(){
+@test
+shared void checkClassOrInterfaceCaseTypes(){
     value iwct = `interface InterfaceWithCaseTypes`;
     assert(iwct.caseTypes.size == 2);
     assert(is OpenClassType iwcta = iwct.caseTypes[0],
@@ -659,6 +673,7 @@ void checkClassOrInterfaceCaseTypes(){
     assert(iwsta.declaration.name == "T");
 }
 
+@test
 shared void checkModifiers(){
     value mods = `class Modifiers`;
     assert(!mods.annotation, !mods.final, mods.abstract, mods.shared, !mods.formal, !mods.actual, !mods.default);
@@ -674,14 +689,16 @@ shared void checkModifiers(){
     assert(`function annot`.annotation);
 }
 
-void checkContainers(){
+@test
+shared void checkContainers(){
     assert(`class ContainerClass.InnerClass`.container.name == "ContainerClass");
     assert(`class ContainerClass`.container.name == "metamodel");
     assert(`value NoParams.str`.container.name == "NoParams");
     assert(`function NoParams.noParams`.container.name == "NoParams");
 }
 
-void checkLocalTypes(){
+@test
+shared void checkLocalTypes(){
     class Foo(shared String str) {
         shared class Bar() {}
     }
@@ -691,7 +708,8 @@ void checkLocalTypes(){
     value innerType = `Foo.Bar`;
 }
 
-void checkEqualityAndHash(){
+@test
+shared void checkEqualityAndHash(){
     // declarations
     
     value noParamsDecl = `class NoParams`;
@@ -930,7 +948,8 @@ void checkEqualityAndHash(){
     assert(i1Type.string == "metamodel::TypeParams<metamodel::TPA&metamodel::TPB>");
 }
 
-void checkApplyTypeConstraints(){
+@test
+shared void checkApplyTypeConstraints(){
     value ctpClass = `class ConstrainedTypeParams`;
     try{
         ctpClass.apply(`String`, `Object`);
@@ -976,7 +995,8 @@ void checkApplyTypeConstraints(){
     }
 }
 
-void checkApplications(){
+@test
+shared void checkApplications(){
     Object topLevelValue = `value toplevelString`.apply<String>();
     assert(is Value<String> topLevelValue);
 
@@ -1005,7 +1025,8 @@ FIXME: to be determined wrt container types
 */
 }
 
-void checkTests(){
+@test
+shared void checkTests(){
     assert(`NoParams`.isTypeOf(NoParams()));
     assert(!`Integer`.isTypeOf(NoParams()));
     assert(`TPA & TPB`.isTypeOf(TP1()));
@@ -1031,7 +1052,8 @@ void checkTests(){
     assert(!`Nothing`.isExactly(`Object`));
 }
 
-void checkTypeArgumentChecks(){
+@test
+shared void checkTypeArgumentChecks(){
     try{
         `class NoParams`.apply();
         assert(false);
