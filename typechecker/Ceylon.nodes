@@ -501,7 +501,8 @@
 ^(abstract TERM
     ProducedType typeModel;
     boolean unboxed;
-    boolean typeErased;)
+    boolean typeErased;
+    boolean untrustedType;)
 ^(abstract OPERATOR_EXPRESSION:TERM)
 
 ^(abstract BINARY_OPERATOR_EXPRESSION:OPERATOR_EXPRESSION
