@@ -892,16 +892,75 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     @Override 
     @Ignore 
     public Sequential<? extends Element> getSequence() {
-        int len = java.lang.reflect.Array.getLength(array);
-        Element[] arr = (Element[])java.lang.reflect.Array.newInstance(array.getClass().getComponentType(), len);
-        if (array instanceof java.lang.Object[]) {
-            System.arraycopy(array, 0, arr, 0, len);
-        } else {
-            for (int i=0; i<len; i++) {
-                arr[i] = (Element) java.lang.reflect.Array.get(array, i);
+        long size = getSize();
+        java.lang.Object[] result;
+        if ($reifiedElement instanceof TypeDescriptor.Class) {
+            TypeDescriptor.Class clazz = (TypeDescriptor.Class) $reifiedElement;
+            result = (Element[])java.lang.reflect.Array.newInstance(clazz.getKlass(), (int)size);
+        }
+        else {
+            result = new java.lang.Object[(int)size];
+        }
+        if (array instanceof long[]) {
+            long[] arr = (long[]) array;
+            for (int i=0; i<size; i++) {
+                result[i] = Integer.instance(arr[i]);
             }
         }
-        return new ArraySequence<Element>($reifiedElement, arr, 0, len, false);
+        else if (array instanceof double[]) {
+            double[] arr = (double[]) array;
+            for (int i=0; i<size; i++) {
+                result[i] = Float.instance(arr[i]);
+            }
+        }
+        else if (array instanceof char[]) {
+            char[] arr = (char[]) array;
+            for (int i=0; i<size; i++) {
+                result[i] = Character.instance(arr[i]);
+            }
+        }
+        else if (array instanceof int[]) {
+            int[] arr = (int[]) array;
+            for (int i=0; i<size; i++) {
+                if (result instanceof Integer[]) {
+                    result[i] = Integer.instance(arr[i]);
+                }
+                else if (result instanceof Character[]) {
+                    result[i] = Character.instance(arr[i]);
+                }
+                else {
+                    throw new AssertionException("unexpected primitive array");
+                }
+            }
+        }
+        else if (array instanceof short[]) {
+            short[] arr = (short[]) array;
+            for (int i=0; i<size; i++) {
+                result[i] = Integer.instance(arr[i]);
+            }
+        }
+        else if (array instanceof byte[]) {
+            byte[] arr = (byte[]) array;
+            for (int i=0; i<size; i++) {
+                result[i] = Integer.instance(arr[i]);
+            }
+        }
+        else if (array instanceof float[]) {
+            float[] arr = (float[]) array;
+            for (int i=0; i<size; i++) {
+                result[i] = Float.instance(arr[i]);
+            }
+        }
+        else if (array instanceof boolean[]) {
+            boolean[] arr = (boolean[]) array;
+            for (int i=0; i<size; i++) {
+                result[i] = Boolean.instance(arr[i]);
+            }
+        }
+        else {
+            System.arraycopy(array, 0, result, 0, (int)size);
+        }
+        return new ArraySequence<Element>($reifiedElement, result, 0, (int)size, false);
     }
 
     @Override @SuppressWarnings("rawtypes")
