@@ -36,7 +36,7 @@ class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             }
             returning $ceylontmp2 instanceof .ceylon.language.Sequence;
         );
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> full = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("foo")});
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> full = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Sequential<? extends .ceylon.language.String>>(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("foo")});
         sync = (
             let
             {

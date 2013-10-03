@@ -19,7 +19,7 @@ final class callableNamedInvocationSequenced_f_ {
             let
             {
                 .ceylon.language.Integer $arg$1$0 = .ceylon.language.Integer.instance(1L);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $arg$1$1 = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("")});
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $arg$1$1 = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Sequential<? extends .ceylon.language.String>>(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("")});
                 foo.$call$variadic($arg$1$0, $arg$1$1);
             }
             returning null;
@@ -28,7 +28,7 @@ final class callableNamedInvocationSequenced_f_ {
             let
             {
                 .ceylon.language.Integer $arg$2$0 = .ceylon.language.Integer.instance(1L);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $arg$2$1 = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $arg$2$1 = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
                         .ceylon.language.String.instance(""),
                         .ceylon.language.String.instance("")});
                 foo.$call$variadic($arg$2$0, $arg$2$1);
