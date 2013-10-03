@@ -15,7 +15,7 @@ final class bug973_ff_ {
     }
     private static final long[] value;
     static {
-        value = new long[]{((.ceylon.language.Integer)(
+        value = new long[]{((.ceylon.language.Integer)(.java.lang.Object)(
             let
             {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;

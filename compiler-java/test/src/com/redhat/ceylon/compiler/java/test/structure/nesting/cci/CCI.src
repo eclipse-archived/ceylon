@@ -48,7 +48,7 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> i
             private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cci.C$CC$CCI<? extends T, ? super X> $this;
             
             private T m2$priv() {
-                return <.java.lang.Object>m1$priv(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null);
+                return (T)(.java.lang.Object)<.java.lang.Object>m1$priv(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null);
             }
         }
         
