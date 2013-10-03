@@ -873,6 +873,10 @@ shared void run() {
     checkModuleAndImports();
     checkPackage();
     checkMetamodelRefs();
+    
+    // ATTENTION!
+    // When you add new test methods here make sure they are "shared" and marked "@test"!
+    
     print("Annotation tests OK");
 }
 shared void test() { run(); }

@@ -1183,6 +1183,9 @@ shared void run() {
 
     checkTypeArgumentChecks();
 
+    // ATTENTION!
+    // When you add new test methods here make sure they are "shared" and marked "@test"!
+
     // FIXME: test members() wrt filtering
     // FIXME: test untyped class to applied class
     
@@ -1207,6 +1210,10 @@ shared void run() {
     bugC1201();
     bugC1210();
     bugC1244();
+    
+    // ATTENTION!
+    // When you add new test methods here make sure they are "shared" and marked "@test"!
+    
     print("Metamodel tests OK");
 }
 shared void test() { run(); }
