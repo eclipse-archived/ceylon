@@ -43,7 +43,7 @@ function typeLiteral$meta($$targs$$) {
       } else if (mdl['$mt'] === 'mthd') {
         return AppliedFunction(t);
       } else if (mdl['$mt'] === 'attr' || mdl['$mt'] === 'gttr' || mdl['$mt'] === 'obj') {
-        return AppliedValue(t,{Container:{t:mm.$cont},Type:mm.$t});
+        return AppliedValue(undefined,t,{Container:{t:mm.$cont},Type:mm.$t});
       } else {
         console.log("WTF is a metatype " + mdl['$mt'] + " on a closed type???????");
       }
