@@ -24,6 +24,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls
 import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -44,6 +45,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -401,7 +403,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         boolean exprBoxed = !CodegenUtil.isUnBoxed(expr);
         boolean exprErased = CodegenUtil.hasTypeErased(expr);
-        return applyErasureAndBoxing(result, exprType, exprErased, exprBoxed, boxingStrategy, expectedType, flags);
+        boolean exprUntrustedType = CodegenUtil.hasUntrustedType(expr);
+        return applyErasureAndBoxing(result, exprType, exprErased, exprBoxed, exprUntrustedType, boxingStrategy, expectedType, flags);
     }
     
     JCExpression applyErasureAndBoxing(JCExpression result, ProducedType exprType,
@@ -411,7 +414,14 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     JCExpression applyErasureAndBoxing(JCExpression result, ProducedType exprType,
-            boolean exprErased, boolean exprBoxed,
+            boolean exprErased, boolean exprBoxed, 
+            BoxingStrategy boxingStrategy, ProducedType expectedType, 
+            int flags) {
+        return applyErasureAndBoxing(result, exprType, exprErased, exprBoxed, false, boxingStrategy, expectedType, flags);
+    }
+    
+    JCExpression applyErasureAndBoxing(JCExpression result, ProducedType exprType,
+            boolean exprErased, boolean exprBoxed, boolean exprUntrustedType,
             BoxingStrategy boxingStrategy, ProducedType expectedType, 
             int flags) {
         
@@ -470,16 +480,27 @@ public class ExpressionTransformer extends AbstractTransformer {
                         exprIsRaw = true;
                         // let's not add another downcast if we got a cast: one is enough
                         downCast = false;
+                        // same for forced erasure
+                        exprErased = false;
                     }
 
                     // if the expr is not raw, we need a cast
                     // if the expr is raw:
                     //  don't even try making an actual cast if there are bounded type parameters in play, because going raw is much safer
                     //  also don't try making the cast if the expected type is raw because anything goes
-                    if(!exprIsRaw 
-                            || (!expectedTypeHasConstrainedTypeParameters && !expectedTypeIsRaw)
+                    boolean needsTypedCast = !exprIsRaw 
+                            || (!expectedTypeHasConstrainedTypeParameters && !expectedTypeIsRaw);
+                    if(needsTypedCast
                             // make sure that downcasts get at least one cast
-                            || downCast){
+                            || downCast
+                            // same for forced erasure
+                            || exprUntrustedType){
+                        // forced erasure may require a previous cast to Object if we were not able to insert a raw cast
+                        // because for instance Sequential<String> cannot be cast forcibly to Empty because Java is so smart
+                        // it figures out that there's no intersection between the two types, but we know better
+                        if(exprUntrustedType){
+                            result = make().TypeCast(syms().objectType, result);
+                        }
                         // Do the actual cast
                         JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT);
                         result = make().TypeCast(targetType, result);
@@ -511,7 +532,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return ret;
     }
 
-    private boolean needsCast(ProducedType exprType, ProducedType expectedType, 
+    boolean needsCast(ProducedType exprType, ProducedType expectedType, 
                               boolean expectedTypeNotRaw, boolean expectedTypeHasConstrainedTypeParameters,
                               boolean downCast) {
         // make sure we work on definite types
@@ -2733,36 +2754,50 @@ public class ExpressionTransformer extends AbstractTransformer {
     private final void transformTypeArguments(
             CallBuilder callBuilder,
             StaticMemberOrTypeExpression mte) {
-        java.util.List<ProducedType> typeargs = mte.getTypeArguments().getTypeModels();
         java.util.List<TypeParameter> tps = null;
         Declaration declaration = mte.getDeclaration();
-        if (declaration instanceof TypeDeclaration) {
-            tps = ((TypeDeclaration)declaration).getTypeParameters();
-        } else if (declaration instanceof Functional) {
-            tps = ((Functional)declaration).getTypeParameters();
+        if (declaration instanceof Generic) {
+            tps = ((Generic)declaration).getTypeParameters();
         }
         if (tps != null) {
-            outer :for (TypeParameter tp : tps) {
+            for (TypeParameter tp : tps) {
                 ProducedType ta = mte.getTarget().getTypeArguments().get(tp);
-                if (willEraseToObject(ta)) {
-                    if (hasDependentTypeParameters(tps, tp)) {
+                java.util.List<ProducedType> bounds = null;
+                boolean needsCastForBounds = false;
+                if(!tp.getSatisfiedTypes().isEmpty()){
+                    bounds = new ArrayList<ProducedType>(tp.getSatisfiedTypes().size());
+                    for(ProducedType bound : tp.getSatisfiedTypes()){
+                        // substitute the right type arguments
+                        bound = substituteTypeArgumentsForTypeParameterBound(mte.getTarget(), bound);
+                        bounds.add(bound);
+                        needsCastForBounds |= needsCast(ta, bound, false, false, false);
+                    }
+                }
+                boolean hasMultipleBounds;
+                ProducedType firstBound;
+                if(bounds != null){
+                    hasMultipleBounds = bounds.size() > 1;
+                    firstBound = bounds.isEmpty() ? null : bounds.get(0);
+                }else{
+                    hasMultipleBounds = false;
+                    firstBound = null;
+                }
+                if (willEraseToObject(ta) || needsCastForBounds) {
+                    if (hasDependentTypeParameters(tps, tp)
+                            // if we must use the bounds and we have more than one, we cannot use one to satisfy them all
+                            // and we cannot represent the intersection type in Java so give up
+                            || hasMultipleBounds
+                            // if we are going to use the first bound and it is self-dependent, just give up because
+                            // we cannot express that in the Java language
+                            || isBoundsSelfDependant(tp)
+                            || (firstBound != null && willEraseToObject(firstBound))) {
                         callBuilder.typeArguments(List.<JCExpression>nil());
                         return;
                     }
-                    if (tp.getSatisfiedTypes().isEmpty()) {
+                    if (firstBound == null) {
                         callBuilder.typeArgument(makeJavaType(ta, JT_TYPE_ARGUMENT));
                     } else {
-                        // Find the first bound which is assignable to the 
-                        // type argument and use that 
-                        for (ProducedType bound : tp.getSatisfiedTypes()) {
-                            if (bound.isSubtypeOf(ta)) {
-                                callBuilder.typeArgument(makeJavaType(bound, JT_TYPE_ARGUMENT));
-                                continue outer;
-                            }
-                        }
-                        // If we found none, give up and go raw
-                        callBuilder.typeArguments(List.<JCExpression>nil());
-                        return;
+                        callBuilder.typeArgument(makeJavaType(firstBound, JT_TYPE_ARGUMENT));
                     }
                 } else {
                     callBuilder.typeArgument(makeJavaType(ta, JT_TYPE_ARGUMENT));
@@ -2770,7 +2805,35 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         }
     }
-    
+
+    boolean erasesTypeArguments(ProducedReference producedReference) {
+        java.util.List<TypeParameter> tps = null;
+        Declaration declaration = producedReference.getDeclaration();
+        if (declaration instanceof Generic) {
+            tps = ((Generic)declaration).getTypeParameters();
+        }
+        if (tps != null) {
+            for (TypeParameter tp : tps) {
+                ProducedType ta = producedReference.getTypeArguments().get(tp);
+                java.util.List<ProducedType> bounds = null;
+                boolean needsCastForBounds = false;
+                if(!tp.getSatisfiedTypes().isEmpty()){
+                    bounds = new ArrayList<ProducedType>(tp.getSatisfiedTypes().size());
+                    for(ProducedType bound : tp.getSatisfiedTypes()){
+                        // substitute the right type arguments
+                        bound = substituteTypeArgumentsForTypeParameterBound(producedReference, bound);
+                        bounds.add(bound);
+                        needsCastForBounds |= needsCast(ta, bound, false, false, false);
+                    }
+                }
+                if (willEraseToObject(ta) || needsCastForBounds) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     protected JCExpression transformNamedArgumentInvocationOrInstantiation(NamedArgumentInvocation invocation, 
             CallBuilder callBuilder,
             TransformedInvocationPrimary transformedPrimary) {

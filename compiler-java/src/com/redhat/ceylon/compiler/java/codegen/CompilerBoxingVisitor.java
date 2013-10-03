@@ -20,6 +20,7 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 public class CompilerBoxingVisitor extends BoxingVisitor {
@@ -42,6 +43,11 @@ public class CompilerBoxingVisitor extends BoxingVisitor {
     @Override
     protected boolean hasErasure(ProducedType type) {
         return transformer.hasErasure(type);
+    }
+    
+    @Override
+    protected boolean hasErasedTypeParameters(ProducedReference producedReference) {
+        return transformer.expressionGen().erasesTypeArguments(producedReference);
     }
 
     @Override

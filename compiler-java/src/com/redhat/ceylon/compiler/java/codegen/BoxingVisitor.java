@@ -25,6 +25,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -69,6 +70,7 @@ public abstract class BoxingVisitor extends Visitor {
     protected abstract boolean isBooleanTrue(Declaration decl);
     protected abstract boolean isBooleanFalse(Declaration decl);
     protected abstract boolean hasErasure(ProducedType type);
+    protected abstract boolean hasErasedTypeParameters(ProducedReference producedReference);
     protected abstract boolean isTypeParameter(ProducedType type);
 
     @Override
@@ -156,14 +158,16 @@ public abstract class BoxingVisitor extends Visitor {
             StaticMemberOrTypeExpression expr = (StaticMemberOrTypeExpression)that.getPrimary();
             if (expr.getDeclaration() instanceof Method) {
                 Method mth = (Method)expr.getDeclaration();
-                if (isTypeParameter(mth.getType()) && hasErasedTypeParameter(expr.getTypeArguments().getTypeModels())) {
+                if (isTypeParameter(mth.getType()) 
+                        && hasErasedTypeParameter(expr.getTarget(), expr.getTypeArguments().getTypeModels())) {
                     CodegenUtil.markTypeErased(that);
+                    CodegenUtil.markUntrustedType(that);
                 }
             }
         }
     }
 
-    private boolean hasErasedTypeParameter(List<ProducedType> typeArguments) {
+    private boolean hasErasedTypeParameter(ProducedReference producedReference, List<ProducedType> typeArguments) {
         if (typeArguments != null){
             for (ProducedType arg : typeArguments) {
                 if (hasErasure(arg) /*|| willEraseToSequential(param.getType())*/) {
@@ -171,7 +175,7 @@ public abstract class BoxingVisitor extends Visitor {
                 }
             }
         }
-        return false;
+        return hasErasedTypeParameters(producedReference);
     }
     
     @Override
@@ -393,6 +397,8 @@ public abstract class BoxingVisitor extends Visitor {
             CodegenUtil.markRaw(that);
         if(CodegenUtil.hasTypeErased(term))
             CodegenUtil.markTypeErased(that);
+        if(CodegenUtil.hasUntrustedType(term))
+            CodegenUtil.markUntrustedType(that);
     }
 
 }

@@ -114,6 +114,14 @@ class CodegenUtil {
         node.setTypeErased(erased);
     }
 
+    static void markUntrustedType(Term node) {
+       node.setUntrustedType(true);
+    }
+
+    static boolean hasUntrustedType(Term node) {
+        return node.getUntrustedType();
+     }
+
     /**
      * Determines if the given statement or argument has a compiler annotation 
      * with the given name.

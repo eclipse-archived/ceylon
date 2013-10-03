@@ -1584,6 +1584,25 @@ public abstract class AbstractTransformer implements Transformation {
             } 
             JCExpression jta;
             
+            if(!tp.getSatisfiedTypes().isEmpty()){
+                boolean needsCastForBounds = false;
+                for(ProducedType bound : tp.getSatisfiedTypes()){
+                    bound = bound.substitute(tas);
+                    needsCastForBounds |= expressionGen().needsCast(ta, bound, false, false, false);
+                }
+                if(needsCastForBounds){
+                    // replace with the first bound
+                    ta = tp.getSatisfiedTypes().get(0).substitute(tas);
+                    if(tp.getSatisfiedTypes().size() > 1
+                            || isBoundsSelfDependant(tp)
+                            || willEraseToObject(ta)){
+                        // A bit ugly, but we need to escape from the loop and create a raw type, no generics
+                        typeArgs = null;
+                        break;
+                    }
+                }
+            }
+            
             if (sameTypeForCeylonTypes(syms().ceylonAnythingType, ta)) {
                 // For the root type Void:
                 if ((flags & (JT_SATISFIES | JT_EXTENDS)) != 0) {
@@ -1835,27 +1854,51 @@ public abstract class AbstractTransformer implements Transformation {
             // Java will see.
             ProducedType erasedType = typeFact().getDefiniteType(declType).getSupertype(typeFact().getSequentialDeclaration());
             return erasedType.substitute(producedReference.getTypeArguments());
-        } else if (type.getDeclaration() instanceof ClassOrInterface) {
-            // Explicit type parameter
-            return type;
         } else if (declTypeDecl instanceof ClassOrInterface) {
-            return declType;
+            return type;
         } else if ((declTypeDecl instanceof TypeParameter)
                 && (flags & TP_TO_BOUND) != 0) {
-            if (!declTypeDecl.getSatisfiedTypes().isEmpty()
-                    && !willEraseToObject(declTypeDecl.getSatisfiedTypes().get(0))) {
+            ProducedType upperBound = null;
+            boolean needsCastToBound = false;
+            if(!declTypeDecl.getSatisfiedTypes().isEmpty()){
                 // use upper bound
-                ProducedType upperBound = declTypeDecl.getSatisfiedTypes().get(0);
+                upperBound = declTypeDecl.getSatisfiedTypes().get(0);
+                // make sure we apply the type arguments
+                upperBound = substituteTypeArgumentsForTypeParameterBound(producedReference, upperBound);
                 ProducedType self = upperBound.getDeclaration().getSelfType();
                 if (self != null) {
-                    upperBound = self;
+                    // make sure we apply the type arguments
+                    upperBound = self.substitute(upperBound.getTypeArguments());
                 }
-                // make sure we apply the type arguments
-                return upperBound.substitute(producedReference.getTypeArguments());
+                needsCastToBound = expressionGen().needsCast(type, upperBound, false, false, false);
+            }
+            if ((willEraseToObject(type) || needsCastToBound)
+                    && upperBound != null) {
+                if(!willEraseToObject(upperBound))
+                    return upperBound;
             }
         }
         return type;
     }
+
+    protected ProducedType substituteTypeArgumentsForTypeParameterBound(
+            ProducedReference target, ProducedType bound) {
+        Declaration declaration = target.getDeclaration();
+        if(declaration.getContainer() instanceof ClassOrInterface){
+            ProducedType targetType = target.getQualifyingType();
+            // static methods have a container but do not capture type parameters
+            if(targetType != null
+                    && !declaration.isStaticallyImportable()){
+                ClassOrInterface methodContainer = (ClassOrInterface) declaration.getContainer();
+                Map<TypeParameter, ProducedType> typeArguments = targetType.getSupertype(methodContainer).getTypeArguments();
+                // we need type arguments that may come from the method container
+                bound = bound.substitute(typeArguments);
+            }
+        }
+        // and those that may come from the method call itself
+        return bound.substitute(target.getTypeArguments());
+    }
+
 
     private boolean isJavaVariadic(Parameter parameter) {
         return parameter.isSequenced()
@@ -2995,6 +3038,14 @@ public abstract class AbstractTransformer implements Transformation {
             }
         }
         return isDependedOn;
+    }
+
+    /**
+     * Returns true if the bounds of the type parameter depend on the type parameter itself,
+     * like Element given Element satisfies Foo&lt;Element> for example.
+     */
+    boolean isBoundsSelfDependant(TypeParameter tp){
+        return dependsOnTypeParameter(tp, tp);
     }
     
     private boolean dependsOnTypeParameter(TypeParameter tpToCheck, TypeParameter tpToDependOn) {
