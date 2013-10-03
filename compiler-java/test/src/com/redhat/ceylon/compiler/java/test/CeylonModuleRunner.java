@@ -21,7 +21,6 @@ package com.redhat.ceylon.compiler.java.test;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -34,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.annotation.PostConstruct;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.DiagnosticListener;
 
@@ -55,7 +53,6 @@ import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
-import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyClass;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
@@ -172,7 +169,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         // XXX Need to use CMR if the module has dependencies
         URLClassLoader cl = classLoaderForModule(moduleName, outRepo);
         if (cl != null) {
-            loadCompiledTests(srcDir, cl, phasedUnits);
+            loadCompiledTests(srcDir, cl, phasedUnits, moduleName);
         }
     }
 
@@ -201,9 +198,9 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                 runner.getDescription());
     }
     
-    private void loadCompiledTests(File srcDir, URLClassLoader cl, PhasedUnits phasedUnits)
+    private void loadCompiledTests(File srcDir, URLClassLoader cl, PhasedUnits phasedUnits, String moduleName)
                 throws InitializationError {
-            Map<String, List<String>> testMethods = testLoader.loadTestMethods(this, phasedUnits);
+        Map<String, List<String>> testMethods = testLoader.loadTestMethods(this, phasedUnits, moduleName);
         if (testMethods.isEmpty() && errorIfNoTests) {
             createFailingTest("No tests!", new Exception("contains no tests"));
         }
@@ -315,12 +312,12 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
          * @param phasedUnits
          * @return A map of class names to test methods contained in that class
          */
-        public Map<String, List<String>> loadTestMethods(final CeylonModuleRunner moduleRunner, PhasedUnits phasedUnits);
+        public Map<String, List<String>> loadTestMethods(final CeylonModuleRunner moduleRunner, PhasedUnits phasedUnits, String moduleName);
     }
 
     public static class StandardLoader implements TestLoader {
         @Override
-        public Map<String, List<String>> loadTestMethods(final CeylonModuleRunner moduleRunner, PhasedUnits phasedUnits) {
+        public Map<String, List<String>> loadTestMethods(final CeylonModuleRunner moduleRunner, final PhasedUnits phasedUnits, final String moduleName) {
             // Find all the top level classes/functions annotated @test
             // Unfortunately doing it like this
             final Map<String, List<String>> testMethods = new TreeMap<String, List<String>>();
@@ -338,38 +335,35 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                                 && ((AnyClass)that).getDeclarationModel().getParameterLists().get(0).getParameters().size() == 0) {
                             testClassName = Decl.className(that.getDeclarationModel());
                             that.visitChildren(this);
-                            if (moduleRunner.errorIfNoTests 
-                                    && (testMethods.get(testClassName) == null
-                                        || testMethods.get(testClassName).isEmpty())) {
-                                final Unit unit = that.getUnit();
-                                moduleRunner.createFailingTest(testClassName, new Exception("contains no tests"));
-                            }
                             testClassName = null;
                         }
                         for (CompilerAnnotation ca : that.getCompilerAnnotations()) {
                             Identifier identifier = ca.getIdentifier();
                             if ("test".equals(identifier.getToken().getText())) {
-                                boolean added = false;
                                 final com.redhat.ceylon.compiler.typechecker.model.Declaration decl = that.getDeclarationModel();
-                                if (testClassName != null) {
-                                    if (decl instanceof com.redhat.ceylon.compiler.typechecker.model.Method) {
-                                        com.redhat.ceylon.compiler.typechecker.model.Method method = (com.redhat.ceylon.compiler.typechecker.model.Method)decl;
-                                        String methodName = method.getName();
-                                        if (method.getParameterLists().size() == 1
-                                                && method.getParameterLists().get(0).getParameters().size() == 0) {
-                                            List<String> methods = testMethods.get(testClassName);
-                                            if (methods == null) {
-                                                methods = new ArrayList<String>(3);
-                                                testMethods.put(testClassName, methods);
+                                if (moduleName.isEmpty() || Decl.getModule(decl).getNameAsString().equals(moduleName)) {
+                                    boolean added = false;
+                                    if (testClassName != null || decl.isToplevel()) {
+                                        if (decl instanceof com.redhat.ceylon.compiler.typechecker.model.Method) {
+                                            com.redhat.ceylon.compiler.typechecker.model.Method method = (com.redhat.ceylon.compiler.typechecker.model.Method)decl;
+                                            String methodName = method.getName();
+                                            if (method.getParameterLists().size() == 1
+                                                    && method.getParameterLists().get(0).getParameters().size() == 0) {
+                                                String clsNm = (testClassName != null) ? testClassName : Decl.className(method);
+                                                List<String> methods = testMethods.get(clsNm);
+                                                if (methods == null) {
+                                                    methods = new ArrayList<String>(3);
+                                                    testMethods.put(clsNm, methods);
+                                                }
+                                                methods.add(methodName);
+                                                added = true;
                                             }
-                                            methods.add(methodName);
-                                            added = true;
                                         }
+                                    } 
+                                    if (!added) {
+                                        moduleRunner.createFailingTest(Decl.className(decl),
+                                                new Exception("@test should only be used on methods of concrete top level classes whose name ends with 'Test' or on toplevel methods"));
                                     }
-                                } 
-                                if (!added) {
-                                    moduleRunner.createFailingTest(Decl.className(decl),
-                                            new Exception("@test should only be used on methods of concrete top level classes whose name ends with 'Test'"));
                                 }
                             }
                         }
