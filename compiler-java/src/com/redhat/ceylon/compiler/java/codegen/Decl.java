@@ -512,6 +512,14 @@ public class Decl {
         return (ClassOrInterface) decl;
     }
 
+    public static Package getPackage(Declaration decl){
+        if (decl instanceof Scope) {
+            return getPackageContainer((Scope)decl);
+        } else {
+            return getPackageContainer(decl.getContainer());
+        }
+    }
+
     public static Package getPackageContainer(Scope scope){
         // stop when null or when it's a Package
         while(scope != null
@@ -522,6 +530,14 @@ public class Decl {
             scope = (Scope) scope.getContainer();
         }
         return (Package) scope;
+    }
+
+    public static Module getModule(Declaration decl){
+        if (decl instanceof Scope) {
+            return getModuleContainer((Scope)decl);
+        } else {
+            return getModuleContainer(decl.getContainer());
+        }
     }
 
     public static Module getModuleContainer(Scope scope) {
@@ -560,7 +576,11 @@ public class Decl {
     }
     
     public static String className(Declaration decl) {
-        return decl.getQualifiedNameString().replace("::", ".");
+        String name = decl.getQualifiedNameString().replace("::", ".");
+        if (Character.isLowerCase(decl.getName().charAt(0))) {
+            name += "_";
+        }
+        return name;
     }
 
     public static Tree.Term unwrapExpressionsUntilTerm(Tree.Term term) {
