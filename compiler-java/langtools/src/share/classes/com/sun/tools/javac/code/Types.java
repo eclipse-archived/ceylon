@@ -3577,6 +3577,8 @@ public class Types {
 
         boolean high;
         boolean rewriteTypeVars;
+        // Ceylon: added to detect recursive types, see https://github.com/ceylon/ceylon-compiler/issues/1342
+        List<ClassType> visited = List.nil();
 
         Rewriter(boolean high, boolean rewriteTypeVars) {
             this.high = high;
@@ -3587,12 +3589,28 @@ public class Types {
         public Type visitClassType(ClassType t, Void s) {
             ListBuffer<Type> rewritten = new ListBuffer<Type>();
             boolean changed = false;
-            for (Type arg : t.allparams()) {
-                Type bound = visit(arg);
-                if (arg != bound) {
+            // Ceylon: detect recursive types
+            boolean turnToRaw = false;
+            for(ClassType v : visited){
+                if(v == t){
+                    // recursive bound, go raw
                     changed = true;
+                    turnToRaw = true;
                 }
-                rewritten.append(bound);
+            }
+            if(!turnToRaw){
+                visited = visited.prepend(t);
+                // end Ceylon
+                for (Type arg : t.allparams()) {
+                    Type bound = visit(arg);
+                    if (arg != bound) {
+                        changed = true;
+                    }
+                    rewritten.append(bound);
+                }
+                // Ceylon: detect recursive types
+                visited = visited.tail;
+                // End Ceylon
             }
             if (changed)
                 return subst(t.tsym.type,
