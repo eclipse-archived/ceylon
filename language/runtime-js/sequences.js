@@ -145,11 +145,6 @@ Array$proto.longerThan = function(len) {
 Array$proto.longerThan.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','Iterable','$m','longerThan']};
 
 exports.ArrayList=ArrayList;
-exports.array=function(elems, $$$ptypes) {
-    return Array$(elems, $$$ptypes);
-}
-exports.array.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','array']};
-
 exports.arrayOfSize=function(size, elem, $$$mptypes) {
     if (size > 0) {
         var elems = [];
