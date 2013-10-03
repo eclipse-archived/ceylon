@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.java.language;
 
+import ceylon.language.Array;
+
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -46,12 +48,12 @@ public final class ObjectArray<T> implements ReifiedType {
     
     @Ignore
     public static <T> ceylon.language.Array<T> getArray(T[] array){
-        return null;
+        return Array.instance(array);
     }
 
     @TypeInfo("ceylon.language::Array<T>")
     public ceylon.language.Array<T> getArray(){
-        return null;
+        throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore

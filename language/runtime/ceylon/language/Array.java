@@ -204,7 +204,16 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     public Cloneable$impl $ceylon$language$Cloneable$impl(){
         return $ceylon$language$Cloneable$this;
     }
-
+    
+    @Ignore
+    public static <T> Array<T> instance(T[] array) {
+        if (array == null) {
+            return null;
+        }
+        return new Array<T>(TypeDescriptor.klass(array.getClass().getComponentType()), 
+                array);
+    }
+    
     @Ignore
     public static Array<Character> instance(char[] array) {
         if (array == null) {
