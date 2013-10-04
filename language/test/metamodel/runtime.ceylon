@@ -1137,58 +1137,81 @@ shared void checkTypeArgumentChecks(){
 
 shared void run() {
     print("Running Metamodel tests");
-    visitStringHierarchy();
-
-    checkPackageAndModule();
-
-    checkHierarchy();
-
-    checkConstructors();    
-
-    checkMemberFunctions();
-
-    checkMemberAttributes();
-
-    checkMemberTypes();
-
-    checkToplevelAttributes();
-
-    checkToplevelFunctions();
-
-    checkUntypedFunctionToAppliedFunction();
-
-    checkModules();
-
-    checkObjectDeclaration();
-
-    checkAliases();
-
-    checkTypeParameters();
-
-    checkClassOrInterfaceCaseTypes();
-
-    checkModifiers();
-
-    checkContainers();
-
-    checkLocalTypes();
-
-    checkEqualityAndHash();
-
-    checkApplyTypeConstraints();
-
-    checkApplications();
-
-    checkTests();
-
-    checkTypeArgumentChecks();
-
+    try {
+        visitStringHierarchy();
+    } catch (Exception e) { print("Failed visit string hierarchy"); e.printStackTrace(); }
+    try {
+        checkPackageAndModule();
+    } catch (Exception e) { print("Failed check package and module"); e.printStackTrace(); }
+    try {
+        checkHierarchy();
+    } catch (Exception e) { print("Failed hierarchy"); e.printStackTrace(); }
+    try {
+        checkConstructors();    
+    } catch (Exception e) { print("Failed constructors"); e.printStackTrace(); }
+    try {
+        checkMemberFunctions();
+    } catch (Exception e) { print("Failed member functions"); e.printStackTrace(); }
+    try {
+        checkMemberAttributes();
+    } catch (Exception e) { print("Failed member attributes"); e.printStackTrace(); }
+    try {
+        checkMemberTypes();
+    } catch (Exception e) { print("Failed member types"); e.printStackTrace(); }
+    try {
+        checkToplevelAttributes();
+    } catch (Exception e) { print("Failed top level attributes"); e.printStackTrace(); }
+    try {
+        checkToplevelFunctions();
+    } catch (Exception e) { print("Failed top level functions"); e.printStackTrace(); }
+    try {
+        checkUntypedFunctionToAppliedFunction();
+    } catch (Exception e) { print("Failed untyped to applied function"); e.printStackTrace(); }
+    try {
+        checkModules();
+    } catch (Exception e) { print("Failed modules "); e.printStackTrace(); }
+    try {
+        checkObjectDeclaration();
+    } catch (Exception e) { print("Failed object declaration"); e.printStackTrace(); }
+    try {
+        checkAliases();
+    } catch (Exception e) { print("Failed aliases"); e.printStackTrace(); }
+    try {
+        checkTypeParameters();
+    } catch (Exception e) { print("Failed type parameters"); e.printStackTrace(); }
+    try {
+        checkClassOrInterfaceCaseTypes();
+    } catch (Exception e) { print("Failed class/interface case types"); e.printStackTrace(); }
+    try {
+        checkModifiers();
+    } catch (Exception e) { print("Failed modifiers"); e.printStackTrace(); }
+    try {
+        checkContainers();
+    } catch (Exception e) { print("Failed containers"); e.printStackTrace(); }
+    try {
+        checkLocalTypes();
+    } catch (Exception e) { print("Failed local types"); e.printStackTrace(); }
+    try {
+        checkEqualityAndHash();
+    } catch (Exception e) { print("Failed equals/hash"); e.printStackTrace(); }
+    try {
+        checkApplyTypeConstraints();
+    } catch (Exception e) { print("Failed apply type constraints"); e.printStackTrace(); }
+    try {
+        checkApplications();
+    } catch (Exception e) { print("Failed applications"); e.printStackTrace(); }
+    try {
+        checkTests();
+    } catch (Exception e) { print("Failed tests"); e.printStackTrace(); }
+    try {
+        checkTypeArgumentChecks();
+    } catch (Exception e) { print("Failed type arguments"); e.printStackTrace(); }
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
 
     // FIXME: test members() wrt filtering
     // FIXME: test untyped class to applied class
-    
+    try { 
     bug238();
     bug245();
     bug257();
@@ -1210,7 +1233,10 @@ shared void run() {
     bugC1201();
     bugC1210();
     bugC1244();
-    
+    } catch (Exception e) {
+        print("Failed bugs");
+        e.printStackTrace();
+    } 
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
     
