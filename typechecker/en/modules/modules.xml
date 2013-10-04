@@ -163,12 +163,12 @@
         descriptor. If no module descriptor is found, the code belongs to
         the <emphasis>default module</emphasis>.</para>
         
+        <comment><para>Note: the default module is intended only as a 
+        convenience for experimental code.</para></comment>
+        
         <para>A package or compilation unit may belong to only one module.
         No more than one module descriptor may occur in the containing
         directories of a compilation unit.</para> 
-        
-        <comment><para>Note: the default module is intended only as a 
-        convenience for experimental code.</para></comment>
         
         <para>Thus, the structure of the source directory containing the 
         module <literal>org.hello</literal> might be the following:</para>
