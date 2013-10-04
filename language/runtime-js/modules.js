@@ -25,7 +25,7 @@ function modules$2(){
           } else {
             mpath = name.replace(/\./g,'/') + '/' + version + "/" + name + "-" + version;
           }
-          lm = require(mpath);
+          try {lm = require(mpath);}catch(e){return null;}
         }
         if (lm && lm.$$METAMODEL$$) {
           lm = Modulo(lm);
@@ -106,6 +106,19 @@ function Modulo(meta, $$modulo){
     }
     $$modulo.findPackage=findPackage;
     findPackage.$$metamodel$$={mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Package$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$m','findPackage']};
+    function findImportedPackage(pknm){
+      var pk = this.findPackage(pknm);
+      if (pk == null) {
+        var deps=this.dependencies;
+        for (var i=0; i < deps.length; i++) {
+          pk = deps[i].container.findImportedPackage(pknm);
+          if (pk)return pk;
+        }
+      }
+      return pk;
+    }
+    $$modulo.findImportedPackage=findImportedPackage;
+    findImportedPackage.$$metamodel$$={mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Package$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$m','findImportedPackage']};
     function annotations($$$mptypes){
       var anns = this.meta.$mod$ans$;
       if (typeof(anns) === 'function') {
@@ -145,6 +158,15 @@ function Importa(name, version, $$importa){
     defineAttr($$importa,'name',function(){return name;},undefined,{mod:$$METAMODEL$$,$t:{t:String$},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','name']});
     var version=version;
     defineAttr($$importa,'version',function(){return version;},undefined,{mod:$$METAMODEL$$,$t:{t:String$},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','version']});
+    defineAttr($$importa,'shared',function(){
+console.log("IMPLEMENT! Import.shared");
+return false;},undefined,{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','shared']});
+    defineAttr($$importa,'optional',function(){
+console.log("IMPLEMENT! Import.optional");
+return version;},undefined,{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','optional']});
+    defineAttr($$importa,'container',function(){
+console.log("IMPLEMENT! Import.container");
+return version;},undefined,{mod:$$METAMODEL$$,$t:{t:Module$meta$declaration},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','container']});
     return $$importa;
 }
 Importa.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:Import$meta$declaration}],$an:function(){return[shared()];},d:['ceylon.language.meta.declaration','Import']};

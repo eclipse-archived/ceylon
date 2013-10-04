@@ -256,9 +256,8 @@ function $init$OpenValue(){
         (function($$openValue){
             
             //MethodDefinition apply at X (39:4-39:68)
-            $$openValue.$apply=function $apply(instance$8){
-              if (instance$8===null || instance$8===undefined)return null;
-              return instance$8[this.name];
+            $$openValue.$apply=function $apply($$$mptypes){
+              return (this.tipo.set?AppliedVariable:AppliedValue)(undefined,this.tipo,$$$mptypes);
             };$$openValue.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Value$meta$model,a:{Type:{t:Anything}}},$ps:[{$nm:'instance',$mt:'prm',$def:1,$t:{t:Anything}}],$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$m','apply']};};
             
             //AttributeDeclaration defaulted at X (40:4-40:44)

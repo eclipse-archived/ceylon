@@ -296,8 +296,8 @@ function AppliedValue(obj,attr,$$targs$$,$$appliedValue){
     attr.$$metamodel$$=mm;
   }
   $init$AppliedValue();
-  if ($$appliedValue ===undefined){
-    if (obj)$$appliedValue=new AppliedValue.$$;
+  if ($$appliedValue===undefined){
+    if (obj||mm.$cont===undefined)$$appliedValue=new AppliedValue.$$;
     else {
       $$appliedValue=function(x){return AppliedValue(x,attr,$$targs$$);};
       $$appliedValue.$$=AppliedValue.$$;
@@ -370,7 +370,7 @@ function AppliedVariable(obj,attr,$$targs$$,$$appliedVariable){
   }
   $init$AppliedVariable$meta$model();
   if ($$appliedVariable===undefined) {
-    if (obj)$$appliedVariable=new AppliedVariable.$$;
+    if (obj||mm.$cont===undefined)$$appliedVariable=new AppliedVariable.$$;
     else {
       $$appliedVariable=function(x){return AppliedVariable(x,attr,$$targs$$);};
       $$appliedVariable.$$=AppliedVariable.$$;
