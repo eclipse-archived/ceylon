@@ -163,6 +163,10 @@
         descriptor. If no module descriptor is found, the code belongs to
         the <emphasis>default module</emphasis>.</para>
         
+        <para>A package or compilation unit may belong to only one module.
+        No more than one module descriptor may occur in the containing,
+        directories of a compilation unit.</para> 
+        
         <comment><para>Note: the default module is intended only as a 
         convenience for experimental code.</para></comment>
         
@@ -212,8 +216,8 @@
         <itemizedlist>
             <listitem>
                 <para>the first element of the module name must be a top-level
-                internet domain name, and the second element of the module 
-                name must be a second-level domain of the given top-level domain 
+                internet domain name, and the second element of the module name 
+                must be a second-level domain of the given top-level domain 
                 owned by the organization distributing the module, and.</para>
             </listitem>
             <listitem>
@@ -250,9 +254,15 @@
             Therefore, <literal>org.hibernate.orm</literal> is strongly
             preferred to <literal>org.hibernate</literal>.</para>
             
-            <para>Any package whose name begins with the module name belongs
-            to the module, for example, the packages:</para>
-    
+            <para>Modules may not be "nested". That is, the list of identifiers 
+            forming the name of a module may not be a prefix of the list of 
+            identifiers forming the name of another module.</para>
+            
+            <para>A package belongs to a module if the list of identifiers 
+            forming the name of the module is a prefix of the list of 
+            identifiers forming the name of the package. For example, the 
+            packages:</para>
+            
             <screen>ceylon.language</screen>
             <screen>ceylon.language.assertion</screen>
             <screen>ceylon.language.meta</screen>
