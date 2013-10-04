@@ -135,6 +135,10 @@ public class ExpressionTransformer extends AbstractTransformer {
      * types have no supertype in common.
      */
     public static final int EXPR_DOWN_CAST = 1 << 3;
+    /** 
+     * Use this when the expression being passed contains code to check for nulls coming from Java
+     */
+    public static final int EXPR_HAS_NULL_CHECK_FENCE = 1 << 4;
 
     static{
         // only there to make sure this class is initialised before the enums defined in it, otherwise we
@@ -335,11 +339,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         }
 
-        result = applyErasureAndBoxing(result, expr, boxingStrategy, expectedType, flags);
         if (expectedType != null && hasUncheckedNulls(expr)
                 && expectedType.isSubtypeOf(typeFact().getObjectDeclaration().getType())) {
             result = makeUtilInvocation("checkNull", List.of(result), null);
+            flags |= EXPR_HAS_NULL_CHECK_FENCE;
         }
+        result = applyErasureAndBoxing(result, expr, boxingStrategy, expectedType, flags);
 
         return result;
     }
@@ -389,8 +394,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression applyErasureAndBoxing(JCExpression result, Tree.Term expr, BoxingStrategy boxingStrategy, 
                 ProducedType expectedType, int flags) {
         ProducedType exprType = expr.getTypeModel();
-        if(hasUncheckedNulls(expr) && !isOptional(exprType))
+        if ((flags & EXPR_HAS_NULL_CHECK_FENCE) != 0) {
+            exprType = getNonNullType(exprType);
+        } else if (hasUncheckedNulls(expr) && !isOptional(exprType)) {
             exprType = typeFact().getOptionalType(exprType);
+        }
         boolean exprBoxed = !CodegenUtil.isUnBoxed(expr);
         boolean exprErased = CodegenUtil.hasTypeErased(expr);
         return applyErasureAndBoxing(result, exprType, exprErased, exprBoxed, boxingStrategy, expectedType, flags);

@@ -1691,7 +1691,7 @@ public abstract class AbstractTransformer implements Transformation {
         return typeArgs;
     }
 
-    private ProducedType getNonNullType(ProducedType pt) {
+    protected ProducedType getNonNullType(ProducedType pt) {
         // typeFact().getDefiniteType() intersects with Object, which isn't 
         // always right for working with the java type system.
         if (typeFact().getAnythingDeclaration().equals(pt.getDeclaration())) {
