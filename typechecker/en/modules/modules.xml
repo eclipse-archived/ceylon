@@ -164,7 +164,7 @@
         the <emphasis>default module</emphasis>.</para>
         
         <para>A package or compilation unit may belong to only one module.
-        No more than one module descriptor may occur in the containing,
+        No more than one module descriptor may occur in the containing
         directories of a compilation unit.</para> 
         
         <comment><para>Note: the default module is intended only as a 
