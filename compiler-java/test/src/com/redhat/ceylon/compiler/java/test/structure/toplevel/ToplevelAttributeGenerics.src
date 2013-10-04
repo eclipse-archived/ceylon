@@ -9,7 +9,7 @@ final class topLevelAttributeGenerics_ {
         value = new .ceylon.language.List[]{new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("hello")})};
     }
     
-    public static .ceylon.language.List<? extends .ceylon.language.String> $get() {
+    public static .ceylon.language.List<? extends .ceylon.language.String> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -26,7 +26,7 @@ public final class topLevelAttributeGenericsShared_ {
         value = new .ceylon.language.List[]{new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("hello")})};
     }
     
-    public static .ceylon.language.List<? extends .ceylon.language.String> $get() {
+    public static .ceylon.language.List<? extends .ceylon.language.String> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -43,7 +43,7 @@ final class topLevelVariableGenerics_ {
         value = new .ceylon.language.List[]{new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("hello")})};
     }
     
-    public static .ceylon.language.List<? extends .ceylon.language.String> $get() {
+    public static .ceylon.language.List<? extends .ceylon.language.String> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -51,7 +51,7 @@ final class topLevelVariableGenerics_ {
         }
     }
     
-    public static void $set(final .ceylon.language.List<? extends .ceylon.language.String> topLevelVariableGenerics) {
+    public static void set_(final .ceylon.language.List<? extends .ceylon.language.String> topLevelVariableGenerics) {
         value[0] = topLevelVariableGenerics;
     }
 }
@@ -64,7 +64,7 @@ public final class topLevelVariableGenericsShared_ {
         value = new .ceylon.language.List[]{new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("hello")})};
     }
     
-    public static .ceylon.language.List<? extends .ceylon.language.String> $get() {
+    public static .ceylon.language.List<? extends .ceylon.language.String> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -72,7 +72,7 @@ public final class topLevelVariableGenericsShared_ {
         }
     }
     
-    public static void $set(final .ceylon.language.List<? extends .ceylon.language.String> topLevelVariableGenericsShared) {
+    public static void set_(final .ceylon.language.List<? extends .ceylon.language.String> topLevelVariableGenericsShared) {
         value[0] = topLevelVariableGenericsShared;
     }
 }

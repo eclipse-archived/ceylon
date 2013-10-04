@@ -28,7 +28,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Attribute
 public class bogusTopLevelAttributeInvalidType_ {
     @TypeInfo("&&")
-    public static Object $get(){
+    public static Object get_(){
         return null;
     }
 }

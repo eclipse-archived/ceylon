@@ -28,7 +28,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Attribute
 public class bogusTopLevelAttributeMissingType_ {
     @TypeInfo("com.redhat.ceylon.compiler.java.test.model::MissingType")
-    public static Object $get(){
+    public static Object get_(){
         return null;
     }
 }
