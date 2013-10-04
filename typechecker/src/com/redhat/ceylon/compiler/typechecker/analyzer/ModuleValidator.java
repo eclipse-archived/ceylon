@@ -146,16 +146,11 @@ public class ModuleValidator {
                 ArtifactResult artifact = null;
                 RepositoryManager repositoryManager = context.getRepositoryManager();
                 Exception exceptionOnGetArtifact = null;
-                ArtifactContext artifactContext = null;
-                for(String extension : searchedArtifactExtensions){
-                    artifactContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), "."+extension);
-                    try {
-                        artifact = repositoryManager.getArtifactResult(artifactContext);
-                        if(artifact != null) 
-                            break;
-                    } catch (Exception e) {
-                        exceptionOnGetArtifact = e;
-                    }
+                ArtifactContext artifactContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), getArtifactSuffixes(searchedArtifactExtensions));
+                try {
+                    artifact = repositoryManager.getArtifactResult(artifactContext);
+                } catch (Exception e) {
+                    exceptionOnGetArtifact = e;
                 }
                 if (artifact == null) {
                     //not there => error
@@ -186,6 +181,14 @@ public class ModuleValidator {
         }
     }
 
+    private String[] getArtifactSuffixes(Iterable<String> extensions) {
+        ArrayList<String> suffixes = new ArrayList<String>();
+        for (String ext : extensions) {
+            suffixes.add("." + ext);
+        }
+        return suffixes.toArray(new String[suffixes.size()]);
+    }
+    
     private void checkAndAddDependency(List<Module> dependencies, Module module, LinkedList<Module> dependencyTree) {
         Module dupe = moduleManager.findModule(module, dependencies, false);
         if (dupe != null && !isSameVersion(module, dupe)) {
