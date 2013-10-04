@@ -776,7 +776,7 @@ public class Util {
         return array;
     }
     
-    public static java.lang.Object[] fillArray(java.lang.Object[] array, java.lang.Object val){
+    public static <T> T[] fillArray(T[] array, T val){
         Arrays.fill(array, val);
         return array;
     }
