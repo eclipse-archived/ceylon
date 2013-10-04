@@ -575,7 +575,7 @@ public class Naming implements LocalId {
         } else if (decl instanceof TypedDeclaration && Decl.isBoxedVariable((TypedDeclaration)decl)) {
             return "ref";
         } else {
-            return "$get";
+            return "get_";
         }
     }
 
@@ -605,7 +605,7 @@ public class Naming implements LocalId {
         } else if (decl instanceof TypedDeclaration && Decl.isBoxedVariable((TypedDeclaration)decl)) {
             return "ref";
         }  else {
-            return "$set";
+            return "set_";
         }
     }
 

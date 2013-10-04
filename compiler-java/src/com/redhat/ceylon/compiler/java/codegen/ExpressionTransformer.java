@@ -1185,7 +1185,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression makeModuleLiteralCall(Module module) {
-        JCExpression modulesGetIdent = naming.makeFQIdent("ceylon", "language", "meta", "modules_", "$get");
+        JCExpression modulesGetIdent = naming.makeFQIdent("ceylon", "language", "meta", "modules_", "get_");
         JCExpression modulesGet = make().Apply(null, modulesGetIdent, List.<JCExpression>nil());
         if(module.isDefault()){
             return make().Apply(null, makeSelect(modulesGet, "getDefault"), List.<JCExpression>nil());

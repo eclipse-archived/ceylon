@@ -1788,7 +1788,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     private JCTree.JCBlock generateIndirectGetterBlock(Value v) {
         JCTree.JCExpression returnExpr;
-        returnExpr = naming.makeQualIdent(naming.makeName(v, Naming.NA_WRAPPER), "$get");
+        returnExpr = naming.makeQualIdent(naming.makeName(v, Naming.NA_WRAPPER), "get_");
         returnExpr = make().Apply(null, returnExpr, List.<JCExpression>nil());
         JCReturn returnValue = make().Return(returnExpr);
         List<JCStatement> stmts = List.<JCTree.JCStatement>of(returnValue);   
