@@ -4681,7 +4681,11 @@ public class GenerateJsVisitor extends Visitor
                 TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
                 out(")");
             } else if (that instanceof ValueLiteral || d instanceof Value) {
-                out(clAlias, "$init$AppliedValue$meta$model()(");
+                if (((Value)d).isVariable()) {
+                    out(clAlias, "$init$AppliedVariable$meta$model()(undefined,");
+                } else {
+                    out(clAlias, "$init$AppliedValue$meta$model()(undefined,");
+                }
                 if (ltype == null) {
                     qualify(that, d);
                 } else {
