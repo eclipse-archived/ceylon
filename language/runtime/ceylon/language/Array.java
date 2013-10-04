@@ -430,7 +430,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                     return unsafeItem(idx++);
                 }
                 else {
-                    return finished_.$get();
+                    return finished_.get_();
                 }
             }
 

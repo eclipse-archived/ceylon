@@ -248,14 +248,14 @@ public class Metamodel {
             return new FreeIntersectionType((com.redhat.ceylon.compiler.typechecker.model.IntersectionType)declaration);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType){
-            return ceylon.language.meta.declaration.nothingType_.$get();
+            return ceylon.language.meta.declaration.nothingType_.get_();
         }
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
 
     public static Sequential<? extends ceylon.language.meta.declaration.OpenType> getMetamodelSequential(List<ProducedType> types) {
         if(types.isEmpty())
-            return (Sequential)empty_.$get();
+            return (Sequential)empty_.get_();
         ceylon.language.meta.declaration.OpenType[] ret = new ceylon.language.meta.declaration.OpenType[types.size()];
         int i=0;
         for(ProducedType pt : types){
@@ -298,7 +298,7 @@ public class Metamodel {
             return new AppliedIntersectionType<T>(reifiedType, (com.redhat.ceylon.compiler.typechecker.model.IntersectionType)declaration);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType){
-            return (ceylon.language.meta.model.Type<T>)ceylon.language.meta.model.nothingType_.$get();
+            return (ceylon.language.meta.model.Type<T>)ceylon.language.meta.model.nothingType_.get_();
         }
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
@@ -450,7 +450,7 @@ public class Metamodel {
         Iterator<?> iterator = types.iterator();
         Object it;
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = new LinkedList<com.redhat.ceylon.compiler.typechecker.model.ProducedType>();
-        while((it = iterator.next()) != finished_.$get()){
+        while((it = iterator.next()) != finished_.get_()){
             ceylon.language.meta.model.Type<?> pt = (ceylon.language.meta.model.Type<?>) it;
             com.redhat.ceylon.compiler.typechecker.model.ProducedType modelPt = Metamodel.getModel(pt);
             producedTypes.add(modelPt);
@@ -756,7 +756,7 @@ public class Metamodel {
         DeclarationType findDeclarationByName(Sequential<? extends DeclarationType> declarations, String name) {
         Iterator<? extends DeclarationType> iterator = declarations.iterator();
         Object it;
-        while((it = iterator.next()) != finished_.$get()){
+        while((it = iterator.next()) != finished_.get_()){
             @SuppressWarnings("unchecked")
             DeclarationType tp = (DeclarationType) it;
             if(tp.getName().equals(name))
@@ -788,7 +788,7 @@ public class Metamodel {
         Object it;
         java.util.Map<com.redhat.ceylon.compiler.typechecker.model.TypeParameter, com.redhat.ceylon.compiler.typechecker.model.ProducedType> ptArguments 
         = appliedFunction.getTypeArguments();
-        while((it = typeParameters.next()) != finished_.$get()){
+        while((it = typeParameters.next()) != finished_.get_()){
             com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter tp = (com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter) it;
             com.redhat.ceylon.compiler.typechecker.model.TypeParameter tpDecl = (com.redhat.ceylon.compiler.typechecker.model.TypeParameter) tp.declaration;
             com.redhat.ceylon.compiler.typechecker.model.ProducedType ptArg = ptArguments.get(tpDecl);
@@ -828,7 +828,7 @@ public class Metamodel {
             Iterator<?> iterator = declaration.getTypeParameterDeclarations().iterator();
             Object it;
             boolean once = true;
-            while((it = iterator.next()) != finished_.$get()){
+            while((it = iterator.next()) != finished_.get_()){
                 if(once)
                     once = false;
                 else

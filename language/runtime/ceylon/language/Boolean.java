@@ -19,7 +19,7 @@ public abstract class Boolean implements ReifiedType {
 
     @Ignore
     public static Boolean instance(boolean b) {
-        return b ? true_.$get() : false_.$get();
+        return b ? true_.get_() : false_.get_();
     }
 
     @Ignore
@@ -27,7 +27,7 @@ public abstract class Boolean implements ReifiedType {
     
     @Ignore
     public static java.lang.String toString(boolean value) {
-        return (value) ? true_.$get().toString() : false_.$get().toString();
+        return (value) ? true_.get_().toString() : false_.get_().toString();
     }
     
     @Ignore

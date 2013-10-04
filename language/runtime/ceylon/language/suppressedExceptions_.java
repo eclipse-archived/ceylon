@@ -20,7 +20,7 @@ public final class suppressedExceptions_ {
         if (sup.length > 0) {
             return ArraySequence.backedBy$hidden(ceylon.language.Exception.$TypeDescriptor, sup, 0, sup.length);
         } else {
-            return (ceylon.language.Sequential)empty_.$get();
+            return (ceylon.language.Sequential)empty_.get_();
         }
     }
 

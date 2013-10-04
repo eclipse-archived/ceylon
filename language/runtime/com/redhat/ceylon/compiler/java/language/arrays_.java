@@ -45,7 +45,7 @@ public final class arrays_ {
     private static final arrays_ value = new arrays_();
 
     @Ignore
-    public static arrays_ $get() {
+    public static arrays_ get_() {
         return value;
     }
 
@@ -534,7 +534,7 @@ public final class arrays_ {
         Iterator<? extends java.lang.String> iterator = values.iterator();
         for(int i=0;i<dst.length;i++){
             java.lang.Object o = iterator.next();
-            if(o == finished_.$get())
+            if(o == finished_.get_())
                 throw new RuntimeException("Depleted values iterable before its size was reached. Size = " + dst.length + ", index = "+i);
             dst[i] = String.instance((java.lang.String)o);
         }

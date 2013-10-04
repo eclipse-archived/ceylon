@@ -35,7 +35,7 @@ public class ArraySequenceTest {
     }
     
     @SuppressWarnings("rawtypes")
-    private final Sequential empty = empty_.$get();
+    private final Sequential empty = empty_.get_();
     
     @Test
     public void testConstructor() {
@@ -231,7 +231,7 @@ public class ArraySequenceTest {
             Assert.assertEquals(description, s("a"), iterator.next());
             Assert.assertEquals(description, s("b"), iterator.next());
             Assert.assertEquals(description, s("c"), iterator.next());
-            Assert.assertEquals(description, finished_.$get(), iterator.next());
+            Assert.assertEquals(description, finished_.get_(), iterator.next());
         }
     }
 

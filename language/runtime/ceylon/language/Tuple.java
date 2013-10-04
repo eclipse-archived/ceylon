@@ -85,7 +85,7 @@ public final class Tuple<Element, First extends Element, Rest extends ceylon.lan
     private static void copyToArray(ceylon.language.Sequential seq, java.lang.Object[] array, int offset) {
         ceylon.language.Iterator iter = seq.iterator();
         int i = offset;
-        for (java.lang.Object elem = iter.next(); elem != ceylon.language.finished_.$get(); elem = iter.next()) {
+        for (java.lang.Object elem = iter.next(); elem != ceylon.language.finished_.get_(); elem = iter.next()) {
             array[i++] = elem;
         }
     }

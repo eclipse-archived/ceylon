@@ -65,7 +65,7 @@ public class FreeIntersectionType
         // do not use satisfiedTypes.hashCode because order is not significant
         Iterator<? extends OpenType> iterator = satisfiedTypes.iterator();
         Object obj;
-        while((obj = iterator.next()) != finished_.$get()){
+        while((obj = iterator.next()) != finished_.get_()){
             result = result + obj.hashCode();
         }
         return result;

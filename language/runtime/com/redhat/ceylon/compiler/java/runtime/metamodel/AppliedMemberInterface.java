@@ -103,7 +103,7 @@ public class AppliedMemberInterface<Container, Type>
     @Override
     @Ignore
     public Interface<? extends Type> $call$variadic() {
-        return $call$variadic(empty_.$get());
+        return $call$variadic(empty_.get_());
     }
     
     @Override
@@ -143,20 +143,20 @@ public class AppliedMemberInterface<Container, Type>
     @Override
     @Ignore
     public Interface<? extends Type> $call$variadic(Object arg0) {
-        return $call$variadic(arg0, empty_.$get());
+        return $call$variadic(arg0, empty_.get_());
     }
 
     @Override
     @Ignore
     public Interface<? extends Type> $call$variadic(Object arg0, Object arg1) {
-        return $call$variadic(arg0, arg1, empty_.$get());
+        return $call$variadic(arg0, arg1, empty_.get_());
     }
 
     @Override
     @Ignore
     public Interface<? extends Type> $call$variadic(Object arg0, Object arg1,
             Object arg2) {
-        return $call$variadic(arg0, arg1, arg2, empty_.$get());
+        return $call$variadic(arg0, arg1, arg2, empty_.get_());
     }
 
     @Override

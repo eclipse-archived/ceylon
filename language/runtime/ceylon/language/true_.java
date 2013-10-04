@@ -8,7 +8,7 @@ public class true_ extends Boolean {
     
     private final static true_ value = new true_();
 
-    public static true_ $get(){
+    public static true_ get_(){
         return value;
     }
 

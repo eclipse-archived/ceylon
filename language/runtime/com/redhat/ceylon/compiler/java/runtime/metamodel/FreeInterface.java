@@ -37,7 +37,7 @@ public class FreeInterface
     @Ignore
     @Override
     public <Type> ceylon.language.meta.model.Interface<Type> interfaceApply(TypeDescriptor $reifiedType){
-        return interfaceApply($reifiedType, (Sequential)empty_.$get());
+        return interfaceApply($reifiedType, (Sequential)empty_.get_());
     }
 
     @SuppressWarnings("unchecked")
@@ -62,7 +62,7 @@ public class FreeInterface
         return this.<Container, Type>memberInterfaceApply($reifiedContainer,
                                                           $reifiedType,
                                                           containerType,
-                                                          (Sequential)empty_.$get());
+                                                          (Sequential)empty_.get_());
     }
 
     @SuppressWarnings("unchecked")

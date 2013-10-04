@@ -245,7 +245,7 @@ class DeclarationParser {
         if (version == null) {
             throw metamodelError("Runtime versions not yet supported");
         }
-        Module module = ceylon.language.meta.modules_.$get().find(moduleName, version);
+        Module module = ceylon.language.meta.modules_.get_().find(moduleName, version);
         if (module == null) {
             throw metamodelNotFound("Could not find module: " + moduleName + ", version: " + version);
         }

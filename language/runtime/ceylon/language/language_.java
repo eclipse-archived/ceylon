@@ -43,7 +43,7 @@ public final class language_ {
     private language_() {}
     private static final language_ value = new language_();
     
-    public static language_ $get() {
+    public static language_ get_() {
         return value;
     }
 }

@@ -58,7 +58,7 @@ public class FreeTypeParameter
         if(declaration.getCaseTypes() != null)
             caseTypes = Metamodel.getMetamodelSequential(declaration.getCaseTypes());
         else
-            caseTypes = (Sequential)empty_.$get();
+            caseTypes = (Sequential)empty_.get_();
         satisfiedTypes = Metamodel.getMetamodelSequential(declaration.getSatisfiedTypes());
         container = Metamodel.getOrCreateMetamodel(declaration.getDeclaration());
     }
@@ -100,11 +100,11 @@ public class FreeTypeParameter
     @Override
     public ceylon.language.meta.declaration.Variance getVariance(){
         if(declaration.isInvariant())
-            return ceylon.language.meta.declaration.invariant_.$get();
+            return ceylon.language.meta.declaration.invariant_.get_();
         if(declaration.isCovariant())
-            return ceylon.language.meta.declaration.covariant_.$get();
+            return ceylon.language.meta.declaration.covariant_.get_();
         if(declaration.isContravariant())
-            return ceylon.language.meta.declaration.contravariant_.$get();
+            return ceylon.language.meta.declaration.contravariant_.get_();
         throw new RuntimeException("Underlying declaration is neither invariant, covariant nor contravariant");
     }
 

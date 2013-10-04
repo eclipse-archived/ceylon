@@ -142,7 +142,7 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
             TypeDescriptor $reifiedKind,
             Predicates.Predicate predicate) {
         if (predicate == Predicates.false_()) {
-            return (Sequential<? extends Kind>)empty_.$get();
+            return (Sequential<? extends Kind>)empty_.get_();
         }
         List<com.redhat.ceylon.compiler.typechecker.model.Declaration> modelMembers = declaration.getMembers();
         SequenceBuilder<Kind> members = new SequenceBuilder<Kind>($reifiedKind, modelMembers.size());

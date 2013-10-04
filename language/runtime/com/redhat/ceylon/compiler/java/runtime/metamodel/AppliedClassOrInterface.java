@@ -137,7 +137,7 @@ public abstract class AppliedClassOrInterface<Type>
                                                                          @Ignore TypeDescriptor $reifiedArguments, 
                                                                          String name){
         
-        return getMethod($reifiedSubType, $reifiedType, $reifiedArguments, name, (Sequential)empty_.$get());
+        return getMethod($reifiedSubType, $reifiedType, $reifiedArguments, name, (Sequential)empty_.get_());
     }
 
     @Override
@@ -168,7 +168,7 @@ public abstract class AppliedClassOrInterface<Type>
                                                                             @Ignore TypeDescriptor $reifiedKind, 
                                                                             String name){
         
-        return getClassOrInterface($reifiedSubType, $reifiedKind, name, (Sequential)empty_.$get());
+        return getClassOrInterface($reifiedSubType, $reifiedKind, name, (Sequential)empty_.get_());
     }
 
     @Override

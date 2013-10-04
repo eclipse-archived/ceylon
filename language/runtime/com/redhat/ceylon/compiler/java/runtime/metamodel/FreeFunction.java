@@ -99,7 +99,7 @@ public class FreeFunction
     public ceylon.language.meta.declaration.FunctionOrValueDeclaration getParameterDeclaration(@Name("name") String name){
         Iterator<?> iterator = parameterList.iterator();
         Object o;
-        while((o = iterator.next()) != finished_.$get()){
+        while((o = iterator.next()) != finished_.get_()){
             ceylon.language.meta.declaration.FunctionOrValueDeclaration pd = (ceylon.language.meta.declaration.FunctionOrValueDeclaration) o;
             if(pd.getName().equals(name))
                 return pd;
@@ -118,7 +118,7 @@ public class FreeFunction
     public ceylon.language.meta.declaration.TypeParameter getTypeParameterDeclaration(@Name("name") String name) {
         Iterator<? extends ceylon.language.meta.declaration.TypeParameter> iterator = typeParameters.iterator();
         Object it;
-        while((it = iterator.next()) != finished_.$get()){
+        while((it = iterator.next()) != finished_.get_()){
             ceylon.language.meta.declaration.TypeParameter tp = (ceylon.language.meta.declaration.TypeParameter) it;
             if(tp.getName().equals(name))
                 return tp;
@@ -131,7 +131,7 @@ public class FreeFunction
     @Override
     public <Return extends Object, Arguments extends Sequential<? extends Object>> ceylon.language.meta.model.Function<Return, Arguments> apply(TypeDescriptor $reifiedReturn,
             TypeDescriptor $reifiedArguments){
-        return apply($reifiedReturn,$reifiedArguments,(Sequential)empty_.$get());
+        return apply($reifiedReturn,$reifiedArguments,(Sequential)empty_.get_());
     }
 
     @Override
@@ -171,7 +171,7 @@ public class FreeFunction
                                                               $reifiedReturn,
                                                               $reifiedArguments,
                                                               containerType,
-                                                              (Sequential)empty_.$get());
+                                                              (Sequential)empty_.get_());
     }
 
     @TypeInfo("ceylon.language.meta.model::Method<Container,Return,Arguments>")

@@ -244,7 +244,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Override
     public Sequential<? extends Element> getRest() {
         if (length==1) {
-            return (Sequential)empty_.$get();
+            return (Sequential)empty_.get_();
         }
         else {
             return backedBy$hidden((Element[])array, first + 1, length - 1);
@@ -263,7 +263,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     @Override
     public Sequential<? extends Element> spanTo(Integer to) {
-        return to.longValue() < 0 ? (Sequential)empty_.$get() : span(Integer.instance(0), to);
+        return to.longValue() < 0 ? (Sequential)empty_.get_() : span(Integer.instance(0), to);
     }
     @Override
     public Sequential<? extends Element> spanFrom(Integer from) {
@@ -282,7 +282,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         	toIndex = tmp;
         }
     	if (toIndex<0 || fromIndex>lastIndex) {
-    		return (Sequential)empty_.$get();
+    		return (Sequential)empty_.get_();
     	}
     	fromIndex= Math.max(fromIndex, 0);
     	toIndex = Math.min(toIndex, lastIndex);        
@@ -306,7 +306,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         final long lastIndex = getLastIndex().longValue();
         
         if (fromIndex > lastIndex || length <= 0) {
-            return (Sequential)empty_.$get();
+            return (Sequential)empty_.get_();
         }
         long l;
         if (length > lastIndex-fromIndex) {
@@ -372,7 +372,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
                 return array[(int) idx++];
             }
             else {
-                return finished_.$get();
+                return finished_.get_();
             }
         }
 

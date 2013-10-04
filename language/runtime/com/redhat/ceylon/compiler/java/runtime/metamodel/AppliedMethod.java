@@ -110,7 +110,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     @Override
     @Ignore
     public Function<? extends Type, ? super Arguments> $call$variadic() {
-        return $call$variadic(empty_.$get());
+        return $call$variadic(empty_.get_());
     }
     
     @Override
@@ -152,21 +152,21 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     @Ignore
     public Function<? extends Type, ? super Arguments> $call$variadic(
             Object arg0) {
-        return $call$variadic(arg0, empty_.$get());
+        return $call$variadic(arg0, empty_.get_());
     }
 
     @Override
     @Ignore
     public Function<? extends Type, ? super Arguments> $call$variadic(
             Object arg0, Object arg1) {
-        return $call$variadic(arg0, arg1, empty_.$get());
+        return $call$variadic(arg0, arg1, empty_.get_());
     }
 
     @Override
     @Ignore
     public Function<? extends Type, ? super Arguments> $call$variadic(
             Object arg0, Object arg1, Object arg2) {
-        return $call$variadic(arg0, arg1, arg2, empty_.$get());
+        return $call$variadic(arg0, arg1, arg2, empty_.get_());
     }
 
     @Override

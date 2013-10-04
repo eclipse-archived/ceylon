@@ -104,7 +104,7 @@ public final class unflatten_ {
                         Iterator iterator = seq.iterator();
                         java.lang.Object it;
                         int i=0;
-                        while(i < beforeVariadic && (it = iterator.next()) != finished_.$get()){
+                        while(i < beforeVariadic && (it = iterator.next()) != finished_.get_()){
                             args[i++] = it;
                         }
                         // add the remainder as a variadic arg if required

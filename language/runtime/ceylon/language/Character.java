@@ -193,16 +193,16 @@ public final class Character
 	public Comparison compare(@Name("other") Character other) {
         long x = codePoint;
         long y = other.codePoint;
-        return (x < y) ? smaller_.$get() :
-            ((x == y) ? equal_.$get() : larger_.$get());
+        return (x < y) ? smaller_.get_() :
+            ((x == y) ? equal_.get_() : larger_.get_());
 	}
 
     @Ignore
     public static Comparison compare(int codePoint, int otherCodePoint) {
         long x = codePoint;
         long y = otherCodePoint;
-        return (x < y) ? smaller_.$get() :
-            ((x == y) ? equal_.$get() : larger_.$get());
+        return (x < y) ? smaller_.get_() :
+            ((x == y) ? equal_.get_() : larger_.get_());
     }
 
 	/*@Override

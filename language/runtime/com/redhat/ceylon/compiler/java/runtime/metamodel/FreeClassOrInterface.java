@@ -86,7 +86,7 @@ public abstract class FreeClassOrInterface
         if(declaration.getCaseTypes() != null)
             this.caseTypes = Metamodel.getMetamodelSequential(declaration.getCaseTypes());
         else
-            this.caseTypes = (Sequential)empty_.$get();
+            this.caseTypes = (Sequential)empty_.get_();
 
         this.typeParameters = Metamodel.getTypeParameters(declaration);
         
@@ -144,7 +144,7 @@ public abstract class FreeClassOrInterface
             @Ignore TypeDescriptor $reifiedKind,
             Predicates.Predicate predicate) {
         if (predicate == Predicates.false_()) {
-            return (Sequential<? extends Kind>)empty_.$get();
+            return (Sequential<? extends Kind>)empty_.get_();
         }
         checkInit();
         SequenceBuilder<Kind> members = new SequenceBuilder<Kind>($reifiedKind, declarations.size());
@@ -234,7 +234,7 @@ public abstract class FreeClassOrInterface
     @Ignore
     @Override
     public <Type> ceylon.language.meta.model.ClassOrInterface<Type> apply(@Ignore TypeDescriptor $reifiedType){
-        return apply($reifiedType, (Sequential)empty_.$get());
+        return apply($reifiedType, (Sequential)empty_.get_());
     }
 
     @SuppressWarnings("unchecked")
@@ -266,7 +266,7 @@ public abstract class FreeClassOrInterface
         return this.<Container, Type>memberApply($reifiedContainer,
                                                  $reifiedType,
                                                  containerType,
-                                                 (Sequential)empty_.$get());
+                                                 (Sequential)empty_.get_());
     }
 
     @TypeInfo("ceylon.language.meta.model::Member<Container,ceylon.language.meta.model::ClassOrInterface<Type>>&ceylon.language.meta.model::ClassOrInterface<Type>")

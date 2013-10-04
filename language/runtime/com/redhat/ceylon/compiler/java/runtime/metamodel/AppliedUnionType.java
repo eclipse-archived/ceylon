@@ -90,7 +90,7 @@ public class AppliedUnionType<Union>
         // do not use caseTypes.hashCode because order is not significant
         Iterator<? extends Type<?>> iterator = caseTypes.iterator();
         Object obj;
-        while((obj = iterator.next()) != finished_.$get()){
+        while((obj = iterator.next()) != finished_.get_()){
             result = result + obj.hashCode();
         }
         return result;

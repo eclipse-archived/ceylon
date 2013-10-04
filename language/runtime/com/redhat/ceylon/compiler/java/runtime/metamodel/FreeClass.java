@@ -53,7 +53,7 @@ public class FreeClass
             }
             this.parameters = Util.sequentialInstance(ceylon.language.meta.declaration.FunctionOrValueDeclaration.$TypeDescriptor, parameters);
         }else{
-            this.parameters = (Sequential) empty_.$get();
+            this.parameters = (Sequential) empty_.get_();
         }
     }
     
@@ -102,7 +102,7 @@ public class FreeClass
         checkInit();
         Iterator<?> iterator = parameters.iterator();
         Object o;
-        while((o = iterator.next()) != finished_.$get()){
+        while((o = iterator.next()) != finished_.get_()){
             ceylon.language.meta.declaration.FunctionOrValueDeclaration pd = (ceylon.language.meta.declaration.FunctionOrValueDeclaration) o;
             if(pd.getName().equals(name))
                 return pd;
@@ -115,7 +115,7 @@ public class FreeClass
     @Override
     public <Type, Arguments extends Sequential<? extends Object>> ceylon.language.meta.model.Class<Type, Arguments> classApply(TypeDescriptor $reifiedType,
             TypeDescriptor $reifiedArguments){
-        return classApply($reifiedType, $reifiedArguments, (Sequential)empty_.$get());
+        return classApply($reifiedType, $reifiedArguments, (Sequential)empty_.get_());
     }
 
     @SuppressWarnings("unchecked")
@@ -153,7 +153,7 @@ public class FreeClass
                                                  $reifiedType,
                                                  $reifiedArguments,
                                                  containerType,
-                                                 (Sequential)empty_.$get());
+                                                 (Sequential)empty_.get_());
     }
 
     @SuppressWarnings("unchecked")

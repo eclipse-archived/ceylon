@@ -135,7 +135,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
         Iterator<?> iterator = restSequence.iterator();
         Object val;
         int i = inArray;
-        while((val = iterator.next()) != finished_.$get()){
+        while((val = iterator.next()) != finished_.get_()){
             elems[i++] = val;
         }
         return ArraySequence.<Element>instance($reifiedElement, elems);
@@ -296,7 +296,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
         Iterator<? extends Element> iterator = iterator();
         Object elem;
         boolean first = true;
-        while((elem = iterator.next()) != finished_.$get()){
+        while((elem = iterator.next()) != finished_.get_()){
             if(!first)
                 sb.append(",");
             else
@@ -317,9 +317,9 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
         Iterator<? extends Element> myIterator = iterator();
         Iterator otherIterator = other.iterator();
         Object myElem;
-        while((myElem = myIterator.next()) != finished_.$get()){
+        while((myElem = myIterator.next()) != finished_.get_()){
             Object otherElem;
-            if((otherElem = otherIterator.next()) != finished_.$get()){
+            if((otherElem = otherIterator.next()) != finished_.get_()){
                 if(myElem == null){
                     if(otherElem != null)
                         return false;
@@ -331,7 +331,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
                 return false;
         }
         // we depleted our iterator, make sure the other one is depleted too
-        return otherIterator.next() == finished_.$get();
+        return otherIterator.next() == finished_.get_();
     }
 
     @Override
@@ -340,7 +340,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
         Iterator<? extends Element> iterator = iterator();
         Object elem;
         int hash = 17;
-        while((elem = iterator.next()) != finished_.$get()){
+        while((elem = iterator.next()) != finished_.get_()){
             hash = 31 * hash + (elem != null ? elem.hashCode() : 0);
         }
         return hash;

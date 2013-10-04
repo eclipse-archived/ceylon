@@ -19,7 +19,7 @@ public final class modules_ {
     private static final modules_ value = new modules_();
     
     @Ignore
-    public static modules_ $get() {
+    public static modules_ get_() {
         return value;
     }
     

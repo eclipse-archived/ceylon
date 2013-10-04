@@ -37,7 +37,7 @@ public final class flatten_ {
             @Override
             public Return $call(java.lang.Object arg0) {
                 // FIXME: implement reified
-                return tupleFunction.$call(new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, arg0, empty_.$get()));
+                return tupleFunction.$call(new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, arg0, empty_.get_()));
             }
 
             @Override
@@ -45,7 +45,7 @@ public final class flatten_ {
                 // FIXME: implement reified
                 return tupleFunction.$call(new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
                                            arg0, new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
-                                                           arg1, empty_.$get())));
+                                                           arg1, empty_.get_())));
             }
 
             @Override
@@ -54,12 +54,12 @@ public final class flatten_ {
                 return tupleFunction.$call(new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
                                            arg0, new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
                                                            arg1, new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
-                                                                           arg2, empty_.$get()))));
+                                                                           arg2, empty_.get_()))));
             }
 
             @Override
             public Return $call(java.lang.Object... args) {
-                Sequential t = empty_.$get();
+                Sequential t = empty_.get_();
                 for (int i=args.length-1;i>=0;i--) {
                     // FIXME: implement reified
                     t = new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, args[i], t);

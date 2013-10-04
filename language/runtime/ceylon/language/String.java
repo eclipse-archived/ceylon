@@ -240,15 +240,15 @@ public final class String
     @Override
     public Comparison compare(@Name("other") String other) {
         int c = value.compareTo(other.value);
-        return (c < 0) ? smaller_.$get() :
-            ((c == 0) ? equal_.$get() : larger_.$get());
+        return (c < 0) ? smaller_.get_() :
+            ((c == 0) ? equal_.get_() : larger_.get_());
     }
 
     @Ignore
     public static Comparison compare(java.lang.String value, java.lang.String otherValue) {
         int c = value.compareTo(otherValue);
-        return (c < 0) ? smaller_.$get() :
-            ((c == 0) ? equal_.$get() : larger_.$get());
+        return (c < 0) ? smaller_.get_() :
+            ((c == 0) ? equal_.get_() : larger_.get_());
     }
 
     /*@Override
@@ -393,7 +393,7 @@ public final class String
     @Ignore
     public static boolean definesEvery(java.lang.String value) {
         // TODO We're still boxing here!
-        return instance(value).definesEvery((Sequential)empty_.$get());
+        return instance(value).definesEvery((Sequential)empty_.get_());
     }
 
 //    @Override
@@ -429,7 +429,7 @@ public final class String
     @Ignore
     public static boolean definesAny(java.lang.String value) {
         // TODO We're still boxing here!
-        return instance(value).definesAny((Sequential)empty_.$get());
+        return instance(value).definesAny((Sequential)empty_.get_());
     }
 
 //    @Override
@@ -455,13 +455,13 @@ public final class String
 //    @Override
 //    @Ignore
 //    public Sequential<? extends Character> items() {
-//        return $ceylon$language$Correspondence$this.items((Sequential)empty_.$get());
+//        return $ceylon$language$Correspondence$this.items((Sequential)empty_.get_());
 //    }
 
     @Ignore
     public static Sequential<? extends Character> items(java.lang.String value) {
         // TODO We're still boxing here!
-        return instance(value).items((Sequential)empty_.$get());
+        return instance(value).items((Sequential)empty_.get_());
     }
 
 //    @Override
@@ -705,7 +705,7 @@ public final class String
                     result = Character.instance(codePoint);
                     offset += java.lang.Character.charCount(codePoint);
                 } else {
-                    result = finished_.$get();
+                    result = finished_.get_();
                 }
                 return result;
             }
@@ -1035,7 +1035,7 @@ public final class String
         java.lang.StringBuilder result = new java.lang.StringBuilder();
         Iterator<? extends String> it = strings.iterator();
         java.lang.Object elem = it.next();
-        if (elem != finished_.$get()) {
+        if (elem != finished_.get_()) {
             result.append(elem);
             for (;!((elem = it.next()) instanceof Finished);) {
                 result.append(value).append(elem);
@@ -1046,12 +1046,12 @@ public final class String
 
     @Ignore
     public java.lang.String join() {
-        return join((Sequential)empty_.$get());
+        return join((Sequential)empty_.get_());
     }
 
     @Ignore
     public static java.lang.String join(java.lang.String value) {
-        return join(value, (Sequential)empty_.$get());
+        return join(value, (Sequential)empty_.get_());
     }
 
     @Override
@@ -1468,7 +1468,7 @@ public final class String
     @Ignore
     public static Sequential<? extends Character> sort(java.lang.String value, Callable<? extends Comparison> f) {
         if (value.isEmpty()) {
-            return (Sequential)empty_.$get();
+            return (Sequential)empty_.get_();
         } else {
             return instance(value).sort(f);
         }
@@ -1797,7 +1797,7 @@ public final class String
                         lastTokenWasSeparator = false;
                         return String.instance("");
                     } else {
-                        return finished_.$get();
+                        return finished_.get_();
                     }
                 }
 
@@ -1892,7 +1892,7 @@ public final class String
 
         @Override
         public boolean getEmpty() {
-            return iterator().next() == finished_.$get();
+            return iterator().next() == finished_.get_();
         }
 
         @Override
@@ -2132,7 +2132,7 @@ public final class String
                         pos = idx+oc.length();
                         return Integer.instance(idx);
                     }
-                    return finished_.$get();
+                    return finished_.get_();
                 }
 
                 @Override
@@ -2157,7 +2157,7 @@ public final class String
 
         @Override
         public boolean getEmpty() {
-            return iterator().next() == finished_.$get();
+            return iterator().next() == finished_.get_();
         }
         
         @Override

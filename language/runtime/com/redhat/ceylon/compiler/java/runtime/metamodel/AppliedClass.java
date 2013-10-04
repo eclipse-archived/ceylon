@@ -355,19 +355,19 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     @Override
     @Ignore
     public Type $call$variadic(Object arg0) {
-        return $call(arg0, empty_.$get());
+        return $call(arg0, empty_.get_());
     }
 
     @Override
     @Ignore
     public Type $call$variadic(Object arg0, Object arg1) {
-        return $call(arg0, arg1, empty_.$get());
+        return $call(arg0, arg1, empty_.get_());
     }
 
     @Override
     @Ignore
     public Type $call$variadic(Object arg0, Object arg1, Object arg2) {
-        return $call(arg0, arg1, arg2, empty_.$get());
+        return $call(arg0, arg1, arg2, empty_.get_());
     }
 
     @Ignore

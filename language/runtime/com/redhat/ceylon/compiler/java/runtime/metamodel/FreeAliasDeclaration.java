@@ -91,7 +91,7 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
     @Ignore
     @Override
     public <Type> ceylon.language.meta.model.Type<Type> apply(@Ignore TypeDescriptor $reifiedType){
-        return apply($reifiedType, (Sequential)empty_.$get());
+        return apply($reifiedType, (Sequential)empty_.get_());
     }
 
     @Override
@@ -122,7 +122,7 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
         return this.<Container, Type>memberApply($reifiedContainer,
                                                  $reifiedType,
                                                  containerType,
-                                                 (Sequential)empty_.$get());
+                                                 (Sequential)empty_.get_());
     }
 
     @TypeInfo("ceylon.language.meta.model::Member<Container,ceylon.language.meta.model::Type<Type>>&ceylon.language.meta.model::Type<Type>")

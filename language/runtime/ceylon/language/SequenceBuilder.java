@@ -82,7 +82,7 @@ public class SequenceBuilder<Element> implements ReifiedType {
     @TypeInfo("ceylon.language::Sequential<Element>")
     public Sequential<? extends Element> getSequence() {
         if (array==null || length == 0) {
-            return (Sequential)empty_.$get();
+            return (Sequential)empty_.get_();
         }
         else {
             return ArraySequence.backedBy$hidden($reifiedElement, (Element[])array, 0, length);

@@ -57,10 +57,10 @@ final class integerRangeByIterable_ {
                         long result = current;
                         if (inverse) {
                             // avoid current < lim etc: possibility of overflow
-                            if (current-lim < 0) return finished_.$get();
+                            if (current-lim < 0) return finished_.get_();
                             current-=step;
                         } else {
-                            if (current-lim > 0) return finished_.$get();
+                            if (current-lim > 0) return finished_.get_();
                             current+=step;
                         }
                         return Integer.instance(result);

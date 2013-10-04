@@ -22,7 +22,7 @@ public class SequenceBuilderTest {
     }
     
     @SuppressWarnings("rawtypes")
-    private final Sequential empty = empty_.$get();
+    private final Sequential empty = empty_.get_();
     
     @Test
     public void testEmpty() {

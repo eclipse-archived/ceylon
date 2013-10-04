@@ -29,7 +29,7 @@ final class internalSort_ {
         final Iterable<? extends Element, ? extends java.lang.Object> elements) {
         
         if( elements.getEmpty() ) {
-            return (Sequential)empty_.$get();   
+            return (Sequential)empty_.get_();   
         }
         
         ArraySequence<? extends Element> result = new ArraySequence<Element>($reifiedElement, (ceylon.language.Iterable)elements);
