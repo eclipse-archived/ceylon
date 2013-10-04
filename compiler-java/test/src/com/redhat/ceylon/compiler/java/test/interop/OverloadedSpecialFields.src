@@ -12,20 +12,8 @@ final class overloadedSpecialFields_ {
         sync = .ceylon.language.Integer.instance(java.hashCode((int)0L));
         sync = .ceylon.language.Integer.instance(java.hashCode(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(0L)));
         sync = .ceylon.language.String.instance(java.toString());
-        sync = .com.redhat.ceylon.compiler.java.Util.checkNull((
-            let
-            {
-                .java.lang.String $ceylontmp0 = java.toString((int)1L);
-            }
-            returning $ceylontmp0 != null ? .ceylon.language.String.instance($ceylontmp0) : null;
-        ));
-        sync = .com.redhat.ceylon.compiler.java.Util.checkNull((
-            let
-            {
-                .java.lang.String $ceylontmp1 = java.toString(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
-            }
-            returning $ceylontmp1 != null ? .ceylon.language.String.instance($ceylontmp1) : null;
-        ));
+        sync = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(java.toString((int)1L)));
+        sync = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(java.toString(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L))));
     }
     
     public static void main(.java.lang.String[] args) {
