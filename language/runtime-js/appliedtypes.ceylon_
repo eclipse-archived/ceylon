@@ -20,8 +20,8 @@ shared class AppliedClass<out Type, in Arguments>() satisfies Class<Type,Argumen
     given Kind satisfies ClassOrInterface<Anything> { throw Exception("unimplemented"); }
   shared actual Method<SubType, Type, Arguments>? getMethod<SubType, Type, Arguments>(String name, ClosedType* types)
     given Arguments satisfies Anything[] { throw Exception("unimplemented"); }
-  shared actual Attribute<SubType, Type>? getAttribute<SubType, Type>(String name) { throw Exception("unimplemented"); }
-  shared actual VariableAttribute<SubType, Type>? getVariableAttribute<SubType, Type>(String name) { throw Exception("unimplemented"); }
+  shared actual Attribute<Container, Type>? getAttribute<Container, Type>(String name) { throw Exception("unimplemented"); }
+  shared actual VariableAttribute<Container, Type>? getVariableAttribute<Container, Type>(String name) { throw Exception("unimplemented"); }
 
   shared actual Boolean isTypeOf(Anything instance) { throw Exception("Class declaration"); }
   shared actual Boolean isSuperTypeOf(ClosedType<Anything> type) { throw Exception("Class declaration"); }
@@ -39,8 +39,8 @@ shared class AppliedInterface<out Type>() satisfies Interface<Type>
     given Arguments satisfies Anything[] { throw Exception("unimplemented"); }
   shared actual Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType* types)
     given Kind satisfies ClassOrInterface<Anything> { throw Exception("unimplemented"); }
-  shared actual Attribute<SubType, Type>? getAttribute<SubType, Type>(String name) { throw Exception("unimplemented"); }
-  shared actual VariableAttribute<SubType, Type>? getVariableAttribute<SubType, Type>(String name) { throw Exception("unimplemented"); }
+  shared actual Attribute<Container, Type>? getAttribute<Container, Type>(String name) { throw Exception("unimplemented"); }
+  shared actual VariableAttribute<Container, Type>? getVariableAttribute<Container, Type>(String name) { throw Exception("unimplemented"); }
 
   shared actual Boolean isTypeOf(Anything instance) { throw Exception("Class declaration"); }
   shared actual Boolean isSuperTypeOf(ClosedType<Anything> type) { throw Exception("Class declaration"); }
