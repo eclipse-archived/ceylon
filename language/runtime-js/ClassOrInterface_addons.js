@@ -30,9 +30,9 @@ ClassOrInterface$meta$model.$$.prototype.getAttribute=function getAttribute(name
   var nom = '$prop$get' + name$15[0].toUpperCase() + name$15.substring(1);
   var at = this.tipo.$$.prototype[nom];
   if (!at)return null;
-  return (at.set?AppliedVariableAttribute:AppliedAttribute)(nom, at, $$$mptypes);
+  return (at.set?AppliedVariableAttribute:AppliedAttribute)(name$15, at, $$$mptypes);
 };
-ClassOrInterface$meta$model.$$.prototype.getAttribute.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Attribute$meta$model,a:{Type:'Type',Container:'SubType'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{SubType:{},Type:{}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getAttribute']};};
+ClassOrInterface$meta$model.$$.prototype.getAttribute.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Attribute$meta$model,a:{Type:'Type',Container:'Container'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Type:{}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getAttribute']};};
 defineAttr(ClassOrInterface$meta$model.$$.prototype,'container',function(){
   var $$coi=this;
   var cont = $$coi.tipo.$$metamodel$$.$cont;
