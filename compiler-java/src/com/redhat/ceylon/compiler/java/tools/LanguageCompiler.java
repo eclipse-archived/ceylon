@@ -50,9 +50,11 @@ import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.java.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.java.loader.CeylonEnter;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
+import com.redhat.ceylon.compiler.java.loader.UnknownTypeCollector;
 import com.redhat.ceylon.compiler.java.loader.model.CompilerModuleManager;
 import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -96,18 +98,18 @@ public class LanguageCompiler extends JavaCompiler {
 
     /** The context key for the phasedUnits. */
     protected static final Context.Key<PhasedUnits> phasedUnitsKey = new Context.Key<PhasedUnits>();
-    public static final Context.Key<PhasedUnitsManager> phasedUnitsManagerKey = new Context.Key<PhasedUnitsManager>();
+    public static final Context.Key<CompilerDelegate> compilerDelegateKey = new Context.Key<CompilerDelegate>();
 
     /** The context key for the ceylon context. */
     public static final Context.Key<com.redhat.ceylon.compiler.typechecker.context.Context> ceylonContextKey = new Context.Key<com.redhat.ceylon.compiler.typechecker.context.Context>();
 
     private final CeylonTransformer gen;
     private final PhasedUnits phasedUnits;
-    private final PhasedUnitsManager phasedUnitsManager;
+    private final CompilerDelegate compilerDelegate;
     private final com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
     private final VFS vfs;
 
-	private CeylonModelLoader modelLoader;
+	private AbstractModelLoader modelLoader;
 
     private CeylonEnter ceylonEnter;
 
@@ -126,7 +128,7 @@ public class LanguageCompiler extends JavaCompiler {
             phasedUnits = new PhasedUnits(ceylonContext, new ModuleManagerFactory(){
                 @Override
                 public ModuleManager createModuleManager(com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext) {
-                    PhasedUnitsManager phasedUnitsManager = getPhasedUnitsManagerInstance(context);
+                    CompilerDelegate phasedUnitsManager = getCompilerDelegate(context);
                     return phasedUnitsManager.getModuleManager();
                 }
             });
@@ -135,22 +137,14 @@ public class LanguageCompiler extends JavaCompiler {
         return phasedUnits;
     }
 
-    public static PhasedUnitsManager getPhasedUnitsManagerInstance(final Context context) {
-        PhasedUnitsManager phasedUnitsManager = context.get(phasedUnitsManagerKey);
-        if (phasedUnitsManager == null) {
-            return new PhasedUnitsManager() {
+    public static CompilerDelegate getCompilerDelegate(final Context context) {
+        CompilerDelegate compilerDelegate = context.get(compilerDelegateKey);
+        if (compilerDelegate == null) {
+            return new CompilerDelegate() {
                 @Override
                 public ModuleManager getModuleManager() {
                     com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = getCeylonContextInstance(context);
                     return new CompilerModuleManager(ceylonContext, context);
-                }
-
-                @Override
-                public void resolveDependencies() {
-                    com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = getCeylonContextInstance(context);
-                    PhasedUnits phasedUnits = getPhasedUnitsInstance(context);
-                    ModuleValidator validator = new ModuleValidator(ceylonContext, phasedUnits);
-                    validator.verifyModuleDependencyTree();
                 }
 
                 @Override
@@ -160,18 +154,44 @@ public class LanguageCompiler extends JavaCompiler {
                 }
 
                 @Override
-                public Iterable<PhasedUnit> getPhasedUnitsForExtraPhase(
-                        java.util.List<PhasedUnit> sourceUnits) {
-                    return sourceUnits;
+                public void typeCheck(java.util.List<PhasedUnit> listOfUnits) {
+                    for (PhasedUnit pu : listOfUnits) {
+                        pu.validateTree();
+                        pu.scanDeclarations();
+                    }
+                    for (PhasedUnit pu : listOfUnits) { 
+                        pu.scanTypeDeclarations(); 
+                    } 
+                    for (PhasedUnit pu: listOfUnits) { 
+                        pu.validateRefinement();
+                    }
+                    
+                    for (PhasedUnit pu : listOfUnits) { 
+                        pu.analyseTypes(); 
+                    }
+                    
+                    for (PhasedUnit pu : listOfUnits) { 
+                        pu.analyseFlow();
+                    }
+
+                    UnknownTypeCollector utc = new UnknownTypeCollector();
+                    for (PhasedUnit pu : listOfUnits) { 
+                        pu.getCompilationUnit().visit(utc);
+                    }
                 }
 
                 @Override
-                public void extraPhasesApplied() {
+                public void visitModules(PhasedUnits phasedUnits) {
+                    phasedUnits.visitModules();
                 }
-                
+
+                @Override
+                public void prepareForTypeChecking(List<JCCompilationUnit> trees) {
+                    CeylonEnter.instance(context).prepareForTypeChecking(trees);
+                }
             };
         }
-        return phasedUnitsManager;
+        return compilerDelegate;
     }
     
     /** Get the Ceylon context instance for this context. */
@@ -204,14 +224,14 @@ public class LanguageCompiler extends JavaCompiler {
         super(context);
         ceylonContext = getCeylonContextInstance(context);
         vfs = ceylonContext.getVfs();
-        phasedUnitsManager = getPhasedUnitsManagerInstance(context);
+        compilerDelegate = getCompilerDelegate(context);
         phasedUnits = getPhasedUnitsInstance(context);
         try {
             gen = CeylonTransformer.getInstance(context);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        modelLoader = (CeylonModelLoader) CeylonModelLoader.instance(context);
+        modelLoader = CeylonModelLoader.instance(context);
         ceylonEnter = CeylonEnter.instance(context);
         options = Options.instance(context);
         isBootstrap = options.get(OptionName.BOOTSTRAPCEYLON) != null;
@@ -249,13 +269,13 @@ public class LanguageCompiler extends JavaCompiler {
     }
 
 
-    public static interface PhasedUnitsManager {
+    public static interface CompilerDelegate {
         
         ModuleManager getModuleManager();
-        void resolveDependencies();
+        void prepareForTypeChecking(List<JCCompilationUnit> trees);
         PhasedUnit getExternalSourcePhasedUnit(VirtualFile srcDir, VirtualFile file);
-        Iterable<PhasedUnit> getPhasedUnitsForExtraPhase(java.util.List<PhasedUnit> sourceUnits);
-        void extraPhasesApplied();
+        void typeCheck(java.util.List<PhasedUnit> listOfUnits);
+        void visitModules(PhasedUnits phasedUnits);
     }
     
     private JCCompilationUnit ceylonParse(JavaFileObject filename, CharSequence readSource) {
@@ -274,7 +294,7 @@ public class LanguageCompiler extends JavaCompiler {
             
             PhasedUnit phasedUnit = null;
             
-            PhasedUnit externalPhasedUnit = phasedUnitsManager.getExternalSourcePhasedUnit(srcDir, file);
+            PhasedUnit externalPhasedUnit = compilerDelegate.getExternalSourcePhasedUnit(srcDir, file);
             
             if (externalPhasedUnit != null) {
                 phasedUnit = new CeylonPhasedUnit(externalPhasedUnit, filename, map);
@@ -357,7 +377,7 @@ public class LanguageCompiler extends JavaCompiler {
     }
 
     private void loadCompiledModules(List<JCCompilationUnit> trees, LinkedList<JCCompilationUnit> moduleTrees) {
-        phasedUnits.visitModules();
+        compilerDelegate.visitModules(phasedUnits);
         Modules modules = ceylonContext.getModules();
         // now make sure the phase units have their modules and packages set correctly
         for (PhasedUnit pu : phasedUnits.getPhasedUnits()) {

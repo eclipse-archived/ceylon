@@ -46,12 +46,13 @@ import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeylonPhasedUnit;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
-import com.redhat.ceylon.compiler.java.tools.LanguageCompiler.PhasedUnitsManager;
+import com.redhat.ceylon.compiler.java.tools.LanguageCompiler.CompilerDelegate;
 import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -108,7 +109,7 @@ public class CeylonEnter extends Enter {
     private CeylonTransformer gen;
     private boolean hasRun = false;
     private PhasedUnits phasedUnits;
-    private PhasedUnitsManager phasedUnitsManager;
+    private CompilerDelegate compilerDelegate;
     private com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
     private Log log;
     private AbstractModelLoader modelLoader;
@@ -137,7 +138,7 @@ public class CeylonEnter extends Enter {
             e.printStackTrace();
         }
         phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
-        phasedUnitsManager = LanguageCompiler.getPhasedUnitsManagerInstance(context);
+        compilerDelegate = LanguageCompiler.getCompilerDelegate(context);
         ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
         log = CeylonLog.instance(context);
         modelLoader = CeylonModelLoader.instance(context);
@@ -163,7 +164,7 @@ public class CeylonEnter extends Enter {
     public void main(List<JCCompilationUnit> trees) {
         // complete the javac AST with a completed ceylon model
         timer.startTask("prepareForTypeChecking");
-        prepareForTypeChecking(trees);
+        compilerDelegate.prepareForTypeChecking(trees);
         timer.endTask();
         List<JCCompilationUnit> javaTrees = List.nil();
         List<JCCompilationUnit> ceylonTrees = List.nil();
@@ -304,7 +305,8 @@ public class CeylonEnter extends Enter {
         // make sure we don't load the files we are compiling from their class files
         modelLoader.setupSourceFileObjects(trees);
         // resolve module dependencies
-        phasedUnitsManager.resolveDependencies();
+        ModuleValidator validator = new ModuleValidator(ceylonContext, phasedUnits);
+        validator.verifyModuleDependencyTree();
         // now load package descriptors
         modelLoader.loadPackageDescriptors();
         // at this point, abort if we had any errors logged
@@ -413,34 +415,12 @@ public class CeylonEnter extends Enter {
 
     private void typeCheck() {
         final java.util.List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
-        
+
+        // Delegate to an external typechecker (e.g. the IDE build)
+        compilerDelegate.typeCheck(listOfUnits);
+
+        // This phase is proper to the Java backend 
         for (PhasedUnit pu : listOfUnits) {
-            pu.validateTree();
-            pu.scanDeclarations();
-        }
-        for (PhasedUnit pu : listOfUnits) { 
-            pu.scanTypeDeclarations(); 
-        } 
-        for (PhasedUnit pu: listOfUnits) { 
-            pu.validateRefinement();
-        }
-        
-        for (PhasedUnit pu : listOfUnits) { 
-            pu.analyseTypes(); 
-        }
-        
-        for (PhasedUnit pu : listOfUnits) { 
-            pu.analyseFlow();
-        }
-        
-        UnknownTypeCollector utc = new UnknownTypeCollector();
-        for (PhasedUnit pu : listOfUnits) { 
-            pu.getCompilationUnit().visit(utc);
-        }
-        
-        
-        Iterable<PhasedUnit> phasedUnitsForExtraPhase = phasedUnitsManager.getPhasedUnitsForExtraPhase(listOfUnits);
-        for (PhasedUnit pu : phasedUnitsForExtraPhase) {
             Unit unit = pu.getUnit();
             final CompilationUnit compilationUnit = pu.getCompilationUnit();
             for (Declaration d: unit.getDeclarations()) {
@@ -456,23 +436,21 @@ public class CeylonEnter extends Enter {
         AnnotationModelVisitor amv = new AnnotationModelVisitor();
         DefiniteAssignmentVisitor dav = new DefiniteAssignmentVisitor();
         // Extra phases for the compiler
-        for (PhasedUnit pu : phasedUnitsForExtraPhase) {
+        for (PhasedUnit pu : listOfUnits) {
             pu.getCompilationUnit().visit(boxingDeclarationVisitor);
         }
-        for (PhasedUnit pu : phasedUnitsForExtraPhase) {
+        for (PhasedUnit pu : listOfUnits) {
             pu.getCompilationUnit().visit(boxingVisitor);
         }
-        for (PhasedUnit pu : phasedUnitsForExtraPhase) {
+        for (PhasedUnit pu : listOfUnits) {
             pu.getCompilationUnit().visit(deferredVisitor);
         }
-        for (PhasedUnit pu : phasedUnitsForExtraPhase) {
+        for (PhasedUnit pu : listOfUnits) {
             pu.getCompilationUnit().visit(amv);
         }
-        for (PhasedUnit pu : phasedUnitsForExtraPhase) {
+        for (PhasedUnit pu : listOfUnits) {
             pu.getCompilationUnit().visit(dav);
         }
-        
-        phasedUnitsManager.extraPhasesApplied();
         
         collectTreeErrors(true);
     }

@@ -27,6 +27,7 @@ import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
@@ -42,19 +43,19 @@ public class CeylonClassWriter extends ClassWriter {
     }
 
     private CeyloncFileManager fileManager;
-    private CeylonModelLoader ceylonModelLoader;
+    private AbstractModelLoader modelLoader;
 
     public CeylonClassWriter(Context context) {
         super(context);
         fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
-        ceylonModelLoader = (CeylonModelLoader) CeylonModelLoader.instance(context);
+        modelLoader = CeylonModelLoader.instance(context);
     }
 
     @Override
     public JavaFileObject writeClass(ClassSymbol c) throws IOException,
             PoolOverflow, StringOverflow {
         String packageName = c.packge().getQualifiedName().toString();
-        Package pkg = ceylonModelLoader.findPackage(packageName);
+        Package pkg = modelLoader.findPackage(packageName);
         if(pkg == null)
             throw new RuntimeException("Failed to find package: "+packageName);
         Module module = pkg.getModule();
