@@ -37,11 +37,11 @@ function typeLiteral$meta($$targs$$) {
       }
       var mdl = get_model(mm);
       if (mdl['$mt'] === 'cls') {
-        return AppliedClass(t,mdl['$tp']);
+        return AppliedClass(t,mdl['$tp'],{Type:$$targs$$.Type,Arguments:{t:Nothing}});
       } else if (mdl['$mt'] === 'ifc') {
-        return AppliedInterface(t,mdl['$tp']);
+        return AppliedInterface(t,mdl['$tp'],$$targs$$);
       } else if (mdl['$mt'] === 'mthd') {
-        return AppliedFunction(t);
+        return AppliedFunction(t,{Type:$$targs$$.Type,Arguments:{t:Nothing}});
       } else if (mdl['$mt'] === 'attr' || mdl['$mt'] === 'gttr' || mdl['$mt'] === 'obj') {
         return AppliedValue(undefined,t,{Container:{t:mm.$cont},Type:mm.$t});
       } else {

@@ -10,10 +10,12 @@ function AppliedClass(tipo,$$targs$$,that){
         that.tipo=function(){return tipo.apply(x,arguments);};
         return that;
       }
+      that.tipo$2=tipo;
       var dummy = new AppliedClass.$$;
       that.$$=AppliedClass.$$;
       that.getT$all=function(){return dummy.getT$all();};
       that.getT$name=function(){return dummy.getT$name();};
+      that.equals=function(o){return o && (o.tipo$2||o.tipo)==tipo;};
     } else {
       that=new AppliedClass.$$;
     }
@@ -66,6 +68,9 @@ function $init$AppliedClass(){
                 var $$clase=this;
                 throw wrapexc(Exception(String$("Class declaration",17)),'26:67-26:103','?');
             };$$clase.isSuperTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$m','isSuperTypeOf']};};
+
+  $$clase.equals=function(o){return o && (o.tipo$2||o.tipo)==tipo; };
+//TODO equals metamodel
 
             $$clase.isExactly=function isExactly(type$10){
                 var $$clase=this;
@@ -281,6 +286,7 @@ function AppliedFunction(m,$$targs$$,o) {
   }
   return f;
 }
+AppliedFunction.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.model','Function'],satisfies:{t:Function$meta$model,a:{Type:'Type',Arguments:'Arguments'}},$an:function(){return [shared(),actual()];}};};
 exports.AppliedFunction$meta$model=AppliedFunction;
 
 function AppliedValue(obj,attr,$$targs$$,$$appliedValue){
