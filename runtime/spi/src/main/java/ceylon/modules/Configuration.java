@@ -58,6 +58,11 @@ public class Configuration {
     public String cacheRepository;
 
     /**
+     * Indicates that the default repositories should not be used
+     */
+    public boolean noDefaultRepositories;
+
+    /**
      * Name of class or toplevel method to run
      */
     public String run;
@@ -124,6 +129,9 @@ public class Configuration {
                 break;
             case CACHE_REPOSITORY:
                 cacheRepository = values[arg];
+                break;
+            case NO_DEFAULT_REPOSITORIES:
+                noDefaultRepositories = true;
                 break;
             case REPOSITORY:
                 repositories.add(values[arg]);
