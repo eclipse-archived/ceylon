@@ -253,6 +253,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
                 .cwd(new File(getCurrentWorkingDir()))
                 .systemRepo(systemRepo)
                 .cacheRepo(cacheRepo)
+                .noDefaultRepos(getNoDefaultRepos())
                 .userRepos(userRepos)
                 .outRepo(outRepo)
                 .offline(getOfflineOption())
@@ -296,6 +297,10 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
 
     private String getCacheRepoOption() {
         return options.get(OptionName.CEYLONCACHEREPO);
+    }
+
+    private boolean getNoDefaultRepos() {
+        return options.get(OptionName.CEYLONNODEFREPOS) != null;
     }
 
     private String getOutputRepoOption() {
