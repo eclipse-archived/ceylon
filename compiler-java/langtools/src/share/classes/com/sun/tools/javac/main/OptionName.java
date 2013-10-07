@@ -50,6 +50,7 @@ public enum OptionName {
     CEYLONREPO("-rep"),
     CEYLONSYSTEMREPO("-sysrep"),
     CEYLONCACHEREPO("-cacherep"),
+    CEYLONNODEFREPOS("-nodefreps"),
     CEYLONUSER("-user"),
     CEYLONPASS("-pass"),
     SOURCEPATH("-sourcepath"),
