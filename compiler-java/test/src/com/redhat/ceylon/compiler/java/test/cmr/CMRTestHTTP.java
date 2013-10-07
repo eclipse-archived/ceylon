@@ -120,7 +120,7 @@ public class CMRTestHTTP extends CompilerTest {
         
         try{
             // then try to compile only one module (the other being loaded from its car) 
-            result = getCompilerTask(Arrays.asList("-out", destDir, "-rep", repoAURL),
+            result = getCompilerTask(Arrays.asList("-out", destDir, "-rep", repoAURL, "-verbose:cmr"),
                     "modules/depend/b/module.ceylon", "modules/depend/b/package.ceylon", "modules/depend/b/a.ceylon", "modules/depend/b/B.ceylon").call();
             Assert.assertEquals(Boolean.TRUE, result);
 
@@ -161,7 +161,7 @@ public class CMRTestHTTP extends CompilerTest {
         
         try{
             // then try to compile our module by outputting to HTTP 
-            Boolean result = getCompilerTask(Arrays.asList("-out", repoAURL), "modules/single/module.ceylon").call();
+            Boolean result = getCompilerTask(Arrays.asList("-out", repoAURL, "-verbose:cmr"), "modules/single/module.ceylon").call();
             Assert.assertEquals(Boolean.TRUE, result);
 
         }finally{
@@ -204,9 +204,9 @@ public class CMRTestHTTP extends CompilerTest {
         
         try{
             // then try to compile our module by outputting to HTTP 
-            Boolean result = getCompilerTask(Arrays.asList("-out", repoAURL), "modules/mixed/JavaClass.java").call();
+            Boolean result = getCompilerTask(Arrays.asList("-out", repoAURL, "-verbose:cmr"), "modules/mixed/JavaClass.java").call();
             Assert.assertEquals(Boolean.TRUE, result);
-            result = getCompilerTask(Arrays.asList("-out", repoAURL), "modules/mixed/CeylonClass.ceylon").call();
+            result = getCompilerTask(Arrays.asList("-out", repoAURL, "-verbose:cmr"), "modules/mixed/CeylonClass.ceylon").call();
             Assert.assertEquals(Boolean.TRUE, result);
 
         }finally{
