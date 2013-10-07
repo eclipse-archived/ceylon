@@ -16,7 +16,6 @@
  */
 package ceylon.modules;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,6 +23,7 @@ import java.util.Map;
 
 import ceylon.modules.spi.Argument;
 import ceylon.modules.spi.ArgumentType;
+
 import com.redhat.ceylon.common.Versions;
 
 /**
@@ -76,7 +76,7 @@ public class Configuration {
      * Offline mode
      */
     public boolean offline;
-
+    
     // Non-Ceylon
     public String executable;
     public boolean cacheContent;
@@ -151,44 +151,18 @@ public class Configuration {
     }
 
     private void printUsage(int exitCode) {
-        String distRepo = getDistRepo();
-        String homeRepo = getHomeRepo();
         System.err.print("Usage: ceylon [options...] moduleName/version [args...]\n"
                 + "\n"
                 + " -run qualified-name: Name of a class or toplevel method to run\n"
                 + "                      (default: use the module descriptor)\n"
-                + " -rep path:           Module repository path (can be specified more than once)\n"
-                + "                      Default:\n");
-        if (distRepo != null)
-            System.err.print(
-                    "                      " + distRepo + "\n");
-        System.err.print(
-                "                      ./modules\n");
-        if (homeRepo != null)
-            System.err.print(
-                    "                      " + homeRepo + "\n");
-        System.err.print(
-                " -src path:           Source path (default: source)\n"
-                        + " -verbose:            Output messages about what the runtime is doing\n"
-                        + " -help:               Prints help usage\n"
-                        + " -version:            Prints version number\n"
-                        + " moduleName/version:  Module name and version to run (required)\n"
+                + " -rep path:           Module repository path (can be specified more than once)\n");
+        System.err.print(" -src path:           Source path (default: source)\n"
+                + " -verbose:            Output messages about what the runtime is doing\n"
+                + " -help:               Prints help usage\n"
+                + " -version:            Prints version number\n"
+                + " moduleName/version:  Module name and version to run (required)\n"
         );
         SecurityActions.exit(exitCode);
-    }
-
-    private String getDistRepo() {
-        String ceylonHome = SecurityActions.getProperty("ceylon.home");
-        if (ceylonHome != null)
-            return ceylonHome + File.separator + "repo";
-        return null;
-    }
-
-    private String getHomeRepo() {
-        String userHome = SecurityActions.getProperty("user.home");
-        if (userHome != null)
-            return userHome + File.separator + ".ceylon" + File.separator + "repo";
-        return null;
     }
 
     public void check() {
