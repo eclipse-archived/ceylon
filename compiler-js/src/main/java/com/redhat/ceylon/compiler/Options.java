@@ -15,6 +15,7 @@ public class Options {
     private List<String> repos = new ArrayList<String>();
     private String systemRepo;
     private String cacheRepo;
+    private boolean noDefRepos;
     private String user;
     private String pass;
     private List<String> srcDirs = new ArrayList<String>();
@@ -36,7 +37,7 @@ public class Options {
             String cacheRepository, String outputRepository, final String username, final String password,
             boolean protoStyle, boolean wrapModules, boolean useIndent, boolean useComments, String verbosity,
             boolean showTimes, boolean fromStdin, boolean generateSrcArchive,
-            String srcEncoding, boolean offlineMode) {
+            String srcEncoding, boolean offlineMode, boolean noDefaultRepos) {
         repos = repositories;
         srcDirs = sourceDirectories;
         if (systemRepository != null) systemRepo = systemRepository;
@@ -54,6 +55,7 @@ public class Options {
         gensrc = generateSrcArchive;
         encoding = srcEncoding;
         offline = offlineMode;
+        noDefRepos = noDefaultRepos;
     }
 
     private Options() {}
@@ -197,6 +199,10 @@ public class Options {
     /** Returns the cache folder (default = null) */
     public String getCacheRepo() {
         return cacheRepo;
+    }
+    
+    public boolean getNoDefaultRepos() {
+        return noDefRepos;
     }
 
     public String getUser() {

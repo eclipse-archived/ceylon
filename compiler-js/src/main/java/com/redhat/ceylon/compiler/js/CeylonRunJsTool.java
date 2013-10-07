@@ -346,6 +346,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         final RepositoryManager repoman = CeylonUtils.repoManager()
                 .systemRepo(systemRepo)
                 .cacheRepo(cacheRepo)
+                .noDefaultRepos(noDefRepos)
                 .userRepos(getRepositoryAsStrings())
                 .offline(offline)
                 .cwd(cwd)
