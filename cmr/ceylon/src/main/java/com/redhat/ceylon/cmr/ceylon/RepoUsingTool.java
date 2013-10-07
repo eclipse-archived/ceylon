@@ -32,6 +32,7 @@ import com.redhat.ceylon.common.tool.ToolModel;
 public abstract class RepoUsingTool extends CeylonBaseTool {
     protected List<URI> repo;
     protected String systemRepo;
+    protected String cacheRepo;
     protected boolean offline;
 
     private RepositoryManager rm;
@@ -85,6 +86,13 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     public void setSystemRepository(String systemRepo) {
         this.systemRepo = systemRepo;
     }
+    
+    @OptionArgument(longName="cacherep", argumentName="url")
+    @Description("Specifies the folder to use for caching downloaded modules. " +
+            "(default: `~/.ceylon/cache`)")
+    public void setCacheRepository(String cacheRepo) {
+        this.cacheRepo = cacheRepo;
+    }
 
     @Option(longName="offline")
     @Description("Enables offline mode that will prevent the module loader from connecting to remote repositories.")
@@ -100,6 +108,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         if (rm == null) {
             CeylonUtils.CeylonRepoManagerBuilder rmb = CeylonUtils.repoManager()
                     .systemRepo(systemRepo)
+                    .cacheRepo(cacheRepo)
                     .userRepos(getRepositoryAsStrings())
                     .offline(offline);
                 
@@ -245,6 +254,10 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         if (systemRepo != null) {
             args.add("--sysrep");
             args.add(systemRepo);
+        }
+        if (cacheRepo != null) {
+            args.add("--cacherep");
+            args.add(cacheRepo);
         }
         if (repo != null) {
             for (URI r : repo) {
