@@ -142,6 +142,7 @@ public class CeylonDocTool implements Tool {
     private boolean haltOnError;
     private List<String> repositories = new LinkedList<String>();
     private String systemRepository;
+    private String cacheRepository;
     private List<String> moduleSpecs = new LinkedList<String>();
     private Module currentModule;
     private List<String> links = new LinkedList<String>();
@@ -209,6 +210,16 @@ public class CeylonDocTool implements Tool {
     @Description("The URL of the system repository containing essential modules")
     public void setSystemRepository(String systemRepository) {
         this.systemRepository = systemRepository;
+    }
+
+    public String getCacheRepository() {
+        return cacheRepository;
+    }
+
+    @OptionArgument(longName="cacherep", argumentName="dir-or-url")
+    @Description("The folder to cache downloaded modules")
+    public void setCacheRepository(String cacheRepository) {
+        this.cacheRepository = cacheRepository;
     }
 
     public List<String> getModuleSpecs() {
@@ -284,6 +295,7 @@ public class CeylonDocTool implements Tool {
         // set up the artifact repository
         RepositoryManager repository = CeylonUtils.repoManager()
                 .systemRepo(systemRepository)
+                .cacheRepo(cacheRepository)
                 .userRepos(repositories)
                 .offline(offline)
                 .logger(log).buildManager();

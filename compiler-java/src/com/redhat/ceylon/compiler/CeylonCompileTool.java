@@ -320,6 +320,11 @@ public class CeylonCompileTool extends RepoUsingTool {
             arguments.add(systemRepo);
         }
         
+        if (cacheRepo != null) {
+            arguments.add("-cacherep");
+            arguments.add(cacheRepo);
+        }
+        
         if (repo != null) {
             for (URI uri : this.repo) {
                 arguments.add("-rep");
