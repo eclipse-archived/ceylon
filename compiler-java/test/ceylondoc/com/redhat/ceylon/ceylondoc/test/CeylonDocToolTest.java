@@ -73,10 +73,10 @@ public class CeylonDocToolTest {
     
     private CeylonDocTool tool(List<File> pathname, List<String> moduleName, 
             boolean throwOnError, String... repositories)
-            throws IOException {
+            throws Exception {
         CeylonDocTool tool = new CeylonDocTool();
         tool.setSourceFolders(pathname); 
-        tool.setRepositories(Arrays.asList(repositories));
+        tool.setRepositoryAsStrings(Arrays.asList(repositories));
         tool.setModuleSpecs(moduleName);
         tool.setHaltOnError(throwOnError);
         tool.init();
@@ -90,7 +90,7 @@ public class CeylonDocToolTest {
     
     private CeylonDocTool tool(String pathname, String moduleName, 
             boolean throwOnError, String... repositories)
-            throws IOException {
+            throws Exception {
         return tool(Arrays.asList(new File(pathname)),
                 Arrays.asList(moduleName),
                 throwOnError, repositories);
@@ -140,7 +140,7 @@ public class CeylonDocToolTest {
         
     };
     
-    protected void assertMatchInFile(File destDir, String path, Pattern pattern, GrepAsserter asserter) throws IOException {
+    protected void assertMatchInFile(File destDir, String path, Pattern pattern, GrepAsserter asserter) throws Exception {
         assertFileExists(destDir, path);
         Charset charset = Charset.forName("UTF-8");
         
@@ -161,25 +161,25 @@ public class CeylonDocToolTest {
         }
     }
     
-    protected void assertMatchInFile(File destDir, String path, Pattern pattern) throws IOException {
+    protected void assertMatchInFile(File destDir, String path, Pattern pattern) throws Exception {
         assertMatchInFile(destDir, path, pattern, AT_LEAST_ONE_MATCH);
     }
     
-    protected void assertNoMatchInFile(File destDir, String path, Pattern pattern) throws IOException {
+    protected void assertNoMatchInFile(File destDir, String path, Pattern pattern) throws Exception {
         assertMatchInFile(destDir, path, pattern, NO_MATCHES);
     }
     
     @Test
-    public void moduleA() throws IOException {
+    public void moduleA() throws Exception {
         moduleA(false);
     }
     
     @Test
-    public void moduleAWithPrivate() throws IOException {
+    public void moduleAWithPrivate() throws Exception {
         moduleA(true);
     }
 
-    private void moduleA(boolean includeNonShared) throws IOException {
+    private void moduleA(boolean includeNonShared) throws Exception {
         String pathname = "test/ceylondoc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.single";
 
@@ -227,31 +227,31 @@ public class CeylonDocToolTest {
     }
 
     @Test
-    public void externalLinksToLocalRepoUrlWithModuleNamePattern() throws IOException {
+    public void externalLinksToLocalRepoUrlWithModuleNamePattern() throws Exception {
         String repoUrl = "file://" + new File("").getAbsolutePath() + "/build/CeylonDocToolTest/" + name.getMethodName();
         externalLinks(repoUrl, "com.redhat=" + repoUrl);
     }
     
     @Test
-    public void externalLinksToLocalRepoPathWithModuleNamePattern() throws IOException {
+    public void externalLinksToLocalRepoPathWithModuleNamePattern() throws Exception {
         String repoUrl = new File("").getAbsolutePath() + "/build/CeylonDocToolTest/" + name.getMethodName();
         externalLinks(repoUrl, "com.redhat=" + repoUrl);
     }
 
     @Test
-    public void externalLinksToRemoteRepoWithModuleNamePattern() throws IOException {
+    public void externalLinksToRemoteRepoWithModuleNamePattern() throws Exception {
         String repoUrl = "http://acme.com/repo";
         externalLinks(repoUrl, "com.redhat=" + repoUrl);
     }
     
     @Test
-    public void externalLinksToLocalRepoUrlWithoutModuleNamePattern() throws IOException {
+    public void externalLinksToLocalRepoUrlWithoutModuleNamePattern() throws Exception {
         String repoUrl = "file://" + new File("").getAbsolutePath() + "/build/CeylonDocToolTest/" + name.getMethodName();
         externalLinks(repoUrl, "file://not-existing-dir", "https://not-existing-url", repoUrl);
     }
     
     @Test
-    public void externalLinksToRemoteRepoWithoutModuleNamePattern() throws IOException {
+    public void externalLinksToRemoteRepoWithoutModuleNamePattern() throws Exception {
         HttpServer stubServer = HttpServer.create(new InetSocketAddress(0), 1);
         stubServer.createContext("/repo", new HttpHandler() {
             @Override
@@ -274,7 +274,7 @@ public class CeylonDocToolTest {
         }
     }    
     
-    private File externalLinks(String repoUrl, String... linkArgs) throws IOException {
+    private File externalLinks(String repoUrl, String... linkArgs) throws Exception {
         compile("test/ceylondoc", "com.redhat.ceylon.ceylondoc.test.modules.dependency.b");
         compile("test/ceylondoc", "com.redhat.ceylon.ceylondoc.test.modules.dependency.c");
 
@@ -297,14 +297,14 @@ public class CeylonDocToolTest {
     }
     
     @Test
-    public void moduleDependencies() throws IOException {
+    public void moduleDependencies() throws Exception {
         String repoUrl = "http://acme.com/repo";
         File destDir = externalLinks(repoUrl, "com.redhat=" + repoUrl);
         assertModuleDependencies(destDir);
     }
 
     @Test
-    public void dependentOnBinaryModule() throws IOException {
+    public void dependentOnBinaryModule() throws Exception {
         String pathname = "test/ceylondoc";
         
         // compile the b module
@@ -315,7 +315,7 @@ public class CeylonDocToolTest {
     }
 
     @Test
-    public void classLoading() throws IOException {
+    public void classLoading() throws Exception {
         String pathname = "test/ceylondoc";
         
         // compile the a and b modules
@@ -328,7 +328,7 @@ public class CeylonDocToolTest {
     }
 
     @Test
-    public void containsJavaCode() throws IOException {
+    public void containsJavaCode() throws Exception {
         String pathname = "test/ceylondoc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.mixed";
         
@@ -340,7 +340,7 @@ public class CeylonDocToolTest {
     }
 
     @Test
-    public void documentSingleModule() throws IOException {
+    public void documentSingleModule() throws Exception {
         String pathname = "test/ceylondoc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.multi.a";
         
@@ -360,7 +360,7 @@ public class CeylonDocToolTest {
     }
 
     @Test
-    public void documentPackage() throws IOException {
+    public void documentPackage() throws Exception {
         String pathname = "test/ceylondoc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.multi.a.sub";
         
@@ -375,7 +375,7 @@ public class CeylonDocToolTest {
     }
 
     @Test
-    public void documentDefaultModule() throws IOException {
+    public void documentDefaultModule() throws Exception {
         String pathname = "test/ceylondoc";
         String moduleName = "default";
         
@@ -398,7 +398,7 @@ public class CeylonDocToolTest {
     }
 
     @Test
-    public void ceylonLanguage() throws IOException {
+    public void ceylonLanguage() throws Exception {
         String pathname = "../ceylon.language/src";
         String moduleName = "ceylon.language";
         CeylonDocTool tool = tool(pathname, moduleName, true);
@@ -414,7 +414,7 @@ public class CeylonDocToolTest {
     }
 
     @Test
-    public void ceylonSdk() throws IOException {
+    public void ceylonSdk() throws Exception {
         File sdkDir = new File("../ceylon-sdk");
         if (!sdkDir.exists()
                 || !sdkDir.isDirectory()) {
@@ -547,7 +547,7 @@ public class CeylonDocToolTest {
         }
     }
 
-    private void assertBasicContent(File destDir, boolean includeNonShared) throws IOException {
+    private void assertBasicContent(File destDir, boolean includeNonShared) throws Exception {
         assertMatchInFile(destDir, "index.html", 
                 Pattern.compile("This is a <strong>test</strong> module"));
         assertMatchInFile(destDir, "index.html", 
@@ -583,19 +583,19 @@ public class CeylonDocToolTest {
                 Pattern.compile("<a class='link-source-code' href='StubClass.ceylon.html'><i class='icon-source-code'></i>Source Code</a>"));
     }
 
-    private void assertBy(File destDir) throws IOException {
+    private void assertBy(File destDir) throws Exception {
         assertMatchInFile(destDir, "index.html", 
                 Pattern.compile("<span class='title'>By: </span><span class='value'>Tom Bentley</span>"));
         assertMatchInFile(destDir, "Types.type.html", 
                 Pattern.compile("<span class='title'>By: </span><span class='value'>Tom Bentley</span>"));
     }
     
-    private void assertLicense(File destDir) throws IOException {
+    private void assertLicense(File destDir) throws Exception {
         assertMatchInFile(destDir, "index.html", 
                 Pattern.compile("<span class='title'>License: </span><span class='value'>http://www.gnu.org/licenses/gpl.html</span>"));
     }
 
-    private void assertParametersDocumentation(File destDir) throws IOException {
+    private void assertParametersDocumentation(File destDir) throws Exception {
     	assertMatchInFile(destDir, "index.html", 
     			Pattern.compile("<div class='parameters section'><span class='title'>Parameters: </span><ul><li><span class='parameter'>numbers</span><p>Sequenced parameters <code>numbers</code></p>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
@@ -610,7 +610,7 @@ public class CeylonDocToolTest {
                 Pattern.compile("<li><span class='parameter'>b</span><p>Method parameter <code>b</code></p>"));
 	}
 
-	private void assertThrows(File destDir) throws IOException {
+	private void assertThrows(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<div class='throws section'><span class='title'>Throws: </span><ul><li>"));        
         assertMatchInFile(destDir, "StubClass.type.html", 
@@ -619,7 +619,7 @@ public class CeylonDocToolTest {
                 Pattern.compile("<a class='link' href='StubException.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubException'>StubException</a><p><code>when</code> with <strong>WIKI</strong> syntax</p>"));
     }
 
-    private void assertSee(File destDir) throws IOException {
+    private void assertSee(File destDir) throws Exception {
         assertMatchInFile(destDir, "index.html", Pattern.compile("<div class='see section'><span class='title'>See also: </span><span class='value'><a class='link' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'>StubClass</a>, <a class='link' href='index.html#stubTopLevelMethod' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubTopLevelMethod'>stubTopLevelMethod</a></span></div>"));
         assertMatchInFile(destDir, "index.html", Pattern.compile("<div class='see section'><span class='title'>See also: </span><span class='value'><a class='link' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'>StubClass</a>, <a class='link' href='index.html#stubTopLevelAttribute' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubTopLevelAttribute'>stubTopLevelAttribute</a></span></div>"));
         
@@ -629,7 +629,7 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<div class='see section'><span class='title'>See also: </span><span class='value'><a class='link' href='StubClass.type.html#attributeWithSee' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.attributeWithSee'>attributeWithSee</a>, <a class='link' href='StubException.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubException'>StubException</a>, <a class='link' href='a/A1.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single.a::A1'>A1</a>, <a class='link' href='a/A2.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single.a::A2'>com.redhat.ceylon.ceylondoc.test.modules.single.a::A2</a>"));
     }
     
-    private void assertIcons(File destDir) throws IOException {
+    private void assertIcons(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubInterface.type.html", Pattern.compile("<i class='icon-interface'></i><span class='sub-navbar-name'>StubInterface</span>"));
         assertMatchInFile(destDir, "StubInterface.type.html", Pattern.compile("<td id='formalMethodFromStubInterface' nowrap><i class='icon-shared-member'><i class='icon-decoration-formal'></i></i>"));
         assertMatchInFile(destDir, "StubInterface.type.html", Pattern.compile("<td id='defaultDeprecatedMethodFromStubInterface' nowrap><i class='icon-decoration-deprecated'><i class='icon-shared-member'></i></i>"));
@@ -641,7 +641,7 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<td id='defaultDeprecatedMethodFromStubInterface' nowrap><i class='icon-decoration-deprecated'><i class='icon-shared-member'><i class='icon-decoration-over'></i></i></i>"));        
     }
     
-    private void assertInnerTypesDoc(File destDir) throws IOException {
+    private void assertInnerTypesDoc(File destDir) throws Exception {
         assertFileExists(destDir, "StubClass.StubInnerInterface.type.html");
         assertFileExists(destDir, "StubClass.StubInnerClass.type.html");
         assertFileExists(destDir, "StubClass.StubInnerException.type.html");
@@ -667,7 +667,7 @@ public class CeylonDocToolTest {
                 Pattern.compile("<div class='satisfied section'><span class='title'>Satisfied Interfaces: </span><a class='link' href='StubClass.StubInnerInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.StubInnerInterface'>StubInnerInterface</a>"));                
     }
     
-    private void assertDeprecated(File destDir) throws IOException {
+    private void assertDeprecated(File destDir) throws Exception {
         assertFileExists(destDir, "DeprecatedClass.type.html");
         
         assertMatchInFile(destDir, "index.html",
@@ -680,7 +680,7 @@ public class CeylonDocToolTest {
                 Pattern.compile("<div class='deprecated section'><p><span class='title'>Deprecated: </span>Don't use this method"));
     }
     
-    private void assertTagged(File destDir) throws IOException {
+    private void assertTagged(File destDir) throws Exception {
         assertMatchInFile(destDir, ".resources/index.js", 
                 Pattern.compile("var tagIndex = \\[\\n'stubInnerMethodTag1',"));
         assertMatchInFile(destDir, ".resources/index.js", 
@@ -703,7 +703,7 @@ public class CeylonDocToolTest {
                 Pattern.compile("<div class='tags section'><a class='tag label' name='stubTag1' href='search.html\\?q=stubTag1'>stubTag1</a><a class='tag label' name='stubTag2' href='search.html\\?q=stubTag2'>stubTag2</a>"));
     }
     
-    private void assertDocumentationOfRefinedMember(File destDir) throws IOException {
+    private void assertDocumentationOfRefinedMember(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("Description of StubInterface.formalMethodFromStubInterface"));
         assertMatchInFile(destDir, "StubClass.type.html", 
@@ -712,12 +712,12 @@ public class CeylonDocToolTest {
                 Pattern.compile("Deprecated in StubInterface.defaultDeprecatedMethodFromStubInterface"));
     }
     
-	private void assertSequencedParameter(File destDir) throws IOException {
+	private void assertSequencedParameter(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<span class='void'>void</span> methodWithSequencedParameter\\(<span title='ceylon.language::Integer'>Integer</span>\\[\\] numbers\\)"));
 	}
     
-    private void assertCallableParameter(File destDir) throws IOException {
+    private void assertCallableParameter(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("methodWithCallableParameter1\\(<span class='void'>void</span> onClick\\(\\)\\)"));
         
@@ -728,7 +728,7 @@ public class CeylonDocToolTest {
                 Pattern.compile("methodWithCallableParameter3\\(<span class='void'>void</span> fce1\\(<span class='void'>void</span> fce2\\(<span class='void'>void</span> fce3\\(\\)\\)\\)\\)"));
     }
     
-    private void assertTupleParameter(File destDir) throws IOException {
+    private void assertTupleParameter(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("methodWithTouple1\\(\\[<span title='ceylon.language::Integer'>Integer</span>, <span title='ceylon.language::Float'>Float</span>\\] t\\)"));
         
@@ -736,19 +736,19 @@ public class CeylonDocToolTest {
                 Pattern.compile("methodWithTouple2<span class='type-parameter'>&lt;T&gt;</span>\\(\\[<span title='ceylon.language::String'>String</span>|<span class='type-parameter'>T</span>, <span title='ceylon.language::Integer'>Integer=</span>, <span title='ceylon.language::Float'>Float</span>\\*\\] t\\)"));
     }
     
-    private void assertDefaultedParametres(File destDir) throws IOException {
+    private void assertDefaultedParametres(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("methodWithDefaultedParameter1\\(<span title='ceylon.language::String'>String</span> a<span class='specifier'>= \"a\"</span>, <span title='ceylon.language::String'>String</span> b<span class='specifier'>= constAbc</span>, <span title='ceylon.language::String'>String</span>\\? c<span class='specifier'>= null</span>\\)"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("methodWithDefaultedParameter4\\(<span title='ceylon.language::Boolean'>Boolean</span>\\(<span title='ceylon.language::Character'>Character</span>\\) separator<span class='specifier'>= \\(Character ch\\) => ch.whitespace</span>\\)"));
     }
     
-    private void assertAnythingReturnType(File destDir) throws IOException {
+    private void assertAnythingReturnType(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<span title='ceylon.language::Anything'>Anything</span> methodWithAnything\\(\\)"));
     }
 
-    private void assertFencedCodeBlockWithSyntaxHighlighter(File destDir) throws IOException {
+    private void assertFencedCodeBlockWithSyntaxHighlighter(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<link href='.resources/shCore.css' rel='stylesheet' type='text/css'/>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
@@ -763,7 +763,7 @@ public class CeylonDocToolTest {
                 Pattern.compile("<pre class=\"brush: ceylon\">shared actual default Integer hash \\{"));
     }
     
-    private void assertWikiStyleLinkSyntax(File destDir) throws IOException {
+    private void assertWikiStyleLinkSyntax(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("StubClass = <a class='link' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'>StubClass</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
@@ -818,7 +818,7 @@ public class CeylonDocToolTest {
                 Pattern.compile("fullUnresolvable2 = <span class='link-unresolvable'>\\[unresolvable.bar::Bar.foo\\]</span>"));
     }
     
-    private void assertConstants(File destDir) throws IOException {
+    private void assertConstants(File destDir) throws Exception {
         assertMatchInFile(destDir, "index.html", 
                 Pattern.compile("<span title='ceylon.language::String'>String</span> constAbc<span class='specifier'>= \"abcdef\"</span>"));
         assertMatchInFile(destDir, "index.html", 
@@ -833,14 +833,14 @@ public class CeylonDocToolTest {
                 Pattern.compile("<span title='ceylon.language::Float'>Float</span> constNumPI<span class='specifier'>= 3.14</span>"));
     }
     
-    private void assertLinksToRefinedDeclaration(File destDir) throws IOException {
+    private void assertLinksToRefinedDeclaration(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html",
                 Pattern.compile("<div class='refined section'><span class='title'>Refined declaration: </span><a class='link' href='StubInterface.type.html#defaultDeprecatedMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.defaultDeprecatedMethodFromStubInterface'>defaultDeprecatedMethodFromStubInterface</a><span class='value'></span></div>"));
         assertMatchInFile(destDir, "StubClass.type.html",
                 Pattern.compile("<div class='refined section'><span class='title'>Refined declaration: </span><a class='link' href='StubInterface.type.html#formalMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface'>formalMethodFromStubInterface</a><span class='value'></span></div>"));
     }
     
-    private void assertGenericTypeParams(File destDir) throws IOException {
+    private void assertGenericTypeParams(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClassWithGenericTypeParams.type.html",
                 Pattern.compile("<span class='sub-navbar-name'>StubClassWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-keyword'>in </span>ContravariantType, T1, T2, T3, <span class='type-parameter-keyword'>out </span>CovariantType, DefaultedType<span class='type-parameter-keyword'> = </span>\\{<a class='link' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'>StubClass</a>\\*\\}&gt;</span></span>"));
         assertMatchInFile(destDir, "StubClassWithGenericTypeParams.type.html",
@@ -860,7 +860,7 @@ public class CeylonDocToolTest {
                 Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>T3</span>\\(<span title='ceylon.language::String'>String</span> s\\)</div>"));
     }
     
-    private void assertObjectPageDifferences(File destDir) throws IOException {
+    private void assertObjectPageDifferences(File destDir) throws Exception {
         assertMatchInFile(destDir, "stubObject.object.html",
                 Pattern.compile("<title>Object stubObject</title>"));
         assertMatchInFile(destDir, "stubObject.object.html",
@@ -873,7 +873,7 @@ public class CeylonDocToolTest {
                 Pattern.compile("<a href='stubObject.object.html#stubInnerObject'><span title='Jump to singleton object declaration'>Singleton object declaration</span></a>"));
     }
     
-    private void assertExternalLinks(File destDir, String repoUrl) throws IOException {
+    private void assertExternalLinks(File destDir, String repoUrl) throws Exception {
         String linkStart = "<a class='link' href='" + repoUrl + "/com/redhat/ceylon/ceylondoc/test/modules/dependency";
         
         assertMatchInFile(destDir, "index.html",
@@ -910,14 +910,14 @@ public class CeylonDocToolTest {
                 Pattern.compile("com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2 = " + linkStart + "/b/1.0/module-doc/bb/B2.type.html#b2' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2</a>"));
     }
     
-    private void assertSharedParameterOfClass(File destDir) throws IOException {
+    private void assertSharedParameterOfClass(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<td id='printHello' nowrap><i class='icon-shared-member'></i>printHello</td>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <span class='void'>void</span> printHello\\(<span title='ceylon.language::String'>String</span> name\\)</div>"));
     }
     
-    private void assertAliases(File destDir) throws IOException {
+    private void assertAliases(File destDir) throws Exception {
         assertMatchInFile(destDir, "index.html",
                 Pattern.compile("Aliases"));        
         
@@ -937,7 +937,7 @@ public class CeylonDocToolTest {
                 Pattern.compile("<td id='InnerAliasNumber' nowrap><i class='icon-type-alias'></i>InnerAliasNumber</td><td>"));        
     }
     
-    private void assertModuleDependencies(File destDir) throws IOException {
+    private void assertModuleDependencies(File destDir) throws Exception {
         assertMatchInFile(destDir, "index.html",
                 Pattern.compile("<table id='section-dependencies'"));        
         assertMatchInFile(destDir, "index.html",
@@ -946,33 +946,33 @@ public class CeylonDocToolTest {
                 Pattern.compile("<tr><td class='shrink'><span title='import of module com.redhat.ceylon.ceylondoc.test.modules.dependency.c 1.0'><i class='icon-module'></i></span><a class='link' href='http://acme.com/repo/com/redhat/ceylon/ceylondoc/test/modules/dependency/c/1.0/module-doc/index.html' title='Go to module'>com.redhat.ceylon.ceylondoc.test.modules.dependency.c</a></td><td class='shrink'>1.0</td><td><div class='description import-description'></div></td></tr>"));        
     }
 
-    private void assertBug659ShowInheritedMembers(File destDir) throws IOException {
+    private void assertBug659ShowInheritedMembers(File destDir) throws Exception {
     	assertMatchInFile(destDir, "StubClass.type.html",
     			Pattern.compile("Inherited Methods"));
     	assertMatchInFile(destDir, "StubClass.type.html",
     			Pattern.compile("<td>Methods inherited from: <i class='icon-interface'></i><a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>StubInterface</a><div class='inherited-members'><a class='link' href='StubInterface.type.html#defaultDeprecatedMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.defaultDeprecatedMethodFromStubInterface'>defaultDeprecatedMethodFromStubInterface</a>, <a class='link' href='StubInterface.type.html#formalMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface'>formalMethodFromStubInterface</a>"));
     }
 
-    private void assertBug691AbbreviatedOptionalType(File destDir) throws IOException {
+    private void assertBug691AbbreviatedOptionalType(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html",
                 Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <span title='ceylon.language::String'>String</span>\\? bug691AbbreviatedOptionalType1\\(\\)</div>"));
         assertMatchInFile(destDir, "StubClass.type.html",
                 Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <span class='type-parameter'>Element</span>\\? bug691AbbreviatedOptionalType2<span class='type-parameter'>&lt;Element&gt;</span>\\(\\)</div>"));
     }
     
-    private void assertBug839(File destDir) throws IOException {
+    private void assertBug839(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html",
                 Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> \\{&lt;<span title='ceylon.language::Integer'>Integer</span>-&gt;<span class='type-parameter'>Element</span>&amp;<span title='ceylon.language::Object'>Object</span>&gt;\\*\\} bug839<span class='type-parameter'>&lt;Element&gt;</span>\\(\\)</div>"));
     }
 
-    private void assertBug968(File destDir) throws IOException {
+    private void assertBug968(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html",
                 Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> \\{<span title='ceylon.language::Integer'>Integer</span>\\*\\} bug968_1\\(\\)</div>"));
         assertMatchInFile(destDir, "StubClass.type.html",
                 Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> \\{<span title='ceylon.language::Integer'>Integer</span>\\+\\} bug968_2\\(\\)</div>"));
     }
 
-    private void assertBug927LoadingAndSortingInheritedMembers(File destDir) throws IOException {
+    private void assertBug927LoadingAndSortingInheritedMembers(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html",
                 Pattern.compile("Inherited Attributes"));
         assertMatchInFile(destDir, "StubClass.type.html",
@@ -987,7 +987,7 @@ public class CeylonDocToolTest {
                 "module-doc");
     }
 
-    private void compile(String pathname, String moduleName) throws IOException {
+    private void compile(String pathname, String moduleName) throws Exception {
         CeyloncTool compiler = new CeyloncTool();
         List<String> options = Arrays.asList("-src", pathname, "-out", "build/ceylon-cars");
         JavacTask task = compiler.getTask(null, null, null, options, Arrays.asList(moduleName), null);
@@ -995,7 +995,7 @@ public class CeylonDocToolTest {
         Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);
     }
 
-    private void compileJavaModule(String pathname, String... fileNames) throws IOException {
+    private void compileJavaModule(String pathname, String... fileNames) throws Exception {
         CeyloncTool compiler = new CeyloncTool();
         List<String> options = Arrays.asList("-src", pathname, "-out", "build/ceylon-cars");
         JavacFileManager fileManager = compiler.getStandardFileManager(null, null, null);
