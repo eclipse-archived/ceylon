@@ -146,7 +146,6 @@ public class CeylonCompileTool extends RepoUsingTool {
     private List<File> source = Collections.singletonList(new File("source"));
     private String out;
     private List<String> module = Collections.emptyList();
-    private boolean d;
     private boolean continueOnErrors;
     private List<String> javac = Collections.emptyList();
     private String user;
@@ -164,12 +163,6 @@ public class CeylonCompileTool extends RepoUsingTool {
             " (default: `./source`)")
     public void setSource(List<File> source) {
         this.source = source;
-    }
-    
-    @Option(longName="d")
-    @Description("Disables the default module repositories and source directory.")
-    public void setDisableDefaultRepos(boolean d) {
-        this.d = d;
     }
     
     @Hidden
@@ -268,10 +261,6 @@ public class CeylonCompileTool extends RepoUsingTool {
             arguments.add("-src");
             arguments.add(source.getPath());
             options.addMulti(OptionName.SOURCEPATH, source.getPath());
-        }
-        
-        if (d) {
-            arguments.add("-d");
         }
         
         if (continueOnErrors) {
