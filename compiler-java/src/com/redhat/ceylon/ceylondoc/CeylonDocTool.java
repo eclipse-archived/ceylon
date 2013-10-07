@@ -47,6 +47,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.cmr.impl.CMRException;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -54,7 +55,6 @@ import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
-import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
@@ -114,7 +114,7 @@ import com.redhat.ceylon.tools.ModuleSpec;
 "    ceylon doc org.hibernate/3.0.0.beta \\\n"+
 "        --src ~/projects/hibernate/src \\\n"+
 "        --out ~/projects/hibernate/build")
-public class CeylonDocTool implements Tool {
+public class CeylonDocTool extends RepoUsingTool {
 
     private List<PhasedUnit> phasedUnits;
     private List<Module> modules;
@@ -140,25 +140,22 @@ public class CeylonDocTool implements Tool {
     private List<String> compiledClasses = new LinkedList<String>();
     private List<File> sourceFolders = Collections.singletonList(new File("source"));
     private boolean haltOnError;
-    private List<String> repositories = new LinkedList<String>();
-    private String systemRepository;
-    private String cacheRepository;
     private List<String> moduleSpecs = new LinkedList<String>();
     private Module currentModule;
     private List<String> links = new LinkedList<String>();
     private TypeChecker typeChecker;
     private String encoding;
-    private boolean offline;
     private final Map<String, Boolean> moduleUrlAvailabilityCache = new HashMap<String, Boolean>();
 
     public CeylonDocTool() {
+        super(CeylondMessages.RESOURCE_BUNDLE);
     }
     
     public CeylonDocTool(List<File> sourceFolders, List<String> repositories, List<String> moduleSpecs,
-            boolean haltOnError) {
+            boolean haltOnError) throws Exception {
         this();
         setSourceFolders(sourceFolders);
-        setRepositories(repositories);
+        setRepositoryAsStrings(repositories);
         setModuleSpecs(moduleSpecs);
         setHaltOnError(haltOnError);
         init();
@@ -190,36 +187,6 @@ public class CeylonDocTool implements Tool {
 
     public void setHaltOnError(boolean haltOnError) {
         this.haltOnError = haltOnError;
-    }
-
-    public List<String> getRepositories() {
-        return repositories;
-    }
-
-    @OptionArgument(longName="rep", argumentName="dir-or-url")
-    @Description("The URL of a module repository containing dependencies")
-    public void setRepositories(List<String> repositories) {
-        this.repositories = repositories;
-    }
-
-    public String getSystemRepository() {
-        return systemRepository;
-    }
-
-    @OptionArgument(longName="sysrep", argumentName="dir-or-url")
-    @Description("The URL of the system repository containing essential modules")
-    public void setSystemRepository(String systemRepository) {
-        this.systemRepository = systemRepository;
-    }
-
-    public String getCacheRepository() {
-        return cacheRepository;
-    }
-
-    @OptionArgument(longName="cacherep", argumentName="dir-or-url")
-    @Description("The folder to cache downloaded modules")
-    public void setCacheRepository(String cacheRepository) {
-        this.cacheRepository = cacheRepository;
     }
 
     public List<String> getModuleSpecs() {
@@ -294,9 +261,9 @@ public class CeylonDocTool implements Tool {
         
         // set up the artifact repository
         RepositoryManager repository = CeylonUtils.repoManager()
-                .systemRepo(systemRepository)
-                .cacheRepo(cacheRepository)
-                .userRepos(repositories)
+                .systemRepo(systemRepo)
+                .cacheRepo(cacheRepo)
+                .userRepos(getRepositoryAsStrings())
                 .offline(offline)
                 .logger(log).buildManager();
         

@@ -134,7 +134,7 @@ public class Main {
         try{
             CeylonDocTool ceylonDocTool = new CeylonDocTool();
             ceylonDocTool.setSourceFolders(sourceFolders);
-            ceylonDocTool.setRepositories(repositories);
+            ceylonDocTool.setRepositoryAsStrings(repositories);
             ceylonDocTool.setModuleSpecs(modules);
             ceylonDocTool.setHaltOnError(false);
             ceylonDocTool.setOutputRepository(destDir, user, pass);
