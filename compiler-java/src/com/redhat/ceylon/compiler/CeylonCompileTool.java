@@ -325,6 +325,10 @@ public class CeylonCompileTool extends RepoUsingTool {
             arguments.add(cacheRepo);
         }
         
+        if (noDefRepos) {
+            arguments.add("-nodefreps");
+        }
+        
         if (repo != null) {
             for (URI uri : this.repo) {
                 arguments.add("-rep");

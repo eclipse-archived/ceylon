@@ -46,7 +46,6 @@ import javax.annotation.PostConstruct;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.cmr.impl.CMRException;
 import com.redhat.ceylon.common.tool.Argument;
@@ -260,12 +259,9 @@ public class CeylonDocTool extends RepoUsingTool {
         this.log = new CeylondLogger();
         
         // set up the artifact repository
-        RepositoryManager repository = CeylonUtils.repoManager()
-                .systemRepo(systemRepo)
-                .cacheRepo(cacheRepo)
-                .userRepos(getRepositoryAsStrings())
-                .offline(offline)
-                .logger(log).buildManager();
+        RepositoryManager repository = createRepositoryManagerBuilder()
+                .logger(log)
+                .buildManager();
         
         builder.setRepositoryManager(repository);
         
@@ -480,7 +476,7 @@ public class CeylonDocTool extends RepoUsingTool {
         collectSubclasses();
 
         // make a destination repo
-        RepositoryManager outputRepository = CeylonUtils.repoManager()
+        RepositoryManager outputRepository = createRepositoryManagerBuilder()
                 .outRepo(this.outputRepository)
                 .logger(log)
                 .user(user)
