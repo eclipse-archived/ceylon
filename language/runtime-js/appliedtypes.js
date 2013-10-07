@@ -56,26 +56,11 @@ function $init$AppliedClass(){
 
             defineAttr($$clase,'typeArguments',function(){
                 var $$clase=this;
-                throw wrapexc(Exception(String$("Class declaration",17)),'15:63-15:99','?');
+                throw wrapexc(Exception(String$("IMPL AppliedClass.typeArguments ")),'15:63-15:99','?');
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$at','typeArguments']};});
-
-            $$clase.isTypeOf=function isTypeOf(instance$8){
-                var $$clase=this;
-                throw wrapexc(Exception(String$("Class declaration",17)),'25:54-25:90','?');
-            };$$clase.isTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$m','isTypeOf']};};
-
-            $$clase.isSuperTypeOf=function isSuperTypeOf(type$9){
-                var $$clase=this;
-                throw wrapexc(Exception(String$("Class declaration",17)),'26:67-26:103','?');
-            };$$clase.isSuperTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$m','isSuperTypeOf']};};
 
   $$clase.equals=function(o){return o && (o.tipo$2||o.tipo)==tipo; };
 //TODO equals metamodel
-
-            $$clase.isExactly=function isExactly(type$10){
-                var $$clase=this;
-                throw wrapexc(Exception(String$("Class declaration",17)),'27:63-27:99','?');
-            };$$clase.isExactly.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$m','isExactly']};};
 
   defineAttr($$clase,'string',function(){
     var mm = this.tipo.$$metamodel$$;
@@ -124,32 +109,22 @@ function $init$AppliedInterface(){
 
             defineAttr($$appliedInterface,'typeArguments',function(){
                 var $$appliedInterface=this;
-                throw wrapexc(Exception(String$("unimplemented",13)),'34:63-34:95','?');
+                throw wrapexc(Exception(String$("IMPL AppliedInterface.typeArguments")),'34:63-34:95','?');
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:AppliedInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Interface','$at','typeArguments']};});
 
             defineAttr($$appliedInterface,'extendedType',function(){
                 var $$appliedInterface=this;
-                throw wrapexc(Exception(String$("unimplemented",13)),'35:62-35:94','?');
+                throw wrapexc(Exception(String$("IMPL AppliedInterface.extendedType")),'35:62-35:94','?');
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:ClassModel$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}}]},$cont:AppliedInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Interface','$at','extendedType']};});
-
-            $$appliedInterface.isTypeOf=function isTypeOf(instance$17){
-                var $$appliedInterface=this;
-                throw wrapexc(Exception(String$("Class declaration",17)),'44:54-44:90','?');
-            };$$appliedInterface.isTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:AppliedInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Interface','$m','isTypeOf']};};
-
-            $$appliedInterface.isSuperTypeOf=function isSuperTypeOf(type$18){
-                var $$appliedInterface=this;
-                throw wrapexc(Exception(String$("Class declaration",17)),'45:67-45:103','?');
-            };$$appliedInterface.isSuperTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Interface','$m','isSuperTypeOf']};};
 
             $$appliedInterface.isExactly=function isExactly(type$19){
                 var $$appliedInterface=this;
-                throw wrapexc(Exception(String$("Class declaration",17)),'46:63-46:99','?');
+                throw wrapexc(Exception(String$("IMPL AppliedInterface.isExactly")),'46:63-46:99','?');
             };$$appliedInterface.isExactly.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Interface','$m','isExactly']};};
 
             defineAttr($$appliedInterface,'container',function(){
                 var $$appliedInterface=this;
-                throw wrapexc(Exception(String$("Class declaration",17)),'47:50-47:86','?');
+                throw wrapexc(Exception(String$("IMPL AppliedInterface.container")),'47:50-47:86','?');
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Type$meta$model,a:{Type:{t:Anything}}}]},$cont:AppliedInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Interface','$at','container']};});
 
   defineAttr($$appliedInterface,'string',function(){
@@ -183,28 +158,37 @@ function AppliedUnionType(tipo,types$2, $$targs$$, that) {
 }
 AppliedUnionType.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Union:{'var':'out','def':{t:Anything}}},satisfies:[{t:UnionType$meta$model,a:{Union:'Union'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','UnionType']};};
 function $init$AppliedUnionType(){
-    if (AppliedUnionType.$$===undefined){
-        initTypeProto(AppliedUnionType,'ceylon.language.meta.model::AppliedUnionType',Basic,UnionType$meta$model);
-        (function($$appliedUnionType){
+  if (AppliedUnionType.$$===undefined){
+    initTypeProto(AppliedUnionType,'ceylon.language.meta.model::AppliedUnionType',Basic,UnionType$meta$model);
+    (function($$appliedUnionType){
             
             defineAttr($$appliedUnionType,'caseTypes',function(){
                 var $$appliedUnionType=this;
                 return $$appliedUnionType._types; //TODO type
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:List,a:{Element:{t:Type$meta$model,a:{Type:'Union'}}}},$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$at','caseTypes']};});
 
-            $$appliedUnionType.isTypeOf=function isTypeOf(instance$20){
-                var $$appliedUnionType=this;
-                throw wrapexc(Exception(String$("Class declaration",17)),'69:54-69:90','?');
-            };$$appliedUnionType.isTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$m','isTypeOf']};};
+      $$appliedUnionType.isTypeOf=function isTypeOf(instance$20){
+        var tipos=[];
+        for (var i=0; i < this._types.length;i++) {
+          var _t = this._types[i];
+          if (_t.tipo) {
+            _t={t:_t.tipo};
+          } else if (_t.t===undefined) {
+          _t={t:_t};
+          }
+          tipos.push(_t);
+        }
+        return isOfType(instance$20,{t:'u',l:tipos});
+      };$$appliedUnionType.isTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$m','isTypeOf']};};
 
             $$appliedUnionType.isSuperTypeOf=function isSuperTypeOf(type$21){
                 var $$appliedUnionType=this;
-                throw wrapexc(Exception(String$("Class declaration",17)),'70:67-70:103','?');
+                throw wrapexc(Exception(String$("IMPL AppliedUnionType.isSuperTypeOf")),'70:67-70:103','?');
             };$$appliedUnionType.isSuperTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$m','isSuperTypeOf']};};
 
             $$appliedUnionType.isExactly=function isExactly(type$22){
                 var $$appliedUnionType=this;
-                throw wrapexc(Exception(String$("Class declaration",17)),'71:63-71:99','?');
+                throw wrapexc(Exception(String$("IMPL AppliedUnionType.isExactly")),'71:63-71:99','?');
             };$$appliedUnionType.isExactly.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$m','isExactly']};};
 
         })(AppliedUnionType.$$.prototype);
@@ -225,28 +209,37 @@ function AppliedIntersectionType(tipo,types$3, $$targs$$, that) {
 }
 AppliedIntersectionType.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Union:{'var':'out','def':{t:Anything}}},satisfies:[{t:IntersectionType$meta$model,a:{Intersection:'Union'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','IntersectionType']};};
 function $init$AppliedIntersectionType(){
-    if (AppliedIntersectionType.$$===undefined){
-        initTypeProto(AppliedIntersectionType,'ceylon.language.meta.model::AppliedIntersectionType',Basic,IntersectionType$meta$model);
-        (function($$appliedIntersectionType){
+  if (AppliedIntersectionType.$$===undefined){
+    initTypeProto(AppliedIntersectionType,'ceylon.language.meta.model::AppliedIntersectionType',Basic,IntersectionType$meta$model);
+    (function($$appliedIntersectionType){
 
             defineAttr($$appliedIntersectionType,'satisfiedTypes',function(){
                 var $$appliedIntersectionType=this;
                 return $$appliedIntersectionType._types;
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:List,a:{Element:{t:Type$meta$model,a:{Type:'Union'}}}},$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$at','satisfiedTypes']};});
 
-            $$appliedIntersectionType.isTypeOf=function isTypeOf(instance$23){
-                var $$appliedIntersectionType=this;
-                throw wrapexc(Exception(String$("Class declaration",17)),'77:54-77:90','?');
-            };$$appliedIntersectionType.isTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$m','isTypeOf']};};
+      $$appliedIntersectionType.isTypeOf=function isTypeOf(instance$23){
+        var tipos=[];
+        for (var i=0; i < this._types.length;i++) {
+          var _t = this._types[i];
+          if (_t.tipo) {
+            _t={t:_t.tipo};
+          } else if (_t.t===undefined) {
+          _t={t:_t};
+          }
+          tipos.push(_t);
+        }
+        return isOfType(instance$23,{t:'u',l:tipos});
+      };$$appliedIntersectionType.isTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$m','isTypeOf']};};
 
             $$appliedIntersectionType.isSuperTypeOf=function isSuperTypeOf(type$24){
                 var $$appliedIntersectionType=this;
-                throw wrapexc(Exception(String$("Class declaration",17)),'78:67-78:103','?');
+                throw wrapexc(Exception(String$("IMPL AppliedIntersectionType.isSuperTypeOf")),'78:67-78:103','?');
             };$$appliedIntersectionType.isSuperTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$m','isSuperTypeOf']};};
 
             $$appliedIntersectionType.isExactly=function isExactly(type$25){
                 var $$appliedIntersectionType=this;
-                throw wrapexc(Exception(String$("Class declaration",17)),'79:63-79:99','?');
+                throw wrapexc(Exception(String$("IMPL AppliedIntersectionType.isExactly")),'79:63-79:99','?');
             };$$appliedIntersectionType.isExactly.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$m','isExactly']};};
 
         })(AppliedIntersectionType.$$.prototype);
@@ -351,7 +344,7 @@ function $init$AppliedValue(){
             t=t(); $$atr.tipo.$$metamodel$$=t;
           }
           //TODO determine if t is a class, interface, etc to return the apropriate type
-          throw wrapexc(Exception(String$("Implement AppliedValue.container",17)),'55:50-55:86','?');
+          throw wrapexc(Exception(String$("IMPL AppliedValue.container",17)),'55:50-55:86','?');
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Type$meta$model,a:{Type:{t:Anything}}}]},$cont:AppliedValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$at','container']};});
 
     })(AppliedValue.$$.prototype);
@@ -461,7 +454,7 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
 
   defineAttr($$appliedMethod,'typeArguments',function(){
       var $$appliedMethod=this;
-      throw wrapexc(Exception(String$("unimplemented",13)),'92:75-92:107','?');
+      throw wrapexc(Exception(String$("IMPL AppliedMethod.typeArguments")),'92:75-92:107','?');
   },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','typeArguments']};});
 
   return $$appliedMethod;
