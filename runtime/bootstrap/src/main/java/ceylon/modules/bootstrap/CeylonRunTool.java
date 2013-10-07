@@ -127,6 +127,11 @@ public class CeylonRunTool extends RepoUsingTool {
         argList.add("-sysrep");
         argList.add(sysRep);
 
+        if (cacheRepo != null) {
+            argList.add("-cacherep");
+            argList.add(cacheRepo);
+        }
+        
         if (repo != null) {
             for (URI repo : this.repo) {
                 argList.add("-rep");
