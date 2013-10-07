@@ -229,7 +229,7 @@ function $init$AppliedIntersectionType(){
           }
           tipos.push(_t);
         }
-        return isOfType(instance$23,{t:'u',l:tipos});
+        return isOfType(instance$23,{t:'i',l:tipos});
       };$$appliedIntersectionType.isTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$m','isTypeOf']};};
 
             $$appliedIntersectionType.isSuperTypeOf=function isSuperTypeOf(type$24){
