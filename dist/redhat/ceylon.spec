@@ -11,8 +11,10 @@
 
 # Use one of the following lines depending if the source zip file
 # is a micro version (like 0.3.1) or not (like 0.4)
-#%define name_source %{name}-%{major_version}.%{minor_version}.%{micro_version}
-%define name_source %{name}-%{major_version}.%{minor_version}
+# ATTENTION Simply commenting out a define does not work, it seems
+# the parser will still see and use it! Just change the # for a %
+#define name_source %{name}-%{major_version}.%{minor_version}
+%define name_source %{name}-%{major_version}.%{minor_version}.%{micro_version}
 
 Name: ceylon
 Epoch: 0
@@ -23,7 +25,7 @@ Summary: Ceylon language
 Group: Development/Languages
 License: ASL 2.0 and GPL v 2 + Classpath exception
 URL: http://www.ceylon-lang.org//
-Source0: https://github.com/downloads/ceylon/ceylon-dist/%{name_source}.zip
+Source0: http://downloads.ceylon-lang.org/cli/%{name_source}.zip
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch:     noarch
 BuildRequires: zip
@@ -77,6 +79,8 @@ popd
 
 
 %changelog
+* Tue Sep 24 2013 Tako Schotanus <tschotan@redhat.com> 0.6.1-0
+- Update for 0.6.1
 * Fri Sep 20 2013 Stephane Epardaud <separdau@redhat.com> 0.6.0-0
 - Update for 0.6
 * Wed Mar 13 2013 Tako Schotanus <tschotan@redhat.com> 0.5.0-1
