@@ -132,6 +132,10 @@ public class CeylonRunTool extends RepoUsingTool {
             argList.add(cacheRepo);
         }
         
+        if (noDefRepos) {
+            argList.add("-nodefreps");
+        }
+        
         if (repo != null) {
             for (URI repo : this.repo) {
                 argList.add("-rep");
