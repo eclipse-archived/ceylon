@@ -133,7 +133,7 @@ function Nothing(wat) {
 }
 initType(Nothing, 'ceylon.language::Nothing');
 //This is quite a special case, since Nothing is not in the model, we need to insert it there
-$$METAMODEL$$['ceylon.language'].Nothing={"$mt":"cls","$an":{"shared":[]},"$nm":"Nothing"};
+$$METAMODEL$$['ceylon.language']["Nothing"]={"$mt":"cls","$an":{"shared":[]},"$nm":"Nothing"};
 Nothing.$$metamodel$$={$ps:[],$an:function(){return[shared()]},mod:$$METAMODEL$$,d:['ceylon.language','Nothing']};
 
 function Object$(wat) {
