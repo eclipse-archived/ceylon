@@ -50,8 +50,6 @@ import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.java.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.java.loader.CeylonEnter;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
-import com.redhat.ceylon.compiler.java.loader.UnknownTypeCollector;
-import com.redhat.ceylon.compiler.java.loader.model.CompilerModuleManager;
 import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
@@ -140,56 +138,7 @@ public class LanguageCompiler extends JavaCompiler {
     public static CompilerDelegate getCompilerDelegate(final Context context) {
         CompilerDelegate compilerDelegate = context.get(compilerDelegateKey);
         if (compilerDelegate == null) {
-            return new CompilerDelegate() {
-                @Override
-                public ModuleManager getModuleManager() {
-                    com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = getCeylonContextInstance(context);
-                    return new CompilerModuleManager(ceylonContext, context);
-                }
-
-                @Override
-                public PhasedUnit getExternalSourcePhasedUnit(
-                        VirtualFile srcDir, VirtualFile file) {
-                    return null;
-                }
-
-                @Override
-                public void typeCheck(java.util.List<PhasedUnit> listOfUnits) {
-                    for (PhasedUnit pu : listOfUnits) {
-                        pu.validateTree();
-                        pu.scanDeclarations();
-                    }
-                    for (PhasedUnit pu : listOfUnits) { 
-                        pu.scanTypeDeclarations(); 
-                    } 
-                    for (PhasedUnit pu: listOfUnits) { 
-                        pu.validateRefinement();
-                    }
-                    
-                    for (PhasedUnit pu : listOfUnits) { 
-                        pu.analyseTypes(); 
-                    }
-                    
-                    for (PhasedUnit pu : listOfUnits) { 
-                        pu.analyseFlow();
-                    }
-
-                    UnknownTypeCollector utc = new UnknownTypeCollector();
-                    for (PhasedUnit pu : listOfUnits) { 
-                        pu.getCompilationUnit().visit(utc);
-                    }
-                }
-
-                @Override
-                public void visitModules(PhasedUnits phasedUnits) {
-                    phasedUnits.visitModules();
-                }
-
-                @Override
-                public void prepareForTypeChecking(List<JCCompilationUnit> trees) {
-                    CeylonEnter.instance(context).prepareForTypeChecking(trees);
-                }
-            };
+            return new CeyloncCompilerDelegate(context);
         }
         return compilerDelegate;
     }
