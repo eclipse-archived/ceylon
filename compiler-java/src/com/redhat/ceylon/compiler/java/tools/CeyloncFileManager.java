@@ -246,11 +246,13 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         List<String> userRepos = new LinkedList<String>();
         userRepos.addAll(options.getMulti(OptionName.CEYLONREPO));
         String systemRepo = getSystemRepoOption();
+        String cacheRepo = getCacheRepoOption();
         String outRepo = getOutputRepoOption();
         
         repoManager = CeylonUtils.repoManager()
                 .cwd(new File(getCurrentWorkingDir()))
                 .systemRepo(systemRepo)
+                .cacheRepo(cacheRepo)
                 .userRepos(userRepos)
                 .outRepo(outRepo)
                 .offline(getOfflineOption())
@@ -290,6 +292,10 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
 
     private String getSystemRepoOption() {
         return options.get(OptionName.CEYLONSYSTEMREPO);
+    }
+
+    private String getCacheRepoOption() {
+        return options.get(OptionName.CEYLONCACHEREPO);
     }
 
     private String getOutputRepoOption() {
