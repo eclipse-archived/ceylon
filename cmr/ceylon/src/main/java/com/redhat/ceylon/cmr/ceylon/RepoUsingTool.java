@@ -33,6 +33,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     protected List<URI> repo;
     protected String systemRepo;
     protected String cacheRepo;
+    protected boolean noDefRepos;
     protected boolean offline;
 
     private RepositoryManager rm;
@@ -94,8 +95,14 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         this.cacheRepo = cacheRepo;
     }
 
+    @Option(longName="no-default-repositories")
+    @Description("Indicates that the default repositories should not be used.")
+    public void setNoDefRepos(boolean noDefRepos) {
+        this.noDefRepos = noDefRepos;
+    }
+
     @Option(longName="offline")
-    @Description("Enables offline mode that will prevent the module loader from connecting to remote repositories.")
+    @Description("Enables offline mode that will prevent connections to remote repositories.")
     public void setOffline(boolean offline) {
         this.offline = offline;
     }
@@ -104,14 +111,19 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         this.out = out;
     }
     
+    protected CeylonUtils.CeylonRepoManagerBuilder createRepositoryManagerBuilder() {
+        CeylonUtils.CeylonRepoManagerBuilder rmb = CeylonUtils.repoManager()
+                .systemRepo(systemRepo)
+                .cacheRepo(cacheRepo)
+                .noDefaultRepos(noDefRepos)
+                .userRepos(getRepositoryAsStrings())
+                .offline(offline);
+        return rmb;
+    }
+    
     protected synchronized RepositoryManager getRepositoryManager() {
         if (rm == null) {
-            CeylonUtils.CeylonRepoManagerBuilder rmb = CeylonUtils.repoManager()
-                    .systemRepo(systemRepo)
-                    .cacheRepo(cacheRepo)
-                    .userRepos(getRepositoryAsStrings())
-                    .offline(offline);
-                
+            CeylonUtils.CeylonRepoManagerBuilder rmb = createRepositoryManagerBuilder();
             rm = rmb.buildManager();   
         }
         return rm;
