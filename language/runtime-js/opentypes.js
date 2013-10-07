@@ -48,7 +48,7 @@ function $init$FreeClass(){
             //AttributeGetterDefinition typeArguments at X (167:4-167:97)
             defineAttr($$freeClass,'typeArguments',function(){
                 var $$freeClass=this;
-                throw wrapexc(Exception(String$("unimplemented",13)),'167:63-167:95','X');
+                throw wrapexc(Exception(String$("IMPL FreeClass.typeArguments")),'167:63-167:95','X');
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}}},$cont:FreeClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenClassType','$at','typeArguments']};});
         })(FreeClass.$$.prototype);
     }
@@ -88,7 +88,7 @@ function $init$FreeInterface(){
             //AttributeGetterDefinition typeArguments at X (176:4-176:97)
             defineAttr($$freeInterface,'typeArguments',function(){
                 var $$freeInterface=this;
-                throw wrapexc(Exception(String$("unimplemented",13)),'176:63-176:95','X');
+                throw wrapexc(Exception(String$("IMPL FreeInterface.typeArguments")),'176:63-176:95','X');
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}}},$cont:FreeInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenInterfaceType','$at','typeArguments']};});
         })(FreeInterface.$$.prototype);
     }
@@ -136,7 +136,7 @@ function $init$OpenFunction(){
             $$openFunction.$apply=function $apply(types$2){
                 var $$openFunction=this;
                 if(types$2===undefined){types$2=getEmpty();}
-                throw Exception();
+                throw Exception("IMPL OpenFunction.apply");
             };$$openFunction.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Function$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','apply']};};
             
             //MethodDefinition memberApply at X (21:4-21:105)
@@ -152,7 +152,7 @@ function $init$OpenFunction(){
             $$openFunction.memberApply=function memberApply(instance$3,types$5,$$$mptypes){
                 var $$openFunction=this;
                 if(types$5===undefined){types$5=getEmpty();}
-                throw Exception();
+                throw Exception("IMPL OpenFunction.memberApply");
             };$$openFunction.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Method$meta$model,a:{Arguments:'Arguments',Type:'MethodType',Container:'Container'}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenFunction,$tp:{Container:{},MethodType:{},Arguments:{'satisfies':[{t:Sequential,a:{Element:{t:Anything}}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','memberApply']};};
             
             //AttributeDeclaration defaulted at X (25:4-25:44)
@@ -177,7 +177,7 @@ function $init$OpenFunction(){
             //AttributeGetterDefinition openType at X (33:2-33:43)
             defineAttr($$openFunction,'openType',function(){
                 var $$openFunction=this;
-                throw Exception();
+                throw Exception("IMPL OpenFunction.openType");
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:OpenType$meta$declaration},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','openType']};});
             //AttributeDeclaration typeParameterDeclarations at X (34:2-34:63)
             defineAttr($$openFunction,'typeParameterDeclarations',function(){
@@ -275,7 +275,7 @@ function $init$OpenValue(){
             //AttributeGetterDefinition openType at X (44:2-44:43)
             defineAttr($$openValue,'openType',function(){
                 var $$openValue=this;
-                throw Exception();
+                throw Exception("IMPL OpenValue.openType");
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:OpenType$meta$declaration},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','openType']};});
 
 defineAttr($$openValue,'name',function(){return this.name_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','name']};});
@@ -398,10 +398,13 @@ function OpenClass(pkg, meta, that){
 }
 OpenClass.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:ClassDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','ClassDeclaration']};};
 function $init$OpenClass(){
-    if (OpenClass.$$===undefined){
-        initTypeProto(OpenClass,'ceylon.language.meta.declaration::OpenClass',Basic,ClassDeclaration$meta$declaration);
-        (function($$openClass){
-            
+  if (OpenClass.$$===undefined){
+    initTypeProto(OpenClass,'ceylon.language.meta.declaration::OpenClass',Basic,ClassDeclaration$meta$declaration);
+    (function($$openClass){
+
+defineAttr($$openClass,'string',function(){
+  return String$("class " + this.qualifiedName);
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language','Object']};}); 
             //AttributeDeclaration anonymous at X (48:2-48:42)
             defineAttr($$openClass,'anonymous',function(){
                 var $$openClass=this;
@@ -412,7 +415,7 @@ function $init$OpenClass(){
             $$openClass.$apply=function $apply(types$9){
                 var $$openClass=this;
                 if(types$9===undefined){types$9=getEmpty();}
-                throw Exception();
+                throw Exception("IMPL OpenClass.apply");
             };$$openClass.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Class$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$m','apply']};};
             
             //MethodDeclaration annotatedMemberDeclarations at X (55:2-56:66)
@@ -425,7 +428,7 @@ function $init$OpenClass(){
             //AttributeGetterDefinition openType at X (61:2-61:43)
             defineAttr($$openClass,'openType',function(){
                 var $$openClass=this;
-                throw Exception();
+                throw Exception("IMPL OpenClass.openType");
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:OpenType$meta$declaration},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','openType']};});
             //AttributeDeclaration typeParameterDeclarations at X (62:2-62:63)
             defineAttr($$openClass,'typeParameterDeclarations',function(){
@@ -532,10 +535,13 @@ function OpenInterface(pkg, meta, that) {
 }
 OpenInterface.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:InterfaceDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','InterfaceDeclaration']};};
 function $init$OpenInterface(){
-    if (OpenInterface.$$===undefined){
-        initTypeProto(OpenInterface,'ceylon.language.meta.declaration::OpenInterface',Basic,InterfaceDeclaration$meta$declaration);
-        (function($$openInterface){
+  if (OpenInterface.$$===undefined){
+    initTypeProto(OpenInterface,'ceylon.language.meta.declaration::OpenInterface',Basic,InterfaceDeclaration$meta$declaration);
+    (function($$openInterface){
             
+defineAttr($$openInterface,'string',function(){
+  return String$("interface " + this.qualifiedName);
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language','Object']};}); 
             //MethodDefinition apply at X (73:2-73:71)
             $$openInterface.$apply=function $apply(types$16){
               return AppliedInterface(this.tipo,{Type:{t:this.tipo}});
@@ -552,7 +558,7 @@ function $init$OpenInterface(){
             //AttributeGetterDefinition openType at X (86:2-86:43)
             defineAttr($$openInterface,'openType',function(){
                 var $$openInterface=this;
-                throw Exception();
+                throw Exception("IMPL OpenInterface.openType");
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:OpenType$meta$declaration},$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$at','openType']};});
             //AttributeDeclaration typeParameterDeclarations at X (87:2-87:63)
             defineAttr($$openInterface,'typeParameterDeclarations',function(){
