@@ -358,11 +358,11 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             child = fromRepository(cache, context, addLeaf);
         }
 
-        if (child != null) {
+        if (child == null) {
             log.debug(" -> Artifact " + context + " not found in any repository");
         }
 
-        return child; // not found
+        return child;
     }
 
     protected Node fromRepository(Repository repository, ArtifactContext context, boolean addLeaf) {
