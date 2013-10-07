@@ -26,6 +26,7 @@ public class CeylonUtils {
         private File actualCwd;
         private File cwd;
         private String systemRepo;
+        private String cacheRepo;
         private List<String> userRepos;
         private List<String> extraUserRepos;
         private List<String> remoteRepos;
@@ -60,6 +61,18 @@ public class CeylonUtils {
          */
         public CeylonRepoManagerBuilder systemRepo(String systemRepo) {
             this.systemRepo = systemRepo;
+            return this;
+        }
+
+        /**
+         * Sets the path to use for the caching of downloaded modules. When not set the
+         * value will be taken from the system configuration
+         *
+         * @param cacheRepo A path to a folder to use for caching
+         * @return This object for chaining method calls
+         */
+        public CeylonRepoManagerBuilder cacheRepo(String cacheRepo) {
+            this.cacheRepo = cacheRepo;
             return this;
         }
 
@@ -205,8 +218,13 @@ public class CeylonUtils {
 
             // First we determine the cache repository
 
-            Repositories.Repository cacheRepo = repositories.getCacheRepository();
-            final File root = new File(absolute(cacheRepo.getUrl()));
+            File root;
+            if (cacheRepo == null) {
+                Repositories.Repository cr = repositories.getCacheRepository();
+                root = new File(absolute(cr.getUrl()));
+            } else {
+                root = new File(absolute(resolveRepoUrl(repositories, cacheRepo)));
+            }
 
             final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log, isOffline(config));
 
@@ -370,6 +388,18 @@ public class CeylonUtils {
             }
         }
 
+        private String resolveRepoUrl(Repositories repositories, String repoUrl) {
+            if (repoUrl.startsWith("+")) {
+                // The token is the name of a repository defined in the Ceylon configuration file
+                String path = absolute(repoUrl.substring(1));
+                Repositories.Repository repo = repositories.getRepository(path);
+                if (repo != null) {
+                    repoUrl = repo.getUrl();
+                }
+            }
+            return repoUrl;
+        }
+        
         private void addRepo(RepositoryManagerBuilder builder, Repositories repositories, String repoUrl, boolean prepend) {
             try {
                 if (repoUrl.startsWith("+")) {
@@ -377,8 +407,7 @@ public class CeylonUtils {
                     String path = absolute(repoUrl.substring(1));
                     Repositories.Repository repo = repositories.getRepository(path);
                     if (repo != null) {
-                        addRepo(builder, repo, prepend);
-                        return;
+                        repoUrl = repo.getUrl();
                     }
                 }
                 String path = absolute(repoUrl);
