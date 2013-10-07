@@ -49,6 +49,7 @@ public enum OptionName {
     CP("-cp"),
     CEYLONREPO("-rep"),
     CEYLONSYSTEMREPO("-sysrep"),
+    CEYLONCACHEREPO("-cacherep"),
     CEYLONUSER("-user"),
     CEYLONPASS("-pass"),
     SOURCEPATH("-sourcepath"),
