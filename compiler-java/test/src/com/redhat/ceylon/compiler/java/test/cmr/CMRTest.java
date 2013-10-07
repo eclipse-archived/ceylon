@@ -181,7 +181,6 @@ public class CMRTest extends CompilerTest {
         File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.modules.single", "6.6.6");
         assertFalse(carFile.exists());
 
-        String cacheDir = Repositories.get().getCacheRepository().getUrl();
         File carFileInCache = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.modules.single", "6.6.6", cacheDir);
         if(carFileInCache.exists())
             carFileInCache.delete();
@@ -226,8 +225,7 @@ public class CMRTest extends CompilerTest {
         assertFalse(carFile.exists());
 
         // clean up the cache repo if required
-        String cacheRepo = Repositories.get().getCacheRepository().getUrl();
-        File carFileInHomeRepo = getModuleArchive("a", "1.0", cacheRepo);
+        File carFileInHomeRepo = getModuleArchive("a", "1.0", cacheDir);
         if(carFileInHomeRepo.exists())
             carFileInHomeRepo.delete();
 
@@ -239,7 +237,7 @@ public class CMRTest extends CompilerTest {
         assertFalse(carFileInWorkingRepo.exists());
         
         // put a broken one in the cache repo
-        compileModuleFromSourceFolder("a", "home_repo/a_broken", cacheRepo);
+        compileModuleFromSourceFolder("a", "home_repo/a_broken", cacheDir);
         assertTrue(carFileInHomeRepo.exists());
 
         // the good one in a local repo

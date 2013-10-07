@@ -75,8 +75,10 @@ public abstract class CompilerTest {
 
     protected final static String dir = "test/src";
     protected final static String destDirGeneral = "build/test-cars";
+    protected final static String cacheDirGeneral = "build/test-cache";
     public static final String LANGUAGE_MODULE_CAR = "../ceylon.language/ide-dist/ceylon.language-"+TypeChecker.LANGUAGE_MODULE_VERSION+".car";
     protected final String destDir;
+    protected final String cacheDir;
     protected final String moduleName;
     protected final List<String> defaultOptions;
     
@@ -97,7 +99,12 @@ public abstract class CompilerTest {
         } else {
             destDir = destDirGeneral + File.separator + transformDestDir(moduleName.substring(lastDot+1));
         }
-        defaultOptions = Arrays.asList("-out", destDir);
+        if(lastDot == -1){
+            cacheDir = cacheDirGeneral + File.separator + transformDestDir(moduleName);
+        } else {
+            cacheDir = cacheDirGeneral + File.separator + transformDestDir(moduleName.substring(lastDot+1));
+        }
+        defaultOptions = Arrays.asList("-out", destDir, "-cacherep", cacheDir);
     }
 
     // for subclassers 
@@ -131,6 +138,7 @@ public abstract class CompilerTest {
 	@Before
 	public void cleanCars() {
 	    cleanCars(destDir);
+        cleanCars(cacheDir);
 	}
 	
     public void cleanCars(String repo) {
@@ -598,6 +606,8 @@ public abstract class CompilerTest {
         options.addAll(initialOptions);
         if(!options.contains("-src"))
             options.addAll(Arrays.asList("-src", getSourcePath()));
+        if(!options.contains("-cacherep"))
+            options.addAll(Arrays.asList("-cacherep", getCachePath()));
         boolean hasVerbose = false;
         for(String option : options){
             if(option.startsWith("-verbose")){
@@ -615,6 +625,10 @@ public abstract class CompilerTest {
 
     protected String getSourcePath() {
         return dir;
+    }
+
+    protected String getCachePath() {
+        return cacheDir;
     }
 
     protected ModuleWithArtifact getDestModuleWithArtifact(){

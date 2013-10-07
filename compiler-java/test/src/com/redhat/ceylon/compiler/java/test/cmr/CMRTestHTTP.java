@@ -98,7 +98,6 @@ public class CMRTestHTTP extends CompilerTest {
         String moduleA = "com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a";
         
         // Clean up any cached version
-        String cacheDir = Repositories.get().getCacheRepository().getUrl();
         File carFileInCache = getModuleArchive(moduleA, "6.6.6", cacheDir);
         if(carFileInCache.exists())
             carFileInCache.delete();
