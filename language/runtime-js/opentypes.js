@@ -402,15 +402,42 @@ function $init$OpenClass(){
     initTypeProto(OpenClass,'ceylon.language.meta.declaration::OpenClass',Basic,ClassDeclaration$meta$declaration);
     (function($$openClass){
 
-defineAttr($$openClass,'string',function(){
-  return String$("class " + this.qualifiedName);
-},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language','Object']};}); 
-            //AttributeDeclaration anonymous at X (48:2-48:42)
-            defineAttr($$openClass,'anonymous',function(){
-                var $$openClass=this;
-                return false;
-            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','anonymous']};});
-            
+      defineAttr($$openClass,'string',function(){
+        return String$("class " + this.qualifiedName);
+      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language','Object']};}); 
+      defineAttr($$openClass,'anonymous',function(){
+        var $$openClass=this;
+        return false;
+      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','anonymous']};});
+      defineAttr($$openClass,'abstract',function(){
+        var _m=this.meta;
+        return (_m && (_m['abstract'] || _m.$an['abstract']))!==undefined;
+      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','abstract']};});
+      defineAttr($$openClass,'$final',function(){
+        var _m=this.meta;
+        return (_m && (_m['final'] || _m.$an['final']))!==undefined;
+      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','final']};});
+      defineAttr($$openClass,'annotation',function(){
+        var _m=this.meta;
+        return (_m && (_m['annotation'] || _m.$an['annotation']))!==undefined;
+      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','NestableDeclaration','$at','annotation']};});
+      defineAttr($$openClass,'actual',function(){
+        var _m=this.meta;
+        return (_m && _m.$an && _m.$an.actual)!==undefined;
+      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','NestableDeclaration','$at','actual']};});
+      defineAttr($$openClass,'formal',function(){
+        var _m=this.meta;
+        return (_m && _m.$an && _m.$an.formal)!==undefined;
+      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','NestableDeclaration','$at','formal']};});
+      defineAttr($$openClass,'shared',function(){
+        var _m=this.meta;
+        return (_m && _m.$an && _m.$an.shared)!==undefined;
+      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','NestableDeclaration','$at','shared']};});
+      defineAttr($$openClass,'$default',function(){
+        var _m=this.meta;
+        return (_m && _m.$an && _m.$an['default'])!==undefined;
+      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','NestableDeclaration','$at','default']};});
+
             //MethodDefinition apply at X (49:2-49:76)
             $$openClass.$apply=function $apply(types$9){
                 var $$openClass=this;
