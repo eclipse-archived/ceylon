@@ -345,6 +345,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         //Create a repository manager to load the js module we're going to run
         final RepositoryManager repoman = CeylonUtils.repoManager()
                 .systemRepo(systemRepo)
+                .cacheRepo(cacheRepo)
                 .userRepos(getRepositoryAsStrings())
                 .offline(offline)
                 .cwd(cwd)

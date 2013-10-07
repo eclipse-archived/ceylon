@@ -19,7 +19,7 @@ public class TestJavaDeps {
         final TypeChecker tc = builder.getTypeChecker();
         tc.process();
         final Options opts = new Options(Collections.<String>emptyList(), Collections.singletonList("src/test/resources/javadeps"),
-                null, "./build", null, null, false, true, false, true, null, false, false, false, "UTF-8", false);
+                null, null, "./build", null, null, false, true, false, true, null, false, false, false, "UTF-8", false);
         final JsCompiler comp = new JsCompiler(tc, opts);
         comp.generate();
     }
