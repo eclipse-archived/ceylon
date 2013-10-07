@@ -34,6 +34,7 @@ public class CeylonUtils {
         private String user;
         private String password;
         private boolean offline;
+        private boolean noDefRepos;
         private boolean jdkIncluded;
         private Logger log;
 
@@ -76,6 +77,14 @@ public class CeylonUtils {
             return this;
         }
 
+        /**
+         * Indicates that the default repositories should not be used (defaults to false)
+         */
+        public CeylonRepoManagerBuilder noDefaultRepos(boolean noDefRepos){
+            this.noDefRepos = noDefRepos;
+            return this;
+        }
+        
         /**
          * Sets a list of paths to use for the remote repositories. When not set the
          * list will be taken from the system configuration (they don't really have
@@ -244,8 +253,9 @@ public class CeylonUtils {
 
             // The rest we add in the normal order becuase they get APpended to the root
 
-            if (jdkIncluded)
+            if (jdkIncluded) {
                 addRepo(builder, repositories, "jdk", false);
+            }
 
             if (userRepos != null && !userRepos.isEmpty()) {
                 // Add user defined repos
@@ -254,9 +264,11 @@ public class CeylonUtils {
                 }
             } else {
                 // We add the configured local lookup repos only when no user defined repos have been passed
-                Repositories.Repository[] repos = repositories.getLocalLookupRepositories();
-                for (Repositories.Repository lookup : repos) {
-                    addRepo(builder, lookup, false);
+                if (!noDefRepos) {
+                    Repositories.Repository[] repos = repositories.getLocalLookupRepositories();
+                    for (Repositories.Repository lookup : repos) {
+                        addRepo(builder, lookup, false);
+                    }
                 }
             }
 
@@ -268,9 +280,11 @@ public class CeylonUtils {
             }
                 
             // Add default non-remote repos (like the user repo)
-            Repositories.Repository[] globals = repositories.getGlobalLookupRepositories();
-            for (Repositories.Repository lookup : globals) {
-                addRepo(builder, lookup, false);
+            if (!noDefRepos) {
+                Repositories.Repository[] globals = repositories.getGlobalLookupRepositories();
+                for (Repositories.Repository lookup : globals) {
+                    addRepo(builder, lookup, false);
+                }
             }
 
             // Add the "remote" repos (not necessarily remote but it's at the point in the
@@ -282,17 +296,21 @@ public class CeylonUtils {
                 }
             } else {
                 // We add the configured remote lookup repos only when no user defined repos have been passed
-                Repositories.Repository[] repos = repositories.getRemoteLookupRepositories();
-                for (Repositories.Repository lookup : repos) {
-                    addRepo(builder, lookup, false);
+                if (!noDefRepos) {
+                    Repositories.Repository[] repos = repositories.getRemoteLookupRepositories();
+                    for (Repositories.Repository lookup : repos) {
+                        addRepo(builder, lookup, false);
+                    }
                 }
             }
 
             // Add the remaining ("other") default repos (like the Herd repo),
             // these will always come last
-            Repositories.Repository[] others = repositories.getOtherLookupRepositories();
-            for (Repositories.Repository lookup : others) {
-                addRepo(builder, lookup, false);
+            if (!noDefRepos) {
+                Repositories.Repository[] others = repositories.getOtherLookupRepositories();
+                for (Repositories.Repository lookup : others) {
+                    addRepo(builder, lookup, false);
+                }
             }
 
             log.debug("Repository lookup order:");
