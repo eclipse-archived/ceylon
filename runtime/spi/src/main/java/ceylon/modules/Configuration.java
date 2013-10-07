@@ -53,6 +53,11 @@ public class Configuration {
     public String systemRepository;
 
     /**
+     * The path to the cache folder (default = null)
+     */
+    public String cacheRepository;
+
+    /**
      * Name of class or toplevel method to run
      */
     public String run;
@@ -116,6 +121,9 @@ public class Configuration {
                 break;
             case SYSTEM_REPOSITORY:
                 systemRepository = values[arg];
+                break;
+            case CACHE_REPOSITORY:
+                cacheRepository = values[arg];
                 break;
             case REPOSITORY:
                 repositories.add(values[arg]);

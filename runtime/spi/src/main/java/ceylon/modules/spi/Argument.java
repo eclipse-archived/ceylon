@@ -27,6 +27,7 @@ public enum Argument {
     RUN("run", ArgumentType.CEYLON, 1),
     REPOSITORY("rep", ArgumentType.CEYLON, 1),
     SYSTEM_REPOSITORY("sysrep", ArgumentType.CEYLON, 1),
+    CACHE_REPOSITORY("cacherep", ArgumentType.CEYLON, 1),
     SOURCE("src", ArgumentType.CEYLON, 1),
     VERBOSE("verbose", ArgumentType.CEYLON, 0),
     OFFLINE("offline", ArgumentType.CEYLON, 0),

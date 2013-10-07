@@ -106,6 +106,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
         Logger log = new JULLogger();
         final RepositoryManagerBuilder builder = CeylonUtils.repoManager()
                 .systemRepo(conf.systemRepository)
+                .cacheRepo(conf.cacheRepository)
                 .userRepos(conf.repositories)
                 .offline(offline || conf.offline)
                 .logger(log)
