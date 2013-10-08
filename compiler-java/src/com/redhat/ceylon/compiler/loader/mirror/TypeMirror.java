@@ -75,4 +75,9 @@ public interface TypeMirror {
      * Returns the underlying class declaration of this type if it represents a class type
      */
     ClassMirror getDeclaredClass();
+    
+    /**
+     * Returns the underlying type parameter declaration of this type if it represents a class type
+     */
+    TypeParameterMirror getTypeParameter();
 }

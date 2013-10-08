@@ -26,6 +26,7 @@ import javax.lang.model.type.TypeKind;
 
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
+import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
 
 /**
  * Simple Type Mirror.
@@ -102,5 +103,10 @@ public class SimpleReflType implements TypeMirror {
 
     public Module getModule() {
         return module;
+    }
+
+    @Override
+    public TypeParameterMirror getTypeParameter() {
+        return null;
     }
 }

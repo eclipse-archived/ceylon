@@ -35,9 +35,11 @@ import java.util.Map;
 import javax.lang.model.type.TypeKind;
 
 import com.redhat.ceylon.compiler.java.loader.mirror.JavacClass;
+import com.redhat.ceylon.compiler.java.loader.mirror.JavacTypeParameter;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
+import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 
 public class ReflectionType implements TypeMirror {
@@ -51,6 +53,8 @@ public class ReflectionType implements TypeMirror {
     private boolean upperBoundSet;
     private ReflectionClass declaredClass;
     private boolean declaredClassSet;
+    private boolean typeParameterSet;
+    private ReflectionTypeParameter typeParameter;
 
     public ReflectionType(Type type) {
         this.type = type;
@@ -168,12 +172,6 @@ public class ReflectionType implements TypeMirror {
                 upperBound = new ReflectionType(ct[0]);
             }else
                 upperBound = null;
-        }else if(type instanceof TypeVariable){
-            Type[] ct = ((TypeVariable) type).getBounds();
-            // FIXME: we can have more than one
-            if(ct.length != 1)
-                throw new RuntimeException("Not one upper bound in wildcard type: "+ct.length);
-            upperBound = new ReflectionType(ct[0]);
         }
         upperBoundSet = true;
         return upperBound;
@@ -226,5 +224,16 @@ public class ReflectionType implements TypeMirror {
             declaredClassSet = true;
         }
         return declaredClass;
+    }
+
+    @Override
+    public TypeParameterMirror getTypeParameter() {
+        if(getKind() != TypeKind.TYPEVAR)
+            return null;
+        if(!typeParameterSet){
+            typeParameter = new ReflectionTypeParameter(type);
+            typeParameterSet = true;
+        }
+        return typeParameter;
     }
 }

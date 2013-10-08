@@ -91,6 +91,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -2298,8 +2299,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             return false;
         case TYPEVAR:
-            TypeMirror bound = type.getUpperBound();
-            return bound != null && !sameType(bound, OBJECT_TYPE);
+            TypeParameterMirror typeParameter = type.getTypeParameter();
+            return typeParameter != null && hasNonErasedBounds(typeParameter);
         default:
             return false;
         }
@@ -3273,11 +3274,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private ProducedType obtainTypeParameterBound(TypeMirror type, Scope scope, Set<TypeDeclaration> rawDeclarationsSeen) {
         // type variables are never mapped
         if(type.getKind() == TypeKind.TYPEVAR){
-            TypeMirror bound = type.getUpperBound();
-            if(bound != null)
-                return obtainTypeParameterBound(bound, scope, rawDeclarationsSeen);
-            // no bound is Object
-            return typeFactory.getObjectDeclaration().getType();
+            TypeParameterMirror typeParameter = type.getTypeParameter();
+            if(!typeParameter.getBounds().isEmpty()){
+                IntersectionType it = new IntersectionType(typeFactory);
+                for(TypeMirror bound : typeParameter.getBounds()){
+                    ProducedType boundModel = obtainTypeParameterBound(bound, scope, rawDeclarationsSeen);
+                    it.getSatisfiedTypes().add(boundModel);
+                }
+                return it.getType();
+            }else
+                // no bound is Object
+                return typeFactory.getObjectDeclaration().getType();
         }else{
             TypeMirror mappedType = applyTypeMapping(type, TypeLocation.TYPE_PARAM);
 
