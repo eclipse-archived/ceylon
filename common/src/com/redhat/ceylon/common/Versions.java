@@ -27,8 +27,9 @@ public class Versions {
      * M4 is 3.0
      * M5 is 4.0
      * M6 is 5.0
+     * 1.0 is 6.0
      */
-    public static final int JVM_BINARY_MAJOR_VERSION = 5;
+    public static final int JVM_BINARY_MAJOR_VERSION = 6;
     public static final int JVM_BINARY_MINOR_VERSION = 0;
     public static final int JS_BINARY_MAJOR_VERSION = JVM_BINARY_MAJOR_VERSION;
     public static final int JS_BINARY_MINOR_VERSION = JVM_BINARY_MINOR_VERSION;
