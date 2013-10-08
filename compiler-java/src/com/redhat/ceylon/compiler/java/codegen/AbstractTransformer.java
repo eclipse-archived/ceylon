@@ -1595,7 +1595,8 @@ public abstract class AbstractTransformer implements Transformation {
                     ta = tp.getSatisfiedTypes().get(0).substitute(tas);
                     if(tp.getSatisfiedTypes().size() > 1
                             || isBoundsSelfDependant(tp)
-                            || willEraseToObject(ta)){
+                            || willEraseToObject(ta)
+                            || !tp.isCovariant()){
                         // A bit ugly, but we need to escape from the loop and create a raw type, no generics
                         typeArgs = null;
                         break;
