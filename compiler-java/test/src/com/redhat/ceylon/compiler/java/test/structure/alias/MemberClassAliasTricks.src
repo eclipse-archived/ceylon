@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.alias;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Members({
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member.class),
@@ -58,7 +58,7 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
         return new MemberClassAliasTricks_Foo(a, b);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
     @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasTricks_Foo")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.class)
@@ -74,7 +74,7 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
         return new MemberClassAliasTricks_Foo(a, b);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
     @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasTricks_Foo")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.class)
@@ -123,7 +123,7 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
         );
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
     @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member.MemberClassAliasToEnclosingMemberClass.class)})
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.class)
@@ -144,7 +144,7 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
             return new Member(a, b);
         }
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
         @.ceylon.language.SharedAnnotation$annotation
         @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasTricks_Foo.Member")
         @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member.class)
@@ -176,7 +176,7 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo();
     }
     
@@ -199,7 +199,7 @@ final class memberClassAliasTricksMethod_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.alias.memberClassAliasTricksMethod_.memberClassAliasTricksMethod();
     }
 }

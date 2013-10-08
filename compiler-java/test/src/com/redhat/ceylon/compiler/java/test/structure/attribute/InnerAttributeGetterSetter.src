@@ -12,7 +12,7 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
             private innerGetterSetter$getter_() {
             }
             
-            public long $get() {
+            public long get_() {
                 return 0L;
             }
         }
@@ -24,12 +24,12 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
             }
             private long value;
             
-            public void $set(final long innerGetterSetter) {
+            public void set_(final long innerGetterSetter) {
             }
         }
         final innerGetterSetter$setter_ innerGetterSetter$setter_ = new innerGetterSetter$setter_();
-        final long n = innerGetterSetter$getter_.$get();
-        innerGetterSetter$setter_.$set(1L);
+        final long n = innerGetterSetter$getter_.get_();
+        innerGetterSetter$setter_.set_(1L);
     }
     
     private final void m2$priv() {
@@ -40,7 +40,7 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
             private innerGetterSetter$getter_() {
             }
             
-            public long $get() {
+            public long get_() {
                 return m.ref;
             }
         }
@@ -52,7 +52,7 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
             }
             private long value;
             
-            public void $set(final long innerGetterSetter) {
+            public void set_(final long innerGetterSetter) {
                 (
                     let
                     {
@@ -64,12 +64,12 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
             }
         }
         final innerGetterSetter$setter_ innerGetterSetter$setter_ = new innerGetterSetter$setter_();
-        final long n = innerGetterSetter$getter_.$get();
-        innerGetterSetter$setter_.$set(1L);
+        final long n = innerGetterSetter$getter_.get_();
+        innerGetterSetter$setter_.set_(1L);
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterSetter();
     }
     

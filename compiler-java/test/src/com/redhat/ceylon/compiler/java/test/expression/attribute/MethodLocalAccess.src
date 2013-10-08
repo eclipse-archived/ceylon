@@ -17,12 +17,12 @@ class MethodLocalAccess implements .com.redhat.ceylon.compiler.java.runtime.mode
             private n2$getter_() {
             }
             
-            public long $get() {
+            public long get_() {
                 return 1L;
             }
         }
         final .com.redhat.ceylon.compiler.java.language.GetterLong n2$getter_ = new n2$getter_();
-        return n2$getter_.$get();
+        return n2$getter_.get_();
     }
     
     private final long m3$priv() {
@@ -32,8 +32,8 @@ class MethodLocalAccess implements .com.redhat.ceylon.compiler.java.runtime.mode
             private selfref$getter_() {
             }
             
-            public long $get() {
-                if ($get() > 0L) {
+            public long get_() {
+                if (get_() > 0L) {
                     return 1L;
                 } else {
                     return 0L;
@@ -41,11 +41,11 @@ class MethodLocalAccess implements .com.redhat.ceylon.compiler.java.runtime.mode
             }
         }
         final .com.redhat.ceylon.compiler.java.language.GetterLong selfref$getter_ = new selfref$getter_();
-        return selfref$getter_.$get();
+        return selfref$getter_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalAccess();
     }
     

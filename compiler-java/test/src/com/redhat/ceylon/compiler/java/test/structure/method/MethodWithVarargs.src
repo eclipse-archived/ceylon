@@ -9,7 +9,7 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$2 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 f1$($ceylontmp$ns$2);
             }
             returning null;
@@ -37,7 +37,7 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$5 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$5 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 f2$(i, $ceylontmp$ns$5);
             }
             returning null;
@@ -65,7 +65,7 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$os$8 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$os$8 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 f3$($ceylontmp$os$8);
             }
             returning null;
@@ -125,7 +125,7 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithVarargs();
     }
     

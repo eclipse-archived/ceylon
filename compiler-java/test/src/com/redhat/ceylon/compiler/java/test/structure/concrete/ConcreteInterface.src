@@ -160,7 +160,7 @@ class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.C();
     }
     

@@ -25,7 +25,7 @@ final class callableArgumentSequenced_g_ {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 callableArgumentSequenced_g($ceylontmp$s$0);
             }
             returning null;
@@ -53,7 +53,7 @@ final class callableArgumentSequenced_m_ {
             
             @.java.lang.Override
             public .java.lang.Object $call() {
-                final .ceylon.language.Sequential $$s$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                final .ceylon.language.Sequential $$s$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 return $call$typed($$s$);
             }
             
@@ -108,7 +108,7 @@ final class callableArgumentSequenced_m_ {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object... $param$0) {
-                return $call$typed($spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.$get()));
+                return $call$typed($spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
@@ -179,7 +179,7 @@ final class callableArgumentSequenced_m_ {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object... $param$0) {
-                return $call$typed((.ceylon.language.Sequence)$spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.$get()));
+                return $call$typed((.ceylon.language.Sequence)$spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
@@ -200,7 +200,7 @@ final class callableArgumentSequenced_m_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_m_.callableArgumentSequenced_m();
     }
 }

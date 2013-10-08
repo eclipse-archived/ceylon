@@ -13,7 +13,7 @@ class Bug620<T extends .ceylon.language.Numeric<T>> implements .com.redhat.ceylo
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug620(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     

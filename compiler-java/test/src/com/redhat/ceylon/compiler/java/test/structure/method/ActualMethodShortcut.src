@@ -31,7 +31,7 @@ class ActualMethodShortcutSub extends .com.redhat.ceylon.compiler.java.test.stru
                 return (
                     let
                     {
-                        .ceylon.language.process_.$get().writeLine($$line);
+                        .ceylon.language.process_.get_().writeLine($$line);
                     }
                     returning null;
                 );
@@ -41,7 +41,7 @@ class ActualMethodShortcutSub extends .com.redhat.ceylon.compiler.java.test.stru
     
     @.java.lang.Override
     public final .java.lang.Object print1() {
-        .ceylon.language.process_.$get().writeLine("hello");
+        .ceylon.language.process_.get_().writeLine("hello");
         return null;
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> print2$specifier;
@@ -63,7 +63,7 @@ class ActualMethodShortcutSub extends .com.redhat.ceylon.compiler.java.test.stru
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.ActualMethodShortcutSub();
     }
     

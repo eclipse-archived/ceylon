@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.quoting.lettercase;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Object
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public final class Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -10,7 +10,7 @@ public final class Object implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     private final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject InnerObject;
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
     @.com.redhat.ceylon.compiler.java.metadata.Object
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public final class InnerObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -53,7 +53,7 @@ public final class Object implements .com.redhat.ceylon.compiler.java.runtime.mo
     @.ceylon.language.SharedAnnotation$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.lettercase::Object")
-    public static .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object $get() {
+    public static .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

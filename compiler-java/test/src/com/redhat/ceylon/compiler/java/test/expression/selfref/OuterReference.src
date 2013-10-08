@@ -10,7 +10,7 @@ class OuterReferenceSuper implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReferenceSuper();
     }
     
@@ -192,7 +192,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference();
     }
     

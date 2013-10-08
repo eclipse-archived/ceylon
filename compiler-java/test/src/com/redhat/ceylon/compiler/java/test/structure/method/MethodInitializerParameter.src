@@ -50,7 +50,7 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
             let
             {
                 .ceylon.language.Integer $arg$2$0 = .ceylon.language.Integer.instance(1L);
-                .ceylon.language.Sequential $arg$2$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential $arg$2$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 m.$call$variadic($arg$2$0, $arg$2$1);
             }
             returning null;

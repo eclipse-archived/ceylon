@@ -24,7 +24,7 @@ final class callableWithDefaulted_ {
             public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
                 final .java.lang.String b = $$b(a);
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 return $call$typed(a, b, args$);
             }
             
@@ -32,14 +32,14 @@ final class callableWithDefaulted_ {
             public .ceylon.language.Integer $call$variadic(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
                 final .java.lang.String b = $$b(a);
-                return $call$typed(a, b, (.ceylon.language.Sequential).ceylon.language.empty_.$get());
+                return $call$typed(a, b, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
             }
             
             @.java.lang.Override
             public .ceylon.language.Integer $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
                 final .java.lang.String b = ((.ceylon.language.String)$param$1).toString();
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 return $call$typed(a, b, args$);
             }
             
@@ -70,7 +70,7 @@ final class callableWithDefaulted_ {
             public .ceylon.language.Integer $call(final .java.lang.Object... $param$0) {
                 final long a = ((.ceylon.language.Integer)$param$0[0]).longValue();
                 final .java.lang.String b = $param$0.length > 1 ? ((.ceylon.language.String)$param$0[1]).toString() : $$b(a);
-                return $call$typed(a, b, $spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 2, $param$0.length - 2, $param$0, .ceylon.language.empty_.$get()));
+                return $call$typed(a, b, $spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 2, $param$0.length - 2, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
@@ -85,7 +85,7 @@ final class callableWithDefaulted_ {
             }
         };
         defaultedVariadic.$call$variadic(.ceylon.language.Integer.instance(1L));
-        defaultedVariadic.$call$variadic(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), (.ceylon.language.Sequential).ceylon.language.empty_.$get());
+        defaultedVariadic.$call$variadic(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), (.ceylon.language.Sequential).ceylon.language.empty_.get_());
         defaultedVariadic.$call$variadic(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}));
         defaultedVariadic.$call$variadic(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
@@ -109,7 +109,7 @@ final class callableWithDefaulted_ {
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        i$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.$get();
+                        i$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -122,7 +122,7 @@ final class callableWithDefaulted_ {
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -140,7 +140,7 @@ final class callableWithDefaulted_ {
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem1 = iter$0.next();
-                        i$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.$get();
+                        i$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -153,7 +153,7 @@ final class callableWithDefaulted_ {
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -171,7 +171,7 @@ final class callableWithDefaulted_ {
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem2 = iter$0.next();
-                        i$exhausted = $ceylontmpitem2 == .ceylon.language.finished_.$get();
+                        i$exhausted = $ceylontmpitem2 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -184,7 +184,7 @@ final class callableWithDefaulted_ {
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -231,7 +231,7 @@ final class callableWithDefaulted_ {
             @.java.lang.Override
             public .ceylon.language.String $call(final .java.lang.Object... $param$0) {
                 final .java.lang.String b = ((.ceylon.language.String)$param$0[0]).toString();
-                return $call$typed(b, (.ceylon.language.Sequence)$spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.$get()));
+                return $call$typed(b, (.ceylon.language.Sequence)$spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
@@ -264,7 +264,7 @@ final class callableWithDefaulted_ {
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem3 = iter$0.next();
-                        i$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.$get();
+                        i$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -277,7 +277,7 @@ final class callableWithDefaulted_ {
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -295,7 +295,7 @@ final class callableWithDefaulted_ {
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem4 = iter$0.next();
-                        i$exhausted = $ceylontmpitem4 == .ceylon.language.finished_.$get();
+                        i$exhausted = $ceylontmpitem4 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -308,7 +308,7 @@ final class callableWithDefaulted_ {
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -326,7 +326,7 @@ final class callableWithDefaulted_ {
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem5 = iter$0.next();
-                        i$exhausted = $ceylontmpitem5 == .ceylon.language.finished_.$get();
+                        i$exhausted = $ceylontmpitem5 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -339,7 +339,7 @@ final class callableWithDefaulted_ {
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -509,7 +509,7 @@ final class callableWithDefaulted_ {
             
             @.java.lang.Override
             public .ceylon.language.Sequential<? extends .ceylon.language.Integer> $call() {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> a$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> a$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 return $call$typed(a$);
             }
             
@@ -564,7 +564,7 @@ final class callableWithDefaulted_ {
             
             @.java.lang.Override
             public .ceylon.language.Sequential<? extends .ceylon.language.Integer> $call(final .java.lang.Object... $param$0) {
-                return $call$typed($spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.$get()));
+                return $call$typed($spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
@@ -629,7 +629,7 @@ final class callableWithDefaulted_ {
             
             @.java.lang.Override
             public .ceylon.language.Sequence<? extends .ceylon.language.Integer> $call(final .java.lang.Object... $param$0) {
-                return $call$typed((.ceylon.language.Sequence)$spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.$get()));
+                return $call$typed((.ceylon.language.Sequence)$spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
@@ -645,7 +645,7 @@ final class callableWithDefaulted_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableWithDefaulted_.callableWithDefaulted();
     }
 }
@@ -659,7 +659,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
             let
             {
                 .java.lang.String $ceylontmp$b$6 = defaultedVariadic$b(a);
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$args$7 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$args$7 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 defaultedVariadic$priv$(a, $ceylontmp$b$6, $ceylontmp$args$7);
             }
             returning null;
@@ -674,7 +674,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$args$8 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$args$8 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 defaultedVariadic$priv$(a, b, $ceylontmp$args$8);
             }
             returning null;
@@ -712,7 +712,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
                 final long $$a = ((.ceylon.language.Integer)$param$0).longValue();
                 final .java.lang.String $$b = defaultedVariadic$b($$a);
-                final .ceylon.language.Sequential $$args$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                final .ceylon.language.Sequential $$args$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 return $call$typed($$a, $$b, $$args$);
             }
             
@@ -720,14 +720,14 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
             public .java.lang.Object $call$variadic(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
                 final long $$a = ((.ceylon.language.Integer)$param$0).longValue();
                 final .java.lang.String $$b = defaultedVariadic$b($$a);
-                return $call$typed($$a, $$b, (.ceylon.language.Sequential).ceylon.language.empty_.$get());
+                return $call$typed($$a, $$b, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
             }
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final long $$a = ((.ceylon.language.Integer)$param$0).longValue();
                 final .java.lang.String $$b = ((.ceylon.language.String)$param$1).toString();
-                final .ceylon.language.Sequential $$args$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                final .ceylon.language.Sequential $$args$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 return $call$typed($$a, $$b, $$args$);
             }
             
@@ -758,7 +758,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
             public .java.lang.Object $call(final .java.lang.Object... $param$0) {
                 final long $$a = ((.ceylon.language.Integer)$param$0[0]).longValue();
                 final .java.lang.String $$b = $param$0.length > 1 ? ((.ceylon.language.String)$param$0[1]).toString() : defaultedVariadic$b($$a);
-                return $call$typed($$a, $$b, $spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 2, $param$0.length - 2, $param$0, .ceylon.language.empty_.$get()));
+                return $call$typed($$a, $$b, $spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 2, $param$0.length - 2, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
@@ -820,7 +820,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object... $param$0) {
                 final long $$a = ((.ceylon.language.Integer)$param$0[0]).longValue();
-                return $call$typed($$a, (.ceylon.language.Sequence)$spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.$get()));
+                return $call$typed($$a, (.ceylon.language.Sequence)$spreadVarargs(.ceylon.language.Integer.$TypeDescriptor, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
@@ -928,7 +928,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableWithDefaulted();
     }
     

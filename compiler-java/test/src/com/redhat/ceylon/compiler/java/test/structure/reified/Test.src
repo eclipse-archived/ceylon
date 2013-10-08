@@ -57,7 +57,7 @@ public class TestClass<Key, Value> implements .com.redhat.ceylon.compiler.java.r
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.reified.TestClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -84,7 +84,7 @@ final class test_ {
         if (.com.redhat.ceylon.compiler.java.Util.isReified($obj$7 = obj, $reifiedKey)) {
             final Key $obj$8 = (Key)$obj$7;
         }
-        final Key objOrNot = (Key).ceylon.language.nothing_.$get();
+        final Key objOrNot = (Key).ceylon.language.nothing_.get_();
         .java.lang.Object $objOrNot$10;
         if (($objOrNot$10 = objOrNot) != null) {
             final Key $objOrNot$11 = (Key)$objOrNot$10;
@@ -125,7 +125,7 @@ final class test_ {
         }
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class first_ {
     
@@ -149,14 +149,14 @@ public final class first_ {
     public static <Value, Absent>void first(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, @.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAbsent) {
-        final Value first = (Value).ceylon.language.nothing_.$get();
+        final Value first = (Value).ceylon.language.nothing_.get_();
         if (.com.redhat.ceylon.compiler.java.Util.isReified(first, $reifiedAbsent) || .com.redhat.ceylon.compiler.java.Util.isReified(first, $reifiedValue)) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Absent|Value first"));
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.reified.first_.first(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
 }

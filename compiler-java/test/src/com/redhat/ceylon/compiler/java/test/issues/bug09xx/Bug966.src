@@ -399,7 +399,7 @@ public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends 
                 return .ceylon.language.Integer.getMagnitude(((.ceylon.language.Enumerable<? extends .java.lang.Object>)(.ceylon.language.Enumerable)getLast()).getIntegerValue() - ((.ceylon.language.Enumerable<? extends .java.lang.Object>)(.ceylon.language.Enumerable)getFirst()).getIntegerValue()) + 1L;
             }
         }
-        return ((.ceylon.language.Integer).ceylon.language.nothing_.$get()).longValue();
+        return ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
     }
     
     @.java.lang.Override

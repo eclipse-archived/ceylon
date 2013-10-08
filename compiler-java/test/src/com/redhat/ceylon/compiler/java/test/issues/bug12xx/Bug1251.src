@@ -23,16 +23,16 @@ public class Bug1251A extends .com.redhat.ceylon.compiler.java.test.issues.bug12
     
     @.java.lang.Override
     public final <TypeRenamed>TypeRenamed refined(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedTypeRenamed) {
-        return (TypeRenamed).ceylon.language.nothing_.$get();
+        return (TypeRenamed).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final <Type extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1251X>Type refined2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedType) {
-        return (Type).ceylon.language.nothing_.$get();
+        return (Type).ceylon.language.nothing_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1251A();
     }
     

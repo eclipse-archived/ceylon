@@ -17,7 +17,7 @@ class Bug1334_1 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_1();
     }
     
@@ -46,7 +46,7 @@ class Bug1334_2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_2();
     }
     
@@ -75,7 +75,7 @@ class Bug1334_3 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_3();
     }
     
@@ -102,7 +102,7 @@ class Bug1334_4 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_4();
     }
     
@@ -129,7 +129,7 @@ class Bug1334_5 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_5();
     }
     
@@ -197,7 +197,7 @@ class Bug1334_7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_7();
     }
     
@@ -265,7 +265,7 @@ class Bug1334_9 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_9();
     }
     
@@ -310,7 +310,7 @@ class Bug1334_10 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_10();
     }
     
@@ -369,7 +369,7 @@ class Bug1334_12 extends .java.lang.Object implements .com.redhat.ceylon.compile
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_12();
     }
     

@@ -94,7 +94,7 @@ class NamedArgumentInvocation implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation();
     }
     

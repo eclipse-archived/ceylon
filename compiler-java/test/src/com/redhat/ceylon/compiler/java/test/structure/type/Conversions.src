@@ -9,7 +9,7 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType 
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.Foo();
     }
     
@@ -29,7 +29,7 @@ class Bar extends .com.redhat.ceylon.compiler.java.test.structure.type.Foo {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.Bar();
     }
     
@@ -49,7 +49,7 @@ class Baz extends .com.redhat.ceylon.compiler.java.test.structure.type.Foo {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.Baz();
     }
     
@@ -70,7 +70,7 @@ class GenInv<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.GenInv(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -90,7 +90,7 @@ class GenCov<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.GenCov(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -110,7 +110,7 @@ class GenCon<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.GenCon(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -144,7 +144,7 @@ class Sats<T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats>
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.Sats(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -172,7 +172,7 @@ class BarSats extends .com.redhat.ceylon.compiler.java.test.structure.type.Bar i
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.BarSats();
     }
     
@@ -189,7 +189,7 @@ class ExtAnything extends .com.redhat.ceylon.compiler.java.test.structure.type.G
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.ExtAnything();
     }
     
@@ -206,7 +206,7 @@ class ExtNothing extends .com.redhat.ceylon.compiler.java.test.structure.type.Ge
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.ExtNothing();
     }
     
@@ -258,7 +258,7 @@ class Conversions implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.Conversions();
     }
     
@@ -291,7 +291,7 @@ class UpperBoundErasure1<T extends .com.redhat.ceylon.compiler.java.test.structu
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.UpperBoundErasure1(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     

@@ -6,14 +6,14 @@ class TopLevelAccess implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     private final void m$priv() {
-        final boolean bb1 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b1_.$get();
-        final boolean bb2 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b2_.$get();
-        final boolean bb3 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b3_.$get();
-        final boolean bb4 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b4_.$get();
+        final boolean bb1 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b1_.get_();
+        final boolean bb2 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b2_.get_();
+        final boolean bb3 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b3_.get_();
+        final boolean bb4 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b4_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAccess();
     }
     
@@ -32,7 +32,7 @@ final class b1_ {
         value = new boolean[]{true};
     }
     
-    public static boolean $get() {
+    public static boolean get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -49,7 +49,7 @@ public final class b2_ {
         value = new boolean[]{true};
     }
     
-    public static boolean $get() {
+    public static boolean get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -62,7 +62,7 @@ final class b3_ {
     private b3_() {
     }
     
-    public static boolean $get() {
+    public static boolean get_() {
         return true;
     }
 }
@@ -71,7 +71,7 @@ public final class b4_ {
     private b4_() {
     }
     
-    public static boolean $get() {
+    public static boolean get_() {
         return true;
     }
 }

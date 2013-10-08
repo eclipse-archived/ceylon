@@ -6,7 +6,7 @@ class CallableReturnReturningClass implements .com.redhat.ceylon.compiler.java.r
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass();
     }
     
@@ -32,7 +32,7 @@ final class callableReturnReturningClass_bar_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnReturningClass_bar_.callableReturnReturningClass_bar();
     }
 }

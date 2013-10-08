@@ -62,7 +62,7 @@ class KlassTypeParamsInstantiation implements .com.redhat.ceylon.compiler.java.r
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.instantiation.KlassTypeParamsInstantiation();
     }
     
@@ -97,7 +97,7 @@ class KlassTypeParamsInstantiationT<T> implements .com.redhat.ceylon.compiler.ja
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.instantiation.KlassTypeParamsInstantiationT(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     

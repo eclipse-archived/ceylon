@@ -6,7 +6,7 @@ final class bug1336_ {
     }
     
     static void bug1336() {
-        final .ceylon.language.Sequential itemsSequence = .ceylon.language.empty_.$get();
+        final .ceylon.language.Sequential itemsSequence = .ceylon.language.empty_.get_();
         final .ceylon.language.Sequence $itemsSequence$2;
         .ceylon.language.Sequential $itemsSequence$1 = null;
         if (($itemsSequence$1 = itemsSequence) instanceof .ceylon.language.Sequence) {
@@ -15,7 +15,7 @@ final class bug1336_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1336_.bug1336();
     }
 }

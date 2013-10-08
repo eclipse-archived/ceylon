@@ -9,7 +9,7 @@ abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler
             private f$getter_() {
             }
             
-            public .java.lang.String $get() {
+            public .java.lang.String get_() {
                 return "";
             }
         }
@@ -21,7 +21,7 @@ abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler
             }
             private .java.lang.String value;
             
-            public void $set(final .java.lang.String f) {
+            public void set_(final .java.lang.String f) {
             }
         }
         final f$setter_ f$setter_ = new f$setter_();
@@ -32,7 +32,7 @@ abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler
             private f6$getter_() {
             }
             
-            public .java.lang.String $get() {
+            public .java.lang.String get_() {
                 return "";
             }
         }
@@ -44,7 +44,7 @@ abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler
             }
             private .java.lang.String value;
             
-            public void $set(final .java.lang.String f6) {
+            public void set_(final .java.lang.String f6) {
                 (
                     let
                     {
@@ -208,7 +208,7 @@ class SubClassAttributeGetterSetter extends .com.redhat.ceylon.compiler.java.tes
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttributeGetterSetter();
     }
     

@@ -14,7 +14,7 @@ class ScaleOp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp scale(final .ceylon.language.Float other) {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp).ceylon.language.nothing_.get_();
     }
     
     private final void m$priv() {
@@ -37,7 +37,7 @@ class ScaleOp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp();
     }
     

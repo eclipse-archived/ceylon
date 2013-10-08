@@ -127,7 +127,7 @@ class CMiddle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
     }
     
@@ -193,7 +193,7 @@ class CLeft implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft();
     }
     
@@ -579,7 +579,7 @@ final class topLevelLeftAttribute_ {
         value = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Left[]{new .com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft()};
     }
     
-    public static .com.redhat.ceylon.compiler.java.test.expression.erasure.Left $get() {
+    public static .com.redhat.ceylon.compiler.java.test.expression.erasure.Left get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -587,7 +587,7 @@ final class topLevelLeftAttribute_ {
         }
     }
     
-    public static void $set(final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left topLevelLeftAttribute) {
+    public static void set_(final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left topLevelLeftAttribute) {
         value[0] = topLevelLeftAttribute;
     }
 }

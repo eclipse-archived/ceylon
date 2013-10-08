@@ -62,16 +62,16 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     
     @.java.lang.Override
     public final .ceylon.language.Integer getFirst() {
-        return (.ceylon.language.Integer).ceylon.language.nothing_.$get();
+        return (.ceylon.language.Integer).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Integer getLast() {
-        return (.ceylon.language.Integer).ceylon.language.nothing_.$get();
+        return (.ceylon.language.Integer).ceylon.language.nothing_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.NameCollision();
     }
     

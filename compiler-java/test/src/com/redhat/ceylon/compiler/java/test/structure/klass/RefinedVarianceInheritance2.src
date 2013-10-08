@@ -23,7 +23,7 @@ class RefinedVarianceInheritance2Nothing extends .com.redhat.ceylon.compiler.jav
     
     @.java.lang.Override
     public final long m() {
-        return ((.ceylon.language.Integer).ceylon.language.nothing_.$get()).longValue();
+        return ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
     }
     
     @.java.lang.Override
@@ -32,7 +32,7 @@ class RefinedVarianceInheritance2Nothing extends .com.redhat.ceylon.compiler.jav
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.RefinedVarianceInheritance2Nothing();
     }
     

@@ -24,7 +24,7 @@ import com.redhat.ceylon.compiler.java.metadata.Attribute;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
-@Ceylon(major = 5)
+@Ceylon(major = 6)
 @Attribute
 public class bogusTopLevelAttributeMissingType_ {
     @TypeInfo("com.redhat.ceylon.compiler.java.test.model::MissingType")

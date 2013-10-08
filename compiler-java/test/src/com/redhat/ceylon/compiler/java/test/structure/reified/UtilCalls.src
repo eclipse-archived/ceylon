@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.reified;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class utilCalls_ {
     
@@ -28,7 +28,7 @@ public final class utilCalls_ {
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        i$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.$get();
+                        i$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -41,7 +41,7 @@ public final class utilCalls_ {
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -63,7 +63,7 @@ public final class utilCalls_ {
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem1 = iter$0.next();
-                        i$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.$get();
+                        i$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -76,7 +76,7 @@ public final class utilCalls_ {
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -102,11 +102,11 @@ public final class utilCalls_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.reified.utilCalls_.utilCalls();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class variadicMethod_ {
     
@@ -118,7 +118,7 @@ public final class variadicMethod_ {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ints$3 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ints$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 variadicMethod($ceylontmp$ints$3);
             }
             returning null;

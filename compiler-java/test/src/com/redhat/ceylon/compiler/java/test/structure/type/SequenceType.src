@@ -10,16 +10,16 @@ class SequenceType implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L)});
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> s2 = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> s2 = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
         final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.structure.type.SequenceType> s3 = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.structure.type.SequenceType, .com.redhat.ceylon.compiler.java.test.structure.type.SequenceType, .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.structure.type.SequenceType, ? extends .com.redhat.ceylon.compiler.java.test.structure.type.SequenceType, ? extends .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.structure.type.SequenceType, ? extends .com.redhat.ceylon.compiler.java.test.structure.type.SequenceType, ? extends .ceylon.language.Empty>>>(.com.redhat.ceylon.compiler.java.test.structure.type.SequenceType.$TypeDescriptor, new .java.lang.Object[]{
                 this,
                 this,
                 this});
-        final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.structure.type.SequenceType> s4 = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.structure.type.SequenceType>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
+        final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.structure.type.SequenceType> s4 = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.structure.type.SequenceType>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.SequenceType();
     }
     

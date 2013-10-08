@@ -9,7 +9,7 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 m$priv$(a, $ceylontmp$b$0);
             }
             returning null;
@@ -33,7 +33,7 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
         (
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Throwable> $ceylontmp$b$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .java.lang.Throwable> $ceylontmp$b$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 m2$priv$(a, $ceylontmp$b$1);
             }
             returning null;
@@ -57,7 +57,7 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
         (
             let
             {
-                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> $ceylontmp$b$2 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> $ceylontmp$b$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 m3$priv$(a, $ceylontmp$b$2);
             }
             returning null;
@@ -118,7 +118,7 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence();
     }
     

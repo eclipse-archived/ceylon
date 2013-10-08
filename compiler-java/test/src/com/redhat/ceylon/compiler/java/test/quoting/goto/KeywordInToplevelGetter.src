@@ -5,10 +5,10 @@ public final class strictfp_ {
     private strictfp_() {
     }
     
-    public static long $get() {
+    public static long get_() {
         return 0L;
     }
     
-    public static void $set(final long strictfp) {
+    public static void set_(final long strictfp) {
     }
 }

@@ -33,9 +33,9 @@ class Bug1289_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     
     @.java.lang.Override
     public final .java.lang.Object m(final .ceylon.language.Integer xboxed, final .ceylon.language.Integer yboxed, final .ceylon.language.Integer zboxed) {
-        final long x = ((.ceylon.language.Integer).ceylon.language.nothing_.$get()).longValue();
-        final long y = ((.ceylon.language.Integer).ceylon.language.nothing_.$get()).longValue();
-        final long z = ((.ceylon.language.Integer).ceylon.language.nothing_.$get()).longValue();
+        final long x = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
+        final long y = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
+        final long z = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
         boolean b = false;
         b = (
             let
@@ -209,7 +209,7 @@ class Bug1289_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo();
     }
     
@@ -233,9 +233,9 @@ class Bug1289_Foo2 implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     
     @.java.lang.Override
     public final .java.lang.Object m(final .ceylon.language.Float xboxed, final .ceylon.language.Float yboxed, final .ceylon.language.Float zboxed) {
-        final double x = ((.ceylon.language.Float).ceylon.language.nothing_.$get()).doubleValue();
-        final double y = ((.ceylon.language.Float).ceylon.language.nothing_.$get()).doubleValue();
-        final double z = ((.ceylon.language.Float).ceylon.language.nothing_.$get()).doubleValue();
+        final double x = ((.ceylon.language.Float).ceylon.language.nothing_.get_()).doubleValue();
+        final double y = ((.ceylon.language.Float).ceylon.language.nothing_.get_()).doubleValue();
+        final double z = ((.ceylon.language.Float).ceylon.language.nothing_.get_()).doubleValue();
         boolean b = false;
         b = (
             let
@@ -409,7 +409,7 @@ class Bug1289_Foo2 implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo2();
     }
     
@@ -435,9 +435,9 @@ class Bug1289_Foo3<Element extends .ceylon.language.Comparable<? super Element>>
     
     @.java.lang.Override
     public final .java.lang.Object m(final Element xboxed, final Element yboxed, final Element zboxed) {
-        final Element x = (Element).ceylon.language.nothing_.$get();
-        final Element y = (Element).ceylon.language.nothing_.$get();
-        final Element z = (Element).ceylon.language.nothing_.$get();
+        final Element x = (Element).ceylon.language.nothing_.get_();
+        final Element y = (Element).ceylon.language.nothing_.get_();
+        final Element z = (Element).ceylon.language.nothing_.get_();
         boolean b = false;
         b = (
             let
@@ -611,7 +611,7 @@ class Bug1289_Foo3<Element extends .ceylon.language.Comparable<? super Element>>
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo3(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     

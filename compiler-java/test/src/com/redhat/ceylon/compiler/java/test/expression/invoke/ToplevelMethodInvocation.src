@@ -9,7 +9,7 @@ final class topLevelMethodInvocationMethod1_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.topLevelMethodInvocationMethod1_.topLevelMethodInvocationMethod1();
     }
 }
@@ -33,7 +33,7 @@ class ToplevelMethodInvocation implements .com.redhat.ceylon.compiler.java.runti
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.ToplevelMethodInvocation();
     }
     

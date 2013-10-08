@@ -15,13 +15,13 @@ final class bug605test_ {
     }
     
     static void bug605test() {
-        final long i = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.hash_.$get();
-        final .java.lang.String s = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.string_.$get();
+        final long i = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.hash_.get_();
+        final .java.lang.String s = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.string_.get_();
         final .java.lang.String q = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.equals_.$equals(.ceylon.language.String.instance(""));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.bug605test_.bug605test();
     }
 }
@@ -37,7 +37,7 @@ final class bug605mth_ {
             private hash$getter_() {
             }
             
-            public long $get() {
+            public long get_() {
                 return 1L;
             }
         }
@@ -48,7 +48,7 @@ final class bug605mth_ {
             private string$getter_() {
             }
             
-            public .java.lang.String $get() {
+            public .java.lang.String get_() {
                 return "hello";
             }
         }
@@ -64,13 +64,13 @@ final class bug605mth_ {
             }
         }
         final equals_ equals = new equals_();
-        final long i = hash$getter_.$get();
-        final .java.lang.String s = string$getter_.$get();
+        final long i = hash$getter_.get_();
+        final .java.lang.String s = string$getter_.get_();
         final .java.lang.String q = equals.$equals(.ceylon.language.String.instance(""));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.bug605mth_.bug605mth();
     }
 }
@@ -86,7 +86,7 @@ class Bug605cls implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             private hash$getter_() {
             }
             
-            public long $get() {
+            public long get_() {
                 return 1L;
             }
         }
@@ -97,7 +97,7 @@ class Bug605cls implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             private string$getter_() {
             }
             
-            public .java.lang.String $get() {
+            public .java.lang.String get_() {
                 return "hello";
             }
         }
@@ -113,13 +113,13 @@ class Bug605cls implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             }
         }
         final equals_ equals = new equals_();
-        final long i = hash$getter_.$get();
-        final .java.lang.String s = string$getter_.$get();
+        final long i = hash$getter_.get_();
+        final .java.lang.String s = string$getter_.get_();
         final .java.lang.String q = equals.$equals(.ceylon.language.String.instance(""));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.Bug605cls();
     }
     
@@ -134,7 +134,7 @@ final class hash_ {
     private hash_() {
     }
     
-    public static long $get() {
+    public static long get_() {
         return 1L;
     }
 }
@@ -143,7 +143,7 @@ final class string_ {
     private string_() {
     }
     
-    public static .java.lang.String $get() {
+    public static .java.lang.String get_() {
         return "hello";
     }
 }

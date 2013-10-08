@@ -7,7 +7,7 @@ class ImplementOverloadedConstructor1 extends .com.redhat.ceylon.compiler.java.t
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor1();
     }
     
@@ -24,7 +24,7 @@ class ImplementOverloadedConstructor2 extends .com.redhat.ceylon.compiler.java.t
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor2();
     }
     

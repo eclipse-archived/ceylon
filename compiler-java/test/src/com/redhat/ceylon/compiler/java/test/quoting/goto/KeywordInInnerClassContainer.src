@@ -55,7 +55,7 @@ final class transient_ implements .com.redhat.ceylon.compiler.java.runtime.model
         value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_[]{new .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_ $get() {
+    static .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_ get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -74,13 +74,13 @@ final class m_ {
     }
     
     static void m() {
-        .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.$get().InnerClass_0$new();
-        final long int = .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.$get().getGoto();
-        .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.$get().$strictfp();
+        .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.get_().InnerClass_0$new();
+        final long int = .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.get_().getGoto();
+        .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.get_().$strictfp();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.quoting.$goto.m_.m();
     }
 }

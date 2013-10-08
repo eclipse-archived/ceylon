@@ -11,7 +11,7 @@ class NamedArgumentSequencedTypeParamInvocation<T> implements .com.redhat.ceylon
         (
             let
             {
-                .ceylon.language.Sequential<? extends T> $ceylontmp$strings$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends T> $ceylontmp$strings$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 algo$($ceylontmp$strings$0);
             }
             returning null;
@@ -32,7 +32,7 @@ class NamedArgumentSequencedTypeParamInvocation<T> implements .com.redhat.ceylon
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -61,7 +61,7 @@ final class foo_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.foo_.foo();
     }
 }

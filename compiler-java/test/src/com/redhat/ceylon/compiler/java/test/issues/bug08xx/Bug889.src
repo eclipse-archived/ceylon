@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class bug889_ {
     

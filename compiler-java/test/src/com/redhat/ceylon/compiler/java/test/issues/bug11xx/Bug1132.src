@@ -44,7 +44,7 @@ public class Bug1132Class implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1132Class();
     }
     
@@ -84,7 +84,7 @@ public class Bug1132Class2<T> implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1132Class2(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -134,7 +134,7 @@ public final class bug1132_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1132_.bug1132(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
 }

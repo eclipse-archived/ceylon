@@ -47,7 +47,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 long $arg$1$0 = 1L;
-                .ceylon.language.Iterable $arg$1$1 = (.ceylon.language.Iterable).ceylon.language.empty_.$get();
+                .ceylon.language.Iterable $arg$1$1 = (.ceylon.language.Iterable).ceylon.language.empty_.get_();
                 m$priv($arg$1$0, $arg$1$1);
             }
             returning null;
@@ -125,7 +125,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                             
                             private final boolean i() {
                                 final .java.lang.Object $ceylontmpitem8 = iter$0.next();
-                                i$exhausted = $ceylontmpitem8 == .ceylon.language.finished_.$get();
+                                i$exhausted = $ceylontmpitem8 == .ceylon.language.finished_.get_();
                                 if (i$exhausted) {
                                     return false;
                                 } else {
@@ -138,7 +138,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                                 if (this.i()) {
                                     final .ceylon.language.Integer i = this.i;
                                     return i;
-                                } else return .ceylon.language.finished_.$get();
+                                } else return .ceylon.language.finished_.get_();
                             }
                         };
                     }
@@ -164,7 +164,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                             
                             private final boolean i() {
                                 final .java.lang.Object $ceylontmpitem10 = iter$0.next();
-                                i$exhausted = $ceylontmpitem10 == .ceylon.language.finished_.$get();
+                                i$exhausted = $ceylontmpitem10 == .ceylon.language.finished_.get_();
                                 if (i$exhausted) {
                                     return false;
                                 } else {
@@ -177,7 +177,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                                 if (this.i()) {
                                     final .ceylon.language.Integer i = this.i;
                                     return i;
-                                } else return .ceylon.language.finished_.$get();
+                                } else return .ceylon.language.finished_.get_();
                             }
                         };
                     }
@@ -224,7 +224,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable();
     }
     

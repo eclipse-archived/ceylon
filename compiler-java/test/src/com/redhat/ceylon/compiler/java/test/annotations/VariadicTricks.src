@@ -19,7 +19,7 @@ final class VariadicTricks implements .com.redhat.ceylon.compiler.java.runtime.m
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 this($ceylontmp$args$0);
             }
             returning null;
@@ -79,7 +79,7 @@ final class variadicTricksEmpty_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.variadicTricksEmpty_.variadicTricksEmpty();
     }
 }
@@ -112,7 +112,7 @@ final class variadicTricks_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning variadicTricks($ceylontmp$args$1);
         );
@@ -135,7 +135,7 @@ final class variadicTricksIndirect_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$2 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning variadicTricksIndirect($ceylontmp$args$2);
         );
@@ -160,7 +160,7 @@ final class variadicTricksIndirectEmpty_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.variadicTricksIndirectEmpty_.variadicTricksIndirectEmpty();
     }
 }
@@ -198,7 +198,7 @@ class VariadicTricksCallsite implements .com.redhat.ceylon.compiler.java.runtime
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricksCallsite();
     }
     

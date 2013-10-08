@@ -6,7 +6,7 @@ class VariadicPossiblyEmpty implements .com.redhat.ceylon.compiler.java.runtime.
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$arg$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$arg$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 this($ceylontmp$arg$0);
             }
             returning null;

@@ -32,12 +32,12 @@ final class bug843_test_ {
     }
     
     static void bug843_test() {
-        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug843_1<.ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.$get());
-        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug843_2<.ceylon.language.Empty>(.ceylon.language.Empty.$TypeDescriptor, (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.$get());
+        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug843_1<.ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
+        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug843_2<.ceylon.language.Empty>(.ceylon.language.Empty.$TypeDescriptor, (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug843_test_.bug843_test();
     }
 }

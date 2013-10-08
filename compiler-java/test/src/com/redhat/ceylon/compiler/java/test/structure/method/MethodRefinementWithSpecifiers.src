@@ -69,7 +69,7 @@ class MethodRefinementWithSpecifiers_ClassNoParam implements .com.redhat.ceylon.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_ClassNoParam();
     }
     
@@ -85,7 +85,7 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
         this.arg = arg;
         this.$com$redhat$ceylon$compiler$java$test$structure$method$MethodRefinementWithSpecifiers_Interface$this = new .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface$impl(this);
         this.f9$specifier = .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_returnsMethod_.methodRefinementWithSpecifiers_returnsMethod();
-        this.f10$specifier = .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_attributeMethod_.$get();
+        this.f10$specifier = .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_attributeMethod_.get_();
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> arg;
     
@@ -280,7 +280,7 @@ final class arg2_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.method.arg2_.arg2();
     }
 }
@@ -448,7 +448,7 @@ final class methodRefinementWithSpecifiers_attributeMethod_ {
         value = new .ceylon.language.Callable[]{.com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_returnsMethod_.methodRefinementWithSpecifiers_returnsMethod()};
     }
     
-    public static .ceylon.language.Callable<? extends .java.lang.Object> $get() {
+    public static .ceylon.language.Callable<? extends .java.lang.Object> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

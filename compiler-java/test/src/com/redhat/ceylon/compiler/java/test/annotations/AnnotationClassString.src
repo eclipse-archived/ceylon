@@ -118,7 +118,7 @@ final class AnnotationClassStringDefaulted implements .com.redhat.ceylon.compile
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted();
     }
     
@@ -196,7 +196,7 @@ final class AnnotationClassStringSequenceDefaulted implements .com.redhat.ceylon
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaulted();
     }
     
@@ -274,7 +274,7 @@ final class AnnotationClassStringIterableDefaulted implements .com.redhat.ceylon
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaulted();
     }
     
@@ -342,7 +342,7 @@ final class annotationClassString_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.annotationClassString_.annotationClassString();
     }
 }
@@ -363,7 +363,7 @@ final class annotationClassStringStatic_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.annotationClassStringStatic_.annotationClassStringStatic();
     }
 }
@@ -407,7 +407,7 @@ final class annotationClassStringDefaulted_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.annotationClassStringDefaulted_.annotationClassStringDefaulted();
     }
 }
@@ -423,7 +423,7 @@ class AnnotationClassString_callsite implements .com.redhat.ceylon.compiler.java
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString_callsite();
     }
     

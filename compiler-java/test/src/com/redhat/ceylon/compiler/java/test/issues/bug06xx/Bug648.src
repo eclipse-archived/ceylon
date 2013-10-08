@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "T",
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -31,7 +31,7 @@ class Bug648<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug648(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     

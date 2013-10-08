@@ -16,12 +16,12 @@ final class getterArgumentNamedInvocationBoxing_ {
                     private $item$1() {
                     }
                     
-                    public long $get() {
+                    public long get_() {
                         return 1L;
                     }
                 }
                 final .com.redhat.ceylon.compiler.java.language.GetterLong $item$1 = new $item$1();
-                final .ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance($item$1.$get());
+                final .ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance($item$1.get_());
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .ceylon.language.String.$TypeDescriptor;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$1 = .ceylon.language.Integer.$TypeDescriptor;
             }
@@ -37,12 +37,12 @@ final class getterArgumentNamedInvocationBoxing_ {
                     private $item$3() {
                     }
                     
-                    public T $get() {
+                    public T get_() {
                         return t;
                     }
                 }
                 final .com.redhat.ceylon.compiler.java.language.Getter<T> $item$3 = new $item$3();
-                final T $arg$2$1 = $item$3.$get();
+                final T $arg$2$1 = $item$3.get_();
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$0 = .ceylon.language.String.$TypeDescriptor;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$1 = $reifiedT;
             }

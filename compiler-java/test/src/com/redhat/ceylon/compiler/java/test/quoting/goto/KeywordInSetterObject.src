@@ -9,7 +9,7 @@ class KeywordInSetterObject implements .com.redhat.ceylon.compiler.java.runtime.
             private i$getter_() {
             }
             
-            public long $get() {
+            public long get_() {
                 return 0L;
             }
         }
@@ -21,7 +21,7 @@ class KeywordInSetterObject implements .com.redhat.ceylon.compiler.java.runtime.
             }
             private long value;
             
-            public void $set(final long i) {
+            public void set_(final long i) {
                 
                 final class goto_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
@@ -41,7 +41,7 @@ class KeywordInSetterObject implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInSetterObject();
     }
     

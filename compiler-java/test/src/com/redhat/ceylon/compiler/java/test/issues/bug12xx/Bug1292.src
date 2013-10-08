@@ -16,7 +16,7 @@ class Bug1292 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292();
     }
     
@@ -42,7 +42,7 @@ final class Bug1292I$impl {
     private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I $this;
     
     public boolean equals(final .java.lang.Object other) {
-        return ((.ceylon.language.Boolean).ceylon.language.nothing_.$get()).booleanValue();
+        return ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
     }
 }
 class Bug1292_2 extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I {
@@ -64,7 +64,7 @@ class Bug1292_2 extends .java.lang.Object implements .com.redhat.ceylon.compiler
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292_2();
     }
     

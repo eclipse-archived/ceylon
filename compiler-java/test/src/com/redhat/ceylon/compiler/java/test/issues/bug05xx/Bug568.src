@@ -6,7 +6,7 @@ final class bug568_ {
     }
     
     static void bug568() {
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> childPaths = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> childPaths = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
         .java.lang.Object $elem$0;
         for (.ceylon.language.Iterator<? extends .ceylon.language.String> $s$iter$2 = (
             let
@@ -26,7 +26,7 @@ final class bug568_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug568_.bug568();
     }
 }

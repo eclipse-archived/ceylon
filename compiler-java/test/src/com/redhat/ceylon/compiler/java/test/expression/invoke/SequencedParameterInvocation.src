@@ -9,7 +9,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 m$priv$(a, $ceylontmp$i$0);
             }
             returning null;
@@ -33,7 +33,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
         (
             let
             {
-                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> $ceylontmp$i$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> $ceylontmp$i$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 m2$priv$(a, $ceylontmp$i$1);
             }
             returning null;
@@ -92,7 +92,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem2 = iter$0.next();
-                        i$exhausted = $ceylontmpitem2 == .ceylon.language.finished_.$get();
+                        i$exhausted = $ceylontmpitem2 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -105,7 +105,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -123,7 +123,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem3 = iter$0.next();
-                        i$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.$get();
+                        i$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -136,7 +136,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -154,7 +154,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem4 = iter$0.next();
-                        i$exhausted = $ceylontmpitem4 == .ceylon.language.finished_.$get();
+                        i$exhausted = $ceylontmpitem4 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -167,7 +167,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -185,7 +185,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem5 = iter$0.next();
-                        i$exhausted = $ceylontmpitem5 == .ceylon.language.finished_.$get();
+                        i$exhausted = $ceylontmpitem5 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -198,7 +198,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -216,7 +216,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem6 = iter$0.next();
-                        i$exhausted = $ceylontmpitem6 == .ceylon.language.finished_.$get();
+                        i$exhausted = $ceylontmpitem6 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -229,7 +229,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -247,7 +247,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem7 = iter$0.next();
-                        i$exhausted = $ceylontmpitem7 == .ceylon.language.finished_.$get();
+                        i$exhausted = $ceylontmpitem7 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -260,7 +260,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -276,7 +276,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation();
     }
     

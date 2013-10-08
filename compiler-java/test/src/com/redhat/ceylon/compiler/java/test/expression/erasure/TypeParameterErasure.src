@@ -92,7 +92,7 @@ class TPECLeft implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPECLeft();
     }
     
@@ -165,7 +165,7 @@ class TPECMiddle implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPECMiddle();
     }
     
@@ -811,7 +811,7 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure();
     }
     

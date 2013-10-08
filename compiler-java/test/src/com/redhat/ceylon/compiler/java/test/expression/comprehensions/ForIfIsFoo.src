@@ -19,7 +19,7 @@ class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.$get();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -45,7 +45,7 @@ class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                         if (this.next1()) {
                             final .java.lang.Object x = this.x;
                             return $x$2.foo();
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -66,7 +66,7 @@ class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                     
                     private final boolean y() {
                         final .java.lang.Object $ceylontmpitem3 = iter$0.next();
-                        y$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.$get();
+                        y$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.get_();
                         if (y$exhausted) {
                             return false;
                         } else {
@@ -92,7 +92,7 @@ class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                         if (this.next1()) {
                             final .java.lang.Object y = this.y;
                             return $x$5.foo();
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -100,7 +100,7 @@ class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsFoo();
     }
     

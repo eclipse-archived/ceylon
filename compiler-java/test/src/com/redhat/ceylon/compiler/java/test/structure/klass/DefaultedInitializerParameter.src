@@ -21,7 +21,7 @@ public class DefaultedInitializerParameter implements .com.redhat.ceylon.compile
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter();
     }
     
@@ -94,7 +94,7 @@ class DefaultedInitializerParameter3 implements .com.redhat.ceylon.compiler.java
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter3();
     }
     
@@ -141,7 +141,7 @@ class DefaultedInitializerParameter4 implements .com.redhat.ceylon.compiler.java
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter4();
     }
     
@@ -158,7 +158,7 @@ class DefaultedInitializerParameter5 implements .com.redhat.ceylon.compiler.java
             let
             {
                 long $ceylontmp$n$8 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter5.$init$n();
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$9 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$9 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 this($ceylontmp$n$8, $ceylontmp$seq$9);
             }
             returning null;
@@ -169,7 +169,7 @@ class DefaultedInitializerParameter5 implements .com.redhat.ceylon.compiler.java
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$10 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$10 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 this(n, $ceylontmp$seq$10);
             }
             returning null;
@@ -184,7 +184,7 @@ class DefaultedInitializerParameter5 implements .com.redhat.ceylon.compiler.java
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter5();
     }
     

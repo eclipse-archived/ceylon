@@ -16,7 +16,7 @@ final class staticMethods_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.staticMethods_.staticMethods();
     }
 }
@@ -36,7 +36,7 @@ final class staticMethodsAndSubClassesOnInstance_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.staticMethodsAndSubClassesOnInstance_.staticMethodsAndSubClassesOnInstance();
     }
 }
@@ -55,7 +55,7 @@ final class staticMethodsAndSubClassesOnType_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.staticMethodsAndSubClassesOnType_.staticMethodsAndSubClassesOnType();
     }
 }
@@ -75,7 +75,7 @@ class StaticMethodsAndSubClasses extends .com.redhat.ceylon.compiler.java.test.i
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.StaticMethodsAndSubClasses();
     }
     
@@ -95,7 +95,7 @@ final class staticFields_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.staticFields_.staticFields();
     }
 }

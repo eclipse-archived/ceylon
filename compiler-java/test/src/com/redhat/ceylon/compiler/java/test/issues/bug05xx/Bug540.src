@@ -12,7 +12,7 @@ final class arr1_ {
                 .ceylon.language.Integer.instance(3L)}))};
     }
     
-    public static .ceylon.language.Array<.ceylon.language.Integer> $get() {
+    public static .ceylon.language.Array<.ceylon.language.Integer> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -39,7 +39,7 @@ final class arr3_ {
         )};
     }
     
-    public static .ceylon.language.Array<.ceylon.language.Integer> $get() {
+    public static .ceylon.language.Array<.ceylon.language.Integer> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

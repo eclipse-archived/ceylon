@@ -21,7 +21,7 @@ final class Bug1323_1 implements .com.redhat.ceylon.compiler.java.runtime.model.
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$a$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$a$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 this(i, $ceylontmp$a$0);
             }
             returning null;
@@ -137,7 +137,7 @@ final class bug1223Spread1_1_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$a$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$a$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning bug1223Spread1_1(i, $ceylontmp$a$1);
         );
@@ -207,7 +207,7 @@ final class bug1223Spread2_1_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$a$3 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$a$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning bug1223Spread2_1(i, $ceylontmp$a$3);
         );
@@ -308,7 +308,7 @@ public final class bug1323_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.bug1323_.bug1323();
     }
 }

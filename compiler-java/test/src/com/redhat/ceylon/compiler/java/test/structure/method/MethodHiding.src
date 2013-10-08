@@ -15,7 +15,7 @@ class MethodHiding implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodHiding();
     }
     
@@ -41,7 +41,7 @@ class MethodHidingSub extends .com.redhat.ceylon.compiler.java.test.structure.me
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodHidingSub();
     }
     

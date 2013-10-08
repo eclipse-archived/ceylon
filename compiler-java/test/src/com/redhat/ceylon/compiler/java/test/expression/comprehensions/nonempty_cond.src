@@ -25,7 +25,7 @@ final class nonemptyCond_ {
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.$get();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -51,7 +51,7 @@ final class nonemptyCond_ {
                         if (this.next1()) {
                             final .ceylon.language.Integer x = this.x;
                             return $ints$2.getFirst();
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -59,7 +59,7 @@ final class nonemptyCond_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.comprehensions.nonemptyCond_.nonemptyCond();
     }
 }

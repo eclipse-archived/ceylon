@@ -10,7 +10,7 @@ public final class bug1219_ {
     private bug1219_() {
     }
     
-    public static .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $get() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.$get();
+    public static .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> get_() {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_();
     }
 }

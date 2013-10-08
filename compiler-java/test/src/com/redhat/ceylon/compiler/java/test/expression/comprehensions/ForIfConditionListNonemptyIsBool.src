@@ -19,7 +19,7 @@ class ForIfConditionList implements .com.redhat.ceylon.compiler.java.runtime.mod
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.$get();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -52,7 +52,7 @@ class ForIfConditionList implements .com.redhat.ceylon.compiler.java.runtime.mod
                         if (this.next1()) {
                             final .ceylon.language.Sequential<? extends .java.lang.Object> x = this.x;
                             return .ceylon.language.Boolean.instance($y$4 == 1L);
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -60,7 +60,7 @@ class ForIfConditionList implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfConditionList();
     }
     

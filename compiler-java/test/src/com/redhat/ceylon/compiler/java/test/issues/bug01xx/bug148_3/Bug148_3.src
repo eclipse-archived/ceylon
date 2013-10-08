@@ -6,12 +6,12 @@ public final class bug148_3_ {
     }
     
     public static void bug148_3() {
-        .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.Integer.toString(.bug148_3.f_.$get())));
-        .bug148_3.f_.$set(3L);
+        .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.Integer.toString(.bug148_3.f_.get_())));
+        .bug148_3.f_.set_(3L);
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .bug148_3.bug148_3_.bug148_3();
     }
 }
@@ -20,10 +20,10 @@ final class f_ {
     private f_() {
     }
     
-    public static long $get() {
+    public static long get_() {
         return 2L;
     }
     
-    public static void $set(final long f) {
+    public static void set_(final long f) {
     }
 }

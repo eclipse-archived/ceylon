@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class attr1_ {
     
@@ -13,7 +13,7 @@ final class attr1_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    public static long $get() {
+    public static long get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -21,7 +21,7 @@ final class attr1_ {
         }
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class attr2_ {
     
@@ -36,7 +36,7 @@ final class attr2_ {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("variable")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    public static long $get() {
+    public static long get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -45,13 +45,13 @@ final class attr2_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void $set(@.com.redhat.ceylon.compiler.java.metadata.Name("attr2")
+    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("attr2")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long attr2) {
         value[0] = attr2;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class attr3_ {
     
@@ -61,11 +61,11 @@ final class attr3_ {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
-    public static long $get() {
+    public static long get_() {
         return 1L;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class attr4_ {
     
@@ -75,12 +75,12 @@ final class attr4_ {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
-    public static long $get() {
+    public static long get_() {
         return 1L;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void $set(@.com.redhat.ceylon.compiler.java.metadata.Name("attr4")
+    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("attr4")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long attr4) {
     }

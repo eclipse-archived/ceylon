@@ -33,11 +33,11 @@ class Bug1328 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.java.lang.Override
     public final <Thing2 extends .ceylon.language.Integer>Thing2 make(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedThing2, final Thing2 provided) {
-        return (Thing2).ceylon.language.nothing_.$get();
+        return (Thing2).ceylon.language.nothing_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328();
     }
     

@@ -20,7 +20,7 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 m2$priv$(i, $ceylontmp$seq$0);
             }
             returning null;
@@ -49,7 +49,7 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
     public final void capture() {
         m$priv(1L);
         m2$priv(1L);
-        m3$priv((T).ceylon.language.nothing_.$get());
+        m3$priv((T).ceylon.language.nothing_.get_());
     }
     
     @.java.lang.Override

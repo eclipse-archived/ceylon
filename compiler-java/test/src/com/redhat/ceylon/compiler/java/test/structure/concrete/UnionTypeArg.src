@@ -208,11 +208,11 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     
     @.java.lang.Override
     public final .ceylon.language.Iterator iterator() {
-        return (.ceylon.language.Iterator).ceylon.language.nothing_.$get();
+        return (.ceylon.language.Iterator).ceylon.language.nothing_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.UnionTypeArg();
     }
     
@@ -420,7 +420,7 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public final .ceylon.language.Iterator iterator() {
-        return (.ceylon.language.Iterator).ceylon.language.nothing_.$get();
+        return (.ceylon.language.Iterator).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
@@ -434,7 +434,7 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.UnionTypeArgOverride();
     }
     

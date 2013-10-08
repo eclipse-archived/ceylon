@@ -60,7 +60,7 @@ public class NullHandlingOperators implements .com.redhat.ceylon.compiler.java.r
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp6 = s1;
             }
-            returning $ceylontmp6 != null ? $ceylontmp6 : (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
+            returning $ceylontmp6 != null ? $ceylontmp6 : (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
         );
     }
     
@@ -73,7 +73,7 @@ public class NullHandlingOperators implements .com.redhat.ceylon.compiler.java.r
             }
             returning $ceylontmp7 instanceof .ceylon.language.Sequence;
         );
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> seq = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> seq = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
         sync = (
             let
             {
@@ -125,14 +125,14 @@ public class NullHandlingOperators implements .com.redhat.ceylon.compiler.java.r
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq = (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp13 = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(false ? .ceylon.language.empty_.$get() : null);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp13 = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(false ? .ceylon.language.empty_.get_() : null);
             }
             returning $ceylontmp13 != null ? $ceylontmp13 : new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(2L));
         );
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.NullHandlingOperators();
     }
     

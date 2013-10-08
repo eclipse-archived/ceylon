@@ -13,7 +13,7 @@ class KlassTypeParams<U, V> implements .com.redhat.ceylon.compiler.java.runtime.
             private getter$getter_() {
             }
             
-            public U $get() {
+            public U get_() {
                 return getAttr$priv();
             }
         }
@@ -24,7 +24,7 @@ class KlassTypeParams<U, V> implements .com.redhat.ceylon.compiler.java.runtime.
             private getset$getter_() {
             }
             
-            public V $get() {
+            public V get_() {
                 return getVar$priv();
             }
         }
@@ -36,7 +36,7 @@ class KlassTypeParams<U, V> implements .com.redhat.ceylon.compiler.java.runtime.
             }
             private V value;
             
-            public void $set(final V getset) {
+            public void set_(final V getset) {
                 setVar$priv(getset);
             }
         }

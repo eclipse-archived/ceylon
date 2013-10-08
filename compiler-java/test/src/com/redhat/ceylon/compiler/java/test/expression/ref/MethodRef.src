@@ -497,7 +497,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$39 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$39 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning nullarySequenced$($ceylontmp$s$39);
         );
@@ -515,7 +515,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$40 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$40 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning unarySequenced$(s1, $ceylontmp$s$40);
         );
@@ -533,7 +533,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$41 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$41 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning binarySequenced$(s1, s2, $ceylontmp$s$41);
         );
@@ -551,7 +551,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$42 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$42 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning ternarySequenced$(s1, s2, s3, $ceylontmp$s$42);
         );
@@ -569,7 +569,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$43 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$43 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning narySequenced$(s1, s2, s3, s4, $ceylontmp$s$43);
         );
@@ -593,7 +593,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                     
                     @.java.lang.Override
                     public .ceylon.language.String $call() {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                         return $call$typed(s$);
                     }
                     
@@ -648,7 +648,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                     
                     @.java.lang.Override
                     public .ceylon.language.String $call(final .java.lang.Object... $param$0) {
-                        return $call$typed($spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.$get()));
+                        return $call$typed($spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
                     }
                     
                     @.java.lang.Override
@@ -662,7 +662,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                 };
             }
         };
-        if (.ceylon.language.String.instance("nullarySequenced({})").equals(nullaryRef.$call(this).$call$variadic((.ceylon.language.Sequential).ceylon.language.empty_.$get()))) {
+        if (.ceylon.language.String.instance("nullarySequenced({})").equals(nullaryRef.$call(this).$call$variadic((.ceylon.language.Sequential).ceylon.language.empty_.get_()))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullarySequenced({})\" == nullaryRef(this)()"));
         if (.ceylon.language.String.instance("nullarySequenced([r1])").equals(nullaryRef.$call(this).$call$variadic(.ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("r1")})))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullarySequenced([r1])\" == nullaryRef(this)(\"r1\")"));
@@ -687,7 +687,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                     @.java.lang.Override
                     public .ceylon.language.String $call(final .java.lang.Object $param$0) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                         return $call$typed(s1, s$);
                     }
                     
@@ -731,7 +731,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                     @.java.lang.Override
                     public .ceylon.language.String $call(final .java.lang.Object... $param$0) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0[0]).toString();
-                        return $call$typed(s1, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.$get()));
+                        return $call$typed(s1, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.get_()));
                     }
                     
                     @.java.lang.Override
@@ -746,7 +746,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                 };
             }
         };
-        if (.ceylon.language.String.instance("unarySequenced(s; {})").equals(unaryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s"), (.ceylon.language.Sequential).ceylon.language.empty_.$get()))) {
+        if (.ceylon.language.String.instance("unarySequenced(s; {})").equals(unaryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unarySequenced(s; {})\" == unaryRef(this)(\"s\")"));
         if (.ceylon.language.String.instance("unarySequenced(s; [r1])").equals(unaryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s"), .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("r1")})))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unarySequenced(s; [r1])\" == unaryRef(this)(\"s\", \"r1\")"));
@@ -773,7 +773,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                     public .ceylon.language.String $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                         return $call$typed(s1, s2, s$);
                     }
                     
@@ -804,7 +804,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                     public .ceylon.language.String $call(final .java.lang.Object... $param$0) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0[0]).toString();
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$0[1]).toString();
-                        return $call$typed(s1, s2, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 2, $param$0.length - 2, $param$0, .ceylon.language.empty_.$get()));
+                        return $call$typed(s1, s2, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 2, $param$0.length - 2, $param$0, .ceylon.language.empty_.get_()));
                     }
                     
                     @.java.lang.Override
@@ -820,7 +820,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                 };
             }
         };
-        if (.ceylon.language.String.instance("binarySequenced(s1, s2; {})").equals(binaryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), (.ceylon.language.Sequential).ceylon.language.empty_.$get()))) {
+        if (.ceylon.language.String.instance("binarySequenced(s1, s2; {})").equals(binaryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binarySequenced(s1, s2; {})\" == binaryRef(this)(\"s1\", \"s2\")"));
         if (.ceylon.language.String.instance("binarySequenced(s1, s2; [r1])").equals(binaryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("r1")})))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binarySequenced(s1, s2; [r1])\" == binaryRef(this)(\"s1\", \"s2\", \"r1\")"));
@@ -849,7 +849,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
                         final .java.lang.String s3 = ((.ceylon.language.String)$param$2).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                         return $call$typed(s1, s2, s3, s$);
                     }
                     
@@ -867,7 +867,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0[0]).toString();
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$0[1]).toString();
                         final .java.lang.String s3 = ((.ceylon.language.String)$param$0[2]).toString();
-                        return $call$typed(s1, s2, s3, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 3, $param$0.length - 3, $param$0, .ceylon.language.empty_.$get()));
+                        return $call$typed(s1, s2, s3, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 3, $param$0.length - 3, $param$0, .ceylon.language.empty_.get_()));
                     }
                     
                     @.java.lang.Override
@@ -884,7 +884,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                 };
             }
         };
-        if (.ceylon.language.String.instance("ternarySequenced(s1, s2, s3; {})").equals(ternaryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), (.ceylon.language.Sequential).ceylon.language.empty_.$get()))) {
+        if (.ceylon.language.String.instance("ternarySequenced(s1, s2, s3; {})").equals(ternaryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternarySequenced(s1, s2, s3; {})\" == ternaryRef(this)(\"s1\", \"s2\", \"s3\")"));
         if (.ceylon.language.String.instance("ternarySequenced(s1, s2, s3; [r1])").equals(ternaryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("r1")})))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternarySequenced(s1, s2, s3; [r1])\" == ternaryRef(this)(\"s1\", \"s2\", \"s3\", \"r1\")"));
@@ -915,7 +915,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$0[1]).toString();
                         final .java.lang.String s3 = ((.ceylon.language.String)$param$0[2]).toString();
                         final .java.lang.String s4 = ((.ceylon.language.String)$param$0[3]).toString();
-                        return $call$typed(s1, s2, s3, s4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0.length - 4, $param$0, .ceylon.language.empty_.$get()));
+                        return $call$typed(s1, s2, s3, s4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0.length - 4, $param$0, .ceylon.language.empty_.get_()));
                     }
                     
                     @.java.lang.Override
@@ -933,7 +933,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                 };
             }
         };
-        if (.ceylon.language.String.instance("narySequenced(s1, s2, s3, s4; {})").equals(naryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), (.ceylon.language.Sequential).ceylon.language.empty_.$get()))) {
+        if (.ceylon.language.String.instance("narySequenced(s1, s2, s3, s4; {})").equals(naryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"narySequenced(s1, s2, s3, s4; {})\" == naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\")"));
         if (.ceylon.language.String.instance("narySequenced(s1, s2, s3, s4; [r1])").equals(naryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("r1")})))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"narySequenced(s1, s2, s3, s4; [r1])\" == naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\", \"r1\")"));
@@ -1245,7 +1245,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.ref.MethodRef();
     }
     
@@ -1255,7 +1255,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MethodRef.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class methodRef_ {
     
@@ -1276,7 +1276,7 @@ final class methodRef_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.ref.methodRef_.methodRef();
     }
 }

@@ -7,7 +7,7 @@ final class ceylon_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .ceylon_.ceylon();
     }
 }

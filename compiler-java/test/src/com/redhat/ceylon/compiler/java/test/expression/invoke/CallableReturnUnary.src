@@ -31,7 +31,7 @@ final class callableReturnUnary_bar_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnUnary_bar_.callableReturnUnary_bar();
     }
 }

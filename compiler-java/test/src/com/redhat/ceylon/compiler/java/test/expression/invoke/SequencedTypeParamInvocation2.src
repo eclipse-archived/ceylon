@@ -9,7 +9,7 @@ final class sequencedTypeParamInvocation2_ {
         (
             let
             {
-                .ceylon.language.Sequential<? extends T> $ceylontmp$ts$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends T> $ceylontmp$ts$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 sequencedTypeParamInvocation2($reifiedT, $ceylontmp$ts$0);
             }
             returning null;
@@ -39,7 +39,7 @@ final class sequencedTypeParamInvocation2_test_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.sequencedTypeParamInvocation2_test_.sequencedTypeParamInvocation2_test();
     }
 }

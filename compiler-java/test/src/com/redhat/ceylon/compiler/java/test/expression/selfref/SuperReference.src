@@ -25,7 +25,7 @@ class SuperReference implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference();
     }
     
@@ -56,7 +56,7 @@ class SuperReferenceChild extends .com.redhat.ceylon.compiler.java.test.expressi
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReferenceChild();
     }
     

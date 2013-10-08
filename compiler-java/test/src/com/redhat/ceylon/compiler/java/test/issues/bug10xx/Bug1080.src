@@ -6,13 +6,13 @@ final class bug1080_ {
     }
     
     static void bug1080() {
-        if (.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1080Attr_.$get() != null) {
-            final .java.lang.Object a = .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1080Attr_.$get();
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1080Attr_.get_() != null) {
+            final .java.lang.Object a = .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1080Attr_.get_();
         }
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1080_.bug1080();
     }
 }
@@ -25,7 +25,7 @@ final class bug1080Attr_ {
         value = new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)};
     }
     
-    public static .java.lang.Object $get() {
+    public static .java.lang.Object get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

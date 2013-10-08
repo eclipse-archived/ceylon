@@ -12,7 +12,7 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
                 .ceylon.language.String.instance("a"),
                 .ceylon.language.String.instance("b")});
-        final .ceylon.language.Empty empty = .ceylon.language.empty_.$get();
+        final .ceylon.language.Empty empty = .ceylon.language.empty_.get_();
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterableComp = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
@@ -26,7 +26,7 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                     
                     private final boolean s() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        s$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.$get();
+                        s$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
                         if (s$exhausted) {
                             return false;
                         } else {
@@ -39,7 +39,7 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                         if (this.s()) {
                             final .ceylon.language.String s = this.s;
                             return s;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -57,7 +57,7 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                     
                     private final boolean s() {
                         final .java.lang.Object $ceylontmpitem1 = iter$0.next();
-                        s$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.$get();
+                        s$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.get_();
                         if (s$exhausted) {
                             return false;
                         } else {
@@ -70,7 +70,7 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                         if (this.s()) {
                             final .ceylon.language.String s = this.s;
                             return s;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -88,7 +88,7 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                     
                     private final boolean s() {
                         final .java.lang.Object $ceylontmpitem2 = iter$0.next();
-                        s$exhausted = $ceylontmpitem2 == .ceylon.language.finished_.$get();
+                        s$exhausted = $ceylontmpitem2 == .ceylon.language.finished_.get_();
                         if (s$exhausted) {
                             return false;
                         } else {
@@ -101,7 +101,7 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                         if (this.s()) {
                             final .ceylon.language.String s = this.s;
                             return s;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -119,7 +119,7 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                     
                     private final boolean s() {
                         final .java.lang.Object $ceylontmpitem3 = iter$0.next();
-                        s$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.$get();
+                        s$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.get_();
                         if (s$exhausted) {
                             return false;
                         } else {
@@ -132,7 +132,7 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                         if (this.s()) {
                             final .ceylon.language.String s = this.s;
                             return s;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -146,7 +146,7 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.literal.SequenceLiteral();
     }
     

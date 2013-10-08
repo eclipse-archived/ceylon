@@ -83,7 +83,7 @@ final class indirectTypeParam_ {
             
             @.java.lang.Override
             public .ceylon.language.Sequential<? extends .java.lang.Object> $call() {
-                final .ceylon.language.Sequential $$iterables$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                final .ceylon.language.Sequential $$iterables$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 return $call$typed($$iterables$);
             }
             
@@ -138,7 +138,7 @@ final class indirectTypeParam_ {
             
             @.java.lang.Override
             public .ceylon.language.Sequential<? extends .java.lang.Object> $call(final .java.lang.Object... $param$0) {
-                return $call$typed($spreadVarargs(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.$get()));
+                return $call$typed($spreadVarargs(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
@@ -154,7 +154,7 @@ final class indirectTypeParam_ {
             
             @.java.lang.Override
             public .ceylon.language.Sequential<? extends X> $call() {
-                final .ceylon.language.Sequential $$iterables$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                final .ceylon.language.Sequential $$iterables$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 return $call$typed($$iterables$);
             }
             
@@ -209,7 +209,7 @@ final class indirectTypeParam_ {
             
             @.java.lang.Override
             public .ceylon.language.Sequential<? extends X> $call(final .java.lang.Object... $param$0) {
-                return $call$typed($spreadVarargs(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reifiedX, .ceylon.language.Null.$TypeDescriptor), 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.$get()));
+                return $call$typed($spreadVarargs(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reifiedX, .ceylon.language.Null.$TypeDescriptor), 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
@@ -224,7 +224,7 @@ final class indirectTypeParam_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.indirectTypeParam_.indirectTypeParam(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
 }

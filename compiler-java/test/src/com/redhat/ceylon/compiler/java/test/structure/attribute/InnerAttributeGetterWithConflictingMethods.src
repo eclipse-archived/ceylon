@@ -12,7 +12,7 @@ class InnerAttributeGetterWithConflictingMethods implements .com.redhat.ceylon.c
             private x$getter_() {
             }
             
-            public long $get() {
+            public long get_() {
                 return 2L;
             }
         }
@@ -24,11 +24,11 @@ class InnerAttributeGetterWithConflictingMethods implements .com.redhat.ceylon.c
             }
             
             long getX() {
-                return x$getter_.$get();
+                return x$getter_.get_();
             }
         }
         final getX_ getX = new getX_();
-        final long n = x$getter_.$get();
+        final long n = x$getter_.get_();
         final long n2 = getX.getX();
     }
     
@@ -39,7 +39,7 @@ class InnerAttributeGetterWithConflictingMethods implements .com.redhat.ceylon.c
             private x$getter_() {
             }
             
-            public long $get() {
+            public long get_() {
                 return 2L;
             }
         }
@@ -51,16 +51,16 @@ class InnerAttributeGetterWithConflictingMethods implements .com.redhat.ceylon.c
             }
             
             long getX() {
-                return x$getter_.$get();
+                return x$getter_.get_();
             }
         }
         final getX_ getX = new getX_();
-        final long n = x$getter_.$get();
+        final long n = x$getter_.get_();
         final long n2 = getX.getX();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterWithConflictingMethods();
     }
     

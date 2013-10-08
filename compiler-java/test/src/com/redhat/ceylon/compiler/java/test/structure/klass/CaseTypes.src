@@ -21,7 +21,7 @@ public final class foo_ extends .com.redhat.ceylon.compiler.java.test.structure.
         value = new .com.redhat.ceylon.compiler.java.test.structure.klass.foo_[]{new .com.redhat.ceylon.compiler.java.test.structure.klass.foo_()};
     }
     
-    public static .com.redhat.ceylon.compiler.java.test.structure.klass.foo_ $get() {
+    public static .com.redhat.ceylon.compiler.java.test.structure.klass.foo_ get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -44,7 +44,7 @@ public final class bar_ extends .com.redhat.ceylon.compiler.java.test.structure.
         value = new .com.redhat.ceylon.compiler.java.test.structure.klass.bar_[]{new .com.redhat.ceylon.compiler.java.test.structure.klass.bar_()};
     }
     
-    public static .com.redhat.ceylon.compiler.java.test.structure.klass.bar_ $get() {
+    public static .com.redhat.ceylon.compiler.java.test.structure.klass.bar_ get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -75,7 +75,7 @@ public class Foo extends .com.redhat.ceylon.compiler.java.test.structure.klass.C
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.Foo();
     }
     
@@ -92,7 +92,7 @@ public class Bar extends .com.redhat.ceylon.compiler.java.test.structure.klass.C
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.Bar();
     }
     

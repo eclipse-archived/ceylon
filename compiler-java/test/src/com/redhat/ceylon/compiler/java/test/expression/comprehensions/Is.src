@@ -49,16 +49,16 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common common() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo foo() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo).ceylon.language.nothing_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo();
     }
     
@@ -75,11 +75,11 @@ class FooSub extends .com.redhat.ceylon.compiler.java.test.expression.comprehens
     }
     
     public final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub foo2() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub).ceylon.language.nothing_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub();
     }
     
@@ -124,16 +124,16 @@ class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common common() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar bar() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar).ceylon.language.nothing_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar();
     }
     
@@ -162,7 +162,7 @@ final class isCond_ {
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.$get();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -188,7 +188,7 @@ final class isCond_ {
                         if (this.next1()) {
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             return $x$2.foo();
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -206,7 +206,7 @@ final class isCond_ {
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem3 = iter$0.next();
-                        x$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.$get();
+                        x$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -232,7 +232,7 @@ final class isCond_ {
                         if (this.next1()) {
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             return $x$5.foo();
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -250,7 +250,7 @@ final class isCond_ {
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem6 = iter$0.next();
-                        x$exhausted = $ceylontmpitem6 == .ceylon.language.finished_.$get();
+                        x$exhausted = $ceylontmpitem6 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -273,7 +273,7 @@ final class isCond_ {
                         if (this.next1()) {
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             return ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)x).common();
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -291,7 +291,7 @@ final class isCond_ {
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem8 = iter$0.next();
-                        x$exhausted = $ceylontmpitem8 == .ceylon.language.finished_.$get();
+                        x$exhausted = $ceylontmpitem8 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -314,7 +314,7 @@ final class isCond_ {
                         if (this.next1()) {
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             return ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x).foo().common();
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -332,7 +332,7 @@ final class isCond_ {
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem10 = iter$0.next();
-                        x$exhausted = $ceylontmpitem10 == .ceylon.language.finished_.$get();
+                        x$exhausted = $ceylontmpitem10 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -355,7 +355,7 @@ final class isCond_ {
                         if (this.next1()) {
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             return ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface)x).bar();
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -373,7 +373,7 @@ final class isCond_ {
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem12 = iter$0.next();
-                        x$exhausted = $ceylontmpitem12 == .ceylon.language.finished_.$get();
+                        x$exhausted = $ceylontmpitem12 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -396,7 +396,7 @@ final class isCond_ {
                         if (this.next1()) {
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             return x;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }

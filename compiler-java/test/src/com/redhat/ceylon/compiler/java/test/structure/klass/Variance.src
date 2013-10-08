@@ -72,7 +72,7 @@ class VarianceSubClass extends .com.redhat.ceylon.compiler.java.test.structure.k
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom m(final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle param) {
-        return (.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

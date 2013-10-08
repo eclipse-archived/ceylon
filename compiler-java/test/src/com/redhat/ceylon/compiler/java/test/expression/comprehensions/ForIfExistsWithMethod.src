@@ -23,7 +23,7 @@ class ForIfExistsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.$get();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -49,7 +49,7 @@ class ForIfExistsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.
                         if (this.next1()) {
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod x = this.x;
                             return .ceylon.language.Integer.instance($y$2);
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -57,7 +57,7 @@ class ForIfExistsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod();
     }
     

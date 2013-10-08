@@ -17,7 +17,7 @@ public class Bug1059<SomeType> implements .com.redhat.ceylon.compiler.java.runti
         if (.com.redhat.ceylon.compiler.java.Util.isReified(getI$priv(), $reifiedSomeType)) {
             return new .ceylon.language.Singleton<SomeType>($reifiedSomeType, (SomeType)getI$priv()).iterator();
         }
-        return (.ceylon.language.Iterator).ceylon.language.nothing_.$get();
+        return (.ceylon.language.Iterator).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

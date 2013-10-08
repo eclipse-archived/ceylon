@@ -23,7 +23,7 @@ class ForIfIsNotObject implements .com.redhat.ceylon.compiler.java.runtime.model
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.$get();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -46,7 +46,7 @@ class ForIfIsNotObject implements .com.redhat.ceylon.compiler.java.runtime.model
                         if (this.next1()) {
                             final .java.lang.Object x = this.x;
                             return nowt$priv(x);
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -67,7 +67,7 @@ class ForIfIsNotObject implements .com.redhat.ceylon.compiler.java.runtime.model
                     
                     private final boolean y() {
                         final .java.lang.Object $ceylontmpitem2 = iter$0.next();
-                        y$exhausted = $ceylontmpitem2 == .ceylon.language.finished_.$get();
+                        y$exhausted = $ceylontmpitem2 == .ceylon.language.finished_.get_();
                         if (y$exhausted) {
                             return false;
                         } else {
@@ -93,7 +93,7 @@ class ForIfIsNotObject implements .com.redhat.ceylon.compiler.java.runtime.model
                         if (this.next1()) {
                             final .java.lang.Object y = this.y;
                             return nowt$priv($x$4);
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -101,7 +101,7 @@ class ForIfIsNotObject implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsNotObject();
     }
     

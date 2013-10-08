@@ -9,7 +9,7 @@ final class bug1113_ {
         .java.lang.Object $f$1;
         if (.com.redhat.ceylon.compiler.java.Util.isReified($f$1 = f, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reifiedRet, .ceylon.language.Empty.$TypeDescriptor))) {
             final .ceylon.language.Callable<? extends Ret> $f$2 = (.ceylon.language.Callable)$f$1;
-            return $f$2.$call$variadic((.ceylon.language.Sequential).ceylon.language.empty_.$get());
+            return $f$2.$call$variadic((.ceylon.language.Sequential).ceylon.language.empty_.get_());
         }
         .java.lang.Object $f$4;
         if (.com.redhat.ceylon.compiler.java.Util.isReified($f$4 = f, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reifiedRet, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)))) {

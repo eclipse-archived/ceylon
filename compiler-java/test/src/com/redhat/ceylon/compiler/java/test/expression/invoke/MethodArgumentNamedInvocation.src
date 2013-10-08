@@ -34,7 +34,7 @@ final class methodArgumentNamedIncovation_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.methodArgumentNamedIncovation_.methodArgumentNamedIncovation();
     }
 }

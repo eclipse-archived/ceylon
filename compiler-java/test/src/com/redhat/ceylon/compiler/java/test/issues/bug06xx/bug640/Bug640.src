@@ -17,7 +17,7 @@ public final class bug640_ {
             }
             returning new .ceylon.language.Array<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept>($arg$0$reified$0, $arg$0$0);
         );
-        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept().accepts(.com.redhat.ceylon.compiler.java.language.arrays_.$get().<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept>toObjectArray(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept.class), x));
+        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept().accepts(.com.redhat.ceylon.compiler.java.language.arrays_.get_().<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept>toObjectArray(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept.class), x));
         final .ceylon.language.Array<.ceylon.language.String> y = (
             let
             {
@@ -29,7 +29,7 @@ public final class bug640_ {
             }
             returning new .ceylon.language.Array<.ceylon.language.String>($arg$1$reified$0, $arg$1$0);
         );
-        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept().strings(.com.redhat.ceylon.compiler.java.language.arrays_.$get().toJavaStringArray(y));
+        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept().strings(.com.redhat.ceylon.compiler.java.language.arrays_.get_().toJavaStringArray(y));
         final .ceylon.language.Array<.ceylon.language.Integer> z = (
             let
             {
@@ -41,11 +41,11 @@ public final class bug640_ {
             }
             returning new .ceylon.language.Array<.ceylon.language.Integer>($arg$2$reified$0, $arg$2$0);
         );
-        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept().longs(.com.redhat.ceylon.compiler.java.language.arrays_.$get().toLongArray(z));
+        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept().longs(.com.redhat.ceylon.compiler.java.language.arrays_.get_().toLongArray(z));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.bug640_.bug640();
     }
 }

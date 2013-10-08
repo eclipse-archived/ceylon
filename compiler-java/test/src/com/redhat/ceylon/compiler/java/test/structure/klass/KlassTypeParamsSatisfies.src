@@ -12,7 +12,7 @@ class KlassTypeParamsSatisfies<U extends .ceylon.language.Container<? extends .c
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedW;
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassTypeParamsSatisfies(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     

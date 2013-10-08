@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
 @interface Quoting$annotation {
@@ -13,13 +13,13 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     
     public abstract long $hashCode();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface Quoting$annotations {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.Quoting$annotation[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.AnnotationAnnotation$annotation
 @.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -151,7 +151,7 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::Quoting")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .com.redhat.ceylon.compiler.java.test.annotations.Quoting getClone() {
-        return (.com.redhat.ceylon.compiler.java.test.annotations.Quoting).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.annotations.Quoting).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
@@ -162,7 +162,7 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Quoting.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {
@@ -199,11 +199,11 @@ final class quoting_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.quoting_.quoting();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {

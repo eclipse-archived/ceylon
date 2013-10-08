@@ -9,7 +9,7 @@ class Variadic implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 possiblyEmpty$priv$($ceylontmp$args$0);
             }
             returning null;
@@ -33,7 +33,7 @@ class Variadic implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.Variadic();
     }
     

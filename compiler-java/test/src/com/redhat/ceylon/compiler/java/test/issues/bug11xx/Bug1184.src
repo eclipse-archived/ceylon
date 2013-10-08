@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug1184() {
@@ -11,7 +11,7 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning narySequenced$(s1, s2, s3, s4, $ceylontmp$s$0);
         );
@@ -71,7 +71,7 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 final .java.lang.String $$s2 = ((.ceylon.language.String)$param$0[1]).toString();
                 final .java.lang.String $$s3 = ((.ceylon.language.String)$param$0[2]).toString();
                 final .java.lang.String $$s4 = ((.ceylon.language.String)$param$0[3]).toString();
-                return $call$typed($$s1, $$s2, $$s3, $$s4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0.length - 4, $param$0, .ceylon.language.empty_.$get()));
+                return $call$typed($$s1, $$s2, $$s3, $$s4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0.length - 4, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
@@ -108,7 +108,7 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 final .java.lang.String $$s2 = ((.ceylon.language.String)$param$0[1]).toString();
                 final .java.lang.String $$s3 = ((.ceylon.language.String)$param$0[2]).toString();
                 final .java.lang.String $$s4 = ((.ceylon.language.String)$param$0[3]).toString();
-                return $call$typed($$s1, $$s2, $$s3, $$s4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0.length - 4, $param$0, .ceylon.language.empty_.$get()));
+                return $call$typed($$s1, $$s2, $$s3, $$s4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0.length - 4, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
@@ -145,7 +145,7 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 final .java.lang.String $$s2 = ((.ceylon.language.String)$param$0[1]).toString();
                 final .java.lang.String $$s3 = ((.ceylon.language.String)$param$0[2]).toString();
                 final .java.lang.String $$s4 = ((.ceylon.language.String)$param$0[3]).toString();
-                return $call$typed($$s1, $$s2, $$s3, $$s4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0.length - 4, $param$0, .ceylon.language.empty_.$get()));
+                return $call$typed($$s1, $$s2, $$s3, $$s4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0.length - 4, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
@@ -166,7 +166,7 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1184();
     }
     

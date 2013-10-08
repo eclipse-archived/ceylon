@@ -19,7 +19,7 @@ class CE_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_Foo();
     }
     
@@ -32,8 +32,8 @@ class CE_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
 public class CE_MethodClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public CE_MethodClass() {
-        this.erasedMethod = .ceylon.language.nothing_.$get();
-        this.nonErasedMethod = (.ceylon.language.Callable).ceylon.language.nothing_.$get();
+        this.erasedMethod = .ceylon.language.nothing_.get_();
+        this.nonErasedMethod = (.ceylon.language.Callable).ceylon.language.nothing_.get_();
     }
     private final .java.lang.Object erasedMethod;
     
@@ -47,7 +47,7 @@ public class CE_MethodClass implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodClass();
     }
     

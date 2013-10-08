@@ -6,7 +6,7 @@ class NamedArgumentWithEmptySequence implements .com.redhat.ceylon.compiler.java
         (
             let
             {
-                .ceylon.language.Sequential $arg$1$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential $arg$1$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 m$priv($arg$1$0);
             }
             returning null;
@@ -17,7 +17,7 @@ class NamedArgumentWithEmptySequence implements .com.redhat.ceylon.compiler.java
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 m$priv$($ceylontmp$b$0);
             }
             returning null;
@@ -38,7 +38,7 @@ class NamedArgumentWithEmptySequence implements .com.redhat.ceylon.compiler.java
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithEmptySequence();
     }
     

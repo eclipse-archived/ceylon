@@ -6,14 +6,14 @@ class TopLevelAssign implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     private final void m$priv() {
-        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB1_.$set(false);
-        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB2_.$set(false);
-        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB3_.$set(false);
-        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB4_.$set(false);
+        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB1_.set_(false);
+        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB2_.set_(false);
+        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB3_.set_(false);
+        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB4_.set_(false);
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAssign();
     }
     
@@ -32,7 +32,7 @@ final class topLevelAssignB1_ {
         value = new boolean[]{true};
     }
     
-    public static boolean $get() {
+    public static boolean get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -40,7 +40,7 @@ final class topLevelAssignB1_ {
         }
     }
     
-    public static void $set(final boolean topLevelAssignB1) {
+    public static void set_(final boolean topLevelAssignB1) {
         value[0] = topLevelAssignB1;
     }
 }
@@ -53,7 +53,7 @@ public final class topLevelAssignB2_ {
         value = new boolean[]{true};
     }
     
-    public static boolean $get() {
+    public static boolean get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -61,7 +61,7 @@ public final class topLevelAssignB2_ {
         }
     }
     
-    public static void $set(final boolean topLevelAssignB2) {
+    public static void set_(final boolean topLevelAssignB2) {
         value[0] = topLevelAssignB2;
     }
 }
@@ -70,11 +70,11 @@ final class topLevelAssignB3_ {
     private topLevelAssignB3_() {
     }
     
-    public static boolean $get() {
+    public static boolean get_() {
         return true;
     }
     
-    public static void $set(final boolean topLevelAssignB3) {
+    public static void set_(final boolean topLevelAssignB3) {
         throw new .ceylon.language.Exception(null, null);
     }
 }
@@ -83,11 +83,11 @@ public final class topLevelAssignB4_ {
     private topLevelAssignB4_() {
     }
     
-    public static boolean $get() {
+    public static boolean get_() {
         return true;
     }
     
-    public static void $set(final boolean topLevelAssignB4) {
+    public static void set_(final boolean topLevelAssignB4) {
         throw new .ceylon.language.Exception(null, null);
     }
 }

@@ -14,7 +14,7 @@ final class methodIfFalseElse_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.statement.conditional.methodIfFalseElse_.methodIfFalseElse();
     }
 }
@@ -32,7 +32,7 @@ final class methodIfFalseElse2_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.statement.conditional.methodIfFalseElse2_.methodIfFalseElse2();
     }
 }

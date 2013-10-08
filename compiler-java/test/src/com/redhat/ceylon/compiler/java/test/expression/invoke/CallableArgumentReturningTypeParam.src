@@ -18,7 +18,7 @@ final class callableArgumentReturningTypeParam_bar_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_bar_.callableArgumentReturningTypeParam_bar(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
 }
@@ -32,7 +32,7 @@ final class callableArgumentReturningTypeParam_baz_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_baz_.callableArgumentReturningTypeParam_baz();
     }
 }
@@ -59,7 +59,7 @@ final class callableArgumentReturningTypeParam_m_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_m_.callableArgumentReturningTypeParam_m();
     }
 }

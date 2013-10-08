@@ -154,7 +154,7 @@ final class InstantiatorDelegates$impl<X> {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$4 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$4 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning new Sequenced(b, $ceylontmp$i$4);
         );
@@ -266,7 +266,7 @@ class InstantiatorDelegatesImpl<X> implements .com.redhat.ceylon.compiler.java.r
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegatesImpl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -348,7 +348,7 @@ final class instantiatorDelegates_ {
             {
                 .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$12$callable$ = a;
                 boolean $arg$12$0 = true;
-                .ceylon.language.Sequential $arg$12$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential $arg$12$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning $arg$12$callable$.Sequenced$new($arg$12$0, $arg$12$1);
         );

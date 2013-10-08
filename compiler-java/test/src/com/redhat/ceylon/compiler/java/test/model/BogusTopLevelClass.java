@@ -26,7 +26,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
-@Ceylon(major = 5)
+@Ceylon(major = 6)
 @com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.model::MissingType")
 @CaseTypes(of = "com.redhat.ceylon.compiler.java.test.model::MissingType")
 @TypeParameters(@TypeParameter(value = "T", 

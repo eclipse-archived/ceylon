@@ -256,7 +256,7 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             let
             {
                 long $ceylontmp$n$13 = fa$n();
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$14 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$14 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning fa$($ceylontmp$n$13, $ceylontmp$seq$14);
         );
@@ -270,7 +270,7 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$15 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$15 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning fa$(n, $ceylontmp$seq$15);
         );
@@ -498,7 +498,7 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
             let
             {
                 long $ceylontmp$n$29 = fa$n();
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$30 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$30 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning fa$($ceylontmp$n$29, $ceylontmp$seq$30);
         );
@@ -508,7 +508,7 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$31 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$31 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning fa$(n, $ceylontmp$seq$31);
         );
@@ -877,7 +877,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             let
             {
                 long $ceylontmp$n$43 = fa$n();
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$44 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$44 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning fa$($ceylontmp$n$43, $ceylontmp$seq$44);
         );
@@ -887,7 +887,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$45 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$45 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning fa$(n, $ceylontmp$seq$45);
         );
@@ -908,7 +908,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls();
     }
     
@@ -1163,7 +1163,7 @@ final class methodInvocationWithDefaultedParameters_ {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$66$callable$ = f;
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$66$this$ = $arg$66$callable$;
                 long $arg$66$0 = $arg$66$this$.fa$n();
-                .ceylon.language.Sequential $arg$66$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential $arg$66$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 $arg$66$callable$.fa($arg$66$0, $arg$66$1);
             }
             returning null;
@@ -1187,7 +1187,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$68$callable$ = f;
                 long $arg$68$0 = 6L;
-                .ceylon.language.Sequential $arg$68$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential $arg$68$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 $arg$68$callable$.fa($arg$68$0, $arg$68$1);
             }
             returning null;
@@ -1457,7 +1457,7 @@ final class methodInvocationWithDefaultedParameters_ {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$91$callable$ = f2;
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$91$this$ = $arg$91$callable$;
                 long $arg$91$0 = $arg$91$this$.fa$n();
-                .ceylon.language.Sequential $arg$91$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential $arg$91$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 $arg$91$callable$.fa($arg$91$0, $arg$91$1);
             }
             returning null;
@@ -1481,7 +1481,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$93$callable$ = f2;
                 long $arg$93$0 = 6L;
-                .ceylon.language.Sequential $arg$93$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential $arg$93$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 $arg$93$callable$.fa($arg$93$0, $arg$93$1);
             }
             returning null;
@@ -1711,7 +1711,7 @@ final class methodInvocationWithDefaultedParameters_ {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$112$callable$ = b;
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$112$this$ = $arg$112$callable$;
                 long $arg$112$0 = $arg$112$this$.fa$n();
-                .ceylon.language.Sequential $arg$112$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential $arg$112$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 $arg$112$callable$.fa($arg$112$0, $arg$112$1);
             }
             returning null;
@@ -1735,7 +1735,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$114$callable$ = b;
                 long $arg$114$0 = 6L;
-                .ceylon.language.Sequential $arg$114$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential $arg$114$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 $arg$114$callable$.fa($arg$114$0, $arg$114$1);
             }
             returning null;
@@ -1968,7 +1968,7 @@ final class methodInvocationWithDefaultedParameters_ {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$133$callable$ = b2;
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$133$this$ = $arg$133$callable$;
                 long $arg$133$0 = $arg$133$this$.fa$n();
-                .ceylon.language.Sequential $arg$133$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential $arg$133$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 $arg$133$callable$.fa($arg$133$0, $arg$133$1);
             }
             returning null;
@@ -1992,7 +1992,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$135$callable$ = b2;
                 long $arg$135$0 = 6L;
-                .ceylon.language.Sequential $arg$135$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential $arg$135$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 $arg$135$callable$.fa($arg$135$0, $arg$135$1);
             }
             returning null;
@@ -2026,7 +2026,7 @@ final class methodInvocationWithDefaultedParameters_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.methodInvocationWithDefaultedParameters_.methodInvocationWithDefaultedParameters();
     }
 }

@@ -98,7 +98,7 @@ class Bug270 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug270();
     }
     
@@ -126,7 +126,7 @@ final class bug270_ {
         )};
     }
     
-    public static .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> $get() {
+    public static .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -152,7 +152,7 @@ final class bug270Variable_ {
         )};
     }
     
-    public static .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> $get() {
+    public static .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -160,7 +160,7 @@ final class bug270Variable_ {
         }
     }
     
-    public static void $set(final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> bug270Variable) {
+    public static void set_(final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> bug270Variable) {
         value[0] = bug270Variable;
     }
 }
@@ -191,7 +191,7 @@ final class bug270_2_ {
         ))};
     }
     
-    public static .ceylon.language.Entry<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.String> $get() {
+    public static .ceylon.language.Entry<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.String> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

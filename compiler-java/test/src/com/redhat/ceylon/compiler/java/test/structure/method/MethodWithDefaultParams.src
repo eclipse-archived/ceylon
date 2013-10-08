@@ -188,7 +188,7 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
             let
             {
                 long $ceylontmp$n$9 = f6$n();
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$10 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$10 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 f6$($ceylontmp$n$9, $ceylontmp$seq$10);
             }
             returning null;
@@ -203,7 +203,7 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$11 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$11 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 f6$(n, $ceylontmp$seq$11);
             }
             returning null;
@@ -224,7 +224,7 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams();
     }
     

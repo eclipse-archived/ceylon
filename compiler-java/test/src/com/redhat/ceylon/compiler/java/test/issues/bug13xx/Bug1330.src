@@ -21,7 +21,7 @@ class Bug1330_2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     private final void m$priv() {
-        final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.Node> nodes = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.Node>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
+        final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.Node> nodes = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.Node>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
         nodes.filter(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.Node.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.Node.class)), .ceylon.language.Empty.$TypeDescriptor), "Boolean(Bug1330_2.Node)", (short)-1){
             
             @.java.lang.Override
@@ -33,7 +33,7 @@ class Bug1330_2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2();
     }
     
@@ -66,7 +66,7 @@ class Bug1330<N> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     private final void m$priv() {
-        final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330<N>.Node> nodes = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330<N>.Node>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
+        final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330<N>.Node> nodes = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330<N>.Node>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
         nodes.filter(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330.class, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330.this.$reifiedN), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330.Node.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330.class, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330.this.$reifiedN), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330.Node.class)), .ceylon.language.Empty.$TypeDescriptor), "Boolean(Bug1330<N>.Node)", (short)-1){
             
             @.java.lang.Override
@@ -78,7 +78,7 @@ class Bug1330<N> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     

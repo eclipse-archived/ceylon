@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Summable<com.redhat.ceylon.compiler.java.test.issues.bug13xx::Bug1313>"})
 class Bug1313 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Summable<.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313> {
     
@@ -26,12 +26,12 @@ class Bug1313 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     public final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313 plus(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug13xx::Bug1313")
     final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313 other) {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313).ceylon.language.nothing_.get_();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313();
     }
     
@@ -43,7 +43,7 @@ class Bug1313 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug1313_ {
     
@@ -93,7 +93,7 @@ final class bug1313_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1313_.bug1313();
     }
 }

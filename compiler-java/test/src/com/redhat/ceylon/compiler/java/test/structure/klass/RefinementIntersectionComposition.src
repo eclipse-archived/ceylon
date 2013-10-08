@@ -122,16 +122,16 @@ class RIC_Nothing_From_Class extends .com.redhat.ceylon.compiler.java.test.struc
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A getVal() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A get() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A).ceylon.language.nothing_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Nothing_From_Class();
     }
     
@@ -169,16 +169,16 @@ class RIC_Nothing_From_Interface implements .com.redhat.ceylon.compiler.java.run
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B getVal() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B get() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B).ceylon.language.nothing_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Nothing_From_Interface();
     }
     

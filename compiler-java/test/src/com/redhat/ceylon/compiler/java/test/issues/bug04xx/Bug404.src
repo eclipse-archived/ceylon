@@ -16,7 +16,7 @@ class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                     .ceylon.language.String.instance("1"),
                     .ceylon.language.String.instance("1.0")}).contains($ceylontmp0);
         );
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> empty = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> empty = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
         sync = !(
             let
             {
@@ -72,7 +72,7 @@ class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug404();
     }
     

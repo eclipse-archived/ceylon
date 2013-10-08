@@ -19,7 +19,7 @@ final class forIfIsBooleanConditions_ {
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.$get();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -47,7 +47,7 @@ final class forIfIsBooleanConditions_ {
                         if (this.next1()) {
                             final .java.lang.Object x = this.x;
                             return .ceylon.language.Integer.instance($y$2 + 1L);
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }

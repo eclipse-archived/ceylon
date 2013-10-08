@@ -13,11 +13,11 @@ abstract class OfOp implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     private final void m$priv() {
-        final .ceylon.language.Comparable<? super .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp> comp = (.ceylon.language.Comparable).ceylon.language.nothing_.$get();
+        final .ceylon.language.Comparable<? super .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp> comp = (.ceylon.language.Comparable).ceylon.language.nothing_.get_();
         final .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp foo = (.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp)comp;
-        final .java.lang.Object v = .ceylon.language.nothing_.$get();
+        final .java.lang.Object v = .ceylon.language.nothing_.get_();
         final .java.lang.Object x = v;
-        final .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp o = (.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp).ceylon.language.nothing_.$get();
+        final .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp o = (.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp).ceylon.language.nothing_.get_();
         final .java.lang.Object z = o;
     }
     

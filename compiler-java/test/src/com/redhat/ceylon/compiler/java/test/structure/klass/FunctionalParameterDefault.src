@@ -34,7 +34,7 @@ class FunctionalParameterDefault implements .com.redhat.ceylon.compiler.java.run
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault();
     }
     
@@ -58,7 +58,7 @@ class FunctionalParameterDefaultSub extends .com.redhat.ceylon.compiler.java.tes
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefaultSub();
     }
     

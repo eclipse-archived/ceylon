@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -10,7 +10,7 @@ public class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
     
@@ -22,7 +22,7 @@ public class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Foo.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -32,7 +32,7 @@ public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.Bar();
     }
     
@@ -44,7 +44,7 @@ public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Bar.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 class UnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     UnionTypeInfo(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
@@ -55,7 +55,7 @@ class UnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         final .java.lang.Object attr;
         this.sharedAttr = new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
         @.com.redhat.ceylon.compiler.java.metadata.Attribute
         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.language::Getter<com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar>"})
         final class getter$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.Object> {
@@ -64,13 +64,13 @@ class UnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.Re
             }
             
             @.com.redhat.ceylon.compiler.java.metadata.Transient
-            public .java.lang.Object $get() {
+            public .java.lang.Object get_() {
                 return new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
             }
         }
         final .com.redhat.ceylon.compiler.java.language.Getter getter$getter_ = new getter$getter_();
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
         @.com.redhat.ceylon.compiler.java.metadata.Attribute
         final class getter$setter_ {
             
@@ -78,7 +78,7 @@ class UnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.Re
             }
             private .java.lang.Object value;
             
-            public void $set(@.com.redhat.ceylon.compiler.java.metadata.Name("getter")
+            public void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("getter")
             final .java.lang.Object getter) {
             }
         }
@@ -147,7 +147,7 @@ class UnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.UnionTypeInfo.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class SharedUnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -167,7 +167,7 @@ public class SharedUnionTypeInfo implements .com.redhat.ceylon.compiler.java.run
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.SharedUnionTypeInfo.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class toplevelMethod_ {
     
@@ -185,7 +185,7 @@ final class toplevelMethod_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class sharedToplevelMethod_ {
     
@@ -205,7 +205,7 @@ public final class sharedToplevelMethod_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class toplevelAttribute_ {
     
@@ -220,7 +220,7 @@ final class toplevelAttribute_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar",
             erased = true)
-    public static .java.lang.Object $get() {
+    public static .java.lang.Object get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -228,7 +228,7 @@ final class toplevelAttribute_ {
         }
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 public final class sharedToplevelAttribute_ {
     
@@ -245,7 +245,7 @@ public final class sharedToplevelAttribute_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar",
             erased = true)
-    public static .java.lang.Object $get() {
+    public static .java.lang.Object get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -253,7 +253,7 @@ public final class sharedToplevelAttribute_ {
         }
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class toplevelGetter_ {
     
@@ -265,19 +265,19 @@ final class toplevelGetter_ {
             value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar",
             erased = true)
     @.com.redhat.ceylon.compiler.java.metadata.Transient
-    public static .java.lang.Object $get() {
+    public static .java.lang.Object get_() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void $set(@.com.redhat.ceylon.compiler.java.metadata.Name("toplevelGetter")
+    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("toplevelGetter")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar",
             erased = true)
     final .java.lang.Object toplevelGetter) {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 public final class toplevelSharedGetter_ {
     
@@ -291,12 +291,12 @@ public final class toplevelSharedGetter_ {
             value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar",
             erased = true)
     @.com.redhat.ceylon.compiler.java.metadata.Transient
-    public static .java.lang.Object $get() {
+    public static .java.lang.Object get_() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void $set(@.com.redhat.ceylon.compiler.java.metadata.Name("toplevelSharedGetter")
+    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("toplevelSharedGetter")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar",
             erased = true)

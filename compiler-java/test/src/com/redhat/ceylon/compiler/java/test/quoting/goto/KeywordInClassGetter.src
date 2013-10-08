@@ -9,7 +9,7 @@ class KeywordInClassGetter implements .com.redhat.ceylon.compiler.java.runtime.m
             private goto$getter_() {
             }
             
-            public .java.lang.String $get() {
+            public .java.lang.String get_() {
                 return "";
             }
         }
@@ -21,14 +21,14 @@ class KeywordInClassGetter implements .com.redhat.ceylon.compiler.java.runtime.m
             }
             private .java.lang.String value;
             
-            public void $set(final .java.lang.String goto) {
+            public void set_(final .java.lang.String goto) {
             }
         }
         final goto$setter_ goto$setter_ = new goto$setter_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassGetter();
     }
     

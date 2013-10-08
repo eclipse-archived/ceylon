@@ -51,7 +51,7 @@ final class topLevelObjectWithMembers_ implements .com.redhat.ceylon.compiler.ja
         value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_[]{new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_ $get() {
+    static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_ get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

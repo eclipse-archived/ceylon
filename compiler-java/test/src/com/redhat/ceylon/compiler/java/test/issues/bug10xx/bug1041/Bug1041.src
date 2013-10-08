@@ -26,7 +26,7 @@ class ByteBuffer extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bu
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.ByteBuffer();
     }
     
@@ -227,7 +227,7 @@ class Bug1041<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.Bug1041(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     

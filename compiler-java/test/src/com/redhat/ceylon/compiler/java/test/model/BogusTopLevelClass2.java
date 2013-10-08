@@ -23,7 +23,7 @@ package com.redhat.ceylon.compiler.java.test.model;
 import com.redhat.ceylon.compiler.java.metadata.CaseTypes;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 
-@Ceylon(major = 5)
+@Ceylon(major = 6)
 @com.redhat.ceylon.compiler.java.metadata.Class
 @CaseTypes(value = "com.redhat.ceylon.compiler.java.test.model::MissingType")
 public class BogusTopLevelClass2 {

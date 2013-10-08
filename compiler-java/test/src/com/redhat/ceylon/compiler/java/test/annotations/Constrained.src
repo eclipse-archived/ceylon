@@ -1,10 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface ConstrainedToClass$annotation {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.AnnotationAnnotation$annotation
 @.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -56,7 +56,7 @@ final class ConstrainedToClass implements .com.redhat.ceylon.compiler.java.runti
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass();
     }
     
@@ -68,18 +68,18 @@ final class ConstrainedToClass implements .com.redhat.ceylon.compiler.java.runti
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
 @interface ConstrainedToClassSeq$annotation {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface ConstrainedToClassSeq$annotations {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq$annotation[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.AnnotationAnnotation$annotation
 @.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -131,7 +131,7 @@ final class ConstrainedToClassSeq implements .com.redhat.ceylon.compiler.java.ru
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq();
     }
     
@@ -143,11 +143,11 @@ final class ConstrainedToClassSeq implements .com.redhat.ceylon.compiler.java.ru
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface ConstrainedToInterface$annotation {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.AnnotationAnnotation$annotation
 @.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -199,7 +199,7 @@ final class ConstrainedToInterface implements .com.redhat.ceylon.compiler.java.r
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface();
     }
     
@@ -211,18 +211,18 @@ final class ConstrainedToInterface implements .com.redhat.ceylon.compiler.java.r
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
 @interface ConstrainedToInterfaceSeq$annotation {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface ConstrainedToInterfaceSeq$annotations {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq$annotation[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.AnnotationAnnotation$annotation
 @.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -274,7 +274,7 @@ final class ConstrainedToInterfaceSeq implements .com.redhat.ceylon.compiler.jav
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq();
     }
     
@@ -286,11 +286,11 @@ final class ConstrainedToInterfaceSeq implements .com.redhat.ceylon.compiler.jav
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface ConstrainedToFunction$annotation {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.AnnotationAnnotation$annotation
 @.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -342,7 +342,7 @@ final class ConstrainedToFunction implements .com.redhat.ceylon.compiler.java.ru
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction();
     }
     
@@ -354,18 +354,18 @@ final class ConstrainedToFunction implements .com.redhat.ceylon.compiler.java.ru
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
 @interface ConstrainedToFunctionSeq$annotation {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface ConstrainedToFunctionSeq$annotations {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq$annotation[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.AnnotationAnnotation$annotation
 @.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -417,7 +417,7 @@ final class ConstrainedToFunctionSeq implements .com.redhat.ceylon.compiler.java
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq();
     }
     
@@ -429,11 +429,11 @@ final class ConstrainedToFunctionSeq implements .com.redhat.ceylon.compiler.java
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface ConstrainedToValue$annotation {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.AnnotationAnnotation$annotation
 @.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -485,7 +485,7 @@ final class ConstrainedToValue implements .com.redhat.ceylon.compiler.java.runti
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue();
     }
     
@@ -497,18 +497,18 @@ final class ConstrainedToValue implements .com.redhat.ceylon.compiler.java.runti
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
 @interface ConstrainedToValueSeq$annotation {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface ConstrainedToValueSeq$annotations {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq$annotation[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.AnnotationAnnotation$annotation
 @.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -560,7 +560,7 @@ final class ConstrainedToValueSeq implements .com.redhat.ceylon.compiler.java.ru
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq();
     }
     
@@ -572,11 +572,11 @@ final class ConstrainedToValueSeq implements .com.redhat.ceylon.compiler.java.ru
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface ConstrainedToVariable$annotation {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.AnnotationAnnotation$annotation
 @.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -628,7 +628,7 @@ final class ConstrainedToVariable implements .com.redhat.ceylon.compiler.java.ru
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable();
     }
     
@@ -640,18 +640,18 @@ final class ConstrainedToVariable implements .com.redhat.ceylon.compiler.java.ru
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
 @interface ConstrainedToVariableSeq$annotation {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface ConstrainedToVariableSeq$annotations {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq$annotation[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.AnnotationAnnotation$annotation
 @.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -703,7 +703,7 @@ final class ConstrainedToVariableSeq implements .com.redhat.ceylon.compiler.java
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq();
     }
     
@@ -715,11 +715,11 @@ final class ConstrainedToVariableSeq implements .com.redhat.ceylon.compiler.java
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface ConstrainedToPackage$annotation {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.AnnotationAnnotation$annotation
 @.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -771,7 +771,7 @@ final class ConstrainedToPackage implements .com.redhat.ceylon.compiler.java.run
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage();
     }
     
@@ -783,18 +783,18 @@ final class ConstrainedToPackage implements .com.redhat.ceylon.compiler.java.run
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
 @interface ConstrainedToPackageSeq$annotation {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface ConstrainedToPackageSeq$annotations {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq$annotation[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.AnnotationAnnotation$annotation
 @.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -846,7 +846,7 @@ final class ConstrainedToPackageSeq implements .com.redhat.ceylon.compiler.java.
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq();
     }
     
@@ -858,11 +858,11 @@ final class ConstrainedToPackageSeq implements .com.redhat.ceylon.compiler.java.
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface ConstrainedToModule$annotation {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.AnnotationAnnotation$annotation
 @.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -914,7 +914,7 @@ final class ConstrainedToModule implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule();
     }
     
@@ -926,18 +926,18 @@ final class ConstrainedToModule implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
 @interface ConstrainedToModuleSeq$annotation {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface ConstrainedToModuleSeq$annotations {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq$annotation[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.AnnotationAnnotation$annotation
 @.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -989,7 +989,7 @@ final class ConstrainedToModuleSeq implements .com.redhat.ceylon.compiler.java.r
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq();
     }
     
@@ -1001,11 +1001,11 @@ final class ConstrainedToModuleSeq implements .com.redhat.ceylon.compiler.java.r
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface ConstrainedToImport$annotation {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.AnnotationAnnotation$annotation
 @.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -1057,7 +1057,7 @@ final class ConstrainedToImport implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport();
     }
     
@@ -1069,18 +1069,18 @@ final class ConstrainedToImport implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
 @interface ConstrainedToImportSeq$annotation {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface ConstrainedToImportSeq$annotations {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq$annotation[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.AnnotationAnnotation$annotation
 @.ceylon.language.FinalAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -1132,7 +1132,7 @@ final class ConstrainedToImportSeq implements .com.redhat.ceylon.compiler.java.r
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq();
     }
     

@@ -57,19 +57,19 @@ final class getterArgumentNamedInvocation_ {
                     private $s$4() {
                     }
                     
-                    public .java.lang.String $get() {
+                    public .java.lang.String get_() {
                         return "s";
                     }
                 }
                 final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> $s$4 = new $s$4();
-                final .java.lang.String $arg$3$1 = $s$4.$get();
+                final .java.lang.String $arg$3$1 = $s$4.get_();
                 
                 final class $i$5 implements .com.redhat.ceylon.compiler.java.language.GetterLong {
                     
                     private $i$5() {
                     }
                     
-                    public long $get() {
+                    public long get_() {
                         if (num < 0L) {
                             return 0L;
                         }
@@ -77,7 +77,7 @@ final class getterArgumentNamedInvocation_ {
                     }
                 }
                 final .com.redhat.ceylon.compiler.java.language.GetterLong $i$5 = new $i$5();
-                final long $arg$3$0 = $i$5.$get();
+                final long $arg$3$0 = $i$5.get_();
                 callFunction.callFunction($arg$3$0, $arg$3$1);
             }
             returning null;
@@ -91,7 +91,7 @@ final class getterArgumentNamedInvocation_ {
                     private $i$8() {
                     }
                     
-                    public long $get() {
+                    public long get_() {
                         if (num < 0L) {
                             return 0L;
                         }
@@ -99,19 +99,19 @@ final class getterArgumentNamedInvocation_ {
                     }
                 }
                 final .com.redhat.ceylon.compiler.java.language.GetterLong $i$8 = new $i$8();
-                final long $arg$7$0 = $i$8.$get();
+                final long $arg$7$0 = $i$8.get_();
                 
                 final class $s$10 implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
                     
                     private $s$10() {
                     }
                     
-                    public .java.lang.String $get() {
+                    public .java.lang.String get_() {
                         return "s";
                     }
                 }
                 final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> $s$10 = new $s$10();
-                final .java.lang.String $arg$7$1 = $s$10.$get();
+                final .java.lang.String $arg$7$1 = $s$10.get_();
                 callFunction.callFunction($arg$7$0, $arg$7$1);
             }
             returning null;
@@ -126,12 +126,12 @@ final class getterArgumentNamedInvocation_ {
                     private $s$12() {
                     }
                     
-                    public .java.lang.String $get() {
+                    public .java.lang.String get_() {
                         return "s";
                     }
                 }
                 final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> $s$12 = new $s$12();
-                final .java.lang.String $arg$11$1 = $s$12.$get();
+                final .java.lang.String $arg$11$1 = $s$12.get_();
                 long $arg$11$0 = $arg$11$this$.callFunction$i();
                 callFunction.callFunction($arg$11$0, $arg$11$1);
             }
@@ -147,7 +147,7 @@ final class getterArgumentNamedInvocation_ {
                     private $i$14() {
                     }
                     
-                    public long $get() {
+                    public long get_() {
                         if (num < 0L) {
                             return 0L;
                         }
@@ -155,7 +155,7 @@ final class getterArgumentNamedInvocation_ {
                     }
                 }
                 final .com.redhat.ceylon.compiler.java.language.GetterLong $i$14 = new $i$14();
-                final long $arg$13$0 = $i$14.$get();
+                final long $arg$13$0 = $i$14.get_();
                 .java.lang.String $arg$13$1 = $arg$13$this$.callFunction$s($arg$13$0);
                 callFunction.callFunction($arg$13$0, $arg$13$1);
             }

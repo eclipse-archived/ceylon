@@ -9,7 +9,7 @@ public final class transient_ implements .com.redhat.ceylon.compiler.java.runtim
         value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_[]{new .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_()};
     }
     
-    public static .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_ $get() {
+    public static .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_ get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

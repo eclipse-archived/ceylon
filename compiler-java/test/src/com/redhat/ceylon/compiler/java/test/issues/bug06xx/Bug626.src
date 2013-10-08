@@ -6,7 +6,7 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Null.$TypeDescriptor, this);
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Null.$TypeDescriptor, this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
-        this.hash = ((.ceylon.language.Integer).ceylon.language.nothing_.$get()).longValue();
+        this.hash = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
     }
     protected final .ceylon.language.Iterable$impl<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object> $ceylon$language$Iterable$this;
     
@@ -209,7 +209,7 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {
-        return ((.ceylon.language.Boolean).ceylon.language.nothing_.$get()).booleanValue();
+        return ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
     }
     private final long hash;
     
@@ -226,11 +226,11 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     @.java.lang.Override
     public final .ceylon.language.Iterator<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> iterator() {
-        return (.ceylon.language.Iterator).ceylon.language.nothing_.$get();
+        return (.ceylon.language.Iterator).ceylon.language.nothing_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug626();
     }
     

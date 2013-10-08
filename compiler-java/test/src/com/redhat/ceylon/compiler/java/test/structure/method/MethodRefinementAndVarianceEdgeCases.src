@@ -8,7 +8,7 @@ class MRAVEC_Invariant<Element> implements .com.redhat.ceylon.compiler.java.runt
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -25,7 +25,7 @@ class MRAVEC_Covariant<Element> implements .com.redhat.ceylon.compiler.java.runt
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -42,7 +42,7 @@ class MRAVEC_Contravariant<Element> implements .com.redhat.ceylon.compiler.java.
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -59,23 +59,23 @@ class MRAVEC_Top<Element> implements .com.redhat.ceylon.compiler.java.runtime.mo
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
     
     public Element f() {
-        return (Element).ceylon.language.nothing_.$get();
+        return (Element).ceylon.language.nothing_.get_();
     }
     
     public .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant<Element> f2() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant).ceylon.language.nothing_.get_();
     }
     
     public .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant<? extends Element> f3() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant).ceylon.language.nothing_.get_();
     }
     
     public .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant<? super Element> f4() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant).ceylon.language.nothing_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Top(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -92,26 +92,26 @@ class MRAVEC_BottomNull extends .com.redhat.ceylon.compiler.java.test.structure.
     
     @.java.lang.Override
     public final .java.lang.Object f() {
-        return .ceylon.language.nothing_.$get();
+        return .ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant<.java.lang.Object> f2() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant<? extends .java.lang.Object> f3() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant<? super .java.lang.Object> f4() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant).ceylon.language.nothing_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomNull();
     }
     
@@ -129,26 +129,26 @@ class MRAVEC_BottomNothing extends .com.redhat.ceylon.compiler.java.test.structu
     
     @.java.lang.Override
     public final .java.lang.Object f() {
-        return .ceylon.language.nothing_.$get();
+        return .ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant<.java.lang.Object> f2() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant<? extends .java.lang.Object> f3() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant f4() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant).ceylon.language.nothing_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomNothing();
     }
     
@@ -166,26 +166,26 @@ class MRAVEC_BottomAnything extends .com.redhat.ceylon.compiler.java.test.struct
     
     @.java.lang.Override
     public final .java.lang.Object f() {
-        return .ceylon.language.nothing_.$get();
+        return .ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant<.java.lang.Object> f2() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant<? extends .java.lang.Object> f3() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant<? super .java.lang.Object> f4() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant).ceylon.language.nothing_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomAnything();
     }
     
@@ -203,26 +203,26 @@ class MRAVEC_BottomErased extends .com.redhat.ceylon.compiler.java.test.structur
     
     @.java.lang.Override
     public final .java.lang.Object f() {
-        return .ceylon.language.nothing_.$get();
+        return .ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant f2() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant f3() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant f4() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant).ceylon.language.nothing_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomErased();
     }
     

@@ -17,14 +17,14 @@ final class arrayOfSome_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning arrayOfSome($reifiedElement, $ceylontmp$elements$0);
         );
     }
     
     static <Element>.ceylon.language.Array<Element> arrayOfSome(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .ceylon.language.Sequential<? extends Element> elements) {
-        return (.ceylon.language.Array).ceylon.language.nothing_.$get();
+        return (.ceylon.language.Array).ceylon.language.nothing_.get_();
     }
 }
 final class bug647test_ {
@@ -60,7 +60,7 @@ final class bug647test_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug647test_.bug647test();
     }
 }

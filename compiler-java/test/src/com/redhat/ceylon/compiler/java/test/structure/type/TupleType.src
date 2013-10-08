@@ -38,7 +38,7 @@ final class add_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.type.add_.add();
     }
 }
@@ -77,7 +77,7 @@ final class tupleTypeTest_ {
         final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> hibye1 = hibye;
         final .ceylon.language.Sequential<? extends .ceylon.language.String> hibye2 = hibye;
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>> trip = (.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>>)(.ceylon.language.Tuple).com.redhat.ceylon.compiler.java.test.structure.type.triple_.triple("", 0L, 0.0);
-        final .ceylon.language.Empty emptyTuple = .ceylon.language.empty_.$get();
+        final .ceylon.language.Empty emptyTuple = .ceylon.language.empty_.get_();
         final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty> oneTuple = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("a")});
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>> twoTuple = new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor), new .java.lang.Object[]{
                 .ceylon.language.String.instance("a"),
@@ -104,7 +104,7 @@ final class tupleTypeTest_ {
                     
                     private final boolean s() {
                         final .java.lang.Object $ceylontmpitem1 = iter$0.next();
-                        s$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.$get();
+                        s$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.get_();
                         if (s$exhausted) {
                             return false;
                         } else {
@@ -117,7 +117,7 @@ final class tupleTypeTest_ {
                         if (this.s()) {
                             final .ceylon.language.String s = this.s;
                             return s;
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -125,7 +125,7 @@ final class tupleTypeTest_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.type.tupleTypeTest_.tupleTypeTest();
     }
 }

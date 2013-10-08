@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 class NamedArgumentInvocationWithMethodReference implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     NamedArgumentInvocationWithMethodReference() {
@@ -43,7 +43,7 @@ class NamedArgumentInvocationWithMethodReference implements .com.redhat.ceylon.c
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationWithMethodReference();
     }
     

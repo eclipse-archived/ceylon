@@ -16,7 +16,7 @@ class RangeOp<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOp(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -69,19 +69,19 @@ final class rangeOpF_ extends .com.redhat.ceylon.compiler.java.test.expression.o
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum getPredecessor() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.$get();
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum getSuccessor() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.$get();
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.get_();
     }
     private static final .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_[] value;
     static {
         value = new .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_[]{new .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_ $get() {
+    static .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_ get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -102,19 +102,19 @@ final class rangeOpE_ extends .com.redhat.ceylon.compiler.java.test.expression.o
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum getPredecessor() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.$get();
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum getSuccessor() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.$get();
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.get_();
     }
     private static final .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_[] value;
     static {
         value = new .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_[]{new .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_ $get() {
+    static .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_ get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -133,11 +133,11 @@ final class bug_ {
     }
     
     static void bug() {
-        final .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> range = new .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum>(.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.$get(), .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.$get());
+        final .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> range = new .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum>(.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.get_(), .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.get_());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.operator.bug_.bug();
     }
 }

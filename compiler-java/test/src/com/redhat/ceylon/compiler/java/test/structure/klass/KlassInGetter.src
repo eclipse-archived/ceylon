@@ -9,7 +9,7 @@ class KlassInGetter implements .com.redhat.ceylon.compiler.java.runtime.model.Re
             private foo$getter_() {
             }
             
-            public .java.lang.String $get() {
+            public .java.lang.String get_() {
                 if (true || true) {
                     final long i = 1L;
                     
@@ -36,7 +36,7 @@ class KlassInGetter implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassInGetter();
     }
     

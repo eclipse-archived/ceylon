@@ -120,7 +120,7 @@ final class AnnotationClassMetamodelReferenceDefaulted implements .com.redhat.ce
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted();
     }
     
@@ -150,7 +150,7 @@ final class AnnotationClassMetamodelReferenceVariadic implements .com.redhat.cey
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.Declaration> $ceylontmp$mmrs$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.Declaration> $ceylontmp$mmrs$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 this($ceylontmp$mmrs$1);
             }
             returning null;
@@ -226,7 +226,7 @@ final class annotationClassMetamodelReferenceLiteral_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.annotationClassMetamodelReferenceLiteral_.annotationClassMetamodelReferenceLiteral();
     }
 }
@@ -257,7 +257,7 @@ final class annotationClassMetamodelReferenceDefaulted2_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.annotationClassMetamodelReferenceDefaulted2_.annotationClassMetamodelReferenceDefaulted2();
     }
 }
@@ -273,7 +273,7 @@ final class annotationClassMetamodelReferenceVariadic1_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.Declaration> $ceylontmp$mmr$2 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.Declaration> $ceylontmp$mmr$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning annotationClassMetamodelReferenceVariadic1($ceylontmp$mmr$2);
         );
@@ -298,7 +298,7 @@ final class annotationClassMetamodelReferenceVariadic2_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.annotationClassMetamodelReferenceVariadic2_.annotationClassMetamodelReferenceVariadic2();
     }
 }
@@ -319,7 +319,7 @@ final class annotationClassMetamodelReferenceVariadic3_ {
                 mmr}));
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.SharedAnnotation$annotation
 @.ceylon.language.AbstractAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Alias("ceylon.language::Object")
@@ -361,7 +361,7 @@ class AnnotationClassMetamodelReference_callsite implements .com.redhat.ceylon.c
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference_callsite();
     }
     

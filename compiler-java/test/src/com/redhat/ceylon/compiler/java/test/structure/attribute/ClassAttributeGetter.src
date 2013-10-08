@@ -9,7 +9,7 @@ abstract class ClassAttributeGetter implements .com.redhat.ceylon.compiler.java.
             private f$getter_() {
             }
             
-            public .java.lang.String $get() {
+            public .java.lang.String get_() {
                 return "";
             }
         }
@@ -20,7 +20,7 @@ abstract class ClassAttributeGetter implements .com.redhat.ceylon.compiler.java.
             private f4$getter_() {
             }
             
-            public .java.lang.String $get() {
+            public .java.lang.String get_() {
                 return "";
             }
         }
@@ -66,7 +66,7 @@ class SubClassAttributeGetter extends .com.redhat.ceylon.compiler.java.test.stru
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttributeGetter();
     }
     

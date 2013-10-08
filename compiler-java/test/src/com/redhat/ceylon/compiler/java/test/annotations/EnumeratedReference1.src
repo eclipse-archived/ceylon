@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
 @interface EnumeratedReference$annotation {
@@ -8,13 +8,13 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     @.com.redhat.ceylon.compiler.java.metadata.EnumerationReference
     public abstract .java.lang.Class<? extends .ceylon.language.Comparison> comparison();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface EnumeratedReference$annotations {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference$annotation[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.FinalAnnotation$annotation
 @.ceylon.language.AnnotationAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -84,7 +84,7 @@ final class EnumeratedReference implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -103,7 +103,7 @@ final class enumeratedReference_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference(comparison);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
 @interface EnumeratedReferenceVariadic$annotation {
@@ -111,13 +111,13 @@ final class enumeratedReference_ {
     @.com.redhat.ceylon.compiler.java.metadata.EnumerationReference
     public abstract .java.lang.Class<? extends .ceylon.language.Comparison>[] comparison();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface EnumeratedReferenceVariadic$annotations {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic$annotation[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.FinalAnnotation$annotation
 @.ceylon.language.AnnotationAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -131,7 +131,7 @@ final class EnumeratedReferenceVariadic implements .com.redhat.ceylon.compiler.j
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Comparison> $ceylontmp$comparison$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Comparison> $ceylontmp$comparison$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 this($ceylontmp$comparison$0);
             }
             returning null;
@@ -200,7 +200,7 @@ final class EnumeratedReferenceVariadic implements .com.redhat.ceylon.compiler.j
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {256},
@@ -215,7 +215,7 @@ final class enumeratedReferenceVariadic_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Comparison> $ceylontmp$comparison$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Comparison> $ceylontmp$comparison$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning enumeratedReferenceVariadic($ceylontmp$comparison$1);
         );
@@ -231,7 +231,7 @@ final class enumeratedReferenceVariadic_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic(comparison);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
 @interface EnumeratedReferenceDefaulted$annotation {
@@ -239,13 +239,13 @@ final class enumeratedReferenceVariadic_ {
     @.com.redhat.ceylon.compiler.java.metadata.EnumerationReference
     public abstract .java.lang.Class<? extends .ceylon.language.Comparison> comparison() default .ceylon.language.larger_.class;
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface EnumeratedReferenceDefaulted$annotations {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted$annotation[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.FinalAnnotation$annotation
 @.ceylon.language.AnnotationAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -292,7 +292,7 @@ final class EnumeratedReferenceDefaulted implements .com.redhat.ceylon.compiler.
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     static .ceylon.language.Comparison $init$comparison() {
-        return .ceylon.language.larger_.$get();
+        return .ceylon.language.larger_.get_();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this;
@@ -327,7 +327,7 @@ final class EnumeratedReferenceDefaulted implements .com.redhat.ceylon.compiler.
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted();
     }
     
@@ -339,7 +339,7 @@ final class EnumeratedReferenceDefaulted implements .com.redhat.ceylon.compiler.
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -363,7 +363,7 @@ final class enumeratedReferenceDefaulted_ {
     @.com.redhat.ceylon.compiler.java.metadata.ObjectValue(.ceylon.language.smaller_.class)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     static final .ceylon.language.Comparison enumeratedReferenceDefaulted$comparison() {
-        return .ceylon.language.smaller_.$get();
+        return .ceylon.language.smaller_.get_();
     }
     
     @.ceylon.language.AnnotationAnnotation$annotation
@@ -378,7 +378,7 @@ final class enumeratedReferenceDefaulted_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.enumeratedReferenceDefaulted_.enumeratedReferenceDefaulted();
     }
 }

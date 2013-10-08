@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.quoting.lettercase;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class UpperMethod {
     
@@ -13,11 +13,11 @@ final class UpperMethod {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.quoting.lettercase.UpperMethod.UpperMethod();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 class UpperMethodC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     UpperMethodC() {
@@ -28,7 +28,7 @@ class UpperMethodC implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void UpperMethod() {
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
         @.com.redhat.ceylon.compiler.java.metadata.Method
         final class LocalUpperMethod {
             
@@ -44,7 +44,7 @@ class UpperMethodC implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.quoting.lettercase.UpperMethodC();
     }
     

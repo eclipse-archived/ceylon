@@ -9,7 +9,7 @@ public final class topLevelVariableShared_ {
         value = new long[]{0L};
     }
     
-    public static long $get() {
+    public static long get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -17,7 +17,7 @@ public final class topLevelVariableShared_ {
         }
     }
     
-    public static void $set(final long topLevelVariableShared) {
+    public static void set_(final long topLevelVariableShared) {
         value[0] = topLevelVariableShared;
     }
 }

@@ -31,7 +31,7 @@ class MethodWhile implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
             .ceylon.language.Sequential<? extends .ceylon.language.Integer> $s$2;
             if (($s$2 = seq) instanceof .ceylon.language.Sequence) {
                 final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $s$3 = $s$2;
-                seq = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                seq = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
             } else break;
         }
     }
@@ -48,7 +48,7 @@ class MethodWhile implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhile();
     }
     

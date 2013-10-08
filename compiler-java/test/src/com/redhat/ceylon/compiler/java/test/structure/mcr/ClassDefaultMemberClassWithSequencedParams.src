@@ -13,7 +13,7 @@ class ClassDefaultMemberClassWithSequencedParams implements .com.redhat.ceylon.c
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning new Member($ceylontmp$i$0);
         );
@@ -44,7 +44,7 @@ class ClassDefaultMemberClassWithSequencedParams implements .com.redhat.ceylon.c
         (
             let
             {
-                .ceylon.language.Sequential $arg$2$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential $arg$2$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning Member$new($arg$2$0);
         );
@@ -56,7 +56,7 @@ class ClassDefaultMemberClassWithSequencedParams implements .com.redhat.ceylon.c
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams();
     }
     
@@ -82,7 +82,7 @@ class ClassDefaultMemberClassWithSequencedParams_sub extends .com.redhat.ceylon.
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$3 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning new Member($ceylontmp$i$3);
         );
@@ -114,7 +114,7 @@ class ClassDefaultMemberClassWithSequencedParams_sub extends .com.redhat.ceylon.
         (
             let
             {
-                .ceylon.language.Sequential $arg$5$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential $arg$5$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning Member$new($arg$5$0);
         );
@@ -126,7 +126,7 @@ class ClassDefaultMemberClassWithSequencedParams_sub extends .com.redhat.ceylon.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams_sub();
     }
     

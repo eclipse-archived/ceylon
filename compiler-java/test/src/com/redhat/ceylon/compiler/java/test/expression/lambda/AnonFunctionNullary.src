@@ -103,14 +103,14 @@ final class anonFunctionNullary_ {
             
             @.java.lang.Override
             public .ceylon.language.Comparison $call() {
-                return .ceylon.language.larger_.$get();
+                return .ceylon.language.larger_.get_();
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Comparison> c2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Comparison>(.ceylon.language.Comparison.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Comparison()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Comparison $call() {
-                return .ceylon.language.larger_.$get();
+                return .ceylon.language.larger_.get_();
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Comparison>> c3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Tuple<.ceylon.language.Comparison, ? extends .ceylon.language.Comparison, ? extends .ceylon.language.Tuple<.ceylon.language.Comparison, ? extends .ceylon.language.Comparison, ? extends .ceylon.language.Empty>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Comparison.$TypeDescriptor, .ceylon.language.Comparison.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Comparison.$TypeDescriptor, .ceylon.language.Comparison.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Empty.$TypeDescriptor, "[Comparison, Comparison]()", (short)-1){
@@ -118,8 +118,8 @@ final class anonFunctionNullary_ {
             @.java.lang.Override
             public .ceylon.language.Tuple<.ceylon.language.Comparison, ? extends .ceylon.language.Comparison, ? extends .ceylon.language.Tuple<.ceylon.language.Comparison, ? extends .ceylon.language.Comparison, ? extends .ceylon.language.Empty>> $call() {
                 return new .ceylon.language.Tuple<.ceylon.language.Comparison, .ceylon.language.Comparison, .ceylon.language.Tuple<.ceylon.language.Comparison, ? extends .ceylon.language.Comparison, ? extends .ceylon.language.Empty>>(.ceylon.language.Comparison.$TypeDescriptor, new .java.lang.Object[]{
-                        .ceylon.language.larger_.$get(),
-                        .ceylon.language.smaller_.$get()});
+                        .ceylon.language.larger_.get_(),
+                        .ceylon.language.smaller_.get_()});
             }
         };
         final .ceylon.language.Callable<? extends T> t1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<T>($reifiedT, .ceylon.language.Empty.$TypeDescriptor, "T()", (short)-1){

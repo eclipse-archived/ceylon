@@ -201,7 +201,7 @@ class SuperOfBottomClass implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfBottomClass();
     }
     
@@ -246,7 +246,7 @@ class SuperOfLeftClass implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeftClass();
     }
     
@@ -286,7 +286,7 @@ class SuperOfBottomLeftClass extends .com.redhat.ceylon.compiler.java.test.expre
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfBottomLeftClass();
     }
     

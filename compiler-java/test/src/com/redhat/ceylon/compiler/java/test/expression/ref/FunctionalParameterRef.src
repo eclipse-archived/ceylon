@@ -46,7 +46,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning nullarySequenced$($ceylontmp$s$0);
         );
@@ -65,7 +65,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning unarySequenced$(s1, $ceylontmp$s$1);
         );
@@ -84,7 +84,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$2 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning binarySequenced$(s1, s2, $ceylontmp$s$2);
         );
@@ -103,7 +103,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$3 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning ternarySequenced$(s1, s2, s3, $ceylontmp$s$3);
         );
@@ -122,7 +122,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$4 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$4 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning narySequenced$(s1, s2, s3, s4, $ceylontmp$s$4);
         );
@@ -244,7 +244,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
                     
                     @.java.lang.Override
                     public .ceylon.language.String $call() {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                         return $call$typed(s$);
                     }
                     
@@ -299,7 +299,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
                     
                     @.java.lang.Override
                     public .ceylon.language.String $call(final .java.lang.Object... $param$0) {
-                        return $call$typed($spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.$get()));
+                        return $call$typed($spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
                     }
                     
                     @.java.lang.Override
@@ -313,7 +313,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
                 };
             }
         };
-        if (.ceylon.language.String.instance("nullarySequenced({})").equals(nullaryRef.$call(this).$call$variadic((.ceylon.language.Sequential).ceylon.language.empty_.$get()))) {
+        if (.ceylon.language.String.instance("nullarySequenced({})").equals(nullaryRef.$call(this).$call$variadic((.ceylon.language.Sequential).ceylon.language.empty_.get_()))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullarySequenced({})\" == nullaryRef(this)()"));
         if (.ceylon.language.String.instance("nullarySequenced([r1])").equals(nullaryRef.$call(this).$call$variadic(.ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("r1")})))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullarySequenced([r1])\" == nullaryRef(this)(\"r1\")"));
@@ -338,7 +338,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
                     @.java.lang.Override
                     public .ceylon.language.String $call(final .java.lang.Object $param$0) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                         return $call$typed(s1, s$);
                     }
                     
@@ -382,7 +382,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
                     @.java.lang.Override
                     public .ceylon.language.String $call(final .java.lang.Object... $param$0) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0[0]).toString();
-                        return $call$typed(s1, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.$get()));
+                        return $call$typed(s1, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.get_()));
                     }
                     
                     @.java.lang.Override
@@ -397,7 +397,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
                 };
             }
         };
-        if (.ceylon.language.String.instance("unarySequenced(s; {})").equals(unaryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s"), (.ceylon.language.Sequential).ceylon.language.empty_.$get()))) {
+        if (.ceylon.language.String.instance("unarySequenced(s; {})").equals(unaryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unarySequenced(s; {})\" == unaryRef(this)(\"s\")"));
         if (.ceylon.language.String.instance("unarySequenced(s; [r1])").equals(unaryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s"), .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("r1")})))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unarySequenced(s; [r1])\" == unaryRef(this)(\"s\", \"r1\")"));
@@ -424,7 +424,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
                     public .ceylon.language.String $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                         return $call$typed(s1, s2, s$);
                     }
                     
@@ -455,7 +455,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
                     public .ceylon.language.String $call(final .java.lang.Object... $param$0) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0[0]).toString();
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$0[1]).toString();
-                        return $call$typed(s1, s2, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 2, $param$0.length - 2, $param$0, .ceylon.language.empty_.$get()));
+                        return $call$typed(s1, s2, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 2, $param$0.length - 2, $param$0, .ceylon.language.empty_.get_()));
                     }
                     
                     @.java.lang.Override
@@ -471,7 +471,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
                 };
             }
         };
-        if (.ceylon.language.String.instance("binarySequenced(s1, s2; {})").equals(binaryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), (.ceylon.language.Sequential).ceylon.language.empty_.$get()))) {
+        if (.ceylon.language.String.instance("binarySequenced(s1, s2; {})").equals(binaryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binarySequenced(s1, s2; {})\" == binaryRef(this)(\"s1\", \"s2\")"));
         if (.ceylon.language.String.instance("binarySequenced(s1, s2; [r1])").equals(binaryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("r1")})))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binarySequenced(s1, s2; [r1])\" == binaryRef(this)(\"s1\", \"s2\", \"r1\")"));
@@ -500,7 +500,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
                         final .java.lang.String s3 = ((.ceylon.language.String)$param$2).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                         return $call$typed(s1, s2, s3, s$);
                     }
                     
@@ -518,7 +518,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0[0]).toString();
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$0[1]).toString();
                         final .java.lang.String s3 = ((.ceylon.language.String)$param$0[2]).toString();
-                        return $call$typed(s1, s2, s3, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 3, $param$0.length - 3, $param$0, .ceylon.language.empty_.$get()));
+                        return $call$typed(s1, s2, s3, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 3, $param$0.length - 3, $param$0, .ceylon.language.empty_.get_()));
                     }
                     
                     @.java.lang.Override
@@ -535,7 +535,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
                 };
             }
         };
-        if (.ceylon.language.String.instance("ternarySequenced(s1, s2, s3; {})").equals(ternaryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), (.ceylon.language.Sequential).ceylon.language.empty_.$get()))) {
+        if (.ceylon.language.String.instance("ternarySequenced(s1, s2, s3; {})").equals(ternaryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternarySequenced(s1, s2, s3; {})\" == ternaryRef(this)(\"s1\", \"s2\", \"s3\")"));
         if (.ceylon.language.String.instance("ternarySequenced(s1, s2, s3; [r1])").equals(ternaryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("r1")})))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternarySequenced(s1, s2, s3; [r1])\" == ternaryRef(this)(\"s1\", \"s2\", \"s3\", \"r1\")"));
@@ -566,7 +566,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$0[1]).toString();
                         final .java.lang.String s3 = ((.ceylon.language.String)$param$0[2]).toString();
                         final .java.lang.String s4 = ((.ceylon.language.String)$param$0[3]).toString();
-                        return $call$typed(s1, s2, s3, s4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0.length - 4, $param$0, .ceylon.language.empty_.$get()));
+                        return $call$typed(s1, s2, s3, s4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0.length - 4, $param$0, .ceylon.language.empty_.get_()));
                     }
                     
                     @.java.lang.Override
@@ -584,7 +584,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
                 };
             }
         };
-        if (.ceylon.language.String.instance("narySequenced(s1, s2, s3, s4; {})").equals(naryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), (.ceylon.language.Sequential).ceylon.language.empty_.$get()))) {
+        if (.ceylon.language.String.instance("narySequenced(s1, s2, s3, s4; {})").equals(naryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"narySequenced(s1, s2, s3, s4; {})\" == naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\")"));
         if (.ceylon.language.String.instance("narySequenced(s1, s2, s3, s4; [r1])").equals(naryRef.$call(this).$call$variadic(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("r1")})))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"narySequenced(s1, s2, s3, s4; [r1])\" == naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\", \"r1\")"));
@@ -744,7 +744,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class functionalParameterRef_ {
     
@@ -811,7 +811,7 @@ final class functionalParameterRef_ {
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .ceylon.language.String $call() {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                         return $call$typed(s$);
                     }
                     
@@ -874,7 +874,7 @@ final class functionalParameterRef_ {
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .ceylon.language.String $call(final .java.lang.Object... $param$0) {
-                        return $call$typed($spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.$get()));
+                        return $call$typed($spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
                     }
                     
                     @.java.lang.Override
@@ -901,7 +901,7 @@ final class functionalParameterRef_ {
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .ceylon.language.String $call(final .java.lang.Object $param$0) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                         return $call$typed(s1, s$);
                     }
                     
@@ -951,7 +951,7 @@ final class functionalParameterRef_ {
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .ceylon.language.String $call(final .java.lang.Object... $param$0) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0[0]).toString();
-                        return $call$typed(s1, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.$get()));
+                        return $call$typed(s1, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.get_()));
                     }
                     
                     @.java.lang.Override
@@ -981,7 +981,7 @@ final class functionalParameterRef_ {
                     public .ceylon.language.String $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                         return $call$typed(s1, s2, s$);
                     }
                     
@@ -1016,7 +1016,7 @@ final class functionalParameterRef_ {
                     public .ceylon.language.String $call(final .java.lang.Object... $param$0) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0[0]).toString();
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$0[1]).toString();
-                        return $call$typed(s1, s2, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 2, $param$0.length - 2, $param$0, .ceylon.language.empty_.$get()));
+                        return $call$typed(s1, s2, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 2, $param$0.length - 2, $param$0, .ceylon.language.empty_.get_()));
                     }
                     
                     @.java.lang.Override
@@ -1049,7 +1049,7 @@ final class functionalParameterRef_ {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
                         final .java.lang.String s3 = ((.ceylon.language.String)$param$2).toString();
-                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                        final .ceylon.language.Sequential<? extends .ceylon.language.String> s$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                         return $call$typed(s1, s2, s3, s$);
                     }
                     
@@ -1069,7 +1069,7 @@ final class functionalParameterRef_ {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0[0]).toString();
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$0[1]).toString();
                         final .java.lang.String s3 = ((.ceylon.language.String)$param$0[2]).toString();
-                        return $call$typed(s1, s2, s3, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 3, $param$0.length - 3, $param$0, .ceylon.language.empty_.$get()));
+                        return $call$typed(s1, s2, s3, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 3, $param$0.length - 3, $param$0, .ceylon.language.empty_.get_()));
                     }
                     
                     @.java.lang.Override
@@ -1105,7 +1105,7 @@ final class functionalParameterRef_ {
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$0[1]).toString();
                         final .java.lang.String s3 = ((.ceylon.language.String)$param$0[2]).toString();
                         final .java.lang.String s4 = ((.ceylon.language.String)$param$0[3]).toString();
-                        return $call$typed(s1, s2, s3, s4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0.length - 4, $param$0, .ceylon.language.empty_.$get()));
+                        return $call$typed(s1, s2, s3, s4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0.length - 4, $param$0, .ceylon.language.empty_.get_()));
                     }
                     
                     @.java.lang.Override
@@ -1151,7 +1151,7 @@ final class functionalParameterRef_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.ref.functionalParameterRef_.functionalParameterRef();
     }
 }

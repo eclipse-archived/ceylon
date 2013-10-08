@@ -9,7 +9,7 @@ class FunctionInGetter implements .com.redhat.ceylon.compiler.java.runtime.model
             private foo$getter_() {
             }
             
-            public .java.lang.String $get() {
+            public .java.lang.String get_() {
                 if (true || true) {
                     final long i = 1L;
                     
@@ -32,7 +32,7 @@ class FunctionInGetter implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.FunctionInGetter();
     }
     

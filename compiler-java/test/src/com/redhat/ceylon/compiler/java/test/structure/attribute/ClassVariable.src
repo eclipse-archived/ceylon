@@ -61,7 +61,7 @@ class SubClassVariable extends .com.redhat.ceylon.compiler.java.test.structure.a
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassVariable();
     }
     

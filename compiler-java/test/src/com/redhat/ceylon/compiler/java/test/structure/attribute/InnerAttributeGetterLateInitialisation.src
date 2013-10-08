@@ -14,12 +14,12 @@ class InnerAttributeGetterLateInitialisation implements .com.redhat.ceylon.compi
             private innerGetter$getter_() {
             }
             
-            public long $get() {
+            public long get_() {
                 return m;
             }
         }
         final .com.redhat.ceylon.compiler.java.language.GetterLong innerGetter$getter_ = new innerGetter$getter_();
-        final long n = innerGetter$getter_.$get();
+        final long n = innerGetter$getter_.get_();
     }
     
     private final void m2$priv() {
@@ -31,16 +31,16 @@ class InnerAttributeGetterLateInitialisation implements .com.redhat.ceylon.compi
             private innerGetter$getter_() {
             }
             
-            public long $get() {
+            public long get_() {
                 return m;
             }
         }
         final .com.redhat.ceylon.compiler.java.language.GetterLong innerGetter$getter_ = new innerGetter$getter_();
-        final long n = innerGetter$getter_.$get();
+        final long n = innerGetter$getter_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterLateInitialisation();
     }
     

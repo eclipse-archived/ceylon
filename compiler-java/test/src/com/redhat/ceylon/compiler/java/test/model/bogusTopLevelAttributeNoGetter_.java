@@ -23,7 +23,7 @@ package com.redhat.ceylon.compiler.java.test.model;
 import com.redhat.ceylon.compiler.java.metadata.Attribute;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 
-@Ceylon(major = 5)
+@Ceylon(major = 6)
 @Attribute
 public class bogusTopLevelAttributeNoGetter_ {
     // it's missing its getter method

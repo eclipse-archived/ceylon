@@ -6,12 +6,12 @@ final class toplevelAttributeLateInit_ {
     }
     
     static void toplevelAttributeLateInit() {
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.$set(0L);
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.$set(0L);
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.set_(0L);
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.set_(0L);
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateInit_.toplevelAttributeLateInit();
     }
 }
@@ -21,7 +21,7 @@ final class toplevelAttributeLate_ {
     }
     private static long[] value;
     
-    public static long $get() {
+    public static long get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -29,7 +29,7 @@ final class toplevelAttributeLate_ {
         }
     }
     
-    public static void $set(final long toplevelAttributeLate) {
+    public static void set_(final long toplevelAttributeLate) {
         if (value != null) throw new .ceylon.language.InitializationException("Re-initialization of \'late\' attribute");
         value = new long[1];
         value[0] = toplevelAttributeLate;
@@ -41,7 +41,7 @@ final class toplevelAttributeLateVariable_ {
     }
     private static long[] value;
     
-    public static long $get() {
+    public static long get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -49,7 +49,7 @@ final class toplevelAttributeLateVariable_ {
         }
     }
     
-    public static void $set(final long toplevelAttributeLateVariable) {
+    public static void set_(final long toplevelAttributeLateVariable) {
         if (value == null) value = new long[1];
         value[0] = toplevelAttributeLateVariable;
     }

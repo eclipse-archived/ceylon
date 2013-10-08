@@ -25,7 +25,7 @@ final class existsCond_ {
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.$get();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -64,7 +64,7 @@ final class existsCond_ {
                         if (this.next2()) {
                             final .ceylon.language.String x = this.x;
                             return .ceylon.language.Character.instance(.ceylon.language.Character.getUppercased($c$4));
-                        } else return .ceylon.language.finished_.$get();
+                        } else return .ceylon.language.finished_.get_();
                     }
                 };
             }
@@ -72,7 +72,7 @@ final class existsCond_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.comprehensions.existsCond_.existsCond();
     }
 }

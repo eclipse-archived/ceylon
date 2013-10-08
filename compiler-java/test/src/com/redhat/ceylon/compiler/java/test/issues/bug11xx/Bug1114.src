@@ -15,7 +15,7 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                         private j$getter_() {
                         }
                         
-                        public long $get() {
+                        public long get_() {
                             return 1L;
                         }
                     }
@@ -32,7 +32,7 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                         private j$getter_() {
                         }
                         
-                        public long $get() {
+                        public long get_() {
                             return 2L;
                         }
                     }
@@ -50,7 +50,7 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                         private g_() {
                         }
                         
-                        public double $get() {
+                        public double get_() {
                             return 1.0;
                         }
                     }
@@ -67,7 +67,7 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                         private g_() {
                         }
                         
-                        public double $get() {
+                        public double get_() {
                             return 2.0;
                         }
                     }
@@ -85,7 +85,7 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.ceylon.language.SharedAnnotation$annotation
     public final double getG() {
-        return g_.$get();
+        return g_.get_();
     }
     
     private final void foo$priv() {
@@ -100,7 +100,7 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                         private i$getter_() {
                         }
                         
-                        public long $get() {
+                        public long get_() {
                             return 1L;
                         }
                     }
@@ -117,7 +117,7 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                         private i$getter_() {
                         }
                         
-                        public long $get() {
+                        public long get_() {
                             return 2L;
                         }
                     }
@@ -135,7 +135,7 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                     private f$getter_() {
                     }
                     
-                    public double $get() {
+                    public double get_() {
                         return 2.0;
                     }
                 }
@@ -152,7 +152,7 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                     private c$getter_() {
                     }
                     
-                    public int $get() {
+                    public int get_() {
                         return 99;
                     }
                 }
@@ -169,7 +169,7 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                     private s$getter_() {
                     }
                     
-                    public .java.lang.String $get() {
+                    public .java.lang.String get_() {
                         return "d";
                     }
                 }
@@ -186,7 +186,7 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                     private bug$getter_() {
                     }
                     
-                    public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114 $get() {
+                    public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114 get_() {
                         return new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114(getTest$priv());
                     }
                 }

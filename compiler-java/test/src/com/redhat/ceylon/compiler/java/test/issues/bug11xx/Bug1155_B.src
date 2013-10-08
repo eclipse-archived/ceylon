@@ -12,7 +12,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 binaryStar$(s, $ceylontmp$seq$0);
             }
             returning null;
@@ -40,7 +40,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             let
             {
                 .java.lang.String $ceylontmp$s$1 = binaryOptStar$s();
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq$2 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 binaryOptStar$($ceylontmp$s$1, $ceylontmp$seq$2);
             }
             returning null;
@@ -55,7 +55,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq$3 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 binaryOptStar$(s, $ceylontmp$seq$3);
             }
             returning null;
@@ -88,7 +88,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
                 final .java.lang.String $$s = ((.ceylon.language.String)$param$0).toString();
-                final .ceylon.language.Sequential $$seq$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                final .ceylon.language.Sequential $$seq$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 return $call$typed($$s, $$seq$);
             }
             
@@ -132,7 +132,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object... $param$0) {
                 final .java.lang.String $$s = ((.ceylon.language.String)$param$0[0]).toString();
-                return $call$typed($$s, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.$get()));
+                return $call$typed($$s, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
@@ -163,7 +163,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
                 final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> seq$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> seq$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 return $call$typed(s, seq$);
             }
             
@@ -207,7 +207,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object... $param$0) {
                 final .java.lang.String s = ((.ceylon.language.String)$param$0[0]).toString();
-                return $call$typed(s, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.$get()));
+                return $call$typed(s, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
@@ -273,7 +273,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object... $param$0) {
-                return $call$typed((.ceylon.language.Sequence)$spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.$get()));
+                return $call$typed((.ceylon.language.Sequence)$spreadVarargs(.ceylon.language.String.$TypeDescriptor, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
@@ -296,20 +296,20 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             @.java.lang.Override
             public .java.lang.Object $call() {
                 final .java.lang.String $$s = binaryOptStar$s();
-                final .ceylon.language.Sequential $$seq$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                final .ceylon.language.Sequential $$seq$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 return $call$typed($$s, $$seq$);
             }
             
             @.java.lang.Override
             public .java.lang.Object $call$variadic(final .ceylon.language.Sequential $param$0) {
                 final .java.lang.String $$s = binaryOptStar$s();
-                return $call$typed($$s, (.ceylon.language.Sequential).ceylon.language.empty_.$get());
+                return $call$typed($$s, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
             }
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
                 final .java.lang.String $$s = ((.ceylon.language.String)$param$0).toString();
-                final .ceylon.language.Sequential $$seq$ = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                final .ceylon.language.Sequential $$seq$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 return $call$typed($$s, $$seq$);
             }
             
@@ -353,7 +353,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object... $param$0) {
                 final .java.lang.String $$s = $param$0.length > 0 ? ((.ceylon.language.String)$param$0[0]).toString() : binaryOptStar$s();
-                return $call$typed($$s, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.$get()));
+                return $call$typed($$s, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 1, $param$0.length - 1, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
@@ -375,7 +375,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1155_B();
     }
     

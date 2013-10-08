@@ -8,11 +8,11 @@ final class bug518_ {
     static void bug518() {
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> sp = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}).span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(1L));
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> sp2 = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>)(.ceylon.language.Ranged)new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})).span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(1L));
-        final .ceylon.language.Empty e1 = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Empty>)(.ceylon.language.Ranged).ceylon.language.empty_.$get()).span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(0L));
+        final .ceylon.language.Empty e1 = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Empty>)(.ceylon.language.Ranged).ceylon.language.empty_.get_()).span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(0L));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug518_.bug518();
     }
 }

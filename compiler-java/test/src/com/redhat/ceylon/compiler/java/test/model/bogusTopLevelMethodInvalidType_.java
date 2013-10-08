@@ -24,7 +24,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
-@Ceylon(major = 5)
+@Ceylon(major = 6)
 @Method
 public class bogusTopLevelMethodInvalidType_ {
     @TypeInfo("&&")

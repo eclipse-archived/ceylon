@@ -45,11 +45,11 @@ final class InterfaceErasure$impl<Element, Absent> {
     }
     
     public final .java.lang.Object getAttr() {
-        return .ceylon.language.nothing_.$get();
+        return .ceylon.language.nothing_.get_();
     }
     
     public .java.lang.Object m() {
-        return .ceylon.language.nothing_.$get();
+        return .ceylon.language.nothing_.get_();
     }
     
     public .java.lang.Object defaultedParams() {
@@ -64,7 +64,7 @@ final class InterfaceErasure$impl<Element, Absent> {
     }
     
     public final .java.lang.Object defaultedParams$p() {
-        return .ceylon.language.nothing_.$get();
+        return .ceylon.language.nothing_.get_();
     }
     
     public .java.lang.Object defaultedParams(final .java.lang.Object p) {
@@ -78,7 +78,7 @@ final class InterfaceErasure$impl<Element, Absent> {
     }
     
     public final .java.lang.Object defaultedParams$p2(final .java.lang.Object p) {
-        return .ceylon.language.nothing_.$get();
+        return .ceylon.language.nothing_.get_();
     }
     
     private .java.lang.Object defaultedParams$(final .java.lang.Object p, final .java.lang.Object p2) {
@@ -94,7 +94,7 @@ final class InterfaceErasure$impl<Element, Absent> {
     }
     
     public final .java.lang.Object $Class$init$p() {
-        return .ceylon.language.nothing_.$get();
+        return .ceylon.language.nothing_.get_();
     }
     
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, Absent>.Class Class$new() {
@@ -109,7 +109,7 @@ final class InterfaceErasure$impl<Element, Absent> {
     }
     
     public final .java.lang.Object $Class$init$p2(final .java.lang.Object p) {
-        return .ceylon.language.nothing_.$get();
+        return .ceylon.language.nothing_.get_();
     }
     
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, Absent>.Class Class$new(final .java.lang.Object p) {
@@ -225,7 +225,7 @@ class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasureImpl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     

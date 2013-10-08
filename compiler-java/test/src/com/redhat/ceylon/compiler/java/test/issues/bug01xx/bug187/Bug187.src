@@ -10,7 +10,7 @@ final class bar_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .bug187.bar_.bar();
     }
 }

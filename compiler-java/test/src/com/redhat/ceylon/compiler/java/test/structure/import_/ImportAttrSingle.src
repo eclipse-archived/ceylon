@@ -6,11 +6,11 @@ class ImportAttrSingle implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     private final void m$priv() {
-        final boolean b = .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.f1_.$get();
+        final boolean b = .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.f1_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.import_.ImportAttrSingle();
     }
     

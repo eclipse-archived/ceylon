@@ -8,13 +8,13 @@ final class bug1154_ {
     static void bug1154() {
         final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<.ceylon.language.Boolean> b1 = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.instance(true));
         final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<.ceylon.language.String> b2 = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("hello"));
-        final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Empty> first = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Empty>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, b1, .ceylon.language.empty_.$get());
+        final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Empty> first = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Empty>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, b1, .ceylon.language.empty_.get_());
         final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154<.java.lang.Object, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty>> step = (.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154<.java.lang.Object, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty>>)(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154)first.<.ceylon.language.String>withLeading(.ceylon.language.String.$TypeDescriptor, b2);
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty>> t = ((.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154<.java.lang.Object, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty>>)(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154)step).getTuple();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1154_.bug1154();
     }
 }

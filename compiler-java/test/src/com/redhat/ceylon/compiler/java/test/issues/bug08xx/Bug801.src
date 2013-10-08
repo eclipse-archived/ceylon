@@ -42,7 +42,7 @@ public class Bug801_Class implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class();
     }
     
@@ -213,7 +213,7 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass();
     }
     
@@ -378,7 +378,7 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2();
     }
     

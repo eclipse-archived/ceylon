@@ -25,7 +25,7 @@ class Bug1243<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     public final <Z>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243<T>.Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243.Y).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243.Y).ceylon.language.nothing_.get_();
     }
     
     public final <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ, final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243<T>.Y<Z> arg) {
@@ -39,7 +39,7 @@ class Bug1243<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             }
             
             <Z>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243<T>.Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
-                return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243.Y).ceylon.language.nothing_.$get();
+                return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243.Y).ceylon.language.nothing_.get_();
             }
         }
         final new_ new = new new_();
@@ -85,7 +85,7 @@ class Bug1243b<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     public final <Z>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b<T>.Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b.Y).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b.Y).ceylon.language.nothing_.get_();
     }
     
     public final <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ, final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b<T>.Y<Z> arg) {
@@ -99,7 +99,7 @@ class Bug1243b<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
             }
             
             <Z>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b<T>.Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
-                return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b.Y).ceylon.language.nothing_.$get();
+                return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b.Y).ceylon.language.nothing_.get_();
             }
         }
         final new_ new = new new_();
@@ -145,7 +145,7 @@ class Bug1243c<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     public final <Z>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c<T>.Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c.Y).ceylon.language.nothing_.$get();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c.Y).ceylon.language.nothing_.get_();
     }
     
     public final <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ, final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c<T>.Y<Z> arg) {
@@ -159,7 +159,7 @@ class Bug1243c<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
             }
             
             <Z>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c<T>.Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
-                return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c.Y).ceylon.language.nothing_.$get();
+                return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c.Y).ceylon.language.nothing_.get_();
             }
         }
         final new_ new = new new_();
@@ -206,7 +206,7 @@ final class bug1243d_ {
             }
             
             <Z>Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
-                return (Y).ceylon.language.nothing_.$get();
+                return (Y).ceylon.language.nothing_.get_();
             }
         }
         final new_ new = new new_();
@@ -248,7 +248,7 @@ final class bug1243e_ {
             }
             
             <Z>Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
-                return (Y).ceylon.language.nothing_.$get();
+                return (Y).ceylon.language.nothing_.get_();
             }
         }
         final new_ new = new new_();
@@ -290,7 +290,7 @@ final class bug1243f_ {
             }
             
             <Z>Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
-                return (Y).ceylon.language.nothing_.$get();
+                return (Y).ceylon.language.nothing_.get_();
             }
         }
         final new_ new = new new_();

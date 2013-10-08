@@ -19,7 +19,7 @@ class Bug544SharedAttribute extends .com.redhat.ceylon.compiler.java.test.issues
     }
     private final .java.lang.String s;
     
-    public final .java.lang.String $get() {
+    public final .java.lang.String get_() {
         return s;
     }
     
@@ -66,11 +66,11 @@ class Bug544NonSharedAttr extends .com.redhat.ceylon.compiler.java.test.issues.b
 class Bug544Toplevel extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
     
     Bug544Toplevel() {
-        super(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.$get());
+        super(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.get_());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544Toplevel();
     }
     
@@ -83,7 +83,7 @@ class Bug544Toplevel extends .com.redhat.ceylon.compiler.java.test.issues.bug05x
 class Bug544Qualified extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
     
     Bug544Qualified(final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544SharedAttribute b) {
-        super(b.$get());
+        super(b.get_());
     }
     
     @.java.lang.Override
@@ -116,7 +116,7 @@ class Bug544ContainerClass implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerClass();
     }
     
@@ -161,7 +161,7 @@ final class s_ {
         value = new .java.lang.String[]{""};
     }
     
-    public static .java.lang.String $get() {
+    public static .java.lang.String get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

@@ -39,7 +39,7 @@ final class testBug1242_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug12xx.testBug1242_.testBug1242();
     }
 }
@@ -52,7 +52,7 @@ final class bug1242_yi_ {
         value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242.Y[]{new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("hello")).<.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>Y$new(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}))};
     }
     
-    public static .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<.ceylon.language.String>.Y<.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>> $get() {
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<.ceylon.language.String>.Y<.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

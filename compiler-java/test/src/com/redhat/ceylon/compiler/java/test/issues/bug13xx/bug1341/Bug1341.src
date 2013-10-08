@@ -11,7 +11,7 @@ final class bug1341_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1341.bug1341_.bug1341();
     }
 }

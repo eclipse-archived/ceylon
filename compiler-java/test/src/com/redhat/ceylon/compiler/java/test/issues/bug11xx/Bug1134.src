@@ -6,10 +6,10 @@ final class bug1134Toplevel1_ {
     }
     private static final .ceylon.language.Callable<? extends .ceylon.language.String>[] value;
     static {
-        value = new .ceylon.language.Callable[]{(.ceylon.language.Callable).ceylon.language.nothing_.$get()};
+        value = new .ceylon.language.Callable[]{(.ceylon.language.Callable).ceylon.language.nothing_.get_()};
     }
     
-    public static .ceylon.language.Callable<? extends .ceylon.language.String> $get() {
+    public static .ceylon.language.Callable<? extends .ceylon.language.String> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -23,10 +23,10 @@ final class bug1134Toplevel2_ {
     }
     private static final .java.lang.String[] value;
     static {
-        value = new .java.lang.String[]{.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1134Toplevel1_.$get().$call$variadic(.ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Anything.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})).toString()};
+        value = new .java.lang.String[]{.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1134Toplevel1_.get_().$call$variadic(.ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Anything.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})).toString()};
     }
     
-    public static .java.lang.String $get() {
+    public static .java.lang.String get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

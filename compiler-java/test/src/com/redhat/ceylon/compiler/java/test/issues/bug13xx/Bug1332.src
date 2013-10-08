@@ -62,7 +62,7 @@ public class Bug1332_2 extends .com.redhat.ceylon.compiler.java.test.issues.bug1
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332_2();
     }
     

@@ -33,7 +33,7 @@ final class bug973_ff_ {
                             
                             private final boolean x() {
                                 final .java.lang.Object $ceylontmpitem1 = iter$0.next();
-                                x$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.$get();
+                                x$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.get_();
                                 if (x$exhausted) {
                                     return false;
                                 } else {
@@ -46,7 +46,7 @@ final class bug973_ff_ {
                                 if (this.x()) {
                                     final .ceylon.language.Integer x = this.x;
                                     return x;
-                                } else return .ceylon.language.finished_.$get();
+                                } else return .ceylon.language.finished_.get_();
                             }
                         };
                     }
@@ -56,7 +56,7 @@ final class bug973_ff_ {
         )).longValue()};
     }
     
-    public static long $get() {
+    public static long get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

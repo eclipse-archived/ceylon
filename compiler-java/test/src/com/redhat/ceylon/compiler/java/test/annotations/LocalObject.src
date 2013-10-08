@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.SharedAnnotation$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class LocalObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -11,7 +11,7 @@ public class LocalObject implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void m$priv() {
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
         @.com.redhat.ceylon.compiler.java.metadata.Name("foo")
         @.com.redhat.ceylon.compiler.java.metadata.Object
         final class foo_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -30,7 +30,7 @@ public class LocalObject implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.LocalObject();
     }
     
