@@ -272,6 +272,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected Map<String, ClassMirror> classMirrorCache = new HashMap<String, ClassMirror>();
     protected boolean binaryCompatibilityErrorRaised = false;
     protected Timer timer;
+    private Map<String,LazyPackage> modulelessPackages = new HashMap<String,LazyPackage>();
     
     /**
      * Loads a given package, if required. This is mostly useful for the javac reflection impl.
@@ -3454,5 +3455,66 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected boolean isTypeHidden(Module module, String qualifiedName){
         return module.getNameAsString().equals(JAVA_BASE_MODULE_NAME)
                 && qualifiedName.equals("java.lang.Object");
+    }
+    
+    public synchronized Package findPackage(String quotedPkgName) {
+        String pkgName = quotedPkgName.replace("$", "");
+        // in theory we only have one package with the same name per module in javac
+        for(Package pkg : packagesByName.values()){
+            if(pkg.getNameAsString().equals(pkgName))
+                return pkg;
+        }
+        return null;
+    }
+
+    /**
+     * See explanation in cacheModulelessPackages() below. This is called by LanguageCompiler during loadCompiledModules().
+     */
+    public synchronized LazyPackage findOrCreateModulelessPackage(String pkgName) {
+        LazyPackage pkg = modulelessPackages.get(pkgName);
+        if(pkg != null)
+            return pkg;
+        pkg = new LazyPackage(this);
+        // FIXME: some refactoring needed
+        pkg.setName(pkgName == null ? Collections.<String>emptyList() : Arrays.asList(pkgName.split("\\.")));
+        modulelessPackages.put(pkgName, pkg);
+        return pkg;
+    }
+    
+    /**
+     * Stef: this sucks balls, but the typechecker wants Packages created before we have any Module set up, including for parsing a module
+     * file, and because the model loader looks up packages and caches them using their modules, we can't really have packages before we
+     * have modules. Rather than rewrite the typechecker, we create moduleless packages during parsing, which means they are not cached with
+     * their modules, and after the loadCompiledModules step above, we fix the package modules. Remains to be done is to move the packages
+     * created from their cache to the right per-module cache.
+     */
+    public synchronized void cacheModulelessPackages(){
+        for(LazyPackage pkg : modulelessPackages.values()){
+            String quotedPkgName = Util.quoteJavaKeywords(pkg.getQualifiedNameString());
+            packagesByName.put(cacheKeyByModule(pkg.getModule(), quotedPkgName), pkg);
+        }
+        modulelessPackages.clear();
+    }
+
+    /**
+     * Stef: after a lot of attempting, I failed to make the CompilerModuleManager produce a LazyPackage when the ModuleManager.initCoreModules
+     * is called for the default package. Because it is called by the PhasedUnits constructor, which is called by the ModelLoader constructor,
+     * which means the model loader is not yet in the context, so the CompilerModuleManager can't obtain it to pass it to the LazyPackage
+     * constructor. A rewrite of the logic of the typechecker scanning would fix this, but at this point it's just faster to let it create
+     * the wrong default package and fix it before we start parsing anything.
+     */
+    public synchronized void fixDefaultPackage() {
+        Module defaultModule = modules.getDefaultModule();
+        Package defaultPackage = defaultModule.getDirectPackage("");
+        if(defaultPackage instanceof LazyPackage == false){
+            LazyPackage newPkg = findOrCreateModulelessPackage("");
+            List<Package> defaultModulePackages = defaultModule.getPackages();
+            if(defaultModulePackages.size() != 1)
+                throw new RuntimeException("Assertion failed: default module has more than the default package: "+defaultModulePackages.size());
+            defaultModulePackages.clear();
+            defaultModulePackages.add(newPkg);
+            newPkg.setModule(defaultModule);
+            defaultPackage.setModule(null);
+        }
     }
 }
