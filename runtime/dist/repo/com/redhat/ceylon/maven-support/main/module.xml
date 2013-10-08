@@ -22,6 +22,10 @@
     </resources>
 
     <dependencies>
-        <module name="javax.xml.stream.api"/>
+        <system export="true">
+            <paths>
+                <path name="javax/xml/parsers"/>
+            </paths>
+        </system>
     </dependencies>
 </module>

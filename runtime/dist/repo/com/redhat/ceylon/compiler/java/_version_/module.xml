@@ -16,28 +16,6 @@
   ~ limitations under the License.
   -->
 
-<!--
-  ~ JBoss, Home of Professional Open Source.
-  ~ Copyright 2010, Red Hat, Inc., and individual contributors
-  ~ as indicated by the @author tags. See the copyright.txt file in the
-  ~ distribution for a full listing of individual contributors.
-  ~
-  ~ This is free software; you can redistribute it and/or modify it
-  ~ under the terms of the GNU Lesser General Public License as
-  ~ published by the Free Software Foundation; either version 2.1 of
-  ~ the License, or (at your option) any later version.
-  ~
-  ~ This software is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-  ~ Lesser General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU Lesser General Public
-  ~ License along with this software; if not, write to the Free
-  ~ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
-  ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
-  -->
-
 <module xmlns="urn:jboss:module:1.0" name="com.redhat.ceylon.compiler.java" slot="@ceylon-version@">
     <resources>
         <resource-root path="com.redhat.ceylon.compiler.java-@ceylon-version@.jar"/>
@@ -48,6 +26,15 @@
         <module name="com.redhat.ceylon.common" slot="@ceylon-version@"/>
         <module name="com.redhat.ceylon.typechecker" slot="@ceylon-version@"/>
         <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@"/>
-        <module name="java.compiler"/>
+        <system export="true">
+            <paths>
+                <path name="javax/tools"/>
+                <path name="javax/lang/model"/>
+                <path name="javax/lang/model/element"/>
+                <path name="javax/lang/model/type"/>
+                <path name="javax/lang/model/util"/>
+                <path name="javax/annotation/processing"/>
+            </paths>
+        </system>
     </dependencies>
 </module>
