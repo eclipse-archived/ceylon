@@ -122,7 +122,6 @@
     <!-- Rule to clean everything up -->
     <target name="clean" description="Clean up everything">
         <delete dir="${build.dir}"/>
-        <delete dir="${dist.dir}/lib"/>
     </target>
 
     <target name="dist"
@@ -137,8 +136,6 @@
             </filterset>
         </copy>
         <!-- Copy the Ceylon runtime dependencies -->
-        <copy file="${dist.dir}/repo/${javax-xml-stream.dir}/main/module.xml"
-              tofile="${build.dist.repo}/${javax-xml-stream.dir}/main/module.xml"/>
         <copy file="${jboss-modules.lib}"
               tofile="${build.dist.repo}/${jboss-modules.dir}/main/${jboss-modules.module}"/>
         <copy file="${jboss-jandex.lib}" tofile="${build.dist.repo}/${jboss-jandex.dir}/main/${jboss-jandex.module}"/>
