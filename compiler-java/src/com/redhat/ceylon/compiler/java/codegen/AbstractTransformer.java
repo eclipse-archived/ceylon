@@ -1024,6 +1024,15 @@ public abstract class AbstractTransformer implements Transformation {
             // must be erased
             return true;
         }
+        if(declaration instanceof TypeParameter){
+            // consider type parameters with non-erased bounds as erased to force a cast
+            // see https://github.com/ceylon/ceylon-compiler/issues/1327
+            for(ProducedType bound : declaration.getSatisfiedTypes()){
+                if(!willEraseToObject(bound))
+                    return true;
+            }
+            return false;
+        }
         // Note: we don't consider types like Anything, Null, Basic, Identifiable as erased because
         // they can never be better than Object as far as Java is concerned
         // FIXME: what about Nothing then?
