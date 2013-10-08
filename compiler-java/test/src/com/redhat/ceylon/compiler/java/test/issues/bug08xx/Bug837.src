@@ -17,7 +17,7 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
         this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends Element>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Collection.class, $reifiedElement), (.ceylon.language.Cloneable<.ceylon.language.Collection<? extends Element>>)(.ceylon.language.Cloneable)this);
         this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, Element>(.ceylon.language.Integer.$TypeDescriptor, $reifiedElement, this);
         this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends Element>>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reifiedElement), (.ceylon.language.Ranged<.ceylon.language.Integer, .ceylon.language.List<? extends Element>>)(.ceylon.language.Ranged)this);
-        this.last = getFirst();
+        this.last = (Element)getFirst();
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
     private final long length;
@@ -395,7 +395,7 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends Element> getRest() {
-        return new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug837<Element>($reifiedElement, getFirst().getSuccessor(), getLength$priv() - 1L);
+        return new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug837<Element>($reifiedElement, ((.ceylon.language.Ordinal<? extends Element>)(.ceylon.language.Ordinal)getFirst()).getSuccessor(), getLength$priv() - 1L);
     }
     
     @.java.lang.Override

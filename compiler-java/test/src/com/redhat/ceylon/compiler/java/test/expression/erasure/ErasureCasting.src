@@ -229,7 +229,7 @@ final class erasureCasting_ {
                 new .ceylon.language.Singleton<.ceylon.language.Character>(.ceylon.language.Character.$TypeDescriptor, .ceylon.language.Character.instance(51))});
         final .ceylon.language.Sequential t2 = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>)(.ceylon.language.Ranged)t).span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(1L));
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple<.java.lang.Object, ? extends .ceylon.language.Integer> nonRawTuple = new .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L));
-        final long nonRawTupleFirst = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple<.java.lang.Object, ? extends .ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple)nonRawTuple).getFirst().longValue();
+        final long nonRawTupleFirst = ((.ceylon.language.Integer)(.java.lang.Object)((.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple<.java.lang.Object, ? extends .ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple)nonRawTuple).getFirst()).longValue();
         final int unboxedInteger = ((.ceylon.language.Sequence<? extends .ceylon.language.Character>).ceylon.language.String.<.ceylon.language.Character>withLeading(.ceylon.language.Character.$TypeDescriptor, "abc", .ceylon.language.Character.instance(100))).getFirst().intValue();
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> nonEmptySequence = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
@@ -297,7 +297,7 @@ final class erasureCasting_ {
         final .ceylon.language.Sequential<? extends .ceylon.language.String> sequenceOfStrings2 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>)(.ceylon.language.Correspondence)tupleOfSequentialSomething).get(.ceylon.language.Integer.instance(1L));
         final .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.String>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> sequenceOfSequenceOfStrings = (.ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.String>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>)(.ceylon.language.Tuple).com.redhat.ceylon.compiler.java.Util.tuple_spanFrom((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>>>)(.ceylon.language.Ranged)tupleOfSequentialSomething, .ceylon.language.Integer.instance(1L));
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> callableOfCallable = (.ceylon.language.Callable).ceylon.language.nothing_.get_();
-        final .ceylon.language.Callable<? extends .java.lang.Object> callableResult = .com.redhat.ceylon.compiler.java.test.expression.erasure.ec_callableWithBonds_.<.java.lang.Object, .ceylon.language.Empty, .ceylon.language.Empty>ec_callableWithBonds(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, callableOfCallable).$call();
+        final .ceylon.language.Callable<? extends .java.lang.Object> callableResult = ((.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>>)(.ceylon.language.Callable).com.redhat.ceylon.compiler.java.test.expression.erasure.ec_callableWithBonds_.<.java.lang.Object, .ceylon.language.Empty, .ceylon.language.Empty>ec_callableWithBonds(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, callableOfCallable)).$call();
         final .java.lang.Object n1 = .ceylon.language.min_.min(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor, (.ceylon.language.Iterable).ceylon.language.empty_.get_());
         final .java.lang.Object n2 = (
             let
@@ -617,17 +617,17 @@ class Bug1327 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     private final <Arguments extends .ceylon.language.Sequential<? extends .ceylon.language.String>>Arguments foo$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedArguments, final Arguments args) {
-        return args;
+        return (Arguments)args;
     }
     
     private final void m$priv() {
-        final .ceylon.language.Empty e1 = (.ceylon.language.Empty)(.java.lang.Object)<.ceylon.language.Sequential<? extends .ceylon.language.String>>foo$priv(.ceylon.language.Empty.$TypeDescriptor, (.ceylon.language.Sequential).ceylon.language.empty_.$get());
-        final .ceylon.language.Empty e2 = (.ceylon.language.Empty)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.erasure.bug1327_foo_.<.ceylon.language.Sequential<? extends .ceylon.language.String>>bug1327_foo(.ceylon.language.Empty.$TypeDescriptor, (.ceylon.language.Sequential).ceylon.language.empty_.$get());
-        final .ceylon.language.Empty e3 = (.ceylon.language.Empty)(.java.lang.Object)new .com.redhat.ceylon.compiler.java.test.expression.erasure.Bug1327_2<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor).<.ceylon.language.Sequential<? extends .ceylon.language.Integer>>foo(.ceylon.language.Empty.$TypeDescriptor, (.ceylon.language.Sequential).ceylon.language.empty_.$get());
+        final .ceylon.language.Empty e1 = (.ceylon.language.Empty)(.java.lang.Object)<.ceylon.language.Sequential<? extends .ceylon.language.String>>foo$priv(.ceylon.language.Empty.$TypeDescriptor, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
+        final .ceylon.language.Empty e2 = (.ceylon.language.Empty)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.erasure.bug1327_foo_.<.ceylon.language.Sequential<? extends .ceylon.language.String>>bug1327_foo(.ceylon.language.Empty.$TypeDescriptor, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
+        final .ceylon.language.Empty e3 = (.ceylon.language.Empty)(.java.lang.Object)new .com.redhat.ceylon.compiler.java.test.expression.erasure.Bug1327_2<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor).<.ceylon.language.Sequential<? extends .ceylon.language.Integer>>foo(.ceylon.language.Empty.$TypeDescriptor, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.erasure.Bug1327();
     }
     
@@ -645,11 +645,11 @@ class Bug1327_2<Element> implements .com.redhat.ceylon.compiler.java.runtime.mod
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
     
     public final <Arguments extends .ceylon.language.Sequential<? extends Element>>Arguments foo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedArguments, final Arguments args) {
-        return args;
+        return (Arguments)args;
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.erasure.Bug1327_2(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -664,6 +664,6 @@ public final class bug1327_foo_ {
     }
     
     public static <Arguments extends .ceylon.language.Sequential<? extends .ceylon.language.String>>Arguments bug1327_foo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedArguments, final Arguments args) {
-        return args;
+        return (Arguments)args;
     }
 }

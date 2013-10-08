@@ -12,7 +12,7 @@ class RangeOp<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     private final <T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T>>void t$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t1, final T t2) {
-        final .ceylon.language.Range<T> range = new .ceylon.language.Range<T>($reifiedT, t1, t2);
+        final .ceylon.language.Range<T> range = new .ceylon.language.Range<T>($reifiedT, (T)t1, (T)t2);
     }
     
     public static void main(.java.lang.String[] args) {

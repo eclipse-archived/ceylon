@@ -394,8 +394,8 @@ public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends 
     
     @.java.lang.Override
     public final long getSize() {
-        if (getLast() instanceof .ceylon.language.Enumerable) {
-            if (getFirst() instanceof .ceylon.language.Enumerable) {
+        if ((Element)getLast() instanceof .ceylon.language.Enumerable) {
+            if ((Element)getFirst() instanceof .ceylon.language.Enumerable) {
                 return .ceylon.language.Integer.getMagnitude(((.ceylon.language.Enumerable)(.ceylon.language.Enumerable)getLast()).getIntegerValue() - ((.ceylon.language.Enumerable)(.ceylon.language.Enumerable)getFirst()).getIntegerValue()) + 1L;
             }
         }

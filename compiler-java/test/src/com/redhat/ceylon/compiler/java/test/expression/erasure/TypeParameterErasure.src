@@ -185,17 +185,17 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     private final <T extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight>T parameterizedWithBounds$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
-        t.right();
-        t.right();
-        return t;
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)t).right();
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)t).right();
+        return (T)t;
     }
     
     private final <T extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft & .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight>T parameterizedWithIntersectionBounds$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
-        t.left();
-        t.left();
-        t.right();
-        t.right();
-        return t;
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)t).left();
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)t).left();
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)t).right();
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)t).right();
+        return (T)t;
     }
     
     private final <T>T parameterizedWithErasedBounds$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
@@ -204,7 +204,7 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     private final <T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T>>T parameterizedWithParameterizedBounds$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
-        return t;
+        return (T)t;
     }
     
     private final void testTypeParameters$priv() {
@@ -449,17 +449,17 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
         }
         
         public final <Inner extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>Inner parameterizedWithBounds(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner, final Inner i, final T t) {
-            i.left();
-            i.left();
-            return i;
+            ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)i).left();
+            ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)i).left();
+            return (Inner)i;
         }
         
         public final <Inner extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft & .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight>Inner parameterizedWithIntersectionBounds(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner, final Inner i, final T t) {
-            i.left();
-            i.left();
-            i.right();
-            i.right();
-            return i;
+            ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)i).left();
+            ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)i).left();
+            ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)i).right();
+            ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)i).right();
+            return (Inner)i;
         }
         
         public final <Inner>Inner parameterizedWithErasedBounds(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner, final Inner i, final T t) {
@@ -468,8 +468,8 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
         }
         
         public final <Inner extends .ceylon.language.Ordinal<? extends Inner> & .ceylon.language.Comparable<? super Inner>>Inner parameterizedWithParameterizedBounds(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner, final Inner i, final T t) {
-            i.compare(i);
-            return i;
+            ((.ceylon.language.Comparable<? super Inner>)(.ceylon.language.Comparable)i).compare((Inner)i);
+            return (Inner)i;
         }
         
         @.java.lang.Override
@@ -482,8 +482,8 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
         
         ParameterizedWithBounds(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
             this.$reifiedT = $reifiedT;
-            t.left();
-            t.left();
+            ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)t).left();
+            ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)t).left();
         }
         private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
         
@@ -497,16 +497,16 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
         
         ParameterizedWithIntersectionBounds(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
             this.$reifiedT = $reifiedT;
-            t.left();
-            t.left();
-            t.right();
-            t.right();
+            ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)t).left();
+            ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)t).left();
+            ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)t).right();
+            ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)t).right();
             final .java.lang.Object middle = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPECMiddle();
-            requiresCastLeft$priv(t);
+            requiresCastLeft$priv((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)t);
             (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$33$0 = t;
+                    .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$33$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)t;
                     requiresCastLeft$priv($arg$33$0);
                 }
                 returning null;
@@ -793,14 +793,14 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     private final <T extends .ceylon.language.Integer>void testPrimitiveBound$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T init) {
-        T n = init;
+        T n = (T)init;
     }
     
     class TestPrimitiveBound<T extends .ceylon.language.Integer> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         TestPrimitiveBound(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T init) {
             this.$reifiedT = $reifiedT;
-            T n = init;
+            T n = (T)init;
         }
         private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
         

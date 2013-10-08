@@ -46,7 +46,7 @@ abstract class TypeFamily<N extends .com.redhat.ceylon.compiler.java.test.expres
         }
         
         public boolean touches(final E edge) {
-            return edge.touches((N)this);
+            return ((.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<N, E>.Edge)edge).touches((N)this);
         }
         
         @.java.lang.Override

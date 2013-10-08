@@ -9,24 +9,24 @@ class Bug1095B implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         final Summand y = (
             let
             {
-                .ceylon.language.Summable<Summand> $arg$0$callable$ = x;
-                Summand $arg$0$0 = x;
+                .ceylon.language.Summable<Summand> $arg$0$callable$ = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)x;
+                Summand $arg$0$0 = (Summand)x;
             }
             returning $arg$0$callable$.plus($arg$0$0);
         );
         final .ceylon.language.Summable<Summand> y2 = (
             let
             {
-                .ceylon.language.Summable<Summand> $arg$1$callable$ = x;
-                Summand $arg$1$0 = x;
+                .ceylon.language.Summable<Summand> $arg$1$callable$ = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)x;
+                Summand $arg$1$0 = (Summand)x;
             }
             returning $arg$1$callable$.plus($arg$1$0);
         );
-        final .ceylon.language.Summable<Summand> x2 = x;
+        final .ceylon.language.Summable<Summand> x2 = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)x;
         final .ceylon.language.Summable<Summand> y3 = (
             let
             {
-                .ceylon.language.Summable<Summand> $arg$2$callable$ = x;
+                .ceylon.language.Summable<Summand> $arg$2$callable$ = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)x;
                 Summand $arg$2$0 = (Summand)x2;
             }
             returning $arg$2$callable$.plus($arg$2$0);

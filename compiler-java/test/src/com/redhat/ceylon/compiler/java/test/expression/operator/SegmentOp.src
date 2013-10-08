@@ -16,13 +16,13 @@ class SegmentOp implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     public final <T extends .ceylon.language.Ordinal<? extends T>>.ceylon.language.Sequential<? extends T> t(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T start, final long length) {
-        final .ceylon.language.Sequential<? extends T> segment = .com.redhat.ceylon.compiler.java.Util.<T>spreadOp($reifiedT, start, length);
-        return segment;
+        final .ceylon.language.Sequential<? extends T> segment = .com.redhat.ceylon.compiler.java.Util.<T>spreadOp($reifiedT, (T)start, length);
+        return (.ceylon.language.Sequential<? extends T>)(.ceylon.language.Sequential)segment;
     }
     
     public final <T extends .ceylon.language.Ordinal<? extends T>, S>.ceylon.language.Sequential<? extends T> t2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final .java.lang.Object start, final long length) {
         final .ceylon.language.Sequential<? extends T> segment = .com.redhat.ceylon.compiler.java.Util.<T>spreadOp($reifiedT, (T)start, length);
-        return segment;
+        return (.ceylon.language.Sequential<? extends T>)(.ceylon.language.Sequential)segment;
     }
     
     public static void main(.java.lang.String[] args) {

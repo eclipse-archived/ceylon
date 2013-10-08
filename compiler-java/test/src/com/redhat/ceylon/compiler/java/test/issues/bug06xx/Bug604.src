@@ -46,7 +46,7 @@ abstract class Bug604<N extends .com.redhat.ceylon.compiler.java.test.issues.bug
         }
         
         public boolean touches(final E edge) {
-            return edge.touches((N)this);
+            return ((.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604<N, E>.Edge)edge).touches((N)this);
         }
         
         @.java.lang.Override

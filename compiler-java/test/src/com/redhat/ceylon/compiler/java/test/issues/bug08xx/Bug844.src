@@ -469,7 +469,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
             if ($sel$2 == .ceylon.language.smaller_.get_()) {
                 return null;
             } else if ($sel$2 == .ceylon.language.equal_.get_()) {
-                return getFirst();
+                return (Element)getFirst();
             } else if ($sel$2 == .ceylon.language.larger_.get_()) {
                 return ((.ceylon.language.List<? extends Element>)(.ceylon.language.List)getRest()).get(index.minus(.ceylon.language.Integer.instance(1L)));
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
@@ -489,7 +489,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     
     @.java.lang.Override
     public final .ceylon.language.Sequence<? extends Element> getReversed() {
-        return (.ceylon.language.Sequence<? extends Element>)((.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)getRest()).getReversed().<First>withTrailing($reifiedFirst, getFirst());
+        return (.ceylon.language.Sequence<? extends Element>)((.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)getRest()).getReversed().<First>withTrailing($reifiedFirst, (First)getFirst());
     }
     
     @.java.lang.Override
@@ -497,7 +497,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
         return (
             let
             {
-                .ceylon.language.Sequential<? extends Element> $ceylontmp6 = from.compare(.ceylon.language.Integer.instance(0L)).asSmallAs() ? (.ceylon.language.Sequence<? extends Element>)((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Ranged)getRest()).segment(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(length).plus(from).minus(.ceylon.language.Integer.instance(1L)).longValue()).<First>withLeading($reifiedFirst, getFirst()) : null;
+                .ceylon.language.Sequential<? extends Element> $ceylontmp6 = from.compare(.ceylon.language.Integer.instance(0L)).asSmallAs() ? (.ceylon.language.Sequence<? extends Element>)((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Ranged)getRest()).segment(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(length).plus(from).minus(.ceylon.language.Integer.instance(1L)).longValue()).<First>withLeading($reifiedFirst, (First)getFirst()) : null;
             }
             returning $ceylontmp6 != null ? $ceylontmp6 : ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Ranged)getRest()).segment(from.minus(.ceylon.language.Integer.instance(1L)), length);
         );

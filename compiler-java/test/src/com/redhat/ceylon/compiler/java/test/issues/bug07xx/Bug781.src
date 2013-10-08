@@ -37,14 +37,14 @@ class Bug781_1<T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bu
     
     Bug781_1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
         this.$reifiedT = $reifiedT;
-        t.c();
-        t.i();
+        ((.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class)t).c();
+        ((.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface)t).i();
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     private final <T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface>void m$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
-        t.c();
-        t.i();
+        ((.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class)t).c();
+        ((.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface)t).i();
     }
     
     @.java.lang.Override
@@ -70,8 +70,8 @@ final class Bug781_2$impl<T extends .com.redhat.ceylon.compiler.java.test.issues
     }
     
     private <T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface>void m$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
-        t.c();
-        t.i();
+        ((.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class)t).c();
+        ((.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface)t).i();
     }
 }
 public final class bug781_ {
@@ -80,7 +80,7 @@ public final class bug781_ {
     }
     
     public static <T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface>void bug781(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
-        t.c();
-        t.i();
+        ((.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class)t).c();
+        ((.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface)t).i();
     }
 }

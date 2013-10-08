@@ -46,8 +46,8 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     private final <Summand extends .ceylon.language.Summable<Summand>>void constrainedTypeParameter$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedSummand, final .ceylon.language.Iterable<? extends Summand, ? extends .java.lang.Object> values) {
-        final Summand x = .ceylon.language.sum_.<Summand>sum($reifiedSummand, (.ceylon.language.Iterable)values);
-        final Summand y = (
+        final Summand x = (Summand)(.java.lang.Object).ceylon.language.sum_.<Summand>sum($reifiedSummand, (.ceylon.language.Iterable)values);
+        final Summand y = (Summand)(.java.lang.Object)(
             let
             {
                 .ceylon.language.Iterable $arg$2$0 = (.ceylon.language.Iterable)values;
@@ -55,7 +55,7 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             }
             returning .ceylon.language.sum_.<Summand>sum($arg$2$reified$0, $arg$2$0);
         );
-        final Summand z = (
+        final Summand z = (Summand)(.java.lang.Object)(
             let
             {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$3$reified$0 = $reifiedSummand;
@@ -63,7 +63,7 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             }
             returning <Summand>variadicSum($arg$3$reified$0, $arg$3$0);
         );
-        final Summand a = (
+        final Summand a = (Summand)(.java.lang.Object)(
             let
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095 $arg$4$this$ = this;

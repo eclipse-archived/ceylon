@@ -10,7 +10,7 @@ abstract class SelfType<T extends .com.redhat.ceylon.compiler.java.test.expressi
     public abstract long compareTo(final T other);
     
     public final long reverseCompareTo(final T other) {
-        return other.compareTo((T)this);
+        return ((.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<T>)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType)other).compareTo((T)this);
     }
     
     public final T self() {
@@ -29,7 +29,7 @@ final class selfType_ {
     }
     
     static <X extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X>>void selfType(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X> x, final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X> y) {
-        x.compareTo((X)y);
+        ((.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X>)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType)x).compareTo((X)y);
     }
 }
 abstract class SelfType2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {

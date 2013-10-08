@@ -9,7 +9,7 @@ class Bug620<T extends .ceylon.language.Numeric<T>> implements .com.redhat.ceylo
     
     private final void m$priv(final .ceylon.language.Numeric<T> init) {
         T n = (T)init;
-        n = n.plus(n);
+        n = ((.ceylon.language.Summable<T>)(.ceylon.language.Summable)n).plus((T)n);
     }
     
     public static void main(.java.lang.String[] args) {
