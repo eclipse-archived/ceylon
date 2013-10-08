@@ -115,6 +115,7 @@ public class LazyInterfaceAlias extends InterfaceAlias implements LazyContainer 
 
     @Override
     public boolean isMember() {
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isMember();
     }
 
@@ -266,25 +267,25 @@ public class LazyInterfaceAlias extends InterfaceAlias implements LazyContainer 
 
     @Override
     public boolean isToplevel() {
-        load();
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isToplevel();
     }
 
     @Override
     public boolean isClassMember() {
-        load();
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isClassMember();
     }
 
     @Override
     public boolean isInterfaceMember() {
-        load();
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isInterfaceMember();
     }
 
     @Override
     public boolean isClassOrInterfaceMember() {
-        load();
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isClassOrInterfaceMember();
     }
 
@@ -296,6 +297,7 @@ public class LazyInterfaceAlias extends InterfaceAlias implements LazyContainer 
 
     @Override
     public Scope getContainer() {
+        // NO lazy-loading since this is set before lazy-loading
         return super.getContainer();
     }
 

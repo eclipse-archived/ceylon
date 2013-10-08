@@ -348,31 +348,31 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
 
     @Override
     public boolean isToplevel() {
-        load();
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isToplevel();
     }
 
     @Override
     public boolean isClassMember() {
-        load();
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isClassMember();
     }
 
     @Override
     public boolean isInterfaceMember() {
-        load();
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isInterfaceMember();
     }
 
     @Override
     public boolean isClassOrInterfaceMember() {
-        load();
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isClassOrInterfaceMember();
     }
 
     @Override
     public boolean isMember() {
-        load();
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isMember();
     }
 

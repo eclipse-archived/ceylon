@@ -29,9 +29,7 @@ import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
@@ -188,6 +186,7 @@ public class LazyClass extends Class implements LazyContainer {
 
     @Override
     public boolean isMember() {
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isMember();
     }
 
@@ -339,25 +338,25 @@ public class LazyClass extends Class implements LazyContainer {
 
     @Override
     public boolean isToplevel() {
-        load();
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isToplevel();
     }
 
     @Override
     public boolean isClassMember() {
-        load();
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isClassMember();
     }
 
     @Override
     public boolean isInterfaceMember() {
-        load();
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isInterfaceMember();
     }
 
     @Override
     public boolean isClassOrInterfaceMember() {
-        load();
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isClassOrInterfaceMember();
     }
 
@@ -369,6 +368,7 @@ public class LazyClass extends Class implements LazyContainer {
 
     @Override
     public Scope getContainer() {
+        // NO lazy-loading since this is set before lazy-loading
         return super.getContainer();
     }
 
