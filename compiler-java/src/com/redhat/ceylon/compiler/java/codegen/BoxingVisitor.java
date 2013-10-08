@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;

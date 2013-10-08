@@ -482,6 +482,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         downCast = false;
                         // same for forced erasure
                         exprErased = false;
+                        exprUntrustedType = false;
                     }
 
                     // if the expr is not raw, we need a cast
