@@ -1,7 +1,7 @@
 # Ceylon distribution
 
-This is the 1.0.beta "Virtual Boy" release of the Ceylon command line tools (version 
-0.6.1). This is a pre-release version of the platform for review by the community.
+This is the pre-1.0 "Buckaroo Banzai" release of the Ceylon command line tools (version 
+1.0.0). This is a pre-release version of the platform for review by the community.
 
 Ceylon is a programming language for writing large programs in a team environment. 
 The language is elegant, highly readable, extremely typesafe, and makes it easy to 
@@ -185,3 +185,4 @@ Chris Marshall, Simon Thum, Maia Kozheva, Shelby, Aslak Knutsen,
 Fabien Meurisse, Paco Soberón, sjur, Xavier Coulon, Akber Choudhry,
 Ari Kast, Dan Allen, Deniz Türkoglu, F. Meurisse, Jean-Charles Roger,
 Johannes Lehmann.
+
