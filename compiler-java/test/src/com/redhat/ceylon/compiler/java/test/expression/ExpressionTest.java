@@ -155,6 +155,11 @@ public class ExpressionTest extends CompilerTest {
     public void testErsCallableErasure(){
         compareWithJavaSource("erasure/CallableErasure");
     }
+    @Test
+    public void testTypeParameterBoundsErasure() {
+        compile("erasure/TypeParameterBoundsErasure.ceylon");
+        compile("erasure/TypeParameterBoundsErasure_2.ceylon");
+    }
 
 
     // Literals
