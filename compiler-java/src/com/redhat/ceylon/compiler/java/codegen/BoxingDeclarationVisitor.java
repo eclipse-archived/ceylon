@@ -26,12 +26,15 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
@@ -110,8 +113,14 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             return;
 
         ProducedType type = decl.getType();
-        if(type != null && hasErasure(type)){
-            decl.setTypeErased(true);
+        if(type != null){
+            if(hasErasure(type)){
+                decl.setTypeErased(true);
+            }
+            if(hasTypeParameterWithConstraints(type)){
+                decl.setUntrustedType(true);
+                decl.setTypeErased(true);
+            }
         }
     }
 
@@ -336,5 +345,72 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             ((KeyValueIterator) iter).getKeyVariable().getDeclarationModel().setUnboxed(false);
             ((KeyValueIterator) iter).getValueVariable().getDeclarationModel().setUnboxed(false);
         }
+    }
+    
+    @Override
+    public void visit(Tree.TypeParameterDeclaration that) {
+        super.visit(that);
+        TypeParameter typeParameter = that.getDeclarationModel();
+        if(typeParameter != null){
+            visitTypeParameter(typeParameter);
+        }
+    }
+    
+    private void visitTypeParameter(TypeParameter typeParameter) {
+        if(typeParameter.hasNonErasedBounds() != null)
+            return;
+        for(ProducedType pt : typeParameter.getSatisfiedTypes()){
+            if(!willEraseToObject(pt)){
+                typeParameter.setNonErasedBounds(true);
+                return;
+            }
+        }
+        typeParameter.setNonErasedBounds(false);
+        return;
+    }
+
+    private boolean hasTypeParameterWithConstraints(ProducedType type) {
+        return hasTypeParameterWithConstraintsResolved(type.resolveAliases());
+    }
+    
+    private boolean hasTypeParameterWithConstraintsResolved(ProducedType type) {
+        if(type == null)
+            return false;
+        TypeDeclaration declaration = type.getDeclaration();
+        if(declaration == null)
+            return false;
+        if(declaration instanceof UnionType){
+            UnionType ut = (UnionType) declaration;
+            java.util.List<ProducedType> caseTypes = ut.getCaseTypes();
+            for(ProducedType pt : caseTypes){
+                if(hasTypeParameterWithConstraintsResolved(pt))
+                    return true;
+            }
+            return false;
+        }
+        if(declaration instanceof IntersectionType){
+            IntersectionType ut = (IntersectionType) declaration;
+            java.util.List<ProducedType> satisfiedTypes = ut.getSatisfiedTypes();
+            for(ProducedType pt : satisfiedTypes){
+                if(hasTypeParameterWithConstraintsResolved(pt))
+                    return true;
+            }
+            return false;
+        }
+        if(declaration instanceof TypeParameter){
+            TypeParameter tp = (TypeParameter) declaration;
+            Boolean nonErasedBounds = tp.hasNonErasedBounds();
+            if(nonErasedBounds == null)
+                visitTypeParameter(tp);
+            return nonErasedBounds != null ? nonErasedBounds.booleanValue() : false;
+        }
+        
+        // now check its type parameters
+        for(ProducedType pt : type.getTypeArgumentList()){
+            if(hasTypeParameterWithConstraintsResolved(pt))
+                return true;
+        }
+        // no problem here
+        return false;
     }
 }
