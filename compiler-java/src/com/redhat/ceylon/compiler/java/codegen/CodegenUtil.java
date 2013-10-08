@@ -120,7 +120,12 @@ class CodegenUtil {
 
     static boolean hasUntrustedType(Term node) {
         return node.getUntrustedType();
-     }
+    }
+
+    static boolean hasUntrustedType(TypedDeclaration decl){
+        Boolean ret = decl.getUntrustedType();
+        return ret != null && ret.booleanValue();
+    }
 
     /**
      * Determines if the given statement or argument has a compiler annotation 

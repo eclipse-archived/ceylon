@@ -380,6 +380,8 @@ public abstract class BoxingVisitor extends Visitor {
             CodegenUtil.markRaw(that);
         if(CodegenUtil.hasTypeErased(term))
             CodegenUtil.markTypeErased(that);
+        if(CodegenUtil.hasUntrustedType(term))
+            CodegenUtil.markUntrustedType(that);
     }
 
     /**
