@@ -128,11 +128,13 @@
             depends="build"
             description="Create Ceylon runtime distribution">
         <!-- Setup the basic structure of the dist folder by copying the template folder -->
-        <copy todir="${build.dist}">
+        <copy todir="${build.dist}" overwrite="true">
             <fileset dir="${dist.dir}"/>
-            <globmapper from="_version_" to="${ceylon.base.version}"/>
-            <filterset>
-                <filter token="@@ceylon-version@@" value="${ceylon.base.version}"/>
+            <filtermapper>
+                <replacestring from="_version_" to="${ceylon.base.version}"/>
+            </filtermapper>
+        	<filterset>
+                <filter token="ceylon-version" value="${ceylon.base.version}"/>
             </filterset>
         </copy>
         <!-- Copy the Ceylon runtime dependencies -->
