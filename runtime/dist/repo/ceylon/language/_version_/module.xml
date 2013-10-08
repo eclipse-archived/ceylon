@@ -22,16 +22,16 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="ceylon.language" slot="0.6.1">
+<module xmlns="urn:jboss:module:1.0" name="ceylon.language" slot="@@ceylon-version@@">
     <resources>
-        <resource-root path="ceylon.language-0.6.1.car"/>
+        <resource-root path="ceylon.language-@@ceylon-version@@.car"/>
     </resources>
 
     <dependencies>
-        <module name="com.redhat.ceylon.compiler.java" slot="0.6.1"/>
-        <module name="com.redhat.ceylon.typechecker" slot="0.6.1"/>
-        <module name="com.redhat.ceylon.common" slot="0.6.1"/>
-        <module name="com.redhat.ceylon.module-resolver" slot="0.6.1"/>
+        <module name="com.redhat.ceylon.compiler.java" slot="@@ceylon-version@@"/>
+        <module name="com.redhat.ceylon.typechecker" slot="@@ceylon-version@@"/>
+        <module name="com.redhat.ceylon.common" slot="@@ceylon-version@@"/>
+        <module name="com.redhat.ceylon.module-resolver" slot="@@ceylon-version@@"/>
         <module name="org.jboss.modules"/>
     </dependencies>
 </module>

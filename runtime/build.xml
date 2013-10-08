@@ -131,6 +131,10 @@
         <!-- Setup the basic structure of the dist folder by copying the template folder -->
         <copy todir="${build.dist}">
             <fileset dir="${dist.dir}"/>
+            <globmapper from="_version_" to="${ceylon.base.version}"/>
+            <filterset>
+                <filter token="@@ceylon-version@@" value="${ceylon.base.version}"/>
+            </filterset>
         </copy>
         <!-- Copy the Ceylon runtime dependencies -->
         <copy file="${dist.dir}/repo/${javax-xml-stream.dir}/main/module.xml"
