@@ -2272,8 +2272,39 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         } else {
             decl.setTypeErased(sameType(type, OBJECT_TYPE));
         }
+        if(hasTypeParameterWithConstraints(type))
+            decl.setUntrustedType(true);
     }
 
+    private boolean hasTypeParameterWithConstraints(TypeMirror type) {
+        switch(type.getKind()){
+        case BOOLEAN:
+        case BYTE:
+        case CHAR:
+        case DOUBLE:
+        case FLOAT:
+        case INT:
+        case LONG:
+        case SHORT:
+        case VOID:
+        case WILDCARD:
+            return false;
+        case ARRAY:
+            return hasTypeParameterWithConstraints(type.getComponentType());
+        case DECLARED:
+            for(TypeMirror ta : type.getTypeArguments()){
+                if(hasTypeParameterWithConstraints(ta))
+                    return true;
+            }
+            return false;
+        case TYPEVAR:
+            TypeMirror bound = type.getUpperBound();
+            return bound != null && !sameType(bound, OBJECT_TYPE);
+        default:
+            return false;
+        }
+    }
+    
     private void markUnboxed(TypedDeclaration decl, TypeMirror type) {
         boolean unboxed = false;
         if(type.isPrimitive() 
@@ -2821,11 +2852,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     // from our annotation
     @SuppressWarnings("deprecation")
-    private void setTypeParametersFromAnnotations(Scope scope, List<TypeParameter> params, AnnotatedMirror mirror, List<AnnotationMirror> typeParameters) {
+    private void setTypeParametersFromAnnotations(Scope scope, List<TypeParameter> params, AnnotatedMirror mirror, 
+            List<AnnotationMirror> typeParameterAnnotations, List<TypeParameterMirror> typeParameterMirrors) {
         // We must first add every type param, before we resolve the bounds, which can
         // refer to type params.
         String selfTypeName = getSelfTypeFromAnnotations(mirror);
-        for(AnnotationMirror typeParam : typeParameters){
+        int i=0;
+        for(AnnotationMirror typeParamAnnotation : typeParameterAnnotations){
             TypeParameter param = new TypeParameter();
             param.setUnit(((Element)scope).getUnit());
             param.setContainer(scope);
@@ -2835,10 +2868,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 ((LazyContainer)scope).addMember(param);
             else // must be a method
                 scope.getMembers().add(param);
-            param.setName((String)typeParam.getValue("value"));
+            param.setName((String)typeParamAnnotation.getValue("value"));
             param.setExtendedType(typeFactory.getAnythingDeclaration().getType());
+            if(i < typeParameterMirrors.size()){
+                TypeParameterMirror typeParameterMirror = typeParameterMirrors.get(i);
+                param.setNonErasedBounds(hasNonErasedBounds(typeParameterMirror));
+            }
             
-            String varianceName = (String) typeParam.getValue("variance");
+            String varianceName = (String) typeParamAnnotation.getValue("variance");
             if(varianceName != null){
                 if(varianceName.equals("IN")){
                     param.setContravariant(true);
@@ -2852,28 +2889,29 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             
             params.add(param);
+            i++;
         }
 
         Module moduleScope = Decl.getModuleContainer(scope);
         // Now all type params have been set, we can resolve the references parts
         Iterator<TypeParameter> paramsIterator = params.iterator();
-        for(AnnotationMirror typeParam : typeParameters){
+        for(AnnotationMirror typeParamAnnotation : typeParameterAnnotations){
             TypeParameter param = paramsIterator.next();
             
             @SuppressWarnings("unchecked")
-            List<String> satisfiesAttribute = (List<String>)typeParam.getValue("satisfies");
+            List<String> satisfiesAttribute = (List<String>)typeParamAnnotation.getValue("satisfies");
             setListOfTypes(param.getSatisfiedTypes(), satisfiesAttribute, scope, moduleScope, 
                     "type parameter '"+param.getName()+"' satisfied types");
 
             @SuppressWarnings("unchecked")
-            List<String> caseTypesAttribute = (List<String>)typeParam.getValue("caseTypes");
+            List<String> caseTypesAttribute = (List<String>)typeParamAnnotation.getValue("caseTypes");
             if(caseTypesAttribute != null && !caseTypesAttribute.isEmpty())
                 param.setCaseTypes(new LinkedList<ProducedType>());
             setListOfTypes(param.getCaseTypes(), caseTypesAttribute, scope, moduleScope,
                     "type parameter '"+param.getName()+"' case types");
 
             @SuppressWarnings("unchecked")
-            String defaultValueAttribute = (String)typeParam.getValue("defaultValue");
+            String defaultValueAttribute = (String)typeParamAnnotation.getValue("defaultValue");
             if(defaultValueAttribute != null && !defaultValueAttribute.isEmpty()){
                 ProducedType decodedType = decodeType(defaultValueAttribute, scope, moduleScope, 
                         "type parameter '"+param.getName()+"' defaultValue");
@@ -2881,6 +2919,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 param.setDefaulted(true);
             }
         }
+    }
+
+    private boolean hasNonErasedBounds(TypeParameterMirror typeParameterMirror) {
+        List<TypeMirror> bounds = typeParameterMirror.getBounds();
+        // if we have at least one bound and not a single Object one
+        return bounds.size() > 0
+                && (bounds.size() != 1
+                   || !sameType(bounds.get(0), OBJECT_TYPE));
     }
 
     private void setListOfTypes(List<ProducedType> destinationTypeList, List<String> serialisedTypes, Scope scope, Module moduleScope, 
@@ -2938,7 +2984,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         method.setTypeParameters(params);
         List<AnnotationMirror> typeParameters = getTypeParametersFromAnnotations(methodMirror);
         if(typeParameters != null) {
-            setTypeParametersFromAnnotations(method, params, methodMirror, typeParameters);
+            setTypeParametersFromAnnotations(method, params, methodMirror, typeParameters, methodMirror.getTypeParameters());
         } else {
             setTypeParameters(method, params, methodMirror.getTypeParameters());
         }
@@ -2950,7 +2996,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         klass.setTypeParameters(params);
         List<AnnotationMirror> typeParameters = getTypeParametersFromAnnotations(classMirror);
         if(typeParameters != null) {
-            setTypeParametersFromAnnotations(klass, params, classMirror, typeParameters);
+            setTypeParametersFromAnnotations(klass, params, classMirror, typeParameters, classMirror.getTypeParameters());
         } else {
             setTypeParameters(klass, params, classMirror.getTypeParameters());
         }
