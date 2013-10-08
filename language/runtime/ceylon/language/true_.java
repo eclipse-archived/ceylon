@@ -3,7 +3,7 @@ package ceylon.language;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 
-@Ceylon(major = 5) @Object
+@Ceylon(major = 6) @Object
 public class true_ extends Boolean {
     
     private final static true_ value = new true_();

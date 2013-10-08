@@ -28,7 +28,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
-@Ceylon(major = 5)
+@Ceylon(major = 6)
 @com.redhat.ceylon.compiler.java.metadata.Class
 @TypeParameters({
     @TypeParameter(value = "Type", variance = Variance.OUT),

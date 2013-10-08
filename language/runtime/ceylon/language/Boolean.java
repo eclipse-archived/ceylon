@@ -8,7 +8,7 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major = 5)
+@Ceylon(major = 6)
 @Class
 @CaseTypes({"ceylon.language::true", "ceylon.language::false"})
 @ValueType

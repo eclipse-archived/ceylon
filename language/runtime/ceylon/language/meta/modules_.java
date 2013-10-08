@@ -10,7 +10,7 @@ import com.redhat.ceylon.compiler.java.metadata.Object;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 
-@Ceylon(major = 5)
+@Ceylon(major = 6)
 @Object
 public final class modules_ {
     

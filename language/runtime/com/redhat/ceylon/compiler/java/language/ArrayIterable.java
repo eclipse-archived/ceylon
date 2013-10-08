@@ -25,7 +25,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ignore
-@Ceylon(major = 5)
+@Ceylon(major = 6)
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes("ceylon.language::Iterable<Element,Absent>")
 public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, ReifiedType {

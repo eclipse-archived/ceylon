@@ -7,7 +7,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
-@Ceylon(major = 5)
+@Ceylon(major = 6)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeInterfaceType extends FreeClassOrInterfaceType implements ceylon.language.meta.declaration.OpenInterfaceType {
 

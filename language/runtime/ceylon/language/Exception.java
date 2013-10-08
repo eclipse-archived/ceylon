@@ -9,7 +9,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major = 5)
+@Ceylon(major = 6)
 @Class(extendsType = "ceylon.language::Basic")
 public class Exception extends RuntimeException implements ReifiedType {
 

@@ -7,7 +7,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Object")
 @com.redhat.ceylon.compiler.java.metadata.Annotations({
         @com.redhat.ceylon.compiler.java.metadata.Annotation(

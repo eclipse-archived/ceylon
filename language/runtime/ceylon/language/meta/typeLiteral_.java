@@ -10,7 +10,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major = 5)
+@Ceylon(major = 6)
 @Method
 public final class typeLiteral_ {
     
