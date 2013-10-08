@@ -14,11 +14,11 @@ import net.minidev.json.JSONValue;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.compiler.js.CeylonRunJsException;
 import com.redhat.ceylon.compiler.js.CompilerErrorException;
-import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -35,6 +35,7 @@ public class JsModuleManager extends ModuleManager {
     private boolean clLoaded;
     private final Map<String, Object> clmod;
 	private String encoding;
+    private static final String BIN_VERSION = Versions.JS_BINARY_MAJOR_VERSION + "." + Versions.JS_BINARY_MINOR_VERSION;
 
     public JsModuleManager(Context context, Map<String, Object> jsonCL, String encoding) {
         super(context);
@@ -174,9 +175,9 @@ public class JsModuleManager extends ModuleManager {
                     if (!model.containsKey("$mod-bin")) {
                         throw new CeylonRunJsException("The JS module " + jsFile +
                                 " is not compatible with the current version of ceylon-js");
-                    } else if (!model.get("$mod-bin").toString().equals(JsCompiler.BINARY_VERSION)) {
+                    } else if (!model.get("$mod-bin").toString().equals(BIN_VERSION)) {
                         throw new CompilerErrorException(String.format("This JavaScript module has binary version %s incompatible with the compiler version %s",
-                                model.get("$mod-bin"), JsCompiler.BINARY_VERSION));
+                                model.get("$mod-bin"), BIN_VERSION));
                     }
                     return model;
                 }

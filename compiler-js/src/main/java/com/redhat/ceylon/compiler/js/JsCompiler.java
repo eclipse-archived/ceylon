@@ -41,7 +41,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class JsCompiler {
 
-    public static final String BINARY_VERSION = "1";
     protected final TypeChecker tc;
     protected final Options opts;
     protected final RepositoryManager outRepo;
