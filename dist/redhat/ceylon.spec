@@ -4,17 +4,17 @@
 
 %define section free
 
-%define major_version 0
-%define minor_version 6
-%define micro_version 1
+%define major_version 1
+%define minor_version 0
+%define micro_version 0
 %define ceylon_home /usr/lib/ceylon/%{major_version}.%{minor_version}
 
 # Use one of the following lines depending if the source zip file
 # is a micro version (like 0.3.1) or not (like 0.4)
 # ATTENTION Simply commenting out a define does not work, it seems
 # the parser will still see and use it! Just change the # for a %
-#define name_source %{name}-%{major_version}.%{minor_version}
-%define name_source %{name}-%{major_version}.%{minor_version}.%{micro_version}
+%define name_source %{name}-%{major_version}.%{minor_version}
+#define name_source %{name}-%{major_version}.%{minor_version}.%{micro_version}
 
 Name: ceylon
 Epoch: 0
@@ -79,6 +79,8 @@ popd
 
 
 %changelog
+* Mar Oct 8 2013 Tako Schotanus <tschotan@redhat.com> 1.0.0-0
+- Update for 1.0.0
 * Tue Sep 24 2013 Tako Schotanus <tschotan@redhat.com> 0.6.1-0
 - Update for 0.6.1
 * Fri Sep 20 2013 Stephane Epardaud <separdau@redhat.com> 0.6.0-0
