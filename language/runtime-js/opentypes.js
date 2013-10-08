@@ -407,19 +407,19 @@ function $init$OpenClass(){
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language','Object']};}); 
       defineAttr($$openClass,'anonymous',function(){
         var $$openClass=this;
-        return false;
+        return false; //TODO
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','anonymous']};});
       defineAttr($$openClass,'abstract',function(){
         var _m=this.meta;
-        return (_m && (_m['abstract'] || _m.$an['abstract']))!==undefined;
+        return (_m && (_m['abstract'] || (_m.$an&&_m.$an['abstract'])))!==undefined;
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','abstract']};});
       defineAttr($$openClass,'$final',function(){
         var _m=this.meta;
-        return (_m && (_m['final'] || _m.$an['final']))!==undefined;
+        return (_m && _m.$an && _m.$an['final'])!==undefined;
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','final']};});
       defineAttr($$openClass,'annotation',function(){
         var _m=this.meta;
-        return (_m && (_m['annotation'] || _m.$an['annotation']))!==undefined;
+        return (_m && _m.$an && _m.$an['annotation'])!==undefined;
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','NestableDeclaration','$at','annotation']};});
       defineAttr($$openClass,'actual',function(){
         var _m=this.meta;
