@@ -220,10 +220,6 @@ Used with another target such as 'package'">
     
     <target name="setup-repo">
         <mkdir dir="${ceylon.dist.dir}/repo"/>
-        <copy todir="${ceylon.dist.dir}/repo">
-            <fileset dir="${ceylon-runtime.dir}/dist/repo">
-            </fileset>
-        </copy>
     </target>
 
     <target name="copy-compiler-binaries">
