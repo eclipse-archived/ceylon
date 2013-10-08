@@ -17,6 +17,7 @@ public abstract class TypedDeclaration extends Declaration {
     private boolean uncheckedNullType = false;
     private Boolean unboxed;
     private boolean typeErased;
+    private boolean untrustedType;
     private boolean isDynamicallyTyped;
     
     private TypedDeclaration originalDeclaration;
@@ -123,6 +124,14 @@ public abstract class TypedDeclaration extends Declaration {
 
     public void setTypeErased(Boolean typeErased) { 
         this.typeErased = typeErased; 
+    }
+
+    public Boolean getUntrustedType() { 
+        return untrustedType; 
+    }
+
+    public void setUntrustedType(Boolean untrustedType) { 
+        this.untrustedType = untrustedType; 
     }
 
     public boolean hasUncheckedNullType() {

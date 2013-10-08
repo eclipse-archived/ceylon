@@ -14,6 +14,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     private ProducedType defaultTypeArgument;
     private boolean defaulted;
     private boolean constrained;
+    private Boolean hasNonErasedBounds;
     private List<Declaration> members = new ArrayList<Declaration>(0);
 
     @Override
@@ -148,5 +149,13 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     public void setConstrained(boolean constrained) {
 		this.constrained = constrained;
 	}
+
+    public Boolean hasNonErasedBounds() {
+        return hasNonErasedBounds;
+    }
+
+    public void setNonErasedBounds(boolean hasNonErasedBounds) {
+        this.hasNonErasedBounds = hasNonErasedBounds;
+    }
     
 }
