@@ -147,7 +147,7 @@ interface LazyExprBase {
 }
 class LazyExprTest() satisfies LazyExprBase {
     shared variable Integer x = 1000;
-    shared String f1(Integer i, String f() => "``i``.``(++x)``") => "``i``:``f()``";
+    shared String f1(Integer i, String f() => "``i``.``(x+1)``") => "``i``:``f()``"; //TODO was ++x
     shared Integer f2(Integer i) => 2*(++x)+i;
     shared Integer i1 => ++x;
     shared Integer i2;
@@ -159,7 +159,7 @@ class LazyExprTest() satisfies LazyExprBase {
 }
 
 variable Integer lx = 1000;
-String lazy_f1(Integer i, String f() => "``i``.``(++lx)``") => f();
+String lazy_f1(Integer i, String f() => "``i``.``(lx+1)``") => f(); //TODO was ++lx
 Integer lazy_f2(Integer i) => 2*(++lx)+i;
 Integer lazy_i1 => ++lx;
 
@@ -181,19 +181,19 @@ void testLazyExpressions() {
     value tst = LazyExprTest();
     tst.x = 1;
     check(tst.f1(3)=="3:3.2", "=> defaulted param");
-    check(tst.f2(3)==9, "=> method");
-    check(tst.i1==4, "=> attribute");
-    check(tst.i2==10, "=> attribute specifier");
-    check(tst.s1=="6.1", "=> attribute refinement");
-    check(tst.s2(5)=="7.5", "=> method refinement");
+    check(tst.f2(3)==7, "=> method");
+    check(tst.i1==3, "=> attribute");
+    check(tst.i2==8, "=> attribute specifier");
+    check(tst.s1=="5.1", "=> attribute refinement");
+    check(tst.s2(5)=="6.5", "=> method refinement");
     
     lx = 1;
     check(lazy_f1(3)=="3.2", "=> defaulted param toplevel");
-    check(lazy_f2(3)==9, "=> method toplevel");
-    check(lazy_i1==4, "=> attribute toplevel");
+    check(lazy_f2(3)==7, "=> method toplevel");
+    check(lazy_i1==3, "=> attribute toplevel");
     
     variable Integer x = 1000;
-    String f1(Integer i, String f() => "``i``.``(++x)``") => f();
+    String f1(Integer i, String f() => "``i``.``(x+1)``") => f(); //TODO was ++x
     Integer f2(Integer i) => 2*(++x)+i;
     Integer i1 => ++x;
     Integer i2;
@@ -201,9 +201,9 @@ void testLazyExpressions() {
     
     x = 1;
     check(f1(3)=="3.2", "=> defaulted param local");
-    check(f2(3)==9, "=> method local");
-    check(i1==4, "=> attribute local");
-    check(i2==10, "=> attribute specifier local");
+    check(f2(3)==7, "=> method local");
+    check(i1==3, "=> attribute local");
+    check(i2==8, "=> attribute specifier local");
 
     value tst3 = LazyExprTest3();
     tst3.x = 1;
@@ -221,7 +221,7 @@ void testLazyExpressions() {
     x = 10;
     check(tst.f1{i=>++x;}=="11:11.2", "=> named arg");
     check(tst.f1{i=>++x; f()=>(++x).string;}=="12:13", "=> named arg function");
-    check(tst.f3{f(Integer i)=>"``i``-``++x``";}=="3-14", "=> named arg function with param");
+    check(tst.f3{f(Integer i)=>"``i``-``++x``";}=="2-14", "=> named arg function with param");
 }
 
 shared void test() {
