@@ -332,29 +332,29 @@ public final class ObjectAlias {
     }
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotations({
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6.1:ceylon.language::CAnything"),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6.1:ceylon.language::Vprocess"),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6.1:ceylon.language:meta.declaration:IDeclaration"),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6.1:ceylon.language::IList"),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6.1:ceylon.language::IList.Vsize"),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6.1:ceylon.language::IList.Fget"),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6.1:ceylon.language::Fsort"),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::0.6.1:ceylon.language::Vtrue"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::1.0.0:ceylon.language::CAnything"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::1.0.0:ceylon.language::Vprocess"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::1.0.0:ceylon.language:meta.declaration:IDeclaration"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::1.0.0:ceylon.language::IList"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::1.0.0:ceylon.language::IList.Vsize"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::1.0.0:ceylon.language::IList.Fget"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::1.0.0:ceylon.language::Fsort"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::1.0.0:ceylon.language::Vtrue"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CObjectAlias"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CAnnotationClassMetamodelReference")})
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted$annotations({
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted$annotation(mmr = "::0.6.1:ceylon.language::CAnything"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted$annotation(mmr = "::1.0.0:ceylon.language::CAnything"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted$annotation})
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotations({
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation(mmrs = {}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation(mmrs = "::0.6.1:ceylon.language::CAnything"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation(mmrs = "::1.0.0:ceylon.language::CAnything"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation(mmrs = {
-                "::0.6.1:ceylon.language::CAnything",
-                "::0.6.1:ceylon.language::Vprocess"}),
+                "::1.0.0:ceylon.language::CAnything",
+                "::1.0.0:ceylon.language::Vprocess"}),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation(mmrs = {}),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation(mmrs = {
-                "::0.6.1:ceylon.language::Vfalse",
-                "::0.6.1:ceylon.language::Vfalse"})})
+                "::1.0.0:ceylon.language::Vfalse",
+                "::1.0.0:ceylon.language::Vfalse"})})
 class AnnotationClassMetamodelReference_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnotationClassMetamodelReference_callsite() {

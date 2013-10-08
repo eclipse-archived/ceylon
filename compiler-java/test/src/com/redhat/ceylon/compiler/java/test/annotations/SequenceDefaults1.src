@@ -1428,10 +1428,10 @@ final class sequenceDefaults_Declaration_ {
         );
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.DeclarationValue({"::0.6.1:ceylon.language::Vempty"})
+    @.com.redhat.ceylon.compiler.java.metadata.DeclarationValue({"::1.0.0:ceylon.language::Vempty"})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     static final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> sequenceDefaults_Declaration$seq() {
-        return new .ceylon.language.Tuple<.ceylon.language.meta.declaration.ValueDeclaration, .ceylon.language.meta.declaration.ValueDeclaration, .ceylon.language.Empty>(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.meta.modules_.$get().find("ceylon.language", "0.6.1").findPackage("ceylon.language").getValue("empty")});
+        return new .ceylon.language.Tuple<.ceylon.language.meta.declaration.ValueDeclaration, .ceylon.language.meta.declaration.ValueDeclaration, .ceylon.language.Empty>(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.meta.modules_.$get().find("ceylon.language", "1.0.0").findPackage("ceylon.language").getValue("empty")});
     }
     
     @.ceylon.language.AnnotationAnnotation$annotation
@@ -1500,7 +1500,7 @@ final class sequenceDefaults_Declaration_Empty_ {
         primary = .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration.class)
 @.com.redhat.ceylon.compiler.java.metadata.DeclarationExprs({@.com.redhat.ceylon.compiler.java.metadata.DeclarationValue(
         name = "arg$seq",
-        value = {"::0.6.1:ceylon.language::Vempty"})})
+        value = {"::1.0.0:ceylon.language::Vempty"})})
 final class sequenceArguments_Declaration_ {
     
     private sequenceArguments_Declaration_() {
@@ -1510,7 +1510,7 @@ final class sequenceArguments_Declaration_ {
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Declaration")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration sequenceArguments_Declaration() {
-        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration(new .ceylon.language.Tuple<.ceylon.language.meta.declaration.ValueDeclaration, .ceylon.language.meta.declaration.ValueDeclaration, .ceylon.language.Empty>(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.meta.modules_.$get().find("ceylon.language", "0.6.1").findPackage("ceylon.language").getValue("empty")}));
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration(new .ceylon.language.Tuple<.ceylon.language.meta.declaration.ValueDeclaration, .ceylon.language.meta.declaration.ValueDeclaration, .ceylon.language.Empty>(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.meta.modules_.$get().find("ceylon.language", "1.0.0").findPackage("ceylon.language").getValue("empty")}));
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

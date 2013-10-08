@@ -483,9 +483,9 @@ public class CeylonDocToolTest {
         Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);
         
         // now we need to zip it up
-        File jarFolder = new File(dir, "ceylon/net/0.6.1");
+        File jarFolder = new File(dir, "ceylon/net/1.0.0");
         jarFolder.mkdirs();
-        File jarFile = new File(jarFolder, "ceylon.net-0.6.1.car");
+        File jarFile = new File(jarFolder, "ceylon.net-1.0.0.car");
         // now jar it up
         JarOutputStream outputStream = new JarOutputStream(new FileOutputStream(jarFile));
         for(String name : fileNames){
