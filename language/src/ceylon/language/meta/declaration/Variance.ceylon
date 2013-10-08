@@ -14,5 +14,5 @@ shared object covariant satisfies Variance {
 
 "Contravariant means that supertypes of the given type may be accepted."
 shared object contravariant satisfies Variance {
-    string => "contravariant";
+    string => "Contravariant";
 }
