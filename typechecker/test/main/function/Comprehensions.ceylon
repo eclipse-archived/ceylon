@@ -11,11 +11,11 @@ void comprehensions() {
     Entry<String,Integer>[] entries = [ for (s in words) for (n in 0..10) s->n ];
     @type:"Sequential<String>" value seq = [ for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>1) x.uppercased ];
     @type:"Iterable<String,Null>" value iter = { for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>1) x.uppercased };
-    @type:"Array<String>" array { for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>1) x.uppercased };
+    @type:"Array<String>" Array { for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>1) x.uppercased };
     @error array(for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>1) x.uppercased);
     
-    value yyy = { *array { *seq } };
-    value xxx = { *array (seq) };
+    value yyy = { *Array { *seq } };
+    value xxx = { *Array (seq) };
     
     value nulls = coalesce { for (c in "hElLo") null }.sequence;
     value nullsAndChars = coalesce { for (c in "hElLo") c.uppercase then c else null }.sequence;
