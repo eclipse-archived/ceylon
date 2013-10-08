@@ -30,5 +30,7 @@ public class Versions {
      */
     public static final int JVM_BINARY_MAJOR_VERSION = 5;
     public static final int JVM_BINARY_MINOR_VERSION = 0;
+    public static final int JS_BINARY_MAJOR_VERSION = JVM_BINARY_MAJOR_VERSION;
+    public static final int JS_BINARY_MINOR_VERSION = JVM_BINARY_MINOR_VERSION;
 
 }
