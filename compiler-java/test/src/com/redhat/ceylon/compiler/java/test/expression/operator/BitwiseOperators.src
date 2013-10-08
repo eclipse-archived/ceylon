@@ -27,7 +27,7 @@ abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceyl
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger clear(final long index) {
-        return $ceylon$language$Binary$this.clear(index);
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Binary$this.clear(index);
     }
     protected final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Integral$this;
     
@@ -227,13 +227,13 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     public .java.lang.Object boxedQualifiedAttributes() {
-        this.setBoxedI1(this.getBoxedN1().getNot());
-        this.setBoxedN1(this.getBoxedN1().and(this.getBoxedN2()));
-        this.setBoxedI1(this.getBoxedN1().or(this.getBoxedN2()));
-        this.setBoxedN1(this.getBoxedN1().xor(this.getBoxedN2()));
-        this.setBoxedN1(this.getBoxedN1().leftLogicalShift(1L));
-        this.setBoxedN1(this.getBoxedN1().rightLogicalShift(1L));
-        this.setBoxedN1(this.getBoxedN1().rightArithmeticShift(1L));
+        this.setBoxedI1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().getNot());
+        this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().and(this.getBoxedN2()));
+        this.setBoxedI1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().or(this.getBoxedN2()));
+        this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().xor(this.getBoxedN2()));
+        this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().leftLogicalShift(1L));
+        this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().rightLogicalShift(1L));
+        this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().rightArithmeticShift(1L));
         return null;
     }
     
@@ -336,13 +336,13 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
         .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger n1 = getInitN$priv();
         .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger n2 = getInitN$priv();
         .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger i1 = getInitI$priv();
-        i1 = n1.getNot();
-        n1 = n1.and(n2);
-        i1 = n1.or(n2);
-        n1 = n1.xor(n2);
-        n1 = n1.leftLogicalShift(1L);
-        n1 = n1.rightLogicalShift(1L);
-        n1 = n1.rightArithmeticShift(1L);
+        i1 = (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)n1.getNot();
+        n1 = (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)n1.and(n2);
+        i1 = (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)n1.or(n2);
+        n1 = (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)n1.xor(n2);
+        n1 = (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)n1.leftLogicalShift(1L);
+        n1 = (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)n1.rightLogicalShift(1L);
+        n1 = (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)n1.rightArithmeticShift(1L);
     }
     
     private final void unboxedToplevel$priv() {
@@ -403,13 +403,13 @@ class BitwiseOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expressi
     
     @.java.lang.Override
     public final .java.lang.Object boxedQualifiedAttributes() {
-        super.setBoxedI1(super.getBoxedN1().getNot());
-        super.setBoxedN1(super.getBoxedN1().and(super.getBoxedN2()));
-        super.setBoxedI1(super.getBoxedN1().or(super.getBoxedN2()));
-        super.setBoxedN1(super.getBoxedN1().xor(super.getBoxedN2()));
-        super.setBoxedN1(super.getBoxedN1().leftLogicalShift(1L));
-        super.setBoxedN1(super.getBoxedN1().rightLogicalShift(1L));
-        super.setBoxedN1(super.getBoxedN1().rightArithmeticShift(1L));
+        super.setBoxedI1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)super.getBoxedN1().getNot());
+        super.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)super.getBoxedN1().and(super.getBoxedN2()));
+        super.setBoxedI1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)super.getBoxedN1().or(super.getBoxedN2()));
+        super.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)super.getBoxedN1().xor(super.getBoxedN2()));
+        super.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)super.getBoxedN1().leftLogicalShift(1L));
+        super.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)super.getBoxedN1().rightLogicalShift(1L));
+        super.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)super.getBoxedN1().rightArithmeticShift(1L));
         return null;
     }
     

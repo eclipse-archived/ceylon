@@ -6,7 +6,7 @@ class Bug1095B implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     private final <Summand extends .ceylon.language.Summable<Summand>>void selfType$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedSummand, final Summand x) {
-        final Summand y = (
+        final Summand y = (Summand)(.java.lang.Object)(
             let
             {
                 .ceylon.language.Summable<Summand> $arg$0$callable$ = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)x;
@@ -14,7 +14,7 @@ class Bug1095B implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
             }
             returning $arg$0$callable$.plus($arg$0$0);
         );
-        final .ceylon.language.Summable<Summand> y2 = (
+        final .ceylon.language.Summable<Summand> y2 = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)(
             let
             {
                 .ceylon.language.Summable<Summand> $arg$1$callable$ = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)x;
@@ -23,7 +23,7 @@ class Bug1095B implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
             returning $arg$1$callable$.plus($arg$1$0);
         );
         final .ceylon.language.Summable<Summand> x2 = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)x;
-        final .ceylon.language.Summable<Summand> y3 = (
+        final .ceylon.language.Summable<Summand> y3 = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)(
             let
             {
                 .ceylon.language.Summable<Summand> $arg$2$callable$ = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)x;

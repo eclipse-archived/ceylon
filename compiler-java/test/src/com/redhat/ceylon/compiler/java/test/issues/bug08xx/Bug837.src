@@ -395,7 +395,7 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends Element> getRest() {
-        return new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug837<Element>($reifiedElement, ((.ceylon.language.Ordinal<? extends Element>)(.ceylon.language.Ordinal)getFirst()).getSuccessor(), getLength$priv() - 1L);
+        return new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug837<Element>($reifiedElement, (Element)(.java.lang.Object)((.ceylon.language.Ordinal<? extends Element>)(.ceylon.language.Ordinal)getFirst()).getSuccessor(), getLength$priv() - 1L);
     }
     
     @.java.lang.Override
