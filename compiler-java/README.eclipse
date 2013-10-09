@@ -1,7 +1,11 @@
 Setting up Eclipse to build the Ceylon compiler
 ===============================================
 
- 0. First make sure you have compiled the ceylon projects according to the instruction in the README.md file
+First make sure you have compiled the ceylon projects according to the instruction in the README.md file!
+
+ 0. Set your default "Text file encoding" to "UTF-8" and your default "New text file line delimiter"
+    to "Unix" in your Eclipse preferences (Window -> Preferences -> General -> Workspace). If you do
+    this you can skip Step 6 below.
 
  1. NB, in this file, "/path/to/ceylon" should be replaced with the
     full path of the directory containing this file.
@@ -30,7 +34,17 @@ Setting up Eclipse to build the Ceylon compiler
 
     b) Click "Finish"
 
- 6. If you see an error of the form
+ 6. If you didn't apply the setting of Step 0 you now have to set them in the properties for each of the imported projects:
+
+    a) Right-click on the project, select Properties then Resource
+    
+    b) Make sure the "Text file encoding" is set to "UTF-8" and
+    
+    c) The "New text file line delimiter" is set to "Unix"
+    
+    d) Click "Ok"
+
+ 7. If you see an error of the form
 
     "Access restriction: Class is not accessible due to restriction on
     required library"
@@ -43,11 +57,11 @@ Setting up Eclipse to build the Ceylon compiler
     "Deprecated and restricted API" section in the dialog box.  Set
     this to Warning" or "Ignore".
 
- 7. The project should now be correctly set up.  To test it:
+ 8. The project should now be correctly set up.  To test it:
 
- 8. Select "Run -> Run Configurations..." from the main menu.
+ 9. Select "Run -> Run Configurations..." from the main menu.
 
- 9. In the "Run Configurations" dialog:
+10. In the "Run Configurations" dialog:
 
     a) Right click on "JUnit" in the list on the left
        and select "New" from the popup menu.
@@ -72,6 +86,6 @@ Setting up Eclipse to build the Ceylon compiler
  
     g) Click "Run"
 
-10. You should see some output from the Ceylon compiler in the
+11. You should see some output from the Ceylon compiler in the
     "Console" tab at the bottom of the screen. Some tests will fail
     but most should succeed.
