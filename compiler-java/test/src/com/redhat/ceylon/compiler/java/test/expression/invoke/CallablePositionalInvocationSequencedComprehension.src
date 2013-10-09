@@ -7,7 +7,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
     
     static void callablePositionalInvocationSequencedComprehension(final .ceylon.language.Callable<? extends .java.lang.Object> foo, final .ceylon.language.Callable<? extends .java.lang.Object> bar) {
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> em = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
-        foo.$call$variadic(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
+        foo.$call$variadic(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
@@ -38,7 +38,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
                 };
             }
         }.getSequence());
-        foo.$call$variadic(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{em}){
+        foo.$call$variadic(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, false, new .ceylon.language.Iterable[]{em}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
@@ -69,7 +69,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
                 };
             }
         }.getSequence());
-        bar.$call$variadic(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
+        bar.$call$variadic(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
@@ -100,7 +100,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
                 };
             }
         }.getSequence());
-        bar.$call$variadic(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{em}){
+        bar.$call$variadic(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, false, new .ceylon.language.Iterable[]{em}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
@@ -132,7 +132,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
             }
         }.getSequence());
         final .ceylon.language.Callable<? extends .java.lang.Object> mCallableFoo = foo;
-        mCallableFoo.$call$variadic(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
+        mCallableFoo.$call$variadic(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
@@ -163,7 +163,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
                 };
             }
         }.getSequence());
-        mCallableFoo.$call$variadic(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{em}){
+        mCallableFoo.$call$variadic(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, false, new .ceylon.language.Iterable[]{em}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
@@ -195,7 +195,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
             }
         }.getSequence());
         final .ceylon.language.Callable<? extends .java.lang.Object> mCallableBar = bar;
-        mCallableBar.$call$variadic(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
+        mCallableBar.$call$variadic(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
@@ -226,7 +226,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
                 };
             }
         }.getSequence());
-        mCallableBar.$call$variadic(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{em}){
+        mCallableBar.$call$variadic(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, false, new .ceylon.language.Iterable[]{em}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){

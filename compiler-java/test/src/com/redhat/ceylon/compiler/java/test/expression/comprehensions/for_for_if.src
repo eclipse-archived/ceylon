@@ -6,7 +6,7 @@ final class forForIf_ {
     }
     private static final .ceylon.language.Sequential<? extends .ceylon.language.Integer>[] value;
     static {
-        value = new .ceylon.language.Sequential[]{new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{
+        value = new .ceylon.language.Sequential[]{new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{
                 new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(5L)),
                 new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(5L))}){
             

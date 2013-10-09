@@ -6,7 +6,7 @@ class ForIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     public final void m(final .ceylon.language.Sequential<? extends .java.lang.Object> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{xs}){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{xs}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Boolean> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor){

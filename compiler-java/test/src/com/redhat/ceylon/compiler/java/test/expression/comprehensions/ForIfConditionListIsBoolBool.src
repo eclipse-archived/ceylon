@@ -6,7 +6,7 @@ class ForIfConditionListIsBoolBool implements .com.redhat.ceylon.compiler.java.r
     }
     
     private final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> m$priv(final .ceylon.language.Sequential<? extends .java.lang.Object> xs, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> zs) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{
                 xs,
                 zs}){
             
@@ -85,7 +85,7 @@ class ForIfConditionListIsBoolBool implements .com.redhat.ceylon.compiler.java.r
     }
     
     private final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> synthetic$priv(final .ceylon.language.Sequential<? extends .java.lang.Object> xs, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> zs) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{
                 xs,
                 zs}){
             

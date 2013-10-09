@@ -6,7 +6,7 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> xs) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{xs}){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{xs}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
@@ -53,7 +53,7 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m2(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> xs) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{xs}){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{xs}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){

@@ -216,7 +216,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
     }
     
     private final .java.lang.Object oneSequencedParam3$priv() {
-        return getOneSequencedParam$priv().$call$variadic(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
+        return getOneSequencedParam$priv().$call$variadic(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
@@ -273,7 +273,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
     }
     
     private final .java.lang.Object secondSequencedParam3$priv() {
-        return getSecondSequencedParam$priv().$call$variadic(.ceylon.language.Integer.instance(1L), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
+        return getSecondSequencedParam$priv().$call$variadic(.ceylon.language.Integer.instance(1L), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){

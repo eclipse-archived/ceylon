@@ -6,7 +6,7 @@ class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     public final void m(final .ceylon.language.Sequential<? extends .java.lang.Object> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{xs}){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{xs}){
             
             public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor){
@@ -53,7 +53,7 @@ class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     public final void mvar(final .ceylon.language.Sequential<? extends .java.lang.Object> ys) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{ys}){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{ys}){
             
             public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor){

@@ -36,7 +36,7 @@ final class bug601_ {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor);
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
                 .ceylon.language.Iterable $arg$2$0 = .ceylon.language.ArraySequence.<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), new .java.lang.Object[]{
-                        new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{.ceylon.language.String.split("hello world")}){
+                        new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, false, new .ceylon.language.Iterable[]{.ceylon.language.String.split("hello world")}){
                             
                             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
