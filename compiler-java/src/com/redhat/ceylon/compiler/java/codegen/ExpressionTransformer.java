@@ -4115,6 +4115,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         Naming.SyntheticName prevItemVar = null;
         Naming.SyntheticName ctxtName = null;
         Naming.SyntheticName lastIteratorCtxtName = null;
+        private boolean containsIf = false;
         ListBuffer<JCExpression> iterables = ListBuffer.<JCExpression>lb();
         //Iterator fields
         final ListBuffer<JCTree> fields = new ListBuffer<JCTree>();
@@ -4157,6 +4158,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         }
                         clause = fcl.getComprehensionClause();
                     } else if (clause instanceof IfComprehensionClause) {
+                        containsIf = true;
                         transformIfClause((IfComprehensionClause)clause);
                         if (error != null) {
                             return error;
@@ -4269,16 +4271,6 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCTypeApply iterableType = make().TypeApply(makeIdent(syms().ceylonAbstractIterableType),
                         List.<JCExpression>of(makeJavaType(iteratedType, JT_NO_PRIMITIVES),
                                 makeJavaType(absentIterType, JT_NO_PRIMITIVES)));
-            /*JCExpression iterable = make().NewClass(null, null,
-                    iterableType,
-                                List.<JCExpression>of(
-                                        makeReifiedTypeArgument(iteratedType), 
-                                        makeReifiedTypeArgument(absentIterType),
-                                        make().NewArray(
-                                                makeJavaType(typeFact().getIterableDeclaration().getType(), JT_RAW), List.<JCExpression>nil(), iterables)), 
-                    make().AnonymousClassDef(make().Modifiers(0), 
-                            List.<JCTree>of(getIterator)));
-                            */
             CallBuilder callBuilder = CallBuilder.instance(ExpressionTransformer.this);
             callBuilder.instantiate(null, iterableType, 
                     make().AnonymousClassDef(make().Modifiers(0), 
@@ -4286,6 +4278,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             List<ExpressionAndType> args = List.<ExpressionAndType>of(
                     new ExpressionAndType(makeReifiedTypeArgument(iteratedType), makeTypeDescriptorType()), 
                     new ExpressionAndType(makeReifiedTypeArgument(absentIterType), makeTypeDescriptorType()),
+                    new ExpressionAndType(make().Literal(containsIf), make().Type(syms().booleanType)),
                     new ExpressionAndType(make().NewArray(
                             makeJavaType(typeFact().getIterableDeclaration().getType(), JT_RAW), List.<JCExpression>nil(), iterables),
                             make().TypeArray(makeJavaType(typeFact().getIterableDeclaration().getType(), JT_RAW)))
