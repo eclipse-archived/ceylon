@@ -23,23 +23,18 @@ Directory structure:
 Building
 --------
 
-The default local module repository is created under: 
+For setting up the development environment and compiling and building the distribution
+take a look at [ceylon-dist](https://github.com/ceylon/ceylon-spec/README.md).
 
-    ~/.ceylon/repo
+If after having built the distribution you want to build and test the module resolver
+return to `ceylon-module-resolver` and run
 
-To publish the Ceylon Module Resolver (this
-is required before building the compiler and typechecker), type:
+    ant clean publish
+    
+To run the tests type
 
-    ant publish
-
-Other commands:
-
-* `ant clean`        - clean the build (might be needed before `publish`)
-* `ant test`         - run the tests         
-* `ant clean.repo`   - clean local repository
-* `ant publish`      - publish module `ceylon.language` 
-                       to the local repository
-
+    ant test
+    
 Alternatively you can build this project using Maven:
 
     mvn install
