@@ -353,8 +353,8 @@ public class CeylonTransformer extends AbstractTransformer {
         if (Decl.isNonTransientValue(declarationModel)
                 && !(expression instanceof Tree.LazySpecifierExpression)) {
             if (expression != null) {
-                initialValue = expressionGen().transformExpression(
-                        expression.getExpression(), 
+                initialValue = expressionGen().transform(
+                        expression, 
                         CodegenUtil.getBoxingStrategy(declarationModel),
                         declarationModel.getType());
             } else {

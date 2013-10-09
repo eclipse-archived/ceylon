@@ -248,6 +248,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result;
     }
     
+    public JCExpression transform(Tree.SpecifierOrInitializerExpression expr,
+            BoxingStrategy boxing, ProducedType expectedType) {
+        backwardBranchWithUninitialized = null;
+        return transformExpression(expr.getExpression(), boxing, expectedType);
+    }
+    
     //
     // Any sort of expression
     
