@@ -189,7 +189,7 @@ public class ExpressionTransformer extends AbstractTransformer {
      */
     private boolean uninitializedOperand(boolean uninitializedOperand) {
         boolean prev = this.uninitializedOperand;
-        this.uninitializedOperand = uninitializedOperand;
+        this.uninitializedOperand = prev || uninitializedOperand;
         return prev;
     }
     
