@@ -337,14 +337,14 @@
             sysrep="${build.test.repo}"
             run="runAndAssert"
             module="default"
-            resultproperty="test.ceylon.result">
+            resultproperty="test.ceylon.result.1">
             <rep url="${build.test}"/>
         </ceylon-run>
         <ceylon-run
             executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
             module="javaa/1"
-            resultproperty="test.ceylon.result">
+            resultproperty="test.ceylon.result.2">
             <rep url="${build.test}"/>
             <rep url="aether"/>
         </ceylon-run>
@@ -352,19 +352,24 @@
             executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
             module="metamodel/0.1"
-            resultproperty="test.ceylon.result">
+            resultproperty="test.ceylon.result.3">
             <rep url="${build.test}"/>
         </ceylon-run>
     	<ceylon-run
             executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
             module="annotations/0.1"
-            resultproperty="test.ceylon.result">
+            resultproperty="test.ceylon.result.4">
             <rep url="${build.test}"/>
         </ceylon-run>
         
         <condition property="test.fail.ceylon">
-            <not><equals arg1="${test.ceylon.result}" arg2="0"/></not>
+            <and>
+                <not><equals arg1="${test.ceylon.result.1}" arg2="0"/></not>
+                <not><equals arg1="${test.ceylon.result.2}" arg2="0"/></not>
+                <not><equals arg1="${test.ceylon.result.3}" arg2="0"/></not>
+	            <not><equals arg1="${test.ceylon.result.4}" arg2="0"/></not>
+            </and>
         </condition>
         
         <mkdir dir="${test.reports}"/>
@@ -388,7 +393,7 @@
           <report format="frames" todir="${test.reports}"/>
         </junitreport>-->
         
-        <fail if="${test.fail.ceylon}" message="There were ${test.ceylon.result} failure(s) in the Ceylon tests"/>
+        <fail if="${test.fail.ceylon}" message="There were failures in the Ceylon tests"/>
         <fail if="${test.fail.junit}"  message="There were Junit test failures"/>
         
     </target>
