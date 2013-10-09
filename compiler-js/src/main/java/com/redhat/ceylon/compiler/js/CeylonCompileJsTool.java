@@ -190,10 +190,10 @@ public class CeylonCompileJsTool extends RepoUsingTool {
             String n = e.getName().toLowerCase();
             if (e.isFile() && (n.endsWith(".ceylon") || n.endsWith(".js"))) {
                 if (opts.isVerbose()) {
-                    System.out.println("Adding to compilation set: " + e.getPath());
+                    System.out.println("Adding to compilation set: " + normalizePath(e.getPath()));
                 }
-                if (!onlyFiles.contains(e.getPath())) {
-                    onlyFiles.add(e.getPath());
+                if (!onlyFiles.contains(normalizePath(e.getPath()))) {
+                    onlyFiles.add(normalizePath(e.getPath()));
                 }
             } else if (e.isDirectory()) {
                 addFilesToCompilationSet(opts, e, onlyFiles);
@@ -201,6 +201,10 @@ public class CeylonCompileJsTool extends RepoUsingTool {
         }
     }
 
+    private static String normalizePath(String path) {
+    	return path.replace('\\', '/');
+    }
+    
     public static void run(Options opts, List<String> files) throws IOException {
         final TypeChecker typeChecker;
         if (opts.hasVerboseFlag("cmr")) {
@@ -274,7 +278,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
                             if (opts.isVerbose()) {
                                 System.out.printf("Adding %s to compilation set%n", filedir);
                             }
-                            onlyFiles.add(filedir);
+                            onlyFiles.add(normalizePath(filedir));
                             once=true;
                             break;
                         }
@@ -370,7 +374,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
         typeChecker = tcb.getTypeChecker();
         if (!onlyFiles.isEmpty()) {
             for (PhasedUnit pu : typeChecker.getPhasedUnits().getPhasedUnits()) {
-                if (!onlyFiles.contains(pu.getUnitFile().getPath())) {
+                if (!onlyFiles.contains(normalizePath(pu.getUnitFile().getPath()))) {
                     typeChecker.getPhasedUnits().removePhasedUnitForRelativePath(pu.getPathRelativeToSrcDir());
                 }
             }
