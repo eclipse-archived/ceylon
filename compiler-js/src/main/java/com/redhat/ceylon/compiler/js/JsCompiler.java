@@ -271,7 +271,7 @@ public class JsCompiler {
                     } else {
                         //Find the corresponding compilation unit
                         for (PhasedUnit pu : units) {
-                            String unitPath = pu.getUnitFile().getPath().replace('/', File.separatorChar);
+                            String unitPath = pu.getUnitFile().getPath();
                             if (path.equals(unitPath)) {
                                 compileUnit(pu, names);
                                 if (stopOnError()) {
