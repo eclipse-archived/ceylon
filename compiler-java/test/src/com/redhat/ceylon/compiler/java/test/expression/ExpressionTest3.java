@@ -19,6 +19,9 @@
  */
 package com.redhat.ceylon.compiler.java.test.expression;
 
+import java.lang.reflect.Field;
+
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -192,6 +195,24 @@ public class ExpressionTest3 extends CompilerTest {
     @Test
     public void testComprehensionEmptiness() {
         compareWithJavaSource("comprehensions/Emptiness");
+    }
+    
+    @Test
+    public void testComprehensionsOptimized() throws ReflectiveOperationException {
+        compile("comprehensions/OptimizedTupleComprehension.ceylon");
+        Object seq = run("com.redhat.ceylon.compiler.java.test.expression.comprehensions.optimizedTupleComprehension");
+        Assert.assertEquals("ceylon.language.ArraySequence", seq.getClass().getName());
+        Field length = null;
+        for (Field field : seq.getClass().getDeclaredFields()) {
+            if ("array".equals(field.getName())) {
+                length = field;
+                length.setAccessible(true);
+                break;
+            }
+        }
+        Assert.assertNotNull(length);
+        Object[] array = (Object[])length.get(seq);
+        Assert.assertEquals(10, array.length);
     }
     
     @Test
