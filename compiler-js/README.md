@@ -4,15 +4,15 @@ Ceylon JS compiler
 Compiling and running
 ---------------------
 
-The ceylon-spec project must be located at `../ceylon-spec`.
+For setting up the development environment and compiling and building the distribution
+take a look at [ceylon-dist](https://github.com/ceylon/ceylon-spec/README.md).
 
-First, compile and publish the typechecker by typing:
+If after having built the distribution you want to build and test the compiler
+return to `ceylon-js` and run
 
-    ant publish
+    ant clean publish
 
-in the `ceylon-spec/` directory. 
-
-Now, to compile the tests, type:
+To run the tests type:
 
     ant test
 
