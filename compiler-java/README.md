@@ -24,34 +24,15 @@ Directory structure
 * `src`       - the Ceylon compiler backend sources
 * `langtools` - the OpenJDK Javac compiler sources
 * `test-src`  - the Ceylon compiler backend unit tests
-* `samples`   - a few sample Ceylon programs
 
 Build the compiler and tools
 ----------------------------
 
-First you must make sure you have built the 
-[ceylon.language](https://github.com/ceylon/ceylon.language), 
-[ceylon-spec](https://github.com/ceylon/ceylon-spec) and
-[ceylon-common](https://github.com/ceylon/ceylon-common) projects.
-[ceylon-module-resolver](https://github.com/ceylon/ceylon-module-resolver) projects.
+For setting up the development environment and compiling and building the distribution
+take a look at [ceylon-dist](https://github.com/ceylon/ceylon-spec/README.md).
 
-Go into `ceylon.language` first and run
-
-    ant clean publish
-    
-Then go into `ceylon-common` and run
-
-    ant clean publish
-
-Then go into `ceylon-module-resolver` and run
-
-    ant clean publish
-
-Then go into `ceylon-spec` and run
-
-    ant clean publish
-    
-To build and test the compiler return to `ceylon-compiler` and run
+If after having built the distribution you want to build and test the compiler
+return to `ceylon-compiler` and run
 
     ant clean publish
     
@@ -63,7 +44,7 @@ Note that some of the tests currently fail. See more info in README.tests.
 
 Once built, the compiler lives in this jar:
 
-    ~/.ceylon/repo/com/redhat/ceylon/compiler/java/0.6/com.redhat.ceylon.compiler.java-0.6.jar
+    ~/.ceylon/repo/com/redhat/ceylon/compiler/java/X.Y.Z/com.redhat.ceylon.compiler.java-X.Y.Z.jar
 
 If you want to build and run the Ceylon compiler in Eclipse
 then please see README.eclipse for setup instructions.
@@ -71,29 +52,11 @@ then please see README.eclipse for setup instructions.
 Running the compiler
 --------------------
 
-The compiler can be run as follows:
+For help on the usage of the ceylon compiler you can either type
 
-    build/bin/ceylonc -src samples -out build/ceylon-cars samples/helloworld.ceylon 
-
-The -src argument to the compiler is required in order for
-the compiler to figure out each class's full name.  It is
-a colon-separated path, much like javac's -sourcepath argument.
-
-You can add -rep arguments to add module repositories. These can either be local paths
-or HTTP URLs.
-
-Running your Ceylon program
----------------------------
-
-In order to run your Ceylon program you'll need the https://github.com/ceylon/ceylon-runtime
-project. Clone that repository and follow the README instructions.
-
-Generating the API documentation 
---------------------------------
-
-The ceylondoc tool can be run as follows:
-
-    build/bin/ceylond -out api-docs -src ../ceylon.language/languagesrc/current ceylon.language
+    ceylon help compile
+    
+or you can go to the online documentation for [ceylon compile](/documentation/current/reference/tool/ceylon/subcommands/ceylon-compile.html)
 
 Building the project on Mac with JDK7
 -------------------------------------
