@@ -21,7 +21,7 @@ function FreeClass(declaration, $$freeClass){
   $init$FreeClass();
   if ($$freeClass===undefined)$$freeClass=new FreeClass.$$;
   OpenClassType$meta$declaration($$freeClass);
-  $$freeClass.declaration$26_=declaration;
+  $$freeClass._decl=declaration;
   $$freeClass.$prop$getDeclaration={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:ClassDeclaration$meta$declaration},$cont:FreeClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenClassType','$at','declaration']};}};
   $$freeClass.$prop$getDeclaration.get=function(){return declaration};
   return $$freeClass;
@@ -31,25 +31,6 @@ function $init$FreeClass(){
   if (FreeClass.$$===undefined){
    initTypeProto(FreeClass,'ceylon.language.meta.declaration::FreeClass',Basic,OpenClassType$meta$declaration);
    (function($$freeClass){
-    defineAttr($$freeClass,'declaration',function(){return this.declaration$26_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:ClassDeclaration$meta$declaration},$cont:FreeClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenClassType','$at','declaration']};});
-    defineAttr($$freeClass,'extendedType',function(){
-      return this.declaration.extendedType;
-    },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:OpenClassType$meta$declaration}]},$cont:FreeClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenClassType','$at','extendedType']};});
-    defineAttr($$freeClass,'satisfiedTypes',function(){
-      return this.declaration.satisfiedTypes;
-    },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:OpenInterfaceType$meta$declaration}}},$cont:FreeClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenClassType','$at','satisfiedTypes']};});
-    defineAttr($$freeClass,'typeArguments',function(){
-      var tps=this.declaration.typeParameterDeclarations;
-      if (tps && tps.length > 0) {
-        var targs=[];
-        for (var i=0; i < tps.length; i++) {
-          var targ = Object$();
-          targs.push(Entry(tps[i], targ, {Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}}));
-        }
-        return LazyMap(targs.reifyCeylonType({Absent:{t:Null},Element:{t:Entry,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}}}}),{Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}});
-      }
-      return getEmpty();
-    },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}}},$cont:FreeClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenClassType','$at','typeArguments']};});
     $$freeClass.equals=function(other) {
       return isOfType(other,{t:FreeClass}) && other.declaration.equals(this.declaration);
     }
@@ -67,35 +48,22 @@ function FreeInterface(declaration, $$freeInterface){
     OpenInterfaceType$meta$declaration($$freeInterface);
     
     //AttributeDeclaration declaration at X (173:4-173:50)
-    $$freeInterface.declaration$27_=declaration;
+    $$freeInterface._decl=declaration;
     $$freeInterface.$prop$getDeclaration.get=function(){return declaration};
     return $$freeInterface;
 }
 FreeInterface.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:OpenInterfaceType$meta$declaration}],d:['ceylon.language.meta.declaration','OpenInterfaceType']};};
 function $init$FreeInterface(){
-    if (FreeInterface.$$===undefined){
-        initTypeProto(FreeInterface,'ceylon.language.meta.declaration::FreeInterface',Basic,OpenInterfaceType$meta$declaration);
-        (function($$freeInterface){
-            
-            //AttributeDeclaration declaration at X (173:4-173:50)
-            defineAttr($$freeInterface,'declaration',function(){return this.declaration$27_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:InterfaceDeclaration$meta$declaration},$cont:FreeInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenInterfaceType','$at','declaration']};});
-            
-            //AttributeGetterDefinition extendedType at X (174:4-174:82)
-            defineAttr($$freeInterface,'extendedType',function(){
-              return this.declaration.extendedType;
-            },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:OpenClassType$meta$declaration}]},$cont:FreeInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenInterfaceType','$at','extendedType']};});
-            //AttributeGetterDefinition satisfiedTypes at X (175:4-175:89)
-            defineAttr($$freeInterface,'satisfiedTypes',function(){
-              return this.declaration.satisfiedTypes;
-            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:OpenInterfaceType$meta$declaration}}},$cont:FreeInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenInterfaceType','$at','satisfiedTypes']};});
-            //AttributeGetterDefinition typeArguments at X (176:4-176:97)
-            defineAttr($$freeInterface,'typeArguments',function(){
-                var $$freeInterface=this;
-                throw wrapexc(Exception(String$("IMPL FreeInterface.typeArguments")),'176:63-176:95','X');
-            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}}},$cont:FreeInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenInterfaceType','$at','typeArguments']};});
-        })(FreeInterface.$$.prototype);
+  if (FreeInterface.$$===undefined){
+    initTypeProto(FreeInterface,'ceylon.language.meta.declaration::FreeInterface',Basic,OpenInterfaceType$meta$declaration);
+    (function($$freeInterface){
+    $$freeInterface.equals=function(other) {
+      return isOfType(other,{t:FreeInterface}) && other.declaration.equals(this.declaration);
     }
-    return FreeInterface;
+            
+    })(FreeInterface.$$.prototype);
+  }
+  return FreeInterface;
 }
 exports.$init$FreeInterface=$init$FreeInterface;
 $init$FreeInterface();
