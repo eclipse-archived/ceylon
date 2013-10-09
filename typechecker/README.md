@@ -34,29 +34,17 @@ Directory structure:
               specification
 * `support` - the docbook build
 
-## Type analyzer
+## Build and test the type analyzer
 
-The type checker project depends on two projects that you need 
-to build locally:
+For setting up the development environment and compiling and building the distribution
+take a look at [ceylon-dist](https://github.com/ceylon/ceylon-spec/README.md).
 
-* [ceylon-common](https://github.com/ceylon/ceylon-common)
-* [ceylon.language](https://github.com/ceylon/ceylon.language)
-* [ceylon-module-resolver](https://github.com/ceylon/ceylon-module-resolver)
-
-Go into `ceylon-common` first and run
+If after having built the distribution you want to build and test the type analyzer
+return to `ceylon-spec` and run
 
     ant clean publish
-
-Then go into `ceylon.language` and run
-
-    ant clean publish
-
-Then go into `ceylon-module-resolver` and run
-
-    ant clean publish
-
-To run the type analyzer tests, in the root directory
-type:
+    
+To run the tests type
 
     ant test
 
