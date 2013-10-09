@@ -4083,14 +4083,24 @@ public class ExpressionTransformer extends AbstractTransformer {
             at(comp);
             // make sure "this" will be qualified since we're introducing a new surrounding class
             boolean oldWithinSyntheticClassBody = withinSyntheticClassBody(true);
+            
             try{
+                ListBuffer<JCExpression> iterables = ListBuffer.<JCExpression>lb();
                 Tree.ComprehensionClause clause = comp.getForComprehensionClause();
                 while (clause != null) {
                     final Naming.SyntheticName iterVar = naming.synthetic("iter$"+idx);
                     Naming.SyntheticName itemVar = null;
                     if (clause instanceof ForComprehensionClause) {
                         final ForComprehensionClause fcl = (ForComprehensionClause)clause;
-                        itemVar = transformForClause(fcl, iterVar, itemVar);
+                        SpecifierExpression specexpr = fcl.getForIterator().getSpecifierExpression();
+                        iterables.add(transformExpression(specexpr.getExpression()));
+                        JCExpression iterator = make().Apply(null,
+                                makeSelect(
+                                make().Indexed(make().Apply(null, naming.makeUnquotedIdent("$getIterables"), List.<JCExpression>nil()),
+                                        make().Literal(iterables.size()-1)), "iterator"),
+                                        List.<JCExpression>nil());
+                        itemVar = transformForClause(fcl, iterVar, itemVar, iterator);
+                        
                         if (error != null) {
                             return error;
                         }
@@ -4121,7 +4131,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 //Define the inner iterator class
 
                 JCMethodDecl getIterator = makeGetIterator(iteratedType);
-                JCExpression iterable = makeAnonymousIterable(iteratedType, getIterator);
+                JCExpression iterable = makeAnonymousIterable(iteratedType, getIterator, iterables.toList());
                 for (Substitution subs : fieldSubst) {
                     subs.close();
                 }
@@ -4182,13 +4192,16 @@ public class ExpressionTransformer extends AbstractTransformer {
          * @return
          */
         private JCExpression makeAnonymousIterable(ProducedType iteratedType,
-                JCMethodDecl getIterator) {
+                JCMethodDecl getIterator, List<JCExpression> iterables) {
             JCExpression iterable = make().NewClass(null, null,
                     make().TypeApply(makeIdent(syms().ceylonAbstractIterableType),
                         List.<JCExpression>of(makeJavaType(iteratedType, JT_NO_PRIMITIVES),
                                 makeJavaType(absentIterType, JT_NO_PRIMITIVES))),
-                                List.<JCExpression>of(makeReifiedTypeArgument(iteratedType), 
-                                        makeReifiedTypeArgument(absentIterType)), 
+                                List.<JCExpression>of(
+                                        makeReifiedTypeArgument(iteratedType), 
+                                        makeReifiedTypeArgument(absentIterType),
+                                        make().NewArray(
+                                                makeJavaType(typeFact().getIterableDeclaration().getType(), JT_RAW), List.<JCExpression>nil(), iterables)), 
                     make().AnonymousClassDef(make().Modifiers(0), 
                             List.<JCTree>of(getIterator)));
             return iterable;
@@ -4285,7 +4298,8 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         private SyntheticName transformForClause(final ForComprehensionClause clause,
                 final Naming.SyntheticName iterVar,
-                Naming.SyntheticName itemVar) {
+                Naming.SyntheticName itemVar, 
+                JCExpression iterator) {
             final ForComprehensionClause fcl = clause;
             SpecifierExpression specexpr = fcl.getForIterator().getSpecifierExpression();
             ProducedType iterType = specexpr.getExpression().getTypeModel();
@@ -4296,8 +4310,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), iterVar.asName(), iterTypeExpr,
                     null));
                 fieldNames.add(iterVar.getName());
-                initIterator = make().Exec(make().Assign(iterVar.makeIdent(), make().Apply(null, makeSelect(transformExpression(specexpr.getExpression()), "iterator"), 
-                        List.<JCExpression>nil())));
+                initIterator = make().Exec(make().Assign(iterVar.makeIdent(), iterator));
             } else {
                 //The subsequent iterators need to be inside a method,
                 //in case they depend on the current element of the previous iterator
@@ -4314,9 +4327,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                                   make().Return(makeBoolean(false)),
                                   null),
                         make().Exec(make().Assign(iterVar.makeIdent(), 
-                                                  make().Apply(null,
-                                                               makeSelect(transformExpression(specexpr.getExpression()), "iterator"), 
-                                                               List.<JCExpression>nil()))),
+                                                  iterator)),
                         make().Return(makeBoolean(true))
                 ));
                 fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL),
