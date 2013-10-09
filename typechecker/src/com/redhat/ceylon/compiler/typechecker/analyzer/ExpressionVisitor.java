@@ -595,30 +595,32 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         Value dec = that.getDeclarationModel();
         Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
-        Tree.Type type = that.getType();
         inferType(that, sie);
-        ProducedType t = type.getTypeModel();
-        if (type instanceof Tree.LocalModifier) {
-            if (dec.isParameter()) {
-                type.addError("parameter may not have inferred type: " + 
-                        dec.getName());
-            }
-            else {
-                if (sie==null) {
-                    type.addError("value must specify an explicit type or definition", 200);
-                }
-                else if (isTypeUnknown(t)) {
-                    type.addError("value type could not be inferred");
-                }
-            }
+        Tree.Type type = that.getType();
+        if (type!=null) {
+        	ProducedType t = type.getTypeModel();
+        	if (type instanceof Tree.LocalModifier) {
+        		if (dec.isParameter()) {
+        			type.addError("parameter may not have inferred type: " + 
+        					dec.getName());
+        		}
+        		else {
+        			if (sie==null) {
+        				type.addError("value must specify an explicit type or definition", 200);
+        			}
+        			else if (isTypeUnknown(t)) {
+        				type.addError("value type could not be inferred");
+        			}
+        		}
+        	}
+        	if (!isTypeUnknown(t)) {
+        		checkType(t, dec.getName(), sie, 2100);
+        	}
         }
-        if (!isTypeUnknown(t)) {
-            checkType(t, dec.getName(), sie, 2100);
-        }
-        Setter setter = dec.getSetter();
-        if (setter!=null) {
-            setter.getParameter().getModel().setType(dec.getType());
-        }
+    	Setter setter = dec.getSetter();
+    	if (setter!=null) {
+    		setter.getParameter().getModel().setType(dec.getType());
+    	}
     }
     
     @Override public void visit(Tree.ParameterizedExpression that) {
