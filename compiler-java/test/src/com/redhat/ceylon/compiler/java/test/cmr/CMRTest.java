@@ -820,4 +820,23 @@ public class CMRTest extends CompilerTest {
     public void testMdlJdkBaseModule() throws IOException{
         compile("modules/jdk/appletBroken/Foo.ceylon");
     }
+
+    @Test
+    public void testMdlUsesJavaWithoutImportingIt() throws IOException{
+        assertErrors("modules/jdk/usesJavaWithoutImportingIt/Foo",
+                new CompilerError(20, "package not found in imported modules: java.lang"),
+                new CompilerError(23, "function or value does not exist: nanoTime"));
+    }
+
+    @Test
+    public void testMdlDefaultUsesJavaWithoutImportingIt() throws IOException{
+        List<String> options = new LinkedList<String>();
+        options.add("-src");
+        options.add(getPackagePath()+"/modules/jdk/defaultUsesJavaWithoutImportingIt");
+        options.addAll(defaultOptions);
+        
+        assertErrors("modules/jdk/defaultUsesJavaWithoutImportingIt/Foo",
+                new CompilerError(20, "package not found in imported modules: java.lang"),
+                new CompilerError(23, "function or value does not exist: nanoTime"));
+    }
 }
