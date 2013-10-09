@@ -134,7 +134,7 @@ function Modulo(meta, $$modulo){
       return r.reifyCeylonType({Element:$$$mptypes.Annotation});
     }
     $$modulo.annotations=annotations;
-  defineAttr($$modulo,'string',function(){return String$("Module[" + this.name+"/" + this.version + "]");},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
+  defineAttr($$modulo,'string',function(){return String$("module " + this.name+"/" + this.version);},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
 
     annotations.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Annotation'}},$ps:[],$cont:Modulo,$tp:{Annotation:{'var':'out','satisfies':[{t:Annotation,a:{Value:'Annotation'}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$m','annotations']};
     return $$modulo;
@@ -347,7 +347,7 @@ console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.
     }
     $$paquete.annotations=annotations;
     annotations.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Annotation'}},$ps:[],$cont:Paquete,$tp:{Annotation:{'var':'out','satisfies':[{t:Annotation,a:{Value:'Annotation'}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$m','annotations']};
-  defineAttr($$paquete,'string',function(){return String$("Package[" + this.name+"]");},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
+  defineAttr($$paquete,'string',function(){return String$("package " + this.name);},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
     return $$paquete;
 }
 Paquete.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:Package$meta$declaration}],$an:function(){return[shared()];},d:['ceylon.language.meta.declaration','Package']};
