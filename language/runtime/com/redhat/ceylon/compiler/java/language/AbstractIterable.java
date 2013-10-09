@@ -44,6 +44,8 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     private TypeDescriptor $reifiedElement;
     @Ignore
     private TypeDescriptor $reifiedAbsent;
+    @Ignore
+    private final Iterable[] $iterables;
 
     public AbstractIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
@@ -51,6 +53,21 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$reifiedElement = $reifiedElement;
         this.$reifiedAbsent = $reifiedAbsent;
+        this.$iterables = null;
+    }
+    
+    public AbstractIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent, Iterable... iterables) {
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+        this.$reifiedElement = $reifiedElement;
+        this.$reifiedAbsent = $reifiedAbsent;
+        this.$iterables = iterables;
+    }
+    
+    @Ignore
+    public Iterable[] $getIterables() {
+        return $iterables;
     }
     
     @Ignore
