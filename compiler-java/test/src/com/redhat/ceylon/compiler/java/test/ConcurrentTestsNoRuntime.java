@@ -31,7 +31,8 @@ import com.redhat.ceylon.compiler.java.test.cmr.CMRTest;
 import com.redhat.ceylon.compiler.java.test.cmr.CMRTestHTTP;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest2;
-import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest3;
+import com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionTest;
+import com.redhat.ceylon.compiler.java.test.expression.ref.StaticRefTest;
 import com.redhat.ceylon.compiler.java.test.interop.InteropTest;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_0000_0499;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_0500_0999;
@@ -79,7 +80,8 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     QuotingTest.class,
     CMRTest.class,
     BcTests.class,
-    ExpressionTest3.class,
+    ComprehensionTest.class,
+    StaticRefTest.class,
     CompilerToolsTests.class,
     AntToolTests.class
 })

@@ -31,7 +31,8 @@ import com.redhat.ceylon.compiler.java.test.cmr.CMRTest;
 import com.redhat.ceylon.compiler.java.test.cmr.CMRTestHTTP;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest2;
-import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest3;
+import com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionTest;
+import com.redhat.ceylon.compiler.java.test.expression.ref.StaticRefTest;
 import com.redhat.ceylon.compiler.java.test.fordebug.TraceTests;
 import com.redhat.ceylon.compiler.java.test.interop.InteropTest;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_0000_0499;
@@ -89,7 +90,8 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     // FIXME: this compiles the other language tests for nothing
     LanguageMetamodelSuite.class,
     BcTests.class,
-    ExpressionTest3.class,
+    ComprehensionTest.class,
+    StaticRefTest.class,
     CompilerToolsTests.class,
     // FIXME Disabled: it does not run currently in parallel
     // TopLevelToolTest.class,
