@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
@@ -45,6 +46,7 @@ public class CallBuilder {
     
     private boolean haveLocation = false;
     private Node location;
+    private JCClassDecl classDefs;
     
     private CallBuilder(AbstractTransformer gen) {
         this.gen = gen;
@@ -87,7 +89,12 @@ public class CallBuilder {
     }
     
     public CallBuilder instantiate(ExpressionAndType qualifier, JCExpression cls) {
+        return instantiate(qualifier, cls, null);
+    }
+    
+    public CallBuilder instantiate(ExpressionAndType qualifier, JCExpression cls, JCClassDecl classDefs) {
         this.methodOrClass = cls;
+        this.classDefs = classDefs;
         this.instantiateQualfier = qualifier;
         this.kind = Kind.NEW;
         return this;
@@ -218,7 +225,7 @@ public class CallBuilder {
             result = gen.make().Apply(this.typeargs.toList(), this.methodOrClass, arguments);
             break;
         case NEW:
-            result = gen.make().NewClass(newEncl, null, this.methodOrClass, arguments, null);
+            result = gen.make().NewClass(newEncl, null, this.methodOrClass, arguments, classDefs);
             break;
         case ARRAY_READ:
             result = gen.make().Indexed(this.methodOrClass, arguments.head);
