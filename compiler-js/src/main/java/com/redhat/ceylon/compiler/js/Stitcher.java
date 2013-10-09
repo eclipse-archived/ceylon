@@ -51,6 +51,10 @@ public class Stitcher {
         }
     }
 
+    private static String normalizePath(String path) {
+    	return path.replace('\\', '/');
+    }
+
     private static void compileLanguageModule(List<String> sources, Writer writer, String clmod)
             throws IOException {
         final File clSrcDir = new File("../ceylon.language/src/ceylon/language/");
@@ -89,7 +93,7 @@ public class Stitcher {
                         isJsSrc ? filename.trim() :
                         String.format("%s.ceylon", filename.trim()));
                 if (src.exists() && src.isFile() && src.canRead()) {
-                    includes.add(src.getPath());
+                    includes.add(normalizePath(src.getPath()));
                 } else {
                     throw new IllegalArgumentException("Invalid Ceylon language module source " + src);
                 }
