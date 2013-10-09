@@ -189,11 +189,12 @@ public class CeylonCompileJsTool extends RepoUsingTool {
         for (File e : dir.listFiles()) {
             String n = e.getName().toLowerCase();
             if (e.isFile() && (n.endsWith(".ceylon") || n.endsWith(".js"))) {
+                String path = normalizePath(e.getPath());
                 if (opts.isVerbose()) {
-                    System.out.println("Adding to compilation set: " + normalizePath(e.getPath()));
+                    System.out.println("Adding to compilation set: " + path);
                 }
-                if (!onlyFiles.contains(normalizePath(e.getPath()))) {
-                    onlyFiles.add(normalizePath(e.getPath()));
+                if (!onlyFiles.contains(path)) {
+                    onlyFiles.add(path);
                 }
             } else if (e.isDirectory()) {
                 addFilesToCompilationSet(opts, e, onlyFiles);
