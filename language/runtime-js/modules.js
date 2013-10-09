@@ -212,6 +212,8 @@ function Paquete(name, container, pkg, $$paquete){
         filter = function(m) { return m['$mt']==='mthd' || m['$mt']==='attr' || m['$mt']==='gttr' || m['$mt']==='obj'; };
       } else if (extendsType($$$mptypes.Kind,{t:ClassOrInterfaceDeclaration$meta$declaration})) {
         filter = function(m) { return m['$mt']==='cls' || m['$mt']==='ifc'; };
+      } else if (extendsType($$$mptypes.Kind,{t:AliasDeclaration$meta$declaration})) {
+        filter = function(m) { return m['$mt']==='als'; };
       } else {
         //Dejamos pasar todo
         filter = function(m) { return true; }
@@ -229,6 +231,8 @@ function Paquete(name, container, pkg, $$paquete){
             r.push(OpenInterface(this, m));
           } else if (mt==='attr'||mt==='gttr'||mt==='obj') {
             r.push(OpenValue(this, m));
+          } else if (mt==='als') {
+            r.push(OpenAlias(_findTypeFromModel(this,m)));
           }
         }
       }
@@ -250,36 +254,33 @@ function Paquete(name, container, pkg, $$paquete){
           if (mt==='attr'||m==='gttr'||m==='obj') {
             return OpenValue(this, m);
           }
-          return null;
         } else if (extendsType({t:FunctionDeclaration$meta$declaration}, $$$mptypes.Kind)) {
           if (mt==='mthd') {
             return OpenFunction(this, m);
           }
-          return null;
         } else if (extendsType({t:FunctionOrValueDeclaration$meta$declaration}, $$$mptypes.Kind)) {
           if (mt==='attr'||m==='gttr'||m==='obj') {
             return OpenValue(this, m);
           } else if (mt==='mthd') {
             return OpenFunction(this, m);
           }
-          return null;
         } else if (extendsType({t:ClassDeclaration$meta$declaration}, $$$mptypes.Kind)) {
           if (mt==='cls') {
             return OpenClass(this, m);
           }
-          return null;
         } else if (extendsType({t:InterfaceDeclaration$meta$declaration}, $$$mptypes.Kind)) {
           if (mt==='ifc') {
             return OpenInterface(this, m);
           }
-          return null;
         } else if (extendsType({t:ClassOrInterfaceDeclaration$meta$declaration}, $$$mptypes.Kind)) {
           if (mt==='ifc') {
             return OpenInterface(this, m);
           } else if (mt==='cls') {
             return OpenClass(this, m);
           }
-          return null;
+        } else if (extendsType({t:AliasDeclaration$meta$declaration}, $$$mptypes.Kind)) {
+          if (mt==='als')
+          return OpenAlias(_findTypeFromModel(this,m));
         } else {
 console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.Kind));
         }
@@ -308,6 +309,16 @@ console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.
     }
     $$paquete.getClassOrInterface=getClassOrInterface;
     getClassOrInterface.$$metamodel$$={mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:ClassOrInterfaceDeclaration$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Paquete,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$m','getClassOrInterface']};
+  function getAlias(an) {
+    var al=this.pkg[an];
+    if (al && al.$mt==='als') {
+      var rta = _findTypeFromModel(this, al);
+      return OpenAlias(rta);
+    }
+    return null;
+  }
+  $$paquete.getAlias=getAlias;
+  getAlias.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.declaration','Package','$m','getAlias']};};
     function getFunction(name$6){
       var f = this.pkg[name$6];
       if (f && f['$mt']==='mthd') {
