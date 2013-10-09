@@ -38,8 +38,12 @@ public class StandardArgumentParsers {
             try {
                 return new URI(argument);
             } catch (URISyntaxException e) {
-                File f = new File(argument);
-                return f.toURI();
+                try {
+                    return new URI(argument.replace('\\', '/'));
+                } catch (URISyntaxException e2) {
+                    File f = new File(argument);
+                    return f.toURI();
+                }
             }
         }
     };
