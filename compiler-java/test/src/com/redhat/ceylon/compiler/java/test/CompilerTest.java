@@ -158,14 +158,16 @@ public abstract class CompilerTest {
         });
     }
 
-    
-    
     protected void assertErrors(String ceylon, CompilerError... expectedErrors) {
+        assertErrors(ceylon, defaultOptions, expectedErrors);
+    }
+    
+    protected void assertErrors(String ceylon, List<String> options, CompilerError... expectedErrors) {
         // make a compiler task
         // FIXME: runFileManager.setSourcePath(dir);
         ErrorCollector collector = new ErrorCollector();
         
-        CeyloncTaskImpl task = getCompilerTask(defaultOptions, collector, new String[] {ceylon+".ceylon"});
+        CeyloncTaskImpl task = getCompilerTask(options, collector, new String[] {ceylon+".ceylon"});
 
         // now compile it all the way
         Boolean success = task.call();
