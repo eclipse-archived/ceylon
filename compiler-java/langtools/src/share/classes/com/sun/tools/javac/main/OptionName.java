@@ -102,8 +102,7 @@ public enum OptionName {
     AT("@"),
     SOURCEFILE("sourcefile"),
     SRC("-src"),
-    BOOTSTRAPCEYLON("-Xbootstrapceylon"),
-    CEYLONALLOWWARNINGS("-Xceylonallowwarnings");
+    BOOTSTRAPCEYLON("-Xbootstrapceylon");
 
     public final String optionName;
 

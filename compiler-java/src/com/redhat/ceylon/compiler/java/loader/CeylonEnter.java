@@ -118,7 +118,6 @@ public class CeylonEnter extends Enter {
     private Paths paths;
     private CeyloncFileManager fileManager;
     private JavaCompiler compiler;
-    private boolean allowWarnings;
     private boolean verbose;
     private Check chk;
     private Types types;
@@ -147,7 +146,6 @@ public class CeylonEnter extends Enter {
         paths = Paths.instance(context);
         fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
         compiler = LanguageCompiler.instance(context);
-        allowWarnings = com.redhat.ceylon.compiler.Util.allowWarnings(context);
         verbose = options.get(OptionName.VERBOSE) != null;
         isBootstrap = options.get(OptionName.BOOTSTRAPCEYLON) != null;
         chk = Check.instance(context);
@@ -472,11 +470,7 @@ public class CeylonEnter extends Enter {
                 @Override
                 protected void out(UnsupportedError err) {
                     Node node = getIdentifyingNode(err.getTreeNode());
-                    if (allowWarnings) {
-                        logWarning(getPosition(node), "ceylon", err.getMessage());
-                    } else {
-                        logError(getPosition(node), "ceylon", err.getMessage());
-                    }
+                    logError(getPosition(node), "ceylon", err.getMessage());
                 }
                 @Override
                 protected void out(Node that, String message) {

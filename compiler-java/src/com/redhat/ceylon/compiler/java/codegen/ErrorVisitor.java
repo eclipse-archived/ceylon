@@ -19,7 +19,6 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
-import com.redhat.ceylon.compiler.Util;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
@@ -30,11 +29,8 @@ import com.sun.tools.javac.util.Context;
 
 public class ErrorVisitor extends Visitor implements NaturalVisitor {
 
-    private boolean allowWarnings;
-
     public ErrorVisitor(Context context) {
         super();
-        this.allowWarnings = Util.allowWarnings(context);
     }
 
     public boolean hasErrors(Node target) {
@@ -61,19 +57,10 @@ public class ErrorVisitor extends Visitor implements NaturalVisitor {
     }
 
     private boolean hasError(Node that) {
-        if (allowWarnings) {
-            // skip warnings
-            for(Message message : that.getErrors()){
-                if(!(message instanceof UnsupportedError)
-                        && !(message instanceof UsageWarning))
-                    return true;
-            }
-        } else {
-            // skip only usage warnings
-            for(Message message : that.getErrors()){
-                if(!(message instanceof UsageWarning))
-                    return true;
-            }
+        // skip only usage warnings
+        for(Message message : that.getErrors()){
+            if(!(message instanceof UsageWarning))
+                return true;
         }
         return false;
     }
