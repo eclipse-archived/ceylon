@@ -12,6 +12,7 @@ import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 
 /**
@@ -282,7 +283,7 @@ public class JsIdentifierNames {
             // check if it's a shared member or a toplevel function
             nonLocal = (decl.isShared() && decl.isMember())
                 || (decl.isToplevel() && (forGetterSetter || (decl instanceof Method)
-                                          || (decl instanceof ClassOrInterface)));
+                || (decl instanceof ClassOrInterface) || (decl instanceof TypeAlias)));
         }
         if (nonLocal && (decl instanceof com.redhat.ceylon.compiler.typechecker.model.Class)
                 && Character.isLowerCase(decl.getName().charAt(0))) {
