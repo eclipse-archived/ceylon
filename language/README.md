@@ -21,24 +21,17 @@ Directory structure:
 Build the compiler and tools
 ----------------------------
 
-First you must make sure you have built the 
-[ceylon-common](https://github.com/ceylon/ceylon-common) project.
+For setting up the development environment and compiling and building the distribution
+take a look at [ceylon-dist](https://github.com/ceylon/ceylon-spec/README.md).
 
-Go into `ceylon-common` and run
+If after having built the distribution you want to build and test the compiler
+return to `ceylon-compiler` and run
 
     ant clean publish
+    
+To run the tests type
 
-Repository
-----------
-
-The default local module repository is created under: 
-
-    ~/.ceylon/repo
-
-To publish the type checker and language module (this
-is required before building the compiler), type:
-
-    ant publish
+    ant test
 
 Other commands:
 
