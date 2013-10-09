@@ -47,7 +47,6 @@ import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
 
 import org.junit.Assert;
-
 import org.junit.Before;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -385,13 +384,13 @@ public abstract class CompilerTest {
                 0, dl.get(Diagnostic.Kind.WARNING).size() + dl.get(Diagnostic.Kind.MANDATORY_WARNING).size());
     }
 
-    protected void compileAndRun(String main, String... ceylon) {
+    protected Object compileAndRun(String main, String... ceylon) {
         compile(ceylon);
-        run(main);
+        return run(main);
     }
 
-    protected void run(String main) {
-        run(main, getDestModuleWithArtifact());
+    protected Object run(String main) {
+        return run(main, getDestModuleWithArtifact());
     }
     
     public class ModuleWithArtifact {
@@ -468,11 +467,12 @@ public abstract class CompilerTest {
         }
     }
     
-    protected void run(String main, ModuleWithArtifact... modules) {
+    protected Object run(String main, ModuleWithArtifact... modules) {
         synchronized(RUN_LOCK){
             // the module initialiser code needs to run in a protected section because the language module Util is not loaded by
             // the test classloader but by our own classloader, which may be shared with other tests running in parallel, so if
             // we set up the module system while another thread is setting it up for other modules we're toast
+            Object result = null;
             try{
                 // make sure we load the stuff from the Car
 
@@ -487,15 +487,15 @@ public abstract class CompilerTest {
                     // A main method
                     Method m = klass.getDeclaredMethod(mainMethod);
                     m.setAccessible(true);
-                    m.invoke(null);
+                    result = m.invoke(null);
                 } else {
                     // A main class
                     final Constructor<?> ctor = klass.getDeclaredConstructor();
                     ctor.setAccessible(true);
-                    ctor.newInstance();
+                    result = ctor.newInstance();
                 }
-
                 loader.clearCache();
+                return result;
             }catch(Exception x){
                 throw new RuntimeException(x);
             }
