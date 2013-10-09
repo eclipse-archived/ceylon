@@ -104,6 +104,7 @@ import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewArray;
 import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCTypeApply;
 import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
@@ -4195,7 +4196,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             SpecifierExpression specexpr = forIterator.getSpecifierExpression();
             JCExpression iterableExpr;
             if (!dependentIterators.contains(forIterator)) {
+                boolean prev = uninitializedOperand(true);
                 iterables.add(transformExpression(specexpr.getExpression()));
+                uninitializedOperand(prev);
                 iterableExpr = make().Indexed(make().Apply(null, naming.makeUnquotedIdent("$getIterables"), List.<JCExpression>nil()),
                         make().Literal(iterables.size()-1));
             } else {
@@ -4263,10 +4266,11 @@ public class ExpressionTransformer extends AbstractTransformer {
          */
         private JCExpression makeAnonymousIterable(ProducedType iteratedType,
                 JCMethodDecl getIterator, List<JCExpression> iterables) {
-            JCExpression iterable = make().NewClass(null, null,
-                    make().TypeApply(makeIdent(syms().ceylonAbstractIterableType),
+            JCTypeApply iterableType = make().TypeApply(makeIdent(syms().ceylonAbstractIterableType),
                         List.<JCExpression>of(makeJavaType(iteratedType, JT_NO_PRIMITIVES),
-                                makeJavaType(absentIterType, JT_NO_PRIMITIVES))),
+                                makeJavaType(absentIterType, JT_NO_PRIMITIVES)));
+            /*JCExpression iterable = make().NewClass(null, null,
+                    iterableType,
                                 List.<JCExpression>of(
                                         makeReifiedTypeArgument(iteratedType), 
                                         makeReifiedTypeArgument(absentIterType),
@@ -4274,7 +4278,23 @@ public class ExpressionTransformer extends AbstractTransformer {
                                                 makeJavaType(typeFact().getIterableDeclaration().getType(), JT_RAW), List.<JCExpression>nil(), iterables)), 
                     make().AnonymousClassDef(make().Modifiers(0), 
                             List.<JCTree>of(getIterator)));
-            return iterable;
+                            */
+            CallBuilder callBuilder = CallBuilder.instance(ExpressionTransformer.this);
+            callBuilder.instantiate(null, iterableType, 
+                    make().AnonymousClassDef(make().Modifiers(0), 
+                    List.<JCTree>of(getIterator)));
+            List<ExpressionAndType> args = List.<ExpressionAndType>of(
+                    new ExpressionAndType(makeReifiedTypeArgument(iteratedType), makeTypeDescriptorType()), 
+                    new ExpressionAndType(makeReifiedTypeArgument(absentIterType), makeTypeDescriptorType()),
+                    new ExpressionAndType(make().NewArray(
+                            makeJavaType(typeFact().getIterableDeclaration().getType(), JT_RAW), List.<JCExpression>nil(), iterables),
+                            make().TypeArray(makeJavaType(typeFact().getIterableDeclaration().getType(), JT_RAW)))
+                    );
+            callBuilder.argumentsAndTypes(args);
+            if (hasBackwardBranches()) {
+                callBuilder.argumentHandling(CallBuilder.CB_ALIAS_ARGS | CallBuilder.CB_LET, naming.alias("uninit"));
+            }
+            return callBuilder.build();
         }
 
         class IfComprehensionCondList extends CondList {
