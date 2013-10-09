@@ -56,7 +56,7 @@ For help on the usage of the ceylon compiler you can either type
 
     ceylon help compile
     
-or you can go to the online documentation for [ceylon compile](/documentation/current/reference/tool/ceylon/subcommands/ceylon-compile.html)
+or you can go to the online documentation for [ceylon compile](http://www.ceylon-lang.org/documentation/current/reference/tool/ceylon/subcommands/ceylon-compile.html)
 
 Building the project on Mac with JDK7
 -------------------------------------
