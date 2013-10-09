@@ -213,10 +213,7 @@ public class JsCompiler {
             }
             //First generate the metamodel
             for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
-                String pathFromVFS = pu.getUnitFile().getPath();
-                // VFS talks in terms of URLs while files are platform-dependent, so make it
-                // platform-dependent too
-                String path = pathFromVFS.replace('/', File.separatorChar);
+                String path = pu.getUnitFile().getPath();
                 if (files == null || files.contains(path)) {
                     pu.getCompilationUnit().visit(getOutput(pu).mmg);
                     if (opts.isVerbose()) {
@@ -237,10 +234,7 @@ public class JsCompiler {
             JsIdentifierNames names = new JsIdentifierNames();
             if (files == null) {
                 for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
-                    String pathFromVFS = pu.getUnitFile().getPath();
-                    // VFS talks in terms of URLs while files are platform-dependent, so make it
-                    // platform-dependent too
-                    String path = pathFromVFS.replace('/', File.separatorChar);
+                    String path = pu.getUnitFile().getPath();
                     if (files == null || files.contains(path)) {
                         compileUnit(pu, names);
                         if (stopOnError()) {
