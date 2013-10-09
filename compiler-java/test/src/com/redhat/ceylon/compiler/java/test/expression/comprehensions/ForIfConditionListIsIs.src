@@ -6,12 +6,14 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
     }
     
     private final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> m$priv(final .ceylon.language.Sequential<? extends .java.lang.Object> xs, final .ceylon.language.Sequential<? extends .java.lang.Object> ys) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{
+                xs,
+                ys}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Boolean> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor){
                     {
-                        iter$0 = xs.iterator();
+                        iter$0 = $getIterables()[0].iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
                     private .java.lang.Object x;
@@ -33,7 +35,7 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                         if (x$exhausted) return false;
                         if (iter$1 != null) return true;
                         if (!this.x()) return false;
-                        iter$1 = ys.iterator();
+                        iter$1 = $getIterables()[1].iterator();
                         return true;
                     }
                     private .java.lang.Object y;
@@ -84,12 +86,14 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
     }
     
     private final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> synthetic$priv(final .ceylon.language.Sequential<? extends .java.lang.Object> xs, final .ceylon.language.Sequential<? extends .java.lang.Object> ys) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{
+                xs,
+                ys}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Boolean> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor){
                     {
-                        iter$0 = xs.iterator();
+                        iter$0 = $getIterables()[0].iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
                     private .java.lang.Object x;
@@ -111,7 +115,7 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                         if (x$exhausted) return false;
                         if (iter$1 != null) return true;
                         if (!this.x()) return false;
-                        iter$1 = ys.iterator();
+                        iter$1 = $getIterables()[1].iterator();
                         return true;
                     }
                     private .java.lang.Object y;

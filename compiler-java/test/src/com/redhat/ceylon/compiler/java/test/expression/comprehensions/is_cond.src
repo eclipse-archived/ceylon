@@ -12,12 +12,12 @@ final class isCond_ {
                 .ceylon.language.Integer.instance(3L),
                 .ceylon.language.String.instance("4"),
                 .ceylon.language.Integer.instance(5L)});
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{seq}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
                     {
-                        iter$0 = seq.iterator();
+                        iter$0 = $getIterables()[0].iterator();
                     }
                     private final .ceylon.language.Iterator iter$0;
                     private .java.lang.Object x;

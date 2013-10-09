@@ -10,12 +10,12 @@ class ForIfExistsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m(final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod> xs) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{xs}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
                     {
-                        iter$0 = xs.iterator();
+                        iter$0 = $getIterables()[0].iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod> iter$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod x;

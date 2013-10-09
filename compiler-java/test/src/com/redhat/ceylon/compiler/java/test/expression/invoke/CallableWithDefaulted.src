@@ -96,12 +96,12 @@ final class callableWithDefaulted_ {
         defaultedVariadic.$call$variadic(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), ints);
         defaultedVariadic.$call$variadic(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, ints, .ceylon.language.Integer.instance(3L)));
         defaultedVariadic.$call$variadic(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, ints, .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L)));
-        defaultedVariadic.$call$variadic(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        defaultedVariadic.$call$variadic(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .ceylon.language.Iterable[]{ints}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
                     {
-                        iter$0 = ints.iterator();
+                        iter$0 = $getIterables()[0].iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;
@@ -127,12 +127,12 @@ final class callableWithDefaulted_ {
                 };
             }
         }.getSequence());
-        defaultedVariadic.$call$variadic(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        defaultedVariadic.$call$variadic(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .ceylon.language.Iterable[]{ints}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
                     {
-                        iter$0 = ints.iterator();
+                        iter$0 = $getIterables()[0].iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;
@@ -158,12 +158,12 @@ final class callableWithDefaulted_ {
                 };
             }
         }.getSequence(), .ceylon.language.Integer.instance(3L)));
-        defaultedVariadic.$call$variadic(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        defaultedVariadic.$call$variadic(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .ceylon.language.Iterable[]{ints}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
                     {
-                        iter$0 = ints.iterator();
+                        iter$0 = $getIterables()[0].iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;
@@ -251,12 +251,12 @@ final class callableWithDefaulted_ {
         defaultedNonemptyVariadic.$call$variadic(.ceylon.language.String.instance("a"), ints);
         defaultedNonemptyVariadic.$call$variadic(.ceylon.language.String.instance("a"), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, ints, .ceylon.language.Integer.instance(3L)));
         defaultedNonemptyVariadic.$call$variadic(.ceylon.language.String.instance("a"), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, ints, .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L)));
-        defaultedNonemptyVariadic.$call$variadic(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        defaultedNonemptyVariadic.$call$variadic(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .ceylon.language.Iterable[]{ints}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
                     {
-                        iter$0 = ints.iterator();
+                        iter$0 = $getIterables()[0].iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;
@@ -282,12 +282,12 @@ final class callableWithDefaulted_ {
                 };
             }
         }.getSequence());
-        defaultedNonemptyVariadic.$call$variadic(.ceylon.language.String.instance("a"), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        defaultedNonemptyVariadic.$call$variadic(.ceylon.language.String.instance("a"), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .ceylon.language.Iterable[]{ints}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
                     {
-                        iter$0 = ints.iterator();
+                        iter$0 = $getIterables()[0].iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;
@@ -313,12 +313,12 @@ final class callableWithDefaulted_ {
                 };
             }
         }.getSequence(), .ceylon.language.Integer.instance(3L)));
-        defaultedNonemptyVariadic.$call$variadic(.ceylon.language.String.instance("a"), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        defaultedNonemptyVariadic.$call$variadic(.ceylon.language.String.instance("a"), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .ceylon.language.Iterable[]{ints}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
                     {
-                        iter$0 = ints.iterator();
+                        iter$0 = $getIterables()[0].iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;

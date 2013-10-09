@@ -6,12 +6,12 @@ class ForIfConditionList implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     private final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> m$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> xs) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{xs}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Boolean> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor){
                     {
-                        iter$0 = xs.iterator();
+                        iter$0 = $getIterables()[0].iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> iter$0;
                     private .ceylon.language.Sequential<? extends .java.lang.Object> x;

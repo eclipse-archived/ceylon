@@ -10,12 +10,12 @@ class ForIfIsNotObject implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     public final void m(final .ceylon.language.Sequential<? extends .java.lang.Object> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{xs}){
             
             public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor){
                     {
-                        iter$0 = xs.iterator();
+                        iter$0 = $getIterables()[0].iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
                     private .java.lang.Object x;
@@ -54,12 +54,12 @@ class ForIfIsNotObject implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     public final void mvar(final .ceylon.language.Sequential<? extends .java.lang.Object> ys) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, new .ceylon.language.Iterable[]{ys}){
             
             public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor){
                     {
-                        iter$0 = ys.iterator();
+                        iter$0 = $getIterables()[0].iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
                     private .java.lang.Object y;
