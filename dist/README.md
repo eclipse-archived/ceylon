@@ -25,7 +25,51 @@ Read more about Ceylon at <http://ceylon-lang.org>.
 - `LICENSE-GPL-CP` - The Ceylon GPL/CP license
 - `README.md`      - This file
 
-The command line tools are located in the `bin` directory.
+## Building the distribution
+
+- Make sure you have the [Java 7 JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) and [Ant 1.8+](http://ant.apache.org/) installed and that both are working correctly
+- Make sure you have [Git set up correctly](https://help.github.com/articles/set-up-git)
+- Make sure you have [GitHub SSH access set up correctly](https://help.github.com/articles/generating-ssh-keys)
+
+For the rest of the steps this assumes you have cloned the `ceylon-dist` repository
+and you are currently inside it reading this file. If not first do:
+
+- Create a new directory for the Ceylon project
+- Inside that directory clone ceylon-dist by typing
+
+<!-- lang: bash -->
+    $ git clone git@github.com:ceylon/ceylon-dist.git
+
+Now that you have everything you need continue with the following steps:
+
+- Go into the newly created ceylon-dist directory and run the setup
+
+<!-- lang: bash -->
+    $ cd ceylon-dist ; ant setup
+
+- Now to build the complete distribution run
+
+<!-- lang: bash -->
+    $ ant clean publish-all
+
+After this you'll have a newly built distribution in the `dist` folder of your current directory.
+You can run the `ceylon` command without any further setup or installation by simply running
+
+<!-- lang: bash -->
+    $ dist/bin/ceylon
+
+But it's advisable to add the `ceylon` command to your class path (either by adding the `bin` folder to your class path or by creating a symbolic link to it in an appropriate place like `~/bin/`).
+
+If at any time you want to update the distribution to the latest code from GitHub just run
+
+<!-- lang: bash -->
+    $ ant update-all
+    $ ant clean publish-all
+
+NB: The `update-all` command assumes that your projects are "clean", that is you don't have uncommitted changes.
+If that's not the case you'll have to manually update those projects or first stash your changes (using `git stash`).
+
+After the build finishes the command line tools will be located in the `bin` directory.
 
 - `bin/ceylon`     - The ceylon tool which provides at least the following subcommands:
     * `new`        - Creates a new Ceylon project
@@ -36,7 +80,6 @@ The command line tools are located in the `bin` directory.
     * `run-js`     - Run a Ceylon program on node.js (JavaScript)
     * `import-jar` - Import a Java `.jar` file into a Ceylon module repository
     * `help`       - Displays help about another tool
-
 
 The API documentation for the language module `ceylon.language` may be found here:
 
