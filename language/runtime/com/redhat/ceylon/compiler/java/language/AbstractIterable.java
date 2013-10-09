@@ -4,7 +4,7 @@ package com.redhat.ceylon.compiler.java.language;
 import ceylon.language.Boolean;
 import ceylon.language.Callable;
 import ceylon.language.Category$impl;
-import ceylon.language.Character;
+import ceylon.language.Collection;
 import ceylon.language.Comparison;
 import ceylon.language.Container$impl;
 import ceylon.language.Entry;
@@ -45,24 +45,18 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     @Ignore
     private TypeDescriptor $reifiedAbsent;
     @Ignore
+    private final boolean $containsIfs;
+    @Ignore
     private final Iterable[] $iterables;
-
-    public AbstractIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent) {
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
-        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
-        this.$reifiedElement = $reifiedElement;
-        this.$reifiedAbsent = $reifiedAbsent;
-        this.$iterables = null;
-    }
     
-    public AbstractIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent, Iterable... iterables) {
+    public AbstractIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent, boolean $containsIfs, Iterable... $iterables) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
         this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$reifiedElement = $reifiedElement;
         this.$reifiedAbsent = $reifiedAbsent;
-        this.$iterables = iterables;
+        this.$containsIfs = $containsIfs;
+        this.$iterables = $iterables;
     }
     
     @Ignore
@@ -103,11 +97,32 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     public boolean getEmpty() {
         return iterator().next() == finished_.get_();
     }
-
+    
+    @Ignore
+    private long $getSequenceSize$() {
+        Iterable[] iterables = $getIterables();
+        if (iterables.length == 0) {
+            return -1L;
+        }
+        long size = 1L;
+        for (Iterable it : iterables) {
+            if (it instanceof Collection) {
+                size *= ((Collection)it).getSize();
+            } else if (it instanceof AbstractIterable) {
+                size *= ((AbstractIterable)it).$getSequenceSize$();
+            } else {
+                size = -1L;
+                break;
+            }
+        }
+        return $containsIfs ? Math.min(size, 128) : size;
+    }
+    
     @Override
     @Ignore
     public Sequential<? extends Element> getSequence() {
-        final SequenceBuilder<Element> sb = new SequenceBuilder<Element>($reifiedElement);
+        long size = $getSequenceSize$();
+        final SequenceBuilder<Element> sb = size < 0 || size > java.lang.Integer.MAX_VALUE ? new SequenceBuilder<Element>($reifiedElement) : new SequenceBuilder<Element>($reifiedElement, (int)size) ;
         java.lang.Object next = null;
         for (Iterator<? extends Element> iter = iterator(); (next = iter.next()) != finished_.get_();) {
             sb.append((Element) next);
