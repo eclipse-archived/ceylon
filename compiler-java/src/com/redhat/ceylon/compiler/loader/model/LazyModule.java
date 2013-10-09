@@ -76,7 +76,7 @@ public abstract class LazyModule extends Module {
         }
         // never try to load java packages from the default module because it would
         // work and appear to come from there
-        if(AbstractModelLoader.isJDKModule(name))
+        if(JDKUtils.isJDKAnyPackage(name) || JDKUtils.isOracleJDKAnyPackage(name))
             return null;
         // do the lookup of the default module last
         if(defaultModule)
