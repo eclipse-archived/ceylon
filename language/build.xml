@@ -256,7 +256,7 @@
     <!-- generate the ceylon.language.js file -->
     <target name="ceylon.language.js">
         <mkdir dir="${ceylon.language.dist}"/>
-        <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="js.compiler.classpath" fork="true">
+        <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="js.compiler.classpath" fork="true" failonerror="yes">
             <arg value="${runtime-js.src}/ceylon.language.js" />
             <arg value="${runtime-js.src}/language-module.txt" />
             <arg value="${build.dist}/${ceylon.language.js}" />
