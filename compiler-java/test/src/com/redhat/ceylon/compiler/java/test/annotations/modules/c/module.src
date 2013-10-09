@@ -16,7 +16,7 @@ package com.redhat.ceylon.compiler.java.test.annotations.modules.c;
                         optional = true),
                 @.com.redhat.ceylon.compiler.java.metadata.Import(
                         name = "com.redhat.ceylon.module-resolver",
-                        version = "1.0.0")})
+                        version = "0.6")})
 @.ceylon.language.DocAnnotation$annotation(description = "Module C doc, with imports!")
 final class module_ {
     
