@@ -158,6 +158,23 @@ class OpenInterface(shared actual String name, shared actual Package containingP
   shared actual Boolean isAlias { throw Exception("Unimplemented"); }
 }
 
+class OpenAlias(shared actual String name, shared actual Package containingPackage) satisfies AliasDeclaration {
+  shared actual OpenType extendedType { throw Exception("OpenAlias.extendedType"); }
+  shared actual String qualifiedName { throw Exception("OpenAlias.qualifiedName"); }
+  shared actual Boolean toplevel { throw Exception("OpenAlias.toplevel"); }
+  shared actual Boolean default { throw Exception("OpenAlias.default"); }
+  shared actual Boolean actual { throw Exception("OpenAlias.actual"); }
+  shared actual Boolean formal { throw Exception("OpenAlias.formal"); }
+  shared actual Boolean shared { throw Exception("OpenAlias.shared"); }
+  shared actual Module containingModule { throw Exception("OpenAlias.containingModule"); }
+  shared actual NestableDeclaration|Package container { throw Exception("OpenAlias.container"); }
+  shared actual OpenType openType { throw Exception("OpenAlias.openType"); }
+  shared actual Annotation[] annotations<out Annotation>()
+    given Annotation satisfies MetamodelAnnotation<Annotation> { throw Exception("OpenAlias.annotations()"); }
+  shared actual TypeParameter[] typeParameterDeclarations { throw Exception("OpenAlias.typeParameterDeclarations"); }
+  shared actual TypeParameter? getTypeParameterDeclaration(String name) { throw Exception("OpenAlias.getTypeParameterDeclaration()"); }
+}
+
 class FreeClass(declaration)
         satisfies OpenClassType {
 
@@ -175,3 +192,4 @@ class FreeInterfaceType(declaration)
     shared actual OpenInterfaceType[] satisfiedTypes { throw Exception("unimplemented"); }
     shared actual Map<TypeParameter, OpenType> typeArguments { throw Exception("unimplemented"); }
 }
+
