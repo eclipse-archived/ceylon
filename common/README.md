@@ -1,4 +1,3 @@
-
 Ceylon common
 =============
 
@@ -20,11 +19,14 @@ Directory structure
 Build the module
 ----------------
 
-To build the module run
+For setting up the development environment and compiling and building the distribution
+take a look at [ceylon-dist](https://github.com/ceylon/ceylon-spec/README.md).
+
+If after having built the distribution you want to build the module run
 
     ant clean publish
     
-To run the tests type
+And to run the tests type
 
     ant test
 
