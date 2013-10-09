@@ -25,7 +25,7 @@ For setting up the development environment and compiling and building the distri
 take a look at [ceylon-dist](https://github.com/ceylon/ceylon-spec/README.md).
 
 If after having built the distribution you want to build and test the compiler
-return to `ceylon-compiler` and run
+return to `ceylon.language` and run
 
     ant clean publish
     
