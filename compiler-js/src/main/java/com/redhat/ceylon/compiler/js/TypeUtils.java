@@ -18,6 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
@@ -213,6 +214,13 @@ public class TypeUtils {
             } else {
                 //This can happen in expressions such as Singleton(n) when n is dynamic
                 gen.out("{/*NO PARENT*/t:", GenerateJsVisitor.getClAlias(), "Anything}");
+            }
+        } else if (tp.getContainer() instanceof TypeAlias) {
+            if (parent == tp.getContainer()) {
+                gen.out("'", tp.getName(), "'");
+            } else {
+                //This can happen in expressions such as Singleton(n) when n is dynamic
+                gen.out("{/*NO PARENT ALIAS*/t:", GenerateJsVisitor.getClAlias(), "Anything}");
             }
         } else {
             //it has to be a method, right?
@@ -435,6 +443,41 @@ public class TypeUtils {
         } : null);
     }
 
+    static void outputModelPath(final Declaration d, GenerateJsVisitor gen) {
+        gen.out("['", d.getUnit().getPackage().getNameAsString(), "'");
+        if (d.isToplevel()) {
+            gen.out(",'", d.getName(), "'");
+        } else {
+            ArrayList<String> path = new ArrayList<>();
+            Declaration p = d;
+            while (p instanceof Declaration) {
+                path.add(0, p.getName());
+                //Build the path in reverse
+                if (!p.isToplevel()) {
+                    if (p instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+                        path.add(0, p.isAnonymous() ? "$o" : "$c");
+                    } else if (p instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
+                        path.add(0, "$i");
+                    } else if (p instanceof Method) {
+                        path.add(0, "$m");
+                    } else {
+                        path.add(0, "$at");
+                    }
+                }
+                Scope s = p.getContainer();
+                while (s != null && s instanceof Declaration == false) {
+                    s = s.getContainer();
+                }
+                p = (Declaration)s;
+            }
+            //Output path
+            for (String part : path) {
+                gen.out(",'", part, "'");
+            }
+        }
+        gen.out("]");
+    }
+
     static void encodeForRuntime(final Node that, final Declaration d, final GenerateJsVisitor gen, final RuntimeMetamodelAnnotationGenerator annGen) {
         gen.out("function(){return{mod:$$METAMODEL$$");
         List<TypeParameter> tparms = null;
@@ -533,38 +576,9 @@ public class TypeUtils {
             annGen.generateAnnotations();
         }
         //Path to its model
-        gen.out(",d:['", d.getUnit().getPackage().getNameAsString(), "'");
-        if (d.isToplevel()) {
-            gen.out(",'", d.getName(), "'");
-        } else {
-            ArrayList<String> path = new ArrayList<>();
-            Declaration p = d;
-            while (p instanceof Declaration) {
-                path.add(0, p.getName());
-                //Build the path in reverse
-                if (!p.isToplevel()) {
-                    if (p instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-                        path.add(0, p.isAnonymous() ? "$o" : "$c");
-                    } else if (p instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
-                        path.add(0, "$i");
-                    } else if (p instanceof Method) {
-                        path.add(0, "$m");
-                    } else {
-                        path.add(0, "$at");
-                    }
-                }
-                Scope s = p.getContainer();
-                while (s != null && s instanceof Declaration == false) {
-                    s = s.getContainer();
-                }
-                p = (Declaration)s;
-            }
-            //Output path
-            for (String part : path) {
-                gen.out(",'", part, "'");
-            }
-        }
-        gen.out("]};}");
+        gen.out(",d:");
+        outputModelPath(d, gen);
+        gen.out("};}");
     }
 
     /** Prints out an object with a type constructor under the property "t" and its type arguments under
