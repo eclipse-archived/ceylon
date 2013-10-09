@@ -24,7 +24,11 @@
     <dependencies>
         <system export="true">
             <paths>
+                <path name="javax/xml"/>
+                <path name="javax/xml/namespace"/>
                 <path name="javax/xml/parsers"/>
+                <path name="javax/xml/stream"/>
+                <path name="org/w3c/dom"/>
             </paths>
         </system>
     </dependencies>
