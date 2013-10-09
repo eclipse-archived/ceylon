@@ -33,161 +33,14 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.Specification;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.*;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AddAssignOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AndOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticAssignmentOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Assertion;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberOrTypeExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseTypeExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Body;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BooleanCondition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Break;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseItem;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.CatchClause;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompareOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ComplementOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ConditionList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Continue;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.DecrementOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.DifferenceOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.DivideAssignOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Dynamic;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Element;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElementOrRange;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElementRange;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.EntryOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.EqualOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExecutableStatement;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Exists;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExtendedType;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForStatement;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IdenticalOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfStatement;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Import;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IncrementOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IndexExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InitializerParameter;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IntersectionOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCase;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.LargeAsOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.LargerOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ListedArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MatchCase;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MultiplyAssignOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NegativeOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Nonempty;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotEqualOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.OrOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Outer;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterizedExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositiveOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PostfixDecrementOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PostfixIncrementOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PowerOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ProductOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedType;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotientOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.RangeOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.RemainderAssignOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.RemainderOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Resource;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SafeMemberOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SatisfiedTypes;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SatisfiesCase;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ScaleOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SegmentOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SmallAsOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SmallerOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpreadOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticType;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SubtractAssignOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SumOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SuperType;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchStatement;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ThenOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.This;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Throw;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TryCatchStatement;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Tuple;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArgumentList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.UnaryOperatorExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.UnionOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.WhileStatement;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.XorOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.*;
 
 public class GenerateJsVisitor extends Visitor
         implements NaturalVisitor {
@@ -640,6 +493,22 @@ public class GenerateJsVisitor extends Visitor
         endLine();
     }
 
+    private void addAliasDeclarationToPrototype(TypeDeclaration outer, Tree.TypeAliasDeclaration that) {
+        comment(that);
+        final TypeAlias d = that.getDeclarationModel();
+        String path = qualifiedPath(that, d, true);
+        if (path.length() > 0) {
+            path += '.';
+        }
+        out(names.self(outer), ".", names.name(d), "=");
+        TypeUtils.typeNameOrList(that, that.getTypeSpecifier().getType().getTypeModel(), this);
+        endLine(true);
+        out(names.name(d), ".$cont=", names.name((Declaration)d.getContainer()), ";",
+                names.name(d), ".$mod=$$METAMODEL$$;", names.name(d), ".$d=");
+        TypeUtils.outputModelPath(d, this);
+        endLine(true);
+    }
+
     @Override
     public void visit(InterfaceDeclaration that) {
         //Don't even bother with nodes that have errors
@@ -839,6 +708,24 @@ public class GenerateJsVisitor extends Visitor
         share(d);
 
         typeInitialization(that);
+    }
+
+    @Override
+    public void visit(Tree.TypeAliasDeclaration that) {
+        //Don't even bother with nodes that have errors
+        if (errVisitor.hasErrors(that))return;
+        TypeAlias d = that.getDeclarationModel();
+        if (opts.isOptimize() && d.isClassOrInterfaceMember()) return;
+        comment(that);
+        out("var ", names.name(d), "=");
+        TypeUtils.typeNameOrList(that, that.getTypeSpecifier().getType().getTypeModel(), this);
+        if (d.isMember()) {
+            out(";", names.name(d), ".$cont=", names.name((Declaration)d.getContainer()));
+        }
+        out(";",names.name(d), ".$mod=$$METAMODEL$$;", names.name(d), ".$d=");
+        TypeUtils.outputModelPath(d, this);
+        endLine(true);
+        share(d);
     }
 
     private void referenceOuter(TypeDeclaration d) {
@@ -1170,6 +1057,8 @@ public class GenerateJsVisitor extends Visitor
             addInterfaceDeclarationToPrototype(d, (InterfaceDeclaration) s);
         } else if (s instanceof SpecifierStatement) {
             addSpecifierToPrototype(d, (SpecifierStatement) s);
+        } else if (s instanceof TypeAliasDeclaration) {
+            addAliasDeclarationToPrototype(d, (TypeAliasDeclaration)s);
         }
         //This fixes #231 for prototype style
         if (params != null && s instanceof Tree.Declaration) {
@@ -4605,8 +4494,22 @@ public class GenerateJsVisitor extends Visitor
             out("TypeParam");
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType) {
             out("NothingType");
-        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.TypeAlias) {
-            out("Alias");
+        } else if (d instanceof TypeAlias) {
+            out("Alias()(");
+            if (d.isMember()) {
+                //Make the chain to the top-level container
+                ArrayList<Declaration> parents = new ArrayList<Declaration>(2);
+                Declaration pd = (Declaration)d.getContainer();
+                while (pd!=null) {
+                    parents.add(0,pd);
+                    pd = pd.isMember()?(Declaration)pd.getContainer():null;
+                }
+                for (Declaration _d : parents) {
+                    out(names.name(_d), ".$$.prototype.");
+                }
+            }
+            out(names.name(d), ")");
+            return;
         }
         out("()(", clAlias, "getModules$meta().find('", m.getNameAsString(),
                 "','", m.getVersion(), "').findPackage('", d.getUnit().getPackage().getNameAsString(),
