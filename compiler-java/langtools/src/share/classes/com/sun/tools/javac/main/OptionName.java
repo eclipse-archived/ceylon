@@ -47,6 +47,7 @@ public enum OptionName {
     DEPRECATION("-deprecation"),
     CLASSPATH("-classpath"),
     CP("-cp"),
+    CEYLONCWD("-cwd"),
     CEYLONREPO("-rep"),
     CEYLONSYSTEMREPO("-sysrep"),
     CEYLONCACHEREPO("-cacherep"),
