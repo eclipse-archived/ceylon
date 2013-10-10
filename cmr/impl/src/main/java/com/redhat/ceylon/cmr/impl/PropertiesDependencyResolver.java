@@ -40,6 +40,15 @@ final class PropertiesDependencyResolver implements DependencyResolver {
     public Set<ModuleInfo> resolve(ArtifactResult result) {
         final File artifact = result.artifact();
         final File mp = new File(artifact.getParent(), ArtifactContext.MODULE_PROPERTIES);
+        return resolveFromFile(mp);
+    }
+
+    public Node descriptor(Node artifact) {
+        return NodeUtils.firstParent(artifact).getChild(ArtifactContext.MODULE_PROPERTIES);
+    }
+
+    @Override
+    public Set<ModuleInfo> resolveFromFile(File mp) {
         if (mp.exists() == false)
             return null;
 
@@ -59,9 +68,5 @@ final class PropertiesDependencyResolver implements DependencyResolver {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public Node descriptor(Node artifact) {
-        return NodeUtils.firstParent(artifact).getChild(ArtifactContext.MODULE_PROPERTIES);
     }
 }

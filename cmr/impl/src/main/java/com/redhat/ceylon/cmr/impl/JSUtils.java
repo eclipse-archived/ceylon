@@ -49,6 +49,11 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
     public Set<ModuleInfo> resolve(ArtifactResult result) {
         return readModuleInformation(result.name(), result.artifact());
     }
+    
+    @Override
+    public Set<ModuleInfo> resolveFromFile(File file) {
+        throw new UnsupportedOperationException("Operation not supported for .js files");
+    }
 
     public Node descriptor(Node artifact) {
         return null; // artifact is a descriptor

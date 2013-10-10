@@ -50,6 +50,11 @@ final class XmlDependencyResolver implements DependencyResolver {
     public Set<ModuleInfo> resolve(ArtifactResult result) {
         final File artifact = result.artifact();
         final File mp = new File(artifact.getParent(), ArtifactContext.MODULE_XML);
+        return resolveFromFile(mp);
+    }
+
+    @Override
+    public Set<ModuleInfo> resolveFromFile(File mp) {
         if (mp.exists() == false)
             return null;
 
