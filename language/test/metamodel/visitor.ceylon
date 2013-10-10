@@ -253,7 +253,7 @@ void visitOpenType(OpenType pt){
     }else if(pt == nothingType){
         output("Nothing");
     }else{
-        output("Unsupported type ATM: ``pt``");
+        output("Unsupported open type ATM: ``pt``");
     }
 }
 
@@ -301,6 +301,6 @@ void visitType(Type<Anything> pt){
     }else if(pt == appliedNothingType){
         output("Nothing");
     }else{
-        output("Unsupported type ATM: ``pt``");
+        output("Unsupported closed type ATM: ``pt``");
     }
 }
