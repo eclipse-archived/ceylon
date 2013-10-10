@@ -18,17 +18,17 @@
  * MA  02110-1301, USA.
  */
 @noanno
-class A() {}
+class Bug1346_A() {}
 
 @noanno
-class B() {}
+class Bug1346_B() {}
 
 @noanno
-shared void run() {
-    A|B x = A();
+shared void bug1346() {
+    Bug1346_A|Bug1346_B x = Bug1346_A();
     if(true) {
-        assert (is A x);
+        assert (is Bug1346_A x);
     } else {
-        assert (is B x);
+        assert (is Bug1346_B x);
     }
 }

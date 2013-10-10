@@ -711,7 +711,10 @@ public class StatementTest extends CompilerTest {
     public void testConAssertFalse(){
         compareWithJavaSource("conditional/AssertFalse");
     }
-
+    @Test
+    public void testBug1346() {
+        compareWithJavaSource("conditional/Bug1346");
+    }
     //
     // Dynamic blocks
 
