@@ -54,10 +54,6 @@ function $init$AppliedClass(){
               return AppliedClass(sc.t, {Type:sc,Arguments:{t:Nothing}});
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:ClassModel$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}}]},$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$at','extendedType']};});
 
-            defineAttr($$clase,'typeArguments',function(){
-                var $$clase=this;
-                throw wrapexc(Exception(String$("IMPL AppliedClass.typeArguments ")),'15:63-15:99','?');
-            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$at','typeArguments']};});
 
   $$clase.equals=function(o){return o && (o.tipo$2||o.tipo)==tipo; };
 //TODO equals metamodel
@@ -106,11 +102,6 @@ function $init$AppliedInterface(){
       this._decl = OpenInterface(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), this.tipo);
       return this._decl;
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:InterfaceDeclaration$meta$declaration},$cont:AppliedInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Interface','$at','declaration']};});
-
-            defineAttr($$appliedInterface,'typeArguments',function(){
-                var $$appliedInterface=this;
-                throw wrapexc(Exception(String$("IMPL AppliedInterface.typeArguments")),'34:63-34:95','?');
-            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:AppliedInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Interface','$at','typeArguments']};});
 
             defineAttr($$appliedInterface,'extendedType',function(){
                 var $$appliedInterface=this;
