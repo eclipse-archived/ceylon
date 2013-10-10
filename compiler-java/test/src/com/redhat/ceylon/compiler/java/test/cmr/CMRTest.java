@@ -339,7 +339,7 @@ public class CMRTest extends CompilerTest {
         // now try to compile the subpackage with a broken SHA1
         assertErrors("modules/single/subpackage/Subpackage", 
                 new CompilerError(-1, "Module car /com/redhat/ceylon/compiler/java/test/cmr/modules/single/6.6.6/com.redhat.ceylon.compiler.java.test.cmr.modules.single-6.6.6.car"
-                        + " obtained from repository " + destDir 
+                        + " obtained from repository " + (new File(destDir).getAbsolutePath()) 
                         + " has an invalid SHA1 signature: you need to remove it and rebuild the archive, since it may be corrupted."));
     }
 
