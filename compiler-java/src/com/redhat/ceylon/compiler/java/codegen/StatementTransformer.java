@@ -31,11 +31,13 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SubstitutedName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
+import com.redhat.ceylon.compiler.typechecker.model.ConditionScope;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -136,7 +138,13 @@ public class StatementTransformer extends AbstractTransformer {
             return List.<JCStatement>nil();
         }
         at(block);
-        return transformStmts(block.getStatements());
+        List<JCStatement> result = transformStmts(block.getStatements());
+        Scope scope = block.getScope();
+        while (scope instanceof ConditionScope) {
+            scope = scope.getScope();
+        }
+        naming.closeScopedSubstitutions(scope);
+        return result;
     }
 
     @SuppressWarnings("unchecked")
@@ -635,12 +643,12 @@ public class StatementTransformer extends AbstractTransformer {
             if (subs == null) {
                 return subs;
             }
-            return naming.new Substitution(subs.original, subs.substituted) {
-                public void close() {
-                    // Don't delegate close(): We need the substitution to 
-                    // live until the end of the declaration's scope
-                }
-            };
+            Scope scope = cond.getVariable().getScope().getScope();
+            while (scope instanceof ConditionScope) {
+                scope = scope.getScope();
+            }
+            subs.scopeClose(scope);
+            return subs;
         }
         
         @Override
@@ -961,7 +969,7 @@ public class StatementTransformer extends AbstractTransformer {
             super(exists, 
                     simplifyType(exists.getVariable().getType().getTypeModel()),
                     exists.getVariable().getSpecifierExpression().getExpression(), 
-                    exists.getVariable());    
+                    exists.getVariable());
         }
         
         @Override

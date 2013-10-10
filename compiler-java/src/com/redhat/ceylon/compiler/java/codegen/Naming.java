@@ -1669,6 +1669,7 @@ public class Naming implements LocalId {
         public final String substituted;
         public final String previous;
         private boolean closed = false;
+        private boolean scoped = false;
         
         Substitution(TypedDeclaration decl, String substituted) {
             this.original = decl;
@@ -1681,18 +1682,65 @@ public class Naming implements LocalId {
             if (closed) {
                 return "Spent substitution";
             }
-            return "Substituting " + substituted + " for " + original + " (masking " + previous + ")";
+            return "Substituting " + substituted + " for " + original + " (masking " + previous + ")" + original.getScope();
         }
         
         @Override
         public void close() {
+            if (!scoped) {
+                internalClose();
+            }
+        }
+
+        private void internalClose() {
             if (closed) {
                 throw new IllegalStateException();
             }
             removeVariableSubst(this);
             closed = true;
         }
+        
+        public void scopeClose(Scope scope) {
+            if (closed) {
+                throw new IllegalStateException();
+            }
+            this.scoped = true;
+            com.sun.tools.javac.util.List<Substitution> list = scopedSubstitutions.get(scope);
+            if (list == null) {
+                list = com.sun.tools.javac.util.List.<Substitution>nil();
+            }
+            if (list.contains(this)) {
+                throw new IllegalStateException();
+            }
+            list = list.prepend(this);
+            scopedSubstitutions.put(scope, list);
+        }
     }
+    
+    private Map<Scope, com.sun.tools.javac.util.List<Substitution>> scopedSubstitutions = new HashMap<>();
+    
+    public void closeScopedSubstitutions(Scope scope) {
+        com.sun.tools.javac.util.List<Substitution> substitutions = scopedSubstitutions.remove(scope);
+        if (substitutions != null) {
+            for (Substitution s : substitutions) {
+                s.internalClose();
+            }
+        }
+        
+        for (Map.Entry<Scope, com.sun.tools.javac.util.List<Substitution>> entry : scopedSubstitutions.entrySet()) {
+            Scope s = entry.getKey();
+            while (true) {
+                if (s.equals(scope)) {
+                    throw new RuntimeException("Unclosed scoped substitution(s) " + entry.getValue() + " whose scope is contained within " + scope);
+                }
+                s = s.getScope();
+                if (s == null || s instanceof Package) {
+                    break;
+                }
+            }
+        }
+    }
+    
     /** 
      * Generates an alias for the given declaration, and adds a 
      * substitution for the given declaration using this alias. 
