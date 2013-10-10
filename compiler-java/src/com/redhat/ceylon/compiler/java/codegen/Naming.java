@@ -933,7 +933,7 @@ public class Naming implements LocalId {
             if ((namingOptions & __NA_IDENT_PARAMETER_ALIASED) != 0) {
                 name = Naming.getAliasedParameterName((MethodOrValue)decl);
             } else {
-                name = this.getVarMapper().get(decl);
+                name = substitute(decl);
                 
             }
             expr = makeQualIdent(expr, name);
