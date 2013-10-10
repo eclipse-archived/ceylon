@@ -371,7 +371,7 @@ public class StatementTransformer extends AbstractTransformer {
                 stmts = List.<JCStatement>of(make().Exec(make().Assign(ifVar.makeIdent(), makeBoolean(true))));
                 thenBlock = makeThenBlock(transformedCond, thenPart, null);
             } else {
-                stmts = makeThenBlock(transformedCond, thenPart, null).getStatements();   
+                stmts = makeThenBlock(transformedCond, thenPart, null).getStatements();
             }
             return stmts;
         }
@@ -495,7 +495,7 @@ public class StatementTransformer extends AbstractTransformer {
         Tree.Block thenPart = stmt.getIfClause().getBlock();
         Tree.Block elsePart = stmt.getElseClause() != null ? stmt.getElseClause().getBlock() : null;
         java.util.List<Condition> conditions = stmt.getIfClause().getConditionList().getConditions();
-        return new IfCondList(conditions, thenPart, elsePart).getResult();    
+        return new IfCondList(conditions, thenPart, elsePart).getResult();
     }
 
     private JCBlock makeThenBlock(Cond cond, Block thenPart, Substitution subs) {

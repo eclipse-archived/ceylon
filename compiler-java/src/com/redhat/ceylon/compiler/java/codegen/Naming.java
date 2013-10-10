@@ -1533,7 +1533,7 @@ public class Naming implements LocalId {
          * the substitution leaking outside the (Ceylon) scope in which the 
          * variable is defined. 
          */
-        private class SubstitutionKey {
+        private static class SubstitutionKey {
             private final String name;
             private final Scope scope;
             SubstitutionKey(TypedDeclaration decl) {
@@ -1550,6 +1550,7 @@ public class Naming implements LocalId {
                 }
                 this.scope = scope;
             }
+            @Override
             public String toString() {
                 return name + " in " + scope;
             }
@@ -1557,7 +1558,6 @@ public class Naming implements LocalId {
             public int hashCode() {
                 final int prime = 31;
                 int result = 1;
-                result = prime * result + getOuterType().hashCode();
                 result = prime * result
                         + ((name == null) ? 0 : name.hashCode());
                 result = prime * result
@@ -1573,8 +1573,6 @@ public class Naming implements LocalId {
                 if (getClass() != obj.getClass())
                     return false;
                 SubstitutionKey other = (SubstitutionKey) obj;
-                if (!getOuterType().equals(other.getOuterType()))
-                    return false;
                 if (name == null) {
                     if (other.name != null)
                         return false;
@@ -1586,9 +1584,6 @@ public class Naming implements LocalId {
                 } else if (!scope.equals(other.scope))
                     return false;
                 return true;
-            }
-            private VarMapper getOuterType() {
-                return VarMapper.this;
             }
             
         }
@@ -1681,6 +1676,7 @@ public class Naming implements LocalId {
             this.previous = getVarMapper().put(decl, substituted);
         }
         
+        @Override
         public String toString() {
             if (closed) {
                 return "Spent substitution";
@@ -1688,6 +1684,7 @@ public class Naming implements LocalId {
             return "Substituting " + substituted + " for " + original + " (masking " + previous + ")";
         }
         
+        @Override
         public void close() {
             if (closed) {
                 throw new IllegalStateException();
