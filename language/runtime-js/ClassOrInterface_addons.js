@@ -1,3 +1,4 @@
+//Addendum to ClassOrInterface
 defineAttr(ClassOrInterface$meta$model.$$.prototype,'satisfiedTypes',function(){
   var ints = this.tipo.$$metamodel$$['satisfies'];
   if (ints && ints.length) {
@@ -9,7 +10,7 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'satisfiedTypes',function(){
         mm = mm();
         ifc.$$metamodel$$=mm;
       }
-      rv.push(AppliedInterface(ifc, {Type:{t:Anything}}));
+      rv.push(AppliedInterface(ifc, {Type:{t:ifc}}));
     }
     return rv.reifyCeylonType({Absent:{t:Null},Element:{t:InterfaceModel$meta$model,a:{Type:{t:Anything}}}});
   }
@@ -78,14 +79,36 @@ ClassOrInterface$meta$model.$$.prototype.isTypeOf=function isTypeOf(instance$8){
 };
 ClassOrInterface$meta$model.$$.prototype.isTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Type','$m','isTypeOf']};};
 ClassOrInterface$meta$model.$$.prototype.isSuperTypeOf=function isSuperTypeOf(type$9){
-  var coi=this;
   throw wrapexc(Exception(String$("IMPL ClassOrInterface.isSuperTypeOf")),'26:67-26:103','?');
 };
 ClassOrInterface$meta$model.$$.prototype.isSuperTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Type','$m','isSuperTypeOf']};};
 ClassOrInterface$meta$model.$$.prototype.isExactly=function isExactly(type$10){
-  var coi=this;
   throw wrapexc(Exception(String$("IMPL ClassOrInterface.isExactly")),'27:63-27:99','?');
 };
 ClassOrInterface$meta$model.$$.prototype.isExactly.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Type','$m','isExactly']};};
+defineAttr(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
+  var mm = this.tipo.$$metamodel$$;
+  if (typeof(mm)==='function') {
+    mm=mm(); this.tipo.$$metamodel$$=mm;
+  }
+  if (mm) {
+    if (mm.$tp) {
+      var targs=[];
+      for (var tp in mm.$tp) {
+        var param = OpenTypeParam(this.tipo,tp);
+        var targ;
+        if (this.$$targs$$ && this.$$targs$$.Type && this.$$targs$$.Type.a && this.$$targs$$.Type.a[tp]) {
+          targ=typeLiteral$meta({Type:this.$$targs$$.Type.a[tp]});
+        } else {
+          targ=typeLiteral$meta({Type:{t:Anything}});
+        }
+        targs.push(Entry(param,targ,{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}));
+      }
+      return LazyMap(targs.reifyCeylonType({Absent:{t:Null},Element:{t:Entry,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}}}), {Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}});
+    }
+    return getEmpty();
+  }
+  throw wrapexc(Exception(String$("IMPL ClassOrInterface.typeArguments ")),'15:63-15:99','?');
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
 
 
