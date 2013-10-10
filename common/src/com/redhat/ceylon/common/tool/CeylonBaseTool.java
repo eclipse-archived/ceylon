@@ -6,8 +6,8 @@ public abstract class CeylonBaseTool implements Tool {
     protected File cwd;
     public String verbose;
 
-    public String getVerbose() {
-        return verbose;
+    public File getCwd() {
+        return cwd;
     }
     
     @OptionArgument(longName="cwd", argumentName="dir")
@@ -15,6 +15,10 @@ public abstract class CeylonBaseTool implements Tool {
             "(default: the directory where the tool is run from)")
     public void setCwd(File cwd) {
         this.cwd = cwd;
+    }
+    
+    public String getVerbose() {
+        return verbose;
     }
     
     @Option
