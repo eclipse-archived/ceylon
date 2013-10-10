@@ -53,6 +53,24 @@ public class CeylonUtils {
         }
 
         /**
+         * Sets the current working directory to use for encountering the configuration
+         * files to use for building the repository manager. When not set the current
+         * directory as defined by <code>new File(".")</code> will be used
+         *
+         * @param cwd A String containing a folder path that could possibly contain
+         *            a <code>.ceylon</code> sub-folder with a <code>config</code> file
+         * @return This object for chaining method calls
+         */
+        public CeylonRepoManagerBuilder cwd(String cwd) {
+            if (cwd != null) {
+                this.cwd = new File(cwd);
+            } else {
+                this.cwd = null;
+            }
+            return this;
+        }
+
+        /**
          * Sets the path to use for the system repository where the essential Ceylon
          * modules (compiler, language, spec, etc) can be found. When not set the
          * value will be taken from the system configuration
