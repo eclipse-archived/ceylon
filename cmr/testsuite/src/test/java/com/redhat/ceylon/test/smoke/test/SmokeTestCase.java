@@ -143,7 +143,7 @@ public class SmokeTestCase extends AbstractTest {
         InMemoryContentStore imcs = new InMemoryContentStore();
         OpenNode root = imcs.createRoot();
         Repository repo = new DefaultRepository(root);
-        RepositoryManager manager = builder.appendRepository(repo).buildRepository();
+        RepositoryManager manager = builder.addRepository(repo).buildRepository();
 
         // a few impl details, feel free to remove/ignore this test
 
@@ -197,7 +197,7 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false);
         RemoteContentStore rcs = new RemoteContentStore(repoURL, log, false);
         Repository repo = new DefaultRepository(rcs.createRoot());
-        RepositoryManager manager = builder.appendRepository(repo).buildRepository();
+        RepositoryManager manager = builder.addRepository(repo).buildRepository();
 
         String name = "com.redhat.fizbiz";
         String version = "1.0.0.Beta1";
@@ -225,7 +225,7 @@ public class SmokeTestCase extends AbstractTest {
     public void testMavenRemote() throws Exception {
         RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false);
         Repository externalRepo = MavenRepositoryHelper.getMavenRepository("https://repository.jboss.org/nexus/content/groups/public", log, false);
-        builder.prependRepository(externalRepo);
+        builder.addRepository(externalRepo);
         RepositoryManager manager = builder.buildRepository();
         ArtifactContext ac = new ArtifactContext("org.jboss.jboss-vfs", "3.0.1.GA", ArtifactContext.JAR);
         File file = null;
@@ -280,7 +280,7 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false);
         RepositoryBuilder rb = builder.repositoryBuilder();
         Repository repository = rb.buildRepository("http://modules.ceylon-lang.org/test");
-        builder.appendRepository(repository);
+        builder.addRepository(repository);
         RepositoryManager manager = builder.buildRepository();
 
         ArtifactContext context = new ArtifactContext("io.undertow.core", "1.0.0.Alpha1-9fdfd5f766", ArtifactContext.JAR);

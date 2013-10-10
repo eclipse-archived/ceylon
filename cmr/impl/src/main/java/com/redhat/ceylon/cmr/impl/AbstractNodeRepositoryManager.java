@@ -87,11 +87,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         }
     }
 
-    protected void prependRepository(Repository external) {
-        roots.add(0, external);
-    }
-
-    protected void appendRepository(Repository external) {
+    protected void addRepository(Repository external) {
         roots.add(external);
     }
 

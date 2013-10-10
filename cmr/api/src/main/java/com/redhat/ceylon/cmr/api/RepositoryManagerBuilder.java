@@ -87,13 +87,8 @@ public class RepositoryManagerBuilder {
         return this;
     }
 
-    public RepositoryManagerBuilder prependRepository(Repository external) {
-        getDelegate().prependRepository(external);
-        return this;
-    }
-
-    public RepositoryManagerBuilder appendRepository(Repository external) {
-        getDelegate().appendRepository(external);
+    public RepositoryManagerBuilder addRepository(Repository external) {
+        getDelegate().addRepository(external);
         return this;
     }
 

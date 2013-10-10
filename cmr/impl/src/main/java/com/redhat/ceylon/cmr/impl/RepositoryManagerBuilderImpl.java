@@ -82,23 +82,13 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
         return this;
     }
 
-    protected RepositoryManagerBuilderImpl prependExternalRoot(OpenNode externalRoot) {
-        repository.prependRepository(new DefaultRepository(externalRoot));
+    protected RepositoryManagerBuilderImpl addExternalRoot(OpenNode externalRoot) {
+        repository.addRepository(new DefaultRepository(externalRoot));
         return this;
     }
 
-    protected RepositoryManagerBuilderImpl appendExternalRoot(OpenNode externalRoot) {
-        repository.appendRepository(new DefaultRepository(externalRoot));
-        return this;
-    }
-
-    public RepositoryManagerBuilderImpl prependRepository(Repository externalRoot) {
-        repository.prependRepository(externalRoot);
-        return this;
-    }
-
-    public RepositoryManagerBuilderImpl appendRepository(Repository externalRoot) {
-        repository.appendRepository(externalRoot);
+    public RepositoryManagerBuilderImpl addRepository(Repository externalRoot) {
+        repository.addRepository(externalRoot);
         return this;
     }
 

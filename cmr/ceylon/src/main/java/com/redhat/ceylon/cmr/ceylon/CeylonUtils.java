@@ -255,37 +255,33 @@ public class CeylonUtils {
 
             final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log, isOffline(config));
 
-            // The first two we add in reverse order because they get PREpended to the root
+            if (systemRepo == null) {
+                addRepo(builder, repositories.getSystemRepository());
+            } else {
+                addRepo(builder, repositories, systemRepo);
+            }
 
             if (outRepo == null) {
-                addRepo(builder, repositories.getOutputRepository(), true);
+                addRepo(builder, repositories.getOutputRepository());
             } else {
-                addRepo(builder, repositories, outRepo, true);
+                addRepo(builder, repositories, outRepo);
             }
-
-            if (systemRepo == null) {
-                addRepo(builder, repositories.getSystemRepository(), true);
-            } else {
-                addRepo(builder, repositories, systemRepo, true);
-            }
-
-            // The rest we add in the normal order becuase they get APpended to the root
 
             if (jdkIncluded) {
-                addRepo(builder, repositories, "jdk", false);
+                addRepo(builder, repositories, "jdk");
             }
 
             if (userRepos != null && !userRepos.isEmpty()) {
                 // Add user defined repos
                 for (String repo : userRepos) {
-                    addRepo(builder, repositories, repo, false);
+                    addRepo(builder, repositories, repo);
                 }
             } else {
                 // We add the configured local lookup repos only when no user defined repos have been passed
                 if (!noDefRepos) {
                     Repositories.Repository[] repos = repositories.getLocalLookupRepositories();
                     for (Repositories.Repository lookup : repos) {
-                        addRepo(builder, lookup, false);
+                        addRepo(builder, lookup);
                     }
                 }
             }
@@ -293,7 +289,7 @@ public class CeylonUtils {
             // Add the extra user defined repos
             if (extraUserRepos != null && !extraUserRepos.isEmpty()) {
                 for (String repo : extraUserRepos) {
-                    addRepo(builder, repositories, repo, false);
+                    addRepo(builder, repositories, repo);
                 }
             }
                 
@@ -301,7 +297,7 @@ public class CeylonUtils {
             if (!noDefRepos) {
                 Repositories.Repository[] globals = repositories.getGlobalLookupRepositories();
                 for (Repositories.Repository lookup : globals) {
-                    addRepo(builder, lookup, false);
+                    addRepo(builder, lookup);
                 }
             }
 
@@ -310,14 +306,14 @@ public class CeylonUtils {
             if (remoteRepos != null && !remoteRepos.isEmpty()) {
                 // Add remote repos
                 for (String repo : remoteRepos) {
-                    addRepo(builder, repositories, repo, false);
+                    addRepo(builder, repositories, repo);
                 }
             } else {
                 // We add the configured remote lookup repos only when no user defined repos have been passed
                 if (!noDefRepos) {
                     Repositories.Repository[] repos = repositories.getRemoteLookupRepositories();
                     for (Repositories.Repository lookup : repos) {
-                        addRepo(builder, lookup, false);
+                        addRepo(builder, lookup);
                     }
                 }
             }
@@ -327,7 +323,7 @@ public class CeylonUtils {
             if (!noDefRepos) {
                 Repositories.Repository[] others = repositories.getOtherLookupRepositories();
                 for (Repositories.Repository lookup : others) {
-                    addRepo(builder, lookup, false);
+                    addRepo(builder, lookup);
                 }
             }
 
@@ -408,16 +404,12 @@ public class CeylonUtils {
             }
         }
 
-        private void addRepo(RepositoryManagerBuilder builder, Repositories.Repository repoInfo, boolean prepend) {
+        private void addRepo(RepositoryManagerBuilder builder, Repositories.Repository repoInfo) {
             if (repoInfo != null) {
                 try {
                     String path = absolute(repoInfo.getUrl());
                     Repository repo = builder.repositoryBuilder().buildRepository(path);
-                    if (prepend) {
-                        builder.prependRepository(repo);
-                    } else {
-                        builder.appendRepository(repo);
-                    }
+                    builder.addRepository(repo);
                 } catch (Exception e) {
                     log.debug("Failed to add repository as input repository: " + repoInfo.getUrl() + ": " + e.getMessage());
                 }
@@ -436,7 +428,7 @@ public class CeylonUtils {
             return repoUrl;
         }
         
-        private void addRepo(RepositoryManagerBuilder builder, Repositories repositories, String repoUrl, boolean prepend) {
+        private void addRepo(RepositoryManagerBuilder builder, Repositories repositories, String repoUrl) {
             try {
                 if (repoUrl.startsWith("+")) {
                     // The token is the name of a repository defined in the Ceylon configuration file
@@ -448,11 +440,7 @@ public class CeylonUtils {
                 }
                 String path = absolute(repoUrl);
                 Repository repo = builder.repositoryBuilder().buildRepository(path);
-                if (prepend) {
-                    builder.prependRepository(repo);
-                } else {
-                    builder.appendRepository(repo);
-                }
+                builder.addRepository(repo);
             } catch (Exception e) {
                 log.debug("Failed to add repository as input repository: " + repoUrl + ": " + e.getMessage());
             }

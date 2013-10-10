@@ -47,7 +47,7 @@ public class HerdTestCase extends AbstractTest {
         RepositoryManagerBuilder builder = getRepositoryManagerBuilder(root, offline);
         WebDAVContentStore rcs = new WebDAVContentStore("http://localhost:9000/test", log, false, apiVersion);
         Repository repo = new DefaultRepository(rcs.createRoot());
-        return builder.appendRepository(repo).buildRepository();
+        return builder.addRepository(repo).buildRepository();
     }
 
     protected RepositoryManager getRepositoryManagerApi1() throws Exception {

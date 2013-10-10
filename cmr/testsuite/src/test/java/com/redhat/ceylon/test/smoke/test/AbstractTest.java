@@ -108,7 +108,7 @@ public class AbstractTest {
 
     protected RepositoryManagerBuilder getRepositoryManagerBuilder(File root, boolean offline) throws Exception {
         RepositoryManagerBuilder builder = new RepositoryManagerBuilder(temp.toFile(), log, offline);
-        builder.appendRepository(new DefaultRepository(new FileContentStore(root).createRoot()));
+        builder.addRepository(new DefaultRepository(new FileContentStore(root).createRoot()));
         return builder;
     }
 
