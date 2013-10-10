@@ -17,17 +17,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-
+@noanno
 interface Bug1157_Anno<out Value> given Value satisfies Bug1157_Anno<Value> {}
 
+@noanno
 interface Bug1157_AnnoSub<out Value>
         satisfies Bug1157_Anno<Value>
         given Value satisfies Bug1157_Anno<Value>
         {}
 
+@noanno
 A[] bug1157_annotations<out A>()
         given A satisfies Bug1157_Anno<A> => nothing;
 
+@noanno
 void bug1157_call() {
     bug1157_annotations<Bug1157_AnnoSub<Nothing>>();
 }
