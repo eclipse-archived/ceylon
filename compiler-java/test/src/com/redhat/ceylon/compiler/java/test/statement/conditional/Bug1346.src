@@ -1,0 +1,61 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class Bug1346_A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1346_A() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_A();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_A.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_A.class);
+}
+class Bug1346_B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1346_B() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_B();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_B.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_B.class);
+}
+public final class bug1346_ {
+    
+    private bug1346_() {
+    }
+    
+    public static void bug1346() {
+        final .java.lang.Object x = new .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_A();
+        if (true) {
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_A $x$6;
+            .java.lang.Object $x$5 = null;
+            if (($x$5 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_A) {
+                $x$6 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_A)$x$5;
+            } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Bug1346_A x"));
+        } else {
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_B $x$3;
+            .java.lang.Object $x$2 = null;
+            if (($x$2 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_B) {
+                $x$3 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_B)$x$2;
+            } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Bug1346_B x"));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.statement.conditional.bug1346_.bug1346();
+    }
+}
