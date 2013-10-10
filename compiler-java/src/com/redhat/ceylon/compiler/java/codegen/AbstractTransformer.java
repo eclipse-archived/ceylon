@@ -411,7 +411,7 @@ public abstract class AbstractTransformer implements Transformation {
             final Tree.SpecifierOrInitializerExpression expression) {
         List<JCStatement> stats;
         if (block != null) {
-            stats = statementGen().transformStmts(block.getStatements());
+            stats = statementGen().transformBlock(block);
         } else {
             BoxingStrategy boxing = CodegenUtil.getBoxingStrategy(declarationModel);
             ProducedType type = declarationModel.getType();
@@ -433,7 +433,7 @@ public abstract class AbstractTransformer implements Transformation {
             final Tree.SpecifierOrInitializerExpression expression) {
         List<JCStatement> stats;
         if (block != null) {
-            stats = statementGen().transformStmts(block.getStatements());
+            stats = statementGen().transformBlock(block);
         } else {
             ProducedType type = declarationModel.getType();
             JCExpression transExpr = expressionGen().transformExpression(expression.getExpression(), BoxingStrategy.INDIFFERENT, type);

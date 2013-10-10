@@ -1354,7 +1354,7 @@ public class StatementTransformer extends AbstractTransformer {
                 
                 if (stmt.getElseClause() != null) {
                     // The user-supplied contents of fail block
-                    List<JCStatement> failblock = transformStmts(stmt.getElseClause().getBlock().getStatements());
+                    List<JCStatement> failblock = transformBlock(stmt.getElseClause().getBlock());
                     // Close the inner substitutions of the else block
                     closeInnerSubstituionsForSpecifiedValues(stmt.getElseClause());
                     if (needsFailVar()) {
@@ -1452,7 +1452,7 @@ public class StatementTransformer extends AbstractTransformer {
 
             Tree.ControlClause prevControlClause = currentForClause;
             currentForClause = stmt.getForClause();
-            List<JCStatement> stmts = transformStmts(stmt.getForClause().getBlock().getStatements());
+            List<JCStatement> stmts = transformBlock(stmt.getForClause().getBlock());
             currentForClause = prevControlClause;
             
             return ListBuffer.<JCStatement>lb().appendList(transformIterableIteration(stmt,
@@ -1668,7 +1668,7 @@ public class StatementTransformer extends AbstractTransformer {
             JCVariableDecl init = make().VarDef(make().Modifiers(0), varname.asName(), makeType(), start.makeIdent());
             ControlClause prevForclause = currentForClause;
             currentForClause = stmt.getForClause();
-            List<JCStatement> blockStatements = transformStmts(getBlock().getStatements());
+            List<JCStatement> blockStatements = transformBlock(getBlock());
             currentForClause = prevForclause;
             blockStatements = blockStatements.prepend(make().VarDef(make().Modifiers(FINAL), 
                     names().fromString(getVariable().getIdentifier().getText()), 
