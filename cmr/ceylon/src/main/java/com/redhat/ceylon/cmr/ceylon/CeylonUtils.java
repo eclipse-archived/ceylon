@@ -23,6 +23,7 @@ public class CeylonUtils {
     }
 
     public static class CeylonRepoManagerBuilder {
+        private CeylonConfig config;
         private File actualCwd;
         private File cwd;
         private String systemRepo;
@@ -39,9 +40,21 @@ public class CeylonUtils {
         private Logger log;
 
         /**
-         * Sets the current working directory to use for encountering the configuration
-         * files to use for building the repository manager. When not set the current
-         * directory as defined by <code>new File(".")</code> will be used
+         * Sets the configuration to use for building the repository manager
+         *
+         * @param config A reference to a CeylonConfig object
+         * @return This object for chaining method calls
+         */
+        public CeylonRepoManagerBuilder config(CeylonConfig config) {
+            this.config = config;
+            return this;
+        }
+
+        /**
+         * Sets the current working directory to use for building the repository manager.
+         * This is used to encounter the configuration file when <code>config</code> isn't set
+         * and also functions as the base folder for any relative paths that might be encountered.
+         * When not set the current directory as defined by <code>new File(".")</code> will be used
          *
          * @param cwd A File referencing a folder that could possibly contain a <code>.ceylon</code>
          *            sub-folder with a <code>config</code> file
@@ -53,9 +66,10 @@ public class CeylonUtils {
         }
 
         /**
-         * Sets the current working directory to use for encountering the configuration
-         * files to use for building the repository manager. When not set the current
-         * directory as defined by <code>new File(".")</code> will be used
+         * Sets the current working directory to use for building the repository manager.
+         * This is used to encounter the configuration file when <code>config</code> isn't set
+         * and also functions as the base folder for any relative paths that might be encountered.
+         * When not set the current directory as defined by <code>new File(".")</code> will be used
          *
          * @param cwd A String containing a folder path that could possibly contain
          *            a <code>.ceylon</code> sub-folder with a <code>config</code> file
@@ -231,19 +245,26 @@ public class CeylonUtils {
                 log = new JULLogger();
             }
 
-            // Make sure we load the correct configuration
+            // Make sure we have a configuration
 
-            CeylonConfig config;
             actualCwd = new File(".");
-            if (cwd == null || actualCwd.equals(cwd)) {
+            if (config == null) {
+                // No configuration passed, lets get/load one
+                if (cwd == null || actualCwd.equals(cwd)) {
+                    cwd = actualCwd;
+                    config = CeylonConfig.get();
+                } else {
+                    config = CeylonConfig.createFromLocalDir(cwd);
+                }
+            } else if (cwd == null) {
                 cwd = actualCwd;
-                config = CeylonConfig.get();
-            } else {
-                config = CeylonConfig.createFromLocalDir(cwd);
             }
+            
+            // Access all the repository information from the configuration
+            
             Repositories repositories = Repositories.withConfig(config);
 
-            // First we determine the cache repository
+            // First we determine the cache repository that's needed to create CMR's RepositoryManagerBuilder
 
             File root;
             if (cacheRepo == null) {
@@ -255,6 +276,8 @@ public class CeylonUtils {
 
             final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log, isOffline(config));
 
+            // Now we add all the rest of the repositories in the order that they will be searched
+            
             if (systemRepo == null) {
                 addRepo(builder, repositories.getSystemRepository());
             } else {
