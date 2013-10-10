@@ -62,7 +62,19 @@ public final class PropertiesDependencyResolver implements DependencyResolver {
             }
             Set<ModuleInfo> infos = new LinkedHashSet<ModuleInfo>();
             for (Map.Entry entry : properties.entrySet()) {
-                infos.add(new ModuleInfo(entry.getKey().toString(), entry.getValue().toString(), false, false));
+                String name = entry.getKey().toString();
+                String version = entry.getValue().toString();
+                boolean optional = false;
+                boolean shared = false;
+                if (name.startsWith("+")) {
+                    name = name.substring(1);
+                    shared = true;
+                }
+                if (name.endsWith("?")) {
+                    name = name.substring(0, name.length() - 1);
+                    optional = true;
+                }
+                infos.add(new ModuleInfo(name, version, optional, shared));
             }
             return infos;
         } catch (Exception e) {
