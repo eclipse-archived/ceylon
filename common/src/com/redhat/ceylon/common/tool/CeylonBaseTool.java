@@ -1,10 +1,20 @@
 package com.redhat.ceylon.common.tool;
 
+import java.io.File;
+
 public abstract class CeylonBaseTool implements Tool {
+    protected File cwd;
     public String verbose;
 
     public String getVerbose() {
         return verbose;
+    }
+    
+    @OptionArgument(longName="cwd", argumentName="dir")
+    @Description("Specifies the current working directory for this tool. " +
+            "(default: the directory where the tool is run from)")
+    public void setCwd(File cwd) {
+        this.cwd = cwd;
     }
     
     @Option
