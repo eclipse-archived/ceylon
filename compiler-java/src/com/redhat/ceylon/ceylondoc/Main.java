@@ -41,6 +41,7 @@ public class Main {
         boolean includeSourceCode = false;
         List<String> modules = new LinkedList<String>();
         List<String> repositories = new LinkedList<String>();
+        File cwd = new File(".");
         String systemRepo = null;
         String cacheRepo = null;
         boolean noDefRepos = false;
@@ -52,7 +53,7 @@ public class Main {
             if ("-h".equals(arg)
                     || "-help".equals(arg)
                     || "--help".equals(arg)) {
-                printUsage(SC_OK, systemRepo, cacheRepo, noDefRepos, repositories, destDir);
+                printUsage(SC_OK, cwd, systemRepo, cacheRepo, noDefRepos, repositories, destDir);
             } else if ("-v".equals(arg)
                         || "-version".equals(arg)
                         || "--version".equals(arg)) {
@@ -60,6 +61,11 @@ public class Main {
             } else if ("-d".equals(arg)) {
                 System.err.println(CeylondMessages.msg("error.optionDnotSupported"));
                 exit(SC_ARGS);
+            } else if ("-cwd".equals(arg)) {
+                if (argsLeft <= 0) {
+                    optionMissingArgument(arg);
+                }
+                cwd = new File(args[++i]);
             } else if ("-out".equals(arg)) {
                 if (argsLeft <= 0) {
                     optionMissingArgument(arg);
@@ -112,7 +118,7 @@ public class Main {
         
         if(modules.isEmpty()){
             System.err.println(CeylondMessages.msg("error.noModulesSpecified"));
-            printUsage(SC_ARGS, systemRepo, cacheRepo, noDefRepos, repositories, destDir);
+            printUsage(SC_ARGS, cwd, systemRepo, cacheRepo, noDefRepos, repositories, destDir);
         }
         if (destDir == null) {
             destDir = "modules";
@@ -187,8 +193,8 @@ public class Main {
         exit(SC_OK);
     }
 
-    private static void printUsage(int statusCode, String systemRepo, String cacheRepo, boolean noDefRepos, List<String> userRepos, String outputRepo) {
-        List<String> defaultRepositories = addDefaultRepositories(systemRepo, cacheRepo, noDefRepos, userRepos, null);
+    private static void printUsage(int statusCode, File cwd, String systemRepo, String cacheRepo, boolean noDefRepos, List<String> userRepos, String outputRepo) {
+        List<String> defaultRepositories = addDefaultRepositories(cwd, systemRepo, cacheRepo, noDefRepos, userRepos, null);
         System.err.print(CeylondMessages.msg("info.usage1"));
         for(String repo : defaultRepositories) {
             System.err.println("                        "+repo);
@@ -197,8 +203,9 @@ public class Main {
         exit(statusCode);
     }
     
-    private static List<String> addDefaultRepositories(String systemRepo, String cacheRepo, boolean noDefRepos, List<String> userRepos, String outputRepo){
+    private static List<String> addDefaultRepositories(File cwd, String systemRepo, String cacheRepo, boolean noDefRepos, List<String> userRepos, String outputRepo){
         RepositoryManagerBuilder builder = CeylonUtils.repoManager()
+                .cwd(cwd)
                 .systemRepo(systemRepo)
                 .cacheRepo(cacheRepo)
                 .noDefaultRepos(noDefRepos)

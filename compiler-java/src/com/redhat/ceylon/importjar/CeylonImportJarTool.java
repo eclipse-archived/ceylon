@@ -161,6 +161,7 @@ public class CeylonImportJarTool extends CeylonBaseTool {
     
     public void publish() {
         RepositoryManager outputRepository = CeylonUtils.repoManager()
+                .cwd(cwd)
                 .outRepo(this.out)
                 .logger(log)
                 .user(user)
