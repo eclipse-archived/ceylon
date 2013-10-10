@@ -20,14 +20,19 @@
 package com.redhat.ceylon.importjar;
 
 import java.io.File;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.CMRException;
+import com.redhat.ceylon.cmr.impl.PropertiesDependencyResolver;
+import com.redhat.ceylon.cmr.impl.XmlDependencyResolver;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
@@ -132,6 +137,16 @@ public class CeylonImportJarTool extends CeylonBaseTool {
             if(!(descriptor.toLowerCase().endsWith(".xml") ||
                     descriptor.toLowerCase().endsWith(".properties")))
                 throw new ImportJarException("error.descriptorFile.badSuffix", new Object[]{descriptor}, null);
+            
+            RepositoryManager repository = CeylonUtils.repoManager()
+                    .logger(log)
+                    .user(user)
+                    .password(pass)
+                    .buildManager();
+            if(descriptor.toLowerCase().endsWith(".xml"))
+                checkModuleXml(repository, descriptor);
+            else if(descriptor.toLowerCase().endsWith(".properties"))
+                checkModuleProperties(repository, descriptor);
         }
     }
 
@@ -189,6 +204,61 @@ public class CeylonImportJarTool extends CeylonBaseTool {
         }
     }
     
+    private void checkModuleProperties(RepositoryManager repository, String propertiesPath) {
+        File file = new File(propertiesPath);
+        try{
+            Set<ModuleInfo> dependencies = PropertiesDependencyResolver.INSTANCE.resolveFromFile(file);
+            checkDependencies(repository, dependencies);
+        }catch(ImportJarException x){
+            throw x;
+        }catch(Exception x){
+            throw new ImportJarException("error.descriptorFile.invalid.properties", new Object[]{propertiesPath}, x);
+        }
+    }
+
+    private void checkModuleXml(RepositoryManager repository, String propertiesPath) {
+        File file = new File(propertiesPath);
+        try{
+            Set<ModuleInfo> dependencies = XmlDependencyResolver.INSTANCE.resolveFromFile(file);
+            checkDependencies(repository, dependencies);
+        }catch(ImportJarException x){
+            throw x;
+        }catch(Exception x){
+            throw new ImportJarException("error.descriptorFile.invalid.xml", new Object[]{propertiesPath, x.getMessage()}, x);
+        }
+    }
+
+    private void checkDependencies(RepositoryManager repository, Set<ModuleInfo> dependencies) {
+        if(dependencies.isEmpty()){
+            System.err.println("[WARNING] Empty dependencies file");
+        }else{
+            System.err.println("Checking declared dependencies:");
+            for(ModuleInfo dep : dependencies){
+                String name = dep.getName();
+                String version = dep.getVersion();
+                // missing dep is OK, it can be fixed later, but invalid module/dependency is not OK
+                if(name == null || name.isEmpty())
+                    throw new ImportJarException("error.descriptorFile.invalid.module", new Object[]{name}, null);
+                if("default".equals(name))
+                    throw new ImportJarException("error.descriptorFile.invalid.module.default");
+                if(version == null || version.isEmpty())
+                    throw new ImportJarException("error.descriptorFile.invalid.module.version", new Object[]{version}, null);
+                System.err.print("- "+dep+" ");
+                if(JDKUtils.isJDKModule(name) || JDKUtils.isOracleJDKModule(name))
+                    System.err.println("[OK]");
+                else{
+                    System.err.print("... [");
+                    ArtifactContext context = new ArtifactContext(name, dep.getVersion(), ArtifactContext.CAR, ArtifactContext.JAR);
+                    File artifact = repository.getArtifact(context);
+                    if(artifact != null && artifact.exists())
+                        System.err.println("OK]");
+                    else
+                        System.err.println("NOT FOUND]");
+                }
+            }
+        }
+    }
+
     @Override
     public void run(){
         publish();
