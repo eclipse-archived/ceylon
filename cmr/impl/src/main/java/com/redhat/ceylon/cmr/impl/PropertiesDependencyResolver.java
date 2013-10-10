@@ -34,8 +34,8 @@ import com.redhat.ceylon.cmr.spi.Node;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-final class PropertiesDependencyResolver implements DependencyResolver {
-    static PropertiesDependencyResolver INSTANCE = new PropertiesDependencyResolver();
+public final class PropertiesDependencyResolver implements DependencyResolver {
+    public static final PropertiesDependencyResolver INSTANCE = new PropertiesDependencyResolver();
 
     public Set<ModuleInfo> resolve(ArtifactResult result) {
         final File artifact = result.artifact();

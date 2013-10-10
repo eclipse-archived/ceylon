@@ -44,8 +44,8 @@ import org.xml.sax.SAXException;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-final class XmlDependencyResolver implements DependencyResolver {
-    static XmlDependencyResolver INSTANCE = new XmlDependencyResolver();
+final public class XmlDependencyResolver implements DependencyResolver {
+    public static final XmlDependencyResolver INSTANCE = new XmlDependencyResolver();
 
     public Set<ModuleInfo> resolve(ArtifactResult result) {
         final File artifact = result.artifact();
