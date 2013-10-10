@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="urn:jboss:module:1.0" name="ceylon.language" slot="0.6">
+    <dependencies>
+        <module name="java.base" slot="7"/>
+        <module name="ceylon.language" slot="1.0.0"/>
+        <module name="missing" slot="1"/>
+    </dependencies>
+</module>

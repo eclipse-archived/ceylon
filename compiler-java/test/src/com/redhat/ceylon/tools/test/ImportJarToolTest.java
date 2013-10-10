@@ -144,7 +144,43 @@ public class ImportJarToolTest {
             Assert.assertEquals("Descriptor file test/src/com/redhat/ceylon/tools/test/test-nonexistent-descriptor.xml does not exist", e.getCause().getMessage());
         }
     }
-    
+
+    @Test
+    public void testWithInvalidXmlDescriptor() {
+        FileUtil.delete(new File("modules/importtest"));
+        ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
+        Assert.assertNotNull(model);
+        
+        try {
+            CeylonImportJarTool tool = pluginFactory.bindArguments(model, Arrays.asList(
+                    "--descriptor", "test/src/com/redhat/ceylon/tools/test/test-descriptor-broken.xml", 
+                    "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
+            tool.run();
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertTrue(e.getCause() instanceof ImportJarException);
+            Assert.assertEquals("Descriptor file test/src/com/redhat/ceylon/tools/test/test-descriptor-broken.xml is not a valid module.xml file: org.xml.sax.SAXParseException; lineNumber: 1; columnNumber: 1; Content is not allowed in prolog.", e.getCause().getMessage());
+        }
+    }
+
+    @Test
+    public void testWithInvalidPropertiesDescriptor() {
+        FileUtil.delete(new File("modules/importtest"));
+        ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
+        Assert.assertNotNull(model);
+        
+        try {
+            CeylonImportJarTool tool = pluginFactory.bindArguments(model, Arrays.asList(
+                    "--descriptor", "test/src/com/redhat/ceylon/tools/test/test-descriptor-broken.properties", 
+                    "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
+            tool.run();
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertTrue(e.getCause() instanceof ImportJarException);
+            Assert.assertEquals("Invalid module version '' in module descriptor dependency list", e.getCause().getMessage());
+        }
+    }
+
     @Test
     public void testWithXmlDescriptor() {
         FileUtil.delete(new File("modules/importtest"));
