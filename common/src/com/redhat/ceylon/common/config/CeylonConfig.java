@@ -41,23 +41,17 @@ public class CeylonConfig {
     private HashMap<String, HashSet<String>> sectionNames;
     private HashMap<String, HashSet<String>> optionNames;
     
-    private volatile static CeylonConfig instance;
+    private static final ThreadLocal<CeylonConfig> localInstance = new InheritableThreadLocal<CeylonConfig>();
     
     /**
-     * Retrieves the default configuration for the current JVM.
-     * WARNING: This actually uses the current working directory of the
-     * virtual machine, but the configuration is only determined once,
-     * so if the CWD changes the configuration will still reflect the
-     * state according to the old value! 
+     * Retrieves the default configuration for the current thread.
      * @return Default CeylonConfig object
      */
     public static CeylonConfig get() {
+        CeylonConfig instance = localInstance.get();
         if (instance == null) {
-            synchronized (CeylonConfig.class) {
-                if (instance == null) {
-                    instance = createFromLocalDir(new File("."));
-                }
-            }
+            instance = createFromLocalDir(new File("."));
+            localInstance.set(instance);
         }
         return instance;
     }
@@ -66,8 +60,10 @@ public class CeylonConfig {
      * Set or override the default configuration
      * @param config The CelyonConfig object to use as the default 
      */
-    public static void set(CeylonConfig config) {
-        instance = config;
+    public static CeylonConfig set(CeylonConfig config) {
+        CeylonConfig old = localInstance.get();
+        localInstance.set(config);
+        return old;
     }
 
     /**
