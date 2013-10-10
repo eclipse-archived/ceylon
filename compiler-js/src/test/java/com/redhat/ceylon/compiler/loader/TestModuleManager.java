@@ -60,6 +60,7 @@ public class TestModuleManager {
                 "-src", "src/test/resources/loader/pass1"));
         options = Options.parse(args);
         repoman = CeylonUtils.repoManager()
+                .cwd(options.getCwd())
                 .systemRepo(options.getSystemRepo())
                 .userRepos(options.getRepos())
                 .outRepo(options.getOutDir())
@@ -85,6 +86,7 @@ public class TestModuleManager {
         if (jstc == null) {
             System.out.println("Pass 2: Loading model from JS");
             final RepositoryManager repoman = CeylonUtils.repoManager()
+                    .cwd(options.getCwd())
                     .systemRepo(options.getSystemRepo())
                     .userRepos(options.getRepos())
                     .outRepo(options.getOutDir())

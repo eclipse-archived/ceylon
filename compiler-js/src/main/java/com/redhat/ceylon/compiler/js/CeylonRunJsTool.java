@@ -15,11 +15,10 @@ import java.util.Set;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
-import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.OptionArgument;
@@ -139,14 +138,9 @@ public class CeylonRunJsTool extends RepoUsingTool {
     private List<String> args;
     private PrintStream output;
     private boolean debug;
-    private File cwd;
     
     public CeylonRunJsTool() {
         super(CeylonRunJsMessages.RESOURCE_BUNDLE);
-    }
-
-    public void setCwd(File cwd) {
-        this.cwd = cwd;
     }
 
     /** Sets the PrintStream to use for output. Default is System.out. */
@@ -344,14 +338,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         }
 
         //Create a repository manager to load the js module we're going to run
-        final RepositoryManager repoman = CeylonUtils.repoManager()
-                .systemRepo(systemRepo)
-                .cacheRepo(cacheRepo)
-                .noDefaultRepos(noDefRepos)
-                .userRepos(getRepositoryAsStrings())
-                .offline(offline)
-                .cwd(cwd)
-                .buildManager();
+        final RepositoryManager repoman = getRepositoryManager();
         
         version = checkModuleVersionsOrShowSuggestions(repoman, modname, version, ModuleQuery.Type.JS,
             Versions.JS_BINARY_MAJOR_VERSION, true);

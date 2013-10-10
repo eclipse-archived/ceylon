@@ -180,7 +180,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
 
     @Override
     public void run() throws Exception {
-        final Options opts = new Options(getRepos(), getSrc(), systemRepo, cacheRepo, getOut(), getUser(), getPass(), isOptimize(),
+        final Options opts = new Options(cwd, getRepos(), getSrc(), systemRepo, cacheRepo, getOut(), getUser(), getPass(), isOptimize(),
                 isModulify(), isIndent(), isComments(), getVerbose(), isProfile(), false, !skipSrc, encoding, offline, noDefRepos);
         run(opts, files);
     }
@@ -212,6 +212,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
             System.out.printf("Using repositories: %s%n", opts.getRepos());
         }
         final RepositoryManager repoman = CeylonUtils.repoManager()
+                .cwd(opts.getCwd())
                 .systemRepo(opts.getSystemRepo())
                 .cacheRepo(opts.getCacheRepo())
                 .noDefaultRepos(opts.getNoDefaultRepos())

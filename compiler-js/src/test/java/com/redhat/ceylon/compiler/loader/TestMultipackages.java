@@ -28,6 +28,7 @@ public class TestMultipackages {
                 "-src", "src/test/resources/loader"));
         Options options = Options.parse(args);
         repoman = CeylonUtils.repoManager()
+                .cwd(options.getCwd())
                 .systemRepo(options.getSystemRepo())
                 .userRepos(options.getRepos())
                 .outRepo(options.getOutDir())

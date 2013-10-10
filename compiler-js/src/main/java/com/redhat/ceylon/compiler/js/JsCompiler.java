@@ -120,6 +120,7 @@ public class JsCompiler {
         this.tc = tc;
         opts = options;
         outRepo = CeylonUtils.repoManager()
+                .cwd(options.getCwd())
                 .outRepo(options.getOutDir())
                 .user(options.getUser())
                 .password(options.getPass())

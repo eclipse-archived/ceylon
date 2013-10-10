@@ -29,6 +29,7 @@ public class MainForJsTest {
                 "-rep", "build/runtime",
                 "-out", "build/test/modules")));
         final RepositoryManager repoman = CeylonUtils.repoManager()
+                .cwd(opts.getCwd())
                 .systemRepo(opts.getSystemRepo())
                 .userRepos(opts.getRepos())
                 .outRepo(opts.getOutDir())

@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class Options {
 
+    private File cwd;
     private List<String> repos = new ArrayList<String>();
     private String systemRepo;
     private String cacheRepo;
@@ -33,11 +34,12 @@ public class Options {
     private String encoding = System.getProperty("file.encoding");
     private boolean offline;
 
-    public Options(List<String> repositories, List<String> sourceDirectories, String systemRepository,
+    public Options(File currdir, List<String> repositories, List<String> sourceDirectories, String systemRepository,
             String cacheRepository, String outputRepository, final String username, final String password,
             boolean protoStyle, boolean wrapModules, boolean useIndent, boolean useComments, String verbosity,
             boolean showTimes, boolean fromStdin, boolean generateSrcArchive,
             String srcEncoding, boolean offlineMode, boolean noDefaultRepos) {
+        cwd = currdir;
         repos = repositories;
         srcDirs = sourceDirectories;
         if (systemRepository != null) systemRepo = systemRepository;
@@ -91,7 +93,9 @@ public class Options {
                 if (iter.hasNext()) {
                     String v = iter.next();
                     iter.remove();
-                    if ("-rep".equals(s)) {
+                    if ("-cwd".equals(s)) {
+                        opts.cwd=new File(v);
+                    } else if ("-rep".equals(s)) {
                         opts.addRepo(v);
                     } else if ("-sysrep".equals(s)) {
                         opts.systemRepo=v;
@@ -181,6 +185,11 @@ public class Options {
             return true;
         }
         return false;
+    }
+
+    /** Returns the current working directory (default = null) */
+    public File getCwd() {
+        return cwd;
     }
 
     /** Returns the list of repositories that were parsed from the command line. */
