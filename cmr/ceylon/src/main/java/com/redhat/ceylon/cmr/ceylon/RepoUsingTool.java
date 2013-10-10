@@ -73,7 +73,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             setRepository(EMPTY_URIS);
         }
     }
-    
+
     @OptionArgument(longName="rep", argumentName="url")
     @Description("Specifies a module repository containing dependencies. Can be specified multiple times. " +
             "(default: `modules`, `~/.ceylon/repo`, http://modules.ceylon-lang.org)")
@@ -113,6 +113,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     
     protected CeylonUtils.CeylonRepoManagerBuilder createRepositoryManagerBuilder() {
         CeylonUtils.CeylonRepoManagerBuilder rmb = CeylonUtils.repoManager()
+                .cwd(cwd)
                 .systemRepo(systemRepo)
                 .cacheRepo(cacheRepo)
                 .noDefaultRepos(noDefRepos)
