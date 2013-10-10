@@ -18,9 +18,9 @@
  * MA  02110-1301, USA.
  */
 
-import ceylon.language.model{Class, OptionalAnnotation, Annotated}
-import ceylon.language.model.declaration{ValueDeclaration}
-import ceylon.language.model{optionalAnnotation}
+import ceylon.language.meta.model{Class}
+import ceylon.language.meta.declaration{ValueDeclaration}
+import ceylon.language.meta{optionalAnnotation}
 
 @noanno
 Value? bug1272<Value,ProgramElement>(
@@ -33,9 +33,9 @@ Value? bug1272<Value,ProgramElement>(
 
 @noanno
 void bug1272_callsite() {
-    Class<Shared, []> s = `Shared`;
+    Class<SharedAnnotation, []> s = `SharedAnnotation`;
     ValueDeclaration x => nothing;
     bug1272(s, x);// This is OK!
-    Shared? srd = bug1272(s, x); // This causes javac stackoverflow
+    SharedAnnotation? srd = bug1272(s, x); // This causes javac stackoverflow
     //assert(bug1272(s, x) exists);
 }

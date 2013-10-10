@@ -494,7 +494,6 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     }
     
     @Test
-    @Ignore("1.0")
     public void testBug1272() {
         compile("bug12xx/Bug1272.ceylon");
     }
