@@ -367,7 +367,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         try {
             statementGen().noExpressionlessReturn = isAnything(model.getType());
             if (functionArg.getBlock() != null) {
-                body = statementGen().transform(functionArg.getBlock()).getStatements();
+                body = statementGen().transformBlock(functionArg.getBlock());
                 if (!functionArg.getBlock().getDefinitelyReturns()) {
                     if (isAnything(model.getType())) {
                         body = body.append(make().Return(makeNull()));

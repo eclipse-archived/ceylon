@@ -1194,7 +1194,7 @@ class NamedArgumentInvocation extends Invocation {
         try {
             gen.statementGen().noExpressionlessReturn = gen.isAnything(model.getType());
             if (methodArg.getBlock() != null) {
-                body = gen.statementGen().transform(methodArg.getBlock()).getStatements();
+                body = gen.statementGen().transformBlock(methodArg.getBlock());
                 if (!methodArg.getBlock().getDefinitelyReturns()) {
                     if (gen.isAnything(model.getType())) {
                         body = body.append(gen.make().Return(gen.makeNull()));

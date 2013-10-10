@@ -2239,10 +2239,9 @@ public class StatementTransformer extends AbstractTransformer {
         // Prepare for variable substitution in the following code block
         Substitution prevSubst = naming.addVariableSubst(isCase.getVariable().getDeclarationModel(), substVarName.toString());
 
-        JCBlock block = transform(caseClause.getBlock());
         List<JCStatement> stats = List.<JCStatement> of(decl2);
-        stats = stats.appendList(block.getStatements());
-        block = at(isCase).Block(0, stats);
+        stats = stats.appendList(transformBlock(caseClause.getBlock()));
+        JCBlock block = at(isCase).Block(0, stats);
 
         // Deactivate the above variable substitution
         prevSubst.close();
