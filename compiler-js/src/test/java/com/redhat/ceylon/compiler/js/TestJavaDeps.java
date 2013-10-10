@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.js;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 
 import org.junit.Test;
 
@@ -18,8 +17,13 @@ public class TestJavaDeps {
         builder.addSrcDirectory(new File("src/test/resources/javadeps"));
         final TypeChecker tc = builder.getTypeChecker();
         tc.process();
-        final Options opts = new Options(null, Collections.<String>emptyList(), Collections.singletonList("src/test/resources/javadeps"),
-                null, null, "./build", null, null, false, true, false, true, null, false, false, false, "UTF-8", false, false);
+        final Options opts = new Options()
+                .addSrc("src/test/resources/javadeps")
+                .outDir("./build")
+                .indent(false)
+                .comment(false)
+                .generateSourceArchive(false)
+                .encoding("UTF-8");
         final JsCompiler comp = new JsCompiler(tc, opts);
         comp.generate();
     }

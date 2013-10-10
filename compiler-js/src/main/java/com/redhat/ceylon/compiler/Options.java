@@ -34,33 +34,7 @@ public class Options {
     private String encoding = System.getProperty("file.encoding");
     private boolean offline;
 
-    public Options(File currdir, List<String> repositories, List<String> sourceDirectories, String systemRepository,
-            String cacheRepository, String outputRepository, final String username, final String password,
-            boolean protoStyle, boolean wrapModules, boolean useIndent, boolean useComments, String verbosity,
-            boolean showTimes, boolean fromStdin, boolean generateSrcArchive,
-            String srcEncoding, boolean offlineMode, boolean noDefaultRepos) {
-        cwd = currdir;
-        repos = repositories;
-        srcDirs = sourceDirectories;
-        if (systemRepository != null) systemRepo = systemRepository;
-        if (cacheRepository != null) cacheRepo = cacheRepository;
-        if (outputRepository != null) outDir = outputRepository;
-        user = username;
-        pass = password;
-        optimize = protoStyle;
-        modulify = wrapModules;
-        indent = useIndent;
-        comment = useComments;
-        verbose = verbosity;
-        profile = showTimes;
-        stdin = fromStdin;
-        gensrc = generateSrcArchive;
-        encoding = srcEncoding;
-        offline = offlineMode;
-        noDefRepos = noDefaultRepos;
-    }
-
-    private Options() {}
+    public Options() {}
 
     /** Creates and returns an Options object from a command-list argument list. The list itself
      * is modified, so at the end it only contains the files to compile. */
@@ -191,13 +165,25 @@ public class Options {
     public File getCwd() {
         return cwd;
     }
+    
+    public Options cwd(File cwd) {
+        this.cwd = cwd;
+        return this;
+    }
 
     /** Returns the list of repositories that were parsed from the command line. */
     public List<String> getRepos() {
         return repos;
     }
-    public void addRepo(String repo) {
+    
+    public Options addRepo(String repo) {
         repos.add(repo);
+        return this;
+    }
+    
+    public Options repos(List<String> repos) {
+        this.repos.addAll(repos);
+        return this;
     }
     
     /** Returns the system repository (default = null) */
@@ -205,70 +191,181 @@ public class Options {
         return systemRepo;
     }
 
+    public Options systemRepo(String systemRepo) {
+        this.systemRepo = systemRepo;
+        return this;
+    }
+
     /** Returns the cache folder (default = null) */
     public String getCacheRepo() {
         return cacheRepo;
     }
     
+    public Options cacheRepo(String cacheRepo) {
+        this.cacheRepo = cacheRepo;
+        return this;
+    }
+
     public boolean getNoDefaultRepos() {
         return noDefRepos;
+    }
+
+    public Options noDefaultRepos(boolean noDefRepos) {
+        this.noDefRepos = noDefRepos;
+        return this;
     }
 
     public String getUser() {
         return user;
     }
+    
+    public Options user(String user) {
+        this.user = user;
+        return this;
+    }
+
     public String getPass() {
         return pass;
     }
+    
+    public Options pass(String pass) {
+        this.pass = pass;
+        return this;
+    }
+
     /** Returns a list of the source directories. By default it's just one, "source". */
     public List<String> getSrcDirs() {
         return srcDirs;
     }
+    
+    public Options addSrc(String src) {
+        srcDirs.add(src);
+        return this;
+    }
+
+    public Options sources(List<String> srcs) {
+        srcDirs.addAll(srcs);
+        return this;
+    }
+
     public String getOutDir() {
         return outDir;
     }
+    
+    public Options outDir(String outDir) {
+        this.outDir = outDir;
+        return this;
+    }
+
     public boolean isOptimize() {
         return optimize;
     }
+    
+    public Options optimize(boolean optimize) {
+        this.optimize = optimize;
+        return this;
+    }
+
     public boolean isModulify() {
         return modulify;
     }
+    
+    public Options modulify(boolean modulify) {
+        this.modulify = modulify;
+        return this;
+    }
+
     public boolean isIndent() {
         return indent;
     }
+    
+    public Options indent(boolean indent) {
+        this.indent = indent;
+        return this;
+    }
+
     public boolean isComment() {
         return comment;
     }
+    
+    public Options comment(boolean comment) {
+        this.comment = comment;
+        return this;
+    }
+
     public String getVerbose() {
         return verbose;
     }
+    
+    public Options verbose(String verbose) {
+        this.verbose = verbose;
+        return this;
+    }
+
     public boolean isProfile() {
         return profile;
     }
+    
+    public Options profile(boolean profile) {
+        this.profile = profile;
+        return this;
+    }
+
     public boolean isVersion() {
         return version;
     }
+    
+    public Options version(boolean version) {
+        this.version = version;
+        return this;
+    }
+
     public boolean isStdin() {
         return stdin;
     }
+    
+    public Options stdin(boolean stdin) {
+        this.stdin = stdin;
+        return this;
+    }
+
     public boolean isHelp() {
         return help;
     }
+    
+    public Options help(boolean help) {
+        this.help = help;
+        return this;
+    }
+
     /** The character encoding to use when reading source files. */
     public String getEncoding() {
         return encoding;
     }
+    
+    public Options encoding(String encoding) {
+        this.encoding = encoding;
+        return this;
+    }
+
     public boolean getOffline() {
         return offline;
+    }
+
+    public Options offline(boolean offline) {
+        this.offline = offline;
+        return this;
     }
 
     /** Sets the option to generate the source archive or skip it.
      * The default is to generate it, but it can be set to false
      * for example when doing joint compilation with another backend
      * that will generate .src archives. */
-    public void setGenerateSourceArchive(boolean flag) {
+    public Options generateSourceArchive(boolean flag) {
         gensrc = flag;
+        return this;
     }
+    
     /** Tells whether to generate the .src archive (default true). */
     public boolean isGenerateSourceArchive() {
         return gensrc;

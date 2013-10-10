@@ -180,8 +180,26 @@ public class CeylonCompileJsTool extends RepoUsingTool {
 
     @Override
     public void run() throws Exception {
-        final Options opts = new Options(cwd, getRepos(), getSrc(), systemRepo, cacheRepo, getOut(), getUser(), getPass(), isOptimize(),
-                isModulify(), isIndent(), isComments(), getVerbose(), isProfile(), false, !skipSrc, encoding, offline, noDefRepos);
+        final Options opts = new Options()
+                .cwd(cwd)
+                .repos(getRepos())
+                .sources(getSrc())
+                .systemRepo(systemRepo)
+                .cacheRepo(cacheRepo)
+                .outDir(getOut())
+                .user(getUser())
+                .pass(getPass())
+                .optimize(isOptimize())
+                .modulify(isModulify())
+                .indent(isIndent())
+                .comment(isComments())
+                .verbose(getVerbose())
+                .profile(isProfile())
+                .stdin(false)
+                .generateSourceArchive(!skipSrc)
+                .encoding(encoding)
+                .offline(offline)
+                .noDefaultRepos(noDefRepos);
         run(opts, files);
     }
 
