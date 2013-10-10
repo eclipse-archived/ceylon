@@ -4,13 +4,8 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'satisfiedTypes',function(){
   if (ints && ints.length) {
     var rv = [];
     for (var i=0; i < ints.length; i++) {
-      var ifc = ints[i].t;
-      var mm = ifc.$$metamodel$$;
-      if (typeof(mm)==='function') {
-        mm = mm();
-        ifc.$$metamodel$$=mm;
-      }
-      rv.push(AppliedInterface(ifc, {Type:{t:ifc}}));
+      var ifc = ints[i];
+      rv.push(AppliedInterface(ifc, {Type:ifc}));
     }
     return rv.reifyCeylonType({Absent:{t:Null},Element:{t:InterfaceModel$meta$model,a:{Type:{t:Anything}}}});
   }
