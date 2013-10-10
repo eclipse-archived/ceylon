@@ -223,7 +223,7 @@ void visitOpenType(OpenType pt){
                 if(exists arg){
                     visitOpenType(arg);
                 }else{
-                    output("Unknown Type Argument");
+                    output("Unknown open Type Argument");
                 }
             }
             output(">");
@@ -273,7 +273,7 @@ void visitType(Type<Anything> pt){
                 if(exists arg){
                     visitType(arg);
                 }else{
-                    output("Unknown Type Argument");
+                    output("Unknown closed Type Argument");
                 }
             }
             output(">");
