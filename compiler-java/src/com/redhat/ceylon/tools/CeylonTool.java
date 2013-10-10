@@ -40,6 +40,7 @@ import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.Tools;
+import com.sun.tools.javac.main.CommandLine;
 
 
 /**
@@ -229,7 +230,7 @@ public class CeylonTool implements Tool {
         Exception error = null;
         try {
             ToolModel<CeylonTool> model = getToolModel("");
-            List<String> myArgs = rearrangeArgs(args);
+            List<String> myArgs = rearrangeArgs(CommandLine.parse(args));
             getPluginFactory().bindArguments(model, this, myArgs);
             result = SC_OK;
         } catch (NoSuchToolException e) {

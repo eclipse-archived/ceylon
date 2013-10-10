@@ -51,7 +51,6 @@ import com.redhat.ceylon.compiler.java.util.Timer;
 import com.sun.tools.javac.code.Source;
 import com.sun.tools.javac.file.JavacFileManager;
 import com.sun.tools.javac.jvm.Target;
-import com.sun.tools.javac.main.CommandLine;
 import com.sun.tools.javac.main.JavaCompiler;
 import com.sun.tools.javac.main.JavacOption.Option;
 import com.sun.tools.javac.main.RecognizedOptions;
@@ -563,30 +562,23 @@ public class Main extends com.sun.tools.javac.main.Main {
                 return EXIT_CMDERR;
             }
 
-            List<File> filenames;
-            try {
-                filenames = processArgs(CommandLine.parse(args));
-                if (filenames == null) {
-                    // null signals an error in options, abort
-                    this.exitState = ExitState.cmderror();
-                    return EXIT_CMDERR;
-                } else if (filenames.isEmpty() && fileObjects.isEmpty() && classnames.isEmpty()) {
-                    // it is allowed to compile nothing if just asking for help
-                    // or version info
-                    if (options.get("-help") != null 
-                            || options.get("-jhelp") != null 
-                            || options.get("-X") != null 
-                            || options.get("-version") != null 
-                            || options.get("-fullversion") != null)
-                        return EXIT_OK;
-                    error("err.no.source.files");
-                    this.exitState = ExitState.cmderror();
-                    return EXIT_CMDERR;
-                }
-            } catch (java.io.FileNotFoundException e) {
-                Log.printLines(out, ownName + ": " + getLocalizedString("err.file.not.found", e.getMessage()));
-                this.exitState = ExitState.systemError(null, e);
-                return EXIT_SYSERR;
+            List<File> filenames = processArgs(args);
+            if (filenames == null) {
+                // null signals an error in options, abort
+                this.exitState = ExitState.cmderror();
+                return EXIT_CMDERR;
+            } else if (filenames.isEmpty() && fileObjects.isEmpty() && classnames.isEmpty()) {
+                // it is allowed to compile nothing if just asking for help
+                // or version info
+                if (options.get("-help") != null 
+                        || options.get("-jhelp") != null 
+                        || options.get("-X") != null 
+                        || options.get("-version") != null 
+                        || options.get("-fullversion") != null)
+                    return EXIT_OK;
+                error("err.no.source.files");
+                this.exitState = ExitState.cmderror();
+                return EXIT_CMDERR;
             }
 
             // Set up the timer *after* we've processed to options
