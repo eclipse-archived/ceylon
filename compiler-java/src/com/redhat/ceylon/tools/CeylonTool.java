@@ -19,14 +19,17 @@
  */
 package com.redhat.ceylon.tools;
 
+import java.io.File;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.ArgumentModel;
+import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.FatalToolError;
 import com.redhat.ceylon.common.tool.ModelException;
@@ -262,7 +265,9 @@ public class CeylonTool implements Tool {
     public int execute() throws Exception {
         int result;
         Exception error = null;
+        CeylonConfig oldConfig = null;
         try {
+            oldConfig = setupConfig();
             run();
             result = SC_OK;
         } catch (NoSuchToolException e) {
@@ -283,6 +288,8 @@ public class CeylonTool implements Tool {
         } catch (Exception e) {
             error = e;
             result = SC_TOOL_EXCEPTION;
+        } finally {
+            CeylonConfig.set(oldConfig);
         }
         if (error != null) {
             Usage.handleException(this, getToolName(), error);
@@ -291,13 +298,26 @@ public class CeylonTool implements Tool {
         return result;
     }
 
+    private CeylonConfig setupConfig() {
+        Tool tool = getTool();
+        if (tool instanceof CeylonBaseTool) {
+            CeylonBaseTool cbt = (CeylonBaseTool)tool;
+            File cwd = cbt.getCwd();
+            if (cwd != null) {
+                CeylonConfig config = CeylonConfig.createFromLocalDir(cwd);
+                return CeylonConfig.set(config);
+            }
+        }
+        return null;
+    }
+
     @Override
     public void run() throws Exception {
         if (version) {
             // --version is also handled in main(), so that you can at least do 
             // --version with a Java <7 JVM, but also do it here for consistency
             version(System.out);
-        } else {   
+        } else {
             Tool tool = getTool();
             // Run the tool
             tool.run();
