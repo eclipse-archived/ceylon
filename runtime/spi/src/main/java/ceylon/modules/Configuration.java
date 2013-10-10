@@ -43,6 +43,11 @@ public class Configuration {
     public String[] arguments;
 
     /**
+     * The current working directory to use (default = null)
+     */
+    public String cwd;
+    
+    /**
      * List of module repositories
      */
     public List<String> repositories = new LinkedList<String>();
@@ -123,6 +128,9 @@ public class Configuration {
                 break;
             case RUN:
                 run = values[arg];
+                break;
+            case CWD:
+                cwd = values[arg];
                 break;
             case SYSTEM_REPOSITORY:
                 systemRepository = values[arg];

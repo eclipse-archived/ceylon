@@ -17,6 +17,7 @@
 
 package ceylon.modules.jboss.runtime;
 
+import java.io.File;
 import java.util.NavigableMap;
 import java.util.Set;
 
@@ -105,6 +106,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
     private RepositoryManager createRepository(Configuration conf, boolean offline) {
         Logger log = new JULLogger();
         final RepositoryManagerBuilder builder = CeylonUtils.repoManager()
+                .cwd(conf.cwd)
                 .systemRepo(conf.systemRepository)
                 .cacheRepo(conf.cacheRepository)
                 .noDefaultRepos(conf.noDefaultRepositories)

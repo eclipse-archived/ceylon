@@ -25,6 +25,7 @@ public enum Argument {
     CACHE_CONTENT("cache_content", ArgumentType.IMPL, 0),
     IMPLEMENTATION("impl", ArgumentType.IMPL, 2),
     RUN("run", ArgumentType.CEYLON, 1),
+    CWD("cwd", ArgumentType.CEYLON, 1),
     REPOSITORY("rep", ArgumentType.CEYLON, 1),
     SYSTEM_REPOSITORY("sysrep", ArgumentType.CEYLON, 1),
     CACHE_REPOSITORY("cacherep", ArgumentType.CEYLON, 1),
