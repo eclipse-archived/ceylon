@@ -138,36 +138,30 @@ public class StatementTransformer extends AbstractTransformer {
             return List.<JCStatement>nil();
         }
         at(block);
-        List<JCStatement> result = transformStmts(block.getStatements());
-        Scope scope = block.getScope();
-        while (scope instanceof ConditionScope) {
-            scope = scope.getScope();
-        }
-        naming.closeScopedSubstitutions(scope);
-        return result;
-    }
-
-    @SuppressWarnings("unchecked")
-    List<JCStatement> transformStmts(java.util.List<Tree.Statement> list) {
         CeylonVisitor v = gen().visitor;
         final ListBuffer<JCTree> prevDefs = v.defs;
         final boolean prevInInitializer = v.inInitializer;
         final ClassDefinitionBuilder prevClassBuilder = v.classBuilder;
-        List<JCStatement> childDefs;
+        List<JCStatement> result;
         try {
             v.defs = new ListBuffer<JCTree>();
             v.inInitializer = false;
             v.classBuilder = current();
-            for (Tree.Statement stmt : list)
+            for (Tree.Statement stmt : block.getStatements())
                 stmt.visit(v);
-            childDefs = (List<JCStatement>)v.getResult().toList();
+            result = (List<JCStatement>)v.getResult().toList();
         } finally {
             v.classBuilder = prevClassBuilder;
             v.inInitializer = prevInInitializer;
             v.defs = prevDefs;
+            // Close Substitutions which were scoped to this block
+            Scope scope = block.getScope();
+            while (scope instanceof ConditionScope) {
+                scope = scope.getScope();
+            }
+            naming.closeScopedSubstitutions(scope);
         }
-
-        return childDefs;
+        return result;
     }
 
     private JCThrow makeThrowAssertionException(JCExpression messageExpr) {
