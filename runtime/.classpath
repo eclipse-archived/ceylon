@@ -11,7 +11,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon.language"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/shrinkwrap-api-1.0.0-cr-1.jar" sourcepath="/home/matej/.m2/repository/org/jboss/shrinkwrap/shrinkwrap-api/1.0.0-cr-1/shrinkwrap-api-1.0.0-cr-1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jboss-modules.jar" sourcepath="/home/matej/.m2/repository/org/jboss/modules/jboss-modules/1.1.3.GA/jboss-modules-1.1.3.GA-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-modules.jar" sourcepath="debug/jboss-modules-1.1.3.GA-sources.jar"/>
 	<classpathentry kind="lib" path="lib/shrinkwrap-spi-1.0.0-cr-1.jar"/>
 	<classpathentry kind="lib" path="lib/jboss-logmanager-1.4.0.Final.jar" sourcepath="/home/matej/.m2/repository/org/jboss/logmanager/jboss-logmanager/1.4.0.Final/jboss-logmanager-1.4.0.Final-sources.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
