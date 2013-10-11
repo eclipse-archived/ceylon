@@ -37,7 +37,7 @@ class Bug1124 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             @.java.lang.Override
             public .ceylon.language.Boolean $call(final .java.lang.Object $param$0) {
                 final long j = ((.ceylon.language.Integer)$param$0).longValue();
-                return getI$priv() == j ? .ceylon.language.Boolean.instance(f$priv()) : null;
+                return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124.this.getI$priv() == j ? .ceylon.language.Boolean.instance(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124.this.f$priv()) : null;
             }
         };
     }
@@ -75,7 +75,7 @@ class Bug1124 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             @.java.lang.Override
             public .ceylon.language.Boolean $call(final .java.lang.Object $param$0) {
                 final long j = ((.ceylon.language.Integer)$param$0).longValue();
-                return getI$priv() == j ? .ceylon.language.Boolean.instance(f$priv()) : null;
+                return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124.this.getI$priv() == j ? .ceylon.language.Boolean.instance(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124.this.f$priv()) : null;
             }
         };
     }
