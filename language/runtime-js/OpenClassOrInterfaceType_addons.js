@@ -1,9 +1,16 @@
 defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'typeArguments',function(){
   var tps=this.declaration.typeParameterDeclarations;
   if (tps && tps.length > 0) {
+    var rtps = this.declaration._targs ? this.declaration._targs : this.declaration.tipo.$$metamodel$$.$tp;
     var targs=[];
     for (var i=0; i < tps.length; i++) {
-      var targ = OpenTvar(tps[i]); //TODO dig deeper
+      var tp = rtps[tps[i].name];
+      var targ;
+      if (typeof(tp)==='string') {
+        targ = new OpenTvar(OpenTypeParam(this.declaration.tipo,tp));
+      } else {
+        targ = OpenTvar(tps[i]);
+      }
       targs.push(Entry(tps[i], targ, {Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}}));
     }
     return LazyMap(targs.reifyCeylonType({Absent:{t:Null},Element:{t:Entry,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}}}}),{Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}});
