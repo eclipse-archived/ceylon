@@ -3569,6 +3569,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             
             qualExpr = addInterfaceImplAccessorIfRequired(qualExpr, expr, decl);
 
+            qualExpr = addAnonymousInnerClassQualifierIfRequired(qualExpr, expr, decl);
+            
             if (qualExpr == null && needDollarThis(expr)) {
                 qualExpr = makeQualifiedDollarThis((Tree.BaseMemberExpression)expr);
             }
@@ -3609,6 +3611,51 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         return result;
+    }
+
+    /**
+     * The compiler generates anonymous local classes for things like
+     * Callables and Comprehensions. When referring to a member foo 
+     * within one of those things we need a qualified {@code this}
+     * to ensure we're accessing the outer instances member, not 
+     * a member of the anonymous local class that happens to have the same name.
+     */
+    private JCExpression addAnonymousInnerClassQualifierIfRequired(
+            JCExpression qualExpr, Tree.StaticMemberOrTypeExpression expr,
+            Declaration decl) {
+        if (qualExpr == null 
+                && isWithinSyntheticClassBody()
+                && decl.isMember() && !Decl.isLocalToInitializer(decl)) {
+            // First check whether the expression is captured from an enclosing scope
+            TypeDeclaration outer = null;
+            Scope stop = decl.getScope();
+            if (stop instanceof TypeDeclaration) {// reified scope
+                Scope scope = expr.getScope();
+                while (!(scope instanceof Package)) {
+                    if (scope.equals(stop)) {
+                        outer = (TypeDeclaration)stop;
+                        break;
+                    }
+                    scope = scope.getContainer();
+                }
+            }
+            // If not it might be inherited...
+            if (outer == null) {
+                outer = expr.getScope().getInheritingDeclaration(decl);
+            }
+            if (outer != null) {
+                if (decl.isShared() && outer instanceof Interface) {
+                    qualExpr = naming.makeQuotedThis();
+                } else {
+                    // Class or companion class,
+                    qualExpr = naming.makeQualifiedThis(makeJavaType(((TypeDeclaration)outer).getType(), 
+                            JT_RAW | (outer instanceof Interface ? JT_COMPANION : 0)));
+                } 
+            } else if (decl.isMember()) {
+                Assert.fail();
+            }
+        }
+        return qualExpr;
     }
 
     /**
