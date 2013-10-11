@@ -96,7 +96,7 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                 return (
                     let
                     {
-                        <.ceylon.language.Number>sort3(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, $$elements);
+                        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug687.this.<.ceylon.language.Number>sort3(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, $$elements);
                     }
                     returning null;
                 );

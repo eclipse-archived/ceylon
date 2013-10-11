@@ -85,7 +85,7 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             }
             
             private .ceylon.language.String $call$typed(.java.lang.String s1, .java.lang.String s2, .java.lang.String s3, .java.lang.String s4, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
-                return .ceylon.language.String.instance(narySequenced(s1, s2, s3, s4, s));
+                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1184.this.narySequenced(s1, s2, s3, s4, s));
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.String> r2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor))))), "String(String, String, String, String, String*)", (short)4){
@@ -159,7 +159,7 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             }
             
             private .ceylon.language.String $call$typed(.java.lang.String s1, .java.lang.String s2, .java.lang.String s3, .java.lang.String s4, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
-                return .ceylon.language.String.instance(self$priv().narySequenced(s1, s2, s3, s4, s));
+                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1184.this.self$priv().narySequenced(s1, s2, s3, s4, s));
             }
         };
     }

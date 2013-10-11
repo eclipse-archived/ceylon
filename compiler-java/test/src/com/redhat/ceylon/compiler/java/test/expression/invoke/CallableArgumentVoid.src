@@ -28,7 +28,7 @@ class CallableArgumentAnything implements .com.redhat.ceylon.compiler.java.runti
                 return (
                     let
                     {
-                        m$priv();
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.this.m$priv();
                     }
                     returning null;
                 );
@@ -38,14 +38,41 @@ class CallableArgumentAnything implements .com.redhat.ceylon.compiler.java.runti
             
             @.java.lang.Override
             public .java.lang.Object $call() {
-                return m2();
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.this.m$priv();
+                    }
+                    returning null;
+                );
             }
         });
         f$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call() {
-                return m3();
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.this.m2();
+            }
+        });
+        f$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.this.m2();
+            }
+        });
+        f$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.this.m3();
+            }
+        });
+        f$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.this.m3();
             }
         });
     }

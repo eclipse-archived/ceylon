@@ -22,7 +22,7 @@ class Bug655 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             
             @.java.lang.Override
             public .ceylon.language.String $call() {
-                return .ceylon.language.String.instance(nome$priv());
+                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655.this.nome$priv());
             }
         }).where$priv();
     }

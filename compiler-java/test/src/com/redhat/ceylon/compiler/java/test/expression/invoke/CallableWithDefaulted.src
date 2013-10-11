@@ -772,7 +772,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
                 return (
                     let
                     {
-                        defaultedVariadic$priv(a, b, args);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableWithDefaulted.this.defaultedVariadic$priv(a, b, args);
                     }
                     returning null;
                 );
@@ -833,7 +833,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
                 return (
                     let
                     {
-                        defaultedVariadicNonempty$priv(a, args);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableWithDefaulted.this.defaultedVariadicNonempty$priv(a, args);
                     }
                     returning null;
                 );

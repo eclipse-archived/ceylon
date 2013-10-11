@@ -143,7 +143,7 @@ class ForIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     public final .java.lang.Object next() {
                         if (this.next1()) {
                             final .ceylon.language.Integer x = this.x;
-                            return .ceylon.language.Integer.instance(nowt$priv(x));
+                            return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsNull.this.nowt$priv(x));
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
@@ -190,7 +190,7 @@ class ForIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     public final .java.lang.Object next() {
                         if (this.next1()) {
                             final .ceylon.language.Integer x = this.x;
-                            return .ceylon.language.Integer.instance(nowt$priv($y$10));
+                            return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsNull.this.nowt$priv($y$10));
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

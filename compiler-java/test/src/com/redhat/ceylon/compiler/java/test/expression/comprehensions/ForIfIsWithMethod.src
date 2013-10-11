@@ -96,7 +96,7 @@ class ForIfIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.mode
                     public final .java.lang.Object next() {
                         if (this.next1()) {
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x = this.x;
-                            return nowt$priv($y$5);
+                            return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod.this.nowt$priv($y$5);
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

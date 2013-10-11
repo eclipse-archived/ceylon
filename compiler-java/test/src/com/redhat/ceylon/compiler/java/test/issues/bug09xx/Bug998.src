@@ -29,7 +29,7 @@ class Bug998 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                     public final .java.lang.Object next() {
                         if (this.x()) {
                             final .ceylon.language.Integer x = this.x;
-                            return .ceylon.language.Boolean.instance(f$priv());
+                            return .ceylon.language.Boolean.instance(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug998.this.f$priv());
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

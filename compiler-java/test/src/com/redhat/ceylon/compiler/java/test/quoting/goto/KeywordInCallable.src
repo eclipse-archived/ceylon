@@ -21,7 +21,7 @@ class KeywordInCallable implements .com.redhat.ceylon.compiler.java.runtime.mode
                         return (
                             let
                             {
-                                goto$priv();
+                                .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInCallable.this.goto$priv();
                             }
                             returning null;
                         );
@@ -37,7 +37,7 @@ class KeywordInCallable implements .com.redhat.ceylon.compiler.java.runtime.mode
                 return (
                     let
                     {
-                        goto$priv();
+                        .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInCallable.this.goto$priv();
                     }
                     returning null;
                 );

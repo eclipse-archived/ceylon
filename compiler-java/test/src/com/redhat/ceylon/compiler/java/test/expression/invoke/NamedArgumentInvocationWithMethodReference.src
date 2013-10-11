@@ -29,7 +29,7 @@ class NamedArgumentInvocationWithMethodReference implements .com.redhat.ceylon.c
                         return (
                             let
                             {
-                                m$priv();
+                                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationWithMethodReference.this.m$priv();
                             }
                             returning null;
                         );

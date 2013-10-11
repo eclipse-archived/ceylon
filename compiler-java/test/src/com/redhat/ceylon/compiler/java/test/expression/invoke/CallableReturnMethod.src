@@ -14,7 +14,7 @@ class CallableReturnMethod implements .com.redhat.ceylon.compiler.java.runtime.m
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {
-                return .ceylon.language.Integer.instance(f$priv());
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnMethod.this.f$priv());
             }
         };
     }

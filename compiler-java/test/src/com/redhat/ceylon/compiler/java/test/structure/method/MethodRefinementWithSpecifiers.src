@@ -236,7 +236,7 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
                 return (
                     let
                     {
-                        takesParam$priv($$i);
+                        .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Class.this.takesParam$priv($$i);
                     }
                     returning null;
                 );
@@ -389,7 +389,7 @@ final class Bug891_Interface2$impl {
                 return (
                     let
                     {
-                        takesParam$priv($$i);
+                        .com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2$impl.this.takesParam$priv($$i);
                     }
                     returning null;
                 );

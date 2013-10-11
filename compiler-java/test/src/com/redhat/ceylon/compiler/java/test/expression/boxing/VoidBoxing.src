@@ -103,7 +103,7 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
                         return (
                             let
                             {
-                                returnsvoid$priv($$v);
+                                .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsvoid$priv($$v);
                             }
                             returning null;
                         );
@@ -120,7 +120,7 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
                         final .java.lang.Object $$v = $param$0;
-                        return returnsAnything$priv($$v);
+                        return .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsAnything$priv($$v);
                     }
                 });
             }
@@ -134,7 +134,7 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 return (
                     let
                     {
-                        returnsvoid$priv($$v);
+                        .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsvoid$priv($$v);
                     }
                     returning null;
                 );
@@ -145,7 +145,7 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
                 final .java.lang.Object $$v = $param$0;
-                return returnsAnything$priv($$v);
+                return .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsAnything$priv($$v);
             }
         });
         final .java.lang.Object v11 = (
@@ -213,7 +213,7 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
                         return (
                             let
                             {
-                                returnsvoid$priv($$v);
+                                .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsvoid$priv($$v);
                             }
                             returning null;
                         );
@@ -230,7 +230,7 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
                         final .java.lang.Object $$v = $param$0;
-                        return returnsAnything$priv($$v);
+                        return .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsAnything$priv($$v);
                     }
                 });
             }
@@ -244,7 +244,7 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 return (
                     let
                     {
-                        returnsvoid$priv($$v);
+                        .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsvoid$priv($$v);
                     }
                     returning null;
                 );
@@ -255,7 +255,7 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
                 final .java.lang.Object $$v = $param$0;
-                return returnsAnything$priv($$v);
+                return .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsAnything$priv($$v);
             }
         });
         v = (

@@ -145,7 +145,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                 return (
                     let
                     {
-                        binaryStar(s, seq);
+                        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1155_B.this.binaryStar(s, seq);
                     }
                     returning null;
                 );
@@ -285,7 +285,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                 return (
                     let
                     {
-                        unaryPlus(seq);
+                        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1155_B.this.unaryPlus(seq);
                     }
                     returning null;
                 );
@@ -366,7 +366,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                 return (
                     let
                     {
-                        binaryOptStar(s, seq);
+                        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1155_B.this.binaryOptStar(s, seq);
                     }
                     returning null;
                 );

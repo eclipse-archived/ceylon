@@ -11,7 +11,7 @@ class IndirectInvoke<X> implements .com.redhat.ceylon.compiler.java.runtime.mode
                 return (
                     let
                     {
-                        mGetter1$priv();
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke.this.mGetter1$priv();
                     }
                     returning null;
                 );
@@ -21,28 +21,28 @@ class IndirectInvoke<X> implements .com.redhat.ceylon.compiler.java.runtime.mode
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {
-                return .ceylon.language.Integer.instance(mGetter2$priv());
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke.this.mGetter2$priv());
             }
         };
         this.value3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Boolean()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Boolean $call() {
-                return .ceylon.language.Boolean.instance(mGetter3$priv());
+                return .ceylon.language.Boolean.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke.this.mGetter3$priv());
             }
         };
         this.value4 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.String $call() {
-                return .ceylon.language.String.instance(mGetter4$priv());
+                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke.this.mGetter4$priv());
             }
         };
         this.value5 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<X>($reifiedX, .ceylon.language.Empty.$TypeDescriptor, "X()", (short)-1){
             
             @.java.lang.Override
             public X $call() {
-                return mGetter5$priv();
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke.this.mGetter5$priv();
             }
         };
     }

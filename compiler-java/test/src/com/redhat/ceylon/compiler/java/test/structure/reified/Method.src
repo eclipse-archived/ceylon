@@ -14,7 +14,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
                 return (
                     let
                     {
-                        <.ceylon.language.Integer>method(.ceylon.language.Integer.$TypeDescriptor);
+                        .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass.this.<.ceylon.language.Integer>method(.ceylon.language.Integer.$TypeDescriptor);
                     }
                     returning null;
                 );
@@ -291,7 +291,7 @@ public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.run
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .ceylon.language.Integer $call() {
-                return .ceylon.language.Integer.instance(getC$priv().<.ceylon.language.Integer>method2(.ceylon.language.Integer.$TypeDescriptor));
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterfaceImpl.this.getC$priv().<.ceylon.language.Integer>method2(.ceylon.language.Integer.$TypeDescriptor));
             }
         };
     }

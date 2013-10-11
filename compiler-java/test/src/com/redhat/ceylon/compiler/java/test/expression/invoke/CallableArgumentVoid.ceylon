@@ -27,7 +27,10 @@ class CallableArgumentAnything() {
     shared default Anything m3(){return 1;}
     void callsite() {
         f(m);
+        f(this.m);
         f(m2);
+        f(this.m2);
         f(m3);
+        f(this.m3);
     }
 }
