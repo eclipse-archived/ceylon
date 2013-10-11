@@ -3,7 +3,7 @@ defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'typeArguments
   if (tps && tps.length > 0) {
     var targs=[];
     for (var i=0; i < tps.length; i++) {
-      var targ = Object$();
+      var targ = FreeClass(typeLiteral$meta({Type:Anything})); //TODO find this shit for real
       targs.push(Entry(tps[i], targ, {Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}}));
     }
     return LazyMap(targs.reifyCeylonType({Absent:{t:Null},Element:{t:Entry,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}}}}),{Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}});
