@@ -460,6 +460,11 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("lambda/ConstrainedTypeParam");
     }
     
+    @Test
+    public void testLmdAnonMemberQual(){
+        compareWithJavaSource("lambda/AnonMemberQual");
+    }
+    
     //
     // Optimisations
 
