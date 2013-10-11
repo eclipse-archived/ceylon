@@ -3517,7 +3517,7 @@ public class Attr extends JCTree.Visitor {
         }
 
         // Check that a generic class doesn't extend Throwable
-        if (!c.type.allparams().isEmpty() && types.isSubtype(c.type, syms.throwableType))
+        if (!Context.isCeylon() && !c.type.allparams().isEmpty() && types.isSubtype(c.type, syms.throwableType))
             log.error(tree.extending.pos(), "generic.throwable");
 
         // Check that all methods which implement some
