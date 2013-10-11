@@ -34,11 +34,11 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.typechecker.model.ConditionScope;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -2083,25 +2083,13 @@ public class StatementTransformer extends AbstractTransformer {
             }
         }
         
-        final ListBuffer<JCCatch> catches = ListBuffer.<JCCatch>lb();
-        for (CatchClause catchClause : t.getCatchClauses()) {
-            at(catchClause);
-            java.util.List<ProducedType> exceptionTypes;
-            Variable variable = catchClause.getCatchVariable().getVariable();
-            ProducedType exceptionType = variable.getDeclarationModel().getType();
-            if (typeFact().isUnion(exceptionType)) {
-                exceptionTypes = exceptionType.getDeclaration().getCaseTypes();
-            } else {
-                exceptionTypes = List.<ProducedType>of(exceptionType);
-            }
-            for (ProducedType type : exceptionTypes) {
-                // catch blocks for each exception in the union
-                JCVariableDecl param = make().VarDef(make().Modifiers(Flags.FINAL), names().fromString(variable.getIdentifier().getText()),
-                        makeJavaType(type, JT_CATCH), null);
-                catches.add(make().Catch(param, transform(catchClause.getBlock())));
-            }
+        final List<JCCatch> catches;
+        if (usePolymorphicCatches(t.getCatchClauses())) {
+            catches = transformCatchesPolymorphic(t.getCatchClauses());
+        } else {
+            catches = transformCatchesIfElseIf(t.getCatchClauses());
         }
-
+        
         final JCBlock finallyBlock;
         FinallyClause finallyClause = t.getFinallyClause();
         if (finallyClause != null) {
@@ -2110,12 +2098,159 @@ public class StatementTransformer extends AbstractTransformer {
         } else {
             finallyBlock = null;
         }
-
+        
         if (!catches.isEmpty() || finallyBlock != null) {
-            return at(t).Try(tryBlock, catches.toList(), finallyBlock);
+            return at(t).Try(tryBlock, catches, finallyBlock);
         } else {
             return tryBlock;
         }
+        
+        
+    }
+    
+    /**
+     * Determines whether the {@code CatchClause}s contain any 
+     * intersections or parameterised exception types. If so, the
+     * we have to transform the {@code CatchClause}s using 
+     * {@link #transformCatchesIfElseIf(java.util.List)}, otherwise we can
+     * let the JVM do the heavy lifting an use 
+     * {@link #transformCatchesPolymorphic(java.util.List)}.
+     */
+    boolean usePolymorphicCatches(Iterable<Tree.CatchClause> catchClauses) {
+        for (Tree.CatchClause catchClause : catchClauses) {
+            ProducedType type = catchClause.getCatchVariable().getVariable().getType().getTypeModel();
+            if (type.getDeclaration().isParameterized()) {
+                // e.g. E<T>
+                return false;
+            } else if (typeFact().isIntersection(type)) {
+                // e.g. E&Interface
+                return false;
+            } else if (typeFact().isUnion(type)) {
+                // e.g. E1|E2<T>
+                for (ProducedType utype : type.getDeclaration().getCaseTypes()) {
+                    if (utype.getDeclaration().isParameterized()) {
+                        return false;
+                    } 
+                }
+            }
+        }
+        return true;
+    }
+    
+    /**
+     * Transforms a list of {@code CatchClause}s to a corresponding list 
+     * of {@code JCCatch}.
+     * @see #transformCatchesIfElseIf(java.util.List)
+     */
+    private List<JCCatch> transformCatchesPolymorphic(
+            java.util.List<CatchClause> catchClauses) {
+        final ListBuffer<JCCatch> catches = ListBuffer.<JCCatch>lb();
+        for (CatchClause catchClause : catchClauses) {
+            at(catchClause);
+            Variable variable = catchClause.getCatchVariable().getVariable();
+            ProducedType exceptionType = variable.getDeclarationModel().getType();
+            JCExpression type;
+            if (typeFact().isUnion(exceptionType)) {
+                ListBuffer<JCExpression> caughtTypes = ListBuffer.<JCExpression>lb();
+                for (ProducedType caughtType : exceptionType.getDeclaration().getCaseTypes()) {
+                    caughtTypes.append(makeJavaType(caughtType, JT_CATCH));
+                }
+                type = make().TypeUnion(caughtTypes.toList());
+            } else {
+                type = makeJavaType(exceptionType, JT_CATCH);
+            }
+            JCVariableDecl param = make().VarDef(
+                    make().Modifiers(Flags.FINAL), 
+                    names().fromString(variable.getIdentifier().getText()),
+                    type, null);
+            catches.add(make().Catch(param, transform(catchClause.getBlock())));
+            
+        }
+        return catches.toList();
+    }
+
+    /**
+     * Transforms a list of {@code CatchClause}s to a single {@code JCCatch} 
+     * containing and if/else if chain for finding the appropriate catch block.
+     * @see #transformCatchesPolymorphic(java.util.List)
+     */
+    private List<JCCatch> transformCatchesIfElseIf(
+            java.util.List<CatchClause> catchClauses) {
+        ProducedType supertype = intersectionOfCatchClauseTypes(catchClauses);
+        JCExpression exceptionType = makeJavaType(supertype, JT_CATCH | JT_RAW);
+        SyntheticName exceptionVar = naming.alias("exception");
+        JCVariableDecl param = make().VarDef(
+                make().Modifiers(Flags.FINAL), 
+                exceptionVar.asName(),
+                exceptionType, null);
+        
+        ArrayList<Tree.CatchClause> reversed = new ArrayList<Tree.CatchClause>(catchClauses);
+        Collections.reverse(reversed);
+        
+        JCStatement elsePart = make().Throw(exceptionVar.makeIdent());
+        
+        for (CatchClause catchClause : reversed) {
+            Tree.Variable caughtVar = catchClause.getCatchVariable().getVariable();
+            ProducedType caughtType = caughtVar.getType().getTypeModel();
+            List<JCStatement> catchBlock = transformBlock(catchClause.getBlock());
+            catchBlock = catchBlock.prepend(
+                    makeVar(FINAL,
+                        caughtVar.getIdentifier().getText(), 
+                        makeJavaType(caughtType), 
+                        expressionGen().applyErasureAndBoxing(exceptionVar.makeIdent(), 
+                                supertype, true, true, BoxingStrategy.BOXED, caughtType, 0)));
+            elsePart = make().If(makeTypeTest(null, exceptionVar, caughtType, caughtType), 
+                    make().Block(0, catchBlock), 
+                    elsePart);
+        }
+        return List.of(make().Catch(param, make().Block(0, List.<JCStatement>of(elsePart))));
+    }
+    
+    /**
+     * <p>When transforming {@code CatchClause}s using 
+     * {@link #transformCatchesIfElseIf(java.util.List)} we want the single 
+     * {@code catch} clause to have the most specific Java Exception type
+     * applicable to all the Ceylon Exception types in the list.</p>
+     * 
+     * <p><strong>Note:</strong> This method can return parameterised types
+     * whose parameters are taken from their declaration (i.e. there's 
+     * no corresponding Java type parameter in scope). That should be OK, 
+     * because we're only interested in catching the raw type.</p>
+     */
+    private ProducedType intersectionOfCatchClauseTypes(
+            java.util.List<CatchClause> catchClauses) {
+        ProducedType result = typeFact().getNothingDeclaration().getType();
+        for (Tree.CatchClause catchClause : catchClauses) {
+            ProducedType pt = catchClause.getCatchVariable().getVariable().getType().getTypeModel();
+            result = Util.unionType(result, exceptionSupertype(pt), typeFact());
+        }
+        if (typeFact().isUnion(result)) {
+            return result.getSupertype(typeFact().getExceptionDeclaration());
+        }
+        return result;
+    }
+
+    private ProducedType exceptionSupertype(ProducedType pt) {
+        ProducedType result = typeFact().getNothingDeclaration().getType();
+        if (typeFact().isUnion(pt)) {
+            for (ProducedType t : pt.getCaseTypes()) {
+                result = Util.unionType(result, exceptionSupertype(t), typeFact());
+            }
+        } else if (typeFact().isIntersection(pt)) {
+            for (ProducedType t : pt.getSatisfiedTypes()) {
+                if (t.isSubtypeOf(typeFact().getExceptionDeclaration().getType())) {
+                    result = Util.unionType(result, exceptionSupertype(t), typeFact());
+                }
+            }
+        } else if (pt.isSubtypeOf(typeFact().getExceptionDeclaration().getType())) {
+            if (pt.getDeclaration().isParameterized()) {
+                // We do this to avoid ending up with a union ExG<Foo>|ExG<Bar>
+                // when we're actually going to go raw, so ExG would be fine
+                return pt.getDeclaration().getType();
+            }
+            return pt;
+        } 
+        return result;
     }
     
     private int transformLocalFieldDeclFlags(Tree.AttributeDeclaration cdecl) {
