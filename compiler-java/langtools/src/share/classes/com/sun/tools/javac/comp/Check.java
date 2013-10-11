@@ -1441,6 +1441,7 @@ public class Check {
 
         overrideWarner.clear();
         boolean resultTypesOK =
+                ((m.flags() & CEYLON_METHOD_OVERRIDE_CHECKED) != 0) || 
             types.returnTypeSubstitutable(mt, ot, otres, overrideWarner);
         if (!resultTypesOK) {
             if (!allowCovariantReturns &&
@@ -1501,6 +1502,8 @@ public class Check {
         if (!isDeprecatedOverrideIgnorable(other, origin)) {
             checkDeprecated(TreeInfo.diagnosticPositionFor(m, tree), m, other);
         }
+        if(Context.isCeylon())
+            m.flags_field |= CEYLON_METHOD_OVERRIDE_CHECKED;
     }
     // where
         private boolean isDeprecatedOverrideIgnorable(MethodSymbol m, ClassSymbol origin) {
@@ -1814,6 +1817,8 @@ public class Check {
                         MethodSymbol implmeth = absmeth.implementation(impl, types, true);
                         if (implmeth == null || implmeth == absmeth)
                             undef = absmeth;
+                        else if(Context.isCeylon())
+                            implmeth.flags_field |= CEYLON_METHOD_OVERRIDE_CHECKED;
                     }
                 }
                 if (undef == null) {

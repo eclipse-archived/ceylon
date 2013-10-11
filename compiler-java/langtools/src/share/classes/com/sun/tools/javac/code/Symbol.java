@@ -1194,7 +1194,7 @@ public abstract class Symbol implements Element {
                 Type mt = types.memberType(owner.type, this);
                 Type ot = types.memberType(owner.type, other);
                 if (types.isSubSignature(mt, ot)) {
-                    if (!checkResult)
+                    if (!checkResult || (flags() & CEYLON_METHOD_OVERRIDE_CHECKED) != 0)
                         return true;
                     if (types.returnTypeSubstitutable(mt, ot))
                         return true;

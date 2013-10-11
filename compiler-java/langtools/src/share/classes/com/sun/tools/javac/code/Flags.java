@@ -257,6 +257,11 @@ public class Flags {
      */
     public static final long CLASH = 1L<<43;
 
+    /**
+     * Flag that marks Ceylon methods that have been found to implement at least one supertype method
+     */
+    public static final long CEYLON_METHOD_OVERRIDE_CHECKED = 1L<<44;
+
     /** Modifier masks.
      */
     public static final int
