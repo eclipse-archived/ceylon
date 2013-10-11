@@ -780,6 +780,9 @@ function $init$OpenTypeParam(){
         return String$(qn+this._name);
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenTypeParam,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Declaration','$at','qualifiedName']};});
       defineAttr($$openTypeParam,'string',function(){return String$("given " + this.qualifiedName);},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenTypeParam,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Declaration','$at','string']};});
+      $$openTypeParam.equals=function(o) {
+        return isOfType(o,{t:OpenTypeParam}) && o._cont==this._cont && o._name==this._name;
+      }
     })(OpenTypeParam.$$.prototype);
   }
   return OpenTypeParam;
