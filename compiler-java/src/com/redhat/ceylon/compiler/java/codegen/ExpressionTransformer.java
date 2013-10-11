@@ -339,6 +339,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         Method model = functionArg.getDeclarationModel();
         List<JCStatement> body;
         boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
+        boolean prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(true);
         try {
             statementGen().noExpressionlessReturn = isAnything(model.getType());
             if (functionArg.getBlock() != null) {
@@ -357,6 +358,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 body = List.<JCStatement>of(returnStat);
             }
         } finally {
+            expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
             statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
         }
 
