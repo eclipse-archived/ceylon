@@ -40,27 +40,27 @@ void visitStringHierarchy(){
 void visitInheritedTypes(ClassOrInterface<Anything> type){
     output("Types extended by ``type.declaration.name``:\n");
     if(exists xt = type.extendedType){
-        visitExtendedTypes(xt);
+        visitExtendedTypes(xt,0);
     }
     output("Types satisfied by ``type.declaration.name``:\n");
     for(sat in type.satisfiedTypes){
-        visitSatisfiedTypes(sat);
+        visitSatisfiedTypes(sat,0);
     }
 }
 
-void visitExtendedTypes(ClassModel<Anything, Nothing> type){
-    visitType(type);
+void visitExtendedTypes(ClassModel<Anything, Nothing> type, Integer level){
+    visitType(type,level);
     output("\n");
     if(exists xt = type.extendedType){
-        visitExtendedTypes(xt);
+        visitExtendedTypes(xt,level+2);
     }
 }
 
-void visitSatisfiedTypes(InterfaceModel<Anything> type){
-    visitType(type);
+void visitSatisfiedTypes(InterfaceModel<Anything> type, Integer level){
+    visitType(type,level);
     output("\n");
     for(sat in type.satisfiedTypes){
-        visitSatisfiedTypes(sat);
+        visitSatisfiedTypes(sat,level+2);
     }
 }
 
@@ -257,8 +257,11 @@ void visitOpenType(OpenType pt){
     }
 }
 
-void visitType(Type<Anything> pt){
+void visitType(Type<Anything> pt,Integer level){
     if(is ClassOrInterface<Anything> pt){
+        if (level>0){
+          process.write(" ".repeat(level));
+        }
         output(pt.declaration.name);
         variable Boolean once = true;
         if(pt.declaration.typeParameterDeclarations nonempty){
@@ -271,7 +274,7 @@ void visitType(Type<Anything> pt){
                 }
                 Type<Anything>? arg = pt.typeArguments.get(tp);
                 if(exists arg){
-                    visitType(arg);
+                    visitType(arg,0);
                 }else{
                     output("Unknown closed Type Argument");
                 }
@@ -286,7 +289,7 @@ void visitType(Type<Anything> pt){
             }else{
                 output(" | ");
             }
-            visitType(type);
+            visitType(type,level+2);
         }
     }else if(is IntersectionType<Anything> pt){
         variable Boolean once = true;
@@ -296,7 +299,7 @@ void visitType(Type<Anything> pt){
             }else{
                 output(" & ");
             }
-            visitType(type);
+            visitType(type,level+2);
         }
     }else if(pt == appliedNothingType){
         output("Nothing");
