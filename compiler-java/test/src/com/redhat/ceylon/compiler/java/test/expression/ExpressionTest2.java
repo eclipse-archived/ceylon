@@ -522,6 +522,11 @@ public class ExpressionTest2 extends CompilerTest {
     }
     
     @Test
+    public void testInvMultipleParameterListsMemberQual(){
+        compareWithJavaSource("invoke/MultipleParameterListsMemberQual");
+    }
+    
+    @Test
     public void testAvoidBackwardBranchWithVarargs(){
         compileAndRun(
                 "com.redhat.ceylon.compiler.java.test.expression.invoke.avoidBackwardBranchWithVarargs_run", 
