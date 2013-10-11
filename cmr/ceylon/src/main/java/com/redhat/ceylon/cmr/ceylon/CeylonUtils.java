@@ -368,13 +368,23 @@ public class CeylonUtils {
                 log = new JULLogger();
             }
 
-            // Make sure we load the correct configuration
+            // Make sure we have a configuration
 
             actualCwd = new File(".");
-            if (cwd == null) {
+            if (config == null) {
+                // No configuration passed, lets get/load one
+                if (cwd == null || actualCwd.equals(cwd)) {
+                    cwd = actualCwd;
+                    config = CeylonConfig.get();
+                } else {
+                    config = CeylonConfig.createFromLocalDir(cwd);
+                }
+            } else if (cwd == null) {
                 cwd = actualCwd;
             }
-            CeylonConfig config = CeylonConfig.createFromLocalDir(cwd);
+
+            // Access all the repository information from the configuration
+            
             Repositories repositories = Repositories.withConfig(config);
 
             if (outRepo == null) {
