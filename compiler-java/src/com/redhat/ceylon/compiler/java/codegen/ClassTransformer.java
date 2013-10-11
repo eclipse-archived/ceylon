@@ -881,6 +881,8 @@ public class ClassTransformer extends AbstractTransformer {
             if (!(decl instanceof Interface)) {
                 continue;
             }
+            // make sure we get the right instantiation of the interface
+            satisfiedType = model.getType().getSupertype(decl);
             concreteMembersFromSuperinterfaces((Class)model, classBuilder, satisfiedType, satisfiedInterfaces);
         }
         // now find the set of interfaces we implemented twice with more refined type parameters
@@ -1018,7 +1020,7 @@ public class ClassTransformer extends AbstractTransformer {
                             model.getType(),
                             PUBLIC | (method.isDefault() ? 0 : FINAL),
                             method.getTypeParameters(), 
-                            method.getType(), 
+                            typedMember.getType(), 
                             naming.selector(method), 
                             method.getParameterLists().get(0).getParameters(),
                             ((Method) member).getTypeErased(),
@@ -1034,7 +1036,7 @@ public class ClassTransformer extends AbstractTransformer {
                             model.getType(),
                             PRIVATE,
                             method.getTypeParameters(), 
-                            method.getType(), 
+                            typedMember.getType(), 
                             Naming.selector(method, Naming.NA_CANONICAL_METHOD), 
                             method.getParameterLists().get(0).getParameters(),
                             ((Method) member).getTypeErased(),
@@ -1090,7 +1092,7 @@ public class ClassTransformer extends AbstractTransformer {
         // Add $impl instances for the whole interface hierarchy
         satisfiedInterfaces.add(iface);
         for (ProducedType sat : iface.getSatisfiedTypes()) {
-            sat = satisfiedType.getSupertype(sat.getDeclaration());
+            sat = model.getType().getSupertype(sat.getDeclaration());
             concreteMembersFromSuperinterfaces(model, classBuilder, sat, satisfiedInterfaces);
         }
         
