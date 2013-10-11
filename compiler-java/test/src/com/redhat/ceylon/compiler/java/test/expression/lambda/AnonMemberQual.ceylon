@@ -23,4 +23,6 @@ class AnonMemberQualClass() {
     shared Callable<String, []> s2 => () => this.string;
     shared Callable<Integer, []> h1 => () => hash;
     shared Callable<Integer, []> h2 => () => this.hash;
+    
+    void m(String f()=>string + this.string + hash.string + this.hash.string) {}
 }

@@ -45,6 +45,40 @@ class AnonMemberQualClass implements .com.redhat.ceylon.compiler.java.runtime.mo
         };
     }
     
+    private final void m$priv() {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$f$0 = m$f();
+                m$priv$($ceylontmp$f$0);
+            }
+            returning null;
+        );
+    }
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> m$f() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call() {
+                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.toString() + .com.redhat.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.toString() + .ceylon.language.Integer.toString(.com.redhat.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.hashCode()) + .ceylon.language.Integer.toString(.com.redhat.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.hashCode()));
+            }
+        };
+    }
+    
+    private void m$priv$(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
+    }
+    
+    private final void m$priv(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
+        (
+            let
+            {
+                m$priv$(f);
+            }
+            returning null;
+        );
+    }
+    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass();
