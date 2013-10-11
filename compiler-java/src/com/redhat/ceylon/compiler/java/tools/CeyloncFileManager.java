@@ -319,7 +319,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         File outDir = super.getClassOutDir();
         // set the default value for Ceylon
         if (outDir == null) {
-            String dir = Repositories.get().getOutputRepository().getUrl();
+            String dir = Repositories.withConfig(CompilerConfig.instance(context)).getOutputRepository().getUrl();
             classOutDir = new File(dir);
         }
         return outDir;
