@@ -18,7 +18,11 @@ function _findTypeFromModel(pkg,mdl) {
 //Pass a {t:Bla} and get a FreeClass,FreeInterface,etc (OpenType).
 function _openTypeFromTarg(targ) {
   if (targ.t==='u' || targ.t==='i') {
-    console.log("TODO union/intersection open type");
+    var tl=[];
+    for (var i=0; i < targ.l.length; i++) {
+      tl.push(_openTypeFromTarg(targ.l[i]));
+    }
+    return (targ.t==='u'?FreeUnion:FreeIntersection)(tl.reifyCeylonType({Element:{t:OpenType$meta$declaration}}));
   }
   var mm=targ.t.$$metamodel$$;
   if (typeof(mm)==='function') {
