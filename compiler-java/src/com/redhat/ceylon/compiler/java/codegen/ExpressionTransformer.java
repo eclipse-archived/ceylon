@@ -3061,7 +3061,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             return ret;
         if (expr.getPrimary() instanceof Tree.BaseTypeExpression) {
             Tree.BaseTypeExpression primary = (Tree.BaseTypeExpression)expr.getPrimary();
-            return transformMemberReference(expr, primary);            
+            return transformMemberReference(expr, primary);
         } else if (expr.getPrimary() instanceof Tree.QualifiedTypeExpression) {
             Tree.QualifiedTypeExpression primary = (Tree.QualifiedTypeExpression)expr.getPrimary();
             return transformMemberReference(expr, primary);
@@ -3075,37 +3075,42 @@ public class ExpressionTransformer extends AbstractTransformer {
         Declaration member = expr.getDeclaration();
         ProducedType qualifyingType = primary.getTypeModel();
         Tree.TypeArguments typeArguments = expr.getTypeArguments();
-        if (member instanceof Method) {
-            Method method = (Method)member;
-            if (!method.isParameter()) {
-                ProducedReference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
+        boolean prevSyntheticClassBody = withinSyntheticClassBody(true);
+        try {
+            if (member instanceof Method) {
+                Method method = (Method)member;
+                if (!method.isParameter()) {
+                    ProducedReference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
+                    return CallableBuilder.unboundFunctionalMemberReference(
+                            gen(), 
+                            expr.getTypeModel(), 
+                            method, 
+                            producedReference).build();
+                } else {
+                    ProducedReference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
+                    return CallableBuilder.unboundFunctionalMemberReference(
+                            gen(), 
+                            expr.getTypeModel(), 
+                            method, 
+                            producedReference).build();
+                }
+            } else if (member instanceof Value) {
+                return CallableBuilder.unboundValueMemberReference(
+                        gen(), 
+                        expr.getTypeModel(), 
+                        ((TypedDeclaration)member)).build();
+            } else if (member instanceof Class) {
+                ProducedReference producedReference = expr.getTarget();
                 return CallableBuilder.unboundFunctionalMemberReference(
                         gen(), 
                         expr.getTypeModel(), 
-                        method, 
+                        (Class)member, 
                         producedReference).build();
             } else {
-                ProducedReference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
-                return CallableBuilder.unboundFunctionalMemberReference(
-                        gen(), 
-                        expr.getTypeModel(), 
-                        method, 
-                        producedReference).build();
+                return makeErroneous(expr, "compiler bug: member reference of " + expr + " not supported yet");
             }
-        } else if (member instanceof Value) {
-            return CallableBuilder.unboundValueMemberReference(
-                    gen(), 
-                    expr.getTypeModel(), 
-                    ((TypedDeclaration)member)).build();
-        } else if (member instanceof Class) {
-            ProducedReference producedReference = expr.getTarget();
-            return CallableBuilder.unboundFunctionalMemberReference(
-                    gen(), 
-                    expr.getTypeModel(), 
-                    (Class)member, 
-                    producedReference).build();
-        } else {
-            return makeErroneous(expr, "compiler bug: member reference of " + expr + " not supported yet");
+        } finally {
+            withinSyntheticClassBody(prevSyntheticClassBody);
         }
     }
     
