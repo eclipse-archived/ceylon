@@ -1891,7 +1891,9 @@ public class ClassTransformer extends AbstractTransformer {
             return List.nil();
         }
         // Transform the method body of the 'inner-most method'
+        boolean prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(Decl.isMpl(def.getDeclarationModel()) || expressionGen().isWithinSyntheticClassBody());
         List<JCStatement> body = transformMethodBody(def);
+        expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
         return transform(def, classBuilder, body);
     }
 
