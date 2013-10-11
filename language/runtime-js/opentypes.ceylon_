@@ -207,6 +207,12 @@ shared class OpenTypeParam() satisfies TypeParameter {
 }
 
 shared class OpenTvar(TypeParameter p) satisfies OpenTypeVariable {
-    shared formal TypeParameter declaration => p;
+    shared actual TypeParameter declaration => p;
+}
+shared class FreeUnion(List<OpenType> ts) satisfies OpenUnion {
+    shared actual List<OpenType> caseTypes => ts;
+}
+shared class FreeIntersection(List<OpenType> ts) satisfies OpenIntersection {
+    shared actual List<OpenType> satisfiedTypes => ts;
 }
 

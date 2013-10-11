@@ -15,6 +15,24 @@ function _findTypeFromModel(pkg,mdl) {
   }
   return rv;
 }
+//Pass a {t:Bla} and get a FreeClass,FreeInterface,etc (OpenType).
+function _openTypeFromTarg(targ) {
+  if (targ.t==='u' || targ.t==='i') {
+    console.log("TODO union/intersection open type");
+  }
+  var mm=targ.t.$$metamodel$$;
+  if (typeof(mm)==='function') {
+    mm=mm(); targ.t.$$metamodel$$=mm;
+  }
+  var lit = typeLiteral$meta({Type:targ.t});
+  var mdl = get_model(mm);
+  if (mdl.$mt==='ifc') {
+    return FreeInterface(lit);
+  } else if (mdl.$mt==='cls') {
+    return FreeClass(lit);
+  }
+  console.log("Don't know WTF to return for " + lit);
+}
 
 //ClassDefinition FreeClass at X (161:0-168:0)
 function FreeClass(declaration, $$freeClass){
@@ -128,7 +146,6 @@ function $init$OpenFunction(){
             
             //AttributeDeclaration defaulted at X (25:4-25:44)
             defineAttr($$openFunction,'defaulted',function(){
-                var $$openFunction=this;
                 return false;
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','defaulted']};});
             
@@ -222,7 +239,6 @@ function $init$OpenValue(){
             
             //AttributeDeclaration defaulted at X (40:4-40:44)
             defineAttr($$openValue,'defaulted',function(){
-                var $$openValue=this;
                 return false;
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','defaulted']};});
             
@@ -745,28 +761,50 @@ function $init$OpenTypeParam(){
       defineAttr($$openTypeParam,'container',function(){return this._cont;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:NestableDeclaration$meta$declaration},$cont:OpenTypeParam,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','TypeParameter','$at','container']};});
       //AttributeGetterDefinition defaulted at caca.ceylon (8:4-8:82)
       defineAttr($$openTypeParam,'defaulted',function(){
-          var $$openTypeParam=this;
-          throw wrapexc(Exception(String$("TypeParameter.defaulted",23)),'8:38-8:80','caca.ceylon');
+        var tp=this._cont.$$metamodel$$.$tp[this._name];
+        if (tp) {
+          return tp['def'] !== undefined;
+        }
+        throw wrapexc(Exception(String$("TypeParameter.defaulted",23)),'8:38-8:80','caca.ceylon');
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$cont:OpenTypeParam,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','TypeParameter','$at','defaulted']};});
       //AttributeGetterDefinition defaultTypeArgument at caca.ceylon (9:4-9:104)
       defineAttr($$openTypeParam,'defaultTypeArgument',function(){
-          var $$openTypeParam=this;
-          throw wrapexc(Exception(String$("TypeParameter.defaultTypeArgument",33)),'9:50-9:102','caca.ceylon');
+        var tp=this._cont.$$metamodel$$.$tp[this._name];
+        return tp.def?_openTypeFromTarg(tp.def):null;
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:OpenType$meta$declaration}]},$cont:OpenTypeParam,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','TypeParameter','$at','defaultTypeArgument']};});
       //AttributeGetterDefinition variance at caca.ceylon (10:4-10:81)
       defineAttr($$openTypeParam,'variance',function(){
-          var $$openTypeParam=this;
-          throw wrapexc(Exception(String$("TypeParameter.variance",22)),'10:38-10:79','caca.ceylon');
+        var tp=this._cont.$$metamodel$$.$tp[this._name];
+        if (tp) {
+          if (tp['var']==='out')return getCovariant$meta$declaration();
+          if (tp['var']=== 'in')return getContravariant$meta$declaration();
+          return getInvariant$meta$declaration();
+        }
+        throw wrapexc(Exception(String$("TypeParameter.variance",22)),'10:38-10:79','caca.ceylon');
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Variance$meta$declaration},$cont:OpenTypeParam,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','TypeParameter','$at','variance']};});
       //AttributeGetterDefinition satisfiedTypes at caca.ceylon (11:4-11:95)
       defineAttr($$openTypeParam,'satisfiedTypes',function(){
-          var $$openTypeParam=this;
-          throw wrapexc(Exception(String$("TypeParameter.satisfiedTypes",28)),'11:46-11:93','caca.ceylon');
+        var tp=this._cont.$$metamodel$$.$tp[this._name];
+        if (tp.satisfies) {
+          var a=[];
+          for (var i=0;i<tp.satisfies.length;i++) {
+            a.push(_openTypeFromTarg(tp.satisfies[i]));
+          }
+          return a.reifyCeylonType({Absent:{t:Null},Element:{t:OpenType$meta$declaration}});
+        }
+        return getEmpty();
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:OpenType$meta$declaration}}},$cont:OpenTypeParam,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','TypeParameter','$at','satisfiedTypes']};});
       //AttributeGetterDefinition caseTypes at caca.ceylon (12:4-12:85)
       defineAttr($$openTypeParam,'caseTypes',function(){
-          var $$openTypeParam=this;
-          throw wrapexc(Exception(String$("TypeParameter.caseTypes",23)),'12:41-12:83','caca.ceylon');
+        var tp=this._cont.$$metamodel$$.$tp[this._name];
+        if (tp.of) {
+          var a=[];
+          for (var i=0;i<tp.of.length;i++) {
+            a.push(_openTypeFromTarg(tp.of[i]));
+          }
+          return a.reifyCeylonType({Absent:{t:Null},Element:{t:OpenType$meta$declaration}});
+        }
+        return getEmpty();
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:OpenType$meta$declaration}}},$cont:OpenTypeParam,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','TypeParameter','$at','caseTypes']};});
       //AttributeGetterDefinition name at caca.ceylon (14:4-14:71)
       defineAttr($$openTypeParam,'name',function(){return String$(this._name);},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenTypeParam,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Declaration','$at','name']};});
@@ -814,3 +852,56 @@ function $init$OpenTvar(){
 }
 exports.$init$OpenTvar=$init$OpenTvar;
 $init$OpenTvar();
+
+function FreeUnion(ts$2, $$freeUnion){
+    $init$FreeUnion();
+    if ($$freeUnion===undefined)$$freeUnion=new FreeUnion.$$;
+    $$freeUnion.ts$2_=ts$2;
+    OpenUnion$meta$declaration($$freeUnion);
+    $$freeUnion.$prop$getCaseTypes={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:List,a:{Element:{t:OpenType$meta$declaration}}},$cont:FreeUnion,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenUnion','$at','caseTypes']};}};
+    $$freeUnion.$prop$getCaseTypes.get=function(){return caseTypes};
+    return $$freeUnion;
+}
+FreeUnion.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:OpenUnion$meta$declaration}],$an:function(){return[shared()];},d:['ceylon.language.meta.declaration','OpenUnion']};};
+exports.FreeUnion=FreeUnion;
+function $init$FreeUnion(){
+    if (FreeUnion.$$===undefined){
+        initTypeProto(FreeUnion,'ceylon.language.meta.declaration::FreeUnion',Basic,OpenUnion$meta$declaration);
+        (function($$freeUnion){
+            defineAttr($$freeUnion,'caseTypes',function(){
+                var $$freeUnion=this;
+                return $$freeUnion.ts$2;
+            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:List,a:{Element:{t:OpenType$meta$declaration}}},$cont:FreeUnion,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenUnion','$at','caseTypes']};});
+            defineAttr($$freeUnion,'ts$2',function(){return this.ts$2_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:List,a:{Element:{t:OpenType$meta$declaration}}},$cont:FreeUnion,d:['ceylon.language.meta.declaration','OpenUnion','$at','ts']};});
+        })(FreeUnion.$$.prototype);
+    }
+    return FreeUnion;
+}
+exports.$init$FreeUnion=$init$FreeUnion;
+$init$FreeUnion();
+function FreeIntersection(ts$3, $$freeIntersection){
+    $init$FreeIntersection();
+    if ($$freeIntersection===undefined)$$freeIntersection=new FreeIntersection.$$;
+    $$freeIntersection.ts$3_=ts$3;
+    OpenIntersection$meta$declaration($$freeIntersection);
+    $$freeIntersection.$prop$getSatisfiedTypes={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:List,a:{Element:{t:OpenType$meta$declaration}}},$cont:FreeIntersection,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenIntersection','$at','satisfiedTypes']};}};
+    $$freeIntersection.$prop$getSatisfiedTypes.get=function(){return satisfiedTypes};
+    return $$freeIntersection;
+}
+FreeIntersection.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:OpenIntersection$meta$declaration}],$an:function(){return[shared()];},d:['ceylon.language.meta.declaration','OpenIntersection']};};
+exports.FreeIntersection=FreeIntersection;
+function $init$FreeIntersection(){
+    if (FreeIntersection.$$===undefined){
+        initTypeProto(FreeIntersection,'ceylon.language.meta.declaration::FreeIntersection',Basic,OpenIntersection$meta$declaration);
+        (function($$freeIntersection){
+            defineAttr($$freeIntersection,'satisfiedTypes',function(){
+                var $$freeIntersection=this;
+                return $$freeIntersection.ts$3;
+            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:List,a:{Element:{t:OpenType$meta$declaration}}},$cont:FreeIntersection,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenIntersection','$at','satisfiedTypes']};});
+            defineAttr($$freeIntersection,'ts$3',function(){return this.ts$3_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:List,a:{Element:{t:OpenType$meta$declaration}}},$cont:FreeIntersection,d:['ceylon.language.meta.declaration','OpenIntersection','$at','ts']};});
+        })(FreeIntersection.$$.prototype);
+    }
+    return FreeIntersection;
+}
+exports.$init$FreeIntersection=$init$FreeIntersection;
+$init$FreeIntersection();
