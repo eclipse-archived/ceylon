@@ -690,10 +690,12 @@ public abstract class AbstractTransformer implements Transformation {
     private ProducedTypedReference getRefinedDeclaration(ProducedTypedReference typedReference, ProducedType currentType) {
         TypedDeclaration decl = typedReference.getDeclaration();
         TypedDeclaration modelRefinedDecl = (TypedDeclaration)decl.getRefinedDeclaration();
+        ProducedType referenceQualifyingType = typedReference.getQualifyingType();
         boolean forMixinMethod = 
                 currentType != null
-                && typedReference.getQualifyingType() != null
-                && typedReference.getQualifyingType().getDeclaration() != currentType.getDeclaration();
+                && decl.getContainer() instanceof ClassOrInterface
+                && referenceQualifyingType != null
+                && referenceQualifyingType.getDeclaration() != currentType.getDeclaration();
         // quick exit
         if(decl == modelRefinedDecl && !forMixinMethod)
             return null;
