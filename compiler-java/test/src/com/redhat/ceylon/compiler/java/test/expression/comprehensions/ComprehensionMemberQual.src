@@ -1,0 +1,349 @@
+package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
+
+class ComprehensionMemberQualClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ComprehensionMemberQualClass() {
+        this.i = 1L;
+    }
+    
+    public final long next() {
+        return 1L;
+    }
+    private final long i;
+    
+    public final long getI() {
+        return i;
+    }
+    
+    private final void m$priv() {
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                    {
+                        iter$0 = $getIterables()[0].iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
+                    private .ceylon.language.Integer i;
+                    private boolean i$exhausted;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
+                        i$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        if (i$exhausted) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Integer)$ceylontmpitem0;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualClass.this.next() + .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualClass.this.getI());
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        };
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualClass.Inner Inner$new() {
+        return new Inner();
+    }
+    
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        protected Inner() {
+            this.i = 1L;
+        }
+        
+        public final long next() {
+            return 1L;
+        }
+        private final long i;
+        
+        public final long getI() {
+            return i;
+        }
+        
+        private final void m$priv() {
+            final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
+                
+                public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                        {
+                            iter$0 = $getIterables()[0].iterator();
+                        }
+                        private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
+                        private .ceylon.language.Integer i;
+                        private boolean i$exhausted;
+                        
+                        private final boolean i() {
+                            final .java.lang.Object $ceylontmpitem1 = iter$0.next();
+                            i$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.get_();
+                            if (i$exhausted) {
+                                return false;
+                            } else {
+                                i = (.ceylon.language.Integer)$ceylontmpitem1;
+                                return true;
+                            }
+                        }
+                        
+                        public final .java.lang.Object next() {
+                            if (this.i()) {
+                                final .ceylon.language.Integer i = this.i;
+                                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualClass.Inner.this.next() + .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualClass.this.next() + .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualClass.Inner.this.getI());
+                            } else return .ceylon.language.finished_.get_();
+                        }
+                    };
+                }
+            };
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualClass.Inner.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualClass();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualClass.class);
+}
+interface ComprehensionMemberQualInterfaceFormal {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceFormal$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$ComprehensionMemberQualInterfaceFormal$impl();
+    
+    public abstract long next();
+    
+    public abstract long getI();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceFormal.class);
+}
+final class ComprehensionMemberQualInterfaceFormal$impl {
+    
+    ComprehensionMemberQualInterfaceFormal$impl(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceFormal $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceFormal $this;
+    
+    private void m$priv() {
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                    {
+                        iter$0 = $getIterables()[0].iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
+                    private .ceylon.language.Integer i;
+                    private boolean i$exhausted;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmpitem2 = iter$0.next();
+                        i$exhausted = $ceylontmpitem2 == .ceylon.language.finished_.get_();
+                        if (i$exhausted) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Integer)$ceylontmpitem2;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return .ceylon.language.Integer.instance($this.next() + $this.getI());
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        };
+    }
+}
+interface ComprehensionMemberQualInterfaceNonshared {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceNonshared$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$ComprehensionMemberQualInterfaceNonshared$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceNonshared.class);
+}
+final class ComprehensionMemberQualInterfaceNonshared$impl {
+    
+    ComprehensionMemberQualInterfaceNonshared$impl(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceNonshared $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceNonshared $this;
+    
+    private long next$priv() {
+        return 1L;
+    }
+    
+    private final long getI$priv() {
+        return 1L;
+    }
+    
+    private void m$priv() {
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                    {
+                        iter$0 = $getIterables()[0].iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
+                    private .ceylon.language.Integer i;
+                    private boolean i$exhausted;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmpitem3 = iter$0.next();
+                        i$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.get_();
+                        if (i$exhausted) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Integer)$ceylontmpitem3;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceNonshared$impl.this.next$priv() + $this.$com$redhat$ceylon$compiler$java$test$expression$comprehensions$ComprehensionMemberQualInterfaceNonshared$impl().getI$priv());
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        };
+    }
+}
+final class comprehensionMemberQualLocal_ {
+    
+    private comprehensionMemberQualLocal_() {
+    }
+    
+    static void comprehensionMemberQualLocal() {
+        
+        class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            Local() {
+                this.i = 1L;
+            }
+            
+            public final long next() {
+                return 1L;
+            }
+            private final long i;
+            
+            public final long getI() {
+                return i;
+            }
+            
+            private final void m$priv() {
+                final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
+                    
+                    public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                            {
+                                iter$0 = $getIterables()[0].iterator();
+                            }
+                            private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
+                            private .ceylon.language.Integer i;
+                            private boolean i$exhausted;
+                            
+                            private final boolean i() {
+                                final .java.lang.Object $ceylontmpitem4 = iter$0.next();
+                                i$exhausted = $ceylontmpitem4 == .ceylon.language.finished_.get_();
+                                if (i$exhausted) {
+                                    return false;
+                                } else {
+                                    i = (.ceylon.language.Integer)$ceylontmpitem4;
+                                    return true;
+                                }
+                            }
+                            
+                            public final .java.lang.Object next() {
+                                if (this.i()) {
+                                    final .ceylon.language.Integer i = this.i;
+                                    return .ceylon.language.Integer.instance(Local.this.next() + Local.this.getI());
+                                } else return .ceylon.language.finished_.get_();
+                            }
+                        };
+                    }
+                };
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class);
+            }
+        }
+        
+        final class next_ {
+            
+            private next_() {
+            }
+            
+            long next() {
+                return 1L;
+            }
+        }
+        final next_ next = new next_();
+        
+        class Local2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            Local2() {
+            }
+            
+            private final void m$priv() {
+                final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
+                    
+                    public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                            {
+                                iter$0 = $getIterables()[0].iterator();
+                            }
+                            private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
+                            private .ceylon.language.Integer i;
+                            private boolean i$exhausted;
+                            
+                            private final boolean i() {
+                                final .java.lang.Object $ceylontmpitem5 = iter$0.next();
+                                i$exhausted = $ceylontmpitem5 == .ceylon.language.finished_.get_();
+                                if (i$exhausted) {
+                                    return false;
+                                } else {
+                                    i = (.ceylon.language.Integer)$ceylontmpitem5;
+                                    return true;
+                                }
+                            }
+                            
+                            public final .java.lang.Object next() {
+                                if (this.i()) {
+                                    final .ceylon.language.Integer i = this.i;
+                                    return .ceylon.language.Integer.instance(next.next());
+                                } else return .ceylon.language.finished_.get_();
+                            }
+                        };
+                    }
+                };
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local2.class);
+            }
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.comprehensions.comprehensionMemberQualLocal_.comprehensionMemberQualLocal();
+    }
+}

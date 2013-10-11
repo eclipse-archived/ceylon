@@ -226,5 +226,10 @@ public class ComprehensionTest extends CompilerTest {
         Object[] array = (Object[])length.get(seq);
         Assert.assertEquals(size, array.length);
     }
+    
+    @Test
+    public void testComprehensionMemberQual() {
+        compareWithJavaSource("ComprehensionMemberQual");
+    }
 
 }
