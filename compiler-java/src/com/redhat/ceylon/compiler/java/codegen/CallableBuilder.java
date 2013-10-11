@@ -320,7 +320,9 @@ public class CallableBuilder {
             CeylonTransformer gen, Tree.Expression expr, ParameterList parameterList, 
             Tree.ParameterList parameterListTree, 
             ProducedType callableTypeModel, boolean delegateDefaultedCalls) {
+        boolean prevSyntheticClassBody = gen.expressionGen().withinSyntheticClassBody(true);
         JCExpression transformedExpr = gen.expressionGen().transformExpression(expr, BoxingStrategy.BOXED, gen.getReturnTypeOfCallable(callableTypeModel));
+        gen.expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
         final List<JCStatement> stmts = List.<JCStatement>of(gen.make().Return(transformedExpr));
         return methodArgument(gen, callableTypeModel, parameterList, parameterListTree, stmts, delegateDefaultedCalls);
     }
