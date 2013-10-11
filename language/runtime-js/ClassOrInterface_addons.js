@@ -3,9 +3,24 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'satisfiedTypes',function(){
   var ints = this.tipo.$$metamodel$$['satisfies'];
   if (ints && ints.length) {
     var rv = [];
+    function resolveTypeArguments(root,type) {
+      if (type.a) {
+        var t2 = {t:type.t, a:{}};
+        for (var targ in type.a) {
+          t2.a[targ]=typeof(type.a[targ])==='string' ?
+            t2.a[targ]=root.$$targs$$.Type.a[type.a[targ]]
+            : t2.a[targ]=type.a[targ];
+          if (t2.a[targ] && t2.a[targ].a) {
+            t2.a[targ]=resolveTypeArguments(root,t2.a[targ]);
+          }
+        }
+        type=t2;
+      }
+      return type;
+    }
     for (var i=0; i < ints.length; i++) {
-      var ifc = ints[i];
-      rv.push(AppliedInterface(ifc, {Type:ifc}));
+      var ifc = resolveTypeArguments(this,ints[i]);
+      rv.push(AppliedInterface(ifc.t, {Type:ifc}));
     }
     return rv.reifyCeylonType({Absent:{t:Null},Element:{t:InterfaceModel$meta$model,a:{Type:{t:Anything}}}});
   }
@@ -93,7 +108,12 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
         var param = OpenTypeParam(this.tipo,tp);
         var targ;
         if (this.$$targs$$ && this.$$targs$$.Type && this.$$targs$$.Type.a && this.$$targs$$.Type.a[tp]) {
-          targ=typeLiteral$meta({Type:this.$$targs$$.Type.a[tp]});
+          var _targ=this.$$targs$$.Type.a[tp];
+          if (typeof(_targ)==='string') {
+            console.log("TODO buscar " + tp + "->" + _targ + " para " + this.declaration.qualifedName);
+            _targ={t:Anything};
+          }
+          targ=typeLiteral$meta({Type:_targ});
         } else {
           targ=typeLiteral$meta({Type:{t:Anything}});
         }
