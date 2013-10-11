@@ -449,8 +449,9 @@ public class MethodDefinitionBuilder {
         return resultType(makeResultType(nonWideningTypedRef.getDeclaration(), nonWideningType, flags), method);
     }
     
-    public MethodDefinitionBuilder resultTypeNonWidening(ProducedTypedReference typedRef, ProducedType returnType, int flags){
-        ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
+    public MethodDefinitionBuilder resultTypeNonWidening(ProducedType currentType, ProducedTypedReference typedRef, 
+            ProducedType returnType, int flags){
+        ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef, currentType);
         returnType = gen.nonWideningType(typedRef, nonWideningTypedRef);
         return resultType(makeResultType(nonWideningTypedRef.getDeclaration(), returnType, flags), typedRef.getDeclaration());
 

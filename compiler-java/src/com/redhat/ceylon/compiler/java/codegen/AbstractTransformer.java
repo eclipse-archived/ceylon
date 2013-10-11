@@ -643,7 +643,11 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     ProducedTypedReference nonWideningTypeDecl(ProducedTypedReference typedReference) {
-        ProducedTypedReference refinedTypedReference = getRefinedDeclaration(typedReference);
+        return nonWideningTypeDecl(typedReference, typedReference.getQualifyingType());
+    }
+    
+    ProducedTypedReference nonWideningTypeDecl(ProducedTypedReference typedReference, ProducedType currentType) {
+        ProducedTypedReference refinedTypedReference = getRefinedDeclaration(typedReference, currentType);
         if(refinedTypedReference != null){
             /*
              * We are widening if the type:
@@ -683,22 +687,27 @@ public abstract class AbstractTransformer implements Transformation {
      * - The third special case is when we implement a declaration via multiple super types, without having any refining
      * declarations in those supertypes, simply by instantiating a common super type with different type parameters
      */
-    private ProducedTypedReference getRefinedDeclaration(ProducedTypedReference typedReference) {
+    private ProducedTypedReference getRefinedDeclaration(ProducedTypedReference typedReference, ProducedType currentType) {
         TypedDeclaration decl = typedReference.getDeclaration();
         TypedDeclaration modelRefinedDecl = (TypedDeclaration)decl.getRefinedDeclaration();
+        boolean forMixinMethod = 
+                currentType != null
+                && typedReference.getQualifyingType() != null
+                && typedReference.getQualifyingType().getDeclaration() != currentType.getDeclaration();
         // quick exit
-        if(decl == modelRefinedDecl)
+        if(decl == modelRefinedDecl && !forMixinMethod)
             return null;
-        if(decl.getContainer() instanceof ClassOrInterface){
+        TypeDeclaration qualifyingDeclaration = currentType.getDeclaration();
+        if(qualifyingDeclaration instanceof ClassOrInterface){
             // only try to find better if we're erasing to Object and we're not returning a type param
             if(willEraseToObject(typedReference.getType())
                         || isWideningTypeArguments(decl.getType(), modelRefinedDecl.getType(), true)
                     && !isTypeParameter(typedReference.getType())){
-                ClassOrInterface declaringType = (ClassOrInterface) decl.getContainer();
+                ClassOrInterface declaringType = (ClassOrInterface) qualifyingDeclaration;
                 Set<TypedDeclaration> refinedMembers = getRefinedMembers(declaringType, decl.getName(), 
                         com.redhat.ceylon.compiler.typechecker.model.Util.getSignature(decl), false);
                 // now we must select a different refined declaration if we refine it more than once
-                if(refinedMembers.size() > 1){
+                if(refinedMembers.size() > (forMixinMethod ? 0 : 1)){
                     // first case
                     for(TypedDeclaration refinedDecl : refinedMembers){
                         // get the type reference to see if any eventual type param is instantiated in our inheritance of this type/method

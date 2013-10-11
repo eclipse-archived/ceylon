@@ -826,7 +826,7 @@ public class ClassTransformer extends AbstractTransformer {
             type = type.getQualifyingType();
         }
         
-        classBuilder.method(makeCompanionAccessor((Interface)model, model.getType(), false));
+        classBuilder.method(makeCompanionAccessor((Interface)model, model.getType(), null, false));
         // Build the companion class
         buildCompanion(def, (Interface)model, classBuilder, typeParameterList);
         
@@ -954,7 +954,7 @@ public class ClassTransformer extends AbstractTransformer {
                 // instantiator method implementation
                 Class klass = (Class)member;
                 generateInstantiatorDelegate(classBuilder, satisfiedType,
-                        iface, klass);
+                        iface, klass, model.getType());
             } 
             
             if (Strategy.onlyOnCompanion(member)) {
@@ -980,6 +980,7 @@ public class ClassTransformer extends AbstractTransformer {
                             // which also delegates to the $impl
                             final MethodDefinitionBuilder defaultValueDelegate = makeDelegateToCompanion(iface,
                                     typedParameter,
+                                    model.getType(),
                                     PUBLIC | FINAL, 
                                     typeParameters, 
                                     typedParameter.getType(), 
@@ -1014,6 +1015,7 @@ public class ClassTransformer extends AbstractTransformer {
                     
                     final MethodDefinitionBuilder concreteMemberDelegate = makeDelegateToCompanion(iface,
                             typedMember,
+                            model.getType(),
                             PUBLIC | (method.isDefault() ? 0 : FINAL),
                             method.getTypeParameters(), 
                             method.getType(), 
@@ -1029,6 +1031,7 @@ public class ClassTransformer extends AbstractTransformer {
                         && (method == subMethod)) {
                     final MethodDefinitionBuilder canonicalMethod = makeDelegateToCompanion(iface,
                             typedMember,
+                            model.getType(),
                             PRIVATE,
                             method.getTypeParameters(), 
                             method.getType(), 
@@ -1046,6 +1049,7 @@ public class ClassTransformer extends AbstractTransformer {
                     if (member instanceof Value) {
                         final MethodDefinitionBuilder getterDelegate = makeDelegateToCompanion(iface, 
                                 typedMember,
+                                model.getType(),
                                 PUBLIC | (attr.isDefault() ? 0 : FINAL), 
                                 Collections.<TypeParameter>emptyList(), 
                                 typedMember.getType(), 
@@ -1058,6 +1062,7 @@ public class ClassTransformer extends AbstractTransformer {
                     if (member instanceof Setter) { 
                         final MethodDefinitionBuilder setterDelegate = makeDelegateToCompanion(iface, 
                                 typedMember,
+                                model.getType(),
                                 PUBLIC | (((Setter)member).getGetter().isDefault() ? 0 : FINAL), 
                                 Collections.<TypeParameter>emptyList(), 
                                 typeFact().getAnythingDeclaration().getType(), 
@@ -1093,7 +1098,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     private void generateInstantiatorDelegate(
             ClassDefinitionBuilder classBuilder, ProducedType satisfiedType,
-            Interface iface, Class klass) {
+            Interface iface, Class klass, ProducedType currentType) {
         ProducedType typeMember = satisfiedType.getTypeMember(klass, Collections.<ProducedType>emptyList());
         java.util.List<TypeParameter> typeParameters = klass.getTypeParameters();
         java.util.List<Parameter> parameters = klass.getParameterLists().get(0).getParameters();
@@ -1107,6 +1112,7 @@ public class ClassTransformer extends AbstractTransformer {
                 // which also delegates to the $impl
                 final MethodDefinitionBuilder defaultValueDelegate = makeDelegateToCompanion(iface,
                         typedParameter,
+                        currentType,
                         PUBLIC | FINAL, 
                         typeParameters, 
                         typedParameter.getType(),
@@ -1119,6 +1125,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (Strategy.hasDefaultParameterOverload(param)) {
                 final MethodDefinitionBuilder overload = makeDelegateToCompanion(iface,
                         typeMember,
+                        currentType,
                         PUBLIC | FINAL, 
                         typeParameters,  
                         typeMember.getType(), 
@@ -1131,6 +1138,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         final MethodDefinitionBuilder overload = makeDelegateToCompanion(iface,
                 typeMember,
+                currentType,
                 PUBLIC | FINAL, 
                 typeParameters,  
                 typeMember.getType(), 
@@ -1175,6 +1183,7 @@ public class ClassTransformer extends AbstractTransformer {
      */
     private MethodDefinitionBuilder makeDelegateToCompanion(Interface iface,
             ProducedReference typedMember,
+            ProducedType currentType,
             final long mods,
             final java.util.List<TypeParameter> typeParameters,
             final ProducedType methodType,
@@ -1206,9 +1215,9 @@ public class ClassTransformer extends AbstractTransformer {
                 returnType = typedMember.getType();
             }else if (typedMember instanceof ProducedTypedReference) {
                 ProducedTypedReference typedRef = (ProducedTypedReference) typedMember;
-                concreteWrapper.resultTypeNonWidening(typedRef, typedMember.getType(), 0);
+                concreteWrapper.resultTypeNonWidening(currentType, typedRef, typedMember.getType(), 0);
                 // FIXME: this is redundant with what we computed in the previous line in concreteWrapper.resultTypeNonWidening
-                ProducedTypedReference nonWideningTypedRef = gen().nonWideningTypeDecl(typedRef);
+                ProducedTypedReference nonWideningTypedRef = gen().nonWideningTypeDecl(typedRef, currentType);
                 returnType = gen().nonWideningType(typedRef, nonWideningTypedRef);
             } else {
                 concreteWrapper.resultType(null, makeJavaType((ProducedType)typedMember));
@@ -1333,10 +1342,11 @@ public class ClassTransformer extends AbstractTransformer {
                 makeJavaType(satisfiedType, AbstractTransformer.JT_COMPANION | JT_SATISFIES), null, false,
                 makeAtIgnore());
 
-        classBuilder.method(makeCompanionAccessor(iface, satisfiedType, true));
+        classBuilder.method(makeCompanionAccessor(iface, satisfiedType, model, true));
     }
     
-    private MethodDefinitionBuilder makeCompanionAccessor(Interface iface, ProducedType satisfiedType, boolean forImplementor) {
+    private MethodDefinitionBuilder makeCompanionAccessor(Interface iface, ProducedType satisfiedType, 
+            Class currentType, boolean forImplementor) {
         MethodDefinitionBuilder thisMethod = MethodDefinitionBuilder.systemMethod(
                 this, getCompanionAccessorName(iface));
         thisMethod.noModelAnnotations();
@@ -2722,7 +2732,7 @@ public class ClassTransformer extends AbstractTransformer {
                     || !Decl.isUnboxedVoid(getModel())
                     || Strategy.useBoxedVoid((Method)getModel())) {
                 ProducedTypedReference typedRef = (ProducedTypedReference) typedMember;
-                overloadBuilder.resultTypeNonWidening(typedRef, typedMember.getType(), 0);
+                overloadBuilder.resultTypeNonWidening(typedMember.getQualifyingType(), typedRef, typedMember.getType(), 0);
             } else {
                 super.resultType(overloadBuilder);
             }
