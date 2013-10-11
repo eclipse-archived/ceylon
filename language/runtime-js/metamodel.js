@@ -37,9 +37,9 @@ function typeLiteral$meta($$targs$$) {
       }
       var mdl = get_model(mm);
       if (mdl['$mt'] === 'cls') {
-        return AppliedClass(t,mdl['$tp'],{Type:$$targs$$.Type,Arguments:{t:Nothing}});
+        return AppliedClass(t,{Type:$$targs$$.Type,Arguments:{t:Nothing}});
       } else if (mdl['$mt'] === 'ifc') {
-        return AppliedInterface(t,mdl['$tp'],$$targs$$);
+        return AppliedInterface(t,$$targs$$);
       } else if (mdl['$mt'] === 'mthd') {
         return AppliedFunction(t,{Type:$$targs$$.Type,Arguments:{t:Nothing}});
       } else if (mdl['$mt'] === 'attr' || mdl['$mt'] === 'gttr' || mdl['$mt'] === 'obj') {
@@ -59,7 +59,7 @@ function typeLiteral$meta($$targs$$) {
     }
     var mdl = get_model(mm);
     //We need the module
-    var _mod = modules$meta$model.find(mm.mod['$mod-name'],mm.mod['$mod-version']);
+    var _mod = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']);
     var _pkg = _mod.findPackage(mm.d[0]);
     if (mdl['$mt'] === 'cls') {
       return OpenClass(_pkg, t);
