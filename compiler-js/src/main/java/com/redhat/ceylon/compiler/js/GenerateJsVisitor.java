@@ -503,9 +503,8 @@ public class GenerateJsVisitor extends Visitor
         out(names.self(outer), ".", names.name(d), "=");
         TypeUtils.typeNameOrList(that, that.getTypeSpecifier().getType().getTypeModel(), this);
         endLine(true);
-        out(names.name(d), ".$cont=", names.name((Declaration)d.getContainer()), ";",
-                names.name(d), ".$mod=$$METAMODEL$$;", names.name(d), ".$d=");
-        TypeUtils.outputModelPath(d, this);
+        out(names.name(d), ".$$metamodel$$=");
+        TypeUtils.encodeForRuntime(that,d,this);
         endLine(true);
     }
 
@@ -719,11 +718,8 @@ public class GenerateJsVisitor extends Visitor
         comment(that);
         out("var ", names.name(d), "=");
         TypeUtils.typeNameOrList(that, that.getTypeSpecifier().getType().getTypeModel(), this);
-        if (d.isMember()) {
-            out(";", names.name(d), ".$cont=", names.name((Declaration)d.getContainer()));
-        }
-        out(";",names.name(d), ".$mod=$$METAMODEL$$;", names.name(d), ".$d=");
-        TypeUtils.outputModelPath(d, this);
+        out(";",names.name(d), ".$$metamodel$$=");
+        TypeUtils.encodeForRuntime(that, d, this);
         endLine(true);
         share(d);
     }

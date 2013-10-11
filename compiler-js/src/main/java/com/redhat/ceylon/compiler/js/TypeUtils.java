@@ -480,10 +480,9 @@ public class TypeUtils {
 
     static void encodeForRuntime(final Node that, final Declaration d, final GenerateJsVisitor gen, final RuntimeMetamodelAnnotationGenerator annGen) {
         gen.out("function(){return{mod:$$METAMODEL$$");
-        List<TypeParameter> tparms = null;
+        List<TypeParameter> tparms = d instanceof TypeDeclaration ? ((TypeDeclaration)d).getTypeParameters() : null;
         List<ProducedType> satisfies = null;
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-            tparms = ((com.redhat.ceylon.compiler.typechecker.model.Class) d).getTypeParameters();
             if (((com.redhat.ceylon.compiler.typechecker.model.Class) d).getExtendedType() != null) {
                 gen.out(",'super':");
                 metamodelTypeNameOrList(d.getUnit().getPackage(),
@@ -493,7 +492,6 @@ public class TypeUtils {
 
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
 
-            tparms = ((com.redhat.ceylon.compiler.typechecker.model.Interface) d).getTypeParameters();
             satisfies = ((com.redhat.ceylon.compiler.typechecker.model.Interface) d).getSatisfiedTypes();
 
         } else if (d instanceof MethodOrValue) {
