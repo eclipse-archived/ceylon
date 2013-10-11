@@ -14,7 +14,7 @@ class CE implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {
-                return .ceylon.language.Integer.instance(call$priv());
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.structure.method.CE.this.call$priv());
             }
         };
     }
