@@ -206,3 +206,7 @@ shared class OpenTypeParam() satisfies TypeParameter {
     shared actual String qualifiedName { throw Exception("TypeParameter.qname"); }
 }
 
+shared class OpenTvar(TypeParameter p) satisfies OpenTypeVariable {
+    shared formal TypeParameter declaration => p;
+}
+

@@ -789,3 +789,28 @@ function $init$OpenTypeParam(){
 }
 exports.$init$OpenTypeParam=$init$OpenTypeParam;
 $init$OpenTypeParam();
+
+function OpenTvar(p$2, $$openTvar){
+    $init$OpenTvar();
+    if ($$openTvar===undefined)$$openTvar=new OpenTvar.$$;
+    $$openTvar.p$2=p$2;
+    OpenTypeVariable$meta$declaration($$openTvar);
+    $$openTvar.$prop$getDeclaration={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:TypeParameter$meta$declaration},$cont:OpenTvar,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenTvar','$at','declaration']};}};
+    $$openTvar.$prop$getDeclaration.get=function(){return declaration};
+    return $$openTvar;
+}
+OpenTvar.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:OpenTypeVariable$meta$declaration}],$an:function(){return[shared()];},d:['ceylon.language.meta.declaration','OpenTvar']};};
+exports.OpenTvar=OpenTvar;
+function $init$OpenTvar(){
+    if (OpenTvar.$$===undefined){
+        initTypeProto(OpenTvar,'ceylon.language.meta.declaration::OpenTvar',Basic,$init$OpenTypeVariable$meta$declaration());
+        (function($$openTvar){
+            defineAttr($$openTvar,'declaration',function(){
+                return this.p$2;
+            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:TypeParameter$meta$declaration},$cont:OpenTvar,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenTypeVariable','$at','declaration']};});
+        })(OpenTvar.$$.prototype);
+    }
+    return OpenTvar;
+}
+exports.$init$OpenTvar=$init$OpenTvar;
+$init$OpenTvar();
