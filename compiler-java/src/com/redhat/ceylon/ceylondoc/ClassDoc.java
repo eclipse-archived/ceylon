@@ -291,7 +291,10 @@ public class ClassDoc extends ClassOrPackageDoc {
         
         open("div class='sub-navbar-inner'");
         
-        around("a class='sub-navbar-package' href='"+ linkRenderer().to(pkg).getUrl() +"'", pkg.getNameAsString());
+        open("span class='sub-navbar-package'");
+        writePackageNavigation(pkg);
+        close("span");
+        
         write("<br/>");
         writeClassName();
         close("div"); // sub-navbar-inner

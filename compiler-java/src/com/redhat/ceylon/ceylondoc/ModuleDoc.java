@@ -51,7 +51,7 @@ public class ModuleDoc extends CeylonDoc {
 
         open("div class='container-fluid'");
         writeDescription();
-        writePackagesTable();
+        writePackagesTable("Packages", tool.getPackages(module));
         writeDependencies();
         close("div");
 
@@ -98,36 +98,6 @@ public class ModuleDoc extends CeylonDoc {
         around("span class='title'", "License: ");
         around("span class='value'", license);
         close("div");
-    }
-
-    private void writePackagesTable() throws IOException {
-        List<Package> packages = tool.getPackages(module);
-        if (!packages.isEmpty()) {
-            openTable("section-packages", "Packages", 2, true);
-            for (Package pkg : tool.getPackages(module)) {
-                writePackagesTableRow(pkg);
-            }
-            closeTable();
-        }
-    }
-
-    private void writePackagesTableRow(Package pkg) throws IOException {
-        open("tr");
-
-        open("td");
-        writeIcon(pkg);
-        if (pkg.getNameAsString().isEmpty()) {
-            around("a class='link' href='index.html'", "default package");
-        } else {
-            around("a class='link' href='" + tool.getObjectUrl(module, pkg) + "'", pkg.getNameAsString());
-        }
-        close("td");
-
-        open("td");
-        write(Util.getDocFirstLine(pkg, linkRenderer()));
-        close("td");
-
-        close("tr");
     }
     
     private void writeDependencies() throws IOException {

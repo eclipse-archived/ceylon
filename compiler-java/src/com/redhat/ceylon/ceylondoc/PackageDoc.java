@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.ceylondoc.Util.DeclarationComparatorByName;
+import com.redhat.ceylon.ceylondoc.Util.PackageComparatorByName;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -98,6 +99,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         open("div class='container-fluid'");
         
         writeDescription();
+        writeSubpackages();
         writeAliases();
         writeAttributes();
         writeMethods();
@@ -125,7 +127,10 @@ public class PackageDoc extends ClassOrPackageDoc {
         
         around("span class='sub-navbar-label'", "package");
         writeIcon(pkg);
-        around("span class='sub-navbar-name'", pkg.getNameAsString());
+        open("span class='sub-navbar-name'");
+        writePackageNavigation(pkg);
+        close("span");
+        
         close("div"); // sub-navbar-inner
         
         open("div class='sub-navbar-menu'");
@@ -154,12 +159,27 @@ public class PackageDoc extends ClassOrPackageDoc {
         
         close("div"); // sub-navbar
     }
-
+    
     private void writeDescription() throws IOException {
         open("div class='package-description'");
         around("div class='doc'", getDoc(pkg, linkRenderer()));
         writeBy(pkg);
         close("div");
+    }
+    
+    private void writeSubpackages() throws IOException {
+        if (!sharingPageWithModule) {
+            List<Package> subpackages = new ArrayList<Package>();
+            for (Package p : module.getPackages()) {
+                if (p.getName().size() == pkg.getName().size() + 1
+                        && p.getNameAsString().startsWith(pkg.getNameAsString())
+                        && tool.shouldInclude(p)) {
+                    subpackages.add(p);
+                }
+            }
+            Collections.sort(subpackages, PackageComparatorByName.INSTANCE);
+            writePackagesTable("Subpackages", subpackages);
+        }
     }
     
     private void writeAliases() throws IOException {

@@ -43,6 +43,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import com.redhat.ceylon.ceylondoc.Util.PackageComparatorByName;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -840,16 +841,11 @@ public class CeylonDocTool extends RepoUsingTool {
     List<Package> getPackages(Module module) {
         List<Package> packages = new ArrayList<Package>();
         for (Package pkg : module.getPackages()) {
-            if (pkg.getMembers().size() > 0 && shouldInclude(pkg)) {
+            if (shouldInclude(pkg)) {
                 packages.add(pkg);
             }
         }
-        Collections.sort(packages, new Comparator<Package>() {
-            @Override
-            public int compare(Package a, Package b) {
-                return a.getNameAsString().compareTo(b.getNameAsString());
-            }
-        });
+        Collections.sort(packages, PackageComparatorByName.INSTANCE);
         return packages;
     }
 
@@ -858,7 +854,7 @@ public class CeylonDocTool extends RepoUsingTool {
     }
     
     protected boolean shouldInclude(Package pkg) {
-        return includeNonShared || pkg.isShared();
+        return (includeNonShared || pkg.isShared()) && pkg.getMembers().size() > 0;
     }
     
     protected boolean shouldInclude(Module module){

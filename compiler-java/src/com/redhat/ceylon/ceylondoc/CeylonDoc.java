@@ -415,6 +415,55 @@ public abstract class CeylonDoc extends Markup {
 
         return icons;
     }
+    
+    protected final void writePackageNavigation(Package pkg) throws IOException {
+        if (!module.isDefault()) {
+            List<String> moduleNames = module.getName();
+            List<String> pkgNames = pkg.getName();
+            List<String> subpkgNames = pkgNames.subList(moduleNames.size(), pkgNames.size());
+            linkRenderer().to(module.getRootPackage()).write();
+            if (!subpkgNames.isEmpty()) {
+                StringBuilder subpkgNameBuilder = new StringBuilder(module.getNameAsString());
+                for (String subpkgName : subpkgNames) {
+                    subpkgNameBuilder.append(".").append(subpkgName);
+                    Package subpkg = module.getDirectPackage(subpkgNameBuilder.toString());
+                    write(".");
+                    linkRenderer().to(subpkg).useCustomText(subpkgName).write();
+                }
+            }
+        } else {
+            linkRenderer().to(pkg).write();
+        }
+    }
+    
+    protected final void writePackagesTable(String title, List<Package> packages) throws IOException {
+        if (!packages.isEmpty()) {
+            openTable("section-packages", title, 2, true);
+            for (Package pkg : packages) {
+                writePackagesTableRow(pkg);
+            }
+            closeTable();
+        }
+    }
+
+    protected final void writePackagesTableRow(Package pkg) throws IOException {
+        open("tr");
+
+        open("td");
+        writeIcon(pkg);
+        if (pkg.getNameAsString().isEmpty()) {
+            around("a class='link' href='index.html'", "default package");
+        } else {
+            around("a class='link' href='" + tool.getObjectUrl(module, pkg) + "'", pkg.getNameAsString());
+        }
+        close("td");
+
+        open("td");
+        write(Util.getDocFirstLine(pkg, linkRenderer()));
+        close("td");
+
+        close("tr");
+    }
 
     protected abstract Object getFromObject();    
     

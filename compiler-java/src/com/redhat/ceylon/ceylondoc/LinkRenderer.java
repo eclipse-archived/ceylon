@@ -226,7 +226,11 @@ public class LinkRenderer {
     
     private String processPackage(Package pkg) {
         String pkgUrl = getUrl(pkg, anchor);
-        return buildLinkElement(pkgUrl, pkg.getNameAsString(), "Go to package");
+        if (pkgUrl != null) {
+            return buildLinkElement(pkgUrl, customText != null ? customText : pkg.getNameAsString(), "Go to package " + pkg.getNameAsString());
+        } else {
+            return pkg.getNameAsString();
+        }
     }
 
     private String processProducedType(ProducedType producedType) {

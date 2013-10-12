@@ -219,6 +219,8 @@ public class CeylonDocToolTest {
         assertObjectPageDifferences(destDir);
         assertSharedParameterOfClass(destDir);
         assertAliases(destDir);
+        assertPackageNavigation(destDir);
+        assertSubpackages(destDir);
         assertBug659ShowInheritedMembers(destDir);
         assertBug691AbbreviatedOptionalType(destDir);
         assertBug839(destDir);
@@ -935,6 +937,20 @@ public class CeylonDocToolTest {
                 Pattern.compile("Nested Aliases"));
         assertMatchInFile(destDir, "StubClassWithAlias.type.html",
                 Pattern.compile("<td id='InnerAliasNumber' nowrap><i class='icon-type-alias'></i>InnerAliasNumber</td><td>"));        
+    }
+    
+    private void assertPackageNavigation(File destDir) throws Exception {
+        assertMatchInFile(destDir, "a/index.html",
+                Pattern.compile("<span class='sub-navbar-label'>package</span><i class='icon-package'></i><span class='sub-navbar-name'><a class='link' href='../index.html#section-package' title='Go to package com.redhat.ceylon.ceylondoc.test.modules.single'>com.redhat.ceylon.ceylondoc.test.modules.single</a>.<a class='link-custom-text' href='../a/index.html' title='Go to package com.redhat.ceylon.ceylondoc.test.modules.single.a'>a</a></span>"));
+        assertMatchInFile(destDir, "a/aa/index.html",
+                Pattern.compile("<span class='sub-navbar-label'>package</span><i class='icon-package'></i><span class='sub-navbar-name'><a class='link' href='../../index.html#section-package' title='Go to package com.redhat.ceylon.ceylondoc.test.modules.single'>com.redhat.ceylon.ceylondoc.test.modules.single</a>.<a class='link-custom-text' href='../../a/index.html' title='Go to package com.redhat.ceylon.ceylondoc.test.modules.single.a'>a</a>.<a class='link-custom-text' href='../../a/aa/index.html' title='Go to package com.redhat.ceylon.ceylondoc.test.modules.single.a.aa'>aa</a></span>"));
+    }
+    
+    private void assertSubpackages(File destDir) throws Exception {
+        assertMatchInFile(destDir, "a/index.html",
+                Pattern.compile("<tr class='table-header' title='Click for expand/collapse'><td colspan='2'><i class='icon-expand'></i>Subpackages</td></tr>"));
+        assertMatchInFile(destDir, "a/index.html",
+                Pattern.compile("<tr><td><i class='icon-package'></i><a class='link' href='a/aa/index.html'>com.redhat.ceylon.ceylondoc.test.modules.single.a.aa</a></td><td></td></tr>"));
     }
     
     private void assertModuleDependencies(File destDir) throws Exception {

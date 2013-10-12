@@ -435,6 +435,16 @@ public class Util {
         public int compare(ModuleImport a, ModuleImport b) {
             return a.getModule().getNameAsString().compareTo(b.getModule().getNameAsString());
         }
+    };
+    
+    public static class PackageComparatorByName implements Comparator<Package> {
+
+        public static final PackageComparatorByName INSTANCE = new PackageComparatorByName();
+
+        @Override
+        public int compare(Package a, Package b) {
+            return a.getModule().getNameAsString().compareTo(b.getModule().getNameAsString());
+        }
     };    
    
 }
