@@ -25,7 +25,7 @@ function AppliedClass(tipo,$$targs$$,that){
   that.tipo=tipo;
   return that;
 }
-AppliedClass.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Type:{'var':'out','satisfies':[{t:Object$}]},Arguments:{'var':'in','satisfies':[{t:Sequential,a:{Element:{t:Anything}}}]}},satisfies:[{t:Class$meta$model,a:{Arguments:'Arguments',Type:'Type'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Class']};};
+AppliedClass.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Type:{'var':'out','def':{t:Anything}},Arguments:{'var':'in','satisfies':[{t:Sequential,a:{Element:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:Class$meta$model,a:{Arguments:'Arguments',Type:'Type'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Class']};};
 function $init$AppliedClass(){
     if (AppliedClass.$$===undefined){
         initTypeProto(AppliedClass,'ceylon.language.meta.model::AppliedClass',Basic,Class$meta$model);
@@ -84,7 +84,7 @@ function AppliedInterface(tipo,$$targs$$,$$interfaz){
   $$interfaz.tipo=tipo;
   return $$interfaz;
 }
-AppliedInterface.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Type:{'var':'out','satisfies':[{t:Object$}]}},satisfies:[{t:Interface$meta$model,a:{Type:'Type'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Interface']};};
+AppliedInterface.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Type:{'var':'out','def':{t:Anything}}},satisfies:[{t:Interface$meta$model,a:{Type:'Type'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Interface']};};
 exports.AppliedInterface=AppliedInterface;
 
 function $init$AppliedInterface(){
@@ -357,8 +357,7 @@ function $init$AppliedValue(){
           if (typeof(t)==='function') {
             t=t(); $$atr.tipo.$$metamodel$$=t;
           }
-          t=t.$t;
-          return (get_model(t.$$metamodel$$).$mt==='ifc'?AppliedInterface:AppliedClass)({Type:{t:t},Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
+          return typeLiteral$meta({Type:t.$t});
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Type$meta$model,a:{Type:'Type'}},$cont:AppliedValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$at','type']};});
 
       defineAttr($$appliedValue,'container',function(){
@@ -471,9 +470,7 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
   },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:FunctionDeclaration$meta$declaration},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','declaration']};});
 
   defineAttr($$appliedMethod,'type',function(){
-      var $$atr=this;
-      var t = $atr.tipo.$$metamodel$$['$t'];
-      return (get_model(t.$$metamodel$$).$mt==='ifc'?AppliedInterface:AppliedClass)({Type:{t:t},Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
+    return typeLiteral$meta({Type:this.tipo.$$metamodel$$['$t']});
   },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Type$meta$model,a:{Type:'Type'}},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','type']};});
 
   defineAttr($$appliedMethod,'typeArguments',function(){
@@ -519,7 +516,7 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
       $$atr.tipo.$$metamodel$$=t;
       t=t.$t;
     }
-    return (get_model(t.$$metamodel$$).$mt==='ifc'?AppliedInterface:AppliedClass)({Type:{t:t},Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
+    return typeLiteral$meta({Type:t});
   },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Type$meta$model,a:{Type:'Type'}},$cont:AppliedAttribute,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Attribute','$at','type']};});
   //AttributeGetterDefinition declaration at X (100:4-100:83)
   defineAttr($$appliedAttribute,'declaration',function(){
