@@ -27,37 +27,37 @@ function isOfType(obj, type) {
     }
     if (obj.getT$all === undefined) {
       if (obj.$$metamodel$$) {
-          var _mm = obj.$$metamodel$$;
-          if (typeof(_mm)==='function') {
-            _mm=_mm();
-            obj.$$metamodel$$=_mm;
-          }
-          //We can navigate the metamodel
-          if (_mm.d['$mt'] === 'mthd') {
-              if (type.t === Callable) { //It's a callable reference
-                  if (type.a && type.a.Return && _mm['$t']) {
-                      //Check if return type matches
-                      if (extendsType(_mm['$t'], type.a.Return)) {
-                          if (type.a.Arguments && _mm['$ps'] !== undefined) {
-                              var metaparams = _mm['$ps'];
-                              if (metaparams.length == 0) {
-                                  return type.a.Arguments.t === Empty;
-                              } else {
-                                  //check if arguments match
-                                  var comptype = type.a.Arguments;
-                                  for (var i=0; i < metaparams.length; i++) {
-                                      if (comptype.t !== Tuple || !extendsType(metaparams[i]['$t'], comptype.a.First)) {
-                                          return false;
-                                      }
-                                      comptype = comptype.a.Rest;
-                                  }
-                              }
-                          }
-                          return true;
+        var _mm = obj.$$metamodel$$;
+        if (typeof(_mm)==='function') {
+          _mm=_mm();
+          obj.$$metamodel$$=_mm;
+        }
+        //We can navigate the metamodel
+        if (_mm.d['$mt'] === 'mthd') {
+          if (type.t === Callable) { //It's a callable reference
+            if (type.a && type.a.Return && _mm['$t']) {
+              //Check if return type matches
+              if (extendsType(_mm['$t'], type.a.Return)) {
+                if (type.a.Arguments && _mm['$ps'] !== undefined) {
+                  var metaparams = _mm['$ps'];
+                  if (metaparams.length == 0) {
+                    return type.a.Arguments.t === Empty;
+                  } else {
+                    //check if arguments match
+                    var comptype = type.a.Arguments;
+                    for (var i=0; i < metaparams.length; i++) {
+                      if (comptype.t !== Tuple || !extendsType(metaparams[i]['$t'], comptype.a.First)) {
+                        return false;
                       }
+                      comptype = comptype.a.Rest;
+                    }
                   }
+                }
+                return true;
               }
+            }
           }
+        }
       }
       return false;
     }
@@ -73,7 +73,7 @@ function isOfType(obj, type) {
             type.t.$$metamodel$$=_mm;
           }
           if (_mm && _mm.$tp && _mm.$tp[i]) iance=_mm.$tp[i]['var'];
-          if (iance === null) {
+          if (iance===null) {
             //Type parameter may be in the outer type
             while (iance===null && tmpobj.$$outer !== undefined) {
               tmpobj=tmpobj.$$outer;
