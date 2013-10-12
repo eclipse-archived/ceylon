@@ -158,8 +158,8 @@ function isOfTypes(obj, types) {
   }
   return _ints ? inters||unions : unions;
 }
-function extendsType(t1, t2) {
-    if (t1 === undefined || t1.t === undefined || (t2 !== undefined && t2.t === Nothing)) {
+function extendsType(t1, t2) { //true if t1 is subtype of t2
+    if (t1 === undefined || t1.t === undefined || t1.t === Nothing) {
         return true;//t2 === undefined;
     } else if (t1 === null) {
         return t2.t === Null;
