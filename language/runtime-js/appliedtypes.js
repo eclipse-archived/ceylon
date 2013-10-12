@@ -108,11 +108,6 @@ function $init$AppliedInterface(){
                 throw wrapexc(Exception(String$("IMPL AppliedInterface.extendedType")),'35:62-35:94','?');
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:ClassModel$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}}]},$cont:AppliedInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Interface','$at','extendedType']};});
 
-            $$appliedInterface.isExactly=function isExactly(type$19){
-                var $$appliedInterface=this;
-                throw wrapexc(Exception(String$("IMPL AppliedInterface.isExactly")),'46:63-46:99','?');
-            };$$appliedInterface.isExactly.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Interface','$m','isExactly']};};
-
             defineAttr($$appliedInterface,'container',function(){
                 var $$appliedInterface=this;
                 throw wrapexc(Exception(String$("IMPL AppliedInterface.container")),'47:50-47:86','?');
@@ -177,14 +172,33 @@ function $init$AppliedUnionType(){
                 throw wrapexc(Exception(String$("IMPL AppliedUnionType.isSuperTypeOf")),'70:67-70:103','?');
             };$$appliedUnionType.isSuperTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$m','isSuperTypeOf']};};
 
-            $$appliedUnionType.isExactly=function isExactly(type$22){
-                var $$appliedUnionType=this;
-                throw wrapexc(Exception(String$("IMPL AppliedUnionType.isExactly")),'71:63-71:99','?');
-            };$$appliedUnionType.isExactly.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$m','isExactly']};};
+      $$appliedUnionType.isExactly=function isExactly(type$22){
+        if (isOfType(type$25, {t:AppliedUnionType})) {
+          for (var i=0; i<this._types.length;i++) {
+            var myt = this._types[i];
+            var was=false;
+            for (var j=0; j<type$25._types.length;j++) {
+              was |= myt.isExactly(type$25._types[j]);
+            }
+            if (!was)return false;
+          }
+          //Now the other way around
+          for (var i=0; i<type$25._types.length;i++) {
+            var myt = type$25._types[i];
+            var was=false;
+            for (var j=0; j<this._types.length;j++) {
+              was |= myt.isExactly(this._types[j]);
+            }
+            if (!was)return false;
+          }
+          return true;
+        }
+        return false;
+      };$$appliedUnionType.isExactly.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$m','isExactly']};};
 
-        })(AppliedUnionType.$$.prototype);
-    }
-    return AppliedUnionType;
+    })(AppliedUnionType.$$.prototype);
+  }
+  return AppliedUnionType;
 }
 exports.$init$AppliedUnionType$meta$model=$init$AppliedUnionType;
 $init$AppliedUnionType();
@@ -228,14 +242,33 @@ function $init$AppliedIntersectionType(){
                 throw wrapexc(Exception(String$("IMPL AppliedIntersectionType.isSuperTypeOf")),'78:67-78:103','?');
             };$$appliedIntersectionType.isSuperTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$m','isSuperTypeOf']};};
 
-            $$appliedIntersectionType.isExactly=function isExactly(type$25){
-                var $$appliedIntersectionType=this;
-                throw wrapexc(Exception(String$("IMPL AppliedIntersectionType.isExactly")),'79:63-79:99','?');
-            };$$appliedIntersectionType.isExactly.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$m','isExactly']};};
+      $$appliedIntersectionType.isExactly=function isExactly(type$25){
+        if (isOfType(type$25, {t:AppliedIntersectionType})) {
+          for (var i=0; i<this._types.length;i++) {
+            var myt = this._types[i];
+            var was=false;
+            for (var j=0; j<type$25._types.length;j++) {
+              was |= myt.isExactly(type$25._types[j]);
+            }
+            if (!was)return false;
+          }
+          //Now the other way around
+          for (var i=0; i<type$25._types.length;i++) {
+            var myt = type$25._types[i];
+            var was=false;
+            for (var j=0; j<this._types.length;j++) {
+              was |= myt.isExactly(this._types[j]);
+            }
+            if (!was)return false;
+          }
+          return true;
+        }
+        return false;
+      };$$appliedIntersectionType.isExactly.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$m','isExactly']};};
 
-        })(AppliedIntersectionType.$$.prototype);
-    }
-    return AppliedIntersectionType;
+    })(AppliedIntersectionType.$$.prototype);
+  }
+  return AppliedIntersectionType;
 }
 exports.$init$AppliedIntersectionType$meta$model=$init$AppliedIntersectionType;
 $init$AppliedIntersectionType();
