@@ -48,7 +48,7 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'container',function(){
   var $$coi=this;
   var cont = $$coi.tipo.$$metamodel$$.$cont;
   if (cont === undefined)return null;
-  return (get_model(cont.$$metamodel$$).$mt === 'ifc' ? AppliedInterface : AppliedClass)(cont,{Type:{t:cont},Arguments:{t:Nothing}});
+  return (get_model(cont.$$metamodel$$).$mt === 'ifc' ? AppliedInterface : AppliedClass)(cont,{Type:{t:cont},Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Type$meta$model,a:{Type:{t:Anything}}}]},$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Member','$at','container']};});
 
 ClassOrInterface$meta$model.$$.prototype.getVariableAttribute=function getVariableAttribute(name$16,$$$mptypes){
@@ -78,7 +78,7 @@ ClassOrInterface$meta$model.$$.prototype.getClassOrInterface=function getClassOr
     if (md.$mt==='ifc') {
       return AppliedInterface(ic, {Type:{t:ic}});
     } else if (md.$mt==='cls'){
-      return AppliedClass(ic, {Type:{t:ic}, Arguments:{t:Nothing}});
+      return AppliedClass(ic, {Type:{t:ic}, Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
     }
   }
   return null;

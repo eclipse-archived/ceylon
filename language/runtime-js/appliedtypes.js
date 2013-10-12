@@ -51,7 +51,7 @@ function $init$AppliedClass(){
                 mm = mm();
                 sc.t.$$metamodel$$=mm;
               }
-              return AppliedClass(sc.t, {Type:sc,Arguments:{t:Nothing}});
+              return AppliedClass(sc.t, {Type:sc,Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:ClassModel$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}}]},$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$at','extendedType']};});
 
 
@@ -358,7 +358,7 @@ function $init$AppliedValue(){
             t=t(); $$atr.tipo.$$metamodel$$=t;
           }
           t=t.$t;
-          return (get_model(t.$$metamodel$$).$mt==='ifc'?AppliedInterface:AppliedClass)({Type:{t:t},Arguments:{t:Nothing}});
+          return (get_model(t.$$metamodel$$).$mt==='ifc'?AppliedInterface:AppliedClass)({Type:{t:t},Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Type$meta$model,a:{Type:'Type'}},$cont:AppliedValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$at','type']};});
 
       defineAttr($$appliedValue,'container',function(){
@@ -473,7 +473,7 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
   defineAttr($$appliedMethod,'type',function(){
       var $$atr=this;
       var t = $atr.tipo.$$metamodel$$['$t'];
-      return (get_model(t.$$metamodel$$).$mt==='ifc'?AppliedInterface:AppliedClass)({Type:{t:t},Arguments:{t:Nothing}});
+      return (get_model(t.$$metamodel$$).$mt==='ifc'?AppliedInterface:AppliedClass)({Type:{t:t},Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
   },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Type$meta$model,a:{Type:'Type'}},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','type']};});
 
   defineAttr($$appliedMethod,'typeArguments',function(){
@@ -519,7 +519,7 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
       $$atr.tipo.$$metamodel$$=t;
       t=t.$t;
     }
-    return (get_model(t.$$metamodel$$).$mt==='ifc'?AppliedInterface:AppliedClass)({Type:{t:t},Arguments:{t:Nothing}});
+    return (get_model(t.$$metamodel$$).$mt==='ifc'?AppliedInterface:AppliedClass)({Type:{t:t},Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
   },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Type$meta$model,a:{Type:'Type'}},$cont:AppliedAttribute,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Attribute','$at','type']};});
   //AttributeGetterDefinition declaration at X (100:4-100:83)
   defineAttr($$appliedAttribute,'declaration',function(){

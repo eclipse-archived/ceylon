@@ -12,7 +12,7 @@ function type$meta(x,$$targs$$) {
   if (x === null) {
     return getNothingType$meta$model();
   }
-  return AppliedClass($$targs$$.Type.t, {Type:$$targs$$.Type, Arguments:{t:Nothing}});
+  return AppliedClass($$targs$$.Type.t, {Type:$$targs$$.Type, Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
 }
 type$meta.$$metamodel$$={$ps:[{t:Anything}],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language.meta','type']};
 exports.type$meta=type$meta;
@@ -37,11 +37,11 @@ function typeLiteral$meta($$targs$$) {
       }
       var mdl = get_model(mm);
       if (mdl['$mt'] === 'cls') {
-        return AppliedClass(t,{Type:$$targs$$.Type,Arguments:{t:Nothing}});
+        return AppliedClass(t,{Type:$$targs$$.Type,Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
       } else if (mdl['$mt'] === 'ifc') {
         return AppliedInterface(t,$$targs$$);
       } else if (mdl['$mt'] === 'mthd') {
-        return AppliedFunction(t,{Type:$$targs$$.Type,Arguments:{t:Nothing}});
+        return AppliedFunction(t,{Type:$$targs$$.Type,Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
       } else if (mdl['$mt'] === 'attr' || mdl['$mt'] === 'gttr' || mdl['$mt'] === 'obj') {
         return AppliedValue(undefined,t,{Container:{t:mm.$cont},Type:mm.$t});
       } else {

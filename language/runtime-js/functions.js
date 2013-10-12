@@ -73,7 +73,7 @@ function isOfType(obj, type) {
             type.t.$$metamodel$$=_mm;
           }
           if (_mm && _mm.$tp && _mm.$tp[i]) iance=_mm.$tp[i]['var'];
-          if (iance===null) {
+          if (iance===null) {//null means no i in _mm.$tp
             //Type parameter may be in the outer type
             while (iance===null && tmpobj.$$outer !== undefined) {
               tmpobj=tmpobj.$$outer;
@@ -159,7 +159,7 @@ function isOfTypes(obj, types) {
   return _ints ? inters||unions : unions;
 }
 function extendsType(t1, t2) { //true if t1 is subtype of t2
-    if (t1 === undefined || t1.t === undefined || t1.t === Nothing) {
+    if (t1 === undefined || t1.t === undefined || t1.t === Nothing || t2 === undefined || t2.t === undefined) {
         return true;//t2 === undefined;
     } else if (t1 === null) {
         return t2.t === Null;
