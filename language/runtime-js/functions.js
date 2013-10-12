@@ -160,9 +160,11 @@ function isOfTypes(obj, types) {
 }
 function extendsType(t1, t2) { //true if t1 is subtype of t2
     if (t1 === undefined || t1.t === undefined || t1.t === Nothing || t2 === undefined || t2.t === undefined) {
-        return true;//t2 === undefined;
+      return true;//t2 === undefined;
+    } else if (t2 && t2.t === Anything) {
+      return true;
     } else if (t1 === null) {
-        return t2.t === Null;
+      return t2.t === Null || t2.t === Anything;
     }
     if (t1.t === 'u' || t1.t === 'i') {
         if (t1.t==='i')removeSupertypes(t1.l);
