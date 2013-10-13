@@ -428,7 +428,11 @@ public abstract class CeylonDoc extends Markup {
                     subpkgNameBuilder.append(".").append(subpkgName);
                     Package subpkg = module.getDirectPackage(subpkgNameBuilder.toString());
                     write(".");
-                    linkRenderer().to(subpkg).useCustomText(subpkgName).write();
+                    if (subpkg != null) {
+                        linkRenderer().to(subpkg).useCustomText(subpkgName).write();
+                    } else {
+                        write(subpkgName);
+                    }
                 }
             }
         } else {
