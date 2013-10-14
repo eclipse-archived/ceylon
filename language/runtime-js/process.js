@@ -304,6 +304,8 @@ defineAttr(operatingSystem$proto, 'version', function() {
 },undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','operatingSystem','$at','version']});
 defineAttr(operatingSystem$proto, 'newline', function(){ return linesep; },undefined,
   {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','operatingSystem','$at','newline']});
+defineAttr(operatingSystem$proto, 'fileSeparator', function(){ return filesep; },undefined,
+  {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','operatingSystem','$at','fileSeparator']});
 defineAttr(operatingSystem$proto, 'pathSeparator', function(){ return pathsep; },undefined,
   {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','operatingSystem','$at','pathSeparator']});
 var operatingSystemString = String$("operatingSystem", 7);
