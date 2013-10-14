@@ -66,14 +66,21 @@ public class CeylonSrcTool extends RepoUsingTool {
     
     @Override
     public void run() throws Exception {
+        // First check if all the arguments point to source archives
         for (ModuleSpec module : modules) {
             if (module != ModuleSpec.DEFAULT_MODULE && !module.isVersioned()) {
-                checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, ModuleQuery.Type.SRC, null);
-                return;
+                if (checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, ModuleQuery.Type.SRC, null) == null) {
+                    return;
+                }
             }
         }
+        // If all are correct we unpack them
         for (ModuleSpec module : modules) {
-            ArtifactResult srcArchive = getRepositoryManager().getArtifactResult(new ArtifactContext(module.getName(), module.getVersion(), ArtifactContext.SRC));
+            String version = module.getVersion();
+            if (module != ModuleSpec.DEFAULT_MODULE && !module.isVersioned()) {
+                version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, ModuleQuery.Type.SRC, null);
+            }
+            ArtifactResult srcArchive = getRepositoryManager().getArtifactResult(new ArtifactContext(module.getName(), version, ArtifactContext.SRC));
             if (srcArchive == null) {
                 errorMsg("module.not.found", module, getRepositoryManager().getRepositoriesDisplayString());
                 continue;
