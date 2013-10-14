@@ -92,6 +92,12 @@ public class InteropTest extends CompilerTest {
         compile("JavaFields.java");
         compareWithJavaSource("SpecialFields");
     }
+    
+    @Test
+    public void testIopGetString(){
+        compile("JavaGetString.java");
+        compareWithJavaSource("GetString");
+    }
 
     @Test
     public void testIopOverloadedSpecialFields(){
