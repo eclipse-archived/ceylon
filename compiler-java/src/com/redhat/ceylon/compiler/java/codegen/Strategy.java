@@ -290,5 +290,11 @@ class Strategy {
             m.getUnit().getAnythingDeclaration().equals(m.getType().getDeclaration()) &&
             Decl.isCeylon((TypeDeclaration)m.getRefinedDeclaration().getContainer());
     }
+
+    public static boolean hasDelegatedDpm(Class cls) {
+        return Decl.isRefinableMemberClass(cls.getRefinedDeclaration()) &&
+            Strategy.defaultParameterMethodOnOuter(cls) &&
+            Decl.withinInterface(cls.getRefinedDeclaration());
+    }
     
 }
