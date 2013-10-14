@@ -26,6 +26,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import com.redhat.ceylon.tools.new_.NewProjectToolTest;
 import com.redhat.ceylon.tools.new_.TemplateTest;
 import com.redhat.ceylon.tools.test.ImportJarToolTest;
+import com.redhat.ceylon.tools.version.VersionToolTest;
 import com.redhat.ceylon.tools.bashcompletion.BashCompletionToolTest;
 import com.redhat.ceylon.tools.help.DocToolToolTest;
 import com.redhat.ceylon.tools.help.HelpToolTest;
@@ -45,7 +46,8 @@ import com.redhat.ceylon.tools.help.PlaintextTest;
     NewProjectToolTest.class,
     TemplateTest.class,
     InfoToolTest.class,
-    SrcToolTest.class
+    SrcToolTest.class,
+    VersionToolTest.class
 })
 public class CompilerToolsTests {
 
