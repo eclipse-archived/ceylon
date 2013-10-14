@@ -3320,7 +3320,7 @@ public class ExpressionTransformer extends AbstractTransformer {
      * Is the given primary a {@code super} or {@code super of Foo} 
      * expression (modulo parentheses and multiple {@code of}
      */
-    private static boolean isSuperOrSuperOf(Tree.Primary primary) {
+    static boolean isSuperOrSuperOf(Tree.Primary primary) {
         return isSuper(primary) || isSuperOf(primary);
     }
     

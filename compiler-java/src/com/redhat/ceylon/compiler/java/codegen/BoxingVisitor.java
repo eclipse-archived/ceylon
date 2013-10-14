@@ -25,6 +25,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -73,6 +74,7 @@ public abstract class BoxingVisitor extends Visitor {
     protected abstract boolean hasErasure(ProducedType type);
     protected abstract boolean hasErasedTypeParameters(ProducedReference producedReference);
     protected abstract boolean isTypeParameter(ProducedType type);
+    protected abstract boolean isRaw(ProducedType type);
 
     @Override
     public void visit(BaseMemberExpression that) {
@@ -121,7 +123,17 @@ public abstract class BoxingVisitor extends Visitor {
             // find the return element type
             ProducedType elementType = that.getTarget().getType();
             CodegenUtil.markTypeErased(that, hasErasure(elementType));
-                
+        }
+        if(ExpressionTransformer.isSuperOrSuperOf(that.getPrimary())){
+            // if the target is an interface whose type arguments have been turned to raw, make this expression
+            // as erased
+            ProducedReference target = that.getTarget();
+            if(target != null
+                    && target.getQualifyingType() != null
+                    && target.getQualifyingType().getDeclaration() instanceof Interface
+                    && isRaw(target.getQualifyingType())){
+                CodegenUtil.markTypeErased(that);
+            }
         }
     }
 

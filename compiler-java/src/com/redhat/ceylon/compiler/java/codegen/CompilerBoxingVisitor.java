@@ -54,4 +54,9 @@ public class CompilerBoxingVisitor extends BoxingVisitor {
     protected boolean isTypeParameter(ProducedType type) {
         return transformer.isTypeParameter(type);
     }
+
+    @Override
+    protected boolean isRaw(ProducedType type) {
+        return transformer.isTurnedToRaw(type);
+    }
 }
