@@ -41,6 +41,7 @@ shared void testProcess() {
     check(language.string == "language", "language.string");
 }
 
+@test
 void testSystem() {
     // basically just test if everything can be called without error
     print("system[milliseconds:``system.milliseconds``ms,nanoseconds:``system.nanoseconds``ns," +
@@ -53,6 +54,7 @@ void testSystem() {
     check(system.locale.size > 0, "system.locale");
 }
 
+@test
 void testRuntime() {
     // basically just test if everything can be called without error
     print("runtime[name: ``runtime.name``, version: ``runtime.version``]");
@@ -76,6 +78,7 @@ void testRuntime() {
     }
 }
 
+@test
 void testOperatingSystem() {
     // basically just test if everything can be called without error
     print("operatingSystem[name:``operatingSystem.name``, version:``operatingSystem.version``]");
