@@ -633,6 +633,10 @@ public abstract class CompilerTest {
         return cacheDir;
     }
 
+    protected String getOutPath() {
+        return destDir;
+    }
+
     protected ModuleWithArtifact getDestModuleWithArtifact(){
         return new ModuleWithArtifact(Module.DEFAULT_MODULE_NAME, null);
     }
