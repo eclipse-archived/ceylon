@@ -61,22 +61,17 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public .java.lang.Object getFirst() {
-        return $ceylon$language$Iterable$this.getFirst();
+    public T getFirst() {
+        return (T)$ceylon$language$Iterable$this.getFirst();
     }
     
     @.java.lang.Override
-    public .java.lang.Object getLast() {
-        return $ceylon$language$Iterable$this.getLast();
+    public T getLast() {
+        return (T)$ceylon$language$Iterable$this.getLast();
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> getRest() {
-        return $ceylon$language$Iterable$this.getRest();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Sequential<? extends .java.lang.Object> getSequence() {
+    public .ceylon.language.Sequential<? extends T> getSequence() {
         return $ceylon$language$Iterable$this.getSequence();
     }
     
@@ -86,7 +81,7 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.filter(selecting);
     }
     
@@ -96,17 +91,17 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public .java.lang.Object find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+    public T find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.find(selecting);
     }
     
     @.java.lang.Override
-    public .java.lang.Object findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+    public T findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.findLast(selecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends .java.lang.Object> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
+    public .ceylon.language.Sequential<? extends T> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return $ceylon$language$Iterable$this.sort(comparing);
     }
     
@@ -116,7 +111,7 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends .java.lang.Object> select(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+    public .ceylon.language.Sequential<? extends T> select(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.select(selecting);
     }
     
@@ -131,27 +126,27 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> skipping(final long skip) {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> skipping(final long skip) {
         return $ceylon$language$Iterable$this.skipping(skip);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> taking(final long take) {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> taking(final long take) {
         return $ceylon$language$Iterable$this.taking(take);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> skippingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> skip) {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> skippingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> skip) {
         return $ceylon$language$Iterable$this.skippingWhile(skip);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> takingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> take) {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> takingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> take) {
         return $ceylon$language$Iterable$this.takingWhile(take);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> by(final long step) {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> by(final long step) {
         return $ceylon$language$Iterable$this.by(step);
     }
     
@@ -161,12 +156,12 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> getCoalesced() {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getCoalesced() {
         return $ceylon$language$Iterable$this.getCoalesced();
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> getIndexed() {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>, ? extends .java.lang.Object> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     
@@ -177,7 +172,7 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     
     @.java.lang.Override
     public <Other, OtherAbsent>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent> chain(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent>)$ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
     }
     
     @.java.lang.Override
@@ -191,17 +186,17 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> getCycled() {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getCycled() {
         return $ceylon$language$Iterable$this.getCycled();
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> cycle(final long times) {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> cycle(final long times) {
         return $ceylon$language$Iterable$this.cycle(times);
     }
     
     @.java.lang.Override
-    public .ceylon.language.List<? extends .java.lang.Object> repeat(final long times) {
+    public .ceylon.language.List<? extends T> repeat(final long times) {
         return $ceylon$language$Iterable$this.repeat(times);
     }
     protected final .ceylon.language.Container$impl<? extends T, ? extends .java.lang.Object> $ceylon$language$Container$this;
@@ -225,6 +220,11 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     @.java.lang.Override
     public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getRest() {
+        return $ceylon$language$Iterable$this.getRest();
     }
     
     @.java.lang.Override
