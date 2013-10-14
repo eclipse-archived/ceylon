@@ -8,6 +8,8 @@ import java.util.Set;
 
 import ceylon.language.ArraySequence;
 import ceylon.language.AssertionException;
+import ceylon.language.Callable;
+import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Iterator;
 import ceylon.language.Ranged;
@@ -809,5 +811,97 @@ public class Util {
         if(b == null)
             return false;
         return a.equals(b);
+    }
+    
+    /**
+     * Applies the given function to the given arguments. The argument types are assumed to be correct and
+     * will not be checked. This method will properly deal with variadic functions. The arguments are expected
+     * to be spread in the given sequential, even in the case of variadic functions, which means that there will
+     * be no spreading of any Sequential instance in the given arguments. On the contrary, a portion of the given
+     * arguments may be packaged into a Sequential if the given function is variadic.
+     * 
+     * @param function the function to apply
+     * @param arguments the argument values to pass to the function
+     * @return the function's return value
+     */
+    public static <Return> Return apply(Callable<? extends Return> function, Sequential<? extends Object> arguments){
+        int variadicParameterIndex = function.$getVariadicParameterIndex();
+        switch ((int) arguments.getSize()) {
+        case 0:
+            // even if the function is variadic it will overload $call so we're good
+            return function.$call();
+        case 1:
+            // if the first param is variadic, just pass the sequence along
+            if(variadicParameterIndex == 0)
+                return function.$call$variadic(arguments);
+            return function.$call(arguments.get(Integer.instance(0)));
+        case 2:
+            switch(variadicParameterIndex){
+            // pass the sequence along
+            case 0: return function.$call$variadic(arguments);
+            // extract the first, pass the rest
+            case 1: return function.$call$variadic(arguments.get(Integer.instance(0)), 
+                                              (Sequential)arguments.spanFrom(Integer.instance(1)));
+            // no variadic param, or after we run out of elements to pass
+            default:
+                return function.$call(arguments.get(Integer.instance(0)), 
+                                          arguments.get(Integer.instance(1)));
+            }
+        case 3:
+            switch(variadicParameterIndex){
+            // pass the sequence along
+            case 0: return function.$call$variadic(arguments);
+            // extract the first, pass the rest
+            case 1: return function.$call$variadic(arguments.get(Integer.instance(0)), 
+                                              (Sequential)arguments.spanFrom(Integer.instance(1)));
+            // extract the first and second, pass the rest
+            case 2: return function.$call$variadic(arguments.get(Integer.instance(0)),
+                                              arguments.get(Integer.instance(1)),
+                                              (Sequential)arguments.spanFrom(Integer.instance(2)));
+            // no variadic param, or after we run out of elements to pass
+            default:
+            return function.$call(arguments.get(Integer.instance(0)), 
+                                      arguments.get(Integer.instance(1)), 
+                                      arguments.get(Integer.instance(2)));
+            }
+        default:
+            switch(variadicParameterIndex){
+            // pass the sequence along
+            case 0: return function.$call$variadic(arguments);
+            // extract the first, pass the rest
+            case 1: return function.$call$variadic(arguments.get(Integer.instance(0)), 
+                                             (Sequential)arguments.spanFrom(Integer.instance(1)));
+            // extract the first and second, pass the rest
+            case 2: return function.$call$variadic(arguments.get(Integer.instance(0)),
+                                              arguments.get(Integer.instance(1)),
+                                              (Sequential)arguments.spanFrom(Integer.instance(2)));
+            case 3: return function.$call$variadic(arguments.get(Integer.instance(0)),
+                                            arguments.get(Integer.instance(1)),
+                                            arguments.get(Integer.instance(2)),
+                                            (Sequential)arguments.spanFrom(Integer.instance(3)));
+            // no variadic param
+            case -1:
+                java.lang.Object[] args = Util.toArray(arguments, new java.lang.Object[(int) arguments.getSize()]);
+                return function.$call(args);
+            // we have a variadic param in there bothering us
+            default:
+                // we stuff everything before the variadic into an array
+                int beforeVariadic = (int)Math.min(arguments.getSize(), variadicParameterIndex);
+                boolean needsVariadic = beforeVariadic < arguments.getSize();
+                args = new java.lang.Object[beforeVariadic + (needsVariadic ? 1 : 0)];
+                Iterator iterator = arguments.iterator();
+                java.lang.Object it;
+                int i=0;
+                while(i < beforeVariadic && (it = iterator.next()) != finished_.get_()){
+                    args[i++] = it;
+                }
+                // add the remainder as a variadic arg if required
+                if(needsVariadic){
+                    args[i] = arguments.spanFrom(Integer.instance(beforeVariadic));
+                    return function.$call$variadic(args);
+                }
+                return function.$call(args);
+            }
+        }
     }
 }
