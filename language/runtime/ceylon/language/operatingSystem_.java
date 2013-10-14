@@ -14,7 +14,8 @@ public final class operatingSystem_ {
 	}
 
 	private final java.lang.String newline = System.lineSeparator();
-	private final java.lang.String pathSeparator = System.getProperty("file.separator");
+	private final java.lang.String fileSeparator = System.getProperty("file.separator");
+    private final java.lang.String pathSeparator = System.getProperty("path.separator");
 
 	private operatingSystem_() {
 	}
@@ -42,9 +43,13 @@ public final class operatingSystem_ {
 		return newline;
 	}
 
-	public java.lang.String getPathSeparator() {
-		return pathSeparator;
+	public java.lang.String getFileSeparator() {
+		return fileSeparator;
 	}
+
+    public java.lang.String getPathSeparator() {
+        return pathSeparator;
+    }
 
 	@Override
 	public java.lang.String toString() {
