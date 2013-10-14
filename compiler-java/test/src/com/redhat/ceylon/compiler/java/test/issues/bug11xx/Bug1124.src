@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
 
 interface Bug1124Interface<Key, Value> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface$impl<Key, Value> $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1124Interface$impl();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface$impl<? super Key, ? extends Value> $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1124Interface$impl();
     
     public abstract Value get1(final Key k);
     
@@ -51,10 +51,10 @@ class Bug1124 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private final boolean f$priv() {
         return f.$call().booleanValue();
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface$impl<.ceylon.language.Integer, .ceylon.language.Boolean> $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1124Interface$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface$impl<? super .ceylon.language.Integer, ? extends .ceylon.language.Boolean> $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1124Interface$this;
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface$impl<.ceylon.language.Integer, .ceylon.language.Boolean> $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1124Interface$impl() {
+    public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface$impl<? super .ceylon.language.Integer, ? extends .ceylon.language.Boolean> $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1124Interface$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1124Interface$this;
     }
     

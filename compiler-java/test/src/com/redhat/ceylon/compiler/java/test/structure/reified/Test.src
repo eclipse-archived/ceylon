@@ -22,7 +22,7 @@ public final class TestInterface$impl<Key, Value> {
 }
 public interface TestInterface2<Key, Value> {
     
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2$impl<Key, Value> $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface2$impl();
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2$impl<? extends Key, ? extends Value> $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface2$impl();
 }
 public final class TestInterface2$impl<Key, Value> {
     

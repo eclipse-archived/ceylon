@@ -52,7 +52,7 @@ final class EC_ABC$impl {
 }
 interface EC_Parameterised<T> {
     
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised$impl<T> $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_Parameterised$impl();
+    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised$impl<? extends T> $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_Parameterised$impl();
     
     public abstract T t();
 }
@@ -71,7 +71,7 @@ final class EC_Parameterised$impl<T> {
 }
 interface EC_ParameterisedSelfBound<T> {
     
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedSelfBound$impl<T> $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ParameterisedSelfBound$impl();
+    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedSelfBound$impl<? extends T> $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ParameterisedSelfBound$impl();
     
     public abstract T t();
 }

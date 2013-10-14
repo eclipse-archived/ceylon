@@ -17,10 +17,10 @@ public final class AnnotationClass implements .com.redhat.ceylon.compiler.java.r
     public AnnotationClass(final .java.lang.String strictfp) {
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass>(.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.$TypeDescriptor, this);
     }
-    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
-    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass> $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this;
     }
     

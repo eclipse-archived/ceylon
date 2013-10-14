@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
 interface Bug633Ranged<Index, Span> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<Index, Span> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$impl();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<? super Index, ? extends Span> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$impl();
     
     public abstract .java.lang.Object span(final Index from);
 }
@@ -46,10 +46,10 @@ class Bug633EmptyImpl implements .com.redhat.ceylon.compiler.java.runtime.model.
     public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$this;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<.ceylon.language.Integer, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<? super .ceylon.language.Integer, ? extends .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this;
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<.ceylon.language.Integer, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$impl() {
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<? super .ceylon.language.Integer, ? extends .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this;
     }
     

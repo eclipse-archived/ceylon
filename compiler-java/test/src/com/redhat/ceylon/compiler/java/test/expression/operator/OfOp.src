@@ -5,10 +5,10 @@ abstract class OfOp implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     OfOp() {
         this.$ceylon$language$Comparable$this = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp>(.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp.$TypeDescriptor, this);
     }
-    protected final .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp> $ceylon$language$Comparable$this;
+    protected final .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp> $ceylon$language$Comparable$this;
     
     @.java.lang.Override
-    public .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp> $ceylon$language$Comparable$impl() {
+    public .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp> $ceylon$language$Comparable$impl() {
         return $ceylon$language$Comparable$this;
     }
     

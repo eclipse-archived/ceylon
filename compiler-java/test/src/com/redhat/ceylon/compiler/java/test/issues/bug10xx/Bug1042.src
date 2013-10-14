@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
 
 interface Bug1042<T> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1042$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug10xx$Bug1042$impl();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1042$impl<? super T> $com$redhat$ceylon$compiler$java$test$issues$bug10xx$Bug1042$impl();
 }
 final class Bug1042$impl<T> {
     

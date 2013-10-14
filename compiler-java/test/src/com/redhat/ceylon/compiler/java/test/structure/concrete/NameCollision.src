@@ -26,10 +26,10 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.Container$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$Container$impl() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Container$this;
     }
-    protected final .ceylon.language.Container$impl<.ceylon.language.Integer, .java.lang.Object> $ceylon$language$Container$this;
+    protected final .ceylon.language.Container$impl<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $ceylon$language$Container$this;
     
     @.java.lang.Override
-    public .ceylon.language.Container$impl<.ceylon.language.Integer, .java.lang.Object> $ceylon$language$Container$impl() {
+    public .ceylon.language.Container$impl<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $ceylon$language$Container$impl() {
         return $ceylon$language$Container$this;
     }
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;

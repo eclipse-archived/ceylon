@@ -94,10 +94,10 @@ public class Bug673_PaisController implements .com.redhat.ceylon.compiler.java.r
     public final .java.lang.Object on(final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action) {
         return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_GridBehavior$this.on(event, action);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver$impl<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$this;
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver$impl<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$impl() {
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$this;
     }
     

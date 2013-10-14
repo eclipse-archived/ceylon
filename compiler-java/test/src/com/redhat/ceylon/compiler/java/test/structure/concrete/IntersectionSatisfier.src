@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
 interface IntersectionSatisfier_X<T, N> {
     
-    public .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X$impl<T, N> $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_X$impl();
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X$impl<? extends T, ? extends N> $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_X$impl();
     
     public abstract .java.lang.Object getX();
 }
@@ -24,7 +24,7 @@ final class IntersectionSatisfier_X$impl<T, N> {
 }
 interface IntersectionSatisfier_I1<T> extends .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X<T, .java.lang.Object> {
     
-    public .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1$impl<T> $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$impl();
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1$impl<? extends T> $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$impl();
     
     @.java.lang.Override
     public T getX();
@@ -63,8 +63,8 @@ class IntersectionSatisfier_C<T> implements .com.redhat.ceylon.compiler.java.run
     IntersectionSatisfier_C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I2$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I2$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1$impl<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, (.com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1<.java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1)this);
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_X$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X$impl<.java.lang.Object, .java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, (.com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X<.java.lang.Object, .java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X)this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1$impl<T>($reifiedT, (.com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1<T>)(.com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1)this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_X$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X$impl<T, .java.lang.Object>($reifiedT, .ceylon.language.Null.$TypeDescriptor, (.com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X<T, .java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X)this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I2$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I2$this;
@@ -73,10 +73,10 @@ class IntersectionSatisfier_C<T> implements .com.redhat.ceylon.compiler.java.run
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I2$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I2$impl() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I2$this;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1$impl<? extends T> $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$this;
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$impl() {
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1$impl<? extends T> $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$impl() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$this;
     }
     
@@ -84,10 +84,10 @@ class IntersectionSatisfier_C<T> implements .com.redhat.ceylon.compiler.java.run
     public .java.lang.Object getX() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$this.getX();
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X$impl<.java.lang.Object, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_X$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X$impl<? extends T, ? extends .java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_X$this;
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X$impl<.java.lang.Object, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_X$impl() {
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X$impl<? extends T, ? extends .java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_X$impl() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_X$this;
     }
     

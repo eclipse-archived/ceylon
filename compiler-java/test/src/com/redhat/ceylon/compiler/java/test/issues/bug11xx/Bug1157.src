@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
 
 interface Bug1157_Anno<Value extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno<? extends Value>> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno$impl<Value> $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1157_Anno$impl();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno$impl<? extends Value> $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1157_Anno$impl();
 }
 final class Bug1157_Anno$impl<Value extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno<? extends Value>> {
     
@@ -19,7 +19,7 @@ final class Bug1157_Anno$impl<Value extends .com.redhat.ceylon.compiler.java.tes
 }
 interface Bug1157_AnnoSub<Value extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno<? extends Value>> extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno<Value> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_AnnoSub$impl<Value> $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1157_AnnoSub$impl();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_AnnoSub$impl<? extends Value> $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1157_AnnoSub$impl();
 }
 final class Bug1157_AnnoSub$impl<Value extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno<? extends Value>> {
     

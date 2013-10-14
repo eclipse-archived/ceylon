@@ -24,19 +24,19 @@ final class ConstrainedToClass implements .com.redhat.ceylon.compiler.java.runti
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass.$TypeDescriptor, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$OptionalAnnotation$this;
+    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$OptionalAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$OptionalAnnotation$impl() {
+    public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$OptionalAnnotation$impl() {
         return $ceylon$language$OptionalAnnotation$this;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$ConstrainedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
         return $ceylon$language$ConstrainedAnnotation$this;
     }
     
@@ -46,11 +46,11 @@ final class ConstrainedToClass implements .com.redhat.ceylon.compiler.java.runti
         return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass> $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this;
     }
     
@@ -99,19 +99,19 @@ final class ConstrainedToClassSeq implements .com.redhat.ceylon.compiler.java.ru
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq.$TypeDescriptor, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$SequencedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$SequencedAnnotation$impl() {
+    public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$SequencedAnnotation$impl() {
         return $ceylon$language$SequencedAnnotation$this;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq>, .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq>, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$ConstrainedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq>, .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq>, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
         return $ceylon$language$ConstrainedAnnotation$this;
     }
     
@@ -121,11 +121,11 @@ final class ConstrainedToClassSeq implements .com.redhat.ceylon.compiler.java.ru
         return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq> $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this;
     }
     
@@ -167,19 +167,19 @@ final class ConstrainedToInterface implements .com.redhat.ceylon.compiler.java.r
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface.$TypeDescriptor, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$OptionalAnnotation$this;
+    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$OptionalAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$OptionalAnnotation$impl() {
+    public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$OptionalAnnotation$impl() {
         return $ceylon$language$OptionalAnnotation$this;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
         return $ceylon$language$ConstrainedAnnotation$this;
     }
     
@@ -189,11 +189,11 @@ final class ConstrainedToInterface implements .com.redhat.ceylon.compiler.java.r
         return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface> $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this;
     }
     
@@ -242,19 +242,19 @@ final class ConstrainedToInterfaceSeq implements .com.redhat.ceylon.compiler.jav
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq.$TypeDescriptor, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$SequencedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$SequencedAnnotation$impl() {
+    public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$SequencedAnnotation$impl() {
         return $ceylon$language$SequencedAnnotation$this;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq>, .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq>, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq>, .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq>, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
         return $ceylon$language$ConstrainedAnnotation$this;
     }
     
@@ -264,11 +264,11 @@ final class ConstrainedToInterfaceSeq implements .com.redhat.ceylon.compiler.jav
         return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq> $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this;
     }
     
@@ -310,19 +310,19 @@ final class ConstrainedToFunction implements .com.redhat.ceylon.compiler.java.ru
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction.$TypeDescriptor, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$OptionalAnnotation$this;
+    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$OptionalAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$OptionalAnnotation$impl() {
+    public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$OptionalAnnotation$impl() {
         return $ceylon$language$OptionalAnnotation$this;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
         return $ceylon$language$ConstrainedAnnotation$this;
     }
     
@@ -332,11 +332,11 @@ final class ConstrainedToFunction implements .com.redhat.ceylon.compiler.java.ru
         return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction> $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this;
     }
     
@@ -385,19 +385,19 @@ final class ConstrainedToFunctionSeq implements .com.redhat.ceylon.compiler.java
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq.$TypeDescriptor, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$impl() {
+    public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$impl() {
         return $ceylon$language$SequencedAnnotation$this;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq>, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq>, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq>, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq>, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
         return $ceylon$language$ConstrainedAnnotation$this;
     }
     
@@ -407,11 +407,11 @@ final class ConstrainedToFunctionSeq implements .com.redhat.ceylon.compiler.java
         return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq> $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this;
     }
     
@@ -453,19 +453,19 @@ final class ConstrainedToValue implements .com.redhat.ceylon.compiler.java.runti
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue.$TypeDescriptor, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$this;
+    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$impl() {
+    public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$impl() {
         return $ceylon$language$OptionalAnnotation$this;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
         return $ceylon$language$ConstrainedAnnotation$this;
     }
     
@@ -475,11 +475,11 @@ final class ConstrainedToValue implements .com.redhat.ceylon.compiler.java.runti
         return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue> $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this;
     }
     
@@ -528,19 +528,19 @@ final class ConstrainedToValueSeq implements .com.redhat.ceylon.compiler.java.ru
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq.$TypeDescriptor, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$SequencedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$SequencedAnnotation$impl() {
+    public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$SequencedAnnotation$impl() {
         return $ceylon$language$SequencedAnnotation$this;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq>, .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq>, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq>, .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq>, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
         return $ceylon$language$ConstrainedAnnotation$this;
     }
     
@@ -550,11 +550,11 @@ final class ConstrainedToValueSeq implements .com.redhat.ceylon.compiler.java.ru
         return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq> $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this;
     }
     
@@ -596,19 +596,19 @@ final class ConstrainedToVariable implements .com.redhat.ceylon.compiler.java.ru
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable.$TypeDescriptor, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$OptionalAnnotation$this;
+    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$OptionalAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$OptionalAnnotation$impl() {
+    public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$OptionalAnnotation$impl() {
         return $ceylon$language$OptionalAnnotation$this;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$ConstrainedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
         return $ceylon$language$ConstrainedAnnotation$this;
     }
     
@@ -618,11 +618,11 @@ final class ConstrainedToVariable implements .com.redhat.ceylon.compiler.java.ru
         return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable> $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this;
     }
     
@@ -671,19 +671,19 @@ final class ConstrainedToVariableSeq implements .com.redhat.ceylon.compiler.java
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq.$TypeDescriptor, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq, .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$SequencedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq, .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$SequencedAnnotation$impl() {
+    public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$SequencedAnnotation$impl() {
         return $ceylon$language$SequencedAnnotation$this;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq>, .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq>, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$ConstrainedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq>, .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq>, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
         return $ceylon$language$ConstrainedAnnotation$this;
     }
     
@@ -693,11 +693,11 @@ final class ConstrainedToVariableSeq implements .com.redhat.ceylon.compiler.java
         return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq> $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this;
     }
     
@@ -739,19 +739,19 @@ final class ConstrainedToPackage implements .com.redhat.ceylon.compiler.java.run
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage.$TypeDescriptor, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, .ceylon.language.meta.declaration.Package> $ceylon$language$OptionalAnnotation$this;
+    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$OptionalAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, .ceylon.language.meta.declaration.Package> $ceylon$language$OptionalAnnotation$impl() {
+    public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$OptionalAnnotation$impl() {
         return $ceylon$language$OptionalAnnotation$this;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, .ceylon.language.meta.declaration.Package> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$ConstrainedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, .ceylon.language.meta.declaration.Package> $ceylon$language$ConstrainedAnnotation$impl() {
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$ConstrainedAnnotation$impl() {
         return $ceylon$language$ConstrainedAnnotation$this;
     }
     
@@ -761,11 +761,11 @@ final class ConstrainedToPackage implements .com.redhat.ceylon.compiler.java.run
         return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage> $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this;
     }
     
@@ -814,19 +814,19 @@ final class ConstrainedToPackageSeq implements .com.redhat.ceylon.compiler.java.
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq.$TypeDescriptor, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, .ceylon.language.meta.declaration.Package> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$SequencedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, .ceylon.language.meta.declaration.Package> $ceylon$language$SequencedAnnotation$impl() {
+    public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$SequencedAnnotation$impl() {
         return $ceylon$language$SequencedAnnotation$this;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq>, .ceylon.language.meta.declaration.Package> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq>, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$ConstrainedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq>, .ceylon.language.meta.declaration.Package> $ceylon$language$ConstrainedAnnotation$impl() {
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq>, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$ConstrainedAnnotation$impl() {
         return $ceylon$language$ConstrainedAnnotation$this;
     }
     
@@ -836,11 +836,11 @@ final class ConstrainedToPackageSeq implements .com.redhat.ceylon.compiler.java.
         return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq> $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this;
     }
     
@@ -882,19 +882,19 @@ final class ConstrainedToModule implements .com.redhat.ceylon.compiler.java.runt
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule.$TypeDescriptor, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, .ceylon.language.meta.declaration.Module> $ceylon$language$OptionalAnnotation$this;
+    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$OptionalAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, .ceylon.language.meta.declaration.Module> $ceylon$language$OptionalAnnotation$impl() {
+    public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$OptionalAnnotation$impl() {
         return $ceylon$language$OptionalAnnotation$this;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, .ceylon.language.meta.declaration.Module> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$ConstrainedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, .ceylon.language.meta.declaration.Module> $ceylon$language$ConstrainedAnnotation$impl() {
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$ConstrainedAnnotation$impl() {
         return $ceylon$language$ConstrainedAnnotation$this;
     }
     
@@ -904,11 +904,11 @@ final class ConstrainedToModule implements .com.redhat.ceylon.compiler.java.runt
         return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule> $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this;
     }
     
@@ -957,19 +957,19 @@ final class ConstrainedToModuleSeq implements .com.redhat.ceylon.compiler.java.r
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq.$TypeDescriptor, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, .ceylon.language.meta.declaration.Module> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$SequencedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, .ceylon.language.meta.declaration.Module> $ceylon$language$SequencedAnnotation$impl() {
+    public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$SequencedAnnotation$impl() {
         return $ceylon$language$SequencedAnnotation$this;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq>, .ceylon.language.meta.declaration.Module> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq>, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$ConstrainedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq>, .ceylon.language.meta.declaration.Module> $ceylon$language$ConstrainedAnnotation$impl() {
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq>, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$ConstrainedAnnotation$impl() {
         return $ceylon$language$ConstrainedAnnotation$this;
     }
     
@@ -979,11 +979,11 @@ final class ConstrainedToModuleSeq implements .com.redhat.ceylon.compiler.java.r
         return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq> $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this;
     }
     
@@ -1025,19 +1025,19 @@ final class ConstrainedToImport implements .com.redhat.ceylon.compiler.java.runt
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport.$TypeDescriptor, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, .ceylon.language.meta.declaration.Import> $ceylon$language$OptionalAnnotation$this;
+    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$OptionalAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, .ceylon.language.meta.declaration.Import> $ceylon$language$OptionalAnnotation$impl() {
+    public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$OptionalAnnotation$impl() {
         return $ceylon$language$OptionalAnnotation$this;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, .ceylon.language.meta.declaration.Import> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$ConstrainedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, .ceylon.language.meta.declaration.Import> $ceylon$language$ConstrainedAnnotation$impl() {
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$ConstrainedAnnotation$impl() {
         return $ceylon$language$ConstrainedAnnotation$this;
     }
     
@@ -1047,11 +1047,11 @@ final class ConstrainedToImport implements .com.redhat.ceylon.compiler.java.runt
         return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport> $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this;
     }
     
@@ -1100,19 +1100,19 @@ final class ConstrainedToImportSeq implements .com.redhat.ceylon.compiler.java.r
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq.$TypeDescriptor, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, .ceylon.language.meta.declaration.Import> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$SequencedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, .ceylon.language.meta.declaration.Import> $ceylon$language$SequencedAnnotation$impl() {
+    public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$SequencedAnnotation$impl() {
         return $ceylon$language$SequencedAnnotation$this;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq>, .ceylon.language.meta.declaration.Import> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq>, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$ConstrainedAnnotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq>, .ceylon.language.meta.declaration.Import> $ceylon$language$ConstrainedAnnotation$impl() {
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq>, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$ConstrainedAnnotation$impl() {
         return $ceylon$language$ConstrainedAnnotation$this;
     }
     
@@ -1122,11 +1122,11 @@ final class ConstrainedToImportSeq implements .com.redhat.ceylon.compiler.java.r
         return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq> $ceylon$language$Annotation$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq> $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this;
     }
     

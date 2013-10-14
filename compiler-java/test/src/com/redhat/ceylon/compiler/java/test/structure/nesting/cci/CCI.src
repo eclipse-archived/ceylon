@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.nesting.cci;
 
 interface C$CC$CCI<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
-    public .com.redhat.ceylon.compiler.java.test.structure.nesting.cci.C<T, X>.CC.CCI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$cci$C$CC$CCI$impl();
+    public .com.redhat.ceylon.compiler.java.test.structure.nesting.cci.C<? extends T, ? super X>.CC.CCI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$cci$C$CC$CCI$impl();
 }
 class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

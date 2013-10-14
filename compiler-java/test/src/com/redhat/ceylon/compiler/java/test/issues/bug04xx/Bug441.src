@@ -16,7 +16,7 @@ class Bug441 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     Bug441() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug04xx$IBug441$this = new .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441$impl(this);
-        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441>(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441.$TypeDescriptor, (.ceylon.language.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441>)(.ceylon.language.Cloneable)this);
+        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441>(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug441.$TypeDescriptor, (.ceylon.language.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441>)(.ceylon.language.Cloneable)this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441$impl $com$redhat$ceylon$compiler$java$test$issues$bug04xx$IBug441$this;
     
@@ -24,10 +24,10 @@ class Bug441 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     public .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441$impl $com$redhat$ceylon$compiler$java$test$issues$bug04xx$IBug441$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug04xx$IBug441$this;
     }
-    protected final .ceylon.language.Cloneable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441> $ceylon$language$Cloneable$this;
+    protected final .ceylon.language.Cloneable$impl<? extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441> $ceylon$language$Cloneable$this;
     
     @.java.lang.Override
-    public .ceylon.language.Cloneable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441> $ceylon$language$Cloneable$impl() {
+    public .ceylon.language.Cloneable$impl<? extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441> $ceylon$language$Cloneable$impl() {
         return $ceylon$language$Cloneable$this;
     }
     

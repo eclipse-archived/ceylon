@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.nesting.icc;
 
 interface I<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
-    public .com.redhat.ceylon.compiler.java.test.structure.nesting.icc.I$impl<T, X> $com$redhat$ceylon$compiler$java$test$structure$nesting$icc$I$impl();
+    public .com.redhat.ceylon.compiler.java.test.structure.nesting.icc.I$impl<? extends T, ? super X> $com$redhat$ceylon$compiler$java$test$structure$nesting$icc$I$impl();
     
     public abstract <U>T m1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final X b);
     

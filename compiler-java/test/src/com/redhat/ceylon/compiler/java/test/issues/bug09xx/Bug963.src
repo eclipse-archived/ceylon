@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
 public interface Bug963<Element> extends .ceylon.language.List<Element> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug963$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug963$impl();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug963$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug963$impl();
     
     @.java.lang.Override
     public long getSize();

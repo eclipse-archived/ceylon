@@ -57,7 +57,7 @@ public class Bottom extends .com.redhat.ceylon.compiler.java.test.structure.reif
 public interface Interface<Key> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<Key> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$impl();
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<? extends Key> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class Interface$impl<Key> {
@@ -130,11 +130,11 @@ public class Class1 implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         return $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface1$this;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<.com.redhat.ceylon.compiler.java.test.structure.reified.Top> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<? extends .com.redhat.ceylon.compiler.java.test.structure.reified.Top> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<.com.redhat.ceylon.compiler.java.test.structure.reified.Top> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$impl() {
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<? extends .com.redhat.ceylon.compiler.java.test.structure.reified.Top> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$impl() {
         return $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this;
     }
     
