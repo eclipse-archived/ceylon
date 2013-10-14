@@ -13,3 +13,11 @@ shared object true extends Boolean() {
 shared object false extends Boolean() {
     string => "false";
 }
+
+shared Boolean? parseBoolean(String string) {
+    return string == "true"
+        then true
+        else (string == "false"
+            then false
+            else null);
+}
