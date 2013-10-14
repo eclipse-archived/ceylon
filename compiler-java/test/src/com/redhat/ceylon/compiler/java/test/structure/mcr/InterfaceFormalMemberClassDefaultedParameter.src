@@ -1,0 +1,154 @@
+package com.redhat.ceylon.compiler.java.test.structure.mcr;
+
+interface InterfaceFormalMemberClassDefaultedParameter {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$impl();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter$impl.X X$new(final .java.lang.String o, final .ceylon.language.String s);
+    
+    public abstract .ceylon.language.String $X$init$s(final .java.lang.String o);
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter$impl.X X$new(final .java.lang.String o);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter.class);
+}
+final class InterfaceFormalMemberClassDefaultedParameter$impl {
+    
+    InterfaceFormalMemberClassDefaultedParameter$impl(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter $this;
+    
+    public final .ceylon.language.String $X$init$s(final .java.lang.String o) {
+        return null;
+    }
+    
+    public abstract class X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        public X(final .java.lang.String o) {
+            (
+                let
+                {
+                    .ceylon.language.String $ceylontmp$s$0 = $X$init$s(o);
+                    this(o, $ceylontmp$s$0);
+                }
+                returning null;
+            );
+        }
+        
+        protected X(final .java.lang.String o, final .ceylon.language.String s) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter$impl.X.class));
+        }
+    }
+}
+class InterfaceFormalMemberClassDefaultedParameterSub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter {
+    
+    InterfaceFormalMemberClassDefaultedParameterSub() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$this = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$this;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub.X X$new(final .java.lang.String o, final .ceylon.language.String s) {
+        return new X(o, s);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.String $X$init$s(final .java.lang.String o) {
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$this.$X$init$s(o);
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub.X X$new(final .java.lang.String o) {
+        return (
+            let
+            {
+                .ceylon.language.String $ceylontmp$s$1 = $X$init$s(o);
+            }
+            returning new X(o, $ceylontmp$s$1);
+        );
+    }
+    
+    public class X extends .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter$impl.X {
+        
+        protected X(final .java.lang.String o, final .ceylon.language.String s) {
+            $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$this.super("", s);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub.X.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub.class);
+}
+class InterfaceFormalMemberClassDefaultedParameterSub2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter {
+    
+    InterfaceFormalMemberClassDefaultedParameterSub2() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$this = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$this;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub2.X X$new(final .java.lang.String o, final .ceylon.language.String s) {
+        return new X(o, s);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.String $X$init$s(final .java.lang.String o) {
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$this.$X$init$s(o);
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub2.X X$new(final .java.lang.String o) {
+        return (
+            let
+            {
+                .ceylon.language.String $ceylontmp$s$2 = $X$init$s(o);
+            }
+            returning new X(o, $ceylontmp$s$2);
+        );
+    }
+    
+    public class X extends .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter$impl.X {
+        
+        protected X(final .java.lang.String o, final .ceylon.language.String s) {
+            $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$this.super(o);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub2.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub2.X.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub2();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub2.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub2.class);
+}

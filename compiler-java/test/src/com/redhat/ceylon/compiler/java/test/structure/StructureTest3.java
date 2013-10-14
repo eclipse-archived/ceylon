@@ -116,4 +116,9 @@ public class StructureTest3 extends CompilerTest {
     public void testMcrSubclassedTwice(){
         compareWithJavaSource("mcr/SubclassedTwice");
     }
+    
+    @Test
+    public void testMcrInterfaceFormalMemberClassDefaultedParameter(){
+        compareWithJavaSource("mcr/InterfaceFormalMemberClassDefaultedParameter");
+    }
 }
