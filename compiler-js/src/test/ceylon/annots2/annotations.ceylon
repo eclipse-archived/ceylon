@@ -25,7 +25,7 @@ shared annotation AnnoTest3 annotest3(String text) => AnnoTest3(text);
 shared annotest1 class Example1() {
   string => "Example1";
   shared annotest2(9) Integer printTime() {
-    value m = process.milliseconds;
+    value m = system.milliseconds;
     print("printing at: ``m``");
     return m;
   }

@@ -13,7 +13,7 @@ interface Scal141<in T> of T
         given T satisfies Scal141<T> {}
 
 class Bar141() satisfies Comp141<Bar141> {
-    Integer birth = process.milliseconds;
+    Integer birth = system.milliseconds;
     shared actual Comparison compare(Bar141 other) {
         return birth <=> other.birth;
     }
