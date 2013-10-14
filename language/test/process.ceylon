@@ -42,7 +42,7 @@ shared void testProcess() {
 }
 
 @test
-void testSystem() {
+shared void testSystem() {
     // basically just test if everything can be called without error
     print("system[milliseconds:``system.milliseconds``ms,nanoseconds:``system.nanoseconds``ns," +
            "timezoneOffset:``system.timezoneOffset``ms, locale: ``system.locale``]");
@@ -55,7 +55,7 @@ void testSystem() {
 }
 
 @test
-void testRuntime() {
+shared void testRuntime() {
     // basically just test if everything can be called without error
     print("runtime[name: ``runtime.name``, version: ``runtime.version``]");
     check(runtime.name.size > 0, "runtime.name");
@@ -79,7 +79,7 @@ void testRuntime() {
 }
 
 @test
-void testOperatingSystem() {
+shared void testOperatingSystem() {
     // basically just test if everything can be called without error
     print("operatingSystem[name:``operatingSystem.name``, version:``operatingSystem.version``]");
     check(operatingSystem.name.size > 0, "operatingSystem.name");
