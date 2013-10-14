@@ -97,8 +97,8 @@ public class MiscTest extends CompilerTest {
                 filename = filename.substring(0,  filename.lastIndexOf('.'));
                 for (String s : new String[]{"Array", "ArraySequence", "Boolean", "Callable", "Character", "className",
                         "Exception", "flatten", "Float", "identityHash", "Integer", "internalSort", 
-                        "language", "metamodel", "modules", "process", "integerRangeByIterable",
-                        "SequenceBuilder", "SequenceAppender", "String", "StringBuilder", "Tuple"}) {
+                        "language", "metamodel", "modules", "operatingSystem", "process", "integerRangeByIterable",
+                        "runtime", "SequenceBuilder", "SequenceAppender", "String", "StringBuilder", "system", "Tuple"}) {
                     if (s.equals(filename)) {
                         return true;
                     }
