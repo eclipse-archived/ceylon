@@ -2467,11 +2467,13 @@ public class ExpressionVisitor extends Visitor {
             ProducedType t = pr==null ? 
                     p.getType() : 
                     pr.getTypedParameter(p).getFullType();
-            t = t.resolveAliases();
-            if (t!=null &&!foundParameters.contains(p) &&
-                    t.getDeclaration() instanceof Interface &&
-                    t.getDeclaration().equals(unit.getIterableDeclaration())) {
-                return p;
+            if (t!=null) {
+                t = t.resolveAliases();
+                if (!foundParameters.contains(p) &&
+                        t.getDeclaration() instanceof Interface &&
+                        t.getDeclaration().equals(unit.getIterableDeclaration())) {
+                    return p;
+                }
             }
         }
         return null;
