@@ -6,12 +6,12 @@ import java.util.TimeZone;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 
-@Ceylon(major = 5) @Object
+@Ceylon(major = 6) @Object
 public final class system_ {
     
     private static final system_ value = new system_();
     
-    public static system_ $get() {
+    public static system_ get_() {
         return value;
     }
     

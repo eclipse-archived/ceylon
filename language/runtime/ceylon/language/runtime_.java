@@ -4,12 +4,12 @@ package ceylon.language;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 
-@Ceylon(major = 5) @Object
+@Ceylon(major = 6) @Object
 public final class runtime_ {
     
     private static final runtime_ value = new runtime_();
     
-    public static runtime_ $get() {
+    public static runtime_ get_() {
         return value;
     }
 

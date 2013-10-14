@@ -3,13 +3,13 @@ package ceylon.language;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 
-@Ceylon(major = 5)
+@Ceylon(major = 6)
 @Object
 public final class operatingSystem_ {
 
 	private static final operatingSystem_ value = new operatingSystem_();
 
-	public static operatingSystem_ $get() {
+	public static operatingSystem_ get_() {
 		return value;
 	}
 
