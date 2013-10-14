@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.tools.test;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -31,10 +32,16 @@ import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
+import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.tools.CeylonToolLoader;
 import com.redhat.ceylon.tools.src.CeylonSrcTool;
 
-public class SrcToolTest {
+public class SrcToolTest extends CompilerTest {
+
+    @Override
+    protected String getPackagePath() {
+        return super.getPackagePath() + "/test_mod_source";
+    }
 
     protected final ToolFactory pluginFactory = new ToolFactory();
     protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
@@ -70,6 +77,25 @@ public class SrcToolTest {
         ToolModel<CeylonSrcTool> model = pluginLoader.loadToolModel("src");
         Assert.assertNotNull(model);
         CeylonSrcTool tool = pluginFactory.bindArguments(model, Arrays.<String>asList("--offline", "ceylon.language"));
+    }
+    
+    @Test
+    public void testUnpacking() throws Exception {
+        compile("src_tool_test/module.ceylon", "src_tool_test/package.ceylon", "src_tool_test/foo.ceylon");
+        
+        ToolModel<CeylonSrcTool> model = pluginLoader.loadToolModel("src");
+        Assert.assertNotNull(model);
+        CeylonSrcTool tool = pluginFactory.bindArguments(model, Arrays.<String>asList("--cacherep", getCachePath(), "--rep", getOutPath(), "--src", "build/test-source", "com.redhat.ceylon.tools.test.test_mod_source.src_tool_test/1.0.0"));
         tool.run();
+        
+        String path = "build/test-source/com/redhat/ceylon/tools/test/test_mod_source/src_tool_test";
+        File dir = new File(path);
+        Assert.assertTrue(dir.isDirectory());
+        File moduleFile = new File(dir, "module.ceylon");
+        Assert.assertTrue(moduleFile.isFile());
+        File packageFile = new File(dir, "package.ceylon");
+        Assert.assertTrue(packageFile.isFile());
+        File fooFile = new File(dir, "foo.ceylon");
+        Assert.assertTrue(fooFile.isFile());
     }
 }
