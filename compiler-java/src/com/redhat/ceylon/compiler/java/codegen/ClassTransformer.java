@@ -34,7 +34,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -1152,23 +1151,6 @@ public class ClassTransformer extends AbstractTransformer {
         classBuilder.method(overload);
     }
 
-    private boolean needsRawification(ProducedType type) {
-        final Iterator<TypeParameter> refinedTypeParameters = type.getDeclaration().getTypeParameters().iterator();
-        boolean rawifyParametersAndResults = false;
-        for (ProducedType typeArg : type.getTypeArgumentList()) {
-            final TypeParameter typeParam = refinedTypeParameters.next();
-            if (typeParam.getSatisfiedTypes().isEmpty()
-                    && (typeFact().isIntersection(typeArg) || typeFact().isUnion(typeArg))) {
-                // Use the same hack that makeJavaType() does when handling iterables
-                if (!willEraseToSequential(typeArg)) {
-                    rawifyParametersAndResults = true;
-                    break;
-                }
-            }
-        }
-        return rawifyParametersAndResults;
-    }
-
     private boolean needsCompanionDelegate(final Class model, Declaration member) {
         final boolean mostRefined;
         Declaration m = model.getMember(member.getName(), null, false);
@@ -2062,13 +2044,7 @@ public class ClassTransformer extends AbstractTransformer {
             boolean defaultValuesBody) {
         
         ListBuffer<MethodDefinitionBuilder> lb = ListBuffer.<MethodDefinitionBuilder>lb();
-        boolean needsRaw = false;
         Declaration refinedDeclaration = methodModel.getRefinedDeclaration();
-        if (Decl.withinClassOrInterface(methodModel)) {
-            final Scope refinedFrom = refinedDeclaration.getContainer();
-            final ProducedType inheritedFrom = ((ClassOrInterface)methodModel.getContainer()).getType().getSupertype((TypeDeclaration)refinedFrom);
-            needsRaw = needsRawification(inheritedFrom);
-        }
         
         final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, methodModel);
         
@@ -2088,7 +2064,7 @@ public class ClassTransformer extends AbstractTransformer {
                 annotations = expressionGen().transform(((Tree.ParameterDeclaration)parameter).getTypedDeclaration().getAnnotationList());
             }
             
-            methodBuilder.parameter(parameterModel, annotations, needsRaw ? JT_RAW_TP_BOUND : 0, true);
+            methodBuilder.parameter(parameterModel, annotations, 0, true);
 
             if (Strategy.hasDefaultParameterValueMethod(parameterModel)
                     || Strategy.hasDefaultParameterOverload(parameterModel)) {
@@ -2146,10 +2122,8 @@ public class ClassTransformer extends AbstractTransformer {
             } else {
                 methodBuilder.noAnnotations();
             }
-            methodBuilder.resultType(methodModel, needsRaw ? JT_RAW_TP_BOUND : 0);
-            if (!needsRaw) {
-                copyTypeParameters(methodModel, methodBuilder);
-            }
+            methodBuilder.resultType(methodModel, 0);
+            copyTypeParameters(methodModel, methodBuilder);
             
             if (createCanonical) {
                 // Creates method that redirects to the "canonical" method containing the actual body
