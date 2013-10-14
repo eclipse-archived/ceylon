@@ -203,13 +203,13 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Map<? extends .java.lang.Object, ? extends .ceylon.language.Set<? extends .ceylon.language.Integer>> getInverse() {
-        return (.ceylon.language.Map<? extends .java.lang.Object, ? extends .ceylon.language.Set<? extends .ceylon.language.Integer>>)(.ceylon.language.Map)$ceylon$language$Map$this.getInverse();
+        return $ceylon$language$Map$this.getInverse();
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public <Result>.ceylon.language.Map<? extends .ceylon.language.Integer, ? extends Result> mapItems(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> mapping) {
-        return (.ceylon.language.Map<? extends .ceylon.language.Integer, ? extends Result>)(.ceylon.language.Map)$ceylon$language$Map$this.mapItems($reifiedResult, mapping);
+        return $ceylon$language$Map$this.mapItems($reifiedResult, mapping);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .ceylon.language.Collection$impl<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> $ceylon$language$Collection$this;
@@ -387,7 +387,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public <Other, OtherAbsent>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent> chain(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent>)$ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
     }
     
     @.java.lang.Override
@@ -399,19 +399,19 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> getCycled() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.getCycled();
+        return $ceylon$language$Iterable$this.getCycled();
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> cycle(final long times) {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.cycle(times);
+        return $ceylon$language$Iterable$this.cycle(times);
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.List<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> repeat(final long times) {
-        return (.ceylon.language.List<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>)(.ceylon.language.List)$ceylon$language$Iterable$this.repeat(times);
+        return $ceylon$language$Iterable$this.repeat(times);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .ceylon.language.Container$impl<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> $ceylon$language$Container$this;

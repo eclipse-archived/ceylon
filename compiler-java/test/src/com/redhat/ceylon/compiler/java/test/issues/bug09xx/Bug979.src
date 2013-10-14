@@ -162,7 +162,7 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     @.java.lang.Override
     public <Other, OtherAbsent>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent> chain(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent>)$ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
     }
     
     @.java.lang.Override
@@ -426,7 +426,7 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     
     @.java.lang.Override
     public <Other, OtherAbsent>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent> chain(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent>)$ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
     }
     
     @.java.lang.Override

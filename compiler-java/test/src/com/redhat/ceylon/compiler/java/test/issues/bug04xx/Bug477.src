@@ -66,12 +66,12 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public <Other>.ceylon.language.Sequence withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other element) {
-        return $ceylon$language$List$this.withLeading($reifiedOther, element);
+        return (.ceylon.language.Sequence)$ceylon$language$List$this.withLeading($reifiedOther, element);
     }
     
     @.java.lang.Override
     public <Other>.ceylon.language.Sequence withTrailing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other element) {
-        return $ceylon$language$List$this.withTrailing($reifiedOther, element);
+        return (.ceylon.language.Sequence)$ceylon$language$List$this.withTrailing($reifiedOther, element);
     }
     
     @.java.lang.Override
@@ -283,7 +283,7 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public <Other, OtherAbsent>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent> chain(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent>)$ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
     }
     
     @.java.lang.Override
@@ -466,12 +466,12 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public <Other>.ceylon.language.Sequence withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other element) {
-        return $ceylon$language$List$this.withLeading($reifiedOther, element);
+        return (.ceylon.language.Sequence)$ceylon$language$List$this.withLeading($reifiedOther, element);
     }
     
     @.java.lang.Override
     public <Other>.ceylon.language.Sequence withTrailing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other element) {
-        return $ceylon$language$List$this.withTrailing($reifiedOther, element);
+        return (.ceylon.language.Sequence)$ceylon$language$List$this.withTrailing($reifiedOther, element);
     }
     
     @.java.lang.Override
@@ -683,7 +683,7 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public <Other, OtherAbsent>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent> chain(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent>)$ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
     }
     
     @.java.lang.Override
