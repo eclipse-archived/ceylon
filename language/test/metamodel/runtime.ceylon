@@ -450,38 +450,55 @@ shared void checkToplevelFunctions(){
     assert(exists f2 = pkg.getFunction("fixedParams"));
     assert(is Function<Anything,[String, Integer, Float, Character, Boolean, Object, NoParams]> f2a = f2.apply<Anything,Nothing>());
     f2a("a", 1, 1.2, 'a', true, noParamsInstance, noParamsInstance);
+    f2a.apply("a", 1, 1.2, 'a', true, noParamsInstance, noParamsInstance);
 
     assert(exists f3 = pkg.getFunction("typeParams"));
     assert(is Function<String, [String, Integer]> f3a = f3.apply<Anything,Nothing>(stringType));
     assert(f3a("a", 1) == "a");
+    assert(f3a.apply("a", 1) == "a");
 
     assert(exists f4 = pkg.getFunction("getString"));
     assert(is Function<String, []> f4a = f4.apply<Anything,Nothing>());
     assert(f4a() == "a");
+    assert(f4a.apply() == "a");
+
+    try{
+        // too many params
+        f4a.apply(1);
+        assert(false);
+    }catch(Exception x){
+        assert(is InvocationException x);
+    }
 
     assert(exists f5 = pkg.getFunction("getInteger"));
     assert(is Function<Integer, []> f5a = f5.apply<Anything,Nothing>());
     assert(f5a() == 1);
+    assert(f5a.apply() == 1);
 
     assert(exists f6 = pkg.getFunction("getFloat"));
     assert(is Function<Float, []> f6a = f6.apply<Anything,Nothing>());
     assert(f6a() == 1.2);
+    assert(f6a.apply() == 1.2);
 
     assert(exists f7 = pkg.getFunction("getCharacter"));
     assert(is Function<Character, []> f7a = f7.apply<Anything,Nothing>());
     assert(f7a() == 'a');
+    assert(f7a.apply() == 'a');
 
     assert(exists f8 = pkg.getFunction("getBoolean"));
     assert(is Function<Boolean, []> f8a = f8.apply<Anything,Nothing>());
     assert(f8a() == true);
+    assert(f8a.apply() == true);
     
     assert(exists f9 = pkg.getFunction("getObject"));
     assert(is Function<Object, []> f9a = f9.apply<Anything,Nothing>());
     assert(f9a() == 2);
+    assert(f9a.apply() == 2);
 
     assert(exists f10 = pkg.getFunction("toplevelWithMultipleParameterLists"));
     Function<String(String),[Integer]> f10a = f10.apply<String(String),[Integer]>();
     assert(f10a(1)("a") == "a1");
+    assert(f10a.apply(1)("a") == "a1");
 
     // FIXME: MPL info is lost in the model loader
     //toplevelWithMultipleParameterLists{i = 1;}{s = "a"; };
@@ -494,16 +511,44 @@ shared void checkToplevelFunctions(){
     assert(exists f11 = pkg.getFunction("defaultedParams"));
     assert(is Function<Anything,[Integer=, String=, Boolean=]> f11a = f11.apply<Anything,Nothing>());
     f11a();
+    f11a.apply();
     f11a(0);
+    f11a.apply(0);
     f11a(1, "b");
+    f11a.apply(1, "b");
     f11a(2, "b", false);
+    f11a.apply(2, "b", false);
 
     assert(exists f12 = pkg.getFunction("defaultedParams2"));
     assert(f12.name == "defaultedParams2");
     assert(f12.qualifiedName == "metamodel::defaultedParams2");
     assert(is Function<Anything,[Boolean, Integer=, Integer=, Integer=, Integer=]> f12a = f12.apply<Anything,Nothing>());
     f12a(false);
+    f12a.apply(false);
     f12a(true, -1, -2, -3, -4);
+    f12a.apply(true, -1, -2, -3, -4);
+
+    try{
+        // invalid type
+        f12a.apply("a");
+        assert(false);
+    }catch(Exception x){
+        assert(is IncompatibleTypeException x);
+    }
+    try{
+        // not enough params
+        f12a.apply();
+        assert(false);
+    }catch(Exception x){
+        assert(is InvocationException x);
+    }
+    try{
+        // too many params
+        f12a.apply(true, -1, -2, -3, -4, -5);
+        assert(false);
+    }catch(Exception x){
+        assert(is InvocationException x);
+    }
     
     // check its parameters metamodel
     assert(f12.parameterDeclarations.size == 5);
@@ -517,10 +562,15 @@ shared void checkToplevelFunctions(){
     assert(exists f13 = pkg.getFunction("variadicParams"));
     assert(is Function<Anything,[Integer=, String*]> f13a = f13.apply<Anything,Nothing>());
     f13a();
+    f13a.apply();
     f13a(0);
+    f13a.apply(0);
     f13a(1, "a");
+    f13a.apply(1, "a");
     f13a(2, "a", "a");
+    f13a.apply(2, "a", "a");
     unflatten(f13a)([2, "a", "a"]);
+    
     // check its parameters metamodel
     assert(f13.parameterDeclarations.size == 2);
     assert(exists f13p0 = f13.parameterDeclarations[0], f13p0.name == "count", f13p0.defaulted == true, f13p0.variadic == false);
@@ -529,10 +579,12 @@ shared void checkToplevelFunctions(){
     assert(exists f14 = pkg.getFunction("getAndTakeNoParams"));
     assert(is Function<NoParams, [NoParams]> f14a = f14.apply<Anything,Nothing>());
     assert(f14a(noParamsInstance) == noParamsInstance);
+    assert(f14a.apply(noParamsInstance) == noParamsInstance);
 
     // private function
     value privateToplevelFunctionModel = `privateToplevelFunction`;
     assert(privateToplevelFunctionModel() == "b");
+    assert(privateToplevelFunctionModel.apply() == "b");
 }
 
 @test
