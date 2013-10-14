@@ -1525,7 +1525,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // skip the field if "we've already got one"
             if(klass.getDirectMember(name, null, false) != null)
                 continue;
-            addValue(klass, fieldMirror, isCeylon);
+            if (!"string".equals(fieldMirror.getName()) && ! "hash".equals(fieldMirror.getName())) {
+                addValue(klass, fieldMirror, isCeylon);
+            }
         }
 
         // Having loaded methods and values, we can now set the constructor parameters
