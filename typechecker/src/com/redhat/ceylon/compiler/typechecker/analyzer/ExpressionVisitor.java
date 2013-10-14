@@ -1553,9 +1553,9 @@ public class ExpressionVisitor extends Visitor {
             if (!isTypeUnknown(et)) {
                 checkAssignable(et, unit.getType(unit.getExceptionDeclaration()), 
                         e, "thrown expression must be an exception");
-                if (et.getDeclaration().isParameterized()) {
-                    e.addUnsupportedError("parameterized types in throw not yet supported");
-                }
+//                if (et.getDeclaration().isParameterized()) {
+//                    e.addUnsupportedError("parameterized types in throw not yet supported");
+//                }
             }
         }
     }
@@ -4676,13 +4676,13 @@ public class ExpressionVisitor extends Visitor {
             else {
                 checkAssignable(vt.getTypeModel(), et, vt, 
                         "catch type must be an exception type");
-                TypeDeclaration d = vt.getTypeModel().getDeclaration();
-                if (d instanceof IntersectionType) {
-                    vt.addUnsupportedError("intersection types in catch not yet supported");
-                }
-                else if (d.isParameterized()) {
-                    vt.addUnsupportedError("parameterized types in catch not yet supported");
-                }
+//                TypeDeclaration d = vt.getTypeModel().getDeclaration();
+//                if (d instanceof IntersectionType) {
+//                    vt.addUnsupportedError("intersection types in catch not yet supported");
+//                }
+//                else if (d.isParameterized()) {
+//                    vt.addUnsupportedError("parameterized types in catch not yet supported");
+//                }
             }
         }
     }
@@ -5263,9 +5263,6 @@ public class ExpressionVisitor extends Visitor {
         if (et!=null) {
             ProducedType type = et.getTypeModel();
             if (type!=null) {
-                /*if (ie!=null && !ie.getTypeModel().isExactly(type)) {
-                    ie.addError("OOOOOOOOPS");
-                }*/
                 checkSelfTypes(et, td, type);
                 checkExtensionOfMemberType(et, td, type);
                 //checkCaseOfSupertype(et, td, type);
@@ -5281,10 +5278,10 @@ public class ExpressionVisitor extends Visitor {
                         }
                     }
                 }
-                if (td.isParameterized() &&
-                        type.getSupertype(unit.getExceptionDeclaration())!=null) {
-                    et.addUnsupportedError("generic exception types not yet supported");
-                }
+//                if (td.isParameterized() &&
+//                        type.getSupertype(unit.getExceptionDeclaration())!=null) {
+//                    et.addUnsupportedError("generic exception types not yet supported");
+//                }
             }
         }
     }
