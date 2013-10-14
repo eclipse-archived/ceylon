@@ -1783,8 +1783,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     private boolean isGetter(MethodMirror methodMirror) {
         String name = methodMirror.getName();
-        boolean matchesGet = name.length() > 3 && name.startsWith("get") && isStartOfJavaBeanPropertyName(name.charAt(3));
-        boolean matchesIs = name.length() > 2 && name.startsWith("is") && isStartOfJavaBeanPropertyName(name.charAt(2));
+        boolean matchesGet = name.length() > 3 && name.startsWith("get") 
+                && isStartOfJavaBeanPropertyName(name.charAt(3)) 
+                && !"getString".equals(name) && !"getHash".equals(name);
+        boolean matchesIs = name.length() > 2 && name.startsWith("is") 
+                && isStartOfJavaBeanPropertyName(name.charAt(2)) 
+                && !"isString".equals(name) && !"isHash".equals(name);
         boolean hasNoParams = methodMirror.getParameters().size() == 0;
         boolean hasNonVoidReturn = (methodMirror.getReturnType().getKind() != TypeKind.VOID);
         return (matchesGet || matchesIs) && hasNoParams && hasNonVoidReturn;
