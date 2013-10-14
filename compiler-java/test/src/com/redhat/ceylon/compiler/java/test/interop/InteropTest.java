@@ -86,7 +86,6 @@ public class InteropTest extends CompilerTest {
         compareWithJavaSource("Fields");
     }
 
-    @Ignore("M5: #432")
     @Test
     public void testIopSpecialFields(){
         compile("JavaFields.java");

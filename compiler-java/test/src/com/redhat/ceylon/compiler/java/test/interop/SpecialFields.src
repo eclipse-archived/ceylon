@@ -1,45 +1,18 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
-final class fields {
+final class specialFields_ {
     
-    private fields() {
+    private specialFields_() {
     }
     
-    static void fields() {
+    static void specialFields() {
         final .com.redhat.ceylon.compiler.java.test.interop.JavaFields java = new .com.redhat.ceylon.compiler.java.test.interop.JavaFields();
-        long sync;
-        sync = java.readOnlyField;
-        sync = java.readWriteField;
-        java.readWriteField = 2L;
-        (let .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE0 = java,long $ceylontmpopV1 = $ceylontmpopE0.readWriteField in $ceylontmpopE0.readWriteField = $ceylontmpopV1 + 1; $ceylontmpopV1);
-        (let .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE2 = java,long $ceylontmpopV3 = $ceylontmpopE2.readWriteField + 1 in $ceylontmpopE2.readWriteField = $ceylontmpopV3; $ceylontmpopV3);
-        java.readWriteField = (let .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE4 = java,long $ceylontmpopV5 = java.readWriteField in $ceylontmpopE4.readWriteField = $ceylontmpopV5; $ceylontmpopV5);
-        java.readWriteField = (let .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE6 = java,long $ceylontmpopV7 = $ceylontmpopE6.readWriteField + java.readWriteField in $ceylontmpopE6.readWriteField = $ceylontmpopV7; $ceylontmpopV7);
+        final long h = java.hashCode();
+        final .java.lang.String s = java.toString();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.fields.fields();
-    }
-}
-class CeylonFields extends .com.redhat.ceylon.compiler.java.test.interop.JavaFields {
-    
-    private final void f() {
-        final long i1 = readOnlyField;
-        final long i2 = readWriteField;
-        readWriteField = 2L;
-        (let long $ceylontmpop8 = readWriteField in readWriteField = $ceylontmpop8 + 1; $ceylontmpop8);
-        (let long $ceylontmpop9 = readWriteField + 1 in readWriteField = $ceylontmpop9; $ceylontmpop9);
-        readWriteField = (let long $ceylontmpop10 = readWriteField in readWriteField = $ceylontmpop10; $ceylontmpop10);
-        readWriteField = (let long $ceylontmpop11 = readWriteField + readWriteField in readWriteField = $ceylontmpop11; $ceylontmpop11);
-    }
-    
-    CeylonFields() {
-        super();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.interop.CeylonFields();
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.specialFields_.specialFields();
     }
 }

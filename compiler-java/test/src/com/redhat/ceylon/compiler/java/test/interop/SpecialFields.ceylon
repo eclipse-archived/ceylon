@@ -18,16 +18,9 @@
  * MA  02110-1301, USA.
  */
 @noanno
-@error
 void specialFields() {
-    @error
     JavaFields java = JavaFields();
-    @error
-    java.hash = java.hash;
-    @error
-    java.hash = java.hashCode();
-    @error
-    java.string = java.string;
-    @error
-    java.string = java.toString();
+    value h = java.hash;
+    value s = java.string;
+    // #432: We cannot access the fields called hash and string at all. 
 }
