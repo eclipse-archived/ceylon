@@ -211,3 +211,13 @@ void testFooBar() {
     bar{items1 = {""}; ""};
     bar{items1 = {""}; items2 = {""};};
 }
+
+alias Attributes => {String*};
+
+class Div(Attributes attributes = {}, {Object*} children = {}) {}
+
+void run() {
+    Div { "foo", "bar" };
+    Div { @error Div{} };
+    Div { @error "foo", "bar", Div{} };
+}
