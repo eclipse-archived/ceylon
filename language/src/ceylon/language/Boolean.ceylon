@@ -19,9 +19,8 @@ shared object false extends Boolean() {
  
  Recognized values are \"true\", \"false\"."
 shared Boolean? parseBoolean(String string) {
-    return string == "true"
-        then true
-        else (string == "false"
-            then false
-            else null);
+    switch (string)
+    case ("true") { return true; }
+    case ("false") { return false; }
+    else { return null; }
 }
