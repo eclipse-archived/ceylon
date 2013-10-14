@@ -1,0 +1,78 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
+
+public interface Bug1358<Element> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1358$impl();
+    
+    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult);
+}
+public final class Bug1358$impl<Element> {
+    
+    public Bug1358$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358<? extends Element> $this) {
+        this.$reifiedElement = $reifiedElement;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358<? extends Element> $this;
+    
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+        this.$reifiedElement = $reifiedElement;
+    }
+    
+    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult) {
+        return (Result).ceylon.language.nothing_.get_();
+    }
+}
+public class Bug1358ClassImpl<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358<.java.lang.Object> {
+    
+    public Bug1358ClassImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+        this.$reifiedElement = $reifiedElement;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1358$this = new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358$impl<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reifiedElement, .ceylon.language.Integer.$TypeDescriptor), (.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358)this);
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358$impl $com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1358$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358$impl $com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1358$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1358$this;
+    }
+    
+    @.java.lang.Override
+    public final <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult) {
+        return (Result)$com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1358$this.<Result>fold($reifiedResult);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358ClassImpl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358ClassImpl.class, $reifiedElement);
+    }
+}
+public interface Bug1358InterfaceImpl<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358<.java.lang.Object> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358InterfaceImpl$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1358InterfaceImpl$impl();
+    
+    @.java.lang.Override
+    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult);
+}
+public final class Bug1358InterfaceImpl$impl<Element> {
+    
+    public Bug1358InterfaceImpl$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358InterfaceImpl<Element> $this) {
+        this.$reifiedElement = $reifiedElement;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358InterfaceImpl<Element> $this;
+    
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+        this.$reifiedElement = $reifiedElement;
+    }
+    
+    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult) {
+        return (Result)$this.$com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1358$impl().<Result>fold($reifiedResult);
+    }
+}
