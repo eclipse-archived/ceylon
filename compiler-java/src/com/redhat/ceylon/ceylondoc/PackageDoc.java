@@ -21,6 +21,7 @@
 package com.redhat.ceylon.ceylondoc;
 
 import static com.redhat.ceylon.ceylondoc.Util.getDoc;
+import static com.redhat.ceylon.ceylondoc.Util.isEmpty;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -162,7 +163,11 @@ public class PackageDoc extends ClassOrPackageDoc {
     
     private void writeDescription() throws IOException {
         open("div class='package-description'");
-        around("div class='doc'", getDoc(pkg, linkRenderer()));
+        String doc = getDoc(pkg, linkRenderer());
+        if (isEmpty(doc)) {
+            tool.warnMissingDoc(pkg.getQualifiedNameString());
+        }
+        around("div class='doc'", doc);
         writeBy(pkg);
         close("div");
     }

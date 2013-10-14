@@ -24,7 +24,7 @@ import static com.redhat.ceylon.ceylondoc.Util.getAncestors;
 import static com.redhat.ceylon.ceylondoc.Util.getDoc;
 import static com.redhat.ceylon.ceylondoc.Util.getSuperInterfaces;
 import static com.redhat.ceylon.ceylondoc.Util.isAbbreviatedType;
-import static com.redhat.ceylon.ceylondoc.Util.isNullOrEmpty;
+import static com.redhat.ceylon.ceylondoc.Util.isEmpty;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -395,7 +395,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     }
 
     private void writeListOnSummary(String cssClass, String title, List<?> types) throws IOException {
-        if (!isNullOrEmpty(types)) {
+        if (!isEmpty(types)) {
             open("div class='" + cssClass + " section'");
             around("span class='title'", title);
             

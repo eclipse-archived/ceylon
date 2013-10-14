@@ -21,6 +21,7 @@
 package com.redhat.ceylon.ceylondoc;
 
 import static com.redhat.ceylon.ceylondoc.Util.getDoc;
+import static com.redhat.ceylon.ceylondoc.Util.isEmpty;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -77,7 +78,11 @@ public class ModuleDoc extends CeylonDoc {
         open("div class='module-description'");
 
         writeLinkSourceCode(module);
-        around("div class='doc section'", getDoc(module, linkRenderer()));
+        String doc = getDoc(module, linkRenderer());
+        if (isEmpty(doc)) {
+            tool.warnMissingDoc(module.getNameAsString());
+        }
+        around("div class='doc section'", doc);
 
         writeBy(module);
         writeLicense(module);

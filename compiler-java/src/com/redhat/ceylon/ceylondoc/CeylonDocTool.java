@@ -35,7 +35,6 @@ import java.io.Writer;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -131,6 +130,7 @@ public class CeylonDocTool extends RepoUsingTool {
     private Map<TypeDeclaration, List<ClassOrInterface>> satisfyingClassesOrInterfaces = new HashMap<TypeDeclaration, List<ClassOrInterface>>();    
     private boolean includeNonShared;
     private boolean includeSourceCode;
+    private boolean ignoreMissingDoc;
     private Map<Declaration, PhasedUnit> declarationUnitMap = new HashMap<Declaration, PhasedUnit>();
     private Map<Declaration, Node> declarationNodeMap = new HashMap<Declaration, Node>();
     private Map<Parameter, PhasedUnit> parameterUnitMap = new HashMap<Parameter, PhasedUnit>();
@@ -396,6 +396,16 @@ public class CeylonDocTool extends RepoUsingTool {
     
     public boolean isIncludeSourceCode() {
         return includeSourceCode;
+    }
+
+    @Option(longName="ignore-missing-doc")
+    @Description("Do not print warnings about missing documentation.")
+    public void setIgnoreMissingDoc(boolean ignoreMissingDoc) {
+        this.ignoreMissingDoc = ignoreMissingDoc;
+    }
+    
+    public boolean isIgnoreMissingDoc() {
+        return ignoreMissingDoc;
     }
     
     public String getFileName(TypeDeclaration type) {
@@ -1029,6 +1039,12 @@ public class CeylonDocTool extends RepoUsingTool {
     
     protected Map<String, Boolean> getModuleUrlAvailabilityCache() {
         return moduleUrlAvailabilityCache;
+    }
+
+    protected void warnMissingDoc(String name) {
+        if (!ignoreMissingDoc) {
+            log.warning(CeylondMessages.msg("warn.missingDoc", name));
+        }
     }
     
 }

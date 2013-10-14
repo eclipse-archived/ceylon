@@ -23,6 +23,7 @@ package com.redhat.ceylon.ceylondoc;
 import static com.redhat.ceylon.ceylondoc.Util.getDoc;
 import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
 import static com.redhat.ceylon.ceylondoc.Util.isAbbreviatedType;
+import static com.redhat.ceylon.ceylondoc.Util.isEmpty;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -209,7 +210,11 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     private void writeDescription(Declaration d) throws IOException {
         open("div class='description'");
         writeDeprecated(d);
-        around("div class='doc section'", getDoc(d, linkRenderer()));
+        String doc = getDoc(d, linkRenderer());
+        if (isEmpty(doc)) {
+            tool.warnMissingDoc(d.getQualifiedNameString());
+        }
+        around("div class='doc section'", doc);
         if( d instanceof MethodOrValue ) {
         	writeParameters(d);
             writeThrows(d);        

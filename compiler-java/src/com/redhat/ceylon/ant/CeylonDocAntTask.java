@@ -44,6 +44,7 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
     private LinkSet linkset = new LinkSet();
     private boolean includeNonShared;
     private boolean includeSourceCode;
+    private boolean ignoreMissingDoc;
     
     public CeylonDocAntTask() {
         super("doc");
@@ -52,15 +53,22 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
     /**
      * Include even non-shared declarations
      */
-    public void setIncludeNonShared(boolean includeNonShared){
+    public void setIncludeNonShared(boolean includeNonShared) {
         this.includeNonShared = includeNonShared;
     }
-    
+
     /**
      * Include source code in the documentation
      */
-    public void setIncludeSourceCode(boolean includeSourceCode){
+    public void setIncludeSourceCode(boolean includeSourceCode) {
         this.includeSourceCode = includeSourceCode;
+    }
+
+    /**
+     * Do not print warnings about missing documentation.
+     */
+    public void setIgnoreMissingDoc(boolean ignoreMissingDoc) {
+        this.ignoreMissingDoc = ignoreMissingDoc;
     }
     
     /**
@@ -130,6 +138,8 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
             cmd.createArgument().setValue("--source-code");
         if(includeNonShared)
             cmd.createArgument().setValue("--non-shared");
+        if(ignoreMissingDoc)
+            cmd.createArgument().setValue("--ignore-missing-doc");
         // links
         for (Link link : linkset.getLinks()) {
             log("Adding link: "+link, Project.MSG_VERBOSE);

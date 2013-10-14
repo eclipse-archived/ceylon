@@ -290,9 +290,13 @@ public class Util {
             }
         }
     }
+    
+    public static boolean isEmpty(String s) {
+        return s == null || s.isEmpty();
+    }
 
-    public static boolean isNullOrEmpty(Collection<?> collection) {
-        return collection == null || collection.isEmpty();
+    public static boolean isEmpty(Collection<?> c) {
+        return c == null || c.isEmpty();
     }
     
     public static boolean isException(Class c) {
