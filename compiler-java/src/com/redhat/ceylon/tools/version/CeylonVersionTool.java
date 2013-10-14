@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -25,6 +24,7 @@ import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
+import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
@@ -41,20 +41,34 @@ import com.redhat.ceylon.tools.ModuleSpec;
           "If `--set` is present then update the module versions, "
         + "otherwise show the module versions."
         + "\n\n"
-        + "If `--dependencies` is present as well as `--set` then update the "
+        + "If `--dependencies` is present then show/update the "
         + "versions of module imports of the given module(s)."
         + "\n\n"
         + "`<modules>` specifies the module names (excluding versions) of "
         + "the modules to show or whose versions should be updated. "
-        + "If unspecified then all modules are shown/updated."
+        + "If unspecified then all modules are shown/updated.\n\n"
         + "**Note:** Other modules may also be updated if "
         + "the `--dependencies` option is used, even if they're not listed in `<modules>`\n\n"
         )
+@RemainingSections(value=""
+        + "## Examples"
+        + "\n\n"
+        + "Listing the versions of all the modules in the ceylon SDK:"
+        + "\n\n"
+        + "    ceylon version"
+        + "\n\n"
+        + "Listing the version of ceylon.collection, and modules that depend on it"
+        + "\n\n"
+        + "    ceylon version --dependencies ceylon.collection"
+        + "\n\n"
+        + "Updating the version of ceylon.collection, and the modules that depend on it"
+        + "\n\n"
+        + "    ceylon version --set 1.0.1 --dependencies ceylon.collection")
 public class CeylonVersionTool extends CeylonBaseTool {
 
     // TODO Allow --src to be a :-separated path
     
-    private PrintStream out = System.out;
+    private Appendable out = System.out;
     
     private String newVersion;
     
@@ -68,6 +82,10 @@ public class CeylonVersionTool extends CeylonBaseTool {
 
     private Confirm confirm = Confirm.all;
     
+    public void setOut(Appendable out) {
+        this.out = out;
+    }
+    
     @OptionArgument(longName="src", argumentName="dir")
     @Description("A directory containing Ceylon and/or Java source code (default: `./source`)")
     public void setSourceFolders(List<File> sourceFolders) {
@@ -76,13 +94,13 @@ public class CeylonVersionTool extends CeylonBaseTool {
     
     @OptionArgument
     @Description("The new version number to set."
-            + "If unspecified then all module verions are shown and not updated.")
+            + "If unspecified then module verions are shown and not updated.")
     public void setSet(String newVersion) {
         this.newVersion = newVersion;
     }
     
     @OptionArgument(argumentName="charset")
-    @Description("Sets the encoding used for reading and writing the module.ceylon files" +
+    @Description("Used with `--set`, sets the encoding used for reading and writing the `module.ceylon` files " +
             "(default: platform-specific).")
     public void setEncoding(String encoding) {
         this.encoding = encoding;
@@ -93,14 +111,14 @@ public class CeylonVersionTool extends CeylonBaseTool {
             + "target module(s) in other modules in the given `--src` directories. "
             + "For example:\n\n"
             + "    ceylon version --set 1.1 ceylon.collection\n\n"
-            + "would just update the version of ceylon.collection to 1.1, "
+            + "would just update the version of `ceylon.collection` to 1.1, "
             + "leaving dependent modules depending on the old version. "
             + "Whereas:\n\n"
             + "    ceylon version --set 1.1 --dependencies ceylon.collection\n\n"
             + "would update the version of ceylon.collection to 1.1 and update "
             + "the module import version of all dependent modules in `./source` "
-            + "which depended on ceylon.collection *even if those "
-            + "modules are not listed as `<modules>`*.")
+            + "which depended on `ceylon.collection` __even if those "
+            + "modules are not listed as `<modules>`__.")
     public void setDependencies(boolean dependencies) {
         this.dependencies = dependencies;
     }
@@ -112,18 +130,17 @@ public class CeylonVersionTool extends CeylonBaseTool {
     }
     
     @OptionArgument(argumentName="option")
-    @Description("Determines which updates require confirmation."
-            + "`--confirm=all` requires confirmation "
-            + "on the console for each update performed. "
-            + "`--confirm=dependencies` means that confirmation is only "
+    @Description("Used with `--set`, determines which updates require confirmation.\n\n"
+            + "* `--confirm=all` requires confirmation "
+            + "on the console for each update performed.\n"
+            + "* `--confirm=dependencies` means that confirmation is only "
             + "required when updating versions appearing in module imports; "
-            + "module versions are updated without confirmation. "
-            + "`--confirm=none` prevents any confirmation. "
+            + "module versions are updated without confirmation.\n"
+            + "* `--confirm=none` prevents any confirmation.\n\n"
             + "(default: `all`).")
     public void setConfirm(Confirm confirm) {
         this.confirm = confirm;
     }
-    
     
     @Argument(argumentName="modules", multiplicity="*")
     public void setModules(List<String> modules) {
@@ -217,18 +234,18 @@ public class CeylonVersionTool extends CeylonBaseTool {
             }
         }
     }
-    private void outputVersion(Module module) {
+    private void outputVersion(Module module) throws IOException {
         out.append(CeylonVersionMessages.msg("output.module", 
                 module.getNameAsString(), module.getVersion()))
-            .println();
+            .append(System.lineSeparator());
     }
-    private void outputDependency(Module module, ImportModule moduleImport) {
+    private void outputDependency(Module module, ImportModule moduleImport) throws IOException {
         String version = moduleImport.getVersion().getText();
         version = version.substring(1, version.length()-1);
         out.append(CeylonVersionMessages.msg("output.dependency", 
                 module.getNameAsString(), module.getVersion(),
                 getModuleName(moduleImport), version))
-            .println();
+            .append(System.lineSeparator());
         
     }
     private boolean match(Module module) {
@@ -311,13 +328,12 @@ public class CeylonVersionTool extends CeylonBaseTool {
             prompt: while (true) {
                 // XXX Ugly: Need to replace the new version within the args array 
                 args[args.length-1] = version;
-                // TODO This is printing twice
                 console.printf("%s", CeylonVersionMessages.msg(msgKey, args));
                 String ch = console.readLine();
                 if (ch.equals(CeylonVersionMessages.msg("mnemonic.yes"))) {
                     return version;
                 } else if (ch.equals(CeylonVersionMessages.msg("mnemonic.help"))) {
-                    out.println(CeylonVersionMessages.msg("help"));
+                    out.append(CeylonVersionMessages.msg("help")).append(System.lineSeparator());
                     continue prompt;
                 } else if (ch.equals(CeylonVersionMessages.msg("mnemonic.quit"))) {
                     return null;
