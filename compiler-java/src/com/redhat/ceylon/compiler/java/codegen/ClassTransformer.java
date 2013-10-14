@@ -1265,6 +1265,10 @@ public class ClassTransformer extends AbstractTransformer {
                 exprBoxed = true;
                 boxingStrategy = BoxingStrategy.UNBOXED;
             }
+            // if our interface impl is turned to raw, the whole call will be seen as raw by javac, so we may need
+            // to force an additional cast
+            if(isTurnedToRaw(typedMember.getQualifyingType()))
+                typeErased = true;
             expr = gen().expressionGen().applyErasureAndBoxing(expr, methodType, typeErased, 
                                                                exprBoxed, boxingStrategy,
                                                                returnType, 0);
