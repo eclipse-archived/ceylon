@@ -6,7 +6,7 @@ import com.redhat.ceylon.compiler.java.metadata.Object;
 
 @Ceylon(major = 6) @Object
 public final class language_ {
-	
+    
     public java.lang.String getVersion() {
         return Versions.CEYLON_VERSION_NUMBER;
     }
@@ -37,7 +37,7 @@ public final class language_ {
 
     @Override
     public java.lang.String toString() {
-    	return "language";
+        return "language";
     }
     
     private language_() {}

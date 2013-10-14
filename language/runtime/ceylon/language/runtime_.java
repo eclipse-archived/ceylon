@@ -15,10 +15,10 @@ public final class runtime_ {
 
     private final Integer maxIntegerValue = Integer.instance(Long.MAX_VALUE);
     
-	private final Integer minIntegerValue = Integer.instance(Long.MIN_VALUE);
-	
+    private final Integer minIntegerValue = Integer.instance(Long.MIN_VALUE);
+    
     private runtime_() {}
-	
+    
 
     public java.lang.String getName() {
         return "jvm";
@@ -32,16 +32,16 @@ public final class runtime_ {
         return 64L;
     }
 
-	public Integer getMinIntegerValue() {
-		return minIntegerValue;
-	}
+    public Integer getMinIntegerValue() {
+        return minIntegerValue;
+    }
 
     public Integer getMaxIntegerValue() {
-		return maxIntegerValue;
+        return maxIntegerValue;
     }
     
     @Override
     public java.lang.String toString() {
-    	return "runtime [" + getName() + " / " + getVersion() + "]";
+        return "runtime [" + getName() + " / " + getVersion() + "]";
     }
 }

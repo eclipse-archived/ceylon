@@ -195,13 +195,13 @@ public final class process_ {
     
     @Ignore
     public void setupArguments(java.lang.String[] args) {
-    	if (args.length>0) {
-	        java.lang.Object[] newArgs = new java.lang.Object[args.length];
-	        for (int i = 0; i < args.length; i++) {
-	            newArgs[i] = String.instance(args[i]);
-	        }
-	        this.args = ArraySequence.<String>instance(String.$TypeDescriptor, newArgs);
-    	}
+        if (args.length>0) {
+            java.lang.Object[] newArgs = new java.lang.Object[args.length];
+            for (int i = 0; i < args.length; i++) {
+                newArgs[i] = String.instance(args[i]);
+            }
+            this.args = ArraySequence.<String>instance(String.$TypeDescriptor, newArgs);
+        }
     }
     
 //    shared Entries<String,String> switches { throw; }
@@ -244,7 +244,7 @@ public final class process_ {
     }
     
     public void exit(long code) {
-    	System.exit((int) code);
+        System.exit((int) code);
     }
     
     /*@TypeInfo("ceylon.language::Map<ceylon.language::String, ceylon.language::String>")
@@ -329,7 +329,7 @@ public final class process_ {
     
     @Override
     public java.lang.String toString() {
-    	return "process";
+        return "process";
     }
     
     private process_() {}

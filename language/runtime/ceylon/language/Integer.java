@@ -531,7 +531,7 @@ public final class Integer
 
     @Override
     public int hashCode() {
-    	return (int)(value ^ (value >>> 32));
+        return (int)(value ^ (value >>> 32));
     }
 
     @Ignore
