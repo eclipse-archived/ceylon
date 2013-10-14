@@ -1345,7 +1345,7 @@ public class ClassTransformer extends AbstractTransformer {
                 newInstance)));
         
         classBuilder.field(PROTECTED | FINAL, fieldName, 
-                makeJavaType(satisfiedType, AbstractTransformer.JT_COMPANION | JT_SATISFIES), null, false,
+                makeJavaType(satisfiedType, AbstractTransformer.JT_COMPANION), null, false,
                 makeAtIgnore());
 
         classBuilder.method(makeCompanionAccessor(iface, satisfiedType, model, true));
@@ -1362,7 +1362,7 @@ public class ClassTransformer extends AbstractTransformer {
             // top level, so use Object instead
             thisMethod.resultType(null, make().Type(syms().objectType));
         } else {
-            thisMethod.resultType(null, makeJavaType(satisfiedType, JT_COMPANION | JT_SATISFIES));
+            thisMethod.resultType(null, makeJavaType(satisfiedType, JT_COMPANION));
         }
         if (forImplementor) {
             thisMethod.isOverride(true);
