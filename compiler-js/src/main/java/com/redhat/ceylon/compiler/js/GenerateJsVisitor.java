@@ -1121,8 +1121,10 @@ public class GenerateJsVisitor extends Visitor
         objectDefinition(objDef);
         Value d = objDef.getDeclarationModel();
         Class c = (Class) d.getTypeDeclaration();
-        out(names.self(type), ".", names.name(c), "=", names.name(c), ";");
-        endLine();
+        out(names.self(type), ".", names.name(c), "=", names.name(c), ";",
+                names.self(type), ".", names.name(c), ".$$metamodel$$=");
+        TypeUtils.encodeForRuntime(objDef, d, this);
+        endLine(true);
     }
 
     @Override
@@ -1178,8 +1180,9 @@ public class GenerateJsVisitor extends Visitor
         returnSelf(c);
         indentLevel--;
         endLine();
-        out("}");
-        endLine();
+        out("};", names.name(c), ".$$metamodel$$=");
+        TypeUtils.encodeForRuntime(that, c, this);
+        endLine(true);
 
         typeInitialization(that);
 
@@ -1203,11 +1206,11 @@ public class GenerateJsVisitor extends Visitor
             out(function, names.getter(d), "()");
             beginBlock();
             //Create the object lazily
-            out("if (", objvar, "===undefined)", objvar, "=$init$", names.name(c), "()(");
+            out("if (", objvar, "===undefined){", objvar, "=$init$", names.name(c), "()(");
             if (!targs.isEmpty()) {
                 TypeUtils.printTypeArguments(that, targs, this);
             }
-            out(");");
+            out(");", objvar, ".$$metamodel$$=", names.getter(d), ".$$metamodel$$;}");
             endLine();
             out("return ", objvar, ";");
             endBlockNewLine();            
