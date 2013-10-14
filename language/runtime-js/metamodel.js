@@ -12,6 +12,13 @@ function type$meta(x,$$targs$$) {
   if (x === null) {
     return getNothingType$meta$model();
   }
+  if (x.$$metamodel$$) {
+    //It's an object
+    if (typeof(x.$$metamodel$$)==='function') {
+      x.$$metamodel$$=x.$$metamodel$$();
+    }
+    return AppliedValue(x.$$metamodel$$.$t.t, {Type:x.$$metamodel$$.$t});
+  }
   return AppliedClass($$targs$$.Type.t, {Type:$$targs$$.Type, Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
 }
 type$meta.$$metamodel$$={$ps:[{t:Anything}],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language.meta','type']};
@@ -61,7 +68,7 @@ function typeLiteral$meta($$targs$$) {
     //We need the module
     var _mod = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']);
     var _pkg = _mod.findPackage(mm.d[0]);
-    if (mdl['$mt'] === 'cls') {
+    if (mdl.$mt==='cls' || mdl.$mt==='obj') {
       return OpenClass(_pkg, t);
     } else if (mdl['$mt'] === 'ifc') {
       return OpenInterface(_pkg, t);
