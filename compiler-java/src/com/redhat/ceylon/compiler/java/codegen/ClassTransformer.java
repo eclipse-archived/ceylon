@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
@@ -1294,7 +1295,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         // make sure we get the first type that java will find when it looks up
-        satisfiedType = getFirstSatisfiedType(model.getType(), iface);
+        satisfiedType = getBestSatisfiedType(model.getType(), iface);
 
         // pass the instance of this
         state = state.append( expressionGen().applyErasureAndBoxing(naming.makeThis(), 
@@ -1375,6 +1376,23 @@ public class ClassTransformer extends AbstractTransformer {
             thisMethod.noBody();
         }
         return thisMethod;
+    }
+
+    private ProducedType getBestSatisfiedType(ProducedType currentType, Interface iface) {
+        ProducedType refinedSuperType = currentType.getSupertype(iface);
+        ProducedType firstSatisfiedType = getFirstSatisfiedType(currentType, iface);
+        // in the very special case of the first satisfied type having type arguments erased to Object and
+        // the most refined one having free type parameters, we prefer the one with free type parameters
+        // because Java prefers it and it's in range with what nonWideningType does
+        Map<TypeParameter, ProducedType> refinedTAs = refinedSuperType.getTypeArguments();
+        Map<TypeParameter, ProducedType> firstTAs = firstSatisfiedType.getTypeArguments();
+        for(TypeParameter tp : iface.getTypeParameters()){
+            ProducedType refinedTA = refinedTAs.get(tp);
+            ProducedType firstTA = firstTAs.get(tp);
+            if(willEraseToObject(firstTA) && isTypeParameter(refinedTA))
+                return refinedSuperType;
+        }
+        return firstSatisfiedType;
     }
 
     private ProducedType getFirstSatisfiedType(ProducedType currentType, Interface iface) {
