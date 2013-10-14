@@ -1293,6 +1293,9 @@ public class ClassTransformer extends AbstractTransformer {
             state = state.append(t);
         }
 
+        // make sure we get the first type that java will find when it looks up
+        satisfiedType = getFirstSatisfiedType(model.getType(), iface);
+
         // pass the instance of this
         state = state.append( expressionGen().applyErasureAndBoxing(naming.makeThis(), 
                 model.getType(), false, true, BoxingStrategy.BOXED, 
@@ -1372,6 +1375,25 @@ public class ClassTransformer extends AbstractTransformer {
             thisMethod.noBody();
         }
         return thisMethod;
+    }
+
+    private ProducedType getFirstSatisfiedType(ProducedType currentType, Interface iface) {
+        ProducedType found = null;
+        TypeDeclaration currentDecl = currentType.getDeclaration();
+        if(currentDecl == iface)
+            return currentType;
+        if(currentDecl.getExtendedType() != null){
+            ProducedType supertype = currentType.getSupertype(currentDecl.getExtendedTypeDeclaration());
+            found = getFirstSatisfiedType(supertype, iface);
+            if(found != null)
+                return found;
+        }
+        for(ProducedType superInterfaceType : currentType.getSatisfiedTypes()){
+            found = getFirstSatisfiedType(superInterfaceType, iface);
+            if(found != null)
+                return found;
+        }
+        return null;
     }
 
     private void buildCompanion(final Tree.ClassOrInterface def,
