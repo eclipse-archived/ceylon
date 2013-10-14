@@ -42,6 +42,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     private int variadicIndex = -1;
     private MethodHandle[] dispatch;
     private ceylon.language.meta.model.Type<?> container;
+    private List<ProducedType> parameterProducedTypes;
     
     // FIXME: get rid of duplicate instantiations of AppliedClassType when the type in question has no type parameters
     public AppliedClass(@Ignore TypeDescriptor $reifiedType, 
@@ -97,6 +98,9 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             this.dispatch = new MethodHandle[parameters.size() + 1 - firstDefaulted];
             defaultedMethods = new Object[dispatch.length];
         }
+
+        // get a list of produced parameter types
+        this.parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, producedType);
 
         // FIXME: delay constructor setup for when we actually use it?
         // FIXME: finding the right MethodHandle for the constructor could actually be done in the Class declaration
@@ -154,13 +158,13 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         }
         if(found != null){
             boolean variadic = MethodHandleUtil.isVariadicMethodOrConstructor(found);
-            constructor = reflectionToMethodHandle(found, javaClass, instance, producedType, parameters, variadic, false);
+            constructor = reflectionToMethodHandle(found, javaClass, instance, producedType, parameterProducedTypes, variadic, false);
             if(defaultedMethods != null){
                 // this won't find the last one, but it's method
                 int i=0;
                 for(;i<defaultedMethods.length-1;i++){
                     // FIXME: proper checks
-                    dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, instance, producedType, parameters, variadic, false);
+                    dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, instance, producedType, parameterProducedTypes, variadic, false);
                 }
                 dispatch[i] = constructor;
             }else if(variadic){
@@ -168,14 +172,14 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                 // we treat variadic methods as if the last parameter is optional
                 firstDefaulted = parameters.size() - 1;
                 dispatch = new MethodHandle[2];
-                dispatch[0] = reflectionToMethodHandle(found, javaClass, instance, producedType, parameters, variadic, true);
+                dispatch[0] = reflectionToMethodHandle(found, javaClass, instance, producedType, parameterProducedTypes, variadic, true);
                 dispatch[1] = constructor;
             }
         }
     }
 
     private MethodHandle reflectionToMethodHandle(Object found, Class<?> javaClass, Object instance2, 
-                                                  ProducedType producedType, List<Parameter> parameters,
+                                                  ProducedType producedType, List<ProducedType> parameterProducedTypes,
                                                   boolean variadic, boolean bindVariadicParameterToEmptyArray) {
         MethodHandle constructor = null;
         java.lang.Class<?>[] parameterTypes;
@@ -216,8 +220,6 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             constructor = MethodHandleUtil.insertReifiedTypeArguments(constructor, 0, typeArguments);
             skipParameters += typeParametersCount;
         }
-        // get a list of produced parameter types
-        List<ProducedType> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, producedType);
         // now convert all arguments (we may need to unbox)
         constructor = MethodHandleUtil.unboxArguments(constructor, skipParameters, 0, parameterTypes,
                                                       parameterProducedTypes, variadic, bindVariadicParameterToEmptyArray);
