@@ -576,7 +576,7 @@ public final class Integer
     
     @Ignore
     public static long getSize(long value){
-        return 64;
+        return runtime_.get_().getIntegerSize();
     }
 
     @Override
