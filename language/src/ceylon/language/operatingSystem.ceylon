@@ -10,7 +10,10 @@ shared native object operatingSystem {
     "The line ending character sequence on this platform."
     shared native String newline;
     
-    "The path separator character sequence on this platform."
+    "The character used on this platform to separate the folder/file elements of a path."
+    shared native String fileSeparator;
+    
+    "The character used on this platform to use as a separator between several paths in a list of paths."
     shared native String pathSeparator;
     
     shared actual String string => "operating system [``name`` / ``version``]";
