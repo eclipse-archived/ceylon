@@ -19,7 +19,8 @@
  */
 @noanno
 interface Top<out T> {
-    shared default T s => nothing;
+    shared default T? s => null;
+    shared default T? m() => null;
 }
 @noanno
 interface A{}
@@ -29,10 +30,37 @@ interface B{}
 interface Left satisfies Top<A>{}
 @noanno
 interface Middle<out T> satisfies Top<T> {
-    shared actual T s => super.s;
+    shared actual default T? s => super.s;
+    shared actual default T? m() => super.m();
 }
 @noanno
 interface Right satisfies Middle<A>{}
 
 @noanno
 class Bottom() satisfies Left&Middle<B>&Right{}
+@noanno
+class Bottom2() satisfies Left&Middle<B>&Right{
+    shared actual <A&B>? s => super.s;
+    shared actual <A&B>? m() => super.m();
+}
+
+void bug1240(){
+    bug1240Check(Bottom());
+    bug1240Check(Bottom2());
+}
+
+void bug1240Check(Left&Middle<B>&Right b){
+    Top<A> ba = b;
+    A? a1 = ba.s;
+    Top<B> bb = b;
+    B? b1 = bb.s;
+    Middle<A> ma = b;
+    A? a2 = ma.s;
+    Middle<B> mb = b;
+    B? b2 = mb.s;
+    Left l = b;
+    A? a3 = l.s;
+    Middle<B> r = b;
+    B? b3 = r.s;
+    print("ok");
+}

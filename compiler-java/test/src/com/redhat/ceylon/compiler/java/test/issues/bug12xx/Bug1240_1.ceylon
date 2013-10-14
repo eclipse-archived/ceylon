@@ -18,9 +18,30 @@
  * MA  02110-1301, USA.
  */
 @noanno
-interface AbstractSatisfier_I satisfies Iterable<Anything> {
+interface Top<out T> {
+    shared default T? s => null;
 }
 @noanno
-abstract class AbstractSatisfier<T>() satisfies AbstractSatisfier_I&Iterable<T> {
-    actual shared Iterable<T> rest => super.rest;
+interface A{}
+@noanno
+interface B{}
+@noanno
+interface Left satisfies Top<A>{}
+@noanno
+interface Right satisfies Top<B>{
+    // why is this not legal?
+    //shared actual default <A&B>? s => null;
+}
+
+@noanno
+class Bottom() satisfies Left&Right/*&Top<B>*/{
+    shared actual <A&B>? s => super.s;
+}
+
+void bug1240_1(){
+    Top<A> ba = Bottom();
+    A? a = ba.s;
+    Top<B> bb = Bottom();
+    B? b = bb.s;
+    print("ok");
 }
