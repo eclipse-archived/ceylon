@@ -13,11 +13,12 @@ function type$meta(x,$$targs$$) {
     return getNothingType$meta$model();
   }
   if (x.$$metamodel$$) {
-    //It's an object
+    //Could be an object (or a callable)
     if (typeof(x.$$metamodel$$)==='function') {
       x.$$metamodel$$=x.$$metamodel$$();
     }
-    return AppliedValue(x.$$metamodel$$.$t.t, {Type:x.$$metamodel$$.$t});
+    if (x.$$metamodel$$.$t) //it's an object
+      return AppliedValue(x.$$metamodel$$.$t.t, {Type:x.$$metamodel$$.$t});
   }
   return AppliedClass($$targs$$.Type.t, {Type:$$targs$$.Type, Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
 }
