@@ -424,12 +424,12 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public .java.lang.Object find(final .ceylon.language.Callable selecting) {
+    public .java.lang.Object find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         throw new .ceylon.language.Exception(null, null);
     }
     
     @.java.lang.Override
-    public .java.lang.Object fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .java.lang.Object initial, final .ceylon.language.Callable accumulating) {
+    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
         throw new .ceylon.language.Exception(null, null);
     }
     

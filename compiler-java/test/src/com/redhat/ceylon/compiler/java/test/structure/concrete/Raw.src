@@ -120,7 +120,7 @@ class RawInImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.runtime
     }
     
     @.java.lang.Override
-    public final .java.lang.Object m2(final .java.lang.Object u) {
+    public final .java.lang.Object m2(final Y u) {
         return null;
     }
     
