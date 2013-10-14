@@ -14,6 +14,10 @@ public class JavaGetString {
         return "yes";
     }
     
+    public void setString(String string) {
+        
+    }
+    
     public int getHash() {
         return 0;
     }
@@ -24,6 +28,10 @@ public class JavaGetString {
     
     public int hashCode() {
         return 1;
+    }
+    
+    public void setHash(int hash) {
+        
     }
     
 }

@@ -8,9 +8,11 @@ class GetString implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         .java.lang.String s = .com.redhat.ceylon.compiler.java.Util.checkNull(jgs.toString());
         s = .com.redhat.ceylon.compiler.java.Util.checkNull(jgs.getString());
         boolean b = jgs.isString();
+        jgs.setString("");
         long h = jgs.hashCode();
         h = jgs.getHash();
         b = jgs.isHash();
+        jgs.setHash((int)1L);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
