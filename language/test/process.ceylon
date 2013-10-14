@@ -84,7 +84,9 @@ void testOperatingSystem() {
     print("operatingSystem[name:``operatingSystem.name``, version:``operatingSystem.version``]");
     check(operatingSystem.name.size > 0, "operatingSystem.name");
     check(operatingSystem.version.size > 0, "operatingSystem.version");
-    check(operatingSystem.newline.contains('\n'), "operatingSystem.newline");
+    check(operatingSystem.newline.contains('\n') || operatingSystem.newline.contains('\r'), "operatingSystem.newline");
+    String fileSeparator = operatingSystem.fileSeparator;
+    check((fileSeparator=="/") || (fileSeparator=="\\"), "operatingSystem.fileSeparator");
     String pathSeparator = operatingSystem.pathSeparator;
-    check((pathSeparator=="/") || (pathSeparator=="\\"), "operatingSystem.pathSeparator");
+    check((pathSeparator==":") || (pathSeparator==";"), "operatingSystem.pathSeparator");
 }
