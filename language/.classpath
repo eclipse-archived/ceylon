@@ -10,6 +10,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-module-resolver"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-spec"/>
 	<classpathentry kind="lib" path="/ceylon-runtime/lib/jboss-modules.jar" sourcepath="/jboss-modules/src/main/java"/>
-	<classpathentry kind="lib" path="ide-dist/ceylon.language-1.0.0.car"/>
+	<classpathentry kind="lib" path="ide-dist/ceylon.language-1.0.0.car" sourcepath="runtime"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
