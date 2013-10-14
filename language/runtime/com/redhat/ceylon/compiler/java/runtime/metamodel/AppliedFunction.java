@@ -18,6 +18,8 @@ import ceylon.language.meta.model.Model$impl;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -371,6 +373,21 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         return $call(arg0, arg1, arg2, empty_.get_());
     }
 
+    @Ignore
+    @Override
+    public Type apply(){
+        return apply(empty_.get_());
+    }
+
+    @Override
+    public Type apply(@Name("arguments")
+        @Sequenced
+        @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>")
+        Sequential<? extends java.lang.Object> arguments){
+        
+        return Metamodel.apply(this, arguments, parameterProducedTypes, firstDefaulted, variadicIndex);
+    }
+    
     @Override
     public int hashCode() {
         int result = 1;

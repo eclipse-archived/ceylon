@@ -16,6 +16,8 @@ import ceylon.language.meta.model.InvocationException;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -377,6 +379,21 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     public short $getVariadicParameterIndex() {
         checkInit();
         return (short)variadicIndex;
+    }
+
+    @Ignore
+    @Override
+    public Type apply(){
+        return apply(empty_.get_());
+    }
+
+    @Override
+    public Type apply(@Name("arguments")
+        @Sequenced
+        @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>")
+        Sequential<? extends java.lang.Object> arguments){
+        
+        return Metamodel.apply(this, arguments, parameterProducedTypes, firstDefaulted, variadicIndex);
     }
 
     @Override

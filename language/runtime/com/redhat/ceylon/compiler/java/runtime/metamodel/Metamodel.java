@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ceylon.language.ArraySequence;
+import ceylon.language.Callable;
 import ceylon.language.Iterator;
 import ceylon.language.Null;
 import ceylon.language.SequenceBuilder;
@@ -20,6 +21,7 @@ import ceylon.language.finished_;
 import ceylon.language.Annotated;
 import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.meta.model.IncompatibleTypeException;
+import ceylon.language.meta.model.InvocationException;
 import ceylon.language.ConstrainedAnnotation;
 import ceylon.language.meta.model.TypeApplicationException;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
@@ -988,5 +990,48 @@ public class Metamodel {
         ProducedType supertype = qualifyingType.getSupertype(typeDecl);
         if(supertype == null)
             throw new IncompatibleTypeException("Invalid container type: "+qualifyingType+" is not a subtype of "+typeDecl);
+    }
+    
+    public static <Return> Return apply(Callable<? extends Return> function,
+            Sequential<? extends java.lang.Object> arguments, 
+            List<ProducedType> parameterProducedTypes,
+            int firstDefaulted, int variadicIndex){
+        int argumentCount = (int) arguments.getSize();
+        int parameters = parameterProducedTypes.size();
+        
+        // check minimum
+        if(firstDefaulted == -1){
+            if(argumentCount < parameters)
+                throw new InvocationException("Not enough arguments to function. Expected "+parameters+" but got only "+argumentCount);
+        }else if(argumentCount < firstDefaulted)
+            throw new InvocationException("Not enough arguments to function. Expected at least "+firstDefaulted+" but got only "+argumentCount);
+        
+        // check maximum
+        if(variadicIndex == -1){
+            if(argumentCount > parameters)
+                throw new InvocationException("To many arguments to function. Expected at most "+parameters+" but got "+argumentCount);
+        }// if we're variadic we accept any number
+        
+        // now check their types
+        Iterator<?> it = arguments.iterator();
+        Object arg;
+        int i = 0;
+        ProducedType variadicElement = null;
+        if(variadicIndex != -1)
+            // it must be a Sequential<T>
+            variadicElement = parameterProducedTypes.get(variadicIndex).getTypeArgumentList().get(0);
+        while((arg = it.next()) != finished_.get_()){
+            ProducedType parameterType = variadicIndex == -1 || i < variadicIndex ?
+                    // normal param
+                    parameterProducedTypes.get(i)
+                    // variadic param
+                    : variadicElement;
+            ProducedType argumentType = Metamodel.getProducedType(arg);
+            if(!argumentType.isSubtypeOf(parameterType))
+                throw new IncompatibleTypeException("Invalid argument "+i+", expected type "+parameterType+" but got "+argumentType);
+            i++;
+        }
+        // they are all good, let's call it
+        return Util.apply(function, arguments);
     }
 }
