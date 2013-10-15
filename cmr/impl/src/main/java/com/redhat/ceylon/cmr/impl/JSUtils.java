@@ -25,7 +25,6 @@ import java.util.Set;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -73,8 +72,7 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
      * @return module info list
      */
     public static Set<ModuleInfo> readModuleInformation(final String moduleName, final File jarFile) {
-        ScriptEngine engine = getEngine(jarFile);
-        return getDependencies(engine);
+        return getDependencies(getEngine(jarFile));
     }
 
     public int[] getBinaryVersions(String moduleName, File moduleArchive) {
@@ -94,7 +92,7 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
     }
 
 
-    private static ScriptEngine getEngine(File moduleArchive) {
+    private static Object getEngine(File moduleArchive) {
         ScriptEngine engine = null;
         try {
             engine = new ScriptEngineManager().getEngineByName("JavaScript");
@@ -108,16 +106,16 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
         }
     }
 
-    private static Set<ModuleInfo> getDependencies(ScriptEngine engine) {
+    private static Set<ModuleInfo> getDependencies(Object engine) {
         try {
-            return asModInfos(engine.eval("exports.$$METAMODEL$$()['$mod-deps']"));
+            return asModInfos(safeEval(engine, "exports.$$METAMODEL$$()['$mod-deps']"));
         } catch (Exception ex) {
             throw new RuntimeException("Failed to parse module JS file", ex);
         }
     }
     
     public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive) {
-        ScriptEngine engine = getEngine(moduleArchive);
+        ScriptEngine engine = (ScriptEngine)getEngine(moduleArchive);
         Object name = safeEval(engine, "exports.$$METAMODEL$$()['$mod-name']");
         if (!moduleName.equals(name)) {
             throw new RuntimeException("Incorrect module");
@@ -145,10 +143,10 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
         return mvd;
     }
     
-    private static Object safeEval(ScriptEngine engine, String code) {
+    private static Object safeEval(Object engine, String code) {
         try {
-            return engine.eval(code);
-        } catch (ScriptException ex) {
+            return ((ScriptEngine)engine).eval(code);
+        } catch (Exception ex) {
             throw new RuntimeException("Failed to parse module JS file", ex);
         }
     }
