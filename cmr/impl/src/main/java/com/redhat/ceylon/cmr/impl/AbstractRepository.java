@@ -607,6 +607,10 @@ public abstract class AbstractRepository implements Repository {
         if (artifact == null) {
             artifactName = getArtifactName(moduleName, version, ArtifactContext.JS);
             artifact = versionNode.getChild(artifactName);
+            if (artifact == null) {
+                artifactName = getArtifactName(moduleName, version, ArtifactContext.JAR);
+                artifact = versionNode.getChild(artifactName);
+            }
         }
         return artifact;
     }
