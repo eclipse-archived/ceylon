@@ -4540,14 +4540,14 @@ public class GenerateJsVisitor extends Visitor
             final TypeDeclaration td = ltype.getDeclaration();
             if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
                 out(clAlias, "$init$AppliedClass$meta$model()(");
-                qualify(that, td);
-                out(names.name(td),",");
+                TypeUtils.outputQualifiedTypename(isImported(getCurrentPackage(), td), ltype, this);
+                out(",");
                 TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
                 out(")");
             } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
                 out(clAlias, "$init$AppliedInterface$meta$model()(");
-                qualify(that, td);
-                out(names.name(td),",");
+                TypeUtils.outputQualifiedTypename(isImported(getCurrentPackage(), td), ltype, this);
+                out(",");
                 TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
                 out(")");
             } else if (that instanceof Tree.AliasLiteral) {
