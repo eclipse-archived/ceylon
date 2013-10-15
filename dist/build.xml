@@ -245,7 +245,7 @@ Used with another target such as 'package'">
             <fileset dir="${ceylon-compiler.dir}/build/lib">
                 <include name="ceylon-bootstrap.jar"/>
                 <include name="ceylon-ant.jar"/>
-                <include name="antlr-*-complete.jar"/>
+                <include name="antlr-runtime-*.jar"/>
                 <include name="markdownj-*.jar"/>
                 <include name="txtmark-*.jar"/>
                 <include name="markdownpapers-core-*.jar"/>
