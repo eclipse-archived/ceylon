@@ -2349,8 +2349,12 @@ public class ClassTransformer extends AbstractTransformer {
             bodyExpr = expressionGen().transformInvocation(invocation);
         } else {
             bodyExpr = expressionGen().transformExpression(model, term);
+            // The innermost of an MPL method declared void needs to return null
+            returnNull = Decl.isUnboxedVoid(model) && Decl.isMpl(model);
         }
-        if (!Decl.isUnboxedVoid(model) || Strategy.useBoxedVoid(model)) {
+        if (!Decl.isUnboxedVoid(model)
+                || Decl.isMpl(model)
+                || Strategy.useBoxedVoid(model)) {
             if (returnNull) {
                 body = List.<JCStatement>of(make().Exec(bodyExpr), make().Return(makeNull()));
             } else {
