@@ -346,10 +346,10 @@ function $init$AppliedValue(){
         return OpenValue(_pkg, $$av.tipo);
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:ValueDeclaration$meta$declaration},$cont:AppliedValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$at','declaration']};});
 
-      $$appliedValue.get=function get(){
+      $$appliedValue.$get=function $get(){
         var $$av=this;
         return $$av.obj?$$av.tipo.get.apply($$av.obj):$$av.tipo.get();
-      };$$appliedValue.get.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:'Type',$ps:[],$cont:AppliedValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$m','get']};};
+      };$$appliedValue.$get.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:'Type',$ps:[],$cont:AppliedValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$m','get']};};
 
       defineAttr($$appliedValue,'type',function(){
           var $$atr=this;

@@ -57,7 +57,7 @@ Array$proto.set = function(idx,elem) {
         this[idx] = elem;
     }
 }
-Array$proto.get = function(idx) {
+Array$proto.$get = function(idx) {
     var result = this[idx];
     return result!==undefined ? result:null;
 }
@@ -103,8 +103,8 @@ Array$proto.items = function(keys) {
     if (keys === undefined) return getEmpty();
     var seq = [];
     for (var i = 0; i < keys.size; i++) {
-        var key = keys.get(i);
-        seq.push(this.get(key));
+        var key = keys.$get(i);
+        seq.push(this.$get(key));
     }
     return ArraySequence(seq,this.$$targs$$);
 }

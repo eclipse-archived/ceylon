@@ -62,7 +62,7 @@ function unflatten(ff, $$$mptypes) {
                 if (pmeta[i]['seq'] == 1) {
                     a[i] = seq.skipping(i).sequence;
                 } else if (seq.size > i) {
-                    a[i] = seq.get(i);
+                    a[i] = seq.$get(i);
                 } else {
                     a[i] = undefined;
                 }
@@ -75,7 +75,7 @@ function unflatten(ff, $$$mptypes) {
             if (seq===undefined || seq.size === 0) { return ff(); }
             var a = [];
             for (var i = 0; i < seq.size; i++) {
-                a[i] = seq.get(i);
+                a[i] = seq.$get(i);
             }
             a[i]=ru.$$targs$$;
             return ff.apply(ru, a);

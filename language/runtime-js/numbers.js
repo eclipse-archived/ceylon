@@ -135,7 +135,7 @@ JSNum$proto.rightArithmeticShift = function(i) { return this >>> i; }
 JSNum$proto.and = function(x) { return this & x; }
 JSNum$proto.or = function(x) { return this | x; }
 JSNum$proto.xor = function(x) { return this ^ x; }
-JSNum$proto.get = function(idx) {
+JSNum$proto.$get = function(idx) {
     var mask = 1 << idx;
     return (this & mask) != 0 ? $true : $false;
 }

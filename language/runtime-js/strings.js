@@ -50,7 +50,7 @@ String$proto.equals = function(other) {
     } else if (isOfType(other, {t:Iterable, a:{Element:{t:Character}}})) {
         if (other.size===this.size) {
             for (var i=0;i<this.size;i++) {
-                if (!this.get(i).equals(other.get(i))) return false;
+                if (!this.$get(i).equals(other.$get(i))) return false;
             }
             return true;
         }
@@ -130,7 +130,7 @@ String$proto.iterator= function() {
 	return this.length === 0 ? getEmptyIterator() : StringIterator(this);
 }
 String$proto.iterator.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','String','$m','iterator']};
-String$proto.get = function(index) {
+String$proto.$get = function(index) {
     if (index<0 || index>=this.length) {return null}
     var i = 0;
     for (var count=0; count<index; count++) {
@@ -139,7 +139,7 @@ String$proto.get = function(index) {
     }
     return Character(codepointFromString(this, i));
 }
-String$proto.get.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','String','$m','get']};
+String$proto.$get.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','String','$m','get']};
 defineAttr(String$proto, 'trimmed', function() {
     // make use of the fact that all WS characters are single UTF-16 code units
     var from = 0;
@@ -158,10 +158,10 @@ defineAttr(String$proto, 'trimmed', function() {
 });
 String$proto.trim = function(/*Category*/chars) {
     var from = 0;
-    while (from<this.length && chars(this.get(from))) {++from}
+    while (from<this.length && chars(this.$get(from))) {++from}
     var to = this.length;
     if (from < to) {
-        do {--to} while (from<to && chars(this.get(to)));
+        do {--to} while (from<to && chars(this.$get(to)));
         ++to;
     }
     if (from===0 && to===this.length) {return this;}
@@ -174,7 +174,7 @@ String$proto.trim = function(/*Category*/chars) {
 String$proto.trim.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','String','$m','trim']};
 String$proto.trimLeading = function(/*Category*/chars) {
     var from = 0;
-    while (from<this.length && chars(this.get(from))) {++from}
+    while (from<this.length && chars(this.$get(from))) {++from}
     if (from===0) {return this;}
     var result = String$(this.substring(from, this.length));
     if (this.codePoints !== undefined) {
@@ -186,7 +186,7 @@ String$proto.trimLeading.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','
 String$proto.trimTrailing = function(/*Category*/chars) {
     var to = this.length;
     if (to > 0) {
-        do {--to} while (to>=0 && chars(this.get(to)));
+        do {--to} while (to>=0 && chars(this.$get(to)));
         ++to;
     }
     if (to===this.length) {return this;}
@@ -350,8 +350,8 @@ String$proto.lastOccurrence.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language
 defineAttr(String$proto, 'characters', function() {
     return this.size>0 ? this:getEmpty();
 });
-defineAttr(String$proto, 'first', function() { return this.get(0); });
-defineAttr(String$proto, 'last', function(){ return this.size>0?this.get(this.size.predecessor):null; });
+defineAttr(String$proto, 'first', function() { return this.$get(0); });
+defineAttr(String$proto, 'last', function(){ return this.size>0?this.$get(this.size.predecessor):null; });
 defineAttr(String$proto, 'keys', function() {
     //TODO implement!!!
     return this.size > 0 ? Range(0, this.size.predecessor, {Element:{t:Integer}}) : getEmpty();
