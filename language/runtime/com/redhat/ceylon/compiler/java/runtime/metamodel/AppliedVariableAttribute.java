@@ -1,9 +1,9 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
+import ceylon.language.meta.declaration.VariableDeclaration;
 import ceylon.language.meta.model.Member$impl;
 import ceylon.language.meta.model.VariableAttribute$impl;
-import ceylon.language.meta.declaration.VariableDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;

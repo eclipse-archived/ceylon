@@ -2,14 +2,14 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
+import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.model.Class;
 import ceylon.language.meta.model.ClassModel$impl;
-import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.meta.model.Member$impl;
 import ceylon.language.meta.model.MemberClass$impl;
-import ceylon.language.meta.declaration.ClassDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -163,6 +163,12 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
     public Class<? extends Type, ? super Arguments> $call$variadic(Object arg0,
             Object arg1, Object arg2) {
         return $call$variadic(arg0, arg1, arg2, empty_.get_());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Class<? extends Type, ? super Arguments> bind(@TypeInfo("ceylon.language::Anything") @Name("container") java.lang.Object container){
+        return (Class<? extends Type, ? super Arguments>) Metamodel.bind(this, this.producedType.getQualifyingType(), container);
     }
 
     @Override

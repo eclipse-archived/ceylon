@@ -2,14 +2,14 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.meta.model.ClassOrInterface;
+import ceylon.language.meta.declaration.InterfaceDeclaration;
 import ceylon.language.meta.model.Interface;
 import ceylon.language.meta.model.InterfaceModel$impl;
 import ceylon.language.meta.model.Member$impl;
 import ceylon.language.meta.model.MemberInterface$impl;
-import ceylon.language.meta.declaration.InterfaceDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -157,6 +157,12 @@ public class AppliedMemberInterface<Container, Type>
     public Interface<? extends Type> $call$variadic(Object arg0, Object arg1,
             Object arg2) {
         return $call$variadic(arg0, arg1, arg2, empty_.get_());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Interface<? extends Type> bind(@TypeInfo("ceylon.language::Anything") @Name("container") java.lang.Object container){
+        return (Interface<? extends Type>) Metamodel.bind(this, this.producedType.getQualifyingType(), container);
     }
 
     @Override

@@ -1034,4 +1034,13 @@ public class Metamodel {
         // they are all good, let's call it
         return Util.apply(function, arguments);
     }
+    
+    public static ceylon.language.meta.model.Model bind(ceylon.language.meta.model.Member<?,?> member, ProducedType containerType, Object container){
+        if(container == null)
+            throw new IncompatibleTypeException("Invalid container "+container+", expected type "+containerType+" but got ceylon.language::Null");
+        ProducedType argumentType = Metamodel.getProducedType(container);
+        if(!argumentType.isSubtypeOf(containerType))
+            throw new IncompatibleTypeException("Invalid container "+container+", expected type "+containerType+" but got "+argumentType);
+        return member.$call(container);
+    }
 }

@@ -2,14 +2,15 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
+import ceylon.language.meta.declaration.ValueDeclaration;
 import ceylon.language.meta.model.Attribute$impl;
 import ceylon.language.meta.model.Model$impl;
 import ceylon.language.meta.model.Value;
 import ceylon.language.meta.model.ValueModel$impl;
-import ceylon.language.meta.declaration.ValueDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -152,6 +153,12 @@ public class AppliedAttribute<Container, Type>
     public Value<? extends Type> $call$variadic(Object arg0, Object arg1,
             Object arg2) {
         return $call$variadic(arg0, arg1, arg2, empty_.get_());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Value<? extends Type> bind(@TypeInfo("ceylon.language::Anything") @Name("container") java.lang.Object container){
+        return (Value<? extends Type>) Metamodel.bind(this, this.typedReference.getQualifyingType(), container);
     }
 
     @Override

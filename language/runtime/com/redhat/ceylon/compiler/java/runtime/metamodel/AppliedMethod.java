@@ -11,6 +11,7 @@ import ceylon.language.meta.declaration.FunctionDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -167,6 +168,12 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     public Function<? extends Type, ? super Arguments> $call$variadic(
             Object arg0, Object arg1, Object arg2) {
         return $call$variadic(arg0, arg1, arg2, empty_.get_());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Function<? extends Type, ? super Arguments> bind(@TypeInfo("ceylon.language::Anything") @Name("container") java.lang.Object container){
+        return (Function<? extends Type, ? super Arguments>) Metamodel.bind(this, this.appliedFunction.getQualifyingType(), container);
     }
 
     @Override
