@@ -781,6 +781,7 @@
 
 "A wiki-style link in a documentation string"
 ^(DOC_LINK
+   Module module;
    Package pkg;
    Declaration base;
    List<Declaration> qualified;)

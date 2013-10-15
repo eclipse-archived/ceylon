@@ -11,12 +11,14 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
@@ -31,6 +33,14 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class AnnotationVisitor extends Visitor {
     
+    private static final String DOC_LINK_MODULE = "module ";
+    private static final String DOC_LINK_PACKAGE = "package ";
+    private static final String DOC_LINK_CLASS = "class ";
+    private static final String DOC_LINK_INTERFACE = "interface ";
+    private static final String DOC_LINK_FUNCTION = "function ";
+    private static final String DOC_LINK_VALUE = "value ";
+    private static final String DOC_LINK_ALIAS = "alias ";
+
     private static boolean isIllegalAnnotationParameterType(ProducedType pt) {
         if (pt!=null) {
             TypeDeclaration ptd = pt.getDeclaration();
@@ -426,11 +436,46 @@ public class AnnotationVisitor extends Visitor {
     public void visit(Tree.DocLink that) {
         super.visit(that);
         String text = that.getText();
+        
+        int pipeIndex = text.indexOf("|");
+        if (pipeIndex != -1) {
+            text = text.substring(pipeIndex + 1);
+        }
+        
+        String kind = null;
+        if (text.startsWith(DOC_LINK_MODULE)) {
+            kind = DOC_LINK_MODULE;
+            text = text.substring(DOC_LINK_MODULE.length());
+        } else if (text.startsWith(DOC_LINK_PACKAGE)) {
+            kind = DOC_LINK_PACKAGE;
+            text = text.substring(DOC_LINK_PACKAGE.length());
+        } else if (text.startsWith(DOC_LINK_CLASS)) {
+            kind = DOC_LINK_CLASS;
+            text = text.substring(DOC_LINK_CLASS.length());
+        } else if (text.startsWith(DOC_LINK_INTERFACE)) {
+            kind = DOC_LINK_INTERFACE;
+            text = text.substring(DOC_LINK_INTERFACE.length());
+        } else if (text.startsWith(DOC_LINK_FUNCTION)) {
+            kind = DOC_LINK_FUNCTION;
+            text = text.substring(DOC_LINK_FUNCTION.length());
+        } else if (text.startsWith(DOC_LINK_VALUE)) {
+            kind = DOC_LINK_VALUE;
+            text = text.substring(DOC_LINK_VALUE.length());
+        } else if (text.startsWith(DOC_LINK_ALIAS)) {
+            kind = DOC_LINK_ALIAS;
+            text = text.substring(DOC_LINK_ALIAS.length());
+        }
+        
         int scopeIndex = text.indexOf("::");
-        String packageName = scopeIndex<0 ? 
-                null : text.substring(0, scopeIndex);
-        String path = scopeIndex<0 ? 
-                text : text.substring(scopeIndex+2);
+        
+        String packageName;
+        if (DOC_LINK_MODULE.equals(kind) || DOC_LINK_PACKAGE.equals(kind)) {
+            packageName = text;
+        } else {
+            packageName = scopeIndex < 0 ? null : text.substring(0, scopeIndex);
+        }
+                
+        String path = scopeIndex < 0 ? text : text.substring(scopeIndex + 2);
         String[] names = path.split("\\.");
         Declaration base = null;
         if (packageName==null) {
@@ -440,17 +485,31 @@ public class AnnotationVisitor extends Visitor {
             }
         }
         else {
-            Package pack = that.getUnit().getPackage().getModule()
-                    .getPackage(packageName);
-            if (pack==null) {
-                base = null;
-                that.addUsageWarning("package does not exist: " + packageName);
+            Package pack = that.getUnit().getPackage().getModule().getPackage(packageName);
+            if (pack == null) {
+                if (DOC_LINK_MODULE.equals(kind)) {
+                    that.addUsageWarning("module does not exist: " + packageName);
+                } else {
+                    that.addUsageWarning("package does not exist: " + packageName);
+                }
             }
             else {
                 that.setPkg(pack);
-                if (names.length >0) {
+                if (DOC_LINK_MODULE.equals(kind)) {
+                    Package rootPack = pack.getModule().getRootPackage();
+                    if (pack.equals(rootPack)) {
+                        that.setModule(pack.getModule());
+                    } else {
+                        that.addUsageWarning("module does not exist: " + packageName);
+                    }
+                }
+                if (names.length > 0) {
                     base = pack.getDirectMember(names[0], null, false);
                 }
+            }
+            
+            if (DOC_LINK_MODULE.equals(kind) || DOC_LINK_PACKAGE.equals(kind)) {
+                return;
             }
         }
         if (base==null) {
@@ -462,6 +521,15 @@ public class AnnotationVisitor extends Visitor {
                 that.setQualified(new ArrayList<Declaration>(names.length-1));
             }
             for (int i=1; i<names.length; i++) {
+                if (base instanceof Value) {
+                    Value value = (Value) base;
+                    if (!value.isParameter()
+                            && !value.isTransient()
+                            && value.getTypeDeclaration() != null
+                            && value.getTypeDeclaration().isAnonymous()) {
+                        base = value.getTypeDeclaration();
+                    }
+                }
                 if (base instanceof TypeDeclaration) {
                     Declaration qualified = ((TypeDeclaration) base).getMember(names[i], null, false);
                     if (qualified==null) {
@@ -479,6 +547,20 @@ public class AnnotationVisitor extends Visitor {
                 }
             }
         }
+        
+        if (kind != null && base != null && (names.length == 1 || names.length == that.getQualified().size() + 1)) {
+            if (DOC_LINK_CLASS.equals(kind) && !(base instanceof Class)) {
+                that.addUsageWarning("linked declaration is not a class: " + base.getName());
+            } else if (DOC_LINK_INTERFACE.equals(kind) && !(base instanceof Interface)) {
+                that.addUsageWarning("linked declaration is not an interface: " + base.getName());
+            } else if (DOC_LINK_ALIAS.equals(kind) && !(base instanceof TypeAlias)) {
+                that.addUsageWarning("linked declaration is not a type alias: " + base.getName());
+            } else if (DOC_LINK_FUNCTION.equals(kind) && !(base instanceof Method)) {
+                that.addUsageWarning("linked declaration is not a function: " + base.getName());
+            } else if (DOC_LINK_VALUE.equals(kind) && !(base instanceof Value)) {
+                that.addUsageWarning("linked declaration is not a value: " + base.getName());
+            }
+        }        
     }
 
     @Override 
