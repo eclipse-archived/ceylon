@@ -101,6 +101,7 @@ public class JsIdentifierNames {
         reservedWords.add("apply");
         reservedWords.add("call");
         reservedWords.add("Date");
+        reservedWords.add("get");
 
         // The names of the following members also have to be escaped to avoid
         // collisions with members of native JavaScript classes in the
@@ -285,8 +286,8 @@ public class JsIdentifierNames {
                 || (decl.isToplevel() && (forGetterSetter || (decl instanceof Method)
                 || (decl instanceof ClassOrInterface) || (decl instanceof TypeAlias)));
         }
-        if (nonLocal && (decl instanceof com.redhat.ceylon.compiler.typechecker.model.Class)
-                && Character.isLowerCase(decl.getName().charAt(0))) {
+        if (nonLocal && decl instanceof com.redhat.ceylon.compiler.typechecker.model.Class
+                && ((com.redhat.ceylon.compiler.typechecker.model.Class)decl).isAnonymous()) {
             // A lower-case class name belongs to an object and is not public.
             nonLocal = false;
         }

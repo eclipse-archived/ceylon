@@ -378,12 +378,12 @@ public class InvocationGenerator {
                                 ProducedType tupleType = arg.getTypeModel();
                                 ProducedType targ = tupleType.getTypeArgumentList().get(2);
                                 arg.visit(gen);
-                                gen.out(".get(0)");
+                                gen.out(".$get(0)");
                                 int i = 1;
                                 while (!targ.getDeclaration().inherits(gen.getTypeUtils().empty)) {
                                     gen.out(",");
                                     arg.visit(gen);
-                                    gen.out(".get("+(i++)+")");
+                                    gen.out(".$get("+(i++)+")");
                                     targ = targ.getTypeArgumentList().get(2);
                                 }
                             } else {
@@ -393,7 +393,7 @@ public class InvocationGenerator {
                             arg.visit(gen);
                         } else {
                             arg.visit(gen);
-                            gen.out(".get(0)");
+                            gen.out(".$get(0)");
                             //Find out if there are more params
                             final ParameterList moreParams;
                             if (pd.getDeclaration() instanceof Method) {
@@ -407,7 +407,7 @@ public class InvocationGenerator {
                                 if (found) {
                                     gen.out(",");
                                     arg.visit(gen);
-                                    gen.out(".get(", Integer.toString(c++), ")||undefined");
+                                    gen.out(".$get(", Integer.toString(c++), ")||undefined");
                                 } else {
                                     found = restp.equals(pd);
                                 }

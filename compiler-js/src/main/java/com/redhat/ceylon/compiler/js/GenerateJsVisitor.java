@@ -403,7 +403,11 @@ public class GenerateJsVisitor extends Visitor
     private void comment(Tree.Declaration that) {
         if (!opts.isComment()) return;
         endLine();
-        out("//", that.getNodeType(), " ", that.getDeclarationModel().getName());
+        String dname = that.getNodeType();
+        if (dname.endsWith("Declaration") || dname.endsWith("Definition")) {
+            dname = dname.substring(0, dname.length()-7);
+        }
+        out("//", dname, " ", that.getDeclarationModel().getName());
         location(that);
         endLine();
     }
@@ -3583,7 +3587,7 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(Element that) {
-       out(".get(");
+       out(".$get(");
        that.getExpression().visit(this);
        out(")");
    }
@@ -4058,7 +4062,7 @@ public class GenerateJsVisitor extends Visitor
                 ((Element)eor).getExpression().visit(this);
                 out("]");
             } else {
-                out(".get(");
+                out(".$get(");
                 ((Element)eor).getExpression().visit(this);
                 out(")");
             }
