@@ -262,7 +262,8 @@ public abstract class AbstractRepository implements Repository {
     private boolean isArtifactOfType(String name, Node node, String module, String version, ModuleQuery lookup) {
         switch (lookup.getType()) {
             case JS:
-                return getArtifactName(module, version, ArtifactContext.JS).equals(name);
+                return getArtifactName(module, version, ArtifactContext.JS).equals(name)
+                        && checkBinaryVersion(module, node, lookup);
             case JVM:
                 return (getArtifactName(module, version, ArtifactContext.CAR).equals(name)
                         && checkBinaryVersion(module, node, lookup))
@@ -434,7 +435,7 @@ public abstract class AbstractRepository implements Repository {
                 if (artifact == null)
                     continue;
                 // is it the right version?
-                if (suffix.equals(ArtifactContext.CAR) && !checkBinaryVersion(name, artifact, lookup))
+                if ((suffix.equals(ArtifactContext.CAR) || suffix.equals(ArtifactContext.JS)) && !checkBinaryVersion(name, artifact, lookup))
                     continue;
                 // we found the artifact: let's notify
                 found = true;
