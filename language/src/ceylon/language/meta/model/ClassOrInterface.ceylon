@@ -35,6 +35,19 @@ shared interface ClassOrInterface<out Type=Anything>
     throws(`class TypeApplicationException`, "If the specified closed type argument values are not compatible with the actual result's type parameters.")
     shared formal Member<Container, Kind>? getClassOrInterface<Container=Nothing, Kind=ClassOrInterface<Anything>>(String name, ClosedType<Anything>* types)
         given Kind satisfies ClassOrInterface<Anything>;
+
+    "Gets a member class by name. Returns `null` if not found."
+    throws(`class IncompatibleTypeException`, "If the specified `Container`, `Type` or `Arguments` type arguments are not compatible with the actual result, 
+                                               or if the corresponding member is not a `MemberClass`.")
+    throws(`class TypeApplicationException`, "If the specified closed type argument values are not compatible with the actual result's type parameters.")
+    shared formal MemberClass<Container, Type, Arguments>? getClass<Container=Nothing, Type=Anything, Arguments=Nothing>(String name, ClosedType<Anything>* types)
+        given Arguments satisfies Anything[];
+
+    "Gets a member interface by name. Returns `null` if not found."
+    throws(`class IncompatibleTypeException`, "If the specified `Container` or `Type` type arguments are not compatible with the actual result, 
+                                               or if the corresponding member is not a `MemberInterface`.")
+    throws(`class TypeApplicationException`, "If the specified closed type argument values are not compatible with the actual result's type parameters.")
+    shared formal MemberInterface<Container, Type>? getInterface<Container=Nothing, Type=Anything>(String name, ClosedType<Anything>* types);
     
     "Gets a method by name. Returns `null` if not found."
     throws(`class IncompatibleTypeException`, "If the specified `Container`, `Type` or `Arguments` type arguments are not compatible with the actual result.")

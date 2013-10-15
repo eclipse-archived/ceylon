@@ -7,6 +7,7 @@ import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.model.ClassOrInterface$impl;
+import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.Member;
 import ceylon.language.meta.model.Model$impl;
 
@@ -210,6 +211,101 @@ public abstract class AppliedClassOrInterface<Type>
                 Variance.OUT, Metamodel.getProducedType(actualKind), $reifiedKind);
 
         return member;
+    }
+
+    @Ignore
+    @Override
+    public <Container, Type, Arguments extends ceylon.language.Sequential<? extends java.lang.Object>>
+        ceylon.language.meta.model.MemberClass<Container, Type, Arguments> $getClass(@Ignore TypeDescriptor $reifiedContainer, 
+                                                                            @Ignore TypeDescriptor $reifiedType, 
+                                                                            @Ignore TypeDescriptor $reifiedArguments, 
+                                                                            String name){
+        
+        return $getClass($reifiedContainer, $reifiedType, $reifiedArguments, name, (Sequential)empty_.get_());
+    }
+
+    @Override
+    @TypeParameters({
+        @TypeParameter(value = "Container"),
+        @TypeParameter(value = "Type"),
+        @TypeParameter(value = "Arguments", satisfies = "ceylon.language::Sequential<ceylon.language::Anything>")
+    })
+    @TypeInfo("ceylon.language.meta.model::MemberClass<Container,Type,Arguments>|ceylon.language::Null")
+    public <Container, Type, Arguments extends ceylon.language.Sequential<? extends java.lang.Object>>
+    ceylon.language.meta.model.MemberClass<Container, Type, Arguments> $getClass(@Ignore TypeDescriptor $reifiedContainer, 
+                                                                            @Ignore TypeDescriptor $reifiedType, 
+                                                                            @Ignore TypeDescriptor $reifiedArguments, 
+                                                                            String name, 
+                                                                            @Name("types") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
+        
+        checkInit();
+        final FreeClassOrInterface type = declaration.findType(name);
+        if(type == null)
+            return null;
+        Member<Container, ceylon.language.meta.model.Class<Type,Arguments>> member = 
+                type.getAppliedClassOrInterface(null, null, types, (AppliedClassOrInterface<Container>)this);
+
+        
+        if(member instanceof AppliedMemberClass == false)
+            throw new IncompatibleTypeException("Specified member is not a class: "+name);
+            
+        // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
+        // implementation types to the user, such as AppliedMemberClass
+        TypeDescriptor actualReifiedContainer = ((AppliedMemberClass)member).$reifiedContainer;
+        TypeDescriptor actualType = ((AppliedMemberClass) member).$reifiedType; 
+        TypeDescriptor actualArguments = ((AppliedMemberClass) member).$reifiedArguments;
+        
+        Metamodel.checkReifiedTypeArgument("getClass", "MemberClass<$1,$2,$3>", 
+                Variance.IN, Metamodel.getProducedType(actualReifiedContainer), $reifiedContainer, 
+                Variance.OUT, Metamodel.getProducedType(actualType), $reifiedType,
+                Variance.IN, Metamodel.getProducedType(actualArguments), $reifiedArguments);
+
+        return (ceylon.language.meta.model.MemberClass)member;
+    }
+
+    @Ignore
+    @Override
+    public <Container, Type>
+        ceylon.language.meta.model.MemberInterface<Container, Type> getInterface(@Ignore TypeDescriptor $reifiedContainer, 
+                                                                            @Ignore TypeDescriptor $reifiedType, 
+                                                                            String name){
+        
+        return getInterface($reifiedContainer, $reifiedType, name, (Sequential)empty_.get_());
+    }
+
+    @Override
+    @TypeParameters({
+        @TypeParameter(value = "Container"),
+        @TypeParameter(value = "Type"),
+    })
+    @TypeInfo("ceylon.language.meta.model::MemberInterface<Container,Type>|ceylon.language::Null")
+    public <Container, Type>
+    ceylon.language.meta.model.MemberInterface<Container, Type> getInterface(@Ignore TypeDescriptor $reifiedContainer, 
+                                                                            @Ignore TypeDescriptor $reifiedType, 
+                                                                            String name, 
+                                                                            @Name("types") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
+        
+        checkInit();
+        final FreeClassOrInterface type = declaration.findType(name);
+        if(type == null)
+            return null;
+        Member<Container, ceylon.language.meta.model.Interface<Type>> member = 
+                type.getAppliedClassOrInterface(null, null, types, (AppliedClassOrInterface<Container>)this);
+
+        
+        if(member instanceof AppliedMemberInterface == false)
+            throw new IncompatibleTypeException("Specified member is not an interface: "+name);
+            
+        // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
+        // implementation types to the user, such as AppliedMemberClass
+        TypeDescriptor actualReifiedContainer = ((AppliedMemberInterface)member).$reifiedContainer;
+        TypeDescriptor actualType = ((AppliedMemberInterface) member).$reifiedType; 
+        
+        Metamodel.checkReifiedTypeArgument("getClass", "MemberInterface<$1,$2>", 
+                Variance.IN, Metamodel.getProducedType(actualReifiedContainer), $reifiedContainer, 
+                Variance.OUT, Metamodel.getProducedType(actualType), $reifiedType);
+
+        return (ceylon.language.meta.model.MemberInterface)member;
     }
 
     @Override
