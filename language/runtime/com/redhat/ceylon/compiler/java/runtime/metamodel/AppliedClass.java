@@ -392,7 +392,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         @Sequenced
         @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>")
         Sequential<? extends java.lang.Object> arguments){
-        
+        checkInit();
         return Metamodel.apply(this, arguments, parameterProducedTypes, firstDefaulted, variadicIndex);
     }
 
