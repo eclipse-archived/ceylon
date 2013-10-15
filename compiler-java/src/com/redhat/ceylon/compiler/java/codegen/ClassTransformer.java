@@ -259,8 +259,7 @@ public class ClassTransformer extends AbstractTransformer {
                 } else if (Decl.isAnnotationClass(iteratedType.getDeclaration())) {
                     // Can't use Util.sequentialAnnotation becase we need to 'box'
                     // the Java annotations in their Ceylon annotation class
-                    String wrapperMethod = "$annotationSequence";
-                    argExpr = make().Apply(null, naming.makeUnquotedIdent(wrapperMethod), List.of(annoAttr));
+                    argExpr = make().Apply(null, naming.makeUnquotedIdent(naming.getAnnotationSequenceMethodName()), List.of(annoAttr));
                     ListBuffer<JCStatement> stmts = ListBuffer.lb();
                     SyntheticName array = naming.synthetic("array$");
                     SyntheticName sb = naming.synthetic("sb$");
@@ -275,7 +274,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     List.<JCExpression>of(instantiateAnnotationClass(iteratedType, element.makeIdent()))))));
                     stmts.append(make().Return(make().Apply(null, naming.makeQualIdent(sb.makeIdent(), "getSequence"), List.<JCExpression>nil())));
                     classBuilder.method(
-                            MethodDefinitionBuilder.systemMethod(this, wrapperMethod)
+                            MethodDefinitionBuilder.systemMethod(this, naming.getAnnotationSequenceMethodName())
                                 .ignoreModelAnnotations()
                                 .modifiers(PRIVATE | STATIC)
                                 .resultType(null, makeJavaType(typeFact().getSequentialType(iteratedType)))
@@ -365,7 +364,7 @@ public class ClassTransformer extends AbstractTransformer {
             // annotations are never explicitely final in Java
             sequencedBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | (transformClassDeclFlags(def) & ~FINAL));
             sequencedBuilder.annotations(makeAtRetention(RetentionPolicy.RUNTIME));
-            MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, "value");
+            MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, naming.getSequencedAnnotationMethodName());
             mdb.annotationFlags(Annotations.MODEL_AND_USER);
             mdb.modifiers(PUBLIC | ABSTRACT);
             mdb.resultType(null, make().TypeArray(makeJavaType(klass.getType(), JT_ANNOTATION)));
@@ -1364,7 +1363,7 @@ public class ClassTransformer extends AbstractTransformer {
     private MethodDefinitionBuilder makeCompanionAccessor(Interface iface, ProducedType satisfiedType, 
             Class currentType, boolean forImplementor) {
         MethodDefinitionBuilder thisMethod = MethodDefinitionBuilder.systemMethod(
-                this, getCompanionAccessorName(iface));
+                this, naming.getCompanionAccessorName(iface));
         thisMethod.noModelAnnotations();
         if (!forImplementor && Decl.isAncestorLocal(iface)) {
             // For a local interface the return type cannot be a local
@@ -3105,8 +3104,7 @@ public class ClassTransformer extends AbstractTransformer {
         at(currentParam);
         Parameter parameter = currentParam.getParameterModel();
         Assert.that(Strategy.hasDefaultParameterValueMethod(parameter));
-        String name = Naming.getDefaultedParamMethodName(container, parameter );
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.systemMethod(this, name);
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.systemMethod(this, Naming.getDefaultedParamMethodName(container, parameter));
         methodBuilder.ignoreModelAnnotations();
         if (container != null && Decl.isAnnotationConstructor(container)) {
             AnnotationInvocation ac = (AnnotationInvocation)((Method)container).getAnnotationConstructor();

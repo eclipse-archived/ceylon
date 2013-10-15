@@ -3227,13 +3227,6 @@ public abstract class AbstractTransformer implements Transformation {
     final String getCompanionFieldName(Interface def) {
         return naming.getCompanionFieldName(def);
     }
-    /** 
-     * Returns the name of the method in interfaces and classes used to get 
-     * the companion instance.
-     */
-    final String getCompanionAccessorName(Interface def) {
-        return naming.getCompanionAccessorName(def);
-    }
     
     protected int getPosition(Node node) {
         int pos = getMap().getStartPosition(node.getToken().getLine())

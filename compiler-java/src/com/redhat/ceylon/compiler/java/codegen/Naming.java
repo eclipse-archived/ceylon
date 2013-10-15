@@ -1831,5 +1831,13 @@ public class Naming implements LocalId {
         }
         return sb.substring(0, sb.length()-1);
     }
+
+    public String getSequencedAnnotationMethodName() {
+        return "value";
+    }
+
+    public String getAnnotationSequenceMethodName() {
+        return "$annotationSequence";
+    }
   
 }
