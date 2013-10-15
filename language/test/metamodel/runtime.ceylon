@@ -37,6 +37,8 @@ shared void checkConstructors(){
     assert(fixedParamsClass.name == "FixedParams");
     Anything fixedParams = fixedParamsType("a", 1, 1.2, 'a', true, noParams);
     assert(is FixedParams fixedParams);
+    Anything fixedParams2 = fixedParamsType.apply("a", 1, 1.2, 'a', true, noParams);
+    assert(is FixedParams fixedParams2);
 
     // typed parameters
     value typeParamsType = type(TypeParams("a", 1));
@@ -46,28 +48,43 @@ shared void checkConstructors(){
     Anything typeParams = typeParamsType("a", 1);
     // this checks that we did pass the reified type arguments correctly
     assert(is TypeParams<String> typeParams);
+    Anything typeParams2 = typeParamsType.apply("a", 1);
+    // this checks that we did pass the reified type arguments correctly
+    assert(is TypeParams<String> typeParams2);
 
     // defaulted parameters
     value defaultedParamsType = typeLiteral<DefaultedParams>();
     assert(is Class<DefaultedParams, [Integer=, String=, Boolean=]> defaultedParamsType);
     Anything defaultedParams1 = defaultedParamsType();
     assert(is DefaultedParams defaultedParams1);
+    Anything defaultedParams1b = defaultedParamsType.apply();
+    assert(is DefaultedParams defaultedParams1b);
     Anything defaultedParams2 = defaultedParamsType(0);
     assert(is DefaultedParams defaultedParams2);
+    Anything defaultedParams2b = defaultedParamsType.apply(0);
+    assert(is DefaultedParams defaultedParams2b);
     Anything defaultedParams3 = defaultedParamsType(1, "b");
     assert(is DefaultedParams defaultedParams3);
+    Anything defaultedParams3b = defaultedParamsType.apply(1, "b");
+    assert(is DefaultedParams defaultedParams3b);
     Anything defaultedParams4 = defaultedParamsType(2, "b", false);
     assert(is DefaultedParams defaultedParams4);
+    Anything defaultedParams4b = defaultedParamsType.apply(2, "b", false);
+    assert(is DefaultedParams defaultedParams4b);
 
     value defaultedParams2Type = typeLiteral<DefaultedParams2>();
     assert(is Class<DefaultedParams2, [Boolean, Integer=, Integer=, Integer=, Integer=]> defaultedParams2Type);
     defaultedParams2Type(false);
+    defaultedParams2Type.apply(false);
     defaultedParams2Type(true, -1, -2, -3, -4);
+    defaultedParams2Type.apply(true, -1, -2, -3, -4);
     
     // private class with private constructor
     value privateClassType = `PrivateClass`;
     value privateClassInstance = privateClassType();
     assert(privateClassInstance.string == "d");
+    value privateClassInstance2 = privateClassType.apply();
+    assert(privateClassInstance2.string == "d");
     
     // constructor that throws
     try {
@@ -76,16 +93,32 @@ shared void checkConstructors(){
     }catch(Exception x){
         assert(x is MyException);
     }
+    try {
+        `Throws`.apply(true);
+        assert(false);
+    }catch(Exception x){
+        assert(x is MyException);
+    }
     
     value variadicClass = `VariadicParams`;
     variadicClass();
+    variadicClass.apply();
     variadicClass(0);
+    variadicClass.apply(0);
     variadicClass(1, "a");
+    variadicClass.apply(1, "a");
     variadicClass(2, "a", "a");
+    variadicClass.apply(2, "a", "a");
     unflatten(variadicClass)([2, "a", "a"]);
     
     try{
         `Modifiers`();
+        assert(false);
+    }catch(Exception x){
+        assert(is InvocationException x);
+    }
+    try{
+        `Modifiers`.apply();
         assert(false);
     }catch(Exception x){
         assert(is InvocationException x);
