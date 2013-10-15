@@ -317,10 +317,10 @@ public class SmokeTestCase extends AbstractTest {
     public final static ModuleDetails com_acme_helloworld = new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), set(".car"), 3, null, false, null);
     public final static ModuleDetails hello = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(), set(".car"), 3, null, false, null);
     public final static ModuleDetails moduletest = new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(new ModuleInfo("hello", "1.0.0", false, false)), set(".car"), 3, null, false, null);
-    public final static ModuleDetails old_jar = new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1"), deps(), set(), null, null, false, null);
-    public final static ModuleDetails older_jar = new ModuleDetails("older-jar", null, null, set(), set("12-b3"), deps(), set(), null, null, false, null);
+    public final static ModuleDetails old_jar = new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1"), deps(new ModuleInfo("moduletest", "0.1", true, true)), set(".jar"), null, null, false, null);
+    public final static ModuleDetails older_jar = new ModuleDetails("older-jar", null, null, set(), set("12-b3"), deps(new ModuleInfo("moduletest", "0.1", true, true)), set(".jar"), null, null, false, null);
     public final static ModuleDetails org_jboss_acme = new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps(), set(), null, null, false, null);
-    public final static ModuleDetails test_jar = new ModuleDetails("test-jar", null, null, set(), set("0.1"), deps(), set(), null, null, false, null);
+    public final static ModuleDetails test_jar = new ModuleDetails("test-jar", null, null, set(), set("0.1"), deps(), set(".jar"), null, null, false, null);
     public final static ModuleDetails jsonly = new ModuleDetails("jsonly", null, null, set(), set("1.0.0"), deps(), set(".js"), null, null, false, null);
 
     @Test

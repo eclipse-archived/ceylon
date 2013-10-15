@@ -16,6 +16,6 @@
 
 <module xmlns="urn:jboss:module:1.0" name="older-jar">
     <dependencies>
-        <module name="moduletest" slot="0.1" optional="true"/>
+        <module name="moduletest" slot="0.1" optional="true" export="true"/>
     </dependencies>
 </module>
