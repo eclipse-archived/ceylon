@@ -223,30 +223,47 @@ shared void checkMemberFunctions(){
     assert(f1.declaration.qualifiedName == "metamodel::NoParams.noParams");
     Anything o1 = f1(noParamsInstance)();
     assert(is NoParams o1);
+    Anything o1b = f1(noParamsInstance).apply();
+    assert(is NoParams o1b);
     
     assert(exists f2 = noParamsType.getMethod<NoParams, NoParams, [String, Integer, Float, Character, Boolean, Object]>("fixedParams"));
     Anything o3 = f2(noParamsInstance)("a", 1, 1.2, 'a', true, noParamsInstance);
     assert(is NoParams o3);
+    Anything o3b = f2(noParamsInstance).apply("a", 1, 1.2, 'a', true, noParamsInstance);
+    assert(is NoParams o3b);
     
     assert(exists f3 = noParamsType.getMethod<NoParams, NoParams, [String, Integer]>("typeParams", stringType));
     Anything o5 = f3(noParamsInstance)("a", 1);
     assert(is NoParams o5);
+    Anything o5b = f3(noParamsInstance).apply("a", 1);
+    assert(is NoParams o5b);
 
     assert(exists f4 = noParamsType.getMethod<NoParams, String, []>("getString"));
     assert(f4(noParamsInstance)() == "a");
+    assert(f4(noParamsInstance).apply() == "a");
     assert(exists f5 = noParamsType.getMethod<NoParams, Integer, []>("getInteger"));
     assert(f5(noParamsInstance)() == 1);
+    assert(f5(noParamsInstance).apply() == 1);
     assert(exists f6 = noParamsType.getMethod<NoParams, Float, []>("getFloat"));
     assert(f6(noParamsInstance)() == 1.2);
+    assert(f6(noParamsInstance).apply() == 1.2);
     assert(exists f7 = noParamsType.getMethod<NoParams, Character, []>("getCharacter"));
     assert(f7(noParamsInstance)() == 'a');
+    assert(f7(noParamsInstance).apply() == 'a');
     assert(exists f8 = noParamsType.getMethod<NoParams, Boolean, []>("getBoolean"));
     assert(f8(noParamsInstance)() == true);
+    assert(f8(noParamsInstance).apply() == true);
     
     // method that throws
     Throws t = Throws(false);
     try {
         `Throws.method`(t)();
+        assert(false);
+    }catch(Exception x){
+        assert(x is MyException);
+    }
+    try {
+        `Throws.method`(t).apply();
         assert(false);
     }catch(Exception x){
         assert(x is MyException);
@@ -262,6 +279,8 @@ shared void checkMemberTypes(){
     assert(exists innerClassType = containerClassType.getClassOrInterface<ContainerClass, Class<ContainerClass.InnerClass, []>>("InnerClass"));
     Anything o1 = innerClassType(containerClassInstance)();
     assert(is ContainerClass.InnerClass o1);
+    Anything o1b = innerClassType(containerClassInstance).apply();
+    assert(is ContainerClass.InnerClass o1b);
     // make sure type doesn't throw at it
     assert(type(o1) == innerClassType);
     assert(`class ContainerClass.InnerClass`.name == "InnerClass");
@@ -270,8 +289,12 @@ shared void checkMemberTypes(){
     assert(exists innerDefaultedClassType = containerClassType.getClassOrInterface<ContainerClass, Class<ContainerClass.DefaultedParams, [Integer, Integer=]>>("DefaultedParams"));
     Anything o1_2 = innerDefaultedClassType(containerClassInstance)(0);
     assert(is ContainerClass.DefaultedParams o1_2);
+    Anything o1_2b = innerDefaultedClassType(containerClassInstance).apply(0);
+    assert(is ContainerClass.DefaultedParams o1_2b);
     Anything o1_3 = innerDefaultedClassType(containerClassInstance)(2, 2);
     assert(is ContainerClass.DefaultedParams o1_3);
+    Anything o1_3b = innerDefaultedClassType(containerClassInstance).apply(2, 2);
+    assert(is ContainerClass.DefaultedParams o1_3b);
 
     value containerInterfaceImplInstance = ContainerInterfaceImpl();
     value containerInterfaceType = typeLiteral<ContainerInterface>();
@@ -280,6 +303,8 @@ shared void checkMemberTypes(){
     assert(exists innerInterfaceClassType = containerInterfaceType.getClassOrInterface<ContainerInterface, Class<ContainerInterface.InnerClass, []>>("InnerClass"));
     Anything o2 = innerInterfaceClassType(containerInterfaceImplInstance)();
     assert(is ContainerInterface.InnerClass o2);
+    Anything o2b = innerInterfaceClassType(containerInterfaceImplInstance).apply();
+    assert(is ContainerInterface.InnerClass o2b);
     
     value parameterisedClassType = typeLiteral<ParameterisedContainerClass<Integer>>();
     assert(is Class<ParameterisedContainerClass<Integer>,[]> parameterisedClassType);
