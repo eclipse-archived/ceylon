@@ -112,7 +112,13 @@ public class TypeUtils {
             if (t.isAlias()) {
                 t = t.getExtendedType().getDeclaration();
             }
-            boolean qual = false;
+            //This wasn't needed but now we seem to get imported decls with no package when compiling ceylon.language.model types
+            boolean qual = imported;
+            final String modAlias = imported ? gen.getNames().moduleAlias(t.getUnit().getPackage().getModule()) : null;
+            if (modAlias != null && !modAlias.isEmpty()) {
+                gen.out(modAlias, ".");
+                qual = true;
+            }
             if (t.getScope() instanceof ClassOrInterface) {
                 List<ClassOrInterface> parents = new ArrayList<>();
                 ClassOrInterface parent = (ClassOrInterface)t.getScope();
@@ -121,20 +127,10 @@ public class TypeUtils {
                     parent = (ClassOrInterface)parent.getScope();
                     parents.add(0, parent);
                 }
-                if (imported) {
-                    gen.out(gen.getNames().moduleAlias(parents.get(0).getUnit().getPackage().getModule()), ".");
-                }
                 qual = true;
                 for (ClassOrInterface p : parents) {
                     gen.out(gen.getNames().name(p), ".");
                 }
-            } else if (imported) {
-                //This wasn't needed but now we seem to get imported decls with no package when compiling ceylon.language.model types
-                final String modAlias = gen.getNames().moduleAlias(t.getUnit().getPackage().getModule());
-                if (modAlias != null && !modAlias.isEmpty()) {
-                    gen.out(modAlias, ".");
-                }
-                qual = true;
             }
 
             if (t instanceof UnionType || t instanceof IntersectionType) {
