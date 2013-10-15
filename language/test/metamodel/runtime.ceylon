@@ -1137,81 +1137,130 @@ shared void checkTypeArgumentChecks(){
 
 shared void run() {
     print("Running Metamodel tests");
+    variable value total=0;
+    variable value pass =0;
     try {
+        total++;
         visitStringHierarchy();
+        pass++;
     } catch (Exception e) { print("Failed visit string hierarchy"); e.printStackTrace(); }
     try {
+        total++;
         checkPackageAndModule();
+        pass++;
     } catch (Exception e) { print("Failed check package and module"); e.printStackTrace(); }
     try {
+        total++;
         checkHierarchy();
+        pass++;
     } catch (Exception e) { print("Failed hierarchy"); e.printStackTrace(); }
     try {
+        total++;
         checkConstructors();    
+        pass++;
     } catch (Exception e) { print("Failed constructors"); e.printStackTrace(); }
     try {
+        total++;
         checkMemberFunctions();
+        pass++;
     } catch (Exception e) { print("Failed member functions"); e.printStackTrace(); }
     try {
+        total++;
         checkMemberAttributes();
+        pass++;
     } catch (Exception e) { print("Failed member attributes"); e.printStackTrace(); }
     try {
+        total++;
         checkMemberTypes();
+        pass++;
     } catch (Exception e) { print("Failed member types"); e.printStackTrace(); }
     try {
+        total++;
         checkToplevelAttributes();
+        pass++;
     } catch (Exception e) { print("Failed top level attributes"); e.printStackTrace(); }
     try {
+        total++;
         checkToplevelFunctions();
+        pass++;
     } catch (Exception e) { print("Failed top level functions"); e.printStackTrace(); }
     try {
+        total++;
         checkUntypedFunctionToAppliedFunction();
+        pass++;
     } catch (Exception e) { print("Failed untyped to applied function"); e.printStackTrace(); }
     try {
+        total++;
         checkModules();
+        pass++;
     } catch (Exception e) { print("Failed modules "); e.printStackTrace(); }
     try {
+        total++;
         checkObjectDeclaration();
+        pass++;
     } catch (Exception e) { print("Failed object declaration"); e.printStackTrace(); }
     try {
+        total++;
         checkAliases();
+        pass++;
     } catch (Exception e) { print("Failed aliases"); e.printStackTrace(); }
     try {
+        total++;
         checkTypeParameters();
+        pass++;
     } catch (Exception e) { print("Failed type parameters"); e.printStackTrace(); }
     try {
+        total++;
         checkClassOrInterfaceCaseTypes();
+        pass++;
     } catch (Exception e) { print("Failed class/interface case types"); e.printStackTrace(); }
     try {
+        total++;
         checkModifiers();
+        pass++;
     } catch (Exception e) { print("Failed modifiers"); e.printStackTrace(); }
     try {
+        total++;
         checkContainers();
+        pass++;
     } catch (Exception e) { print("Failed containers"); e.printStackTrace(); }
     try {
+        total++;
         checkLocalTypes();
+        pass++;
     } catch (Exception e) { print("Failed local types"); e.printStackTrace(); }
     try {
+        total++;
         checkEqualityAndHash();
+        pass++;
     } catch (Exception e) { print("Failed equals/hash"); e.printStackTrace(); }
     try {
+        total++;
         checkApplyTypeConstraints();
+        pass++;
     } catch (Exception e) { print("Failed apply type constraints"); e.printStackTrace(); }
     try {
+        total++;
         checkApplications();
+        pass++;
     } catch (Exception e) { print("Failed applications"); e.printStackTrace(); }
     try {
+        total++;
         checkTests();
+        pass++;
     } catch (Exception e) { print("Failed tests"); e.printStackTrace(); }
     try {
+        total++;
         checkTypeArgumentChecks();
+        pass++;
     } catch (Exception e) { print("Failed type arguments"); e.printStackTrace(); }
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
 
     // FIXME: test members() wrt filtering
     // FIXME: test untyped class to applied class
-    try { 
+    try {
+        total++;
     bug238();
     bug245();
     bug257();
@@ -1233,13 +1282,13 @@ shared void run() {
     bugC1201();
     bugC1210();
     bugC1244();
+        pass++;
     } catch (Exception e) {
         print("Failed bugs");
         e.printStackTrace();
     } 
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
-    
-    print("Metamodel tests OK");
+    print(pass==total then "Metamodel tests OK" else "Metamodel tests ``pass``/``total``");
 }
 shared void test() { run(); }
