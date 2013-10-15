@@ -482,6 +482,7 @@ public class TypeUtils {
         gen.out("function(){return{mod:$$METAMODEL$$");
         List<TypeParameter> tparms = d instanceof TypeDeclaration ? ((TypeDeclaration)d).getTypeParameters() : null;
         List<ProducedType> satisfies = null;
+        List<ProducedType> caseTypes = null;
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
             if (((com.redhat.ceylon.compiler.typechecker.model.Class) d).getExtendedType() != null) {
                 gen.out(",'super':");
@@ -489,10 +490,12 @@ public class TypeUtils {
                         ((com.redhat.ceylon.compiler.typechecker.model.Class) d).getExtendedType(), gen);
             }
             satisfies = ((com.redhat.ceylon.compiler.typechecker.model.Class) d).getSatisfiedTypes();
+            caseTypes = ((com.redhat.ceylon.compiler.typechecker.model.Class) d).getCaseTypes();
 
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
 
             satisfies = ((com.redhat.ceylon.compiler.typechecker.model.Interface) d).getSatisfiedTypes();
+            caseTypes = ((com.redhat.ceylon.compiler.typechecker.model.Interface) d).getCaseTypes();
 
         } else if (d instanceof MethodOrValue) {
 
@@ -560,10 +563,20 @@ public class TypeUtils {
             }
             gen.out("}");
         }
-        if (satisfies != null) {
+        if (satisfies != null && !satisfies.isEmpty()) {
             gen.out(",satisfies:[");
             boolean first = true;
             for (ProducedType st : satisfies) {
+                if (!first)gen.out(",");
+                first=false;
+                metamodelTypeNameOrList(d.getUnit().getPackage(), st, gen);
+            }
+            gen.out("]");
+        }
+        if (caseTypes != null && !caseTypes.isEmpty()) {
+            gen.out(",of:[");
+            boolean first = true;
+            for (ProducedType st : caseTypes) {
                 if (!first)gen.out(",");
                 first=false;
                 metamodelTypeNameOrList(d.getUnit().getPackage(), st, gen);
