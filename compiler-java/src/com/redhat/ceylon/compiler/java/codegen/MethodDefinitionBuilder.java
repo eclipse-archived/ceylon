@@ -94,8 +94,16 @@ public class MethodDefinitionBuilder {
         return new MethodDefinitionBuilder(gen, false, gen.naming.selector(method));
     }
     
-    public static MethodDefinitionBuilder method2(AbstractTransformer gen, String name) {
-        return new MethodDefinitionBuilder(gen, false, name);
+    public static MethodDefinitionBuilder method(AbstractTransformer gen, TypedDeclaration decl, int namingOptions) {
+        return new MethodDefinitionBuilder(gen, false, Naming.selector(decl, namingOptions));
+    }
+    
+    public static MethodDefinitionBuilder getter(AbstractTransformer gen, TypedDeclaration attr, boolean indirect) {
+        return new MethodDefinitionBuilder(gen, false, Naming.getGetterName(attr, indirect));
+    }
+    
+    public static MethodDefinitionBuilder setter(AbstractTransformer gen, TypedDeclaration attr) {
+        return new MethodDefinitionBuilder(gen, false, Naming.getSetterName(attr));
     }
     
     public static MethodDefinitionBuilder callable(AbstractTransformer gen) {

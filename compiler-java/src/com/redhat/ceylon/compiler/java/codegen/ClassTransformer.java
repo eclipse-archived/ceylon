@@ -365,7 +365,8 @@ public class ClassTransformer extends AbstractTransformer {
             // annotations are never explicitely final in Java
             sequencedBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | (transformClassDeclFlags(def) & ~FINAL));
             sequencedBuilder.annotations(makeAtRetention(RetentionPolicy.RUNTIME));
-            MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method2(this, "value");
+            MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, "value");
+            mdb.annotationFlags(Annotations.MODEL_AND_USER);
             mdb.modifiers(PUBLIC | ABSTRACT);
             mdb.resultType(null, make().TypeArray(makeJavaType(klass.getType(), JT_ANNOTATION)));
             mdb.noBody();
@@ -1923,10 +1924,9 @@ public class ClassTransformer extends AbstractTransformer {
 
     private MethodDefinitionBuilder makeAnnotationMethod(Tree.Parameter parameter) {
         Parameter parameterModel = parameter.getParameterModel();
-        String name = naming.selector(parameterModel.getModel(), Naming.NA_ANNOTATION_MEMBER);
         JCExpression type = transformAnnotationMethodType(parameter);
         JCExpression defaultValue = parameterModel.isDefaulted() ? transformAnnotationParameterDefault(parameter) : null;
-        MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method2(this, name);
+        MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method(this, parameterModel.getModel(), Naming.NA_ANNOTATION_MEMBER);
         if (isMetamodelReference(parameterModel.getType())
                 || 
                 (typeFact().isIterableType(parameterModel.getType())
@@ -2124,7 +2124,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         if (createCanonical) {
             // Creates the private "canonical" method containing the actual body
-            MethodDefinitionBuilder canonicalBuilder = MethodDefinitionBuilder.method2(this, Naming.selector(methodModel, Naming.NA_CANONICAL_METHOD));
+            MethodDefinitionBuilder canonicalBuilder = MethodDefinitionBuilder.method(this, methodModel, Naming.NA_CANONICAL_METHOD);
             MethodDefinitionBuilder canonicalMethod = new CanonicalMethod(daoTransformation, methodModel, body)
                 .makeOverload(
                     canonicalBuilder, 
