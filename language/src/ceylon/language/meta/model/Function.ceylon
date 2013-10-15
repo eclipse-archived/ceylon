@@ -18,7 +18,7 @@ shared interface Function<out Type=Anything, in Arguments=Nothing>
     
     "Type-unsafe function application, to be used when the argument types are unknown until runtime.
      
-     This has the same behaviour as invoking this Function directly, but exchanges compile-time type
+     This has the same behaviour as invoking this `Function` directly, but exchanges compile-time type
      safety with runtime checks."
     throws(`class IncompatibleTypeException`, "If any argument is not assignable to this function's corresponding parameter")
     throws(`class InvocationException`, "If there are not enough or too many provided arguments")
