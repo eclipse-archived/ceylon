@@ -950,7 +950,7 @@ shared void checkEqualityAndHash(){
 
 @test
 shared void checkApplyTypeConstraints(){
-    value ctpClass = `class ConstrainedTypeParams`;
+    ClassDeclaration ctpClass = `class ConstrainedTypeParams`;
     try{
         ctpClass.apply(`String`, `Object`);
         assert(false);
@@ -1261,27 +1261,45 @@ shared void run() {
     // FIXME: test untyped class to applied class
     try {
         total++;
-    bug238();
-    bug245();
-    bug257();
-    bug258();
-    bug263();
-    bug284();
-    bug285();
-    bug286();
-    bug300();
-    bug303();
-    bug304();
-    bug307();
-    bug308();
-    // those were filed for the JVM compiler initially
-    bugC1196test();
-    bugC1197();
-    bugC1198();
-    bugC1199();
-    bugC1201();
-    bugC1210();
-    bugC1244();
+        bug238();
+        pass++;total++;
+        bug245();
+        pass++;total++;
+        bug257();
+        pass++;total++;
+        bug258();
+        pass++;total++;
+        bug263();
+        pass++;total++;
+        bug284();
+        pass++;total++;
+        bug285();
+        pass++;total++;
+        bug286();
+        pass++;total++;
+        bug300();
+        pass++;total++;
+        bug303();
+        pass++;total++;
+        bug304();
+        pass++;total++;
+        bug307();
+        pass++;total++;
+        bug308();
+        pass++;total++;
+        // those were filed for the JVM compiler initially
+        bugC1196test();
+        pass++;total++;
+        bugC1197();
+        pass++;total++;
+        bugC1198();
+        pass++;total++;
+        bugC1199();
+        pass++;total++;
+        bugC1201();
+        bugC1210();
+        pass++;total++;
+        bugC1244();
         pass++;
     } catch (Exception e) {
         print("Failed bugs");
