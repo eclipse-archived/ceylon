@@ -329,7 +329,6 @@
         </chmod>
         <copy todir="${build.lib}">
             <fileset dir="${basedir}/lib">
-                <include name="antlr-runtime-*.jar" />
                 <include name="txtmark-*.jar" />
                 <include name="markdownpapers-core-*.jar" />
             </fileset>
