@@ -735,7 +735,14 @@ classInstantiation returns [SimpleType type, InvocationExpression invocationExpr
           ie.setPositionalArgumentList($positionalArguments.positionalArgumentList);
           $invocationExpression=ie; 
           p = ie; }
-      )?
+        /*|
+        namedArguments
+        { InvocationExpression ie = new InvocationExpression(null);
+          ie.setPrimary(p);
+          ie.setNamedArgumentList($namedArguments.namedArgumentList);
+          $invocationExpression=ie; 
+          p = ie; }*/
+      )
     ;
 
 satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
