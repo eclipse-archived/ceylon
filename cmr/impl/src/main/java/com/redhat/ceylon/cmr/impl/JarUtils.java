@@ -56,7 +56,12 @@ public final class JarUtils implements DependencyResolver, ModuleInfoReader {
 
     @Override
     public Node descriptor(Node artifact) {
-        throw new UnsupportedOperationException("Operation not implemented");
+        Node parent = NodeUtils.firstParent(artifact);
+        Node descriptor = parent .getChild(ArtifactContext.MODULE_XML);
+        if (descriptor == null) {
+            descriptor = parent.getChild(ArtifactContext.MODULE_PROPERTIES);
+        }
+        return descriptor;
     }
 
     @Override
