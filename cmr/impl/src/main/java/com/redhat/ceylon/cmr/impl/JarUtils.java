@@ -41,7 +41,12 @@ public final class JarUtils implements DependencyResolver, ModuleInfoReader {
 
     @Override
     public Set<ModuleInfo> resolve(ArtifactResult result) {
-        return getDependencies(result.artifact());
+        File mod = result.artifact();
+        if (mod != null && mod.getName().toLowerCase().endsWith(ArtifactContext.JAR)) {
+            return getDependencies(result.artifact());
+        } else {
+            return null;
+        }
     }
     
     @Override

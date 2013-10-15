@@ -47,7 +47,12 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
     }
 
     public Set<ModuleInfo> resolve(ArtifactResult result) {
-        return readModuleInformation(result.name(), result.artifact());
+        File mod = result.artifact();
+        if (mod != null && mod.getName().toLowerCase().endsWith(ArtifactContext.JS)) {
+            return readModuleInformation(result.name(), mod);
+        } else {
+            return null;
+        }
     }
     
     @Override
