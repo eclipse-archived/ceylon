@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import ceylon.language.meta.model.Model$impl;
+import ceylon.language.meta.model.MutationException;
 import ceylon.language.meta.model.Value$impl;
 import ceylon.language.meta.model.ValueModel$impl;
 
@@ -14,6 +15,7 @@ import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -42,10 +44,11 @@ public class AppliedValue<Type>
     private MethodHandle getter;
     private Object instance;
     private ceylon.language.meta.model.Type<? extends java.lang.Object> container;
+    protected ProducedType producedType;
 
     public AppliedValue(@Ignore TypeDescriptor $reifiedType, FreeAttribute value, ProducedTypedReference valueTypedReference, 
             ceylon.language.meta.model.Type<?> container, Object instance) {
-        ProducedType producedType = valueTypedReference.getType();
+        this.producedType = valueTypedReference.getType();
         this.container = container;
         this.type = Metamodel.getAppliedMetamodel(producedType);
         this.$reifiedType = $reifiedType;
@@ -178,6 +181,11 @@ public class AppliedValue<Type>
         }
     }
 
+    @Override
+    public java.lang.Object unsafeSet(@Name("newValue") @TypeInfo("ceylon.language::Anything") java.lang.Object newValue){
+        throw new MutationException("Value is not variable");
+    }
+    
     @Override
     @TypeInfo("ceylon.language.meta.model::Type<Type>")
     public ceylon.language.meta.model.Type<? extends Type> getType() {

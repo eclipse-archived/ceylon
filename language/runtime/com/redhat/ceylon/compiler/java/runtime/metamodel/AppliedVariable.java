@@ -7,13 +7,16 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import ceylon.language.meta.model.Variable$impl;
 import ceylon.language.meta.declaration.VariableDeclaration;
+import ceylon.language.meta.model.IncompatibleTypeException;
+import ceylon.language.meta.model.Variable$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
@@ -116,6 +119,15 @@ public class AppliedVariable<Type>
             Util.rethrow(e);
             return null;
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public java.lang.Object unsafeSet(@Name("newValue") @TypeInfo("ceylon.language::Anything") java.lang.Object newValue){
+        ProducedType newValueType = Metamodel.getProducedType(newValue);
+        if(!newValueType.isSubtypeOf(this.producedType))
+            throw new IncompatibleTypeException("Invalid new value type: "+newValueType+", expecting: "+this.producedType);
+        return set((Type) newValue);
     }
 
     @Override
