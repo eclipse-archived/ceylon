@@ -319,6 +319,26 @@ shared void checkMemberTypes(){
     assert(exists parameterisedInnerClassMember);
     Anything parameterisedInnerClassType = parameterisedInnerClassMember(ParameterisedContainerClass<Integer>());
     assert(is Class<ParameterisedContainerClass<Integer>.InnerClass<String>,[]> parameterisedInnerClassType);
+
+    // inner interface
+    Anything innerInterfaceModel = containerClassType.getInterface<ContainerClass, ContainerClass.InnerInterface>("InnerInterface");
+    assert(is MemberInterface<ContainerClass, ContainerClass.InnerInterface> innerInterfaceModel);
+    
+    try{
+        // get a class as an interface
+        containerClassType.getInterface<ContainerClass, ContainerClass.InnerClass>("InnerClass");
+        assert(false);
+    }catch(Exception x){
+        assert(is IncompatibleTypeException x);
+    }
+
+    try{
+        // get an interface as a class
+        containerClassType.getClass<ContainerClass, ContainerClass.InnerInterface, Nothing>("InnerInterface");
+        assert(false);
+    }catch(Exception x){
+        assert(is IncompatibleTypeException x);
+    }
     
     // private member type
     assert(exists privateMemberType = `PrivateClass`.getClassOrInterface<PrivateClass, Class<Object,[]>>("Inner"));
