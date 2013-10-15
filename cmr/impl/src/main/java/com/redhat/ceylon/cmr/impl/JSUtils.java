@@ -25,6 +25,7 @@ import java.util.Set;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -117,20 +118,37 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
     
     public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive) {
         ScriptEngine engine = getEngine(moduleArchive);
-        try {
-            Object name = engine.eval("exports.$$METAMODEL$$()['$mod-name']");
-            if (!moduleName.equals(name)) {
-                throw new RuntimeException("Incorrect module");
+        Object name = safeEval(engine, "exports.$$METAMODEL$$()['$mod-name']");
+        if (!moduleName.equals(name)) {
+            throw new RuntimeException("Incorrect module");
+        }
+        String version = asString(safeEval(engine, "exports.$$METAMODEL$$()['$mod-version']"));
+        Set<ModuleInfo> deps = getDependencies(engine);
+        
+        String type = ArtifactContext.getSuffixFromFilename(moduleArchive.getName());
+
+        Integer mayor = null, minor = null;
+        String bin = asString(safeEval(engine, "exports.$$METAMODEL$$()['$mod-bin']"));
+        if (bin != null) {
+            int p = bin.indexOf('.');
+            if (p >= 0) {
+                mayor = Integer.parseInt(bin.substring(0, p));
+                minor = Integer.parseInt(bin.substring(p + 1));
+            } else {
+                mayor = Integer.parseInt(bin);
             }
-            String version = asString(engine.eval("exports.$$METAMODEL$$()['$mod-version']"));
-            Set<ModuleInfo> deps = getDependencies(engine);
-            String type = ArtifactContext.getSuffixFromFilename(moduleArchive.getName());
-            
-            ModuleVersionDetails mvd = new ModuleVersionDetails(version);
-            mvd.getArtifactTypes().add(new ModuleVersionArtifact(type, null, null));
-            mvd.getDependencies().addAll(deps);
-            return mvd;
-        } catch (Exception ex) {
+        }
+        
+        ModuleVersionDetails mvd = new ModuleVersionDetails(version);
+        mvd.getArtifactTypes().add(new ModuleVersionArtifact(type, mayor, minor));
+        mvd.getDependencies().addAll(deps);
+        return mvd;
+    }
+    
+    private static Object safeEval(ScriptEngine engine, String code) {
+        try {
+            return engine.eval(code);
+        } catch (ScriptException ex) {
             throw new RuntimeException("Failed to parse module JS file", ex);
         }
     }
