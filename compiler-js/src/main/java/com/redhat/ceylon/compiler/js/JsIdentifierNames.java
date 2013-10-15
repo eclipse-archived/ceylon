@@ -282,9 +282,9 @@ public class JsIdentifierNames {
         boolean nonLocal = !priv;
         if (nonLocal) {
             // check if it's a shared member or a toplevel function
-            nonLocal = (decl.isShared() && decl.isMember())
-                || (decl.isToplevel() && (forGetterSetter || (decl instanceof Method)
-                || (decl instanceof ClassOrInterface) || (decl instanceof TypeAlias)));
+            nonLocal = decl.isMember() ? decl.isShared() || decl instanceof TypeDeclaration :
+                decl.isToplevel() && (forGetterSetter || (decl instanceof Method)
+                || (decl instanceof ClassOrInterface) || (decl instanceof TypeAlias));
         }
         if (nonLocal && decl instanceof com.redhat.ceylon.compiler.typechecker.model.Class
                 && ((com.redhat.ceylon.compiler.typechecker.model.Class)decl).isAnonymous()) {
