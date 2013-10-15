@@ -142,6 +142,7 @@
               tofile="${build.dist.repo}/${jboss-modules.dir}/main/${jboss-modules.module}"/>
         <copy file="${jboss-jandex.lib}" tofile="${build.dist.repo}/${jboss-jandex.dir}/main/${jboss-jandex.module}"/>
         <copy file="${jboss-logmanager.lib}" tofile="${build.dist.repo}/${jboss-logmanager.dir}/main/${jboss-logmanager.module}"/>
+        <copy file="${antlr.lib}" tofile="${build.dist.repo}/${antlr.dir}/${antlr.version}/${antlr.module}"/>
     </target>
 
 	<target name="dist-for-tests" description="Copy jars in the repo used by tests">
@@ -162,13 +163,15 @@
     <target name="publish-libs">
         <copy file="${jboss-modules.lib}"
             tofile="${build.dist.repo}/${jboss-modules.dir}/main/${jboss-modules.module}"/>
+        <copy file="${jboss-jandex.lib}" tofile="${build.dist.repo}/${jboss-jandex.dir}/main/${jboss-jandex.module}"/>
         <copy file="${jboss-logmanager.lib}"
             tofile="${build.dist.repo}/${jboss-logmanager.dir}/main/${jboss-logmanager.module}"/>
+        <copy file="${antlr.lib}" tofile="${build.dist.repo}/${antlr.dir}/${antlr.version}/${antlr.module}"/>
     </target>
 
     <target name="publish-internal" depends="init.repo">
-        <copy todir="${ceylon.runtime.repo}" overwrite="true">
-            <fileset dir="${ceylon.runtime.dist}"/>
+        <copy todir="${ceylon.repo.dir}" overwrite="true">
+            <fileset dir="${build.dist.repo}"/>
         </copy>
     </target>
 
