@@ -153,7 +153,7 @@
 
         <mkdir dir="${build.poms}" />
 
-        <artifact:pom id="antlr.pom.tmp" groupId="org.ceylon-lang" artifactId="antlr-complete" name="antlr-complete" version="${antlr.version}">
+        <artifact:pom id="antlr.pom.tmp" groupId="org.ceylon-lang" artifactId="antlr-runtime" name="antlr-runtime" version="${antlr.version}">
         </artifact:pom>
         <artifact:writepom pomrefid="antlr.pom.tmp" file="${build.poms}/antlr.xml" />
         <artifact:pom id="antlr.pom" file="${build.poms}/antlr.xml" />
@@ -166,7 +166,7 @@
         <artifact:install pomrefid="common.pom" file="${ceylon.common.lib}" />
 
         <artifact:pom id="typechecker.pom.tmp" groupId="org.ceylon-lang" artifactId="ceylon-spec" name="ceylon-spec" version="${module.com.redhat.ceylon.typechecker.version}">
-            <dependency groupId="org.ceylon-lang" artifactId="antlr-complete" version="${antlr.version}" />
+            <dependency groupId="org.ceylon-lang" artifactId="antlr-runtime" version="${antlr.version}" />
         </artifact:pom>
         <artifact:writepom pomrefid="typechecker.pom.tmp" file="${build.poms}/typechecker.xml" />
         <artifact:pom id="typechecker.pom" file="${build.poms}/typechecker.xml" />
@@ -329,7 +329,7 @@
         </chmod>
         <copy todir="${build.lib}">
             <fileset dir="${basedir}/lib">
-                <include name="antlr-*-complete.jar" />
+                <include name="antlr-runtime-*.jar" />
                 <include name="txtmark-*.jar" />
                 <include name="markdownpapers-core-*.jar" />
             </fileset>
