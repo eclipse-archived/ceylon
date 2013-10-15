@@ -101,7 +101,6 @@ public class AppliedVariable<Type>
     @Override
     @Ignore
     public Variable$impl<Type> $ceylon$language$meta$model$Variable$impl() {
-        // TODO Auto-generated method stub
         return null;
     }
 
