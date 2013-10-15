@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.compiler.java.codegen.Naming.Prefix;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -42,8 +43,13 @@ public class ParameterAnnotationTerm extends AnnotationTerm implements Annotatio
     }
     
     @Override
-    public String getFieldNamePart() {
-        return "default$" + sourceParameter.getName();
+    public String getFieldName() {
+        return sourceParameter.getName();
+    }
+    
+    @Override
+    public Prefix getFieldNamePrefix() {
+        return Prefix.default$;
     }
 
     @Override

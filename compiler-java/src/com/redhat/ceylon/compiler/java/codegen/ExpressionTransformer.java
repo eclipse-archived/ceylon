@@ -32,8 +32,11 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.codegen.Invocation.TransformedInvocationPrimary;
+import com.redhat.ceylon.compiler.java.codegen.Naming.Prefix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
+import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
+import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
 import com.redhat.ceylon.compiler.java.codegen.Operators.AssignmentOperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
@@ -2945,7 +2948,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             
             for (ExpressionAndType argument : superArgumentsAndTypes) {
-                SyntheticName argMethodName = naming.synthetic("super$arg$"+argumentNum);
+                SyntheticName argMethodName = naming.synthetic(Prefix.super$arg$, argumentNum);
                 argumentNum++;
 
                 // Generate a static super$arg$N() method on the class
@@ -3151,7 +3154,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(expr);
 
         // iterable
-        Naming.SyntheticName srcIterableName = varBaseName.suffixedBy("$iterable");
+        Naming.SyntheticName srcIterableName = varBaseName.suffixedBy(Suffix.$iterable);
         // make sure we get an Iterable<T> where T is the type we're going to invoke the member on, because
         // we might have a sequence of something erased to Object, like A&B, and we only invoke the member on A
         // which is not erased, so let's not even look at the contents of the sequence, but just the target type
@@ -3160,7 +3163,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression srcIterableExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, typeFact().getIterableType(srcElementType));
 
         // sequenceBuilder
-        Naming.SyntheticName builderVar = varBaseName.suffixedBy("$sequenceBuilder");
+        Naming.SyntheticName builderVar = varBaseName.suffixedBy(Suffix.$sequenceBuilder);
         ProducedType returnElementType = expr.getTarget().getType();
         ProducedType builderType = typeFact().getSequenceBuilderType(returnElementType).getType();
         JCExpression builderTypeExpr = makeJavaType(builderType);
@@ -3168,7 +3171,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 List.<JCExpression>of(makeReifiedTypeArgument(returnElementType)), null);
 
         // element.member
-        final SyntheticName elementVar = varBaseName.suffixedBy("$element");
+        final SyntheticName elementVar = varBaseName.suffixedBy(Suffix.$element);
         JCExpression elementExpr = elementVar.makeIdent();
         elementExpr = applyErasureAndBoxing(elementExpr, srcElementType, CodegenUtil.hasTypeErased(expr.getPrimary()),
                 true, BoxingStrategy.BOXED, 
@@ -3193,7 +3196,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(expr);
         
         // SRC_ELEMENT_TYPE element = (SRC_ELEMENT_TYPE)iteration;
-        final SyntheticName iterationVar = varBaseName.suffixedBy("$iteration");
+        final SyntheticName iterationVar = varBaseName.suffixedBy(Suffix.$iteration);
         JCExpression iteration = iterationVar.makeIdent();
         if (!willEraseToObject(srcElementType)) {
             iteration = make().TypeCast(makeJavaType(srcElementType, JT_NO_PRIMITIVES), 
@@ -3215,7 +3218,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 List.<JCExpression>of(appliedExpr)));
         
         // The for loop
-        final Naming.SyntheticName srcIteratorName = varBaseName.suffixedBy("$iterator");
+        final Naming.SyntheticName srcIteratorName = varBaseName.suffixedBy(Suffix.$iterator);
         backwardBranch(expr);
         List<JCStatement> forStmt = statementGen().transformIterableIteration(expr, 
                 iterationVar, srcIteratorName, 
@@ -4175,7 +4178,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             try{
                 Tree.ComprehensionClause clause = comp.getForComprehensionClause();
                 while (clause != null) {
-                    final Naming.SyntheticName iterVar = naming.synthetic("iter$"+idx);
+                    final Naming.SyntheticName iterVar = naming.synthetic(Prefix.iter$, idx);
                     Naming.SyntheticName itemVar = null;
                     if (clause instanceof Tree.ForComprehensionClause) {
                         final Tree.ForComprehensionClause fcl = (Tree.ForComprehensionClause)clause;
@@ -4230,7 +4233,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 boolean prev = uninitializedOperand(true);
                 iterables.add(transformExpression(specexpr.getExpression()));
                 uninitializedOperand(prev);
-                iterableExpr = make().Indexed(make().Apply(null, naming.makeUnquotedIdent("$getIterables"), List.<JCExpression>nil()),
+                iterableExpr = make().Indexed(make().Apply(null, naming.makeUnquotedIdent(Unfix.$getIterables), List.<JCExpression>nil()),
                         make().Literal(iterables.size()-1));
             } else {
                 iterableExpr =  transformExpression(specexpr.getExpression());
@@ -4394,7 +4397,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             //Filter contexts need to check if the previous context applies and then check the condition
             JCExpression condExpr = make().Apply(null,
                 ctxtName.makeIdentWithThis(), List.<JCExpression>nil());
-            ctxtName = naming.synthetic("next"+idx);
+            ctxtName = naming.synthetic(Prefix.next, idx);
             
             IfComprehensionCondList ifComprehensionCondList = new IfComprehensionCondList(clause.getConditionList().getConditions(), condExpr);
             List<JCStatement> ifs = ifComprehensionCondList.getResult();
@@ -4404,7 +4407,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 .modifiers(Flags.PRIVATE | Flags.FINAL)
                 .resultType(null, makeJavaType(typeFact().getBooleanDeclaration().getType()))
                 .body(loop)
-                .body(make().Return(make().Unary(JCTree.NOT, prevItemVar.suffixedBy("$exhausted").makeIdent())));
+                .body(make().Return(make().Unary(JCTree.NOT, prevItemVar.suffixedBy(Suffix.$exhausted).makeIdent())));
             fields.add(mb.build());
         }
 
@@ -4429,7 +4432,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), iterVar.asName(), iterTypeExpr, null));
                 fieldNames.add(iterVar.getName());
                 JCBlock body = make().Block(0l, List.<JCStatement>of(
-                        make().If(lastIteratorCtxtName.suffixedBy("$exhausted").makeIdent(),
+                        make().If(lastIteratorCtxtName.suffixedBy(Suffix.$exhausted).makeIdent(),
                                   make().Return(makeBoolean(false)),
                                   null),
                         make().If(make().Binary(JCTree.NE, iterVar.makeIdent(), makeNull()),
@@ -4451,7 +4454,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     
                 //Add the item variable as a field in the iterator
                 Value item = ((Tree.ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel();
-                itemVar = naming.synthetic(item.getName());
+                itemVar = naming.synthetic(item);
                 valueCaptures.append(makeVar(Flags.FINAL, itemVar, 
                         makeJavaType(item.getType(),JT_NO_PRIMITIVES), itemVar.makeIdentWithThis()));
                 fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), itemVar.asName(),
@@ -4464,7 +4467,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 Value kdec = kviter.getKeyVariable().getDeclarationModel();
                 Value vdec = kviter.getValueVariable().getDeclarationModel();
                 //But we'll use this as the name for the context function and base for the exhausted field
-                itemVar = naming.synthetic("kv$" + kdec.getName() + "$" + vdec.getName());
+                itemVar = naming.synthetic(Prefix.kv$, kdec.getName(), vdec.getName());
                 fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), names().fromString(kdec.getName()),
                         makeJavaType(kdec.getType(), JT_NO_PRIMITIVES), null));
                 fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), names().fromString(vdec.getName()),
@@ -4475,7 +4478,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 error = makeErroneous(fcl, "compiler bug: iterators of type " + fcl.getForIterator().getNodeType() + " not yet suuported");
                 return null;
             }
-            fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), itemVar.suffixedBy("$exhausted").asName(),
+            fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), itemVar.suffixedBy(Suffix.$exhausted).asName(),
                     makeJavaType(typeFact().getBooleanDeclaration().getType()), null));
             
             //Now the context for this iterator
@@ -4488,7 +4491,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     make().Apply(null, makeSelect(iterVar.makeIdent(), "next"), 
                             List.<JCExpression>nil())));
             //Then we check if it's exhausted
-            contextBody.add(make().Exec(make().Assign(itemVar.suffixedBy("$exhausted").makeIdent(),
+            contextBody.add(make().Exec(make().Assign(itemVar.suffixedBy(Suffix.$exhausted).makeIdent(),
                     make().Binary(JCTree.EQ, tmpItem.makeIdent(), makeFinished()))));
             //Variables get assigned in the else block
             ListBuffer<JCStatement> elseBody = new ListBuffer<JCStatement>();
@@ -4505,8 +4508,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression castEntryExprKey = make().TypeCast(
                     makeJavaType(typeFact().getIteratedType(iterType)),
                     tmpItem.makeIdent());
-                SyntheticName keyName = naming.synthetic(key.getName());
-                SyntheticName itemName = naming.synthetic(item.getName());
+                SyntheticName keyName = naming.synthetic(key);
+                SyntheticName itemName = naming.synthetic(item);
                 valueCaptures.append(makeVar(Flags.FINAL, keyName, 
                         makeJavaType(key.getType(), JT_NO_PRIMITIVES), 
                         keyName.makeIdentWithThis()));
@@ -4539,7 +4542,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 innerBody.add(make().Return(makeBoolean(false)));
             }
             //Assign the next item to the corresponding variables if not exhausted yet
-            contextBody.add(make().If(itemVar.suffixedBy("$exhausted").makeIdent(),
+            contextBody.add(make().If(itemVar.suffixedBy(Suffix.$exhausted).makeIdent(),
                 make().Block(0, innerBody.toList()),
                 make().Block(0, elseBody.toList())));
             

@@ -39,6 +39,7 @@ import java.util.Set;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
+import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.DeferredSpecification;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -261,9 +262,9 @@ public class ClassTransformer extends AbstractTransformer {
                     // the Java annotations in their Ceylon annotation class
                     argExpr = make().Apply(null, naming.makeUnquotedIdent(naming.getAnnotationSequenceMethodName()), List.of(annoAttr));
                     ListBuffer<JCStatement> stmts = ListBuffer.lb();
-                    SyntheticName array = naming.synthetic("array$");
-                    SyntheticName sb = naming.synthetic("sb$");
-                    SyntheticName element = naming.synthetic("element$");
+                    SyntheticName array = naming.synthetic(Unfix.array$);
+                    SyntheticName sb = naming.synthetic(Unfix.sb$);
+                    SyntheticName element = naming.synthetic(Unfix.element$);
                     stmts.append(makeVar(FINAL, sb, 
                             makeJavaType(typeFact().getSequenceBuilderType(iteratedType)),
                             make().NewClass(null, null, makeJavaType(typeFact().getSequenceBuilderType(iteratedType), JT_CLASS_NEW), List.<JCExpression>of(makeReifiedTypeArgument(iteratedType)), null)));

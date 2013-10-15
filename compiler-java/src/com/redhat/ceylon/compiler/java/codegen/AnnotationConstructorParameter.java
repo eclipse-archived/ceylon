@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.compiler.java.codegen.Naming.Prefix;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 
 /**
@@ -41,8 +42,13 @@ public class AnnotationConstructorParameter implements AnnotationFieldName {
     }
 
     @Override
-    public String getFieldNamePart() {
-        return "default$"+parameter.getName();
+    public String getFieldName() {
+        return parameter.getName();
+    }
+    
+    @Override
+    public Prefix getFieldNamePrefix() {
+        return Prefix.default$;
     }
 
     @Override

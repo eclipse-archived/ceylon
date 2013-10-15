@@ -30,6 +30,7 @@ import java.util.LinkedHashMap;
 import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SubstitutedName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
+import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.typechecker.model.ConditionScope;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
@@ -1367,7 +1368,7 @@ public class StatementTransformer extends AbstractTransformer {
                 throw new RuntimeException("Unknown ForIterator");
             }
             
-            final Naming.SyntheticName loopVarName = naming.synthetic(variable.getIdentifier().getText());
+            final Naming.SyntheticName loopVarName = naming.synthetic(variable.getDeclarationModel());
             Tree.Expression specifierExpression = iterDecl.getSpecifierExpression().getExpression();
             ProducedType sequenceElementType;
             if(valueVariable == null)
@@ -1401,7 +1402,7 @@ public class StatementTransformer extends AbstractTransformer {
             }
             JCVariableDecl itemOrKeyDecl = at(stmt).VarDef(make().Modifiers(FINAL, annots), loopVarName.asName(), makeJavaType(loopVarType), 
                     boxUnboxIfNecessary(loopVarInit, true, loopVarType, CodegenUtil.getBoxingStrategy(variable.getDeclarationModel())));
-            final SyntheticName iteratorVarName = loopVarName.suffixedBy("$iter").alias();
+            final SyntheticName iteratorVarName = loopVarName.suffixedBy(Suffix.$iter).alias();
             List<JCStatement> itemDecls = List.<JCStatement> of(itemOrKeyDecl);
 
             if (valueVariable != null) {

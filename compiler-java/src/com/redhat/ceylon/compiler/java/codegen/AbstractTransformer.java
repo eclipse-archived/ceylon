@@ -2821,7 +2821,7 @@ public abstract class AbstractTransformer implements Transformation {
     private JCExpression objectSequentialToJavaArray(ProducedType type, JCExpression expr, List<JCExpression> initialElements) {
         JCExpression klass1 = makeJavaType(type, JT_RAW | JT_NO_PRIMITIVES);
         JCExpression klass2 = makeJavaType(type, JT_CLASS_NEW | JT_NO_PRIMITIVES);
-        Naming.SyntheticName seqName = naming.temp().suffixedBy("$0");
+        Naming.SyntheticName seqName = naming.temp().suffixedBy(0);
 
         ProducedType fixedSizedType = typeFact().getSequentialDeclaration().getProducedType(null, Arrays.asList(type));
         JCExpression seqTypeExpr1 = makeJavaType(fixedSizedType);

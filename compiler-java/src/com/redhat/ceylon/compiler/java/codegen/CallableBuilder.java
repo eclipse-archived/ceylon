@@ -28,6 +28,7 @@ import java.util.Collections;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
+import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -198,12 +199,11 @@ public class CallableBuilder {
             ProducedType typeModel, 
             final Functional methodOrClass, 
             ProducedReference producedReference) {
-        final String instanceName = "$instance";
         final ParameterList parameterList = methodOrClass.getParameterLists().get(0);
         final ProducedType type = gen.getReturnTypeOfCallable(typeModel);
         CallableBuilder inner = new CallableBuilder(gen, type, parameterList);
         inner.parameterTypes = inner.getParameterTypesFromCallableModel();//FromParameterModels();
-        class InstanceDefaultValueCall implements DefaultValueMethodTransformation {            
+        class InstanceDefaultValueCall implements DefaultValueMethodTransformation {
             @Override
             public JCExpression makeDefaultValueMethod(AbstractTransformer gen, Parameter defaultedParam, Tree.Term forwardCallTo, List<JCExpression> defaultMethodArgs) {
                 if (methodOrClass instanceof Method
@@ -214,7 +214,7 @@ public class CallableBuilder {
                     // and it's default is always empty.
                     return gen.makeEmptyAsSequential(true);
                 }
-                JCExpression fn = gen.makeQualIdent(gen.naming.makeUnquotedIdent(instanceName), 
+                JCExpression fn = gen.makeQualIdent(gen.naming.makeUnquotedIdent(Unfix.$instance), 
                         Naming.getDefaultedParamMethodName((Declaration)methodOrClass, defaultedParam));
                 return gen.make().Apply(null, 
                         fn,
@@ -224,15 +224,15 @@ public class CallableBuilder {
         inner.defaultValueCall = new InstanceDefaultValueCall();
         CallBuilder callBuilder = CallBuilder.instance(gen);
         if (methodOrClass instanceof Method) {
-            callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(instanceName), (Method)methodOrClass, Naming.NA_MEMBER));
+            callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance), (Method)methodOrClass, Naming.NA_MEMBER));
         } else if (methodOrClass instanceof Method
                 && ((Method)methodOrClass).isParameter()) {
-            callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(instanceName), (Method)methodOrClass, Naming.NA_MEMBER));
+            callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance), (Method)methodOrClass, Naming.NA_MEMBER));
         } else if (methodOrClass instanceof Class) {
             if (Strategy.generateInstantiator((Class)methodOrClass)) {
-                callBuilder.invoke(gen.naming.makeInstantiatorMethodName(gen.naming.makeUnquotedIdent(instanceName), (Class)methodOrClass));
+                callBuilder.invoke(gen.naming.makeInstantiatorMethodName(gen.naming.makeUnquotedIdent(Unfix.$instance), (Class)methodOrClass));
             } else {
-                callBuilder.instantiate(new ExpressionAndType(gen.naming.makeUnquotedIdent(instanceName), null), 
+                callBuilder.instantiate(new ExpressionAndType(gen.naming.makeUnquotedIdent(Unfix.$instance), null), 
                         gen.makeJavaType(((Class)methodOrClass).getType(), JT_CLASS_NEW));
             }
         } else {
@@ -265,7 +265,7 @@ public class CallableBuilder {
         
         ParameterList outerPl = new ParameterList();
         Parameter instanceParameter = new Parameter();
-        instanceParameter.setName(instanceName);
+        instanceParameter.setName(Naming.name(Unfix.$instance));
         Value valueModel = new Value();
         instanceParameter.setModel(valueModel);
         valueModel.setType(gen.getParameterTypeOfCallable(typeModel, 0));
@@ -290,16 +290,14 @@ public class CallableBuilder {
     public static CallableBuilder unboundValueMemberReference(CeylonTransformer gen, 
             ProducedType typeModel, 
             final TypedDeclaration value) {
-        final String instanceName = "$instance";
-        
         CallBuilder callBuilder = CallBuilder.instance(gen);
-        callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(instanceName), value, Naming.NA_GETTER | Naming.NA_MEMBER));
+        callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance), value, Naming.NA_GETTER | Naming.NA_MEMBER));
         JCExpression innerInvocation = callBuilder.build();
         innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, value.getType(), !value.getUnboxed(), BoxingStrategy.BOXED, value.getType());
         
         ParameterList outerPl = new ParameterList();
         Parameter instanceParameter = new Parameter();
-        instanceParameter.setName(instanceName);
+        instanceParameter.setName(Naming.name(Unfix.$instance));
         Value valueModel = new Value();
         instanceParameter.setModel(valueModel);
         valueModel.setType(gen.getParameterTypeOfCallable(typeModel, 0));
@@ -678,7 +676,7 @@ public class CallableBuilder {
     private JCExpression makeRespread(List<JCExpression> arguments) {
         
         JCExpression invocation = gen.make().Apply(null, 
-                gen.naming.makeUnquotedIdent("$spreadVarargs"), 
+                gen.naming.makeUnquotedIdent(Naming.name(Unfix.$spreadVarargs)), 
                 arguments);
         if (getVariadicParameter().isAtLeastOne()) {
             //invocation = gen.expressionGen().applyErasureAndBoxing(

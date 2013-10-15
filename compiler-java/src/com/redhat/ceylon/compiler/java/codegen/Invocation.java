@@ -32,6 +32,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
+import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -971,7 +972,7 @@ class NamedArgumentInvocation extends Invocation {
         this.producedReference = producedReference;
         namedArgumentList = invocation.getNamedArgumentList();
         varBaseName = gen.naming.alias("arg");
-        callVarName = varBaseName.suffixedBy("$callable$");
+        callVarName = varBaseName.suffixedBy(Suffix.$callable$);
     }
     
     @Override
@@ -1063,7 +1064,7 @@ class NamedArgumentInvocation extends Invocation {
             thisExpr = callVarName.makeIdent();
             break;
         case INIT_COMPANION:
-            thisExpr = varBaseName.suffixedBy("$this$").makeIdent();
+            thisExpr = varBaseName.suffixedBy(Suffix.$this$).makeIdent();
             if (isOnValueType()) {
                 thisExpr = gen.boxType(thisExpr, getQmePrimary().getTypeModel());
             }
@@ -1082,7 +1083,7 @@ class NamedArgumentInvocation extends Invocation {
         ListBuffer<JCExpression> names = ListBuffer.<JCExpression> lb();
         if (!Strategy.defaultParameterMethodStatic(getPrimaryDeclaration())
                 && Strategy.defaultParameterMethodTakesThis(param.getModel())) {
-            names.append(varBaseName.suffixedBy("$this$").makeIdent());
+            names.append(varBaseName.suffixedBy(Suffix.$this$).makeIdent());
         }
         // put all the required reified type args too
         int tpCount = gen.getTypeParameters(producedReference).size();
@@ -1103,8 +1104,7 @@ class NamedArgumentInvocation extends Invocation {
         //if (this.argNames.isEmpty()) {
             //this.argNames.addAll(Collections.<String>nCopies(parameterList(param).size(), null));
         //}
-        String suffix = "$" + paramIndex;
-        final Naming.SyntheticName argName = varBaseName.suffixedBy(suffix);
+        final Naming.SyntheticName argName = varBaseName.suffixedBy(paramIndex);
         if (this.argsNamesByIndex.containsValue(argName)) {
             throw new RuntimeException();
         }
@@ -1117,7 +1117,7 @@ class NamedArgumentInvocation extends Invocation {
     /** Generates the argument name; namedArg may be null if no  
      * argument was given explicitly */
     private Naming.SyntheticName reifiedTypeArgName(int index) {
-        return varBaseName.suffixedBy("$reified$" + index);
+        return varBaseName.suffixedBy(Suffix.$reified$, index);
     }
 
     private java.util.List<Parameter> parameterList(Parameter param) {
@@ -1340,7 +1340,7 @@ class NamedArgumentInvocation extends Invocation {
                                 argExpr = gen.makeInteger(0);
                                 hasDefaulted |= true;
                             }else if(param.getName().equals("length")){
-                                argExpr = gen.makeSelect(varBaseName.suffixedBy("$this$").makeIdent(), "length");
+                                argExpr = gen.makeSelect(varBaseName.suffixedBy(Suffix.$this$).makeIdent(), "length");
                                 hasDefaulted |= true;
                             }else{
                                 argExpr = gen.makeErroneous(this.getNode(), "compiler bug: argument to copyTo method of java array type not supported: "+param.getName());
@@ -1402,7 +1402,7 @@ class NamedArgumentInvocation extends Invocation {
             }
             defaultedParameterInstance = callVarName.makeIdent();
         }
-        JCVariableDecl thisDecl = gen.makeVar(varBaseName.suffixedBy("$this$"), 
+        JCVariableDecl thisDecl = gen.makeVar(varBaseName.suffixedBy(Suffix.$this$), 
                 thisType, 
                 defaultedParameterInstance);
         return thisDecl;

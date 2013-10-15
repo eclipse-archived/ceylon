@@ -1,12 +1,12 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
-import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 
@@ -258,12 +258,12 @@ public class CallBuilder {
     }
 
     private SyntheticName getArgumentName(Naming.SyntheticName basename, int argumentNum) {
-        SyntheticName name = basename.suffixedBy("$arg$"+argumentNum);
+        SyntheticName name = basename.suffixedBy(Suffix.$arg$, argumentNum);
         return name;
     }
 
     private SyntheticName getQualifierName(Naming.SyntheticName basename) {
-        SyntheticName qualName = basename.suffixedBy("$qual");
+        SyntheticName qualName = basename.suffixedBy(Suffix.$qual);
         return qualName;
     }
 

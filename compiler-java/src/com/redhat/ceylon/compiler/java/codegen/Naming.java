@@ -65,9 +65,112 @@ import com.sun.tools.javac.util.Names;
 
 public class Naming implements LocalId {
 
-    private static final String IMPL_POSTFIX = "$impl";
-    private static final String ANNO_POSTFIX = "$annotation";
-    private static final String ANNOS_POSTFIX = "$annotations";
+    /**
+     * A synthetic name, or part of a synthetic name 
+     */
+    interface Affix {
+    }
+    
+    /**
+     * Enumerates suffixes used in synthetic names
+     */
+    enum Unfix implements Affix {
+        $annotationSequence,
+        $TypeDescriptor,
+        $refine,
+        $getType,
+        $call,
+        $call$variadic,
+        $call$typed, 
+        ref, 
+        set_, 
+        get_, 
+        value, array$, sb$, element$, $getIterables, $spreadVarargs, $instance,
+    }
+    
+    /**
+     * Enumerates suffixes used in synthetic names
+     */
+    enum Suffix implements Affix {
+        $impl,
+        $specifier,
+        $new,
+        $getter,
+        $setter,
+        $priv, 
+        $this, 
+        $annotation, 
+        $annotations, 
+        $this$, 
+        $qual, $callable$, $iter, $exhausted, $iterable, $sequenceBuilder, $element, $iteration, $iterator, $arg$, $reified$,
+    }
+    
+    /**
+     * Enumerates prefixes used in synthetic names
+     */
+    enum Prefix implements Affix {
+        $reified,
+        $init$, arg$, default$, iter$, next, super$arg$, $arg$, kv$, $ceylontmp,
+    }
+    
+    static String name(Unfix unfix) {
+        return unfix.toString();
+    }
+    
+    private static String prefixName(Prefix prefix, String s) {
+        return prefix.toString() + s;
+    }
+    
+    private static String prefixName(Prefix prefix, String... rest) {
+        if (rest.length == 0) {
+            throw new RuntimeException();
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(prefix);
+        for (String s : rest) {
+            sb.append(s).append('$');
+        }
+        
+        sb.setLength(sb.length()-1);// remove last $
+        return sb.toString();
+    }
+    
+    private static String suffixName(Suffix suffix, String s) {
+        return s + suffix.toString();
+    }
+    
+    private static String suffixName(Suffix suffix, String... rest) {
+        if (rest.length == 0) {
+            throw new RuntimeException();
+        }
+        StringBuilder sb = new StringBuilder();
+        for (String s : rest) {
+            sb.append(s).append('$');
+        }
+        sb.setLength(sb.length()-1);// remove last $
+        sb.append(suffix);
+        return sb.toString();
+    }
+    
+    static String compoundName(String name, String name2) {
+        return name + "$" + name2;
+    }
+    
+    static String compoundName(String... names) {
+        if (names.length == 0) {
+            throw new RuntimeException();
+        }
+        StringBuilder sb = new StringBuilder();
+        for (String s : names) {
+            sb.append(s).append('$');
+        }
+        sb.setLength(sb.length()-1);// remove last $
+        return sb.toString();
+    }
+    
+    private static final String IMPL_POSTFIX = Suffix.$impl.toString();
+    private static final String ANNO_POSTFIX = Suffix.$annotation.toString();
+    private static final String ANNOS_POSTFIX = Suffix.$annotations.toString();
 
     static enum DeclNameFlag {
         /** 
@@ -183,7 +286,7 @@ public class Naming implements LocalId {
         
         String getterName = getGetterName(property);
         if (decl.isMember() && !decl.isShared()) {
-            getterName += "$priv";
+            getterName = suffixName(Suffix.$priv, getterName);
         }
         return getterName;
     }
@@ -524,7 +627,7 @@ public class Naming implements LocalId {
     private static String quoteMethodNameIfProperty(Method method) {
         String name = method.getName();
         if (!method.isShared()) {
-            name += "$priv";
+            name = suffixName(Suffix.$priv, name);
         }
         // Toplevel methods keep their original name because their names might be mangled
         if (method instanceof LazyMethod) {
@@ -573,9 +676,9 @@ public class Naming implements LocalId {
         if (Decl.withinClassOrInterface(decl) && !Decl.isLocalToInitializer(decl) && !indirect) {
             return getErasedGetterName(decl);
         } else if (decl instanceof TypedDeclaration && Decl.isBoxedVariable((TypedDeclaration)decl)) {
-            return "ref";
+            return name(Unfix.ref);
         } else {
-            return "get_";
+            return name(Unfix.get_);
         }
     }
 
@@ -599,13 +702,13 @@ public class Naming implements LocalId {
         } else if (Decl.withinClassOrInterface(decl) && !Decl.isLocalToInitializer(decl)) {
             String setterName = getSetterName(decl.getName());
             if (decl.isMember() && !decl.isShared()) {
-                setterName += "$priv";
+                setterName = suffixName(Suffix.$priv, setterName);
             }
             return setterName;
         } else if (decl instanceof TypedDeclaration && Decl.isBoxedVariable((TypedDeclaration)decl)) {
-            return "ref";
+            return name(Unfix.ref);
         }  else {
-            return "set_";
+            return name(Unfix.set_);
         }
     }
 
@@ -614,7 +717,7 @@ public class Naming implements LocalId {
             return ((Method) decl).getName() + "$" + CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getName();
         } else if (decl instanceof ClassOrInterface) {
             if (decl.isToplevel() || Decl.isLocalNotInitializer(decl)) {
-                return "$init$" + param.getName();
+                return prefixName(Prefix.$init$, param.getName());
             } else {
                 return "$" + decl.getName() + "$init$" + param.getName();
             }
@@ -628,7 +731,7 @@ public class Naming implements LocalId {
     }
     
     String getInstantiatorMethodName(Class model) {
-        return model.getName()+"$new";
+        return suffixName(Suffix.$new, model.getName());
     }
     
     JCExpression makeInstantiatorMethodName(JCExpression qual, Class model) {
@@ -692,6 +795,10 @@ public class Naming implements LocalId {
      */
     JCIdent makeUnquotedIdent(String ident) {
         return make().Ident(makeUnquotedName(ident));
+    }
+    
+    JCIdent makeUnquotedIdent(Unfix ident) {
+        return make().Ident(makeUnquotedName(name(ident)));
     }
 
     /** 
@@ -1146,10 +1253,10 @@ public class Naming implements LocalId {
         if (Decl.isLocal(decl)) {
             if ((Decl.isGetter(decl) && (namingOptions & NA_SETTER) == 0)
                     || (namingOptions & NA_GETTER) != 0){
-                name = name + "$getter";
+                name = suffixName(Suffix.$getter, name);
             } else if ((decl instanceof Setter && (namingOptions & NA_GETTER) == 0)
                     || (namingOptions & NA_SETTER) != 0) {
-                name = name + "$setter";
+                name = suffixName(Suffix.$setter, name);
             }
         }
         if ((namingOptions & NA_WRAPPER_UNQUOTED) == 0) {
@@ -1170,14 +1277,10 @@ public class Naming implements LocalId {
      * instance.
      */
     final String getCompanionFieldName(Interface def) {
-        return getCompanionFieldName(def, "$this");
-    }
-
-    final String getCompanionFieldName(Interface def, String name) {
         // resolve aliases
         if(def.isAlias())
             def = (Interface) def.getExtendedTypeDeclaration();
-        return "$" + Decl.className(def).replace('.', '$') + name;
+        return suffixName(Suffix.$this, "$" + Decl.className(def).replace('.', '$'));
     }
 
     /**
@@ -1434,8 +1537,21 @@ public class Naming implements LocalId {
          * Returns a new SyntheticName which appends the given suffix onto 
          * this SyntheticName's name.
          */
+        SyntheticName suffixedBy(Suffix suffix) {
+            return new SyntheticName(names.fromString(suffixName(suffix, getName())));
+        }
+        
+        SyntheticName suffixedBy(Suffix suffix, int i) {
+            return new SyntheticName(names.fromString(getName() + suffix + Integer.toString(i)));
+        }
+        
+        @Deprecated
         SyntheticName suffixedBy(String suffix) {
             return new SyntheticName(names.fromString(getName() + suffix));
+        }
+        
+        SyntheticName suffixedBy(int i) {
+            return new SyntheticName(names.fromString(getName() + "$" + Integer.toString(i)));
         }
         
         SyntheticName alias() {
@@ -1749,8 +1865,25 @@ public class Naming implements LocalId {
         return addVariableSubst(decl, alias(substitute(decl)).getName());
     }
     
+    @Deprecated
     SyntheticName synthetic(String name) {
         return new SyntheticName(names.fromString(name));
+    }
+    
+    SyntheticName synthetic(Prefix prefix, String... name) {
+        return new SyntheticName(names.fromString(prefixName(prefix, name)));
+    }
+    
+    SyntheticName synthetic(Unfix name) {
+        return new SyntheticName(names.fromString(name(name)));
+    }
+    
+    SyntheticName synthetic(Prefix name, int i) {
+        return new SyntheticName(names.fromString(prefixName(name, Integer.toString(i))));
+    }
+    
+    SyntheticName synthetic(Value value) {
+        return new SyntheticName(names.fromString(value.getName()));
     }
     
     void clearSubstitutions(Declaration decl) {
@@ -1773,19 +1906,19 @@ public class Naming implements LocalId {
      * Makes a name for a local attribute where we store a method specifier
      */
     public String getMethodSpecifierAttributeName(Method m) {
-        return m.getName()+"$specifier";
+        return suffixName(Suffix.$specifier, m.getName());
     }
     
     public static String getCallableMethodName() {
-        return "$call";
+        return name(Unfix.$call);
     }
 
     public static String getCallableTypedMethodName() {
-        return "$call$typed";
+        return name(Unfix.$call$typed);
     }
     
     public static String getCallableVariadicMethodName() {
-        return "$call$variadic";
+        return name(Unfix.$call$variadic);
     }
     
     public static String getCallableMethodName(Method method) {
@@ -1799,23 +1932,23 @@ public class Naming implements LocalId {
     }
     
     public static String getImplClassName(String name){
-        return name + IMPL_POSTFIX;
+        return suffixName(Suffix.$impl, name);
     }
     
     public String getTypeArgumentDescriptorName(String name) {
-        return "$reified" + name;
+        return prefixName(Prefix.$reified, name);
     }
     
     public String getGetTypeMethodName() {
-        return "$getType";
+        return name(Unfix.$getType);
     }
 
     public String getRefineTypeParametersMethodName() {
-        return "$refine";
+        return name(Unfix.$refine);
     }
 
     public String getTypeDescriptorAliasName() {
-        return "$TypeDescriptor";
+        return name(Unfix.$TypeDescriptor);
     }
     
     /**
@@ -1827,17 +1960,18 @@ public class Naming implements LocalId {
     public static String getAnnotationFieldName(java.util.List<AnnotationFieldName> parts) {
         StringBuilder sb = new StringBuilder();
         for (AnnotationFieldName part : parts) {
-            sb.append(part.getFieldNamePart()).append("$");
+            sb.append(part.getFieldNamePrefix()).append(part.getFieldName()).append("$");
         }
         return sb.substring(0, sb.length()-1);
     }
 
     public String getSequencedAnnotationMethodName() {
-        return "value";
+        return name(Unfix.value);
     }
 
     public String getAnnotationSequenceMethodName() {
-        return "$annotationSequence";
+        return name(Unfix.$annotationSequence);
     }
-  
+    
 }
+

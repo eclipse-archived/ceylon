@@ -258,7 +258,7 @@ public class AttributeDefinitionBuilder {
     
     private void generateValueConstructor(MethodDefinitionBuilder methodDefinitionBuilder) {
         ParameterDefinitionBuilder paramBuilder = ParameterDefinitionBuilder.systemParameter(owner, fieldName).type(attrType, null);
-        JCTree.JCAssign init = owner.make().Assign(owner.makeQualIdent(owner.makeUnquotedIdent("this"), fieldName), owner.makeUnquotedIdent(fieldName));
+        JCTree.JCAssign init = owner.make().Assign(owner.makeQualIdent(owner.naming.makeThis(), fieldName), owner.makeUnquotedIdent(fieldName));
         methodDefinitionBuilder.parameter(paramBuilder).body(owner.make().Exec(init));
     }
 
