@@ -619,6 +619,8 @@ public abstract class AbstractRepository implements Repository {
     private ModuleInfoReader getModuleInfoReader(String suffix) {
         if (ArtifactContext.CAR.equalsIgnoreCase(suffix)) {
             return BytecodeUtils.INSTANCE;
+        } else if (ArtifactContext.JAR.equalsIgnoreCase(suffix)) {
+            return JarUtils.INSTANCE;
         } else if (ArtifactContext.JS.equalsIgnoreCase(suffix)) {
             return JSUtils.INSTANCE;
         } else {
