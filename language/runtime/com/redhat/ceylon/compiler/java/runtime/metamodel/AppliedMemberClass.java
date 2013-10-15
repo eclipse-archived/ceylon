@@ -167,7 +167,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
 
     @SuppressWarnings("unchecked")
     @Override
-    public Class<? extends Type, ? super Arguments> bind(@TypeInfo("ceylon.language::Anything") @Name("container") java.lang.Object container){
+    public Class<? extends Type, ? super Arguments> bind(@TypeInfo("ceylon.language::Object") @Name("container") java.lang.Object container){
         return (Class<? extends Type, ? super Arguments>) Metamodel.bind(this, this.producedType.getQualifyingType(), container);
     }
 

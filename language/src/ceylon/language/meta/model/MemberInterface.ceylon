@@ -2,5 +2,5 @@
 shared interface MemberInterface<in Container, out Type=Anything>
     satisfies InterfaceModel<Type> & Member<Container, Interface<Type>> {
     
-    shared actual formal Interface<Type> bind(Anything container);
+    shared actual formal Interface<Type> bind(Object container);
 }

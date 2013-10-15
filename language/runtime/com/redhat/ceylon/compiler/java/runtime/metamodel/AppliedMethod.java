@@ -172,7 +172,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
 
     @SuppressWarnings("unchecked")
     @Override
-    public Function<? extends Type, ? super Arguments> bind(@TypeInfo("ceylon.language::Anything") @Name("container") java.lang.Object container){
+    public Function<? extends Type, ? super Arguments> bind(@TypeInfo("ceylon.language::Object") @Name("container") java.lang.Object container){
         return (Function<? extends Type, ? super Arguments>) Metamodel.bind(this, this.appliedFunction.getQualifyingType(), container);
     }
 

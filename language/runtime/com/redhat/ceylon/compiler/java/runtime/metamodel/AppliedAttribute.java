@@ -157,7 +157,7 @@ public class AppliedAttribute<Container, Type>
 
     @SuppressWarnings("unchecked")
     @Override
-    public Value<? extends Type> bind(@TypeInfo("ceylon.language::Anything") @Name("container") java.lang.Object container){
+    public Value<? extends Type> bind(@TypeInfo("ceylon.language::Object") @Name("container") java.lang.Object container){
         return (Value<? extends Type>) Metamodel.bind(this, this.typedReference.getQualifyingType(), container);
     }
 

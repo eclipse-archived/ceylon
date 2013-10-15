@@ -22,5 +22,5 @@ shared interface MemberClass<in Container, out Type=Anything, in Arguments=Nothi
         satisfies ClassModel<Type, Arguments> & Member<Container, Class<Type, Arguments>>
         given Arguments satisfies Anything[] {
     
-    shared actual formal Class<Type, Arguments> bind(Anything container);
+    shared actual formal Class<Type, Arguments> bind(Object container);
 }

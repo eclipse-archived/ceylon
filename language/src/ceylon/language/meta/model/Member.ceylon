@@ -29,5 +29,5 @@ shared interface Member<in Container, out Kind>
      This has the same behaviour as invoking this `Member` directly, but exchanges compile-time type
      safety with runtime checks."
     throws(`class IncompatibleTypeException`, "If the container is not assignable to this member's container")
-    shared formal Model bind(Anything container);
+    shared formal Model bind(Object container);
 }
