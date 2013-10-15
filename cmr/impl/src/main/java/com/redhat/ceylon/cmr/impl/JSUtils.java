@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.script.ScriptEngine;
@@ -67,7 +67,8 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
      * @return module info list
      */
     public static Set<ModuleInfo> readModuleInformation(final String moduleName, final File jarFile) {
-        return null;
+        ScriptEngine engine = getEngine(jarFile);
+        return getDependencies(engine);
     }
 
     public int[] getBinaryVersions(String moduleName, File moduleArchive) {
@@ -87,7 +88,7 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
     }
 
 
-    public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive) {
+    private static ScriptEngine getEngine(File moduleArchive) {
         ScriptEngine engine = null;
         try {
             engine = new ScriptEngineManager().getEngineByName("JavaScript");
@@ -95,12 +96,29 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
             engine.eval("var module={}");
             engine.eval("function require() { return { '$addmod$' : function() {} } }");
             engine.eval(new FileReader(moduleArchive));
+            return engine;
+        } catch (Exception ex) {
+            throw new RuntimeException("Failed to parse module JS file", ex);
+        }
+    }
+
+    private static Set<ModuleInfo> getDependencies(ScriptEngine engine) {
+        try {
+            return asModInfos(engine.eval("exports.$$METAMODEL$$()['$mod-deps']"));
+        } catch (Exception ex) {
+            throw new RuntimeException("Failed to parse module JS file", ex);
+        }
+    }
+    
+    public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive) {
+        ScriptEngine engine = getEngine(moduleArchive);
+        try {
             Object name = engine.eval("exports.$$METAMODEL$$()['$mod-name']");
             if (!moduleName.equals(name)) {
                 throw new RuntimeException("Incorrect module");
             }
             String version = asString(engine.eval("exports.$$METAMODEL$$()['$mod-version']"));
-            List<ModuleInfo> deps = asModInfos(engine.eval("exports.$$METAMODEL$$()['$mod-deps']"));
+            Set<ModuleInfo> deps = getDependencies(engine);
             String type = ArtifactContext.getSuffixFromFilename(moduleArchive.getName());
             
             ModuleVersionDetails mvd = new ModuleVersionDetails(version);
@@ -135,15 +153,15 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
         return result.toArray(new String[result.size()]);
     }
     
-    private static List<ModuleInfo> asModInfos(Object obj) {
+    private static Set<ModuleInfo> asModInfos(Object obj) {
         if (obj == null) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
         if (!(obj instanceof Iterable)) {
             throw new RuntimeException("Expected something Iterable");
         }
         Iterable<Object> array = (Iterable)obj;
-        List<ModuleInfo> result = new ArrayList<ModuleInfo>();
+        Set<ModuleInfo> result = new HashSet<ModuleInfo>();
         for (Object o : array) {
             String module = asString(o);
             String name = ModuleUtil.moduleName(module);
