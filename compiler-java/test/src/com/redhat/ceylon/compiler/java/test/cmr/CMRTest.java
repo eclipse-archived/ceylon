@@ -391,9 +391,15 @@ public class CMRTest extends CompilerTest {
         assertTrue(carFile.exists());
 
         // then try to compile only one module (the other being loaded from its car) 
-        compile("modules/depend/b/module.ceylon", "modules/depend/b/a.ceylon", "modules/depend/b/aWildcard.ceylon");
+        compile("modules/depend/b/module.ceylon", "modules/depend/b/package.ceylon", "modules/depend/b/a.ceylon", "modules/depend/b/aWildcard.ceylon", "modules/depend/b/B.ceylon");
 
         carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.modules.depend.b", "6.6.6");
+        assertTrue(carFile.exists());
+
+        // and then the last one (the other 2 being loaded from their cars) that uses the first one transitively
+        compile("modules/depend/c/module.ceylon", "modules/depend/c/a.ceylon", "modules/depend/c/b.ceylon");
+
+        carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.modules.depend.c", "6.6.6");
         assertTrue(carFile.exists());
     }
 
@@ -838,5 +844,14 @@ public class CMRTest extends CompilerTest {
         assertErrors("modules/jdk/defaultUsesJavaWithoutImportingIt/Foo",
                 new CompilerError(20, "package not found in imported modules: java.lang"),
                 new CompilerError(23, "function or value does not exist: nanoTime"));
+    }
+
+    @Test
+    public void testMdlLegacyImport(){
+        // Compile a module that imports a legacy module that has a shared import of another legacy module
+        compile("modules/legacyimport/module.ceylon", "modules/legacyimport/package.ceylon", "modules/legacyimport/A.ceylon");
+        
+        File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.modules.legacyimport", "6.6.6");
+        assertTrue(carFile.exists());
     }
 }
