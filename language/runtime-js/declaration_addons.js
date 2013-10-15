@@ -76,7 +76,18 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
 };
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Kind'}},$ps:[],$cont:OpenInterface,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$m','memberDeclarations']};};
 defineAttr(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'caseTypes',function(){
-  console.log("IMPL ClassOrInterfaceDeclaration.caseTypes");
+  var casos = this.tipo.$$metamodel$$.of;
+  if (casos && casos.length > 0) {
+    var ct = [];
+    for (var i=0; i < casos.length; i++) {
+      if (typeof(casos[i])==='string') {
+        ct.push(OpenTvar(OpenTypeParam(this, casos[i])));
+      } else {
+        ct.push(_openTypeFromTarg(casos[i]));
+      }
+    }
+    return ct.reifyCeylonType({Element:{t:OpenType$meta$declaration}});
+  }
   return getEmpty();
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:OpenType$meta$declaration}}},$cont:ClassOrInterfaceDeclaration$meta$declaration,$an:function(){return[shared(),formal()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$at','caseTypes']};});
 
