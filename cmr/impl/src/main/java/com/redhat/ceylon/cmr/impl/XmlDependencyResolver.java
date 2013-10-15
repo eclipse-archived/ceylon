@@ -62,7 +62,7 @@ final public class XmlDependencyResolver implements DependencyResolver {
             final Module module = parse(mp);
             final Set<ModuleInfo> infos = new LinkedHashSet<ModuleInfo>();
             for (ModuleIdentifier mi : module.getDependencies()) {
-                infos.add(new ModuleInfo(mi.getName(), mi.getSlot(), mi.isOptional(), false));
+                infos.add(new ModuleInfo(mi.getName(), mi.getSlot(), mi.isOptional(), mi.isExport()));
             }
             return infos;
         } catch (Exception e) {
@@ -78,18 +78,20 @@ final public class XmlDependencyResolver implements DependencyResolver {
         private String name;
         private String slot;
         private boolean optional;
+        private boolean export;
 
-        public ModuleIdentifier(String name, String slot, boolean optional) {
+        public ModuleIdentifier(String name, String slot, boolean optional, boolean export) {
             this.name = name;
             if (slot == null || slot.length() == 0)
                 slot = "main";
             this.slot = slot;
             this.optional = optional;
+            this.export = export;
         }
 
         public static ModuleIdentifier create(String string) {
             String[] split = string.split(":");
-            return new ModuleIdentifier(split[0], split.length > 1 ? split[1] : null, false);
+            return new ModuleIdentifier(split[0], split.length > 1 ? split[1] : null, false, false);
         }
 
         public String getName() {
@@ -102,6 +104,10 @@ final public class XmlDependencyResolver implements DependencyResolver {
 
         public boolean isOptional() {
             return optional;
+        }
+
+        public boolean isExport() {
+            return export;
         }
 
         public int compareTo(ModuleIdentifier o) {
@@ -203,7 +209,7 @@ final public class XmlDependencyResolver implements DependencyResolver {
     }
 
     protected static ModuleIdentifier getModuleIdentifier(Element root) {
-        return new ModuleIdentifier(root.getAttribute("name"), root.getAttribute("slot"), Boolean.parseBoolean(root.getAttribute("optional")));
+        return new ModuleIdentifier(root.getAttribute("name"), root.getAttribute("slot"), Boolean.parseBoolean(root.getAttribute("optional")), Boolean.parseBoolean(root.getAttribute("export")));
     }
 
     protected static Document parseXml(InputStream inputStream) throws ParserConfigurationException, SAXException, IOException {
