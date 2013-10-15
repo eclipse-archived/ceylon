@@ -115,23 +115,32 @@ public class CeylonInfoTool extends RepoUsingTool {
                     append(", ");
                 }
                 String suffix = type.getSuffix();
+                int major = (type.getMajorBinaryVersion() != null) ? type.getMajorBinaryVersion() : 0;
+                int minor = (type.getMinorBinaryVersion() != null) ? type.getMinorBinaryVersion() : 0;
                 if (suffix.equalsIgnoreCase(".car")) {
                     append("JVM (#");
-                    if (type.getMajorBinaryVersion() != null) {
-                        append(type.getMajorBinaryVersion());
-                    }
-                    if (type.getMinorBinaryVersion() != null) {
+                    append(major);
+                    if (minor != 0) {
                         append(".");
-                        append(type.getMinorBinaryVersion());
+                        append(minor);
                     }
-                    if (type.getMajorBinaryVersion() != Versions.JVM_BINARY_MAJOR_VERSION) {
+                    if (major != Versions.JVM_BINARY_MAJOR_VERSION && minor != Versions.JVM_BINARY_MINOR_VERSION) {
                         append(" *incompatible*");
                     }
                     append(")");
                 } else if (suffix.equalsIgnoreCase(".jar")) {
                     append("JVM (legacy)");
                 } else if (suffix.equalsIgnoreCase(".js")) {
-                    append("JavaScript");
+                    append("JavaScript (#");
+                    append(major);
+                    if (minor != 0) {
+                        append(".");
+                        append(minor);
+                    }
+                    if (major != Versions.JS_BINARY_MAJOR_VERSION && minor != Versions.JS_BINARY_MINOR_VERSION) {
+                        append(" *incompatible*");
+                    }
+                    append(")");
                 } else if (suffix.equalsIgnoreCase(".src")) {
                     append("Sources");
                 } else if (suffix.startsWith(".")) {
