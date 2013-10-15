@@ -136,27 +136,34 @@ shared void checkMemberAttributes(){
     assert(string.declaration.name == "str");
     assert(string.declaration.qualifiedName == "metamodel::NoParams.str");
     assert(string(noParamsInstance).get() == "a");
+    assert(string.bind(noParamsInstance).get() == "a");
     
     assert(exists integer = noParamsType.getAttribute<NoParams, Integer>("integer"));
     assert(integer(noParamsInstance).get() == 1);
+    assert(integer.bind(noParamsInstance).get() == 1);
     
     assert(exists float = noParamsType.getAttribute<NoParams, Float>("float"));
     assert(float(noParamsInstance).get() == 1.2);
+    assert(float.bind(noParamsInstance).get() == 1.2);
     
     assert(exists character = noParamsType.getAttribute<NoParams, Character>("character"));
     assert(character(noParamsInstance).get() == 'a');
+    assert(character.bind(noParamsInstance).get() == 'a');
     
     assert(exists boolean = noParamsType.getAttribute<NoParams, Boolean>("boolean"));
     assert(boolean(noParamsInstance).get() == true);
+    assert(boolean.bind(noParamsInstance).get() == true);
     
     assert(exists obj = noParamsType.getAttribute<NoParams, NoParams>("obj"));
     assert(obj(noParamsInstance).get() === noParamsInstance);
+    assert(obj.bind(noParamsInstance).get() === noParamsInstance);
 
     assert(is VariableAttribute<NoParams, String> string2 = noParamsType.getAttribute<NoParams, String>("str2"));
     assert(string2.declaration.variable);
     value string2Bound = string2(noParamsInstance);
     assert(string2Bound.get() == "a");
     string2Bound.set("b");
+    string2Bound.unsafeSet("b");
     assert(string2Bound.get() == "b");
     assert(noParamsInstance.str2 == "b");
     
@@ -164,6 +171,7 @@ shared void checkMemberAttributes(){
     value integer2Bound = integer2(noParamsInstance);
     assert(integer2Bound.get() == 1);
     integer2Bound.set(2);
+    integer2Bound.unsafeSet(2);
     assert(integer2Bound.get() == 2);
     assert(noParamsInstance.integer2 == 2);
 
@@ -171,6 +179,7 @@ shared void checkMemberAttributes(){
     value float2Bound = float2(noParamsInstance);
     assert(float2Bound.get() == 1.2);
     float2Bound.set(2.1);
+    float2Bound.unsafeSet(2.1);
     assert(float2Bound.get() == 2.1);
     assert(noParamsInstance.float2 == 2.1);
     
@@ -178,6 +187,7 @@ shared void checkMemberAttributes(){
     value character2Bound = character2(noParamsInstance);
     assert(character2Bound.get() == 'a');
     character2Bound.set('b');
+    character2Bound.unsafeSet('b');
     assert(character2Bound.get() == 'b');
     assert(noParamsInstance.character2 == 'b');
     
@@ -185,6 +195,7 @@ shared void checkMemberAttributes(){
     value boolean2Bound = boolean2(noParamsInstance);
     assert(boolean2Bound.get() == true);
     boolean2Bound.set(false);
+    boolean2Bound.unsafeSet(false);
     assert(boolean2Bound.get() == false);
     assert(noParamsInstance.boolean2 == false);
     
@@ -192,6 +203,7 @@ shared void checkMemberAttributes(){
     value obj2Bound = obj2(noParamsInstance);
     assert(obj2Bound.get() == 2);
     obj2Bound.set(3);
+    obj2Bound.unsafeSet(3);
     assert(obj2Bound.get() == 3);
     assert(noParamsInstance.obj2 == 3);
 
@@ -205,6 +217,12 @@ shared void checkMemberAttributes(){
     }
     try {
         `Throws.getter`(t).set(1);
+        assert(false);
+    }catch(Exception x){
+        assert(x is MyException);
+    }
+    try {
+        `Throws.getter`(t).unsafeSet(1);
         assert(false);
     }catch(Exception x){
         assert(x is MyException);
@@ -467,6 +485,14 @@ shared void checkToplevelAttributes(){
     assert(is ValueDeclaration toplevelObjectDecl = pkg.getValue("toplevelObject"));
     Value<Object> toplevelObjectAttribute = toplevelObjectDecl.apply<Object>();
     assert(toplevelObjectAttribute.get() == 2);
+    
+    // immutable attribute
+    try{
+        toplevelFloatAttribute.unsafeSet(1.2);
+        assert(false);
+    }catch(Exception x){
+        assert(is MutationException x);
+    }
 
     //
     // variables
@@ -475,6 +501,7 @@ shared void checkToplevelAttributes(){
     Variable<Integer> toplevelIntegerVariable = toplevelIntegerVariableDecl.apply<Integer>();
     assert(toplevelIntegerVariable.get() == 1);
     toplevelIntegerVariable.set(2);
+    toplevelIntegerVariable.unsafeSet(2);
     assert(toplevelIntegerVariable.get() == 2);
     assert(toplevelInteger2 == 2);
 
@@ -482,6 +509,7 @@ shared void checkToplevelAttributes(){
     Variable<String> toplevelStringVariable = toplevelStringVariableDecl.apply<String>();
     assert(toplevelStringVariable.get() == "a");
     toplevelStringVariable.set("b");
+    toplevelStringVariable.unsafeSet("b");
     assert(toplevelStringVariable.get() == "b");
     assert(toplevelString2 == "b");
 
@@ -489,6 +517,7 @@ shared void checkToplevelAttributes(){
     Variable<Float> toplevelFloatVariable = toplevelFloatVariableDecl.apply<Float>();
     assert(toplevelFloatVariable.get() == 1.2);
     toplevelFloatVariable.set(2.0);
+    toplevelFloatVariable.unsafeSet(2.0);
     assert(toplevelFloatVariable.get() == 2.0);
     assert(toplevelFloat2 == 2.0);
 
@@ -496,6 +525,7 @@ shared void checkToplevelAttributes(){
     Variable<Character> toplevelCharacterVariable = toplevelCharacterVariableDecl.apply<Character>();
     assert(toplevelCharacterVariable.get() == 'a');
     toplevelCharacterVariable.set('b');
+    toplevelCharacterVariable.unsafeSet('b');
     assert(toplevelCharacterVariable.get() == 'b');
     assert(toplevelCharacter2 == 'b');
 
@@ -503,6 +533,7 @@ shared void checkToplevelAttributes(){
     Variable<Boolean> toplevelBooleanVariable = toplevelBooleanVariableDecl.apply<Boolean>();
     assert(toplevelBooleanVariable.get() == true);
     toplevelBooleanVariable.set(false);
+    toplevelBooleanVariable.unsafeSet(false);
     assert(toplevelBooleanVariable.get() == false);
     assert(toplevelBoolean2 == false);
 
@@ -516,6 +547,14 @@ shared void checkToplevelAttributes(){
     // private attr
     value privateToplevelAttributeModel = `privateToplevelAttribute`;
     assert(privateToplevelAttributeModel.get() == "a");
+
+    // invalid type
+    try{
+        toplevelFloatVariable.unsafeSet(true);
+        assert(false);
+    }catch(Exception x){
+        assert(is IncompatibleTypeException x);
+    }
 }
 
 @test
