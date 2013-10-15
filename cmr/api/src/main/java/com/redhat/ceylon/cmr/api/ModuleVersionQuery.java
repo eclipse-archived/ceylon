@@ -17,4 +17,8 @@ public class ModuleVersionQuery extends ModuleQuery {
         this.version = version;
     }
 
+    @Override
+    public String toString() {
+        return "ModuleVersionQuery[name=" + name + ",version=" + version + ",type=" + type + "]";
+    }
 }

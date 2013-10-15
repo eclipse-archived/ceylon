@@ -1,8 +1,8 @@
 package com.redhat.ceylon.cmr.api;
 
 public class ModuleQuery {
-    private String name;
-    private Type type;
+    protected String name;
+    protected Type type;
     private Long start;
     private Long count;
     private long[] pagingInfo;
@@ -90,6 +90,11 @@ public class ModuleQuery {
 
     public void setBinaryMinor(Integer binaryMinor) {
         this.binaryMinor = binaryMinor;
+    }
+
+    @Override
+    public String toString() {
+        return "ModuleQuery[name=" + name + ",type=" + type + "]";
     }
 
 }

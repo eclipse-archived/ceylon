@@ -37,4 +37,10 @@ public class ModuleVersionResult {
     public boolean hasVersion(String version) {
         return versions.containsKey(version);
     }
+
+    @Override
+    public String toString() {
+        return "ModuleVersionResult[name=" + name + ",versions=" + versions + "]";
+    }
+    
 }
