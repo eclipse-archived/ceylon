@@ -121,6 +121,9 @@ public class TypeUtils {
                     parent = (ClassOrInterface)parent.getScope();
                     parents.add(0, parent);
                 }
+                if (imported) {
+                    gen.out(gen.getNames().moduleAlias(parents.get(0).getUnit().getPackage().getModule()), ".");
+                }
                 qual = true;
                 for (ClassOrInterface p : parents) {
                     gen.out(gen.getNames().name(p), ".");
