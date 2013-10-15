@@ -74,7 +74,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
   }
   return r.reifyCeylonType({Element:$$$mptypes.Kind});
 };
-ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Kind'}},$ps:[],$cont:OpenInterface,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$m','memberDeclarations']};};
+ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Kind'}},$ps:[],$cont:OpenInterface,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','memberDeclarations']};};
 defineAttr(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'caseTypes',function(){
   var casos = this.tipo.$$metamodel$$.of;
   if (casos && casos.length > 0) {
@@ -90,4 +90,34 @@ defineAttr(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'caseTypes'
   }
   return getEmpty();
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:OpenType$meta$declaration}}},$cont:ClassOrInterfaceDeclaration$meta$declaration,$an:function(){return[shared(),formal()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$at','caseTypes']};});
-
+ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply=function(types,$mptypes){
+  var _t = {t:this.tipo};
+  if (typeof(this.tipo.$$metamodel$$)==='function') {
+    this.tipo.$$metamodel$$=this.tipo.$$metamodel$$();
+  }
+  var tparms = this.tipo.$$metamodel$$.$tp;
+  if (tparms){
+    if (types===undefined)throw TypeApplicationException$meta$model();
+    var i=0;
+    _t.a={};
+    for (var tp in tparms) {
+      if (types[i]===undefined)throw TypeApplicationException$meta$model();
+      var _tp = tparms[tp];
+      var _ta = types[i].tipo;
+      _t.a[tp]= _ta.t ? _ta : {t:types[i].tipo};
+      if ((_tp.satisfies && _tp.satisfies.length>0) || (_tp.of && _tp.of.length > 0)) {
+        var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satifies:_tp.of;
+        for (var j=0; j<restraints.length;j++) {
+          if (!extendsType(_t.a[tp],restraints[j])) {
+            throw TypeApplicationException$meta$model(); //TODO message
+          }
+        }
+      }
+      i++;
+    }
+  }
+  if (this.meta.$mt==='ifc')
+    return AppliedInterface(_t, $mptypes);
+  return AppliedClass(_t, $mptypes);
+}
+ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','apply']};};
