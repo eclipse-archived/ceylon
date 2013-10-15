@@ -31,6 +31,7 @@ import com.redhat.ceylon.cmr.api.ContentFinder;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
+import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
@@ -455,6 +456,9 @@ public abstract class AbstractRepository implements Repository {
                             mvd.getAuthors().addAll(mvd2.getAuthors());
                             mvd.getDependencies().addAll(mvd2.getDependencies());
                             mvd.getArtifactTypes().addAll(mvd2.getArtifactTypes());
+                        } else {
+                            // We didn't get any information but we'll at least add the artifact type to the result
+                            mvd.getArtifactTypes().add(new ModuleVersionArtifact(suffix, null, null));
                         }
                     }
                 } catch (Exception e) {
