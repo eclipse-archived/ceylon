@@ -25,6 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
@@ -101,12 +102,13 @@ public abstract class LazyModuleManager extends ModuleManager {
                     attachErrorToDependencyDeclaration(moduleImport, dependencyTree, "Failed to open archive " + artifact.artifact() + ": " + x.getMessage());
                 }
                 
-                for (ArtifactResult dep : artifact.dependencies()) {
+                List<ArtifactResult> deps = artifact.dependencies();
+                for (ArtifactResult dep : deps) {
                     Module dependency = getOrCreateModule(ModuleManager.splitModuleName(dep.name()), dep.version());
 
                     ModuleImport depImport = findImport(module, dependency);
                     if (depImport == null) {
-                        moduleImport = new ModuleImport(dependency, false, false);
+                        moduleImport = new ModuleImport(dependency, dep.importType() == ImportType.OPTIONAL, dep.importType() == ImportType.EXPORT);
                         module.getImports().add(moduleImport);
                     }
                 }
