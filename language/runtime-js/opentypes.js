@@ -33,10 +33,10 @@ function _openTypeFromTarg(targ) {
   var mdl = get_model(mm);
   if (mdl.$mt==='ifc') {
     return FreeInterface(lit);
-  } else if (mdl.$mt==='cls') {
+  } else if (mdl.$mt==='cls' || mdl.$mt==='obj') {
     return FreeClass(lit);
   }
-  console.log("Don't know WTF to return for " + lit);
+  console.log("Don't know WTF to return for " + lit + " metatype " + mdl.$mt);
 }
 
 //ClassDefinition FreeClass at X (161:0-168:0)
@@ -259,7 +259,7 @@ function $init$OpenValue(){
       if (typeof(mm)==='function'){
         mm=mm(); this.tipo.$$metamodel$$=mm;
       }
-      return FreeClass(typeLiteral$meta({Type:mm.$t.t}));
+      return _openTypeFromTarg(mm.$t);
     }
     throw Error("IMPL OpenValue.openType");
   },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:OpenType$meta$declaration},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','openType']};});
