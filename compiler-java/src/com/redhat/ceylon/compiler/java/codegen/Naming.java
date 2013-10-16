@@ -106,6 +106,7 @@ public class Naming implements LocalId {
         $annotations$,
         $arg$,
         $callable$,
+        $canonical$,
         $element$,
         $exhausted$,
         $getter$,
@@ -282,7 +283,7 @@ public class Naming implements LocalId {
             methodName = getMethodNameInternal(decl);
         }
         if ((namingOptions & NA_CANONICAL_METHOD) != 0) {
-            methodName += "$";
+            methodName = suffixName(Suffix.$canonical$, methodName);
         }
         return methodName;
     }
