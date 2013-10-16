@@ -6,6 +6,7 @@
     <property name="build.dir" value="${basedir}/build"/>
     <property name="build.classes" location="${build.dir}/classes"/>
     <property name="build.dist" location="${build.dir}/dist"/>
+    <property name="build.dist.repo" location="${build.dist}/repo"/>
     <property name="build.lib" location="${build.dir}/lib"/>
     <property name="build.test" location="${build.dir}/test"/>
     <property name="test.reports" location="${build.dir}/test-reports"/>
@@ -50,11 +51,11 @@
     <property name="ceylon.module-resolver.jar"
               value="${ceylon.module-resolver.dir}/${module.module-resolver.name}-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
     <property name="ceylon.module-resolver.repo" value="${ceylon.repo.dir}/${ceylon.module-resolver.dir}"/>
-    <property name="ceylon.module-resolver.dist" value="${build.dist}/${ceylon.module-resolver.dir}"/>
+    <property name="ceylon.module-resolver.dist" value="${build.dist.repo}/${ceylon.module-resolver.dir}"/>
 
     <property name="ceylon.maven-support.jar" value="${ceylon.maven-support.dir}/main/${ceylon.maven-support.module}"/>
     <property name="ceylon.maven-support.repo" value="${ceylon.repo.dir}/${ceylon.maven-support.dir}"/>
-    <property name="ceylon.maven-support.dist" value="${build.dist}/${ceylon.maven-support.dir}"/>
+    <property name="ceylon.maven-support.dist" value="${build.dist.repo}/${ceylon.maven-support.dir}"/>
 
     <property name="ceylon.common.dir"
               value="${module.common.dir}/${module.com.redhat.ceylon.common.version}"/>
@@ -134,7 +135,7 @@
             depends="build"
             description="Create Ceylon module-resolver distribution">
         <mkdir dir="${ceylon.module-resolver.dist}"/>
-        <zip destfile="${build.dist}/${ceylon.module-resolver.src}">
+        <zip destfile="${build.dist.repo}/${ceylon.module-resolver.src}">
             <fileset dir="${cmr-api.src}">
                 <include name="**/*.java"/>
             </fileset>
@@ -158,16 +159,23 @@
             </fileset>
         </zip>
         <antcall target="sha1sum">
-            <param name="file" value="${build.dist}/${ceylon.module-resolver.src}"/>
+            <param name="file" value="${build.dist.repo}/${ceylon.module-resolver.src}"/>
         </antcall>
-        <copy file="${module-resolver.jar}" tofile="${build.dist}/${ceylon.module-resolver.jar}"/>
+        <copy file="${module-resolver.jar}" tofile="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
         <antcall target="sha1sum">
-            <param name="file" value="${build.dist}/${ceylon.module-resolver.jar}"/>
+            <param name="file" value="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
         </antcall>
-        <copy file="${shrinkwrap-maven-uberjar.lib}" tofile="${build.dist}/${ceylon.maven-support.jar}"/>
+        <copy file="${shrinkwrap-maven-uberjar.lib}" tofile="${build.dist.repo}/${ceylon.maven-support.jar}"/>
         <antcall target="sha1sum">
-            <param name="file" value="${build.dist}/${ceylon.maven-support.jar}"/>
+            <param name="file" value="${build.dist.repo}/${ceylon.maven-support.jar}"/>
         </antcall>
+        <copy file="${sardine.lib}" tofile="${build.dist.repo}/${sardine.repo}"/>
+        <copy file="${httpclient.lib}" tofile="${build.dist.repo}/${httpclient.repo}"/>
+        <copy file="${httpcore.lib}" tofile="${build.dist.repo}/${httpcore.repo}"/>
+        <copy file="${commons-logging.lib}" tofile="${build.dist.repo}/${commons-logging.repo}"/>
+        <copy file="${commons-codec.lib}" tofile="${build.dist.repo}/${commons-codec.repo}"/>
+        <copy file="${slf4j-api.lib}" tofile="${build.dist.repo}/${slf4j-api.repo}"/>
+        <copy file="${slf4j-simple.lib}" tofile="${build.dist.repo}/${slf4j-simple.repo}"/>
     </target>
 
     <!-- Repository targets -->
@@ -177,11 +185,8 @@
     </target>
 
     <target name="publish-internal" depends="init.repo">
-        <copy todir="${ceylon.module-resolver.repo}" overwrite="true">
-            <fileset dir="${ceylon.module-resolver.dist}"/>
-        </copy>
-        <copy todir="${ceylon.maven-support.repo}" overwrite="true">
-            <fileset dir="${ceylon.maven-support.dist}"/>
+        <copy todir="${ceylon.repo.dir}" overwrite="true">
+            <fileset dir="${build.dist.repo}"/>
         </copy>
     </target>
 
