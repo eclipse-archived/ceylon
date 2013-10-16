@@ -258,6 +258,7 @@ public class Naming implements LocalId {
                 "notifyAll",
                 "getClass",
                 "finalize",
+                "main",
                 "clone"));
     }
     
@@ -276,7 +277,7 @@ public class Naming implements LocalId {
             } else if ("clone".equals(name)
                     && Decl.getClassOrInterfaceContainer(decl).getType().isSubtypeOf(
                             ((TypeDeclaration)decl.getUnit().getLanguageModuleDeclaration("Cloneable")).getType())) {
-                return "clone";    
+                return "clone";
             } 
             methodName = getMethodNameInternal(decl);
         } else {
