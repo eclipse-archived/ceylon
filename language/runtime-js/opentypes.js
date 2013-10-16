@@ -233,15 +233,18 @@ function OpenValue(pkg, meta, that){
 }
 OpenValue.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:ValueDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','ValueDeclaration']};};
 function $init$OpenValue(){
-    if (OpenValue.$$===undefined){
-        initTypeProto(OpenValue,'ceylon.language.meta.declaration::OpenValue',Basic,ValueDeclaration$meta$declaration);
-        (function($$openValue){
+  if (OpenValue.$$===undefined){
+    initTypeProto(OpenValue,'ceylon.language.meta.declaration::OpenValue',Basic,ValueDeclaration$meta$declaration);
+    (function($$openValue){
             
             //MethodDefinition apply at X (39:4-39:68)
-            $$openValue.$apply=function $apply($$$mptypes){
-              return (this.tipo.set?AppliedVariable:AppliedValue)(undefined,this.tipo,$$$mptypes);
-            };$$openValue.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Value$meta$model,a:{Type:{t:Anything}}},$ps:[{$nm:'instance',$mt:'prm',$def:1,$t:{t:Anything}}],$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$m','apply']};};
-            
+      $$openValue.$apply=function $apply($$$mptypes){
+        return (this.tipo.set?AppliedVariable:AppliedValue)(undefined,this.tipo,$$$mptypes);
+      };$$openValue.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Value$meta$model,a:{Type:{t:Anything}}},$ps:[{$nm:'instance',$mt:'prm',$def:1,$t:{t:Anything}}],$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$m','apply']};};
+
+      $$openValue.memberApply=function memberApply(cont,$mptypes) {
+        return AppliedAttribute(this.meta.$nm,this.tipo,$mptypes);
+      };$$openValue.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.declaration','ValueDeclaration','$m','memberApply']};};
             //AttributeDeclaration defaulted at X (40:4-40:44)
             defineAttr($$openValue,'defaulted',function(){
                 return false;
@@ -423,13 +426,6 @@ function $init$OpenClass(){
         return (_m && _m.$an && _m.$an['default'])!==undefined;
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','NestableDeclaration','$at','default']};});
 
-            //MethodDefinition apply at X (49:2-49:76)
-            $$openClass.$apply=function $apply(types$9){
-              var $$openClass=this;
-              if(types$9===undefined){types$9=getEmpty();}
-              throw Error("IMPL OpenClass.apply");
-            };$$openClass.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Class$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$m','apply']};};
-            
             //MethodDeclaration annotatedMemberDeclarations at X (55:2-56:66)
             $$openClass.annotatedMemberDeclarations=function ($$$mptypes){
                 var $$openClass=this;
@@ -546,11 +542,7 @@ function $init$OpenInterface(){
 defineAttr($$openInterface,'string',function(){
   return String$("interface " + this.qualifiedName);
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language','Object']};}); 
-            //MethodDefinition apply at X (73:2-73:71)
-            $$openInterface.$apply=function $apply(types$16){
-              return AppliedInterface(this.tipo,{Type:{t:this.tipo}});
-            };$$openInterface.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Interface$meta,a:{Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$m','apply']};};
-            
+           
             //MethodDeclaration annotatedMemberDeclarations at X (80:2-81:66)
             $$openInterface.annotatedMemberDeclarations=function ($$$mptypes){
                 var $$openInterface=this;
