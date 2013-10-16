@@ -9,8 +9,8 @@ final class sequencedTypeParamInvocation2_ {
         (
             let
             {
-                .ceylon.language.Sequential<? extends T> $ceylontmp$$ts$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                sequencedTypeParamInvocation2($reified$T, $ceylontmp$$ts$$0);
+                .ceylon.language.Sequential<? extends T> $ceylontmp$ts$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                sequencedTypeParamInvocation2($reified$T, $ceylontmp$ts$0);
             }
             returning null;
         );

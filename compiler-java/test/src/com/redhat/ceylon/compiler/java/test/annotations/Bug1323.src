@@ -21,8 +21,8 @@ final class Bug1323_1 implements .com.redhat.ceylon.compiler.java.runtime.model.
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$a$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                this(i, $ceylontmp$$a$$0);
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$a$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this(i, $ceylontmp$a$0);
             }
             returning null;
         );
@@ -137,9 +137,9 @@ final class bug1223Spread1_1_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$a$$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$a$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning bug1223Spread1_1(i, $ceylontmp$$a$$1);
+            returning bug1223Spread1_1(i, $ceylontmp$a$1);
         );
     }
     
@@ -177,9 +177,9 @@ final class bug1223Spread1_3_ {
         return (
             let
             {
-                long $ceylontmp$$i$$2 = .com.redhat.ceylon.compiler.java.test.annotations.bug1223Spread1_3_.bug1223Spread1_3$i(a);
+                long $ceylontmp$i$2 = .com.redhat.ceylon.compiler.java.test.annotations.bug1223Spread1_3_.bug1223Spread1_3$i(a);
             }
-            returning bug1223Spread1_3(a, $ceylontmp$$i$$2);
+            returning bug1223Spread1_3(a, $ceylontmp$i$2);
         );
     }
     
@@ -207,9 +207,9 @@ final class bug1223Spread2_1_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$a$$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$a$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning bug1223Spread2_1(i, $ceylontmp$$a$$3);
+            returning bug1223Spread2_1(i, $ceylontmp$a$3);
         );
     }
     
@@ -247,9 +247,9 @@ final class bug1223Spread2_3_ {
         return (
             let
             {
-                long $ceylontmp$$i$$4 = .com.redhat.ceylon.compiler.java.test.annotations.bug1223Spread2_3_.bug1223Spread2_3$i(a);
+                long $ceylontmp$i$4 = .com.redhat.ceylon.compiler.java.test.annotations.bug1223Spread2_3_.bug1223Spread2_3$i(a);
             }
-            returning bug1223Spread2_3(a, $ceylontmp$$i$$4);
+            returning bug1223Spread2_3(a, $ceylontmp$i$4);
         );
     }
     

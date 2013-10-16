@@ -15,18 +15,18 @@ class Bug978 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$s$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning join$priv$$($ceylontmp$$s$$0);
+            returning join$priv$$canonical$($ceylontmp$s$0);
         );
     }
     
-    private .java.lang.String join$priv$$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private .java.lang.String join$priv$$canonical$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return "";
     }
     
     private final .java.lang.String join$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
-        return join$priv$$(s);
+        return join$priv$$canonical$(s);
     }
     
     @.java.lang.Override

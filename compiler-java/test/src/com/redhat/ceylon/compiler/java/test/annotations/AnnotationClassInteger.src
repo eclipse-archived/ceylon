@@ -21,8 +21,8 @@ final class AnnotationClassInteger implements .com.redhat.ceylon.compiler.java.r
         (
             let
             {
-                long $ceylontmp$$j$$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.$default$j(i);
-                this(i, $ceylontmp$$j$$0);
+                long $ceylontmp$j$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.$default$j(i);
+                this(i, $ceylontmp$j$0);
             }
             returning null;
         );

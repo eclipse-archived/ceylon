@@ -20,9 +20,9 @@ final class bug1263_ {
                 (
                     let
                     {
-                        Node$impl $ceylontmp$$impl$$0 = new Node$impl();
-                        Node $ceylontmp$$foo$$1 = $ceylontmp$$impl$$0.$default$foo();
-                        this($ceylontmp$$foo$$1);
+                        Node$impl $ceylontmp$impl$0 = new Node$impl();
+                        Node $ceylontmp$foo$1 = $ceylontmp$impl$0.$default$foo();
+                        this($ceylontmp$foo$1);
                     }
                     returning null;
                 );

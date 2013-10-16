@@ -131,8 +131,8 @@ final class EnumeratedReferenceVariadic implements .com.redhat.ceylon.compiler.j
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Comparison> $ceylontmp$$comparison$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                this($ceylontmp$$comparison$$0);
+                .ceylon.language.Sequential<? extends .ceylon.language.Comparison> $ceylontmp$comparison$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this($ceylontmp$comparison$0);
             }
             returning null;
         );
@@ -215,9 +215,9 @@ final class enumeratedReferenceVariadic_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Comparison> $ceylontmp$$comparison$$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.Comparison> $ceylontmp$comparison$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning enumeratedReferenceVariadic($ceylontmp$$comparison$$1);
+            returning enumeratedReferenceVariadic($ceylontmp$comparison$1);
         );
     }
     
@@ -259,8 +259,8 @@ final class EnumeratedReferenceDefaulted implements .com.redhat.ceylon.compiler.
         (
             let
             {
-                .ceylon.language.Comparison $ceylontmp$$comparison$$2 = .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted.$default$comparison();
-                this($ceylontmp$$comparison$$2);
+                .ceylon.language.Comparison $ceylontmp$comparison$2 = .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted.$default$comparison();
+                this($ceylontmp$comparison$2);
             }
             returning null;
         );
@@ -354,9 +354,9 @@ final class enumeratedReferenceDefaulted_ {
         return (
             let
             {
-                .ceylon.language.Comparison $ceylontmp$$comparison$$3 = .com.redhat.ceylon.compiler.java.test.annotations.enumeratedReferenceDefaulted_.enumeratedReferenceDefaulted$comparison();
+                .ceylon.language.Comparison $ceylontmp$comparison$3 = .com.redhat.ceylon.compiler.java.test.annotations.enumeratedReferenceDefaulted_.enumeratedReferenceDefaulted$comparison();
             }
-            returning enumeratedReferenceDefaulted($ceylontmp$$comparison$$3);
+            returning enumeratedReferenceDefaulted($ceylontmp$comparison$3);
         );
     }
     

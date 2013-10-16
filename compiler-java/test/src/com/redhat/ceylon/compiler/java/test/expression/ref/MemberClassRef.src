@@ -270,9 +270,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s$$5 = $default$UnaryDefaulted$s();
+                .java.lang.String $ceylontmp$s$5 = $default$UnaryDefaulted$s();
             }
-            returning new UnaryDefaulted($ceylontmp$$s$$5);
+            returning new UnaryDefaulted($ceylontmp$s$5);
         );
     }
     
@@ -310,10 +310,10 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s1$$6 = $default$BinaryDefaulted$s1();
-                .java.lang.String $ceylontmp$$s2$$7 = $default$BinaryDefaulted$s2($ceylontmp$$s1$$6);
+                .java.lang.String $ceylontmp$s1$6 = $default$BinaryDefaulted$s1();
+                .java.lang.String $ceylontmp$s2$7 = $default$BinaryDefaulted$s2($ceylontmp$s1$6);
             }
-            returning new BinaryDefaulted($ceylontmp$$s1$$6, $ceylontmp$$s2$$7);
+            returning new BinaryDefaulted($ceylontmp$s1$6, $ceylontmp$s2$7);
         );
     }
     
@@ -325,9 +325,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s2$$8 = $default$BinaryDefaulted$s2(s1);
+                .java.lang.String $ceylontmp$s2$8 = $default$BinaryDefaulted$s2(s1);
             }
-            returning new BinaryDefaulted(s1, $ceylontmp$$s2$$8);
+            returning new BinaryDefaulted(s1, $ceylontmp$s2$8);
         );
     }
     
@@ -371,11 +371,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s1$$9 = $default$TernaryDefaulted$s1();
-                .java.lang.String $ceylontmp$$s2$$10 = $default$TernaryDefaulted$s2($ceylontmp$$s1$$9);
-                .java.lang.String $ceylontmp$$s3$$11 = $default$TernaryDefaulted$s3($ceylontmp$$s1$$9, $ceylontmp$$s2$$10);
+                .java.lang.String $ceylontmp$s1$9 = $default$TernaryDefaulted$s1();
+                .java.lang.String $ceylontmp$s2$10 = $default$TernaryDefaulted$s2($ceylontmp$s1$9);
+                .java.lang.String $ceylontmp$s3$11 = $default$TernaryDefaulted$s3($ceylontmp$s1$9, $ceylontmp$s2$10);
             }
-            returning new TernaryDefaulted($ceylontmp$$s1$$9, $ceylontmp$$s2$$10, $ceylontmp$$s3$$11);
+            returning new TernaryDefaulted($ceylontmp$s1$9, $ceylontmp$s2$10, $ceylontmp$s3$11);
         );
     }
     
@@ -387,10 +387,10 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s2$$12 = $default$TernaryDefaulted$s2(s1);
-                .java.lang.String $ceylontmp$$s3$$13 = $default$TernaryDefaulted$s3(s1, $ceylontmp$$s2$$12);
+                .java.lang.String $ceylontmp$s2$12 = $default$TernaryDefaulted$s2(s1);
+                .java.lang.String $ceylontmp$s3$13 = $default$TernaryDefaulted$s3(s1, $ceylontmp$s2$12);
             }
-            returning new TernaryDefaulted(s1, $ceylontmp$$s2$$12, $ceylontmp$$s3$$13);
+            returning new TernaryDefaulted(s1, $ceylontmp$s2$12, $ceylontmp$s3$13);
         );
     }
     
@@ -402,9 +402,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s3$$14 = $default$TernaryDefaulted$s3(s1, s2);
+                .java.lang.String $ceylontmp$s3$14 = $default$TernaryDefaulted$s3(s1, s2);
             }
-            returning new TernaryDefaulted(s1, s2, $ceylontmp$$s3$$14);
+            returning new TernaryDefaulted(s1, s2, $ceylontmp$s3$14);
         );
     }
     
@@ -454,12 +454,12 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s1$$15 = $default$NaryDefaulted$s1();
-                .java.lang.String $ceylontmp$$s2$$16 = $default$NaryDefaulted$s2($ceylontmp$$s1$$15);
-                .java.lang.String $ceylontmp$$s3$$17 = $default$NaryDefaulted$s3($ceylontmp$$s1$$15, $ceylontmp$$s2$$16);
-                .java.lang.String $ceylontmp$$s4$$18 = $default$NaryDefaulted$s4($ceylontmp$$s1$$15, $ceylontmp$$s2$$16, $ceylontmp$$s3$$17);
+                .java.lang.String $ceylontmp$s1$15 = $default$NaryDefaulted$s1();
+                .java.lang.String $ceylontmp$s2$16 = $default$NaryDefaulted$s2($ceylontmp$s1$15);
+                .java.lang.String $ceylontmp$s3$17 = $default$NaryDefaulted$s3($ceylontmp$s1$15, $ceylontmp$s2$16);
+                .java.lang.String $ceylontmp$s4$18 = $default$NaryDefaulted$s4($ceylontmp$s1$15, $ceylontmp$s2$16, $ceylontmp$s3$17);
             }
-            returning new NaryDefaulted($ceylontmp$$s1$$15, $ceylontmp$$s2$$16, $ceylontmp$$s3$$17, $ceylontmp$$s4$$18);
+            returning new NaryDefaulted($ceylontmp$s1$15, $ceylontmp$s2$16, $ceylontmp$s3$17, $ceylontmp$s4$18);
         );
     }
     
@@ -471,11 +471,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s2$$19 = $default$NaryDefaulted$s2(s1);
-                .java.lang.String $ceylontmp$$s3$$20 = $default$NaryDefaulted$s3(s1, $ceylontmp$$s2$$19);
-                .java.lang.String $ceylontmp$$s4$$21 = $default$NaryDefaulted$s4(s1, $ceylontmp$$s2$$19, $ceylontmp$$s3$$20);
+                .java.lang.String $ceylontmp$s2$19 = $default$NaryDefaulted$s2(s1);
+                .java.lang.String $ceylontmp$s3$20 = $default$NaryDefaulted$s3(s1, $ceylontmp$s2$19);
+                .java.lang.String $ceylontmp$s4$21 = $default$NaryDefaulted$s4(s1, $ceylontmp$s2$19, $ceylontmp$s3$20);
             }
-            returning new NaryDefaulted(s1, $ceylontmp$$s2$$19, $ceylontmp$$s3$$20, $ceylontmp$$s4$$21);
+            returning new NaryDefaulted(s1, $ceylontmp$s2$19, $ceylontmp$s3$20, $ceylontmp$s4$21);
         );
     }
     
@@ -487,10 +487,10 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s3$$22 = $default$NaryDefaulted$s3(s1, s2);
-                .java.lang.String $ceylontmp$$s4$$23 = $default$NaryDefaulted$s4(s1, s2, $ceylontmp$$s3$$22);
+                .java.lang.String $ceylontmp$s3$22 = $default$NaryDefaulted$s3(s1, s2);
+                .java.lang.String $ceylontmp$s4$23 = $default$NaryDefaulted$s4(s1, s2, $ceylontmp$s3$22);
             }
-            returning new NaryDefaulted(s1, s2, $ceylontmp$$s3$$22, $ceylontmp$$s4$$23);
+            returning new NaryDefaulted(s1, s2, $ceylontmp$s3$22, $ceylontmp$s4$23);
         );
     }
     
@@ -502,9 +502,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s4$$24 = $default$NaryDefaulted$s4(s1, s2, s3);
+                .java.lang.String $ceylontmp$s4$24 = $default$NaryDefaulted$s4(s1, s2, s3);
             }
-            returning new NaryDefaulted(s1, s2, s3, $ceylontmp$$s4$$24);
+            returning new NaryDefaulted(s1, s2, s3, $ceylontmp$s4$24);
         );
     }
     
@@ -749,9 +749,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$s$$39 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$39 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new NullarySequenced($ceylontmp$$s$$39);
+            returning new NullarySequenced($ceylontmp$s$39);
         );
     }
     
@@ -785,9 +785,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$s$$40 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$40 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new UnarySequenced(s1, $ceylontmp$$s$$40);
+            returning new UnarySequenced(s1, $ceylontmp$s$40);
         );
     }
     
@@ -827,9 +827,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$s$$41 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$41 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new BinarySequenced(s1, s2, $ceylontmp$$s$$41);
+            returning new BinarySequenced(s1, s2, $ceylontmp$s$41);
         );
     }
     
@@ -875,9 +875,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$s$$42 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$42 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new TernarySequenced(s1, s2, s3, $ceylontmp$$s$$42);
+            returning new TernarySequenced(s1, s2, s3, $ceylontmp$s$42);
         );
     }
     
@@ -929,9 +929,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$s$$43 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$43 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new NarySequenced(s1, s2, s3, s4, $ceylontmp$$s$$43);
+            returning new NarySequenced(s1, s2, s3, s4, $ceylontmp$s$43);
         );
     }
     

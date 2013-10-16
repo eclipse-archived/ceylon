@@ -118,8 +118,8 @@ public final class variadicMethod_ {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$ints$$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                variadicMethod($ceylontmp$$ints$$3);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ints$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                variadicMethod($ceylontmp$ints$3);
             }
             returning null;
         );

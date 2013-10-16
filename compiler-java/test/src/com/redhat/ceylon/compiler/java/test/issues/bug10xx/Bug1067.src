@@ -6,8 +6,8 @@ class Bug1067 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$$g$$0 = .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1067.$default$g(f);
-                this(f, $ceylontmp$$g$$0);
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$g$0 = .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1067.$default$g(f);
+                this(f, $ceylontmp$g$0);
             }
             returning null;
         );

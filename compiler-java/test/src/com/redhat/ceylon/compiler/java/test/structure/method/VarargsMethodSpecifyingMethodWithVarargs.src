@@ -9,21 +9,21 @@ class VarargsMethodSpecifyingMethodWithVarargs implements .com.redhat.ceylon.com
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$seq$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                foo$priv$$($ceylontmp$$seq$$0);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                foo$priv$$canonical$($ceylontmp$seq$0);
             }
             returning null;
         );
     }
     
-    private void foo$priv$$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    private void foo$priv$$canonical$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
     }
     
     private final void foo$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
         (
             let
             {
-                foo$priv$$(seq);
+                foo$priv$$canonical$(seq);
             }
             returning null;
         );
@@ -33,13 +33,13 @@ class VarargsMethodSpecifyingMethodWithVarargs implements .com.redhat.ceylon.com
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$ints$$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ints$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning bar$priv$$($ceylontmp$$ints$$1);
+            returning bar$priv$$canonical$($ceylontmp$ints$1);
         );
     }
     
-    private .java.lang.Object bar$priv$$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
+    private .java.lang.Object bar$priv$$canonical$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
         return (
             let
             {
@@ -50,7 +50,7 @@ class VarargsMethodSpecifyingMethodWithVarargs implements .com.redhat.ceylon.com
     }
     
     private final .java.lang.Object bar$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
-        return bar$priv$$(ints);
+        return bar$priv$$canonical$(ints);
     }
     
     public static void main(.java.lang.String[] args) {

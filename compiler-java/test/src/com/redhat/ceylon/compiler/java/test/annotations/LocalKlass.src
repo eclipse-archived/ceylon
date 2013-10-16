@@ -168,15 +168,15 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
                 (
                     let
                     {
-                        .ceylon.language.Sequential<? extends T> $ceylontmp$$t$$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                        m2$(arg1, $ceylontmp$$t$$1);
+                        .ceylon.language.Sequential<? extends T> $ceylontmp$t$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                        m2$canonical$(arg1, $ceylontmp$t$1);
                     }
                     returning null;
                 );
             }
             
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private void m2$(final long arg1, final .ceylon.language.Sequential<? extends T> t) {
+            private void m2$canonical$(final long arg1, final .ceylon.language.Sequential<? extends T> t) {
             }
             
             @.ceylon.language.SharedAnnotation$annotation$
@@ -191,7 +191,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
                 (
                     let
                     {
-                        m2$(arg1, t);
+                        m2$canonical$(arg1, t);
                     }
                     returning null;
                 );

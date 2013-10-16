@@ -77,9 +77,9 @@ public class Class<Key, Value> implements .com.redhat.ceylon.compiler.java.runti
         (
             let
             {
-                long $ceylontmp$$a$$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.<Key, Value>$default$a($reified$Key, $reified$Value);
-                long $ceylontmp$$b$$1 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.<Key, Value>$default$b($reified$Key, $reified$Value, $ceylontmp$$a$$0);
-                this($reified$Key, $reified$Value, $ceylontmp$$a$$0, $ceylontmp$$b$$1);
+                long $ceylontmp$a$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.<Key, Value>$default$a($reified$Key, $reified$Value);
+                long $ceylontmp$b$1 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.<Key, Value>$default$b($reified$Key, $reified$Value, $ceylontmp$a$0);
+                this($reified$Key, $reified$Value, $ceylontmp$a$0, $ceylontmp$b$1);
             }
             returning null;
         );
@@ -90,8 +90,8 @@ public class Class<Key, Value> implements .com.redhat.ceylon.compiler.java.runti
         (
             let
             {
-                long $ceylontmp$$b$$2 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.<Key, Value>$default$b($reified$Key, $reified$Value, a);
-                this($reified$Key, $reified$Value, a, $ceylontmp$$b$$2);
+                long $ceylontmp$b$2 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.<Key, Value>$default$b($reified$Key, $reified$Value, a);
+                this($reified$Key, $reified$Value, a, $ceylontmp$b$2);
             }
             returning null;
         );

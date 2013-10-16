@@ -46,18 +46,18 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$s$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning nullarySequenced$($ceylontmp$$s$$0);
+            returning nullarySequenced$canonical$($ceylontmp$s$0);
         );
     }
     
-    private .java.lang.String nullarySequenced$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private .java.lang.String nullarySequenced$canonical$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return nullarySequenced.$callvariadic$(s).toString();
     }
     
     public final .java.lang.String nullarySequenced(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
-        return nullarySequenced$(s);
+        return nullarySequenced$canonical$(s);
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.String> unarySequenced;
     
@@ -65,18 +65,18 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$s$$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning unarySequenced$(s1, $ceylontmp$$s$$1);
+            returning unarySequenced$canonical$(s1, $ceylontmp$s$1);
         );
     }
     
-    private .java.lang.String unarySequenced$(final .java.lang.String s1, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private .java.lang.String unarySequenced$canonical$(final .java.lang.String s1, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return unarySequenced.$callvariadic$(.ceylon.language.String.instance(s1), s).toString();
     }
     
     public final .java.lang.String unarySequenced(final .java.lang.String s1, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
-        return unarySequenced$(s1, s);
+        return unarySequenced$canonical$(s1, s);
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.String> binarySequenced;
     
@@ -84,18 +84,18 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$s$$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning binarySequenced$(s1, s2, $ceylontmp$$s$$2);
+            returning binarySequenced$canonical$(s1, s2, $ceylontmp$s$2);
         );
     }
     
-    private .java.lang.String binarySequenced$(final .java.lang.String s1, final .java.lang.String s2, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private .java.lang.String binarySequenced$canonical$(final .java.lang.String s1, final .java.lang.String s2, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return binarySequenced.$callvariadic$(.ceylon.language.String.instance(s1), .ceylon.language.String.instance(s2), s).toString();
     }
     
     public final .java.lang.String binarySequenced(final .java.lang.String s1, final .java.lang.String s2, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
-        return binarySequenced$(s1, s2, s);
+        return binarySequenced$canonical$(s1, s2, s);
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.String> ternarySequenced;
     
@@ -103,18 +103,18 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$s$$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning ternarySequenced$(s1, s2, s3, $ceylontmp$$s$$3);
+            returning ternarySequenced$canonical$(s1, s2, s3, $ceylontmp$s$3);
         );
     }
     
-    private .java.lang.String ternarySequenced$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private .java.lang.String ternarySequenced$canonical$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return ternarySequenced.$callvariadic$(.ceylon.language.String.instance(s1), .ceylon.language.String.instance(s2), .ceylon.language.String.instance(s3), s).toString();
     }
     
     public final .java.lang.String ternarySequenced(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
-        return ternarySequenced$(s1, s2, s3, s);
+        return ternarySequenced$canonical$(s1, s2, s3, s);
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.String> narySequenced;
     
@@ -122,18 +122,18 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$s$$4 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$4 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning narySequenced$(s1, s2, s3, s4, $ceylontmp$$s$$4);
+            returning narySequenced$canonical$(s1, s2, s3, s4, $ceylontmp$s$4);
         );
     }
     
-    private .java.lang.String narySequenced$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private .java.lang.String narySequenced$canonical$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return narySequenced.$callvariadic$(.ceylon.language.String.instance(s1), .ceylon.language.String.instance(s2), .ceylon.language.String.instance(s3), .ceylon.language.String.instance(s4), s).toString();
     }
     
     public final .java.lang.String narySequenced(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
-        return narySequenced$(s1, s2, s3, s4, s);
+        return narySequenced$canonical$(s1, s2, s3, s4, s);
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> unaryUnaryMpl;
     

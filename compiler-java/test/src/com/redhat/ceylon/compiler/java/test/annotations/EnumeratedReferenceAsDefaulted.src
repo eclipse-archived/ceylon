@@ -130,9 +130,9 @@ final class enumeratedReference_z_ {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y $ceylontmp$$y$$0 = .com.redhat.ceylon.compiler.java.test.annotations.enumeratedReference_z_.enumeratedReference_z$y();
+                .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y $ceylontmp$y$0 = .com.redhat.ceylon.compiler.java.test.annotations.enumeratedReference_z_.enumeratedReference_z$y();
             }
-            returning enumeratedReference_z($ceylontmp$$y$$0);
+            returning enumeratedReference_z($ceylontmp$y$0);
         );
     }
     

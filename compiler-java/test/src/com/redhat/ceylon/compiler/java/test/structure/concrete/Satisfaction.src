@@ -24,9 +24,9 @@ final class I1$impl {
         return (
             let
             {
-                long $ceylontmp$$n$$0 = m1$n();
+                long $ceylontmp$n$0 = m1$n();
             }
-            returning m1$($ceylontmp$$n$$0);
+            returning m1$canonical$($ceylontmp$n$0);
         );
     }
     
@@ -34,12 +34,12 @@ final class I1$impl {
         return $this.i1();
     }
     
-    private long m1$(final long n) {
+    private long m1$canonical$(final long n) {
         return n + $this.i1();
     }
     
     public long m1(final long n) {
-        return m1$(n);
+        return m1$canonical$(n);
     }
 }
 class CI1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.I1 {
@@ -64,9 +64,9 @@ class CI1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
         return (
             let
             {
-                long $ceylontmp$$n$$1 = m1$n();
+                long $ceylontmp$n$1 = m1$n();
             }
-            returning m1$($ceylontmp$$n$$1);
+            returning m1$canonical$($ceylontmp$n$1);
         );
     }
     
@@ -75,7 +75,7 @@ class CI1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$.m1(n);
     }
     
-    private long m1$(final long n) {
+    private long m1$canonical$(final long n) {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$.m1(n);
     }
     
@@ -119,9 +119,9 @@ final class I2$impl {
         return (
             let
             {
-                long $ceylontmp$$n$$2 = m2$n();
+                long $ceylontmp$n$2 = m2$n();
             }
-            returning m2$($ceylontmp$$n$$2);
+            returning m2$canonical$($ceylontmp$n$2);
         );
     }
     
@@ -129,12 +129,12 @@ final class I2$impl {
         return $this.i2();
     }
     
-    private long m2$(final long n) {
+    private long m2$canonical$(final long n) {
         return n + $this.i2();
     }
     
     public long m2(final long n) {
-        return m2$(n);
+        return m2$canonical$(n);
     }
 }
 interface I3 extends .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 {
@@ -173,9 +173,9 @@ final class I4$impl {
         return (
             let
             {
-                long $ceylontmp$$n$$3 = m4$n();
+                long $ceylontmp$n$3 = m4$n();
             }
-            returning m4$($ceylontmp$$n$$3);
+            returning m4$canonical$($ceylontmp$n$3);
         );
     }
     
@@ -183,12 +183,12 @@ final class I4$impl {
         return $this.i4();
     }
     
-    private long m4$(final long n) {
+    private long m4$canonical$(final long n) {
         return n;
     }
     
     public long m4(final long n) {
-        return m4$(n);
+        return m4$canonical$(n);
     }
 }
 class CI3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 {
@@ -214,9 +214,9 @@ class CI3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
         return (
             let
             {
-                long $ceylontmp$$n$$4 = m1$n();
+                long $ceylontmp$n$4 = m1$n();
             }
-            returning m1$($ceylontmp$$n$$4);
+            returning m1$canonical$($ceylontmp$n$4);
         );
     }
     
@@ -225,7 +225,7 @@ class CI3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$.m1(n);
     }
     
-    private long m1$(final long n) {
+    private long m1$canonical$(final long n) {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$.m1(n);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this$;
@@ -254,19 +254,19 @@ class CI3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
         return (
             let
             {
-                long $ceylontmp$$n$$5 = m2$n();
+                long $ceylontmp$n$5 = m2$n();
             }
-            returning m2$($ceylontmp$$n$$5);
+            returning m2$canonical$($ceylontmp$n$5);
         );
     }
     
-    private long m2$(final long n) {
+    private long m2$canonical$(final long n) {
         return 2L;
     }
     
     @.java.lang.Override
     public final long m2(final long n) {
-        return m2$(n);
+        return m2$canonical$(n);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -311,9 +311,9 @@ abstract class A7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return (
             let
             {
-                long $ceylontmp$$n$$6 = m1$n();
+                long $ceylontmp$n$6 = m1$n();
             }
-            returning m1$($ceylontmp$$n$$6);
+            returning m1$canonical$($ceylontmp$n$6);
         );
     }
     
@@ -322,7 +322,7 @@ abstract class A7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$.m1(n);
     }
     
-    private long m1$(final long n) {
+    private long m1$canonical$(final long n) {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$.m1(n);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this$;
@@ -342,9 +342,9 @@ abstract class A7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return (
             let
             {
-                long $ceylontmp$$n$$7 = m2$n();
+                long $ceylontmp$n$7 = m2$n();
             }
-            returning m2$($ceylontmp$$n$$7);
+            returning m2$canonical$($ceylontmp$n$7);
         );
     }
     
@@ -353,7 +353,7 @@ abstract class A7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this$.m2(n);
     }
     
-    private long m2$(final long n) {
+    private long m2$canonical$(final long n) {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this$.m2(n);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.I4$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I4$this$;
@@ -377,19 +377,19 @@ abstract class A7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return (
             let
             {
-                long $ceylontmp$$n$$8 = m4$n();
+                long $ceylontmp$n$8 = m4$n();
             }
-            returning m4$($ceylontmp$$n$$8);
+            returning m4$canonical$($ceylontmp$n$8);
         );
     }
     
-    private long m4$(final long n) {
+    private long m4$canonical$(final long n) {
         return 5L;
     }
     
     @.java.lang.Override
     public final long m4(final long n) {
-        return m4$(n);
+        return m4$canonical$(n);
     }
     
     @.java.lang.Override

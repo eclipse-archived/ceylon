@@ -9,9 +9,9 @@ public final class bug675_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends Element> $ceylontmp$$elements$$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning bug675($reified$Element, $ceylontmp$$elements$$2);
+            returning bug675($reified$Element, $ceylontmp$elements$2);
         );
     }
     

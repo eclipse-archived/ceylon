@@ -461,9 +461,9 @@ final class EC_ErasedMember$impl<Element, Absent> {
         return (
             let
             {
-                .java.lang.Object $ceylontmp$$p$$22 = defaultedParams$p();
+                .java.lang.Object $ceylontmp$p$22 = defaultedParams$p();
             }
-            returning defaultedParams$($ceylontmp$$p$$22);
+            returning defaultedParams$canonical$($ceylontmp$p$22);
         );
     }
     
@@ -471,12 +471,12 @@ final class EC_ErasedMember$impl<Element, Absent> {
         return .ceylon.language.nothing_.get_();
     }
     
-    private .java.lang.Object defaultedParams$(final .java.lang.Object p) {
+    private .java.lang.Object defaultedParams$canonical$(final .java.lang.Object p) {
         return null;
     }
     
     public .java.lang.Object defaultedParams(final .java.lang.Object p) {
-        return defaultedParams$(p);
+        return defaultedParams$canonical$(p);
     }
     
     public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, Absent>.Class Class$new$(final .java.lang.Object p) {
@@ -491,9 +491,9 @@ final class EC_ErasedMember$impl<Element, Absent> {
         return (
             let
             {
-                .java.lang.Object $ceylontmp$$p$$23 = $default$Class$p();
+                .java.lang.Object $ceylontmp$p$23 = $default$Class$p();
             }
-            returning new Class($ceylontmp$$p$$23);
+            returning new Class($ceylontmp$p$23);
         );
     }
     
@@ -542,9 +542,9 @@ class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.r
         return (
             let
             {
-                .java.lang.Object $ceylontmp$$p$$24 = defaultedParams$p();
+                .java.lang.Object $ceylontmp$p$24 = defaultedParams$p();
             }
-            returning defaultedParams$($ceylontmp$$p$$24);
+            returning defaultedParams$canonical$($ceylontmp$p$24);
         );
     }
     
@@ -553,7 +553,7 @@ class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.r
         return $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.defaultedParams(p);
     }
     
-    private .java.lang.Object defaultedParams$(final .java.lang.Object p) {
+    private .java.lang.Object defaultedParams$canonical$(final .java.lang.Object p) {
         return $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.defaultedParams(p);
     }
     

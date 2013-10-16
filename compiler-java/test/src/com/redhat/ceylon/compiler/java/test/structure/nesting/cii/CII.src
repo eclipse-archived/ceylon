@@ -21,9 +21,9 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> i
         return (
             let
             {
-                U $ceylontmp$$u$$0 = m1$u($reified$U, b);
+                U $ceylontmp$u$0 = m1$u($reified$U, b);
             }
-            returning m1$priv$$($reified$U, b, $ceylontmp$$u$$0);
+            returning m1$priv$$canonical$($reified$U, b, $ceylontmp$u$0);
         );
     }
     
@@ -31,12 +31,12 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> i
         return null;
     }
     
-    private <U>T m1$priv$$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final X b, final U u) {
+    private <U>T m1$priv$$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final X b, final U u) {
         throw new .ceylon.language.Exception(null, null);
     }
     
     private final <U>T m1$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final X b, final U u) {
-        return m1$priv$$($reified$U, b, u);
+        return m1$priv$$canonical$($reified$U, b, u);
     }
     
     final class CI$impl {

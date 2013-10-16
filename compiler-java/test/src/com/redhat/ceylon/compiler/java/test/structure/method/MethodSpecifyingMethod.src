@@ -39,9 +39,9 @@ class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.
         return (
             let
             {
-                long $ceylontmp$$i$$2 = oneDefaultedParam$i();
+                long $ceylontmp$i$2 = oneDefaultedParam$i();
             }
-            returning oneDefaultedParam$priv$$($ceylontmp$$i$$2);
+            returning oneDefaultedParam$priv$$canonical$($ceylontmp$i$2);
         );
     }
     
@@ -49,12 +49,12 @@ class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.
         return 2L;
     }
     
-    private .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam$priv$$(final long i) {
+    private .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam$priv$$canonical$(final long i) {
         throw new .ceylon.language.Exception(null, null);
     }
     
     private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam$priv$(final long i) {
-        return oneDefaultedParam$priv$$(i);
+        return oneDefaultedParam$priv$$canonical$(i);
     }
     
     private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam1$priv$() {
@@ -76,18 +76,18 @@ class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$i$$4 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$4 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning oneSequencedParam$priv$$($ceylontmp$$i$$4);
+            returning oneSequencedParam$priv$$canonical$($ceylontmp$i$4);
         );
     }
     
-    private .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam$priv$$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+    private .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam$priv$$canonical$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
         throw new .ceylon.language.Exception(null, null);
     }
     
     private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
-        return oneSequencedParam$priv$$(i);
+        return oneSequencedParam$priv$$canonical$(i);
     }
     
     private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam1$priv$() {

@@ -17,9 +17,9 @@ class ClassDefaultMemberClassWithDefaultedParams implements .com.redhat.ceylon.c
         return (
             let
             {
-                long $ceylontmp$$i$$0 = $default$Member$i();
+                long $ceylontmp$i$0 = $default$Member$i();
             }
-            returning new Member($ceylontmp$$i$$0);
+            returning new Member($ceylontmp$i$0);
         );
     }
     
@@ -72,9 +72,9 @@ class ClassDefaultMemberClassWithDefaultedParams_sub extends .com.redhat.ceylon.
         return (
             let
             {
-                long $ceylontmp$$i$$2 = $default$Member$i();
+                long $ceylontmp$i$2 = $default$Member$i();
             }
-            returning new Member($ceylontmp$$i$$2);
+            returning new Member($ceylontmp$i$2);
         );
     }
     

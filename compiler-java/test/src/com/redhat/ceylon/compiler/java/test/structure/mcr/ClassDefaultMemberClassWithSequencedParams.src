@@ -13,9 +13,9 @@ class ClassDefaultMemberClassWithSequencedParams implements .com.redhat.ceylon.c
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$i$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new Member($ceylontmp$$i$$0);
+            returning new Member($ceylontmp$i$0);
         );
     }
     
@@ -82,9 +82,9 @@ class ClassDefaultMemberClassWithSequencedParams_sub extends .com.redhat.ceylon.
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$i$$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new Member($ceylontmp$$i$$3);
+            returning new Member($ceylontmp$i$3);
         );
     }
     

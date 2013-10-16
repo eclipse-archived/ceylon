@@ -9,21 +9,21 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$i$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                m$priv$$(a, $ceylontmp$$i$$0);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                m$priv$$canonical$(a, $ceylontmp$i$0);
             }
             returning null;
         );
     }
     
-    private void m$priv$$(final .java.lang.String a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+    private void m$priv$$canonical$(final .java.lang.String a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
     }
     
     private final void m$priv$(final .java.lang.String a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
         (
             let
             {
-                m$priv$$(a, i);
+                m$priv$$canonical$(a, i);
             }
             returning null;
         );
@@ -33,21 +33,21 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
         (
             let
             {
-                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> $ceylontmp$$i$$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                m2$priv$$(a, $ceylontmp$$i$$1);
+                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> $ceylontmp$i$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                m2$priv$$canonical$(a, $ceylontmp$i$1);
             }
             returning null;
         );
     }
     
-    private void m2$priv$$(final .java.lang.String a, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> i) {
+    private void m2$priv$$canonical$(final .java.lang.String a, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> i) {
     }
     
     private final void m2$priv$(final .java.lang.String a, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> i) {
         (
             let
             {
-                m2$priv$$(a, i);
+                m2$priv$$canonical$(a, i);
             }
             returning null;
         );

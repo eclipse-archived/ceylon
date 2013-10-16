@@ -133,19 +133,19 @@ class RawInImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.runtime
         return (
             let
             {
-                .java.lang.Object $ceylontmp$$t$$0 = mDefaulted$t();
+                .java.lang.Object $ceylontmp$t$0 = mDefaulted$t();
             }
-            returning mDefaulted$($ceylontmp$$t$$0);
+            returning mDefaulted$canonical$($ceylontmp$t$0);
         );
     }
     
-    private .java.lang.Object mDefaulted$(final .java.lang.Object t) {
+    private .java.lang.Object mDefaulted$canonical$(final .java.lang.Object t) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object mDefaulted(final .java.lang.Object t) {
-        return mDefaulted$(t);
+        return mDefaulted$canonical$(t);
     }
     
     public static void main(.java.lang.String[] args) {

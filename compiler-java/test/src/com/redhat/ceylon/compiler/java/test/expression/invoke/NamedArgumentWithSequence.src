@@ -9,21 +9,21 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$b$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                m$priv$$(a, $ceylontmp$$b$$0);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                m$priv$$canonical$(a, $ceylontmp$b$0);
             }
             returning null;
         );
     }
     
-    private void m$priv$$(final long a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
+    private void m$priv$$canonical$(final long a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
     }
     
     private final void m$priv$(final long a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
         (
             let
             {
-                m$priv$$(a, b);
+                m$priv$$canonical$(a, b);
             }
             returning null;
         );
@@ -33,21 +33,21 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
         (
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Throwable> $ceylontmp$$b$$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                m2$priv$$(a, $ceylontmp$$b$$1);
+                .ceylon.language.Sequential<? extends .java.lang.Throwable> $ceylontmp$b$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                m2$priv$$canonical$(a, $ceylontmp$b$1);
             }
             returning null;
         );
     }
     
-    private void m2$priv$$(final .java.lang.Throwable a, final .ceylon.language.Sequential<? extends .java.lang.Throwable> b) {
+    private void m2$priv$$canonical$(final .java.lang.Throwable a, final .ceylon.language.Sequential<? extends .java.lang.Throwable> b) {
     }
     
     private final void m2$priv$(final .java.lang.Throwable a, final .ceylon.language.Sequential<? extends .java.lang.Throwable> b) {
         (
             let
             {
-                m2$priv$$(a, b);
+                m2$priv$$canonical$(a, b);
             }
             returning null;
         );
@@ -57,21 +57,21 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
         (
             let
             {
-                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> $ceylontmp$$b$$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                m3$priv$$(a, $ceylontmp$$b$$2);
+                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> $ceylontmp$b$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                m3$priv$$canonical$(a, $ceylontmp$b$2);
             }
             returning null;
         );
     }
     
-    private void m3$priv$$(final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence a, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> b) {
+    private void m3$priv$$canonical$(final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence a, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> b) {
     }
     
     private final void m3$priv$(final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence a, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> b) {
         (
             let
             {
-                m3$priv$$(a, b);
+                m3$priv$$canonical$(a, b);
             }
             returning null;
         );

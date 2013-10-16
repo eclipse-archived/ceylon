@@ -17,8 +17,8 @@ class DefaultedAndTypeParams<X> implements .com.redhat.ceylon.compiler.java.runt
         (
             let
             {
-                X $ceylontmp$$x$$0 = m$x($reified$Y, y);
-                m$($reified$Y, y, $ceylontmp$$x$$0);
+                X $ceylontmp$x$0 = m$x($reified$Y, y);
+                m$canonical$($reified$Y, y, $ceylontmp$x$0);
             }
             returning null;
         );
@@ -28,14 +28,14 @@ class DefaultedAndTypeParams<X> implements .com.redhat.ceylon.compiler.java.runt
         return getInit$priv$();
     }
     
-    private <Y>void m$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final Y y, final X x) {
+    private <Y>void m$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final Y y, final X x) {
     }
     
     public final <Y>void m(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final Y y, final X x) {
         (
             let
             {
-                m$($reified$Y, y, x);
+                m$canonical$($reified$Y, y, x);
             }
             returning null;
         );

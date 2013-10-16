@@ -6,7 +6,7 @@ final class bar_ {
     }
     
     static void bar() {
-        .bug187.main_.main();
+        .bug187.main_.$main();
     }
     
     public static void main(.java.lang.String[] args) {

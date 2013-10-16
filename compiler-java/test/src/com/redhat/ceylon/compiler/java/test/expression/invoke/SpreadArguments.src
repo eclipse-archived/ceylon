@@ -22,21 +22,21 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .ceylon.language.Sequential<? extends T> $ceylontmp$$s$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                m2$(i, $ceylontmp$$s$$0);
+                .ceylon.language.Sequential<? extends T> $ceylontmp$s$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                m2$canonical$(i, $ceylontmp$s$0);
             }
             returning null;
         );
     }
     
-    private void m2$(final long i, final .ceylon.language.Sequential<? extends T> s) {
+    private void m2$canonical$(final long i, final .ceylon.language.Sequential<? extends T> s) {
     }
     
     public final void m2(final long i, final .ceylon.language.Sequential<? extends T> s) {
         (
             let
             {
-                m2$(i, s);
+                m2$canonical$(i, s);
             }
             returning null;
         );
@@ -395,21 +395,21 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$i$$44 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                m4$($ceylontmp$$i$$44);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$44 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                m4$canonical$($ceylontmp$i$44);
             }
             returning null;
         );
     }
     
-    private void m4$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+    private void m4$canonical$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
     }
     
     public final void m4(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
         (
             let
             {
-                m4$(i);
+                m4$canonical$(i);
             }
             returning null;
         );

@@ -9,8 +9,8 @@ class Bug1360 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         (
             let
             {
-                .java.lang.String $ceylontmp$$priv$$0 = f$priv();
-                f$priv$$canonical$($ceylontmp$$priv$$0);
+                .java.lang.String $ceylontmp$priv$0 = f$priv();
+                f$priv$$canonical$($ceylontmp$priv$0);
             }
             returning null;
         );
@@ -71,8 +71,8 @@ final class I$impl<T> {
         (
             let
             {
-                T[] $ceylontmp$$s$$1 = main$s();
-                $main$canonical$($ceylontmp$$s$$1);
+                T[] $ceylontmp$s$1 = main$s();
+                $main$canonical$($ceylontmp$s$1);
             }
             returning null;
         );
@@ -117,8 +117,8 @@ class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
         (
             let
             {
-                .java.lang.String[] $ceylontmp$$s$$2 = main$s();
-                $main$canonical$($ceylontmp$$s$$2);
+                .java.lang.String[] $ceylontmp$s$2 = main$s();
+                $main$canonical$($ceylontmp$s$2);
             }
             returning null;
         );

@@ -12,13 +12,13 @@ class VarargsMethodSpecifyingMethodWithIterable implements .com.redhat.ceylon.co
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$ints$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ints$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning bar$priv$$($ceylontmp$$ints$$0);
+            returning bar$priv$$canonical$($ceylontmp$ints$0);
         );
     }
     
-    private .java.lang.Object bar$priv$$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
+    private .java.lang.Object bar$priv$$canonical$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
         return (
             let
             {
@@ -29,7 +29,7 @@ class VarargsMethodSpecifyingMethodWithIterable implements .com.redhat.ceylon.co
     }
     
     private final .java.lang.Object bar$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
-        return bar$priv$$(ints);
+        return bar$priv$$canonical$(ints);
     }
     
     public static void main(.java.lang.String[] args) {

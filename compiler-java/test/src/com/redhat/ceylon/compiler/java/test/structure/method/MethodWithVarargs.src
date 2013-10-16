@@ -9,14 +9,14 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$ns$$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                f1$($ceylontmp$$ns$$2);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                f1$canonical$($ceylontmp$ns$2);
             }
             returning null;
         );
     }
     
-    private void f1$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
+    private void f1$canonical$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
         .java.lang.Object elem$0;
         for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$1 = ns.iterator(); !((elem$0 = n$iterator$$1.next()) instanceof .ceylon.language.Finished); ) {
             final long n = ((.ceylon.language.Integer)elem$0).longValue();
@@ -27,7 +27,7 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                f1$(ns);
+                f1$canonical$(ns);
             }
             returning null;
         );
@@ -37,14 +37,14 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$ns$$5 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                f2$(i, $ceylontmp$$ns$$5);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$5 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                f2$canonical$(i, $ceylontmp$ns$5);
             }
             returning null;
         );
     }
     
-    private void f2$(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
+    private void f2$canonical$(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
         .java.lang.Object elem$3;
         for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$4 = ns.iterator(); !((elem$3 = n$iterator$$4.next()) instanceof .ceylon.language.Finished); ) {
             final long n = ((.ceylon.language.Integer)elem$3).longValue();
@@ -55,7 +55,7 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                f2$(i, ns);
+                f2$canonical$(i, ns);
             }
             returning null;
         );
@@ -65,14 +65,14 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$$os$$8 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                f3$($ceylontmp$$os$$8);
+                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$os$8 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                f3$canonical$($ceylontmp$os$8);
             }
             returning null;
         );
     }
     
-    private void f3$(final .ceylon.language.Sequential<? extends .java.lang.Object> os) {
+    private void f3$canonical$(final .ceylon.language.Sequential<? extends .java.lang.Object> os) {
         .java.lang.Object elem$6;
         for (.ceylon.language.Iterator<? extends .java.lang.Object> o$iterator$$7 = os.iterator(); !((elem$6 = o$iterator$$7.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.Object o = (.java.lang.Object)elem$6;
@@ -83,7 +83,7 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                f3$(os);
+                f3$canonical$(os);
             }
             returning null;
         );

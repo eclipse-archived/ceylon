@@ -16,9 +16,9 @@ final class getterArgumentNamedInvocation_ {
                 (
                     let
                     {
-                        long $ceylontmp$$i$$0 = callFunction$i();
-                        .java.lang.String $ceylontmp$$s$$1 = callFunction$s($ceylontmp$$i$$0);
-                        callFunction($ceylontmp$$i$$0, $ceylontmp$$s$$1);
+                        long $ceylontmp$i$0 = callFunction$i();
+                        .java.lang.String $ceylontmp$s$1 = callFunction$s($ceylontmp$i$0);
+                        callFunction($ceylontmp$i$0, $ceylontmp$s$1);
                     }
                     returning null;
                 );
@@ -32,8 +32,8 @@ final class getterArgumentNamedInvocation_ {
                 (
                     let
                     {
-                        .java.lang.String $ceylontmp$$s$$2 = callFunction$s(i);
-                        callFunction(i, $ceylontmp$$s$$2);
+                        .java.lang.String $ceylontmp$s$2 = callFunction$s(i);
+                        callFunction(i, $ceylontmp$s$2);
                     }
                     returning null;
                 );

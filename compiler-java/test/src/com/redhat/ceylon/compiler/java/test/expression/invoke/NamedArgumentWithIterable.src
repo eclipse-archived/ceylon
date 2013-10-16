@@ -12,8 +12,8 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $ceylontmp$$b$$0 = defaulted$b(a);
-                defaulted$priv$$(a, $ceylontmp$$b$$0);
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $ceylontmp$b$0 = defaulted$b(a);
+                defaulted$priv$$canonical$(a, $ceylontmp$b$0);
             }
             returning null;
         );
@@ -23,14 +23,14 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
         return .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
     }
     
-    private void defaulted$priv$$(final long a, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> b) {
+    private void defaulted$priv$$canonical$(final long a, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> b) {
     }
     
     private final void defaulted$priv$(final long a, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> b) {
         (
             let
             {
-                defaulted$priv$$(a, b);
+                defaulted$priv$$canonical$(a, b);
             }
             returning null;
         );

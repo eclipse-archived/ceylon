@@ -246,48 +246,48 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$$i$$8 = m$i();
+                long $ceylontmp$i$8 = m$i();
             }
-            returning m$($ceylontmp$$i$$8);
+            returning m$canonical$($ceylontmp$i$8);
         );
     }
     
-    private .java.lang.Object m$(final long i) {
+    private .java.lang.Object m$canonical$(final long i) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object m(final long i) {
-        return m$(i);
+        return m$canonical$(i);
     }
     
     public final long m2() {
         return (
             let
             {
-                long $ceylontmp$$i$$9 = m2$i();
+                long $ceylontmp$i$9 = m2$i();
             }
-            returning m2$($ceylontmp$$i$$9);
+            returning m2$canonical$($ceylontmp$i$9);
         );
     }
     
-    private long m2$(final long i) {
+    private long m2$canonical$(final long i) {
         return i;
     }
     
     @.java.lang.Override
     public final long m2(final long i) {
-        return m2$(i);
+        return m2$canonical$(i);
     }
     
     public final long m3() {
         return (
             let
             {
-                long $ceylontmp$$i$$10 = m3$i();
-                long $ceylontmp$$n$$11 = m3$n($ceylontmp$$i$$10);
+                long $ceylontmp$i$10 = m3$i();
+                long $ceylontmp$n$11 = m3$n($ceylontmp$i$10);
             }
-            returning m3$($ceylontmp$$i$$10, $ceylontmp$$n$$11);
+            returning m3$canonical$($ceylontmp$i$10, $ceylontmp$n$11);
         );
     }
     
@@ -295,48 +295,48 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$$n$$12 = m3$n(i);
+                long $ceylontmp$n$12 = m3$n(i);
             }
-            returning m3$(i, $ceylontmp$$n$$12);
+            returning m3$canonical$(i, $ceylontmp$n$12);
         );
     }
     
-    private long m3$(final long i, final long n) {
+    private long m3$canonical$(final long i, final long n) {
         return i;
     }
     
     @.java.lang.Override
     public final long m3(final long i, final long n) {
-        return m3$(i, n);
+        return m3$canonical$(i, n);
     }
     
     public final long m4(final long i) {
         return (
             let
             {
-                long $ceylontmp$$n$$13 = m4$n(i);
+                long $ceylontmp$n$13 = m4$n(i);
             }
-            returning m4$(i, $ceylontmp$$n$$13);
+            returning m4$canonical$(i, $ceylontmp$n$13);
         );
     }
     
-    private long m4$(final long i, final long n) {
+    private long m4$canonical$(final long i, final long n) {
         return i;
     }
     
     @.java.lang.Override
     public final long m4(final long i, final long n) {
-        return m4$(i, n);
+        return m4$canonical$(i, n);
     }
     
     public final <U>long m5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i) {
         return (
             let
             {
-                T $ceylontmp$$t$$14 = m5$t($reified$U, i);
-                U $ceylontmp$$u$$15 = m5$u($reified$U, i, $ceylontmp$$t$$14);
+                T $ceylontmp$t$14 = m5$t($reified$U, i);
+                U $ceylontmp$u$15 = m5$u($reified$U, i, $ceylontmp$t$14);
             }
-            returning m5$($reified$U, i, $ceylontmp$$t$$14, $ceylontmp$$u$$15);
+            returning m5$canonical$($reified$U, i, $ceylontmp$t$14, $ceylontmp$u$15);
         );
     }
     
@@ -344,19 +344,19 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                U $ceylontmp$$u$$16 = m5$u($reified$U, i, t);
+                U $ceylontmp$u$16 = m5$u($reified$U, i, t);
             }
-            returning m5$($reified$U, i, t, $ceylontmp$$u$$16);
+            returning m5$canonical$($reified$U, i, t, $ceylontmp$u$16);
         );
     }
     
-    private <U>long m5$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i, final T t, final U u) {
+    private <U>long m5$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i, final T t, final U u) {
         return i;
     }
     
     @.java.lang.Override
     public final <U>long m5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i, final T t, final U u) {
-        return m5$($reified$U, i, t, u);
+        return m5$canonical$($reified$U, i, t, u);
     }
     
     public static void main(.java.lang.String[] args) {

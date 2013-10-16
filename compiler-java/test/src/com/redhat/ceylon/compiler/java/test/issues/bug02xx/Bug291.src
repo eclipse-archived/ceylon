@@ -16,8 +16,8 @@ final class run_ {
                 (
                     let
                     {
-                        .java.lang.String $ceylontmp$$name$$0 = holaMundo$name();
-                        holaMundo($ceylontmp$$name$$0);
+                        .java.lang.String $ceylontmp$name$0 = holaMundo$name();
+                        holaMundo($ceylontmp$name$0);
                     }
                     returning null;
                 );

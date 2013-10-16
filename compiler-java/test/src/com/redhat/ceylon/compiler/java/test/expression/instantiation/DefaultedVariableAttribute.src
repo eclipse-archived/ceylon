@@ -6,9 +6,9 @@ class DefaultedVariableAttribute implements .com.redhat.ceylon.compiler.java.run
         (
             let
             {
-                .ceylon.language.String $ceylontmp$$firstName$$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$default$firstName();
-                .ceylon.language.String $ceylontmp$$lastName$$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$default$lastName($ceylontmp$$firstName$$0);
-                this($ceylontmp$$firstName$$0, $ceylontmp$$lastName$$1);
+                .ceylon.language.String $ceylontmp$firstName$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$default$firstName();
+                .ceylon.language.String $ceylontmp$lastName$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$default$lastName($ceylontmp$firstName$0);
+                this($ceylontmp$firstName$0, $ceylontmp$lastName$1);
             }
             returning null;
         );
@@ -18,8 +18,8 @@ class DefaultedVariableAttribute implements .com.redhat.ceylon.compiler.java.run
         (
             let
             {
-                .ceylon.language.String $ceylontmp$$lastName$$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$default$lastName(firstName$param$);
-                this(firstName$param$, $ceylontmp$$lastName$$2);
+                .ceylon.language.String $ceylontmp$lastName$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$default$lastName(firstName$param$);
+                this(firstName$param$, $ceylontmp$lastName$2);
             }
             returning null;
         );

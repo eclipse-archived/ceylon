@@ -23,8 +23,8 @@ public class LocalMethod implements .com.redhat.ceylon.compiler.java.runtime.mod
                 (
                     let
                     {
-                        .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$s$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                        m2(i1, $ceylontmp$$s$$0);
+                        .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                        m2(i1, $ceylontmp$s$0);
                     }
                     returning null;
                 );

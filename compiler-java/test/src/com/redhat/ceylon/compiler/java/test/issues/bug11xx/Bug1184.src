@@ -11,14 +11,14 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$s$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning narySequenced$(s1, s2, s3, s4, $ceylontmp$$s$$0);
+            returning narySequenced$canonical$(s1, s2, s3, s4, $ceylontmp$s$0);
         );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private .java.lang.String narySequenced$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private .java.lang.String narySequenced$canonical$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return new .java.lang.StringBuilder().append("narySequenced(").append(s1).append(", ").append(s2).append(", ").append(s3).append(", ").append(s4).append("; ").append(s.toString()).append(")").toString();
     }
     
@@ -37,7 +37,7 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.Sequenced
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
     final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
-        return narySequenced$(s1, s2, s3, s4, s);
+        return narySequenced$canonical$(s1, s2, s3, s4, s);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug11xx::Bug1184")

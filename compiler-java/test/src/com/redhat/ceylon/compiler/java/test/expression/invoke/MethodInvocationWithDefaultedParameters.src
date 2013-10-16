@@ -27,9 +27,9 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                long $ceylontmp$$n$$0 = f1$n();
+                long $ceylontmp$n$0 = f1$n();
             }
-            returning f1$($ceylontmp$$n$$0);
+            returning f1$canonical$($ceylontmp$n$0);
         );
     }
     
@@ -37,21 +37,21 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return 5L;
     }
     
-    private .java.lang.Object f1$(final long n) {
+    private .java.lang.Object f1$canonical$(final long n) {
         return null;
     }
     
     public .java.lang.Object f1(final long n) {
-        return f1$(n);
+        return f1$canonical$(n);
     }
     
     public .java.lang.Object f2(final long n) {
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s$$1 = f2$s(n);
+                .java.lang.String $ceylontmp$s$1 = f2$s(n);
             }
-            returning f2$(n, $ceylontmp$$s$$1);
+            returning f2$canonical$(n, $ceylontmp$s$1);
         );
     }
     
@@ -59,22 +59,22 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return "test";
     }
     
-    private .java.lang.Object f2$(final long n, final .java.lang.String s) {
+    private .java.lang.Object f2$canonical$(final long n, final .java.lang.String s) {
         return null;
     }
     
     public .java.lang.Object f2(final long n, final .java.lang.String s) {
-        return f2$(n, s);
+        return f2$canonical$(n, s);
     }
     
     public .java.lang.Object f3() {
         return (
             let
             {
-                long $ceylontmp$$n$$2 = f3$n();
-                long $ceylontmp$$m$$3 = f3$m($ceylontmp$$n$$2);
+                long $ceylontmp$n$2 = f3$n();
+                long $ceylontmp$m$3 = f3$m($ceylontmp$n$2);
             }
-            returning f3$($ceylontmp$$n$$2, $ceylontmp$$m$$3);
+            returning f3$canonical$($ceylontmp$n$2, $ceylontmp$m$3);
         );
     }
     
@@ -86,9 +86,9 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                long $ceylontmp$$m$$4 = f3$m(n);
+                long $ceylontmp$m$4 = f3$m(n);
             }
-            returning f3$(n, $ceylontmp$$m$$4);
+            returning f3$canonical$(n, $ceylontmp$m$4);
         );
     }
     
@@ -96,22 +96,22 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return n;
     }
     
-    private .java.lang.Object f3$(final long n, final long m) {
+    private .java.lang.Object f3$canonical$(final long n, final long m) {
         return null;
     }
     
     public .java.lang.Object f3(final long n, final long m) {
-        return f3$(n, m);
+        return f3$canonical$(n, m);
     }
     
     public .java.lang.Object f4() {
         return (
             let
             {
-                long $ceylontmp$$n$$5 = f4$n();
-                long $ceylontmp$$m$$6 = f4$m($ceylontmp$$n$$5);
+                long $ceylontmp$n$5 = f4$n();
+                long $ceylontmp$m$6 = f4$m($ceylontmp$n$5);
             }
-            returning f4$($ceylontmp$$n$$5, $ceylontmp$$m$$6);
+            returning f4$canonical$($ceylontmp$n$5, $ceylontmp$m$6);
         );
     }
     
@@ -123,9 +123,9 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                long $ceylontmp$$m$$7 = f4$m(n);
+                long $ceylontmp$m$7 = f4$m(n);
             }
-            returning f4$(n, $ceylontmp$$m$$7);
+            returning f4$canonical$(n, $ceylontmp$m$7);
         );
     }
     
@@ -133,21 +133,21 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return n + 1L;
     }
     
-    private .java.lang.Object f4$(final long n, final long m) {
+    private .java.lang.Object f4$canonical$(final long n, final long m) {
         return null;
     }
     
     public .java.lang.Object f4(final long n, final long m) {
-        return f4$(n, m);
+        return f4$canonical$(n, m);
     }
     
     public .java.lang.Object f5() {
         return (
             let
             {
-                long $ceylontmp$$n$$8 = f5$n();
+                long $ceylontmp$n$8 = f5$n();
             }
-            returning f5$($ceylontmp$$n$$8);
+            returning f5$canonical$($ceylontmp$n$8);
         );
     }
     
@@ -155,21 +155,21 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return getProp();
     }
     
-    private .java.lang.Object f5$(final long n) {
+    private .java.lang.Object f5$canonical$(final long n) {
         return null;
     }
     
     public .java.lang.Object f5(final long n) {
-        return f5$(n);
+        return f5$canonical$(n);
     }
     
     public .java.lang.Object f6() {
         return (
             let
             {
-                long $ceylontmp$$n$$9 = f6$n();
+                long $ceylontmp$n$9 = f6$n();
             }
-            returning f6$($ceylontmp$$n$$9);
+            returning f6$canonical$($ceylontmp$n$9);
         );
     }
     
@@ -177,21 +177,21 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return getPrivProp$priv$();
     }
     
-    private .java.lang.Object f6$(final long n) {
+    private .java.lang.Object f6$canonical$(final long n) {
         return null;
     }
     
     public .java.lang.Object f6(final long n) {
-        return f6$(n);
+        return f6$canonical$(n);
     }
     
     public .java.lang.Object f7() {
         return (
             let
             {
-                long $ceylontmp$$n$$10 = f7$n();
+                long $ceylontmp$n$10 = f7$n();
             }
-            returning f7$($ceylontmp$$n$$10);
+            returning f7$canonical$($ceylontmp$n$10);
         );
     }
     
@@ -199,21 +199,21 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return this.getProp();
     }
     
-    private .java.lang.Object f7$(final long n) {
+    private .java.lang.Object f7$canonical$(final long n) {
         return null;
     }
     
     public .java.lang.Object f7(final long n) {
-        return f7$(n);
+        return f7$canonical$(n);
     }
     
     public .java.lang.Object f8() {
         return (
             let
             {
-                long $ceylontmp$$n$$11 = f8$n();
+                long $ceylontmp$n$11 = f8$n();
             }
-            returning f8$($ceylontmp$$n$$11);
+            returning f8$canonical$($ceylontmp$n$11);
         );
     }
     
@@ -221,21 +221,21 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return getInit$priv$();
     }
     
-    private .java.lang.Object f8$(final long n) {
+    private .java.lang.Object f8$canonical$(final long n) {
         return null;
     }
     
     public .java.lang.Object f8(final long n) {
-        return f8$(n);
+        return f8$canonical$(n);
     }
     
     public .java.lang.Object f9() {
         return (
             let
             {
-                long $ceylontmp$$n$$12 = f9$n();
+                long $ceylontmp$n$12 = f9$n();
             }
-            returning f9$($ceylontmp$$n$$12);
+            returning f9$canonical$($ceylontmp$n$12);
         );
     }
     
@@ -243,22 +243,22 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return .ceylon.language.Integer.getSuccessor(getProp());
     }
     
-    private .java.lang.Object f9$(final long n) {
+    private .java.lang.Object f9$canonical$(final long n) {
         return null;
     }
     
     public .java.lang.Object f9(final long n) {
-        return f9$(n);
+        return f9$canonical$(n);
     }
     
     public .java.lang.Object fa() {
         return (
             let
             {
-                long $ceylontmp$$n$$13 = fa$n();
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$seq$$14 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                long $ceylontmp$n$13 = fa$n();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$14 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning fa$($ceylontmp$$n$$13, $ceylontmp$$seq$$14);
+            returning fa$canonical$($ceylontmp$n$13, $ceylontmp$seq$14);
         );
     }
     
@@ -270,18 +270,18 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$seq$$15 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$15 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning fa$(n, $ceylontmp$$seq$$15);
+            returning fa$canonical$(n, $ceylontmp$seq$15);
         );
     }
     
-    private .java.lang.Object fa$(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    private .java.lang.Object fa$canonical$(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
         return null;
     }
     
     public .java.lang.Object fa(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
-        return fa$(n, seq);
+        return fa$canonical$(n, seq);
     }
     
     public .java.lang.Object fe(final long n, final .ceylon.language.Sequence<? extends .ceylon.language.Integer> seq) {
@@ -304,48 +304,48 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
         return (
             let
             {
-                long $ceylontmp$$n$$16 = f1$n();
+                long $ceylontmp$n$16 = f1$n();
             }
-            returning f1$($ceylontmp$$n$$16);
+            returning f1$canonical$($ceylontmp$n$16);
         );
     }
     
-    private .java.lang.Object f1$(final long n) {
+    private .java.lang.Object f1$canonical$(final long n) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object f1(final long n) {
-        return f1$(n);
+        return f1$canonical$(n);
     }
     
     public final .java.lang.Object f2(final long n) {
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s$$17 = f2$s(n);
+                .java.lang.String $ceylontmp$s$17 = f2$s(n);
             }
-            returning f2$(n, $ceylontmp$$s$$17);
+            returning f2$canonical$(n, $ceylontmp$s$17);
         );
     }
     
-    private .java.lang.Object f2$(final long n, final .java.lang.String s) {
+    private .java.lang.Object f2$canonical$(final long n, final .java.lang.String s) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object f2(final long n, final .java.lang.String s) {
-        return f2$(n, s);
+        return f2$canonical$(n, s);
     }
     
     public final .java.lang.Object f3() {
         return (
             let
             {
-                long $ceylontmp$$n$$18 = f3$n();
-                long $ceylontmp$$m$$19 = f3$m($ceylontmp$$n$$18);
+                long $ceylontmp$n$18 = f3$n();
+                long $ceylontmp$m$19 = f3$m($ceylontmp$n$18);
             }
-            returning f3$($ceylontmp$$n$$18, $ceylontmp$$m$$19);
+            returning f3$canonical$($ceylontmp$n$18, $ceylontmp$m$19);
         );
     }
     
@@ -353,29 +353,29 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
         return (
             let
             {
-                long $ceylontmp$$m$$20 = f3$m(n);
+                long $ceylontmp$m$20 = f3$m(n);
             }
-            returning f3$(n, $ceylontmp$$m$$20);
+            returning f3$canonical$(n, $ceylontmp$m$20);
         );
     }
     
-    private .java.lang.Object f3$(final long n, final long m) {
+    private .java.lang.Object f3$canonical$(final long n, final long m) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object f3(final long n, final long m) {
-        return f3$(n, m);
+        return f3$canonical$(n, m);
     }
     
     public final .java.lang.Object f4() {
         return (
             let
             {
-                long $ceylontmp$$n$$21 = f4$n();
-                long $ceylontmp$$m$$22 = f4$m($ceylontmp$$n$$21);
+                long $ceylontmp$n$21 = f4$n();
+                long $ceylontmp$m$22 = f4$m($ceylontmp$n$21);
             }
-            returning f4$($ceylontmp$$n$$21, $ceylontmp$$m$$22);
+            returning f4$canonical$($ceylontmp$n$21, $ceylontmp$m$22);
         );
     }
     
@@ -383,124 +383,124 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
         return (
             let
             {
-                long $ceylontmp$$m$$23 = f4$m(n);
+                long $ceylontmp$m$23 = f4$m(n);
             }
-            returning f4$(n, $ceylontmp$$m$$23);
+            returning f4$canonical$(n, $ceylontmp$m$23);
         );
     }
     
-    private .java.lang.Object f4$(final long n, final long m) {
+    private .java.lang.Object f4$canonical$(final long n, final long m) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object f4(final long n, final long m) {
-        return f4$(n, m);
+        return f4$canonical$(n, m);
     }
     
     public final .java.lang.Object f5() {
         return (
             let
             {
-                long $ceylontmp$$n$$24 = f5$n();
+                long $ceylontmp$n$24 = f5$n();
             }
-            returning f5$($ceylontmp$$n$$24);
+            returning f5$canonical$($ceylontmp$n$24);
         );
     }
     
-    private .java.lang.Object f5$(final long n) {
+    private .java.lang.Object f5$canonical$(final long n) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object f5(final long n) {
-        return f5$(n);
+        return f5$canonical$(n);
     }
     
     public final .java.lang.Object f6() {
         return (
             let
             {
-                long $ceylontmp$$n$$25 = f6$n();
+                long $ceylontmp$n$25 = f6$n();
             }
-            returning f6$($ceylontmp$$n$$25);
+            returning f6$canonical$($ceylontmp$n$25);
         );
     }
     
-    private .java.lang.Object f6$(final long n) {
+    private .java.lang.Object f6$canonical$(final long n) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object f6(final long n) {
-        return f6$(n);
+        return f6$canonical$(n);
     }
     
     public final .java.lang.Object f7() {
         return (
             let
             {
-                long $ceylontmp$$n$$26 = f7$n();
+                long $ceylontmp$n$26 = f7$n();
             }
-            returning f7$($ceylontmp$$n$$26);
+            returning f7$canonical$($ceylontmp$n$26);
         );
     }
     
-    private .java.lang.Object f7$(final long n) {
+    private .java.lang.Object f7$canonical$(final long n) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object f7(final long n) {
-        return f7$(n);
+        return f7$canonical$(n);
     }
     
     public final .java.lang.Object f8() {
         return (
             let
             {
-                long $ceylontmp$$n$$27 = f8$n();
+                long $ceylontmp$n$27 = f8$n();
             }
-            returning f8$($ceylontmp$$n$$27);
+            returning f8$canonical$($ceylontmp$n$27);
         );
     }
     
-    private .java.lang.Object f8$(final long n) {
+    private .java.lang.Object f8$canonical$(final long n) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object f8(final long n) {
-        return f8$(n);
+        return f8$canonical$(n);
     }
     
     public final .java.lang.Object f9() {
         return (
             let
             {
-                long $ceylontmp$$n$$28 = f9$n();
+                long $ceylontmp$n$28 = f9$n();
             }
-            returning f9$($ceylontmp$$n$$28);
+            returning f9$canonical$($ceylontmp$n$28);
         );
     }
     
-    private .java.lang.Object f9$(final long n) {
+    private .java.lang.Object f9$canonical$(final long n) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object f9(final long n) {
-        return f9$(n);
+        return f9$canonical$(n);
     }
     
     public final .java.lang.Object fa() {
         return (
             let
             {
-                long $ceylontmp$$n$$29 = fa$n();
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$seq$$30 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                long $ceylontmp$n$29 = fa$n();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$30 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning fa$($ceylontmp$$n$$29, $ceylontmp$$seq$$30);
+            returning fa$canonical$($ceylontmp$n$29, $ceylontmp$seq$30);
         );
     }
     
@@ -508,19 +508,19 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$seq$$31 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$31 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning fa$(n, $ceylontmp$$seq$$31);
+            returning fa$canonical$(n, $ceylontmp$seq$31);
         );
     }
     
-    private .java.lang.Object fa$(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    private .java.lang.Object fa$canonical$(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object fa(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
-        return fa$(n, seq);
+        return fa$canonical$(n, seq);
     }
     
     @.java.lang.Override
@@ -721,48 +721,48 @@ class Barkls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                long $ceylontmp$$n$$32 = f1$n();
+                long $ceylontmp$n$32 = f1$n();
             }
-            returning f1$($ceylontmp$$n$$32);
+            returning f1$canonical$($ceylontmp$n$32);
         );
     }
     
-    private .java.lang.Object f1$(final long n) {
+    private .java.lang.Object f1$canonical$(final long n) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object f1(final long n) {
-        return f1$(n);
+        return f1$canonical$(n);
     }
     
     public final .java.lang.Object f2(final long n) {
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s$$33 = f2$s(n);
+                .java.lang.String $ceylontmp$s$33 = f2$s(n);
             }
-            returning f2$(n, $ceylontmp$$s$$33);
+            returning f2$canonical$(n, $ceylontmp$s$33);
         );
     }
     
-    private .java.lang.Object f2$(final long n, final .java.lang.String s) {
+    private .java.lang.Object f2$canonical$(final long n, final .java.lang.String s) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object f2(final long n, final .java.lang.String s) {
-        return f2$(n, s);
+        return f2$canonical$(n, s);
     }
     
     public final .java.lang.Object f3() {
         return (
             let
             {
-                long $ceylontmp$$n$$34 = f3$n();
-                long $ceylontmp$$m$$35 = f3$m($ceylontmp$$n$$34);
+                long $ceylontmp$n$34 = f3$n();
+                long $ceylontmp$m$35 = f3$m($ceylontmp$n$34);
             }
-            returning f3$($ceylontmp$$n$$34, $ceylontmp$$m$$35);
+            returning f3$canonical$($ceylontmp$n$34, $ceylontmp$m$35);
         );
     }
     
@@ -770,29 +770,29 @@ class Barkls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                long $ceylontmp$$m$$36 = f3$m(n);
+                long $ceylontmp$m$36 = f3$m(n);
             }
-            returning f3$(n, $ceylontmp$$m$$36);
+            returning f3$canonical$(n, $ceylontmp$m$36);
         );
     }
     
-    private .java.lang.Object f3$(final long n, final long m) {
+    private .java.lang.Object f3$canonical$(final long n, final long m) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object f3(final long n, final long m) {
-        return f3$(n, m);
+        return f3$canonical$(n, m);
     }
     
     public final .java.lang.Object f4() {
         return (
             let
             {
-                long $ceylontmp$$n$$37 = f4$n();
-                long $ceylontmp$$m$$38 = f4$m($ceylontmp$$n$$37);
+                long $ceylontmp$n$37 = f4$n();
+                long $ceylontmp$m$38 = f4$m($ceylontmp$n$37);
             }
-            returning f4$($ceylontmp$$n$$37, $ceylontmp$$m$$38);
+            returning f4$canonical$($ceylontmp$n$37, $ceylontmp$m$38);
         );
     }
     
@@ -800,86 +800,86 @@ class Barkls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                long $ceylontmp$$m$$39 = f4$m(n);
+                long $ceylontmp$m$39 = f4$m(n);
             }
-            returning f4$(n, $ceylontmp$$m$$39);
+            returning f4$canonical$(n, $ceylontmp$m$39);
         );
     }
     
-    private .java.lang.Object f4$(final long n, final long m) {
+    private .java.lang.Object f4$canonical$(final long n, final long m) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object f4(final long n, final long m) {
-        return f4$(n, m);
+        return f4$canonical$(n, m);
     }
     
     public final .java.lang.Object f5() {
         return (
             let
             {
-                long $ceylontmp$$n$$40 = f5$n();
+                long $ceylontmp$n$40 = f5$n();
             }
-            returning f5$($ceylontmp$$n$$40);
+            returning f5$canonical$($ceylontmp$n$40);
         );
     }
     
-    private .java.lang.Object f5$(final long n) {
+    private .java.lang.Object f5$canonical$(final long n) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object f5(final long n) {
-        return f5$(n);
+        return f5$canonical$(n);
     }
     
     public final .java.lang.Object f7() {
         return (
             let
             {
-                long $ceylontmp$$n$$41 = f7$n();
+                long $ceylontmp$n$41 = f7$n();
             }
-            returning f7$($ceylontmp$$n$$41);
+            returning f7$canonical$($ceylontmp$n$41);
         );
     }
     
-    private .java.lang.Object f7$(final long n) {
+    private .java.lang.Object f7$canonical$(final long n) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object f7(final long n) {
-        return f7$(n);
+        return f7$canonical$(n);
     }
     
     public final .java.lang.Object f9() {
         return (
             let
             {
-                long $ceylontmp$$n$$42 = f9$n();
+                long $ceylontmp$n$42 = f9$n();
             }
-            returning f9$($ceylontmp$$n$$42);
+            returning f9$canonical$($ceylontmp$n$42);
         );
     }
     
-    private .java.lang.Object f9$(final long n) {
+    private .java.lang.Object f9$canonical$(final long n) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object f9(final long n) {
-        return f9$(n);
+        return f9$canonical$(n);
     }
     
     public final .java.lang.Object fa() {
         return (
             let
             {
-                long $ceylontmp$$n$$43 = fa$n();
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$seq$$44 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                long $ceylontmp$n$43 = fa$n();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$44 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning fa$($ceylontmp$$n$$43, $ceylontmp$$seq$$44);
+            returning fa$canonical$($ceylontmp$n$43, $ceylontmp$seq$44);
         );
     }
     
@@ -887,19 +887,19 @@ class Barkls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$seq$$45 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$45 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning fa$(n, $ceylontmp$$seq$$45);
+            returning fa$canonical$(n, $ceylontmp$seq$45);
         );
     }
     
-    private .java.lang.Object fa$(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    private .java.lang.Object fa$canonical$(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object fa(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
-        return fa$(n, seq);
+        return fa$canonical$(n, seq);
     }
     
     @.java.lang.Override

@@ -21,9 +21,9 @@ final class add_ {
         return (
             let
             {
-                .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>>> $ceylontmp$$floats$$0 = .com.redhat.ceylon.compiler.java.test.structure.type.add_.add$floats();
+                .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>>> $ceylontmp$floats$0 = .com.redhat.ceylon.compiler.java.test.structure.type.add_.add$floats();
             }
-            returning add($ceylontmp$$floats$$0);
+            returning add($ceylontmp$floats$0);
         );
     }
     

@@ -87,9 +87,9 @@ final class collidingLiteralDefaults_ {
         return (
             let
             {
-                long $ceylontmp$$i1$$0 = .com.redhat.ceylon.compiler.java.test.annotations.collidingLiteralDefaults_.collidingLiteralDefaults$i1();
+                long $ceylontmp$i1$0 = .com.redhat.ceylon.compiler.java.test.annotations.collidingLiteralDefaults_.collidingLiteralDefaults$i1();
             }
-            returning collidingLiteralDefaults($ceylontmp$$i1$$0);
+            returning collidingLiteralDefaults($ceylontmp$i1$0);
         );
     }
     

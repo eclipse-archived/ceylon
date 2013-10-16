@@ -122,9 +122,9 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s$$5 = unaryDefaulted$s();
+                .java.lang.String $ceylontmp$s$5 = unaryDefaulted$s();
             }
-            returning unaryDefaulted$($ceylontmp$$s$$5);
+            returning unaryDefaulted$canonical$($ceylontmp$s$5);
         );
     }
     
@@ -132,22 +132,22 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return "s";
     }
     
-    private .java.lang.String unaryDefaulted$(final .java.lang.String s) {
+    private .java.lang.String unaryDefaulted$canonical$(final .java.lang.String s) {
         return new .java.lang.StringBuilder().append("unaryDefaulted(").append(s).append(")").toString();
     }
     
     public final .java.lang.String unaryDefaulted(final .java.lang.String s) {
-        return unaryDefaulted$(s);
+        return unaryDefaulted$canonical$(s);
     }
     
     public final .java.lang.String binaryDefaulted() {
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s1$$6 = binaryDefaulted$s1();
-                .java.lang.String $ceylontmp$$s2$$7 = binaryDefaulted$s2($ceylontmp$$s1$$6);
+                .java.lang.String $ceylontmp$s1$6 = binaryDefaulted$s1();
+                .java.lang.String $ceylontmp$s2$7 = binaryDefaulted$s2($ceylontmp$s1$6);
             }
-            returning binaryDefaulted$($ceylontmp$$s1$$6, $ceylontmp$$s2$$7);
+            returning binaryDefaulted$canonical$($ceylontmp$s1$6, $ceylontmp$s2$7);
         );
     }
     
@@ -159,9 +159,9 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s2$$8 = binaryDefaulted$s2(s1);
+                .java.lang.String $ceylontmp$s2$8 = binaryDefaulted$s2(s1);
             }
-            returning binaryDefaulted$(s1, $ceylontmp$$s2$$8);
+            returning binaryDefaulted$canonical$(s1, $ceylontmp$s2$8);
         );
     }
     
@@ -169,23 +169,23 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return "s2";
     }
     
-    private .java.lang.String binaryDefaulted$(final .java.lang.String s1, final .java.lang.String s2) {
+    private .java.lang.String binaryDefaulted$canonical$(final .java.lang.String s1, final .java.lang.String s2) {
         return new .java.lang.StringBuilder().append("binaryDefaulted(").append(s1).append(", ").append(s2).append(")").toString();
     }
     
     public final .java.lang.String binaryDefaulted(final .java.lang.String s1, final .java.lang.String s2) {
-        return binaryDefaulted$(s1, s2);
+        return binaryDefaulted$canonical$(s1, s2);
     }
     
     public final .java.lang.String ternaryDefaulted() {
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s1$$9 = ternaryDefaulted$s1();
-                .java.lang.String $ceylontmp$$s2$$10 = ternaryDefaulted$s2($ceylontmp$$s1$$9);
-                .java.lang.String $ceylontmp$$s3$$11 = ternaryDefaulted$s3($ceylontmp$$s1$$9, $ceylontmp$$s2$$10);
+                .java.lang.String $ceylontmp$s1$9 = ternaryDefaulted$s1();
+                .java.lang.String $ceylontmp$s2$10 = ternaryDefaulted$s2($ceylontmp$s1$9);
+                .java.lang.String $ceylontmp$s3$11 = ternaryDefaulted$s3($ceylontmp$s1$9, $ceylontmp$s2$10);
             }
-            returning ternaryDefaulted$($ceylontmp$$s1$$9, $ceylontmp$$s2$$10, $ceylontmp$$s3$$11);
+            returning ternaryDefaulted$canonical$($ceylontmp$s1$9, $ceylontmp$s2$10, $ceylontmp$s3$11);
         );
     }
     
@@ -197,10 +197,10 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s2$$12 = ternaryDefaulted$s2(s1);
-                .java.lang.String $ceylontmp$$s3$$13 = ternaryDefaulted$s3(s1, $ceylontmp$$s2$$12);
+                .java.lang.String $ceylontmp$s2$12 = ternaryDefaulted$s2(s1);
+                .java.lang.String $ceylontmp$s3$13 = ternaryDefaulted$s3(s1, $ceylontmp$s2$12);
             }
-            returning ternaryDefaulted$(s1, $ceylontmp$$s2$$12, $ceylontmp$$s3$$13);
+            returning ternaryDefaulted$canonical$(s1, $ceylontmp$s2$12, $ceylontmp$s3$13);
         );
     }
     
@@ -212,9 +212,9 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s3$$14 = ternaryDefaulted$s3(s1, s2);
+                .java.lang.String $ceylontmp$s3$14 = ternaryDefaulted$s3(s1, s2);
             }
-            returning ternaryDefaulted$(s1, s2, $ceylontmp$$s3$$14);
+            returning ternaryDefaulted$canonical$(s1, s2, $ceylontmp$s3$14);
         );
     }
     
@@ -222,24 +222,24 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return "s3";
     }
     
-    private .java.lang.String ternaryDefaulted$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
+    private .java.lang.String ternaryDefaulted$canonical$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
         return new .java.lang.StringBuilder().append("ternaryDefaulted(").append(s1).append(", ").append(s2).append(", ").append(s3).append(")").toString();
     }
     
     public final .java.lang.String ternaryDefaulted(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
-        return ternaryDefaulted$(s1, s2, s3);
+        return ternaryDefaulted$canonical$(s1, s2, s3);
     }
     
     public final .java.lang.String naryDefaulted() {
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s1$$15 = naryDefaulted$s1();
-                .java.lang.String $ceylontmp$$s2$$16 = naryDefaulted$s2($ceylontmp$$s1$$15);
-                .java.lang.String $ceylontmp$$s3$$17 = naryDefaulted$s3($ceylontmp$$s1$$15, $ceylontmp$$s2$$16);
-                .java.lang.String $ceylontmp$$s4$$18 = naryDefaulted$s4($ceylontmp$$s1$$15, $ceylontmp$$s2$$16, $ceylontmp$$s3$$17);
+                .java.lang.String $ceylontmp$s1$15 = naryDefaulted$s1();
+                .java.lang.String $ceylontmp$s2$16 = naryDefaulted$s2($ceylontmp$s1$15);
+                .java.lang.String $ceylontmp$s3$17 = naryDefaulted$s3($ceylontmp$s1$15, $ceylontmp$s2$16);
+                .java.lang.String $ceylontmp$s4$18 = naryDefaulted$s4($ceylontmp$s1$15, $ceylontmp$s2$16, $ceylontmp$s3$17);
             }
-            returning naryDefaulted$($ceylontmp$$s1$$15, $ceylontmp$$s2$$16, $ceylontmp$$s3$$17, $ceylontmp$$s4$$18);
+            returning naryDefaulted$canonical$($ceylontmp$s1$15, $ceylontmp$s2$16, $ceylontmp$s3$17, $ceylontmp$s4$18);
         );
     }
     
@@ -251,11 +251,11 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s2$$19 = naryDefaulted$s2(s1);
-                .java.lang.String $ceylontmp$$s3$$20 = naryDefaulted$s3(s1, $ceylontmp$$s2$$19);
-                .java.lang.String $ceylontmp$$s4$$21 = naryDefaulted$s4(s1, $ceylontmp$$s2$$19, $ceylontmp$$s3$$20);
+                .java.lang.String $ceylontmp$s2$19 = naryDefaulted$s2(s1);
+                .java.lang.String $ceylontmp$s3$20 = naryDefaulted$s3(s1, $ceylontmp$s2$19);
+                .java.lang.String $ceylontmp$s4$21 = naryDefaulted$s4(s1, $ceylontmp$s2$19, $ceylontmp$s3$20);
             }
-            returning naryDefaulted$(s1, $ceylontmp$$s2$$19, $ceylontmp$$s3$$20, $ceylontmp$$s4$$21);
+            returning naryDefaulted$canonical$(s1, $ceylontmp$s2$19, $ceylontmp$s3$20, $ceylontmp$s4$21);
         );
     }
     
@@ -267,10 +267,10 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s3$$22 = naryDefaulted$s3(s1, s2);
-                .java.lang.String $ceylontmp$$s4$$23 = naryDefaulted$s4(s1, s2, $ceylontmp$$s3$$22);
+                .java.lang.String $ceylontmp$s3$22 = naryDefaulted$s3(s1, s2);
+                .java.lang.String $ceylontmp$s4$23 = naryDefaulted$s4(s1, s2, $ceylontmp$s3$22);
             }
-            returning naryDefaulted$(s1, s2, $ceylontmp$$s3$$22, $ceylontmp$$s4$$23);
+            returning naryDefaulted$canonical$(s1, s2, $ceylontmp$s3$22, $ceylontmp$s4$23);
         );
     }
     
@@ -282,9 +282,9 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .java.lang.String $ceylontmp$$s4$$24 = naryDefaulted$s4(s1, s2, s3);
+                .java.lang.String $ceylontmp$s4$24 = naryDefaulted$s4(s1, s2, s3);
             }
-            returning naryDefaulted$(s1, s2, s3, $ceylontmp$$s4$$24);
+            returning naryDefaulted$canonical$(s1, s2, s3, $ceylontmp$s4$24);
         );
     }
     
@@ -292,12 +292,12 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return "s4";
     }
     
-    private .java.lang.String naryDefaulted$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
+    private .java.lang.String naryDefaulted$canonical$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
         return new .java.lang.StringBuilder().append("naryDefaulted(").append(s1).append(", ").append(s2).append(", ").append(s3).append(", ").append(s4).append(")").toString();
     }
     
     public final .java.lang.String naryDefaulted(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
-        return naryDefaulted$(s1, s2, s3, s4);
+        return naryDefaulted$canonical$(s1, s2, s3, s4);
     }
     
     public final void defaulted() {
@@ -497,90 +497,90 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$s$$39 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$39 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning nullarySequenced$($ceylontmp$$s$$39);
+            returning nullarySequenced$canonical$($ceylontmp$s$39);
         );
     }
     
-    private .java.lang.String nullarySequenced$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private .java.lang.String nullarySequenced$canonical$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return new .java.lang.StringBuilder().append("nullarySequenced(").append(s.toString()).append(")").toString();
     }
     
     public final .java.lang.String nullarySequenced(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
-        return nullarySequenced$(s);
+        return nullarySequenced$canonical$(s);
     }
     
     public final .java.lang.String unarySequenced(final .java.lang.String s1) {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$s$$40 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$40 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning unarySequenced$(s1, $ceylontmp$$s$$40);
+            returning unarySequenced$canonical$(s1, $ceylontmp$s$40);
         );
     }
     
-    private .java.lang.String unarySequenced$(final .java.lang.String s1, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private .java.lang.String unarySequenced$canonical$(final .java.lang.String s1, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return new .java.lang.StringBuilder().append("unarySequenced(").append(s1).append("; ").append(s.toString()).append(")").toString();
     }
     
     public final .java.lang.String unarySequenced(final .java.lang.String s1, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
-        return unarySequenced$(s1, s);
+        return unarySequenced$canonical$(s1, s);
     }
     
     public final .java.lang.String binarySequenced(final .java.lang.String s1, final .java.lang.String s2) {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$s$$41 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$41 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning binarySequenced$(s1, s2, $ceylontmp$$s$$41);
+            returning binarySequenced$canonical$(s1, s2, $ceylontmp$s$41);
         );
     }
     
-    private .java.lang.String binarySequenced$(final .java.lang.String s1, final .java.lang.String s2, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private .java.lang.String binarySequenced$canonical$(final .java.lang.String s1, final .java.lang.String s2, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return new .java.lang.StringBuilder().append("binarySequenced(").append(s1).append(", ").append(s2).append("; ").append(s.toString()).append(")").toString();
     }
     
     public final .java.lang.String binarySequenced(final .java.lang.String s1, final .java.lang.String s2, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
-        return binarySequenced$(s1, s2, s);
+        return binarySequenced$canonical$(s1, s2, s);
     }
     
     public final .java.lang.String ternarySequenced(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$s$$42 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$42 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning ternarySequenced$(s1, s2, s3, $ceylontmp$$s$$42);
+            returning ternarySequenced$canonical$(s1, s2, s3, $ceylontmp$s$42);
         );
     }
     
-    private .java.lang.String ternarySequenced$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private .java.lang.String ternarySequenced$canonical$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return new .java.lang.StringBuilder().append("ternarySequenced(").append(s1).append(", ").append(s2).append(", ").append(s3).append("; ").append(s.toString()).append(")").toString();
     }
     
     public final .java.lang.String ternarySequenced(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
-        return ternarySequenced$(s1, s2, s3, s);
+        return ternarySequenced$canonical$(s1, s2, s3, s);
     }
     
     public final .java.lang.String narySequenced(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$s$$43 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$43 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning narySequenced$(s1, s2, s3, s4, $ceylontmp$$s$$43);
+            returning narySequenced$canonical$(s1, s2, s3, s4, $ceylontmp$s$43);
         );
     }
     
-    private .java.lang.String narySequenced$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    private .java.lang.String narySequenced$canonical$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return new .java.lang.StringBuilder().append("narySequenced(").append(s1).append(", ").append(s2).append(", ").append(s3).append(", ").append(s4).append("; ").append(s.toString()).append(")").toString();
     }
     
     public final .java.lang.String narySequenced(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
-        return narySequenced$(s1, s2, s3, s4, s);
+        return narySequenced$canonical$(s1, s2, s3, s4, s);
     }
     
     public final void sequenced() {
