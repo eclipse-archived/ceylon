@@ -251,6 +251,8 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     private void checkConstructor() {
         if(((FreeClass)declaration).getAbstract())
             throw new InvocationException("Abstract class cannot be instantiated");
+        if(((FreeClass)declaration).getAnonymous())
+            throw new InvocationException("Object class cannot be instantiated");
         if(constructor == null)
             throw new RuntimeException("No constructor found for: "+declaration.getName());
     }
@@ -396,6 +398,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>")
         Sequential<? extends java.lang.Object> arguments){
         checkInit();
+        checkConstructor();
         return Metamodel.apply(this, arguments, parameterProducedTypes, firstDefaulted, variadicIndex);
     }
 
