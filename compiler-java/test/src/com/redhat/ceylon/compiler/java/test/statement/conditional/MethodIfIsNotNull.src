@@ -12,10 +12,10 @@ class MethodIfIsNotNull implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     public final void mvar(final .java.lang.Object y) {
-        .java.lang.Object $x$3;
-        if (!(($x$3 = y) == null)) {
-            final .java.lang.Object $x$4 = $x$3;
-            .ceylon.language.print_.print(.ceylon.language.String.instance($x$4.toString()));
+        .java.lang.Object x$3;
+        if (!((x$3 = y) == null)) {
+            final .java.lang.Object x$4 = x$3;
+            .ceylon.language.print_.print(.ceylon.language.String.instance(x$4.toString()));
         }
     }
     

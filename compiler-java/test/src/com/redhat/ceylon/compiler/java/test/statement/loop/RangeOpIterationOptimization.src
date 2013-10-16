@@ -19,219 +19,219 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
     
     private final void literals$priv() {
         long sum = 0L;
-        final long $ceylontmpstart0 = 1L;
-        final long $ceylontmpend1 = 10L;
-        final boolean $ceylontmpincreasing2 = $ceylontmpstart0 <= $ceylontmpend1;
-        final long $ceylontmpincr3 = $ceylontmpincreasing2 ? 1L : -1L;
-        for (long $i$4 = $ceylontmpstart0; $ceylontmpincreasing2 ? $i$4 - $ceylontmpend1 <= 0L : $i$4 - $ceylontmpend1 >= 0L; $i$4 += $ceylontmpincr3) {
-            final long i = $i$4;
+        final long $ceylontmpstart$0 = 1L;
+        final long $ceylontmpend$1 = 10L;
+        final boolean $ceylontmpincreasing$2 = $ceylontmpstart$0 <= $ceylontmpend$1;
+        final long $ceylontmpincr$3 = $ceylontmpincreasing$2 ? 1L : -1L;
+        for (long i$4 = $ceylontmpstart$0; $ceylontmpincreasing$2 ? i$4 - $ceylontmpend$1 <= 0L : i$4 - $ceylontmpend$1 >= 0L; i$4 += $ceylontmpincr$3) {
+            final long i = i$4;
             sum += i;
         }
-        final int $ceylontmpstart5 = 97;
-        final int $ceylontmpend6 = 122;
-        final boolean $ceylontmpincreasing7 = $ceylontmpstart5 <= $ceylontmpend6;
-        final int $ceylontmpincr8 = $ceylontmpincreasing7 ? 1 : -1;
-        for (int $c$9 = $ceylontmpstart5; $ceylontmpincreasing7 ? $c$9 - $ceylontmpend6 <= 0 : $c$9 - $ceylontmpend6 >= 0; $c$9 += $ceylontmpincr8) {
-            final int c = $c$9;
+        final int $ceylontmpstart$5 = 97;
+        final int $ceylontmpend$6 = 122;
+        final boolean $ceylontmpincreasing$7 = $ceylontmpstart$5 <= $ceylontmpend$6;
+        final int $ceylontmpincr$8 = $ceylontmpincreasing$7 ? 1 : -1;
+        for (int c$9 = $ceylontmpstart$5; $ceylontmpincreasing$7 ? c$9 - $ceylontmpend$6 <= 0 : c$9 - $ceylontmpend$6 >= 0; c$9 += $ceylontmpincr$8) {
+            final int c = c$9;
             sum += .ceylon.language.Character.getInteger(c);
         }
     }
     
     private final void expressions$priv() {
         long sum = 0L;
-        final long $ceylontmpstart10 = getStart$priv();
-        final long $ceylontmpend11 = getEnd$priv();
-        final boolean $ceylontmpincreasing12 = $ceylontmpstart10 <= $ceylontmpend11;
-        final long $ceylontmpincr13 = $ceylontmpincreasing12 ? 1L : -1L;
-        for (long $i$14 = $ceylontmpstart10; $ceylontmpincreasing12 ? $i$14 - $ceylontmpend11 <= 0L : $i$14 - $ceylontmpend11 >= 0L; $i$14 += $ceylontmpincr13) {
-            final long i = $i$14;
+        final long $ceylontmpstart$10 = getStart$priv();
+        final long $ceylontmpend$11 = getEnd$priv();
+        final boolean $ceylontmpincreasing$12 = $ceylontmpstart$10 <= $ceylontmpend$11;
+        final long $ceylontmpincr$13 = $ceylontmpincreasing$12 ? 1L : -1L;
+        for (long i$14 = $ceylontmpstart$10; $ceylontmpincreasing$12 ? i$14 - $ceylontmpend$11 <= 0L : i$14 - $ceylontmpend$11 >= 0L; i$14 += $ceylontmpincr$13) {
+            final long i = i$14;
             sum += i;
         }
-        final long $ceylontmpstart15 = getStart$priv() + 10L;
-        final long $ceylontmpend16 = getEnd$priv() + 10L;
-        final boolean $ceylontmpincreasing17 = $ceylontmpstart15 <= $ceylontmpend16;
-        final long $ceylontmpincr18 = $ceylontmpincreasing17 ? 1L : -1L;
-        for (long $i$19 = $ceylontmpstart15; $ceylontmpincreasing17 ? $i$19 - $ceylontmpend16 <= 0L : $i$19 - $ceylontmpend16 >= 0L; $i$19 += $ceylontmpincr18) {
-            final long i = $i$19;
+        final long $ceylontmpstart$15 = getStart$priv() + 10L;
+        final long $ceylontmpend$16 = getEnd$priv() + 10L;
+        final boolean $ceylontmpincreasing$17 = $ceylontmpstart$15 <= $ceylontmpend$16;
+        final long $ceylontmpincr$18 = $ceylontmpincreasing$17 ? 1L : -1L;
+        for (long i$19 = $ceylontmpstart$15; $ceylontmpincreasing$17 ? i$19 - $ceylontmpend$16 <= 0L : i$19 - $ceylontmpend$16 >= 0L; i$19 += $ceylontmpincr$18) {
+            final long i = i$19;
             sum += i;
         }
     }
     
     private final void by$priv() {
         long sum = 0L;
-        final long $ceylontmpstart20 = 1L;
-        final long $ceylontmpend21 = 10L;
-        final long $ceylontmpby22 = 3L;
-        if ($ceylontmpby22 <= 0) throw new .ceylon.language.AssertionException("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
-        final boolean $ceylontmpincreasing23 = $ceylontmpstart20 <= $ceylontmpend21;
-        final long $ceylontmpincr24 = $ceylontmpincreasing23 ? $ceylontmpby22 : -$ceylontmpby22;
-        for (long $i$25 = $ceylontmpstart20; $ceylontmpincreasing23 ? $i$25 - $ceylontmpend21 <= 0L : $i$25 - $ceylontmpend21 >= 0L; $i$25 += $ceylontmpincr24) {
-            final long i = $i$25;
+        final long $ceylontmpstart$20 = 1L;
+        final long $ceylontmpend$21 = 10L;
+        final long $ceylontmpby$22 = 3L;
+        if ($ceylontmpby$22 <= 0) throw new .ceylon.language.AssertionException("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        final boolean $ceylontmpincreasing$23 = $ceylontmpstart$20 <= $ceylontmpend$21;
+        final long $ceylontmpincr$24 = $ceylontmpincreasing$23 ? $ceylontmpby$22 : -$ceylontmpby$22;
+        for (long i$25 = $ceylontmpstart$20; $ceylontmpincreasing$23 ? i$25 - $ceylontmpend$21 <= 0L : i$25 - $ceylontmpend$21 >= 0L; i$25 += $ceylontmpincr$24) {
+            final long i = i$25;
             sum += i;
         }
-        final long $ceylontmpstart26 = 1L;
-        final long $ceylontmpend27 = 10L;
-        final long $ceylontmpby28 = 3L;
-        if ($ceylontmpby28 <= 0) throw new .ceylon.language.AssertionException("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
-        final boolean $ceylontmpincreasing29 = $ceylontmpstart26 <= $ceylontmpend27;
-        final long $ceylontmpincr30 = $ceylontmpincreasing29 ? $ceylontmpby28 : -$ceylontmpby28;
-        for (long $i$31 = $ceylontmpstart26; $ceylontmpincreasing29 ? $i$31 - $ceylontmpend27 <= 0L : $i$31 - $ceylontmpend27 >= 0L; $i$31 += $ceylontmpincr30) {
-            final long i = $i$31;
+        final long $ceylontmpstart$26 = 1L;
+        final long $ceylontmpend$27 = 10L;
+        final long $ceylontmpby$28 = 3L;
+        if ($ceylontmpby$28 <= 0) throw new .ceylon.language.AssertionException("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        final boolean $ceylontmpincreasing$29 = $ceylontmpstart$26 <= $ceylontmpend$27;
+        final long $ceylontmpincr$30 = $ceylontmpincreasing$29 ? $ceylontmpby$28 : -$ceylontmpby$28;
+        for (long i$31 = $ceylontmpstart$26; $ceylontmpincreasing$29 ? i$31 - $ceylontmpend$27 <= 0L : i$31 - $ceylontmpend$27 >= 0L; i$31 += $ceylontmpincr$30) {
+            final long i = i$31;
             sum += i;
         }
     }
     
     private final void disabled$priv() {
         long sum = 0L;
-        .java.lang.Object $elem$32;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $i$iter$33 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator(); !(($elem$32 = $i$iter$33.next()) instanceof .ceylon.language.Finished); ) {
-            final long i = ((.ceylon.language.Integer)$elem$32).longValue();
+        .java.lang.Object elem$32;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iter$33 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator(); !((elem$32 = i$iter$33.next()) instanceof .ceylon.language.Finished); ) {
+            final long i = ((.ceylon.language.Integer)elem$32).longValue();
             sum += i;
         }
-        .java.lang.Object $elem$34;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $i$iter$35 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator(); !(($elem$34 = $i$iter$35.next()) instanceof .ceylon.language.Finished); ) {
-            final long i = ((.ceylon.language.Integer)$elem$34).longValue();
+        .java.lang.Object elem$34;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iter$35 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator(); !((elem$34 = i$iter$35.next()) instanceof .ceylon.language.Finished); ) {
+            final long i = ((.ceylon.language.Integer)elem$34).longValue();
             sum += i;
         }
     }
     
     private final void flow$priv() {
         long sum = 0L;
-        final long $ceylontmpstart36 = 1L;
-        final long $ceylontmpend37 = 10L;
-        final boolean $ceylontmpincreasing38 = $ceylontmpstart36 <= $ceylontmpend37;
-        final long $ceylontmpincr39 = $ceylontmpincreasing38 ? 1L : -1L;
-        for (long $withElse$40 = $ceylontmpstart36; $ceylontmpincreasing38 ? $withElse$40 - $ceylontmpend37 <= 0L : $withElse$40 - $ceylontmpend37 >= 0L; $withElse$40 += $ceylontmpincr39) {
-            final long withElse = $withElse$40;
+        final long $ceylontmpstart$36 = 1L;
+        final long $ceylontmpend$37 = 10L;
+        final boolean $ceylontmpincreasing$38 = $ceylontmpstart$36 <= $ceylontmpend$37;
+        final long $ceylontmpincr$39 = $ceylontmpincreasing$38 ? 1L : -1L;
+        for (long withElse$40 = $ceylontmpstart$36; $ceylontmpincreasing$38 ? withElse$40 - $ceylontmpend$37 <= 0L : withElse$40 - $ceylontmpend$37 >= 0L; withElse$40 += $ceylontmpincr$39) {
+            final long withElse = withElse$40;
             sum += withElse;
         }
         sum = 0L;
-        final long $ceylontmpstart41 = 10L;
-        final long $ceylontmpend42 = 1L;
-        final boolean $ceylontmpincreasing43 = $ceylontmpstart41 <= $ceylontmpend42;
-        final long $ceylontmpincr44 = $ceylontmpincreasing43 ? 1L : -1L;
-        for (long $breaks$45 = $ceylontmpstart41; $ceylontmpincreasing43 ? $breaks$45 - $ceylontmpend42 <= 0L : $breaks$45 - $ceylontmpend42 >= 0L; $breaks$45 += $ceylontmpincr44) {
-            final long breaks = $breaks$45;
+        final long $ceylontmpstart$41 = 10L;
+        final long $ceylontmpend$42 = 1L;
+        final boolean $ceylontmpincreasing$43 = $ceylontmpstart$41 <= $ceylontmpend$42;
+        final long $ceylontmpincr$44 = $ceylontmpincreasing$43 ? 1L : -1L;
+        for (long breaks$45 = $ceylontmpstart$41; $ceylontmpincreasing$43 ? breaks$45 - $ceylontmpend$42 <= 0L : breaks$45 - $ceylontmpend$42 >= 0L; breaks$45 += $ceylontmpincr$44) {
+            final long breaks = breaks$45;
             sum += breaks;
             break;
         }
-        boolean $doforelse$46 = true;
-        final long $ceylontmpstart47 = 10L;
-        final long $ceylontmpend48 = 1L;
-        final boolean $ceylontmpincreasing49 = $ceylontmpstart47 <= $ceylontmpend48;
-        final long $ceylontmpincr50 = $ceylontmpincreasing49 ? 1L : -1L;
-        for (long $breaksWithElse$51 = $ceylontmpstart47; $ceylontmpincreasing49 ? $breaksWithElse$51 - $ceylontmpend48 <= 0L : $breaksWithElse$51 - $ceylontmpend48 >= 0L; $breaksWithElse$51 += $ceylontmpincr50) {
-            final long breaksWithElse = $breaksWithElse$51;
+        boolean doforelse$46 = true;
+        final long $ceylontmpstart$47 = 10L;
+        final long $ceylontmpend$48 = 1L;
+        final boolean $ceylontmpincreasing$49 = $ceylontmpstart$47 <= $ceylontmpend$48;
+        final long $ceylontmpincr$50 = $ceylontmpincreasing$49 ? 1L : -1L;
+        for (long breaksWithElse$51 = $ceylontmpstart$47; $ceylontmpincreasing$49 ? breaksWithElse$51 - $ceylontmpend$48 <= 0L : breaksWithElse$51 - $ceylontmpend$48 >= 0L; breaksWithElse$51 += $ceylontmpincr$50) {
+            final long breaksWithElse = breaksWithElse$51;
             sum += breaksWithElse;
-            $doforelse$46 = false;
+            doforelse$46 = false;
             break;
         }
-        if ($doforelse$46) {
+        if (doforelse$46) {
             sum = 0L;
         }
-        boolean $doforelse$52 = true;
-        final long $ceylontmpstart53 = 10L;
-        final long $ceylontmpend54 = 1L;
-        final boolean $ceylontmpincreasing55 = $ceylontmpstart53 <= $ceylontmpend54;
-        final long $ceylontmpincr56 = $ceylontmpincreasing55 ? 1L : -1L;
-        for (long $breaksWithElse$57 = $ceylontmpstart53; $ceylontmpincreasing55 ? $breaksWithElse$57 - $ceylontmpend54 <= 0L : $breaksWithElse$57 - $ceylontmpend54 >= 0L; $breaksWithElse$57 += $ceylontmpincr56) {
-            final long breaksWithElse = $breaksWithElse$57;
+        boolean doforelse$52 = true;
+        final long $ceylontmpstart$53 = 10L;
+        final long $ceylontmpend$54 = 1L;
+        final boolean $ceylontmpincreasing$55 = $ceylontmpstart$53 <= $ceylontmpend$54;
+        final long $ceylontmpincr$56 = $ceylontmpincreasing$55 ? 1L : -1L;
+        for (long breaksWithElse$57 = $ceylontmpstart$53; $ceylontmpincreasing$55 ? breaksWithElse$57 - $ceylontmpend$54 <= 0L : breaksWithElse$57 - $ceylontmpend$54 >= 0L; breaksWithElse$57 += $ceylontmpincr$56) {
+            final long breaksWithElse = breaksWithElse$57;
             sum += breaksWithElse;
             if (breaksWithElse == 5L) {
-                $doforelse$52 = false;
+                doforelse$52 = false;
                 break;
             }
         }
-        if ($doforelse$52) {
+        if (doforelse$52) {
             sum = 0L;
         }
-        final long $ceylontmpstart59 = 10L;
-        final long $ceylontmpend60 = 1L;
-        final boolean $ceylontmpincreasing61 = $ceylontmpstart59 <= $ceylontmpend60;
-        final long $ceylontmpincr62 = $ceylontmpincreasing61 ? 1L : -1L;
-        for (long $returns$63 = $ceylontmpstart59; $ceylontmpincreasing61 ? $returns$63 - $ceylontmpend60 <= 0L : $returns$63 - $ceylontmpend60 >= 0L; $returns$63 += $ceylontmpincr62) {
-            final long returns = $returns$63;
+        final long $ceylontmpstart$59 = 10L;
+        final long $ceylontmpend$60 = 1L;
+        final boolean $ceylontmpincreasing$61 = $ceylontmpstart$59 <= $ceylontmpend$60;
+        final long $ceylontmpincr$62 = $ceylontmpincreasing$61 ? 1L : -1L;
+        for (long returns$63 = $ceylontmpstart$59; $ceylontmpincreasing$61 ? returns$63 - $ceylontmpend$60 <= 0L : returns$63 - $ceylontmpend$60 >= 0L; returns$63 += $ceylontmpincr$62) {
+            final long returns = returns$63;
             sum += returns;
             break;
         }
-        boolean $doforelse$64 = true;
-        final long $ceylontmpstart65 = 10L;
-        final long $ceylontmpend66 = 1L;
-        final boolean $ceylontmpincreasing67 = $ceylontmpstart65 <= $ceylontmpend66;
-        final long $ceylontmpincr68 = $ceylontmpincreasing67 ? 1L : -1L;
-        for (long $returnsWithElse$69 = $ceylontmpstart65; $ceylontmpincreasing67 ? $returnsWithElse$69 - $ceylontmpend66 <= 0L : $returnsWithElse$69 - $ceylontmpend66 >= 0L; $returnsWithElse$69 += $ceylontmpincr68) {
-            final long returnsWithElse = $returnsWithElse$69;
+        boolean doforelse$64 = true;
+        final long $ceylontmpstart$65 = 10L;
+        final long $ceylontmpend$66 = 1L;
+        final boolean $ceylontmpincreasing$67 = $ceylontmpstart$65 <= $ceylontmpend$66;
+        final long $ceylontmpincr$68 = $ceylontmpincreasing$67 ? 1L : -1L;
+        for (long returnsWithElse$69 = $ceylontmpstart$65; $ceylontmpincreasing$67 ? returnsWithElse$69 - $ceylontmpend$66 <= 0L : returnsWithElse$69 - $ceylontmpend$66 >= 0L; returnsWithElse$69 += $ceylontmpincr$68) {
+            final long returnsWithElse = returnsWithElse$69;
             sum += returnsWithElse;
-            $doforelse$64 = false;
+            doforelse$64 = false;
             break;
         }
-        if ($doforelse$64) {
+        if (doforelse$64) {
             sum = 0L;
         }
-        boolean $doforelse$70 = true;
-        final long $ceylontmpstart71 = 10L;
-        final long $ceylontmpend72 = 1L;
-        final boolean $ceylontmpincreasing73 = $ceylontmpstart71 <= $ceylontmpend72;
-        final long $ceylontmpincr74 = $ceylontmpincreasing73 ? 1L : -1L;
-        for (long $returnsWithElse$75 = $ceylontmpstart71; $ceylontmpincreasing73 ? $returnsWithElse$75 - $ceylontmpend72 <= 0L : $returnsWithElse$75 - $ceylontmpend72 >= 0L; $returnsWithElse$75 += $ceylontmpincr74) {
-            final long returnsWithElse = $returnsWithElse$75;
+        boolean doforelse$70 = true;
+        final long $ceylontmpstart$71 = 10L;
+        final long $ceylontmpend$72 = 1L;
+        final boolean $ceylontmpincreasing$73 = $ceylontmpstart$71 <= $ceylontmpend$72;
+        final long $ceylontmpincr$74 = $ceylontmpincreasing$73 ? 1L : -1L;
+        for (long returnsWithElse$75 = $ceylontmpstart$71; $ceylontmpincreasing$73 ? returnsWithElse$75 - $ceylontmpend$72 <= 0L : returnsWithElse$75 - $ceylontmpend$72 >= 0L; returnsWithElse$75 += $ceylontmpincr$74) {
+            final long returnsWithElse = returnsWithElse$75;
             sum += returnsWithElse;
             if (returnsWithElse == 5L) {
-                $doforelse$70 = false;
+                doforelse$70 = false;
                 break;
             }
         }
-        if ($doforelse$70) {
+        if (doforelse$70) {
             sum = 0L;
         }
-        final long $ceylontmpstart77 = 10L;
-        final long $ceylontmpend78 = 1L;
-        final boolean $ceylontmpincreasing79 = $ceylontmpstart77 <= $ceylontmpend78;
-        final long $ceylontmpincr80 = $ceylontmpincreasing79 ? 1L : -1L;
-        for (long $throws$81 = $ceylontmpstart77; $ceylontmpincreasing79 ? $throws$81 - $ceylontmpend78 <= 0L : $throws$81 - $ceylontmpend78 >= 0L; $throws$81 += $ceylontmpincr80) {
-            final long throws = $throws$81;
+        final long $ceylontmpstart$77 = 10L;
+        final long $ceylontmpend$78 = 1L;
+        final boolean $ceylontmpincreasing$79 = $ceylontmpstart$77 <= $ceylontmpend$78;
+        final long $ceylontmpincr$80 = $ceylontmpincreasing$79 ? 1L : -1L;
+        for (long throws$81 = $ceylontmpstart$77; $ceylontmpincreasing$79 ? throws$81 - $ceylontmpend$78 <= 0L : throws$81 - $ceylontmpend$78 >= 0L; throws$81 += $ceylontmpincr$80) {
+            final long throws = throws$81;
             sum += throws;
             break;
         }
-        boolean $doforelse$82 = true;
-        final long $ceylontmpstart83 = 10L;
-        final long $ceylontmpend84 = 1L;
-        final boolean $ceylontmpincreasing85 = $ceylontmpstart83 <= $ceylontmpend84;
-        final long $ceylontmpincr86 = $ceylontmpincreasing85 ? 1L : -1L;
-        for (long $throwsWithElse$87 = $ceylontmpstart83; $ceylontmpincreasing85 ? $throwsWithElse$87 - $ceylontmpend84 <= 0L : $throwsWithElse$87 - $ceylontmpend84 >= 0L; $throwsWithElse$87 += $ceylontmpincr86) {
-            final long throwsWithElse = $throwsWithElse$87;
+        boolean doforelse$82 = true;
+        final long $ceylontmpstart$83 = 10L;
+        final long $ceylontmpend$84 = 1L;
+        final boolean $ceylontmpincreasing$85 = $ceylontmpstart$83 <= $ceylontmpend$84;
+        final long $ceylontmpincr$86 = $ceylontmpincreasing$85 ? 1L : -1L;
+        for (long throwsWithElse$87 = $ceylontmpstart$83; $ceylontmpincreasing$85 ? throwsWithElse$87 - $ceylontmpend$84 <= 0L : throwsWithElse$87 - $ceylontmpend$84 >= 0L; throwsWithElse$87 += $ceylontmpincr$86) {
+            final long throwsWithElse = throwsWithElse$87;
             sum += throwsWithElse;
-            $doforelse$82 = false;
+            doforelse$82 = false;
             break;
         }
-        if ($doforelse$82) {
+        if (doforelse$82) {
             sum = 0L;
         }
-        boolean $doforelse$88 = true;
-        final long $ceylontmpstart89 = 10L;
-        final long $ceylontmpend90 = 1L;
-        final boolean $ceylontmpincreasing91 = $ceylontmpstart89 <= $ceylontmpend90;
-        final long $ceylontmpincr92 = $ceylontmpincreasing91 ? 1L : -1L;
-        for (long $throwsWithElse$93 = $ceylontmpstart89; $ceylontmpincreasing91 ? $throwsWithElse$93 - $ceylontmpend90 <= 0L : $throwsWithElse$93 - $ceylontmpend90 >= 0L; $throwsWithElse$93 += $ceylontmpincr92) {
-            final long throwsWithElse = $throwsWithElse$93;
+        boolean doforelse$88 = true;
+        final long $ceylontmpstart$89 = 10L;
+        final long $ceylontmpend$90 = 1L;
+        final boolean $ceylontmpincreasing$91 = $ceylontmpstart$89 <= $ceylontmpend$90;
+        final long $ceylontmpincr$92 = $ceylontmpincreasing$91 ? 1L : -1L;
+        for (long throwsWithElse$93 = $ceylontmpstart$89; $ceylontmpincreasing$91 ? throwsWithElse$93 - $ceylontmpend$90 <= 0L : throwsWithElse$93 - $ceylontmpend$90 >= 0L; throwsWithElse$93 += $ceylontmpincr$92) {
+            final long throwsWithElse = throwsWithElse$93;
             sum += throwsWithElse;
             if (throwsWithElse == 5L) {
-                $doforelse$88 = false;
+                doforelse$88 = false;
                 break;
             }
         }
-        if ($doforelse$88) {
+        if (doforelse$88) {
             sum = 0L;
         }
     }
     
     private final void captured$priv() {
-        final long $ceylontmpstart95 = 0L;
-        final long $ceylontmpend96 = 10L;
-        final boolean $ceylontmpincreasing97 = $ceylontmpstart95 <= $ceylontmpend96;
-        final long $ceylontmpincr98 = $ceylontmpincreasing97 ? 1L : -1L;
-        for (long $i$99 = $ceylontmpstart95; $ceylontmpincreasing97 ? $i$99 - $ceylontmpend96 <= 0L : $i$99 - $ceylontmpend96 >= 0L; $i$99 += $ceylontmpincr98) {
-            final long i = $i$99;
+        final long $ceylontmpstart$95 = 0L;
+        final long $ceylontmpend$96 = 10L;
+        final boolean $ceylontmpincreasing$97 = $ceylontmpstart$95 <= $ceylontmpend$96;
+        final long $ceylontmpincr$98 = $ceylontmpincreasing$97 ? 1L : -1L;
+        for (long i$99 = $ceylontmpstart$95; $ceylontmpincreasing$97 ? i$99 - $ceylontmpend$96 <= 0L : i$99 - $ceylontmpend$96 >= 0L; i$99 += $ceylontmpincr$98) {
+            final long i = i$99;
             
             final class x_ {
                 

@@ -6,22 +6,22 @@ class AssertNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime
     }
     
     public final long m(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x) {
-        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> $x$2;
-        .ceylon.language.Sequential<? extends .ceylon.language.Integer> $x$1 = null;
-        if (($x$1 = x) instanceof .ceylon.language.Sequence) {
-            $x$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)$x$1;
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> x$2;
+        .ceylon.language.Sequential<? extends .ceylon.language.Integer> x$1 = null;
+        if ((x$1 = x) instanceof .ceylon.language.Sequence) {
+            x$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)x$1;
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nonempty x"));
-        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s = $x$2;
-        return $x$2.getFirst().longValue();
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s = x$2;
+        return x$2.getFirst().longValue();
     }
     
     public final long mvar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x) {
-        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> $s$5;
-        .ceylon.language.Sequential<? extends .ceylon.language.Integer> $s$4 = null;
-        if (($s$4 = x) instanceof .ceylon.language.Sequence) {
-            $s$5 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)$s$4;
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s$5;
+        .ceylon.language.Sequential<? extends .ceylon.language.Integer> s$4 = null;
+        if ((s$4 = x) instanceof .ceylon.language.Sequence) {
+            s$5 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)s$4;
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nonempty s=x"));
-        return $s$5.getFirst().longValue();
+        return s$5.getFirst().longValue();
     }
     
     public static void main(.java.lang.String[] args) {

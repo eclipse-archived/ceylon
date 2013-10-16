@@ -35,13 +35,13 @@ class GenericMethodInvocation implements .com.redhat.ceylon.compiler.java.runtim
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams $arg$0$callable$ = k;
-                .ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("hello");
-                .ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance(1L);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .ceylon.language.String.$TypeDescriptor;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$1 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams arg$0$callable$ = k;
+                .ceylon.language.String arg$0$0 = .ceylon.language.String.instance("hello");
+                .ceylon.language.Integer arg$0$1 = .ceylon.language.Integer.instance(1L);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.String.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$1 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning $arg$0$callable$.<.ceylon.language.String, .ceylon.language.Integer>bar($arg$0$reified$0, $arg$0$reified$1, $arg$0$0, $arg$0$1);
+            returning arg$0$callable$.<.ceylon.language.String, .ceylon.language.Integer>bar(arg$0$reified$0, arg$0$reified$1, arg$0$0, arg$0$1);
         ).toString();
     }
     

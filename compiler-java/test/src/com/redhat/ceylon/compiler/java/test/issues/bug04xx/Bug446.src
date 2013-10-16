@@ -377,9 +377,9 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         return (int)(
             let
             {
-                long $ceylontmphash0 = hash;
+                long $ceylontmphash$0 = hash;
             }
-            returning $ceylontmphash0 ^ $ceylontmphash0 >>> 32;
+            returning $ceylontmphash$0 ^ $ceylontmphash$0 >>> 32;
         );
     }
     

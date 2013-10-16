@@ -11,16 +11,16 @@ class MethodWhileIsWithMethod implements .com.redhat.ceylon.compiler.java.runtim
     
     public final void m() {
         while (true) {
-            .java.lang.Object $y$0;
-            if (($y$0 = give$priv()) instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.FooSub) {
-                final .com.redhat.ceylon.compiler.java.test.statement.loop.FooSub $y$1 = (.com.redhat.ceylon.compiler.java.test.statement.loop.FooSub)$y$0;
-                $y$1.foo();
+            .java.lang.Object y$0;
+            if ((y$0 = give$priv()) instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.FooSub) {
+                final .com.redhat.ceylon.compiler.java.test.statement.loop.FooSub y$1 = (.com.redhat.ceylon.compiler.java.test.statement.loop.FooSub)y$0;
+                y$1.foo();
             } else break;
         }
         while (true) {
-            .java.lang.Object $y$2;
-            if (($y$2 = give$priv()) == null) {
-                final .java.lang.Object $y$3 = $y$2;
+            .java.lang.Object y$2;
+            if ((y$2 = give$priv()) == null) {
+                final .java.lang.Object y$3 = y$2;
             } else break;
         }
     }

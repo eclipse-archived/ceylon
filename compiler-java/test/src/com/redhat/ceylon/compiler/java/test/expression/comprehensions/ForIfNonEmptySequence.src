@@ -18,23 +18,23 @@ class ForIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.
                     private boolean x$exhausted;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)$ceylontmpitem0;
+                            x = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)$ceylontmpitem$0;
                             return true;
                         }
                     }
-                    private .ceylon.language.Sequence<? extends .ceylon.language.Integer> $x$2;
+                    private .ceylon.language.Sequence<? extends .ceylon.language.Integer> x$2;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .ceylon.language.Sequential<? extends .ceylon.language.Integer> $x$1 = null;
-                            if (($x$1 = x) instanceof .ceylon.language.Sequence) {
-                                $x$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)$x$1;
+                            .ceylon.language.Sequential<? extends .ceylon.language.Integer> x$1 = null;
+                            if ((x$1 = x) instanceof .ceylon.language.Sequence) {
+                                x$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)x$1;
                                 break;
                             }
                         }
@@ -44,7 +44,7 @@ class ForIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.
                     public final .java.lang.Object next() {
                         if (this.next1()) {
                             final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x = this.x;
-                            return $x$2.getFirst();
+                            return x$2.getFirst();
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
@@ -65,23 +65,23 @@ class ForIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.
                     private boolean x$exhausted;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem3 = iter$0.next();
-                        x$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$3 = iter$0.next();
+                        x$exhausted = $ceylontmpitem$3 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)$ceylontmpitem3;
+                            x = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)$ceylontmpitem$3;
                             return true;
                         }
                     }
-                    private .ceylon.language.Sequence<? extends .ceylon.language.Integer> $s$5;
+                    private .ceylon.language.Sequence<? extends .ceylon.language.Integer> s$5;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .ceylon.language.Sequential<? extends .ceylon.language.Integer> $s$4 = null;
-                            if (($s$4 = x) instanceof .ceylon.language.Sequence) {
-                                $s$5 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)$s$4;
+                            .ceylon.language.Sequential<? extends .ceylon.language.Integer> s$4 = null;
+                            if ((s$4 = x) instanceof .ceylon.language.Sequence) {
+                                s$5 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)s$4;
                                 break;
                             }
                         }
@@ -91,7 +91,7 @@ class ForIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.
                     public final .java.lang.Object next() {
                         if (this.next1()) {
                             final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x = this.x;
-                            return $s$5.getFirst();
+                            return s$5.getFirst();
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

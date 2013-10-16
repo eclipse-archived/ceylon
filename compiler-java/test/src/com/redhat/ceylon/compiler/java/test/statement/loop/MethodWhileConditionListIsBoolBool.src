@@ -7,10 +7,10 @@ class MethodWhileConditionListIsBoolBool implements .com.redhat.ceylon.compiler.
     
     private final boolean m$priv(final .java.lang.Object x, final long z) {
         while (true) {
-            .java.lang.Object $x$0;
-            if (($x$0 = x) instanceof .ceylon.language.Integer) {
-                final long $x$1 = ((.ceylon.language.Integer)$x$0).longValue();
-                if ($x$1 > 0L) {
+            .java.lang.Object x$0;
+            if ((x$0 = x) instanceof .ceylon.language.Integer) {
+                final long x$1 = ((.ceylon.language.Integer)x$0).longValue();
+                if (x$1 > 0L) {
                     if (z < 10L) {
                         return z == 1L;
                     } else break;
@@ -22,10 +22,10 @@ class MethodWhileConditionListIsBoolBool implements .com.redhat.ceylon.compiler.
     
     private final boolean synthetic$priv(final .java.lang.Object x, final long z) {
         while (true) {
-            .java.lang.Object $y$2;
-            if (($y$2 = x) instanceof .ceylon.language.Integer) {
-                final long $y$3 = ((.ceylon.language.Integer)$y$2).longValue();
-                if ($y$3 > 0L) {
+            .java.lang.Object y$2;
+            if ((y$2 = x) instanceof .ceylon.language.Integer) {
+                final long y$3 = ((.ceylon.language.Integer)y$2).longValue();
+                if (y$3 > 0L) {
                     if (z < 10L) {
                         return z == 1L;
                     } else break;

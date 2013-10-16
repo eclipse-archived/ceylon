@@ -60,10 +60,10 @@ final class topLevelGetterSetter2_ {
         (
             let
             {
-                long $ceylontmpop0 = topLevelGetterSetter2;
-                .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.set_($ceylontmpop0);
+                long $ceylontmpop$0 = topLevelGetterSetter2;
+                .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.set_($ceylontmpop$0);
             }
-            returning $ceylontmpop0;
+            returning $ceylontmpop$0;
         );
     }
 }
@@ -80,10 +80,10 @@ public final class topLevelGetterSetterShared2_ {
         (
             let
             {
-                long $ceylontmpop1 = topLevelGetterSetterShared2;
-                .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.set_($ceylontmpop1);
+                long $ceylontmpop$1 = topLevelGetterSetterShared2;
+                .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.set_($ceylontmpop$1);
             }
-            returning $ceylontmpop1;
+            returning $ceylontmpop$1;
         );
     }
 }

@@ -15,9 +15,9 @@ class MethodDefaultedParamCaptureInitParam implements .com.redhat.ceylon.compile
         return (
             let
             {
-                .java.lang.String $ceylontmp$t$0 = m$t();
+                .java.lang.String $ceylontmp$t$$0 = m$t();
             }
-            returning m$priv$($ceylontmp$t$0);
+            returning m$priv$($ceylontmp$t$$0);
         );
     }
     

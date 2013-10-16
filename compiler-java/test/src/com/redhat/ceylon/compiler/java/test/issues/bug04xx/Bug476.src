@@ -500,9 +500,9 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
         return (int)(
             let
             {
-                long $ceylontmphash1 = 1L;
+                long $ceylontmphash$1 = 1L;
             }
-            returning $ceylontmphash1 ^ $ceylontmphash1 >>> 32;
+            returning $ceylontmphash$1 ^ $ceylontmphash$1 >>> 32;
         );
     }
     

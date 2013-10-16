@@ -18,9 +18,9 @@ final class bug1177_ {
                 return (
                     let
                     {
-                        .ceylon.language.String $ceylontmp$s$0 = m$s();
+                        .ceylon.language.String $ceylontmp$s$$0 = m$s();
                     }
-                    returning m($ceylontmp$s$0);
+                    returning m($ceylontmp$s$$0);
                 );
             }
             

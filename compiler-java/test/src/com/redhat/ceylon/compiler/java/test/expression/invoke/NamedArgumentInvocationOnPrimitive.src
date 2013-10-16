@@ -9,25 +9,25 @@ final class v_ {
         final long three = (
             let
             {
-                long $arg$0$callable$ = 1L;
-                long $arg$0$0 = 2L;
+                long arg$0$callable$ = 1L;
+                long arg$0$0 = 2L;
             }
-            returning .ceylon.language.Integer.plus($arg$0$callable$, $arg$0$0);
+            returning .ceylon.language.Integer.plus(arg$0$callable$, arg$0$0);
         );
         (
             let
             {
-                long $arg$1$callable$ = (
+                long arg$1$callable$ = (
                     let
                     {
-                        long $arg$2$callable$ = 1L;
-                        long $arg$2$0 = 2L;
+                        long arg$2$callable$ = 1L;
+                        long arg$2$0 = 2L;
                     }
-                    returning .ceylon.language.Integer.plus($arg$2$callable$, $arg$2$0);
+                    returning .ceylon.language.Integer.plus(arg$2$callable$, arg$2$0);
                 );
-                .java.lang.Object $arg$1$0 = .ceylon.language.Integer.instance(3L);
+                .java.lang.Object arg$1$0 = .ceylon.language.Integer.instance(3L);
             }
-            returning .ceylon.language.Integer.equals($arg$1$callable$, $arg$1$0);
+            returning .ceylon.language.Integer.equals(arg$1$callable$, arg$1$0);
         );
     }
     

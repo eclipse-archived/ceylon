@@ -153,10 +153,10 @@ class DefaultSetter implements .com.redhat.ceylon.compiler.java.runtime.model.Re
             return (
                 let
                 {
-                    long $ceylontmpop0 = $this.getAFormal();
-                    $this.setAFormal($ceylontmpop0 + 1);
+                    long $ceylontmpop$0 = $this.getAFormal();
+                    $this.setAFormal($ceylontmpop$0 + 1);
                 }
-                returning $ceylontmpop0;
+                returning $ceylontmpop$0;
             );
         }
     }

@@ -9,9 +9,9 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return (
             let
             {
-                .ceylon.language.Sequential<? extends Value> $ceylontmp$values$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends Value> $ceylontmp$values$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning variadicSum$($reifiedValue, $ceylontmp$values$0);
+            returning variadicSum$($reifiedValue, $ceylontmp$values$$0);
         );
     }
     
@@ -27,9 +27,9 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return (
             let
             {
-                .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> $ceylontmp$dummy$1 = defaultedSum$dummy($reifiedValue);
+                .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> $ceylontmp$dummy$$1 = defaultedSum$dummy($reifiedValue);
             }
-            returning defaultedSum$($reifiedValue, $ceylontmp$dummy$1);
+            returning defaultedSum$($reifiedValue, $ceylontmp$dummy$$1);
         );
     }
     
@@ -50,27 +50,27 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         final Summand y = (Summand)(.java.lang.Object)(
             let
             {
-                .ceylon.language.Iterable $arg$2$0 = (.ceylon.language.Iterable)values;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$0 = $reifiedSummand;
+                .ceylon.language.Iterable arg$2$0 = (.ceylon.language.Iterable)values;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = $reifiedSummand;
             }
-            returning .ceylon.language.sum_.<Summand>sum($arg$2$reified$0, $arg$2$0);
+            returning .ceylon.language.sum_.<Summand>sum(arg$2$reified$0, arg$2$0);
         );
         final Summand z = (Summand)(.java.lang.Object)(
             let
             {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$3$reified$0 = $reifiedSummand;
-                .ceylon.language.Sequential $arg$3$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$3$reified$0 = $reifiedSummand;
+                .ceylon.language.Sequential arg$3$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning <Summand>variadicSum($arg$3$reified$0, $arg$3$0);
+            returning <Summand>variadicSum(arg$3$reified$0, arg$3$0);
         );
         final Summand a = (Summand)(.java.lang.Object)(
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095 $arg$4$this$ = this;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$4$reified$0 = $reifiedSummand;
-                .ceylon.language.Iterable $arg$4$0 = $arg$4$this$.defaultedSum$dummy($arg$4$reified$0);
+                .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095 arg$4$this$ = this;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$4$reified$0 = $reifiedSummand;
+                .ceylon.language.Iterable arg$4$0 = arg$4$this$.defaultedSum$dummy(arg$4$reified$0);
             }
-            returning <Summand>defaultedSum($arg$4$reified$0, $arg$4$0);
+            returning <Summand>defaultedSum(arg$4$reified$0, arg$4$0);
         );
     }
     

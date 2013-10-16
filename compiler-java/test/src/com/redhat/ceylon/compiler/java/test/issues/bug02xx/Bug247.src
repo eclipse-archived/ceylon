@@ -9,10 +9,10 @@ final class bug247_ {
         (
             let
             {
-                long $ceylontmpop0 = .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.get_() + 1L;
-                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.set_($ceylontmpop0);
+                long $ceylontmpop$0 = .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.get_() + 1L;
+                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.set_($ceylontmpop$0);
             }
-            returning $ceylontmpop0;
+            returning $ceylontmpop$0;
         );
     }
     

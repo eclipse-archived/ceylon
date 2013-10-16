@@ -36,9 +36,9 @@ final class TypeParamRename$impl<T, U> {
         return (
             let
             {
-                T $ceylontmp$t2$0 = m$t2(t1);
+                T $ceylontmp$t2$$0 = m$t2(t1);
             }
-            returning m$(t1, $ceylontmp$t2$0);
+            returning m$(t1, $ceylontmp$t2$$0);
         );
     }
     
@@ -58,9 +58,9 @@ final class TypeParamRename$impl<T, U> {
         return (
             let
             {
-                V $ceylontmp$v$1 = m2$v($reifiedV, $reifiedW);
+                V $ceylontmp$v$$1 = m2$v($reifiedV, $reifiedW);
             }
-            returning m2$($reifiedV, $reifiedW, $ceylontmp$v$1);
+            returning m2$($reifiedV, $reifiedW, $ceylontmp$v$$1);
         );
     }
     
@@ -102,9 +102,9 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runti
         return (
             let
             {
-                X $ceylontmp$t2$2 = m$t2(t1);
+                X $ceylontmp$t2$$2 = m$t2(t1);
             }
-            returning m$(t1, $ceylontmp$t2$2);
+            returning m$(t1, $ceylontmp$t2$$2);
         );
     }
     
@@ -126,9 +126,9 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runti
         return (
             let
             {
-                A $ceylontmp$v$3 = m2$v($reifiedA, $reifiedB);
+                A $ceylontmp$v$$3 = m2$v($reifiedA, $reifiedB);
             }
-            returning m2$($reifiedA, $reifiedB, $ceylontmp$v$3);
+            returning m2$($reifiedA, $reifiedB, $ceylontmp$v$$3);
         );
     }
     

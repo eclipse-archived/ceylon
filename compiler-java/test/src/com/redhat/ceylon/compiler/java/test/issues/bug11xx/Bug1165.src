@@ -64,37 +64,37 @@ final class bug1165_ {
         final Html html = (
             let
             {
-                Head $arg$0$0 = (
+                Head arg$0$0 = (
                     let
                     {
-                        .java.lang.String $arg$1$0 = "Hello";
+                        .java.lang.String arg$1$0 = "Hello";
                     }
-                    returning new Head($arg$1$0);
+                    returning new Head(arg$1$0);
                 );
-                Body $arg$0$1 = (
+                Body arg$0$1 = (
                     let
                     {
-                        P $arg$2$0 = (
+                        P arg$2$0 = (
                             let
                             {
-                                .ceylon.language.Iterable $arg$3$0 = .ceylon.language.ArraySequence.<.java.lang.Object>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(B.class)), new .java.lang.Object[]{
+                                .ceylon.language.Iterable arg$3$0 = .ceylon.language.ArraySequence.<.java.lang.Object>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(B.class)), new .java.lang.Object[]{
                                         .ceylon.language.String.instance("Hello "),
                                         (
                                             let
                                             {
-                                                .ceylon.language.Iterable $arg$4$0 = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("JUDCon")});
+                                                .ceylon.language.Iterable arg$4$0 = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("JUDCon")});
                                             }
-                                            returning new B($arg$4$0);
+                                            returning new B(arg$4$0);
                                         ),
                                         .ceylon.language.String.instance(" guys")});
                             }
-                            returning new P($arg$3$0);
+                            returning new P(arg$3$0);
                         );
                     }
-                    returning new Body($arg$2$0);
+                    returning new Body(arg$2$0);
                 );
             }
-            returning new Html($arg$0$0, $arg$0$1);
+            returning new Html(arg$0$0, arg$0$1);
         );
         .ceylon.language.print_.print(html);
     }

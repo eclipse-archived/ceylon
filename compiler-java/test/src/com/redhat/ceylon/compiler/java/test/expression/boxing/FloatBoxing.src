@@ -31,10 +31,10 @@ class FloatBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         localAttrObject = <.ceylon.language.Float>id$priv(.ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.instance(1.0));
         final .java.lang.Object localAttrConstantObject = .ceylon.language.Float.instance(localAttrFloat);
         final double localAttrConstantFloat = localAttrFloat;
-        .java.lang.Object $localAttrConstantObject$1;
-        if (($localAttrConstantObject$1 = localAttrConstantObject) instanceof .ceylon.language.Float) {
-            final double $localAttrConstantObject$2 = ((.ceylon.language.Float)$localAttrConstantObject$1).doubleValue();
-            localAttrFloat = $localAttrConstantObject$2;
+        .java.lang.Object localAttrConstantObject$1;
+        if ((localAttrConstantObject$1 = localAttrConstantObject) instanceof .ceylon.language.Float) {
+            final double localAttrConstantObject$2 = ((.ceylon.language.Float)localAttrConstantObject$1).doubleValue();
+            localAttrFloat = localAttrConstantObject$2;
         }
         localAttrFloat = localAttrFloat + 2.0;
         localAttrFloat = localAttrFloat + 4L;

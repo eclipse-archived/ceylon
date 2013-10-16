@@ -9,9 +9,9 @@ final class bug1293_ {
         (
             let
             {
-                .java.lang.String $arg$0$callable$ = "ab";
-                .ceylon.language.Integer $arg$0$0 = .ceylon.language.Integer.instance(0L);
-                .ceylon.language.Callable $arg$0$1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor), .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Character.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), "Integer(Integer, Character)", (short)-1){
+                .java.lang.String arg$0$callable$ = "ab";
+                .ceylon.language.Integer arg$0$0 = .ceylon.language.Integer.instance(0L);
+                .ceylon.language.Callable arg$0$1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor), .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Character.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), "Integer(Integer, Character)", (short)-1){
                     
                     @.java.lang.Override
                     public .ceylon.language.Integer $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
@@ -20,9 +20,9 @@ final class bug1293_ {
                         return .ceylon.language.Integer.instance(p + .ceylon.language.Character.getInteger(e));
                     }
                 };
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning .ceylon.language.String.<.ceylon.language.Integer>fold($arg$0$reified$0, $arg$0$callable$, $arg$0$0, $arg$0$1);
+            returning .ceylon.language.String.<.ceylon.language.Integer>fold(arg$0$reified$0, arg$0$callable$, arg$0$0, arg$0$1);
         );
     }
     

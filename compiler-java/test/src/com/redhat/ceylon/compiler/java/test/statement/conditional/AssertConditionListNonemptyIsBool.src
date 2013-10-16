@@ -6,30 +6,30 @@ class AssertConditionList implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     private final boolean m$priv(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
-        .java.lang.String $ceylontmpassert0 = null;
-        final long $y$4;
-        final .ceylon.language.Sequence<? extends .java.lang.Object> $x$2;
-        .ceylon.language.Sequential<? extends .java.lang.Object> $x$1 = null;
-        if (($x$1 = x) instanceof .ceylon.language.Sequence) {
-            $x$2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$x$1;
-            .java.lang.Object $y$3 = null;
-            if (($y$3 = $x$2.get(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
-                $y$4 = ((.ceylon.language.Integer)$y$3).longValue();
-                if ($y$4 > 0L) {
+        .java.lang.String $ceylontmpassert$0 = null;
+        final long y$4;
+        final .ceylon.language.Sequence<? extends .java.lang.Object> x$2;
+        .ceylon.language.Sequential<? extends .java.lang.Object> x$1 = null;
+        if ((x$1 = x) instanceof .ceylon.language.Sequence) {
+            x$2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)x$1;
+            .java.lang.Object y$3 = null;
+            if ((y$3 = x$2.get(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
+                y$4 = ((.ceylon.language.Integer)y$3).longValue();
+                if (y$4 > 0L) {
                 } else {
-                    $ceylontmpassert0 = .java.lang.System.lineSeparator() + "\tunviolated " + "nonempty x" + (.java.lang.System.lineSeparator() + "\tunviolated ") + "is Integer y = x[0]" + (.java.lang.System.lineSeparator() + "\tviolated ") + "y > 0";
+                    $ceylontmpassert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "nonempty x" + (.java.lang.System.lineSeparator() + "\tunviolated ") + "is Integer y = x[0]" + (.java.lang.System.lineSeparator() + "\tviolated ") + "y > 0";
                 }
             } else {
-                $y$4 = 0L;
-                $ceylontmpassert0 = .java.lang.System.lineSeparator() + "\tunviolated " + "nonempty x" + (.java.lang.System.lineSeparator() + "\tviolated ") + "is Integer y = x[0]" + (.java.lang.System.lineSeparator() + "\tuntested ") + "y > 0";
+                y$4 = 0L;
+                $ceylontmpassert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "nonempty x" + (.java.lang.System.lineSeparator() + "\tviolated ") + "is Integer y = x[0]" + (.java.lang.System.lineSeparator() + "\tuntested ") + "y > 0";
             }
         } else {
-            $x$2 = null;
-            $y$4 = 0L;
-            $ceylontmpassert0 = .java.lang.System.lineSeparator() + "\tviolated " + "nonempty x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y = x[0]" + (.java.lang.System.lineSeparator() + "\tuntested ") + "y > 0";
+            x$2 = null;
+            y$4 = 0L;
+            $ceylontmpassert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "nonempty x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y = x[0]" + (.java.lang.System.lineSeparator() + "\tuntested ") + "y > 0";
         }
-        if ($ceylontmpassert0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert0);
-        return $y$4 == 1L;
+        if ($ceylontmpassert$0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert$0);
+        return y$4 == 1L;
     }
     
     public static void main(.java.lang.String[] args) {

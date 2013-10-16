@@ -13,9 +13,9 @@ class ClassDefaultMemberClassWithSequencedParams implements .com.redhat.ceylon.c
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new Member($ceylontmp$i$0);
+            returning new Member($ceylontmp$i$$0);
         );
     }
     
@@ -34,19 +34,19 @@ class ClassDefaultMemberClassWithSequencedParams implements .com.redhat.ceylon.c
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$1$0 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> arg$1$0 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
                         .ceylon.language.Integer.instance(1L),
                         .ceylon.language.Integer.instance(2L),
                         .ceylon.language.Integer.instance(3L)});
             }
-            returning Member$new($arg$1$0);
+            returning Member$new(arg$1$0);
         );
         (
             let
             {
-                .ceylon.language.Sequential $arg$2$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential arg$2$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning Member$new($arg$2$0);
+            returning Member$new(arg$2$0);
         );
         Member$new();
         return Member$new(.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
@@ -82,9 +82,9 @@ class ClassDefaultMemberClassWithSequencedParams_sub extends .com.redhat.ceylon.
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new Member($ceylontmp$i$3);
+            returning new Member($ceylontmp$i$$3);
         );
     }
     
@@ -104,19 +104,19 @@ class ClassDefaultMemberClassWithSequencedParams_sub extends .com.redhat.ceylon.
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$4$0 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> arg$4$0 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
                         .ceylon.language.Integer.instance(2L),
                         .ceylon.language.Integer.instance(3L),
                         .ceylon.language.Integer.instance(4L)});
             }
-            returning Member$new($arg$4$0);
+            returning Member$new(arg$4$0);
         );
         (
             let
             {
-                .ceylon.language.Sequential $arg$5$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential arg$5$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning Member$new($arg$5$0);
+            returning Member$new(arg$5$0);
         );
         Member$new();
         return Member$new(.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{

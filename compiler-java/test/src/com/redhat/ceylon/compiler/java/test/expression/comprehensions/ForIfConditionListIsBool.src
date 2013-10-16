@@ -18,24 +18,24 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                     private boolean x$exhausted;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmpitem0;
+                            x = (.java.lang.Object)$ceylontmpitem$0;
                             return true;
                         }
                     }
-                    private .java.lang.String $x$2;
+                    private .java.lang.String x$2;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .java.lang.Object $x$1 = null;
-                            if (($x$1 = x) instanceof .ceylon.language.String) {
-                                $x$2 = ((.ceylon.language.String)$x$1).toString();
-                                if (.ceylon.language.String.getUppercased($x$2).equals("S")) {
+                            .java.lang.Object x$1 = null;
+                            if ((x$1 = x) instanceof .ceylon.language.String) {
+                                x$2 = ((.ceylon.language.String)x$1).toString();
+                                if (.ceylon.language.String.getUppercased(x$2).equals("S")) {
                                     break;
                                 }
                             }
@@ -46,7 +46,7 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                     public final .java.lang.Object next() {
                         if (this.next1()) {
                             final .java.lang.Object x = this.x;
-                            return .ceylon.language.String.instance(.ceylon.language.String.getUppercased($x$2));
+                            return .ceylon.language.String.instance(.ceylon.language.String.getUppercased(x$2));
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
@@ -67,24 +67,24 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                     private boolean x$exhausted;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem3 = iter$0.next();
-                        x$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$3 = iter$0.next();
+                        x$exhausted = $ceylontmpitem$3 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmpitem3;
+                            x = (.java.lang.Object)$ceylontmpitem$3;
                             return true;
                         }
                     }
-                    private .java.lang.String $z$5;
+                    private .java.lang.String z$5;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .java.lang.Object $z$4 = null;
-                            if (($z$4 = x) instanceof .ceylon.language.String) {
-                                $z$5 = ((.ceylon.language.String)$z$4).toString();
-                                if (.ceylon.language.String.getUppercased($z$5).equals("S")) {
+                            .java.lang.Object z$4 = null;
+                            if ((z$4 = x) instanceof .ceylon.language.String) {
+                                z$5 = ((.ceylon.language.String)z$4).toString();
+                                if (.ceylon.language.String.getUppercased(z$5).equals("S")) {
                                     break;
                                 }
                             }
@@ -95,7 +95,7 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                     public final .java.lang.Object next() {
                         if (this.next1()) {
                             final .java.lang.Object x = this.x;
-                            return .ceylon.language.String.instance(.ceylon.language.String.getUppercased($z$5));
+                            return .ceylon.language.String.instance(.ceylon.language.String.getUppercased(z$5));
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

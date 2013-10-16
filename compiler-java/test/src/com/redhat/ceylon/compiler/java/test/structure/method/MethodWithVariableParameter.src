@@ -10,18 +10,18 @@ class MethodWithVariableParameter implements .com.redhat.ceylon.compiler.java.ru
         (
             let
             {
-                long $ceylontmpop0 = i;
-                i = $ceylontmpop0 + 1;
+                long $ceylontmpop$0 = i;
+                i = $ceylontmpop$0 + 1;
             }
-            returning $ceylontmpop0;
+            returning $ceylontmpop$0;
         );
         (
             let
             {
-                long $ceylontmpop1 = i + 1L;
-                i = $ceylontmpop1;
+                long $ceylontmpop$1 = i + 1L;
+                i = $ceylontmpop$1;
             }
-            returning $ceylontmpop1;
+            returning $ceylontmpop$1;
         );
     }
     
@@ -30,18 +30,18 @@ class MethodWithVariableParameter implements .com.redhat.ceylon.compiler.java.ru
         (
             let
             {
-                long $ceylontmpop2 = i;
-                i = $ceylontmpop2 + 1;
+                long $ceylontmpop$2 = i;
+                i = $ceylontmpop$2 + 1;
             }
-            returning $ceylontmpop2;
+            returning $ceylontmpop$2;
         );
         (
             let
             {
-                long $ceylontmpop3 = i + 1L;
-                i = $ceylontmpop3;
+                long $ceylontmpop$3 = i + 1L;
+                i = $ceylontmpop$3;
             }
-            returning $ceylontmpop3;
+            returning $ceylontmpop$3;
         );
     }
     
@@ -58,18 +58,18 @@ class MethodWithVariableParameter implements .com.redhat.ceylon.compiler.java.ru
                 (
                     let
                     {
-                        long $ceylontmpop4 = i.ref;
-                        i.ref = $ceylontmpop4 + 1;
+                        long $ceylontmpop$4 = i.ref;
+                        i.ref = $ceylontmpop$4 + 1;
                     }
-                    returning $ceylontmpop4;
+                    returning $ceylontmpop$4;
                 );
                 (
                     let
                     {
-                        long $ceylontmpop5 = i.ref + 1L;
-                        i.ref = $ceylontmpop5;
+                        long $ceylontmpop$5 = i.ref + 1L;
+                        i.ref = $ceylontmpop$5;
                     }
-                    returning $ceylontmpop5;
+                    returning $ceylontmpop$5;
                 );
             }
         }
@@ -89,18 +89,18 @@ class MethodWithVariableParameter implements .com.redhat.ceylon.compiler.java.ru
                 (
                     let
                     {
-                        long $ceylontmpop6 = i.ref;
-                        i.ref = $ceylontmpop6 + 1;
+                        long $ceylontmpop$6 = i.ref;
+                        i.ref = $ceylontmpop$6 + 1;
                     }
-                    returning $ceylontmpop6;
+                    returning $ceylontmpop$6;
                 );
                 (
                     let
                     {
-                        long $ceylontmpop7 = i.ref + 1L;
-                        i.ref = $ceylontmpop7;
+                        long $ceylontmpop$7 = i.ref + 1L;
+                        i.ref = $ceylontmpop$7;
                     }
-                    returning $ceylontmpop7;
+                    returning $ceylontmpop$7;
                 );
             }
         }

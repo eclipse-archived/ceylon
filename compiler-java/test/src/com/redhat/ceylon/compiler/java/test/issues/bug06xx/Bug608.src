@@ -14,13 +14,13 @@ final class bug608_ {
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> commandWithArgs = (
             let
             {
-                .java.lang.String $arg$0$callable$ = "";
-                .java.lang.String $arg$0$this$ = $arg$0$callable$;
-                boolean $arg$0$1 = true;
-                .ceylon.language.Callable $arg$0$0 = .ceylon.language.String.instance($arg$0$this$).split$splitting();
-                boolean $arg$0$2 = .ceylon.language.String.instance($arg$0$this$).split$groupSeparators($arg$0$0, $arg$0$1);
+                .java.lang.String arg$0$callable$ = "";
+                .java.lang.String arg$0$this$ = arg$0$callable$;
+                boolean arg$0$1 = true;
+                .ceylon.language.Callable arg$0$0 = .ceylon.language.String.instance(arg$0$this$).split$splitting();
+                boolean arg$0$2 = .ceylon.language.String.instance(arg$0$this$).split$groupSeparators(arg$0$0, arg$0$1);
             }
-            returning .ceylon.language.String.split($arg$0$callable$, $arg$0$0, $arg$0$1, $arg$0$2);
+            returning .ceylon.language.String.split(arg$0$callable$, arg$0$0, arg$0$1, arg$0$2);
         );
         final .java.lang.ProcessBuilder builder = new .java.lang.ProcessBuilder(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(commandWithArgs.getSequence()));
         builder.command(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(commandWithArgs.getSequence()));

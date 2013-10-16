@@ -228,12 +228,12 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                     private boolean i$exhausted;
                     
                     private final boolean i() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        i$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
+                        i$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
-                            i = (.ceylon.language.Integer)$ceylontmpitem0;
+                            i = (.ceylon.language.Integer)$ceylontmpitem$0;
                             return true;
                         }
                     }
@@ -285,12 +285,12 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                     private boolean i$exhausted;
                     
                     private final boolean i() {
-                        final .java.lang.Object $ceylontmpitem1 = iter$0.next();
-                        i$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$1 = iter$0.next();
+                        i$exhausted = $ceylontmpitem$1 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
-                            i = (.ceylon.language.Integer)$ceylontmpitem1;
+                            i = (.ceylon.language.Integer)$ceylontmpitem$1;
                             return true;
                         }
                     }

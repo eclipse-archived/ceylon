@@ -20,12 +20,12 @@ class ForIfConditionListIsBoolBool implements .com.redhat.ceylon.compiler.java.r
                     private boolean x$exhausted;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmpitem0;
+                            x = (.java.lang.Object)$ceylontmpitem$0;
                             return true;
                         }
                     }
@@ -43,26 +43,26 @@ class ForIfConditionListIsBoolBool implements .com.redhat.ceylon.compiler.java.r
                     
                     private final boolean z() {
                         while (this.iter$1()) {
-                            final .java.lang.Object $ceylontmpitem1 = iter$1.next();
-                            z$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.get_();
+                            final .java.lang.Object $ceylontmpitem$1 = iter$1.next();
+                            z$exhausted = $ceylontmpitem$1 == .ceylon.language.finished_.get_();
                             if (z$exhausted) {
                                 iter$1 = null;
                             } else {
-                                z = (.ceylon.language.Integer)$ceylontmpitem1;
+                                z = (.ceylon.language.Integer)$ceylontmpitem$1;
                                 return true;
                             }
                         }
                         return false;
                     }
-                    private long $x$3;
+                    private long x$3;
                     
                     private final boolean next2() {
                         while (true) {
                             if (!this.z()) break;
-                            .java.lang.Object $x$2 = null;
-                            if (($x$2 = x) instanceof .ceylon.language.Integer) {
-                                $x$3 = ((.ceylon.language.Integer)$x$2).longValue();
-                                if ($x$3 > 0L) {
+                            .java.lang.Object x$2 = null;
+                            if ((x$2 = x) instanceof .ceylon.language.Integer) {
+                                x$3 = ((.ceylon.language.Integer)x$2).longValue();
+                                if (x$3 > 0L) {
                                     if (z.compare(.ceylon.language.Integer.instance(10L)).smallerThan()) {
                                         break;
                                     }
@@ -99,12 +99,12 @@ class ForIfConditionListIsBoolBool implements .com.redhat.ceylon.compiler.java.r
                     private boolean x$exhausted;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem4 = iter$0.next();
-                        x$exhausted = $ceylontmpitem4 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$4 = iter$0.next();
+                        x$exhausted = $ceylontmpitem$4 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmpitem4;
+                            x = (.java.lang.Object)$ceylontmpitem$4;
                             return true;
                         }
                     }
@@ -122,26 +122,26 @@ class ForIfConditionListIsBoolBool implements .com.redhat.ceylon.compiler.java.r
                     
                     private final boolean z() {
                         while (this.iter$1()) {
-                            final .java.lang.Object $ceylontmpitem5 = iter$1.next();
-                            z$exhausted = $ceylontmpitem5 == .ceylon.language.finished_.get_();
+                            final .java.lang.Object $ceylontmpitem$5 = iter$1.next();
+                            z$exhausted = $ceylontmpitem$5 == .ceylon.language.finished_.get_();
                             if (z$exhausted) {
                                 iter$1 = null;
                             } else {
-                                z = (.ceylon.language.Integer)$ceylontmpitem5;
+                                z = (.ceylon.language.Integer)$ceylontmpitem$5;
                                 return true;
                             }
                         }
                         return false;
                     }
-                    private long $y$7;
+                    private long y$7;
                     
                     private final boolean next2() {
                         while (true) {
                             if (!this.z()) break;
-                            .java.lang.Object $y$6 = null;
-                            if (($y$6 = x) instanceof .ceylon.language.Integer) {
-                                $y$7 = ((.ceylon.language.Integer)$y$6).longValue();
-                                if ($y$7 > 0L) {
+                            .java.lang.Object y$6 = null;
+                            if ((y$6 = x) instanceof .ceylon.language.Integer) {
+                                y$7 = ((.ceylon.language.Integer)y$6).longValue();
+                                if (y$7 > 0L) {
                                     if (z.compare(.ceylon.language.Integer.instance(10L)).smallerThan()) {
                                         break;
                                     }

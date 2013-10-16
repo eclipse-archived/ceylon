@@ -63,11 +63,11 @@ class Bug639WideningImpl2 implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     public final void neg(final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening w) {
-        .java.lang.Object $w$1;
-        if (($w$1 = w) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl2) {
-            final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl2 $w$2 = (.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl2)$w$1;
+        .java.lang.Object w$1;
+        if ((w$1 = w) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl2) {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl2 w$2 = (.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl2)w$1;
             final .ceylon.language.Number a = getImplementation().getNegativeValue();
-            final .ceylon.language.Number b = $w$2.getImplementation().getNegativeValue();
+            final .ceylon.language.Number b = w$2.getImplementation().getNegativeValue();
         }
     }
     

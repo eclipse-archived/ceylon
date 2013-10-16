@@ -75,8 +75,8 @@ final class AnnotationClassMetamodelReferenceDefaulted implements .com.redhat.ce
         (
             let
             {
-                .ceylon.language.meta.declaration.Declaration $ceylontmp$mmr$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted.$init$mmr();
-                this($ceylontmp$mmr$0);
+                .ceylon.language.meta.declaration.Declaration $ceylontmp$mmr$$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted.$init$mmr();
+                this($ceylontmp$mmr$$0);
             }
             returning null;
         );
@@ -150,8 +150,8 @@ final class AnnotationClassMetamodelReferenceVariadic implements .com.redhat.cey
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.Declaration> $ceylontmp$mmrs$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                this($ceylontmp$mmrs$1);
+                .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.Declaration> $ceylontmp$mmrs$$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this($ceylontmp$mmrs$$1);
             }
             returning null;
         );
@@ -273,9 +273,9 @@ final class annotationClassMetamodelReferenceVariadic1_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.Declaration> $ceylontmp$mmr$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.Declaration> $ceylontmp$mmr$$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning annotationClassMetamodelReferenceVariadic1($ceylontmp$mmr$2);
+            returning annotationClassMetamodelReferenceVariadic1($ceylontmp$mmr$$2);
         );
     }
     

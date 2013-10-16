@@ -6,8 +6,8 @@ public class Bug1236<P> implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .java.lang.String $ceylontmp$a$0 = .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1236.<P>$init$a($reifiedP, parent);
-                this($reifiedP, parent, $ceylontmp$a$0);
+                .java.lang.String $ceylontmp$a$$0 = .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1236.<P>$init$a($reifiedP, parent);
+                this($reifiedP, parent, $ceylontmp$a$$0);
             }
             returning null;
         );

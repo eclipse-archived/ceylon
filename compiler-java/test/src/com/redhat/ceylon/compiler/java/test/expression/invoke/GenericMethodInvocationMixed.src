@@ -38,12 +38,12 @@ class GenericMethodInvocationMixed<X> implements .com.redhat.ceylon.compiler.jav
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String> $arg$0$callable$ = k;
-                .ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("hello");
-                .ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance(1L);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String> arg$0$callable$ = k;
+                .ceylon.language.String arg$0$0 = .ceylon.language.String.instance("hello");
+                .ceylon.language.Integer arg$0$1 = .ceylon.language.Integer.instance(1L);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning $arg$0$callable$.<.ceylon.language.Integer>bar($arg$0$reified$0, $arg$0$0, $arg$0$1);
+            returning arg$0$callable$.<.ceylon.language.Integer>bar(arg$0$reified$0, arg$0$0, arg$0$1);
         ).toString();
     }
     
@@ -57,12 +57,12 @@ class GenericMethodInvocationMixed<X> implements .com.redhat.ceylon.compiler.jav
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X> $arg$1$callable$ = k;
-                X $arg$1$0 = x;
-                Y $arg$1$1 = y;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$0 = $reifiedY;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X> arg$1$callable$ = k;
+                X arg$1$0 = x;
+                Y arg$1$1 = y;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = $reifiedY;
             }
-            returning $arg$1$callable$.<Y>bar($arg$1$reified$0, $arg$1$0, $arg$1$1);
+            returning arg$1$callable$.<Y>bar(arg$1$reified$0, arg$1$0, arg$1$1);
         );
     }
     

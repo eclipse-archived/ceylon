@@ -453,9 +453,9 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
                 .ceylon.language.String $ceylontmp1 = (
                     let
                     {
-                        .java.lang.Object $safe$0 = getFirst();
+                        .java.lang.Object safe$0 = getFirst();
                     }
-                    returning $safe$0 != null ? .ceylon.language.String.instance($safe$0.toString()) : null;
+                    returning safe$0 != null ? .ceylon.language.String.instance(safe$0.toString()) : null;
                 );
             }
             returning $ceylontmp1 != null ? $ceylontmp1 : .ceylon.language.String.instance("null");
@@ -465,12 +465,12 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     @.java.lang.Override
     public final Element get(final .ceylon.language.Integer index) {
         {
-            .java.lang.Object $sel$2 = index.compare(.ceylon.language.Integer.instance(0L));
-            if ($sel$2 == .ceylon.language.smaller_.get_()) {
+            .java.lang.Object sel$2 = index.compare(.ceylon.language.Integer.instance(0L));
+            if (sel$2 == .ceylon.language.smaller_.get_()) {
                 return null;
-            } else if ($sel$2 == .ceylon.language.equal_.get_()) {
+            } else if (sel$2 == .ceylon.language.equal_.get_()) {
                 return (Element)getFirst();
-            } else if ($sel$2 == .ceylon.language.larger_.get_()) {
+            } else if (sel$2 == .ceylon.language.larger_.get_()) {
                 return ((.ceylon.language.List<? extends Element>)(.ceylon.language.List)getRest()).get(index.minus(.ceylon.language.Integer.instance(1L)));
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
@@ -478,10 +478,10 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     
     @.java.lang.Override
     public final .ceylon.language.Integer getLastIndex() {
-        .ceylon.language.Integer $restLastIndex$4;
-        if (($restLastIndex$4 = ((.ceylon.language.List<? extends Element>)(.ceylon.language.List)getRest()).getLastIndex()) != null) {
-            final long $restLastIndex$5 = $restLastIndex$4.longValue();
-            return .ceylon.language.Integer.instance($restLastIndex$5 + 1L);
+        .ceylon.language.Integer restLastIndex$4;
+        if ((restLastIndex$4 = ((.ceylon.language.List<? extends Element>)(.ceylon.language.List)getRest()).getLastIndex()) != null) {
+            final long restLastIndex$5 = restLastIndex$4.longValue();
+            return .ceylon.language.Integer.instance(restLastIndex$5 + 1L);
         } else {
             return .ceylon.language.Integer.instance(0L);
         }

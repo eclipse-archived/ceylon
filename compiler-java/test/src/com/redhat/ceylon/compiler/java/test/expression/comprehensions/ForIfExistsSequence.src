@@ -18,23 +18,23 @@ class ForIfExistsSequence implements .com.redhat.ceylon.compiler.java.runtime.mo
                     private boolean x$exhausted;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)$ceylontmpitem0;
+                            x = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)$ceylontmpitem$0;
                             return true;
                         }
                     }
-                    private long $y$2;
+                    private long y$2;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .ceylon.language.Integer $y$1 = null;
-                            if (($y$1 = x.get(.ceylon.language.Integer.instance(0L))) != null) {
-                                $y$2 = $y$1.longValue();
+                            .ceylon.language.Integer y$1 = null;
+                            if ((y$1 = x.get(.ceylon.language.Integer.instance(0L))) != null) {
+                                y$2 = y$1.longValue();
                                 break;
                             }
                         }
@@ -44,7 +44,7 @@ class ForIfExistsSequence implements .com.redhat.ceylon.compiler.java.runtime.mo
                     public final .java.lang.Object next() {
                         if (this.next1()) {
                             final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x = this.x;
-                            return .ceylon.language.Integer.instance($y$2);
+                            return .ceylon.language.Integer.instance(y$2);
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

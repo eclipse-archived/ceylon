@@ -9,11 +9,11 @@ final class callableNamedInvocationNary_f_ {
         (
             let
             {
-                .ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance(1L);
-                .ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("");
-                .ceylon.language.Character $arg$0$3 = .ceylon.language.Character.instance(115);
-                .ceylon.language.Boolean $arg$0$2 = .ceylon.language.Boolean.instance(true);
-                foo.$call($arg$0$0, $arg$0$1, $arg$0$2, $arg$0$3);
+                .ceylon.language.Integer arg$0$1 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.String arg$0$0 = .ceylon.language.String.instance("");
+                .ceylon.language.Character arg$0$3 = .ceylon.language.Character.instance(115);
+                .ceylon.language.Boolean arg$0$2 = .ceylon.language.Boolean.instance(true);
+                foo.$call(arg$0$0, arg$0$1, arg$0$2, arg$0$3);
             }
             returning null;
         );

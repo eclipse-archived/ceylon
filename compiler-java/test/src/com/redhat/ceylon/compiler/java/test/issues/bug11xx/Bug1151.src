@@ -22,9 +22,9 @@ public final class Bug1151_A$impl {
         return (
             let
             {
-                long $ceylontmp$a$0 = methodA$a();
+                long $ceylontmp$a$$0 = methodA$a();
             }
-            returning methodA$($ceylontmp$a$0);
+            returning methodA$($ceylontmp$a$$0);
         );
     }
     
@@ -44,9 +44,9 @@ public final class Bug1151_A$impl {
         return (
             let
             {
-                long $ceylontmp$a$1 = methodA2$a();
+                long $ceylontmp$a$$1 = methodA2$a();
             }
-            returning methodA2$priv$($ceylontmp$a$1);
+            returning methodA2$priv$($ceylontmp$a$$1);
         );
     }
     
@@ -66,9 +66,9 @@ public final class Bug1151_A$impl {
         return (
             let
             {
-                long $ceylontmp$a$2 = methodA3$a();
+                long $ceylontmp$a$$2 = methodA3$a();
             }
-            returning methodA3$priv$($ceylontmp$a$2);
+            returning methodA3$priv$($ceylontmp$a$$2);
         );
     }
     
@@ -93,9 +93,9 @@ public class Bug1151_B implements .com.redhat.ceylon.compiler.java.runtime.model
         return (
             let
             {
-                long $ceylontmp$a$3 = methodB$a();
+                long $ceylontmp$a$$3 = methodB$a();
             }
-            returning methodB$($ceylontmp$a$3);
+            returning methodB$($ceylontmp$a$$3);
         );
     }
     
@@ -115,9 +115,9 @@ public class Bug1151_B implements .com.redhat.ceylon.compiler.java.runtime.model
         return (
             let
             {
-                long $ceylontmp$a$4 = methodB2$a();
+                long $ceylontmp$a$$4 = methodB2$a();
             }
-            returning methodB2$priv$($ceylontmp$a$4);
+            returning methodB2$priv$($ceylontmp$a$$4);
         );
     }
     
@@ -166,9 +166,9 @@ public class Bug1151_C extends .com.redhat.ceylon.compiler.java.test.issues.bug1
         return (
             let
             {
-                long $ceylontmp$a$5 = methodA$a();
+                long $ceylontmp$a$$5 = methodA$a();
             }
-            returning methodA$($ceylontmp$a$5);
+            returning methodA$($ceylontmp$a$$5);
         );
     }
     
@@ -185,9 +185,9 @@ public class Bug1151_C extends .com.redhat.ceylon.compiler.java.test.issues.bug1
         return (
             let
             {
-                long $ceylontmp$a$6 = methodB$a();
+                long $ceylontmp$a$$6 = methodB$a();
             }
-            returning methodB$($ceylontmp$a$6);
+            returning methodB$($ceylontmp$a$$6);
         );
     }
     

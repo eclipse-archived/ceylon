@@ -46,10 +46,10 @@ class SuperReferenceChild extends .com.redhat.ceylon.compiler.java.test.expressi
         (
             let
             {
-                long $ceylontmpopV1 = super.getA();
-                super.setA($ceylontmpopV1 + 1);
+                long $ceylontmpopV$1 = super.getA();
+                super.setA($ceylontmpopV$1 + 1);
             }
-            returning $ceylontmpopV1;
+            returning $ceylontmpopV$1;
         );
         super.test();
         return null;

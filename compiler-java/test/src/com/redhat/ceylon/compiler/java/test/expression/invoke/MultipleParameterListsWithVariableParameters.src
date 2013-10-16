@@ -21,18 +21,18 @@ public final class multipleParameterListsWithVariationParameters_ {
                         (
                             let
                             {
-                                long $ceylontmpop0 = a.ref;
-                                a.ref = $ceylontmpop0 + 1;
+                                long $ceylontmpop$0 = a.ref;
+                                a.ref = $ceylontmpop$0 + 1;
                             }
-                            returning $ceylontmpop0;
+                            returning $ceylontmpop$0;
                         );
                         (
                             let
                             {
-                                double $ceylontmpop1 = b.ref + 1.0;
-                                b.ref = $ceylontmpop1;
+                                double $ceylontmpop$1 = b.ref + 1.0;
+                                b.ref = $ceylontmpop$1;
                             }
-                            returning $ceylontmpop1;
+                            returning $ceylontmpop$1;
                         );
                         c = .ceylon.language.String.instance(c.toString());
                         return .ceylon.language.String.instance(.ceylon.language.Integer.toString(a.ref) + .ceylon.language.Float.toString(b.ref) + c.toString());
@@ -71,18 +71,18 @@ public final class multipleParameterListsWithVariationParameters2_ {
                                 (
                                     let
                                     {
-                                        long $ceylontmpop2 = a.ref;
-                                        a.ref = $ceylontmpop2 + 1;
+                                        long $ceylontmpop$2 = a.ref;
+                                        a.ref = $ceylontmpop$2 + 1;
                                     }
-                                    returning $ceylontmpop2;
+                                    returning $ceylontmpop$2;
                                 );
                                 (
                                     let
                                     {
-                                        double $ceylontmpop3 = b.ref + 1.0;
-                                        b.ref = $ceylontmpop3;
+                                        double $ceylontmpop$3 = b.ref + 1.0;
+                                        b.ref = $ceylontmpop$3;
                                     }
-                                    returning $ceylontmpop3;
+                                    returning $ceylontmpop$3;
                                 );
                                 c.ref = .ceylon.language.String.instance(c.ref.toString());
                                 return .ceylon.language.Integer.toString(a.ref) + .ceylon.language.Float.toString(b.ref) + c.ref.toString();

@@ -122,9 +122,9 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .java.lang.String $ceylontmp$s$5 = unaryDefaulted$s();
+                .java.lang.String $ceylontmp$s$$5 = unaryDefaulted$s();
             }
-            returning unaryDefaulted$($ceylontmp$s$5);
+            returning unaryDefaulted$($ceylontmp$s$$5);
         );
     }
     
@@ -144,10 +144,10 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .java.lang.String $ceylontmp$s1$6 = binaryDefaulted$s1();
-                .java.lang.String $ceylontmp$s2$7 = binaryDefaulted$s2($ceylontmp$s1$6);
+                .java.lang.String $ceylontmp$s1$$6 = binaryDefaulted$s1();
+                .java.lang.String $ceylontmp$s2$$7 = binaryDefaulted$s2($ceylontmp$s1$$6);
             }
-            returning binaryDefaulted$($ceylontmp$s1$6, $ceylontmp$s2$7);
+            returning binaryDefaulted$($ceylontmp$s1$$6, $ceylontmp$s2$$7);
         );
     }
     
@@ -159,9 +159,9 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .java.lang.String $ceylontmp$s2$8 = binaryDefaulted$s2(s1);
+                .java.lang.String $ceylontmp$s2$$8 = binaryDefaulted$s2(s1);
             }
-            returning binaryDefaulted$(s1, $ceylontmp$s2$8);
+            returning binaryDefaulted$(s1, $ceylontmp$s2$$8);
         );
     }
     
@@ -181,11 +181,11 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .java.lang.String $ceylontmp$s1$9 = ternaryDefaulted$s1();
-                .java.lang.String $ceylontmp$s2$10 = ternaryDefaulted$s2($ceylontmp$s1$9);
-                .java.lang.String $ceylontmp$s3$11 = ternaryDefaulted$s3($ceylontmp$s1$9, $ceylontmp$s2$10);
+                .java.lang.String $ceylontmp$s1$$9 = ternaryDefaulted$s1();
+                .java.lang.String $ceylontmp$s2$$10 = ternaryDefaulted$s2($ceylontmp$s1$$9);
+                .java.lang.String $ceylontmp$s3$$11 = ternaryDefaulted$s3($ceylontmp$s1$$9, $ceylontmp$s2$$10);
             }
-            returning ternaryDefaulted$($ceylontmp$s1$9, $ceylontmp$s2$10, $ceylontmp$s3$11);
+            returning ternaryDefaulted$($ceylontmp$s1$$9, $ceylontmp$s2$$10, $ceylontmp$s3$$11);
         );
     }
     
@@ -197,10 +197,10 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .java.lang.String $ceylontmp$s2$12 = ternaryDefaulted$s2(s1);
-                .java.lang.String $ceylontmp$s3$13 = ternaryDefaulted$s3(s1, $ceylontmp$s2$12);
+                .java.lang.String $ceylontmp$s2$$12 = ternaryDefaulted$s2(s1);
+                .java.lang.String $ceylontmp$s3$$13 = ternaryDefaulted$s3(s1, $ceylontmp$s2$$12);
             }
-            returning ternaryDefaulted$(s1, $ceylontmp$s2$12, $ceylontmp$s3$13);
+            returning ternaryDefaulted$(s1, $ceylontmp$s2$$12, $ceylontmp$s3$$13);
         );
     }
     
@@ -212,9 +212,9 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .java.lang.String $ceylontmp$s3$14 = ternaryDefaulted$s3(s1, s2);
+                .java.lang.String $ceylontmp$s3$$14 = ternaryDefaulted$s3(s1, s2);
             }
-            returning ternaryDefaulted$(s1, s2, $ceylontmp$s3$14);
+            returning ternaryDefaulted$(s1, s2, $ceylontmp$s3$$14);
         );
     }
     
@@ -234,12 +234,12 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .java.lang.String $ceylontmp$s1$15 = naryDefaulted$s1();
-                .java.lang.String $ceylontmp$s2$16 = naryDefaulted$s2($ceylontmp$s1$15);
-                .java.lang.String $ceylontmp$s3$17 = naryDefaulted$s3($ceylontmp$s1$15, $ceylontmp$s2$16);
-                .java.lang.String $ceylontmp$s4$18 = naryDefaulted$s4($ceylontmp$s1$15, $ceylontmp$s2$16, $ceylontmp$s3$17);
+                .java.lang.String $ceylontmp$s1$$15 = naryDefaulted$s1();
+                .java.lang.String $ceylontmp$s2$$16 = naryDefaulted$s2($ceylontmp$s1$$15);
+                .java.lang.String $ceylontmp$s3$$17 = naryDefaulted$s3($ceylontmp$s1$$15, $ceylontmp$s2$$16);
+                .java.lang.String $ceylontmp$s4$$18 = naryDefaulted$s4($ceylontmp$s1$$15, $ceylontmp$s2$$16, $ceylontmp$s3$$17);
             }
-            returning naryDefaulted$($ceylontmp$s1$15, $ceylontmp$s2$16, $ceylontmp$s3$17, $ceylontmp$s4$18);
+            returning naryDefaulted$($ceylontmp$s1$$15, $ceylontmp$s2$$16, $ceylontmp$s3$$17, $ceylontmp$s4$$18);
         );
     }
     
@@ -251,11 +251,11 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .java.lang.String $ceylontmp$s2$19 = naryDefaulted$s2(s1);
-                .java.lang.String $ceylontmp$s3$20 = naryDefaulted$s3(s1, $ceylontmp$s2$19);
-                .java.lang.String $ceylontmp$s4$21 = naryDefaulted$s4(s1, $ceylontmp$s2$19, $ceylontmp$s3$20);
+                .java.lang.String $ceylontmp$s2$$19 = naryDefaulted$s2(s1);
+                .java.lang.String $ceylontmp$s3$$20 = naryDefaulted$s3(s1, $ceylontmp$s2$$19);
+                .java.lang.String $ceylontmp$s4$$21 = naryDefaulted$s4(s1, $ceylontmp$s2$$19, $ceylontmp$s3$$20);
             }
-            returning naryDefaulted$(s1, $ceylontmp$s2$19, $ceylontmp$s3$20, $ceylontmp$s4$21);
+            returning naryDefaulted$(s1, $ceylontmp$s2$$19, $ceylontmp$s3$$20, $ceylontmp$s4$$21);
         );
     }
     
@@ -267,10 +267,10 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .java.lang.String $ceylontmp$s3$22 = naryDefaulted$s3(s1, s2);
-                .java.lang.String $ceylontmp$s4$23 = naryDefaulted$s4(s1, s2, $ceylontmp$s3$22);
+                .java.lang.String $ceylontmp$s3$$22 = naryDefaulted$s3(s1, s2);
+                .java.lang.String $ceylontmp$s4$$23 = naryDefaulted$s4(s1, s2, $ceylontmp$s3$$22);
             }
-            returning naryDefaulted$(s1, s2, $ceylontmp$s3$22, $ceylontmp$s4$23);
+            returning naryDefaulted$(s1, s2, $ceylontmp$s3$$22, $ceylontmp$s4$$23);
         );
     }
     
@@ -282,9 +282,9 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .java.lang.String $ceylontmp$s4$24 = naryDefaulted$s4(s1, s2, s3);
+                .java.lang.String $ceylontmp$s4$$24 = naryDefaulted$s4(s1, s2, s3);
             }
-            returning naryDefaulted$(s1, s2, s3, $ceylontmp$s4$24);
+            returning naryDefaulted$(s1, s2, s3, $ceylontmp$s4$$24);
         );
     }
     
@@ -497,9 +497,9 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$39 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$$39 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning nullarySequenced$($ceylontmp$s$39);
+            returning nullarySequenced$($ceylontmp$s$$39);
         );
     }
     
@@ -515,9 +515,9 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$40 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$$40 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning unarySequenced$(s1, $ceylontmp$s$40);
+            returning unarySequenced$(s1, $ceylontmp$s$$40);
         );
     }
     
@@ -533,9 +533,9 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$41 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$$41 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning binarySequenced$(s1, s2, $ceylontmp$s$41);
+            returning binarySequenced$(s1, s2, $ceylontmp$s$$41);
         );
     }
     
@@ -551,9 +551,9 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$42 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$$42 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning ternarySequenced$(s1, s2, s3, $ceylontmp$s$42);
+            returning ternarySequenced$(s1, s2, s3, $ceylontmp$s$$42);
         );
     }
     
@@ -569,9 +569,9 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$43 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$$43 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning narySequenced$(s1, s2, s3, s4, $ceylontmp$s$43);
+            returning narySequenced$(s1, s2, s3, s4, $ceylontmp$s$$43);
         );
     }
     

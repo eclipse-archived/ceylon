@@ -32,9 +32,9 @@ final class m_ {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foo<.java.lang.Object> $arg$0$callable$ = f;
-                .java.lang.Object $arg$0$0 = o;
-                $arg$0$callable$.bar($arg$0$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foo<.java.lang.Object> arg$0$callable$ = f;
+                .java.lang.Object arg$0$0 = o;
+                arg$0$callable$.bar(arg$0$0);
             }
             returning null;
         );

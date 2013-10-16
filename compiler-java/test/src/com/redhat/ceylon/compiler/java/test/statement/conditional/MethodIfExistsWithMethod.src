@@ -10,10 +10,10 @@ class MethodIfExistsWithMethod implements .com.redhat.ceylon.compiler.java.runti
     }
     
     public final long m() {
-        .ceylon.language.Integer $y$1;
-        if (($y$1 = give$priv()) != null) {
-            final long $y$2 = $y$1.longValue();
-            return $y$2;
+        .ceylon.language.Integer y$1;
+        if ((y$1 = give$priv()) != null) {
+            final long y$2 = y$1.longValue();
+            return y$2;
         }
         return 0L;
     }

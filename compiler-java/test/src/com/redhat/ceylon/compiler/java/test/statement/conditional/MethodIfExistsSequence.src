@@ -6,10 +6,10 @@ class MethodIfExistsSequence implements .com.redhat.ceylon.compiler.java.runtime
     }
     
     public final long mvar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x) {
-        .ceylon.language.Integer $y$1;
-        if (($y$1 = x.get(.ceylon.language.Integer.instance(0L))) != null) {
-            final long $y$2 = $y$1.longValue();
-            return $y$2;
+        .ceylon.language.Integer y$1;
+        if ((y$1 = x.get(.ceylon.language.Integer.instance(0L))) != null) {
+            final long y$2 = y$1.longValue();
+            return y$2;
         }
         return 0L;
     }

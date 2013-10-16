@@ -67,7 +67,7 @@ class Bug1041<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         final .ceylon.language.Integer elvisOp1 = (
             let
             {
-                .ceylon.language.String $safe$1 = (
+                .ceylon.language.String safe$1 = (
                     let
                     {
                         .java.lang.String $ceylontmp0 = java.getStringProp();
@@ -75,12 +75,12 @@ class Bug1041<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                     returning $ceylontmp0 != null ? .ceylon.language.String.instance($ceylontmp0) : null;
                 );
             }
-            returning $safe$1 != null ? .ceylon.language.Integer.instance($safe$1.getSize()) : null;
+            returning safe$1 != null ? .ceylon.language.Integer.instance(safe$1.getSize()) : null;
         );
         final .ceylon.language.Integer elvisOp2 = (
             let
             {
-                .ceylon.language.String $safe$3 = (
+                .ceylon.language.String safe$3 = (
                     let
                     {
                         .java.lang.String $ceylontmp2 = java.stringMethod();
@@ -88,21 +88,21 @@ class Bug1041<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                     returning $ceylontmp2 != null ? .ceylon.language.String.instance($ceylontmp2) : null;
                 );
             }
-            returning $safe$3 != null ? .ceylon.language.Integer.instance($safe$3.getSize()) : null;
+            returning safe$3 != null ? .ceylon.language.Integer.instance(safe$3.getSize()) : null;
         );
         final .ceylon.language.Integer elvisOp3 = (
             let
             {
-                .ceylon.language.Integer $safe$4 = java.getTaProp();
+                .ceylon.language.Integer safe$4 = java.getTaProp();
             }
-            returning $safe$4 != null ? .ceylon.language.Integer.instance($safe$4.getInteger()) : null;
+            returning safe$4 != null ? .ceylon.language.Integer.instance(safe$4.getInteger()) : null;
         );
         final .ceylon.language.Integer elvisOp4 = (
             let
             {
-                .ceylon.language.Integer $safe$5 = java.taMethod();
+                .ceylon.language.Integer safe$5 = java.taMethod();
             }
-            returning $safe$5 != null ? .ceylon.language.Integer.instance($safe$5.getInteger()) : null;
+            returning safe$5 != null ? .ceylon.language.Integer.instance(safe$5.getInteger()) : null;
         );
         final .java.lang.String elseOp1 = (
             let
@@ -167,30 +167,30 @@ class Bug1041<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         final .ceylon.language.Integer elvisOp1 = (
             let
             {
-                .ceylon.language.String $safe$14 = java.getStringProp();
+                .ceylon.language.String safe$14 = java.getStringProp();
             }
-            returning $safe$14 != null ? .ceylon.language.Integer.instance($safe$14.getSize()) : null;
+            returning safe$14 != null ? .ceylon.language.Integer.instance(safe$14.getSize()) : null;
         );
         final .ceylon.language.Integer elvisOp2 = (
             let
             {
-                .ceylon.language.String $safe$15 = java.stringMethod();
+                .ceylon.language.String safe$15 = java.stringMethod();
             }
-            returning $safe$15 != null ? .ceylon.language.Integer.instance($safe$15.getSize()) : null;
+            returning safe$15 != null ? .ceylon.language.Integer.instance(safe$15.getSize()) : null;
         );
         final .ceylon.language.Integer elvisOp3 = (
             let
             {
-                .ceylon.language.Integer $safe$16 = java.getTaProp();
+                .ceylon.language.Integer safe$16 = java.getTaProp();
             }
-            returning $safe$16 != null ? .ceylon.language.Integer.instance($safe$16.getInteger()) : null;
+            returning safe$16 != null ? .ceylon.language.Integer.instance(safe$16.getInteger()) : null;
         );
         final .ceylon.language.Integer elvisOp4 = (
             let
             {
-                .ceylon.language.Integer $safe$17 = java.taMethod();
+                .ceylon.language.Integer safe$17 = java.taMethod();
             }
-            returning $safe$17 != null ? .ceylon.language.Integer.instance($safe$17.getInteger()) : null;
+            returning safe$17 != null ? .ceylon.language.Integer.instance(safe$17.getInteger()) : null;
         );
         final .java.lang.String elseOp1 = (
             let

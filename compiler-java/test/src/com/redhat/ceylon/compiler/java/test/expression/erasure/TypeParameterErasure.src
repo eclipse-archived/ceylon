@@ -242,34 +242,34 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
         final long i = (
             let
             {
-                .ceylon.language.Integer $arg$3$0 = .ceylon.language.Integer.instance(2L);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$3$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .ceylon.language.Integer arg$3$0 = .ceylon.language.Integer.instance(2L);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$3$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning <.ceylon.language.Integer>parameterized$priv($arg$3$reified$0, $arg$3$0);
+            returning <.ceylon.language.Integer>parameterized$priv(arg$3$reified$0, arg$3$0);
         ).longValue();
         final long i2 = (
             let
             {
-                .ceylon.language.Integer $arg$4$0 = .ceylon.language.Integer.instance(2L);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$4$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .ceylon.language.Integer arg$4$0 = .ceylon.language.Integer.instance(2L);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$4$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning <.ceylon.language.Integer>parameterized$priv($arg$4$reified$0, $arg$4$0);
+            returning <.ceylon.language.Integer>parameterized$priv(arg$4$reified$0, arg$4$0);
         ).longValue();
         final long n = (
             let
             {
-                .ceylon.language.Integer $arg$5$0 = .ceylon.language.Integer.instance(2L);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$5$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .ceylon.language.Integer arg$5$0 = .ceylon.language.Integer.instance(2L);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$5$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning <.ceylon.language.Integer>parameterized$priv($arg$5$reified$0, $arg$5$0);
+            returning <.ceylon.language.Integer>parameterized$priv(arg$5$reified$0, arg$5$0);
         ).longValue();
         final long n2 = (
             let
             {
-                .ceylon.language.Integer $arg$6$0 = .ceylon.language.Integer.instance(2L);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$6$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .ceylon.language.Integer arg$6$0 = .ceylon.language.Integer.instance(2L);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$6$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning <.ceylon.language.Integer>parameterized$priv($arg$6$reified$0, $arg$6$0);
+            returning <.ceylon.language.Integer>parameterized$priv(arg$6$reified$0, arg$6$0);
         ).longValue();
         .java.lang.Object middle = null;
         .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft left = null;
@@ -278,162 +278,162 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
         left = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)(.java.lang.Object)(
             let
             {
-                .java.lang.Object $arg$7$0 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$7$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .java.lang.Object arg$7$0 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$7$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning <.java.lang.Object>parameterized$priv($arg$7$reified$0, $arg$7$0);
+            returning <.java.lang.Object>parameterized$priv(arg$7$reified$0, arg$7$0);
         );
         right = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)(.java.lang.Object)(
             let
             {
-                .java.lang.Object $arg$8$0 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$8$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .java.lang.Object arg$8$0 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$8$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning <.java.lang.Object>parameterized$priv($arg$8$reified$0, $arg$8$0);
+            returning <.java.lang.Object>parameterized$priv(arg$8$reified$0, arg$8$0);
         );
         middle = (
             let
             {
-                .java.lang.Object $arg$9$0 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$9$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .java.lang.Object arg$9$0 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$9$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning <.java.lang.Object>parameterized$priv($arg$9$reified$0, $arg$9$0);
+            returning <.java.lang.Object>parameterized$priv(arg$9$reified$0, arg$9$0);
         );
         left = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$10$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$10$reified$0 = .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft arg$10$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$10$reified$0 = .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor;
             }
-            returning <.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterized$priv($arg$10$reified$0, $arg$10$0);
+            returning <.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterized$priv(arg$10$reified$0, arg$10$0);
         );
         right = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight $arg$11$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$11$reified$0 = .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight arg$11$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$11$reified$0 = .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor;
             }
-            returning <.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight>parameterized$priv($arg$11$reified$0, $arg$11$0);
+            returning <.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight>parameterized$priv(arg$11$reified$0, arg$11$0);
         );
         left = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)(.java.lang.Object)(
             let
             {
-                .java.lang.Object $arg$12$0 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$12$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .java.lang.Object arg$12$0 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$12$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning <.java.lang.Object>parameterized$priv($arg$12$reified$0, $arg$12$0);
+            returning <.java.lang.Object>parameterized$priv(arg$12$reified$0, arg$12$0);
         );
         right = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)(.java.lang.Object)(
             let
             {
-                .java.lang.Object $arg$13$0 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$13$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .java.lang.Object arg$13$0 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$13$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning <.java.lang.Object>parameterized$priv($arg$13$reified$0, $arg$13$0);
+            returning <.java.lang.Object>parameterized$priv(arg$13$reified$0, arg$13$0);
         );
         middle = (
             let
             {
-                .java.lang.Object $arg$14$0 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$14$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .java.lang.Object arg$14$0 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$14$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning <.java.lang.Object>parameterized$priv($arg$14$reified$0, $arg$14$0);
+            returning <.java.lang.Object>parameterized$priv(arg$14$reified$0, arg$14$0);
         );
         left = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)(.java.lang.Object)(
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight $arg$15$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$15$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight arg$15$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$15$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning <.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight>parameterizedWithBounds$priv($arg$15$reified$0, $arg$15$0);
+            returning <.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight>parameterizedWithBounds$priv(arg$15$reified$0, arg$15$0);
         );
         right = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)(.java.lang.Object)(
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight $arg$16$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$16$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight arg$16$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$16$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning <.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight>parameterizedWithBounds$priv($arg$16$reified$0, $arg$16$0);
+            returning <.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight>parameterizedWithBounds$priv(arg$16$reified$0, arg$16$0);
         );
         middle = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight $arg$17$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$17$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight arg$17$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$17$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning <.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight>parameterizedWithBounds$priv($arg$17$reified$0, $arg$17$0);
+            returning <.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight>parameterizedWithBounds$priv(arg$17$reified$0, arg$17$0);
         );
         left = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)(.java.lang.Object)(
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$18$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$18$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft arg$18$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$18$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning parameterizedWithIntersectionBounds$priv($arg$18$reified$0, $arg$18$0);
+            returning parameterizedWithIntersectionBounds$priv(arg$18$reified$0, arg$18$0);
         );
         right = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)(.java.lang.Object)(
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$19$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$19$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft arg$19$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$19$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning parameterizedWithIntersectionBounds$priv($arg$19$reified$0, $arg$19$0);
+            returning parameterizedWithIntersectionBounds$priv(arg$19$reified$0, arg$19$0);
         );
         middle = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$20$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$20$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft arg$20$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$20$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning parameterizedWithIntersectionBounds$priv($arg$20$reified$0, $arg$20$0);
+            returning parameterizedWithIntersectionBounds$priv(arg$20$reified$0, arg$20$0);
         );
         final .java.lang.String s = (
             let
             {
-                .ceylon.language.String $arg$21$0 = .ceylon.language.String.instance("");
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$21$reified$0 = .ceylon.language.String.$TypeDescriptor;
+                .ceylon.language.String arg$21$0 = .ceylon.language.String.instance("");
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$21$reified$0 = .ceylon.language.String.$TypeDescriptor;
             }
-            returning <.ceylon.language.String>parameterizedWithErasedBounds$priv($arg$21$reified$0, $arg$21$0);
+            returning <.ceylon.language.String>parameterizedWithErasedBounds$priv(arg$21$reified$0, arg$21$0);
         ).toString();
         final .java.lang.String s2 = (
             let
             {
-                .ceylon.language.String $arg$22$0 = .ceylon.language.String.instance("");
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$22$reified$0 = .ceylon.language.String.$TypeDescriptor;
+                .ceylon.language.String arg$22$0 = .ceylon.language.String.instance("");
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$22$reified$0 = .ceylon.language.String.$TypeDescriptor;
             }
-            returning <.ceylon.language.String>parameterizedWithErasedBounds$priv($arg$22$reified$0, $arg$22$0);
+            returning <.ceylon.language.String>parameterizedWithErasedBounds$priv(arg$22$reified$0, arg$22$0);
         ).toString();
         final .java.lang.Object e = (
             let
             {
-                .ceylon.language.String $arg$23$0 = .ceylon.language.String.instance("");
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$23$reified$0 = .ceylon.language.String.$TypeDescriptor;
+                .ceylon.language.String arg$23$0 = .ceylon.language.String.instance("");
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$23$reified$0 = .ceylon.language.String.$TypeDescriptor;
             }
-            returning <.ceylon.language.String>parameterizedWithErasedBounds$priv($arg$23$reified$0, $arg$23$0);
+            returning <.ceylon.language.String>parameterizedWithErasedBounds$priv(arg$23$reified$0, arg$23$0);
         );
         final .java.lang.Object e2 = (
             let
             {
-                .java.lang.Object $arg$24$0 = .ceylon.language.String.instance("");
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$24$reified$0 = .ceylon.language.Object.$TypeDescriptor;
+                .java.lang.Object arg$24$0 = .ceylon.language.String.instance("");
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$24$reified$0 = .ceylon.language.Object.$TypeDescriptor;
             }
-            returning parameterizedWithErasedBounds$priv($arg$24$reified$0, $arg$24$0);
+            returning parameterizedWithErasedBounds$priv(arg$24$reified$0, arg$24$0);
         );
         (
             let
             {
-                .ceylon.language.Integer $arg$25$0 = .ceylon.language.Integer.instance(2L);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$25$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .ceylon.language.Integer arg$25$0 = .ceylon.language.Integer.instance(2L);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$25$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning <.ceylon.language.Integer>parameterizedWithParameterizedBounds$priv($arg$25$reified$0, $arg$25$0);
+            returning <.ceylon.language.Integer>parameterizedWithParameterizedBounds$priv(arg$25$reified$0, arg$25$0);
         );
         (
             let
             {
-                .ceylon.language.Integer $arg$26$0 = .ceylon.language.Integer.instance(2L);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$26$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .ceylon.language.Integer arg$26$0 = .ceylon.language.Integer.instance(2L);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$26$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning <.ceylon.language.Integer>parameterizedWithParameterizedBounds$priv($arg$26$reified$0, $arg$26$0);
+            returning <.ceylon.language.Integer>parameterizedWithParameterizedBounds$priv(arg$26$reified$0, arg$26$0);
         );
     }
     
@@ -506,8 +506,8 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
             (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$33$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)t;
-                    requiresCastLeft$priv($arg$33$0);
+                    .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft arg$33$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)t;
+                    requiresCastLeft$priv(arg$33$0);
                 }
                 returning null;
             );
@@ -515,8 +515,8 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
             (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$34$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
-                    requiresCastLeft$priv($arg$34$0);
+                    .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft arg$34$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
+                    requiresCastLeft$priv(arg$34$0);
                 }
                 returning null;
             );
@@ -593,202 +593,202 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized parameterizedMiddle = (
             let
             {
-                .java.lang.Object $arg$35$0 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$35$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .java.lang.Object arg$35$0 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$35$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized($arg$35$reified$0, $arg$35$0);
+            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized(arg$35$reified$0, arg$35$0);
         );
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft> parameterizedLeft = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$36$0 = left;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$36$reified$0 = .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft arg$36$0 = left;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$36$reified$0 = .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor;
             }
-            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>($arg$36$reified$0, $arg$36$0);
+            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>(arg$36$reified$0, arg$36$0);
         );
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized parameterizedExplicitMiddle = (
             let
             {
-                .java.lang.Object $arg$37$0 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$37$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .java.lang.Object arg$37$0 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$37$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized($arg$37$reified$0, $arg$37$0);
+            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized(arg$37$reified$0, arg$37$0);
         );
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft> parameterizedExplicitLeft = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$38$0 = left;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$38$reified$0 = .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft arg$38$0 = left;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$38$reified$0 = .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor;
             }
-            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>($arg$38$reified$0, $arg$38$0);
+            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>(arg$38$reified$0, arg$38$0);
         );
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithBounds parameterizedWithBoundsMiddle = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$39$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$39$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft arg$39$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$39$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithBounds($arg$39$reified$0, $arg$39$0);
+            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithBounds(arg$39$reified$0, arg$39$0);
         );
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithBounds<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft> parameterizedWithBoundsLeft = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$40$0 = left;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$40$reified$0 = .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft arg$40$0 = left;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$40$reified$0 = .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor;
             }
-            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithBounds<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>($arg$40$reified$0, $arg$40$0);
+            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithBounds<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>(arg$40$reified$0, arg$40$0);
         );
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithIntersectionBounds parameterizedWithIntersectionBoundsMiddle = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$41$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$41$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft arg$41$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$41$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithIntersectionBounds($arg$41$reified$0, $arg$41$0);
+            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithIntersectionBounds(arg$41$reified$0, arg$41$0);
         );
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithIntersectionBounds parameterizedWithErasedExplicitBoundsMiddle = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$42$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$42$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft arg$42$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$42$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithIntersectionBounds($arg$42$reified$0, $arg$42$0);
+            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithIntersectionBounds(arg$42$reified$0, arg$42$0);
         );
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<.ceylon.language.Integer> parameterizedWithParameterizedBounds = (
             let
             {
-                .ceylon.language.Integer $arg$43$0 = .ceylon.language.Integer.instance(2L);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$43$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .ceylon.language.Integer arg$43$0 = .ceylon.language.Integer.instance(2L);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$43$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<.ceylon.language.Integer>($arg$43$reified$0, $arg$43$0);
+            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<.ceylon.language.Integer>(arg$43$reified$0, arg$43$0);
         );
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<.ceylon.language.Integer> parameterizedWithExplicitParameterizedBounds = (
             let
             {
-                .ceylon.language.Integer $arg$44$0 = .ceylon.language.Integer.instance(2L);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$44$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .ceylon.language.Integer arg$44$0 = .ceylon.language.Integer.instance(2L);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$44$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<.ceylon.language.Integer>($arg$44$reified$0, $arg$44$0);
+            returning new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<.ceylon.language.Integer>(arg$44$reified$0, arg$44$0);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$45$callable$ = parameterizedMiddle;
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$45$0 = left;
-                .java.lang.Object $arg$45$1 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$45$reified$0 = .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized arg$45$callable$ = parameterizedMiddle;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft arg$45$0 = left;
+                .java.lang.Object arg$45$1 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$45$reified$0 = .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor;
             }
-            returning $arg$45$callable$.<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterized($arg$45$reified$0, $arg$45$0, $arg$45$1);
+            returning arg$45$callable$.<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterized(arg$45$reified$0, arg$45$0, arg$45$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$46$callable$ = parameterizedMiddle;
-                .java.lang.Object $arg$46$0 = middle;
-                .java.lang.Object $arg$46$1 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$46$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized arg$46$callable$ = parameterizedMiddle;
+                .java.lang.Object arg$46$0 = middle;
+                .java.lang.Object arg$46$1 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$46$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning $arg$46$callable$.<.java.lang.Object>parameterized($arg$46$reified$0, $arg$46$0, $arg$46$1);
+            returning arg$46$callable$.<.java.lang.Object>parameterized(arg$46$reified$0, arg$46$0, arg$46$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$47$callable$ = parameterizedMiddle;
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$47$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
-                .java.lang.Object $arg$47$1 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$47$reified$0 = .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized arg$47$callable$ = parameterizedMiddle;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft arg$47$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
+                .java.lang.Object arg$47$1 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$47$reified$0 = .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor;
             }
-            returning $arg$47$callable$.<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterized($arg$47$reified$0, $arg$47$0, $arg$47$1);
+            returning arg$47$callable$.<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterized(arg$47$reified$0, arg$47$0, arg$47$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$48$callable$ = parameterizedMiddle;
-                .java.lang.Object $arg$48$0 = middle;
-                .java.lang.Object $arg$48$1 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$48$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized arg$48$callable$ = parameterizedMiddle;
+                .java.lang.Object arg$48$0 = middle;
+                .java.lang.Object arg$48$1 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$48$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning $arg$48$callable$.<.java.lang.Object>parameterized($arg$48$reified$0, $arg$48$0, $arg$48$1);
+            returning arg$48$callable$.<.java.lang.Object>parameterized(arg$48$reified$0, arg$48$0, arg$48$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$49$callable$ = parameterizedMiddle;
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$49$0 = left;
-                .java.lang.Object $arg$49$1 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$49$reified$0 = .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized arg$49$callable$ = parameterizedMiddle;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft arg$49$0 = left;
+                .java.lang.Object arg$49$1 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$49$reified$0 = .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor;
             }
-            returning $arg$49$callable$.<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterizedWithBounds($arg$49$reified$0, $arg$49$0, $arg$49$1);
+            returning arg$49$callable$.<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterizedWithBounds(arg$49$reified$0, arg$49$0, arg$49$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$50$callable$ = parameterizedMiddle;
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$50$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
-                .java.lang.Object $arg$50$1 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$50$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized arg$50$callable$ = parameterizedMiddle;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft arg$50$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
+                .java.lang.Object arg$50$1 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$50$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning $arg$50$callable$.<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterizedWithBounds($arg$50$reified$0, $arg$50$0, $arg$50$1);
+            returning arg$50$callable$.<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterizedWithBounds(arg$50$reified$0, arg$50$0, arg$50$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$51$callable$ = parameterizedMiddle;
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$51$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
-                .java.lang.Object $arg$51$1 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$51$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized arg$51$callable$ = parameterizedMiddle;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft arg$51$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
+                .java.lang.Object arg$51$1 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$51$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor);
             }
-            returning $arg$51$callable$.parameterizedWithIntersectionBounds($arg$51$reified$0, $arg$51$0, $arg$51$1);
+            returning arg$51$callable$.parameterizedWithIntersectionBounds(arg$51$reified$0, arg$51$0, arg$51$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$52$callable$ = parameterizedMiddle;
-                .ceylon.language.String $arg$52$0 = .ceylon.language.String.instance("");
-                .java.lang.Object $arg$52$1 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$52$reified$0 = .ceylon.language.String.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized arg$52$callable$ = parameterizedMiddle;
+                .ceylon.language.String arg$52$0 = .ceylon.language.String.instance("");
+                .java.lang.Object arg$52$1 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$52$reified$0 = .ceylon.language.String.$TypeDescriptor;
             }
-            returning $arg$52$callable$.<.ceylon.language.String>parameterizedWithErasedBounds($arg$52$reified$0, $arg$52$0, $arg$52$1);
+            returning arg$52$callable$.<.ceylon.language.String>parameterizedWithErasedBounds(arg$52$reified$0, arg$52$0, arg$52$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$53$callable$ = parameterizedMiddle;
-                .java.lang.Object $arg$53$0 = .ceylon.language.String.instance("");
-                .java.lang.Object $arg$53$1 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$53$reified$0 = .ceylon.language.Object.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized arg$53$callable$ = parameterizedMiddle;
+                .java.lang.Object arg$53$0 = .ceylon.language.String.instance("");
+                .java.lang.Object arg$53$1 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$53$reified$0 = .ceylon.language.Object.$TypeDescriptor;
             }
-            returning $arg$53$callable$.parameterizedWithErasedBounds($arg$53$reified$0, $arg$53$0, $arg$53$1);
+            returning arg$53$callable$.parameterizedWithErasedBounds(arg$53$reified$0, arg$53$0, arg$53$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$54$callable$ = parameterizedMiddle;
-                .ceylon.language.String $arg$54$0 = .ceylon.language.String.instance("");
-                .java.lang.Object $arg$54$1 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$54$reified$0 = .ceylon.language.String.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized arg$54$callable$ = parameterizedMiddle;
+                .ceylon.language.String arg$54$0 = .ceylon.language.String.instance("");
+                .java.lang.Object arg$54$1 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$54$reified$0 = .ceylon.language.String.$TypeDescriptor;
             }
-            returning $arg$54$callable$.<.ceylon.language.String>parameterizedWithErasedBounds($arg$54$reified$0, $arg$54$0, $arg$54$1);
+            returning arg$54$callable$.<.ceylon.language.String>parameterizedWithErasedBounds(arg$54$reified$0, arg$54$0, arg$54$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$55$callable$ = parameterizedMiddle;
-                .ceylon.language.Integer $arg$55$0 = .ceylon.language.Integer.instance(2L);
-                .java.lang.Object $arg$55$1 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$55$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized arg$55$callable$ = parameterizedMiddle;
+                .ceylon.language.Integer arg$55$0 = .ceylon.language.Integer.instance(2L);
+                .java.lang.Object arg$55$1 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$55$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning $arg$55$callable$.<.ceylon.language.Integer>parameterizedWithParameterizedBounds($arg$55$reified$0, $arg$55$0, $arg$55$1);
+            returning arg$55$callable$.<.ceylon.language.Integer>parameterizedWithParameterizedBounds(arg$55$reified$0, arg$55$0, arg$55$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$56$callable$ = parameterizedMiddle;
-                .ceylon.language.Integer $arg$56$0 = .ceylon.language.Integer.instance(2L);
-                .java.lang.Object $arg$56$1 = middle;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$56$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized arg$56$callable$ = parameterizedMiddle;
+                .ceylon.language.Integer arg$56$0 = .ceylon.language.Integer.instance(2L);
+                .java.lang.Object arg$56$1 = middle;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$56$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning $arg$56$callable$.<.ceylon.language.Integer>parameterizedWithParameterizedBounds($arg$56$reified$0, $arg$56$0, $arg$56$1);
+            returning arg$56$callable$.<.ceylon.language.Integer>parameterizedWithParameterizedBounds(arg$56$reified$0, arg$56$0, arg$56$1);
         );
     }
     

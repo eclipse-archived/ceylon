@@ -24,9 +24,9 @@ final class I1$impl {
         return (
             let
             {
-                long $ceylontmp$n$0 = m1$n();
+                long $ceylontmp$n$$0 = m1$n();
             }
-            returning m1$($ceylontmp$n$0);
+            returning m1$($ceylontmp$n$$0);
         );
     }
     
@@ -64,9 +64,9 @@ class CI1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
         return (
             let
             {
-                long $ceylontmp$n$1 = m1$n();
+                long $ceylontmp$n$$1 = m1$n();
             }
-            returning m1$($ceylontmp$n$1);
+            returning m1$($ceylontmp$n$$1);
         );
     }
     
@@ -119,9 +119,9 @@ final class I2$impl {
         return (
             let
             {
-                long $ceylontmp$n$2 = m2$n();
+                long $ceylontmp$n$$2 = m2$n();
             }
-            returning m2$($ceylontmp$n$2);
+            returning m2$($ceylontmp$n$$2);
         );
     }
     
@@ -173,9 +173,9 @@ final class I4$impl {
         return (
             let
             {
-                long $ceylontmp$n$3 = m4$n();
+                long $ceylontmp$n$$3 = m4$n();
             }
-            returning m4$($ceylontmp$n$3);
+            returning m4$($ceylontmp$n$$3);
         );
     }
     
@@ -214,9 +214,9 @@ class CI3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
         return (
             let
             {
-                long $ceylontmp$n$4 = m1$n();
+                long $ceylontmp$n$$4 = m1$n();
             }
-            returning m1$($ceylontmp$n$4);
+            returning m1$($ceylontmp$n$$4);
         );
     }
     
@@ -254,9 +254,9 @@ class CI3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
         return (
             let
             {
-                long $ceylontmp$n$5 = m2$n();
+                long $ceylontmp$n$$5 = m2$n();
             }
-            returning m2$($ceylontmp$n$5);
+            returning m2$($ceylontmp$n$$5);
         );
     }
     
@@ -311,9 +311,9 @@ abstract class A7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return (
             let
             {
-                long $ceylontmp$n$6 = m1$n();
+                long $ceylontmp$n$$6 = m1$n();
             }
-            returning m1$($ceylontmp$n$6);
+            returning m1$($ceylontmp$n$$6);
         );
     }
     
@@ -342,9 +342,9 @@ abstract class A7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return (
             let
             {
-                long $ceylontmp$n$7 = m2$n();
+                long $ceylontmp$n$$7 = m2$n();
             }
-            returning m2$($ceylontmp$n$7);
+            returning m2$($ceylontmp$n$$7);
         );
     }
     
@@ -377,9 +377,9 @@ abstract class A7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return (
             let
             {
-                long $ceylontmp$n$8 = m4$n();
+                long $ceylontmp$n$$8 = m4$n();
             }
-            returning m4$($ceylontmp$n$8);
+            returning m4$($ceylontmp$n$$8);
         );
     }
     

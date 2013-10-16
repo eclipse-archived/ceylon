@@ -10,9 +10,9 @@ final class bug313_ {
         final .ceylon.language.String name2 = (
             let
             {
-                .ceylon.language.String $safe$0 = name;
+                .ceylon.language.String safe$0 = name;
             }
-            returning $safe$0 != null ? .ceylon.language.String.instance($safe$0.getUppercased()) : null;
+            returning safe$0 != null ? .ceylon.language.String.instance(safe$0.getUppercased()) : null;
         );
     }
     
@@ -45,9 +45,9 @@ final class bug310_ {
         final .ceylon.language.Integer j = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug310 $safe$1 = x;
+                .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug310 safe$1 = x;
             }
-            returning $safe$1 != null ? .ceylon.language.Integer.instance($safe$1.getI()) : null;
+            returning safe$1 != null ? .ceylon.language.Integer.instance(safe$1.getI()) : null;
         );
     }
     
@@ -69,9 +69,9 @@ final class bug310_2_ {
                 .ceylon.language.Boolean $ceylontmp3 = (
                     let
                     {
-                        .ceylon.language.String $safe$2 = s1;
+                        .ceylon.language.String safe$2 = s1;
                     }
-                    returning $safe$2 != null ? .ceylon.language.Boolean.instance($safe$2.equals(.ceylon.language.String.instance(""))) : null;
+                    returning safe$2 != null ? .ceylon.language.Boolean.instance(safe$2.equals(.ceylon.language.String.instance(""))) : null;
                 );
             }
             returning $ceylontmp3 != null ? $ceylontmp3 : .ceylon.language.Boolean.instance(false);

@@ -9,41 +9,41 @@ final class bug1089_ {
         if ((
             let
             {
-                long $middle$1 = 0L;
+                long middle$1 = 0L;
             }
-            returning 0L <= $middle$1 && $middle$1 < 2L;
+            returning 0L <= middle$1 && middle$1 < 2L;
         )) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<=0<2"));
         if ((
             let
             {
-                long $middle$3 = 1L;
+                long middle$3 = 1L;
             }
-            returning 0L < $middle$3 && $middle$3 < 2L;
+            returning 0L < middle$3 && middle$3 < 2L;
         )) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<1<2"));
         if ((
             let
             {
-                long $middle$5 = 1L;
+                long middle$5 = 1L;
             }
-            returning 0L <= $middle$5 && $middle$5 < 2L;
+            returning 0L <= middle$5 && middle$5 < 2L;
         )) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<=1<2"));
         if ((
             let
             {
-                long $middle$7 = 1L;
+                long middle$7 = 1L;
             }
-            returning 0L < $middle$7 && $middle$7 <= 2L;
+            returning 0L < middle$7 && middle$7 <= 2L;
         )) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<1<=2"));
         if ((
             let
             {
-                long $middle$9 = 1L;
+                long middle$9 = 1L;
             }
-            returning 0L <= $middle$9 && $middle$9 <= 2L;
+            returning 0L <= middle$9 && middle$9 <= 2L;
         )) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<=1<=2"));
     }

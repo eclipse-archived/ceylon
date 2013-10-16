@@ -26,10 +26,10 @@ final class namedArgumentInvocationTopLevelX_ {
         value = new long[]{(
             let
             {
-                .java.lang.String $arg$0$1 = "abc";
-                long $arg$0$0 = 123L;
+                .java.lang.String arg$0$1 = "abc";
+                long arg$0$0 = 123L;
             }
-            returning .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelF_.namedArgumentInvocationTopLevelF($arg$0$0, $arg$0$1);
+            returning .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelF_.namedArgumentInvocationTopLevelF(arg$0$0, arg$0$1);
         )};
     }
     
@@ -53,9 +53,9 @@ final class namedArgumentInvocationTopLevelY_ {
                 (
                     let
                     {
-                        .java.lang.String $arg$1$1 = "abc";
-                        long $arg$1$0 = 123L;
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelV_.namedArgumentInvocationTopLevelV($arg$1$0, $arg$1$1);
+                        .java.lang.String arg$1$1 = "abc";
+                        long arg$1$0 = 123L;
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelV_.namedArgumentInvocationTopLevelV(arg$1$0, arg$1$1);
                     }
                     returning null;
                 );

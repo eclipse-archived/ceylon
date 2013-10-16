@@ -9,7 +9,7 @@ final class bug1011_ {
         (
             let
             {
-                .ceylon.language.Iterable $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
+                .ceylon.language.Iterable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
                     
                     public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                         return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
@@ -21,12 +21,12 @@ final class bug1011_ {
                             private boolean x$exhausted;
                             
                             private final boolean x() {
-                                final .java.lang.Object $ceylontmpitem1 = iter$0.next();
-                                x$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.get_();
+                                final .java.lang.Object $ceylontmpitem$1 = iter$0.next();
+                                x$exhausted = $ceylontmpitem$1 == .ceylon.language.finished_.get_();
                                 if (x$exhausted) {
                                     return false;
                                 } else {
-                                    x = (.ceylon.language.Integer)$ceylontmpitem1;
+                                    x = (.ceylon.language.Integer)$ceylontmpitem$1;
                                     return true;
                                 }
                             }
@@ -40,7 +40,7 @@ final class bug1011_ {
                         };
                     }
                 };
-                .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1011_.bug1011($arg$0$0);
+                .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1011_.bug1011(arg$0$0);
             }
             returning null;
         );
@@ -55,9 +55,9 @@ final class foo_ {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$0 = $reifiedItem;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reifiedKey);
-                .ceylon.language.Iterable $arg$2$0 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reifiedItem, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reifiedKey)), .ceylon.language.Null.$TypeDescriptor, false, new .ceylon.language.Iterable[]{map}){
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = $reifiedItem;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reifiedKey);
+                .ceylon.language.Iterable arg$2$0 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reifiedItem, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reifiedKey)), .ceylon.language.Null.$TypeDescriptor, false, new .ceylon.language.Iterable[]{map}){
                     
                     public final .ceylon.language.Iterator<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>> iterator() {
                         return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reifiedItem, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reifiedKey))){
@@ -70,13 +70,13 @@ final class foo_ {
                             private boolean kv$key$item$exhausted;
                             
                             private final boolean kv$key$item() {
-                                final .java.lang.Object $ceylontmpitem3 = iter$0.next();
-                                kv$key$item$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.get_();
+                                final .java.lang.Object $ceylontmpitem$3 = iter$0.next();
+                                kv$key$item$exhausted = $ceylontmpitem$3 == .ceylon.language.finished_.get_();
                                 if (kv$key$item$exhausted) {
                                     return false;
                                 } else {
-                                    key = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem3).getKey();
-                                    item = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem3).getItem();
+                                    key = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$3).getKey();
+                                    item = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$3).getItem();
                                     return true;
                                 }
                             }
@@ -98,13 +98,13 @@ final class foo_ {
                                                 private boolean kv$k$i$exhausted;
                                                 
                                                 private final boolean kv$k$i() {
-                                                    final .java.lang.Object $ceylontmpitem4 = iter$0.next();
-                                                    kv$k$i$exhausted = $ceylontmpitem4 == .ceylon.language.finished_.get_();
+                                                    final .java.lang.Object $ceylontmpitem$4 = iter$0.next();
+                                                    kv$k$i$exhausted = $ceylontmpitem$4 == .ceylon.language.finished_.get_();
                                                     if (kv$k$i$exhausted) {
                                                         return false;
                                                     } else {
-                                                        k = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem4).getKey();
-                                                        i = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem4).getItem();
+                                                        k = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$4).getKey();
+                                                        i = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$4).getItem();
                                                         return true;
                                                     }
                                                 }
@@ -135,7 +135,7 @@ final class foo_ {
                     }
                 };
             }
-            returning new .ceylon.language.LazyMap<Item, .ceylon.language.LazySet<? extends Key>>($arg$2$reified$0, $arg$2$reified$1, $arg$2$0);
+            returning new .ceylon.language.LazyMap<Item, .ceylon.language.LazySet<? extends Key>>(arg$2$reified$0, arg$2$reified$1, arg$2$0);
         );
         new .ceylon.language.LazyMap<Item, .ceylon.language.LazySet<? extends Key>>($reifiedItem, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reifiedKey), (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reifiedItem, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reifiedKey)), .ceylon.language.Null.$TypeDescriptor, false, new .ceylon.language.Iterable[]{map}){
             
@@ -150,13 +150,13 @@ final class foo_ {
                     private boolean kv$key$item$exhausted;
                     
                     private final boolean kv$key$item() {
-                        final .java.lang.Object $ceylontmpitem5 = iter$0.next();
-                        kv$key$item$exhausted = $ceylontmpitem5 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$5 = iter$0.next();
+                        kv$key$item$exhausted = $ceylontmpitem$5 == .ceylon.language.finished_.get_();
                         if (kv$key$item$exhausted) {
                             return false;
                         } else {
-                            key = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem5).getKey();
-                            item = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem5).getItem();
+                            key = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$5).getKey();
+                            item = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$5).getItem();
                             return true;
                         }
                     }
@@ -178,13 +178,13 @@ final class foo_ {
                                         private boolean kv$k$i$exhausted;
                                         
                                         private final boolean kv$k$i() {
-                                            final .java.lang.Object $ceylontmpitem6 = iter$0.next();
-                                            kv$k$i$exhausted = $ceylontmpitem6 == .ceylon.language.finished_.get_();
+                                            final .java.lang.Object $ceylontmpitem$6 = iter$0.next();
+                                            kv$k$i$exhausted = $ceylontmpitem$6 == .ceylon.language.finished_.get_();
                                             if (kv$k$i$exhausted) {
                                                 return false;
                                             } else {
-                                                k = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem6).getKey();
-                                                i = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem6).getItem();
+                                                k = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$6).getKey();
+                                                i = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$6).getItem();
                                                 return true;
                                             }
                                         }
@@ -217,9 +217,9 @@ final class foo_ {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$7$reified$0 = $reifiedItem;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$7$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reifiedKey);
-                .ceylon.language.Iterable $arg$7$0 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Entry>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reifiedItem, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reifiedKey)), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reifiedItem, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reifiedKey)), .ceylon.language.Null.$TypeDescriptor, false, new .ceylon.language.Iterable[]{map}){
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$7$reified$0 = $reifiedItem;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$7$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reifiedKey);
+                .ceylon.language.Iterable arg$7$0 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Entry>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reifiedItem, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reifiedKey)), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reifiedItem, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reifiedKey)), .ceylon.language.Null.$TypeDescriptor, false, new .ceylon.language.Iterable[]{map}){
                     
                     public final .ceylon.language.Iterator<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>> iterator() {
                         return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reifiedItem, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reifiedKey))){
@@ -232,13 +232,13 @@ final class foo_ {
                             private boolean kv$key$item$exhausted;
                             
                             private final boolean kv$key$item() {
-                                final .java.lang.Object $ceylontmpitem8 = iter$0.next();
-                                kv$key$item$exhausted = $ceylontmpitem8 == .ceylon.language.finished_.get_();
+                                final .java.lang.Object $ceylontmpitem$8 = iter$0.next();
+                                kv$key$item$exhausted = $ceylontmpitem$8 == .ceylon.language.finished_.get_();
                                 if (kv$key$item$exhausted) {
                                     return false;
                                 } else {
-                                    key = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem8).getKey();
-                                    item = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem8).getItem();
+                                    key = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$8).getKey();
+                                    item = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$8).getItem();
                                     return true;
                                 }
                             }
@@ -260,13 +260,13 @@ final class foo_ {
                                                 private boolean kv$k$i$exhausted;
                                                 
                                                 private final boolean kv$k$i() {
-                                                    final .java.lang.Object $ceylontmpitem9 = iter$0.next();
-                                                    kv$k$i$exhausted = $ceylontmpitem9 == .ceylon.language.finished_.get_();
+                                                    final .java.lang.Object $ceylontmpitem$9 = iter$0.next();
+                                                    kv$k$i$exhausted = $ceylontmpitem$9 == .ceylon.language.finished_.get_();
                                                     if (kv$k$i$exhausted) {
                                                         return false;
                                                     } else {
-                                                        k = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem9).getKey();
-                                                        i = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem9).getItem();
+                                                        k = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$9).getKey();
+                                                        i = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$9).getItem();
                                                         return true;
                                                     }
                                                 }
@@ -297,7 +297,7 @@ final class foo_ {
                     }
                 }, extra);
             }
-            returning new .ceylon.language.LazyMap<Item, .ceylon.language.Set<? extends Key>>($arg$7$reified$0, $arg$7$reified$1, $arg$7$0);
+            returning new .ceylon.language.LazyMap<Item, .ceylon.language.Set<? extends Key>>(arg$7$reified$0, arg$7$reified$1, arg$7$0);
         );
         new .ceylon.language.LazyMap<Item, .ceylon.language.Set<? extends Key>>($reifiedItem, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reifiedKey), (.ceylon.language.Iterable).com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.Set<? extends Key>>>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reifiedItem, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reifiedKey)), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reifiedItem, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reifiedKey)), .ceylon.language.Null.$TypeDescriptor, false, new .ceylon.language.Iterable[]{map}){
             
@@ -312,13 +312,13 @@ final class foo_ {
                     private boolean kv$key$item$exhausted;
                     
                     private final boolean kv$key$item() {
-                        final .java.lang.Object $ceylontmpitem10 = iter$0.next();
-                        kv$key$item$exhausted = $ceylontmpitem10 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$10 = iter$0.next();
+                        kv$key$item$exhausted = $ceylontmpitem$10 == .ceylon.language.finished_.get_();
                         if (kv$key$item$exhausted) {
                             return false;
                         } else {
-                            key = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem10).getKey();
-                            item = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem10).getItem();
+                            key = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$10).getKey();
+                            item = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$10).getItem();
                             return true;
                         }
                     }
@@ -340,13 +340,13 @@ final class foo_ {
                                         private boolean kv$k$i$exhausted;
                                         
                                         private final boolean kv$k$i() {
-                                            final .java.lang.Object $ceylontmpitem11 = iter$0.next();
-                                            kv$k$i$exhausted = $ceylontmpitem11 == .ceylon.language.finished_.get_();
+                                            final .java.lang.Object $ceylontmpitem$11 = iter$0.next();
+                                            kv$k$i$exhausted = $ceylontmpitem$11 == .ceylon.language.finished_.get_();
                                             if (kv$k$i$exhausted) {
                                                 return false;
                                             } else {
-                                                k = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem11).getKey();
-                                                i = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem11).getItem();
+                                                k = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$11).getKey();
+                                                i = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$11).getItem();
                                                 return true;
                                             }
                                         }
@@ -389,13 +389,13 @@ final class foo_ {
                     private boolean kv$key$item$exhausted;
                     
                     private final boolean kv$key$item() {
-                        final .java.lang.Object $ceylontmpitem12 = iter$0.next();
-                        kv$key$item$exhausted = $ceylontmpitem12 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$12 = iter$0.next();
+                        kv$key$item$exhausted = $ceylontmpitem$12 == .ceylon.language.finished_.get_();
                         if (kv$key$item$exhausted) {
                             return false;
                         } else {
-                            key = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem12).getKey();
-                            item = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem12).getItem();
+                            key = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$12).getKey();
+                            item = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$12).getItem();
                             return true;
                         }
                     }
@@ -417,13 +417,13 @@ final class foo_ {
                                         private boolean kv$k$i$exhausted;
                                         
                                         private final boolean kv$k$i() {
-                                            final .java.lang.Object $ceylontmpitem13 = iter$0.next();
-                                            kv$k$i$exhausted = $ceylontmpitem13 == .ceylon.language.finished_.get_();
+                                            final .java.lang.Object $ceylontmpitem$13 = iter$0.next();
+                                            kv$k$i$exhausted = $ceylontmpitem$13 == .ceylon.language.finished_.get_();
                                             if (kv$k$i$exhausted) {
                                                 return false;
                                             } else {
-                                                k = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem13).getKey();
-                                                i = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem13).getItem();
+                                                k = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$13).getKey();
+                                                i = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$13).getItem();
                                                 return true;
                                             }
                                         }
@@ -466,13 +466,13 @@ final class foo_ {
                     private boolean kv$key$item$exhausted;
                     
                     private final boolean kv$key$item() {
-                        final .java.lang.Object $ceylontmpitem14 = iter$0.next();
-                        kv$key$item$exhausted = $ceylontmpitem14 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$14 = iter$0.next();
+                        kv$key$item$exhausted = $ceylontmpitem$14 == .ceylon.language.finished_.get_();
                         if (kv$key$item$exhausted) {
                             return false;
                         } else {
-                            key = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem14).getKey();
-                            item = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem14).getItem();
+                            key = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$14).getKey();
+                            item = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$14).getItem();
                             return true;
                         }
                     }
@@ -494,13 +494,13 @@ final class foo_ {
                                         private boolean kv$k$i$exhausted;
                                         
                                         private final boolean kv$k$i() {
-                                            final .java.lang.Object $ceylontmpitem15 = iter$0.next();
-                                            kv$k$i$exhausted = $ceylontmpitem15 == .ceylon.language.finished_.get_();
+                                            final .java.lang.Object $ceylontmpitem$15 = iter$0.next();
+                                            kv$k$i$exhausted = $ceylontmpitem$15 == .ceylon.language.finished_.get_();
                                             if (kv$k$i$exhausted) {
                                                 return false;
                                             } else {
-                                                k = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem15).getKey();
-                                                i = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem15).getItem();
+                                                k = (Key)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$15).getKey();
+                                                i = (Item)((.ceylon.language.Entry<? extends Key, ? extends Item>)$ceylontmpitem$15).getItem();
                                                 return true;
                                             }
                                         }

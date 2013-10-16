@@ -6,85 +6,85 @@ class MethodIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runt
     }
     
     private final boolean m$priv(final .java.lang.Object x, final .java.lang.Object y) {
-        boolean $ceylontmpif0 = false;
-        .java.lang.Object $x1$1;
-        final long $x1$2;
-        .java.lang.Object $y1$3;
-        final long $y1$4;
-        if (($x1$1 = x) instanceof .ceylon.language.Integer) {
-            $x1$2 = ((.ceylon.language.Integer)$x1$1).longValue();
-            if (($y1$3 = y) instanceof .ceylon.language.Integer) {
-                $y1$4 = ((.ceylon.language.Integer)$y1$3).longValue();
-                $ceylontmpif0 = true;
+        boolean $ceylontmpif$0 = false;
+        .java.lang.Object x1$1;
+        final long x1$2;
+        .java.lang.Object y1$3;
+        final long y1$4;
+        if ((x1$1 = x) instanceof .ceylon.language.Integer) {
+            x1$2 = ((.ceylon.language.Integer)x1$1).longValue();
+            if ((y1$3 = y) instanceof .ceylon.language.Integer) {
+                y1$4 = ((.ceylon.language.Integer)y1$3).longValue();
+                $ceylontmpif$0 = true;
             } else {
-                $y1$4 = 0L;
+                y1$4 = 0L;
             }
         } else {
-            $y1$4 = 0L;
-            $x1$2 = 0L;
+            y1$4 = 0L;
+            x1$2 = 0L;
         }
-        if ($ceylontmpif0) {
-            return $x1$2 == $y1$4;
+        if ($ceylontmpif$0) {
+            return x1$2 == y1$4;
         } else {
             return false;
         }
     }
     
     private final boolean synthetic$priv(final .java.lang.Object x, final .java.lang.Object y) {
-        boolean $ceylontmpif5 = false;
-        .java.lang.Object $x$6;
-        final long $x$7;
-        .java.lang.Object $y$8;
-        final long $y$9;
-        if (($x$6 = x) instanceof .ceylon.language.Integer) {
-            $x$7 = ((.ceylon.language.Integer)$x$6).longValue();
-            if (($y$8 = y) instanceof .ceylon.language.Integer) {
-                $y$9 = ((.ceylon.language.Integer)$y$8).longValue();
-                $ceylontmpif5 = true;
+        boolean $ceylontmpif$5 = false;
+        .java.lang.Object x$6;
+        final long x$7;
+        .java.lang.Object y$8;
+        final long y$9;
+        if ((x$6 = x) instanceof .ceylon.language.Integer) {
+            x$7 = ((.ceylon.language.Integer)x$6).longValue();
+            if ((y$8 = y) instanceof .ceylon.language.Integer) {
+                y$9 = ((.ceylon.language.Integer)y$8).longValue();
+                $ceylontmpif$5 = true;
             } else {
-                $y$9 = 0L;
+                y$9 = 0L;
             }
         } else {
-            $y$9 = 0L;
-            $x$7 = 0L;
+            y$9 = 0L;
+            x$7 = 0L;
         }
-        if ($ceylontmpif5) {
-            return $x$7 == $y$9;
+        if ($ceylontmpif$5) {
+            return x$7 == y$9;
         } else {
             return false;
         }
     }
     
     private final boolean mElseIf$priv(final .java.lang.Object x, final .java.lang.Object y) {
-        boolean $ceylontmpif10 = false;
-        .java.lang.Object $x1$11;
-        final long $x1$12;
-        .java.lang.Object $y1$13;
-        final long $y1$14;
-        if (($x1$11 = x) instanceof .ceylon.language.Integer) {
-            $x1$12 = ((.ceylon.language.Integer)$x1$11).longValue();
-            if (($y1$13 = y) instanceof .ceylon.language.Integer) {
-                $y1$14 = ((.ceylon.language.Integer)$y1$13).longValue();
-                $ceylontmpif10 = true;
+        boolean $ceylontmpif$10 = false;
+        .java.lang.Object x1$11;
+        final long x1$12;
+        .java.lang.Object y1$13;
+        final long y1$14;
+        if ((x1$11 = x) instanceof .ceylon.language.Integer) {
+            x1$12 = ((.ceylon.language.Integer)x1$11).longValue();
+            if ((y1$13 = y) instanceof .ceylon.language.Integer) {
+                y1$14 = ((.ceylon.language.Integer)y1$13).longValue();
+                $ceylontmpif$10 = true;
             } else {
-                $y1$14 = 0L;
+                y1$14 = 0L;
             }
         } else {
-            $y1$14 = 0L;
-            $x1$12 = 0L;
+            y1$14 = 0L;
+            x1$12 = 0L;
         }
-        if ($ceylontmpif10) {
-            return $x1$12 == $y1$14;
+        if ($ceylontmpif$10) {
+            return x1$12 == y1$14;
         } else {
-            .java.lang.Object $x1$16;
-            if (($x1$16 = x) instanceof .ceylon.language.Integer) {
-                final long $x1$20 = ((.ceylon.language.Integer)$x1$16).longValue();
-                return $x1$20 == 0L;
+            .java.lang.Object x1$16;
+            if ((x1$16 = x) instanceof .ceylon.language.Integer) {
+                final long x1$20 = ((.ceylon.language.Integer)x1$16).longValue();
+                return x1$20 == 0L;
             } else {
-                .java.lang.Object $y$18;
-                if (($y$18 = y) instanceof .ceylon.language.Integer) {
-                    final long $y$19 = ((.ceylon.language.Integer)$y$18).longValue();
-                    return $y$19 == 0L;
+                .java.lang.Object y$18;
+                if ((y$18 = y) instanceof .ceylon.language.Integer) {
+                    final long y$19 = ((.ceylon.language.Integer)y$18).longValue();
+                    return y$19 == 0L;
                 } else {
                     return false;
                 }

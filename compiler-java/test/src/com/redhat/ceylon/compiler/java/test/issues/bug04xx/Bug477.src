@@ -384,9 +384,9 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (int)(
             let
             {
-                long $ceylontmphash0 = hash;
+                long $ceylontmphash$0 = hash;
             }
-            returning $ceylontmphash0 ^ $ceylontmphash0 >>> 32;
+            returning $ceylontmphash$0 ^ $ceylontmphash$0 >>> 32;
         );
     }
     
@@ -784,9 +784,9 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (int)(
             let
             {
-                long $ceylontmphash1 = hash;
+                long $ceylontmphash$1 = hash;
             }
-            returning $ceylontmphash1 ^ $ceylontmphash1 >>> 32;
+            returning $ceylontmphash$1 ^ $ceylontmphash$1 >>> 32;
         );
     }
     

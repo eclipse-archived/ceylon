@@ -15,10 +15,10 @@ class MethodWhileIsNotNull implements .com.redhat.ceylon.compiler.java.runtime.m
     
     public final void mvar(final .java.lang.Object y) {
         while (true) {
-            .java.lang.Object $x$1;
-            if (!(($x$1 = y) == null)) {
-                final .java.lang.Object $x$2 = $x$1;
-                .ceylon.language.print_.print(.ceylon.language.String.instance($x$2.toString()));
+            .java.lang.Object x$1;
+            if (!((x$1 = y) == null)) {
+                final .java.lang.Object x$2 = x$1;
+                .ceylon.language.print_.print(.ceylon.language.String.instance(x$2.toString()));
             } else break;
         }
     }

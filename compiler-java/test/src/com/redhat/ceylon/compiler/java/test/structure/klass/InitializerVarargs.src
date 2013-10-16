@@ -6,17 +6,17 @@ class InitializerVarargs implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$fs$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                this(f, $ceylontmp$fs$0);
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$fs$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this(f, $ceylontmp$fs$$0);
             }
             returning null;
         );
     }
     
     InitializerVarargs(final .java.lang.String f, final .ceylon.language.Sequential<? extends .ceylon.language.String> fs) {
-        .java.lang.Object $elem$1;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.String> $ff$iter$2 = fs.iterator(); !(($elem$1 = $ff$iter$2.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.String ff = ((.ceylon.language.String)$elem$1).toString();
+        .java.lang.Object elem$1;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.String> ff$iter$2 = fs.iterator(); !((elem$1 = ff$iter$2.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.String ff = ((.ceylon.language.String)elem$1).toString();
         }
     }
     

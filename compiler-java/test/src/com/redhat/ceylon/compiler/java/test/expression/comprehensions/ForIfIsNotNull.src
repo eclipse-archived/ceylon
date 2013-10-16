@@ -18,12 +18,12 @@ class ForIfIsNotNull implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     private boolean x$exhausted;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmpitem0;
+                            x = (.java.lang.Object)$ceylontmpitem$0;
                             return true;
                         }
                     }
@@ -62,23 +62,23 @@ class ForIfIsNotNull implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     private boolean y$exhausted;
                     
                     private final boolean y() {
-                        final .java.lang.Object $ceylontmpitem2 = iter$0.next();
-                        y$exhausted = $ceylontmpitem2 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$2 = iter$0.next();
+                        y$exhausted = $ceylontmpitem$2 == .ceylon.language.finished_.get_();
                         if (y$exhausted) {
                             return false;
                         } else {
-                            y = (.java.lang.Object)$ceylontmpitem2;
+                            y = (.java.lang.Object)$ceylontmpitem$2;
                             return true;
                         }
                     }
-                    private .java.lang.Object $x$4;
+                    private .java.lang.Object x$4;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.y()) break;
-                            .java.lang.Object $x$3 = null;
-                            if (!(($x$3 = y) == null)) {
-                                $x$4 = $x$3;
+                            .java.lang.Object x$3 = null;
+                            if (!((x$3 = y) == null)) {
+                                x$4 = x$3;
                                 break;
                             }
                         }
@@ -88,7 +88,7 @@ class ForIfIsNotNull implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     public final .java.lang.Object next() {
                         if (this.next1()) {
                             final .java.lang.Object y = this.y;
-                            return .ceylon.language.String.instance($x$4.toString());
+                            return .ceylon.language.String.instance(x$4.toString());
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

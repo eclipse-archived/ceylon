@@ -41,20 +41,20 @@ final class QualifiedInstantiationInInterface$impl<G> {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl<G> $arg$0$callable$ = $this.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl();
-                .java.lang.String $arg$0$0 = "";
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl<G> arg$0$callable$ = $this.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl();
+                .java.lang.String arg$0$0 = "";
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning $arg$0$callable$.new Inner<.ceylon.language.Integer>($arg$0$reified$0, $arg$0$0);
+            returning arg$0$callable$.new Inner<.ceylon.language.Integer>(arg$0$reified$0, arg$0$0);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl<G> $arg$1$callable$ = other.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl();
-                .java.lang.String $arg$1$0 = "";
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl<G> arg$1$callable$ = other.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl();
+                .java.lang.String arg$1$0 = "";
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning $arg$1$callable$.new Inner<.ceylon.language.Integer>($arg$1$reified$0, $arg$1$0);
+            returning arg$1$callable$.new Inner<.ceylon.language.Integer>(arg$1$reified$0, arg$1$0);
         );
     }
     
@@ -92,30 +92,30 @@ final class QualifiedInstantiationInInterface$impl<G> {
                 (
                     let
                     {
-                        Local$impl<T> $arg$2$callable$ = (Local$impl<T>)$this.Local$impl();
-                        .java.lang.String $arg$2$0 = "";
-                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                        Local$impl<T> arg$2$callable$ = (Local$impl<T>)$this.Local$impl();
+                        .java.lang.String arg$2$0 = "";
+                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
                     }
-                    returning $arg$2$callable$.new LocalInner<.ceylon.language.Integer>($arg$2$reified$0, $arg$2$0);
+                    returning arg$2$callable$.new LocalInner<.ceylon.language.Integer>(arg$2$reified$0, arg$2$0);
                 );
                 (
                     let
                     {
-                        Local$impl<.ceylon.language.String> $arg$3$callable$ = (Local$impl<.ceylon.language.String>)l.Local$impl();
-                        .java.lang.String $arg$3$0 = "";
-                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$3$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                        Local$impl<.ceylon.language.String> arg$3$callable$ = (Local$impl<.ceylon.language.String>)l.Local$impl();
+                        .java.lang.String arg$3$0 = "";
+                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$3$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
                     }
-                    returning $arg$3$callable$.new LocalInner<.ceylon.language.Integer>($arg$3$reified$0, $arg$3$0);
+                    returning arg$3$callable$.new LocalInner<.ceylon.language.Integer>(arg$3$reified$0, arg$3$0);
                 );
                 .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl.this.$this.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl().new Inner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, "");
                 (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl<G> $arg$4$callable$ = .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl.this.$this.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl();
-                        .java.lang.String $arg$4$0 = "";
-                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$4$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                        .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl<G> arg$4$callable$ = .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl.this.$this.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl();
+                        .java.lang.String arg$4$0 = "";
+                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$4$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
                     }
-                    returning $arg$4$callable$.new Inner<.ceylon.language.Integer>($arg$4$reified$0, $arg$4$0);
+                    returning arg$4$callable$.new Inner<.ceylon.language.Integer>(arg$4$reified$0, arg$4$0);
                 );
             }
         }

@@ -7,15 +7,15 @@ class SwitchIsEnumeratedPrimitive implements .com.redhat.ceylon.compiler.java.ru
     
     private final <Number>void m$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedNumber, final Number n) {
         {
-            .java.lang.Object $sel$0 = n;
-            if ($sel$0 instanceof .ceylon.language.Integer) {
-                final .ceylon.language.Integer $n$3 = (.ceylon.language.Integer)$sel$0;
-                final double f = ((.ceylon.language.Integer)$n$3).getFloat();
-            } else if ($sel$0 instanceof .ceylon.language.Float) {
-                final .ceylon.language.Float $n$2 = (.ceylon.language.Float)$sel$0;
-                final double f = ((.ceylon.language.Float)$n$2).doubleValue();
-            } else if ($sel$0 == null) {
-                final .java.lang.Object $n$1 = (.java.lang.Object)$sel$0;
+            .java.lang.Object sel$0 = n;
+            if (sel$0 instanceof .ceylon.language.Integer) {
+                final .ceylon.language.Integer n$3 = (.ceylon.language.Integer)sel$0;
+                final double f = ((.ceylon.language.Integer)n$3).getFloat();
+            } else if (sel$0 instanceof .ceylon.language.Float) {
+                final .ceylon.language.Float n$2 = (.ceylon.language.Float)sel$0;
+                final double f = ((.ceylon.language.Float)n$2).doubleValue();
+            } else if (sel$0 == null) {
+                final .java.lang.Object n$1 = (.java.lang.Object)sel$0;
                 final double f = 0.0;
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }

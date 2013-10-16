@@ -18,23 +18,23 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     private boolean x$exhausted;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.ceylon.language.Integer)$ceylontmpitem0;
+                            x = (.ceylon.language.Integer)$ceylontmpitem$0;
                             return true;
                         }
                     }
-                    private long $x$2;
+                    private long x$2;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .ceylon.language.Integer $x$1 = null;
-                            if (($x$1 = x) != null) {
-                                $x$2 = $x$1.longValue();
+                            .ceylon.language.Integer x$1 = null;
+                            if ((x$1 = x) != null) {
+                                x$2 = x$1.longValue();
                                 break;
                             }
                         }
@@ -44,7 +44,7 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     public final .java.lang.Object next() {
                         if (this.next1()) {
                             final .ceylon.language.Integer x = this.x;
-                            return .ceylon.language.Integer.instance($x$2);
+                            return .ceylon.language.Integer.instance(x$2);
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
@@ -65,23 +65,23 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     private boolean x$exhausted;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem3 = iter$0.next();
-                        x$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$3 = iter$0.next();
+                        x$exhausted = $ceylontmpitem$3 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.ceylon.language.Integer)$ceylontmpitem3;
+                            x = (.ceylon.language.Integer)$ceylontmpitem$3;
                             return true;
                         }
                     }
-                    private long $y$5;
+                    private long y$5;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .ceylon.language.Integer $y$4 = null;
-                            if (($y$4 = x) != null) {
-                                $y$5 = $y$4.longValue();
+                            .ceylon.language.Integer y$4 = null;
+                            if ((y$4 = x) != null) {
+                                y$5 = y$4.longValue();
                                 break;
                             }
                         }
@@ -91,7 +91,7 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     public final .java.lang.Object next() {
                         if (this.next1()) {
                             final .ceylon.language.Integer x = this.x;
-                            return .ceylon.language.Integer.instance($y$5);
+                            return .ceylon.language.Integer.instance(y$5);
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

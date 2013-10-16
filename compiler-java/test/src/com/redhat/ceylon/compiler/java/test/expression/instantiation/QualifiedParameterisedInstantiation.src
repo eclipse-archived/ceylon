@@ -27,20 +27,20 @@ class QualifiedParameterisedInstantiation<G> implements .com.redhat.ceylon.compi
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> $arg$0$callable$ = this;
-                .java.lang.String $arg$0$0 = "";
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> arg$0$callable$ = this;
+                .java.lang.String arg$0$0 = "";
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning $arg$0$callable$.new Inner<.ceylon.language.Integer>($arg$0$reified$0, $arg$0$0);
+            returning arg$0$callable$.new Inner<.ceylon.language.Integer>(arg$0$reified$0, arg$0$0);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> $arg$1$callable$ = other;
-                .java.lang.String $arg$1$0 = "";
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> arg$1$callable$ = other;
+                .java.lang.String arg$1$0 = "";
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning $arg$1$callable$.new Inner<.ceylon.language.Integer>($arg$1$reified$0, $arg$1$0);
+            returning arg$1$callable$.new Inner<.ceylon.language.Integer>(arg$1$reified$0, arg$1$0);
         );
     }
     

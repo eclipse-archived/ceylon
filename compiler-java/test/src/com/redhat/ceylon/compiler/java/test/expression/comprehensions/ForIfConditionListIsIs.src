@@ -20,12 +20,12 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                     private boolean x$exhausted;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmpitem0;
+                            x = (.java.lang.Object)$ceylontmpitem$0;
                             return true;
                         }
                     }
@@ -43,29 +43,29 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                     
                     private final boolean y() {
                         while (this.iter$1()) {
-                            final .java.lang.Object $ceylontmpitem1 = iter$1.next();
-                            y$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.get_();
+                            final .java.lang.Object $ceylontmpitem$1 = iter$1.next();
+                            y$exhausted = $ceylontmpitem$1 == .ceylon.language.finished_.get_();
                             if (y$exhausted) {
                                 iter$1 = null;
                             } else {
-                                y = (.java.lang.Object)$ceylontmpitem1;
+                                y = (.java.lang.Object)$ceylontmpitem$1;
                                 return true;
                             }
                         }
                         return false;
                     }
-                    private long $y1$5;
-                    private long $x1$3;
+                    private long y1$5;
+                    private long x1$3;
                     
                     private final boolean next2() {
                         while (true) {
                             if (!this.y()) break;
-                            .java.lang.Object $y1$4 = null;
-                            .java.lang.Object $x1$2 = null;
-                            if (($x1$2 = x) instanceof .ceylon.language.Integer) {
-                                $x1$3 = ((.ceylon.language.Integer)$x1$2).longValue();
-                                if (($y1$4 = y) instanceof .ceylon.language.Integer) {
-                                    $y1$5 = ((.ceylon.language.Integer)$y1$4).longValue();
+                            .java.lang.Object y1$4 = null;
+                            .java.lang.Object x1$2 = null;
+                            if ((x1$2 = x) instanceof .ceylon.language.Integer) {
+                                x1$3 = ((.ceylon.language.Integer)x1$2).longValue();
+                                if ((y1$4 = y) instanceof .ceylon.language.Integer) {
+                                    y1$5 = ((.ceylon.language.Integer)y1$4).longValue();
                                     break;
                                 }
                             }
@@ -77,7 +77,7 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                         if (this.next2()) {
                             final .java.lang.Object x = this.x;
                             final .java.lang.Object y = this.y;
-                            return .ceylon.language.Boolean.instance($x1$3 == $y1$5);
+                            return .ceylon.language.Boolean.instance(x1$3 == y1$5);
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
@@ -100,12 +100,12 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                     private boolean x$exhausted;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem6 = iter$0.next();
-                        x$exhausted = $ceylontmpitem6 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$6 = iter$0.next();
+                        x$exhausted = $ceylontmpitem$6 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmpitem6;
+                            x = (.java.lang.Object)$ceylontmpitem$6;
                             return true;
                         }
                     }
@@ -123,29 +123,29 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                     
                     private final boolean y() {
                         while (this.iter$1()) {
-                            final .java.lang.Object $ceylontmpitem7 = iter$1.next();
-                            y$exhausted = $ceylontmpitem7 == .ceylon.language.finished_.get_();
+                            final .java.lang.Object $ceylontmpitem$7 = iter$1.next();
+                            y$exhausted = $ceylontmpitem$7 == .ceylon.language.finished_.get_();
                             if (y$exhausted) {
                                 iter$1 = null;
                             } else {
-                                y = (.java.lang.Object)$ceylontmpitem7;
+                                y = (.java.lang.Object)$ceylontmpitem$7;
                                 return true;
                             }
                         }
                         return false;
                     }
-                    private long $y$11;
-                    private long $x$9;
+                    private long y$11;
+                    private long x$9;
                     
                     private final boolean next2() {
                         while (true) {
                             if (!this.y()) break;
-                            .java.lang.Object $y$10 = null;
-                            .java.lang.Object $x$8 = null;
-                            if (($x$8 = x) instanceof .ceylon.language.Integer) {
-                                $x$9 = ((.ceylon.language.Integer)$x$8).longValue();
-                                if (($y$10 = y) instanceof .ceylon.language.Integer) {
-                                    $y$11 = ((.ceylon.language.Integer)$y$10).longValue();
+                            .java.lang.Object y$10 = null;
+                            .java.lang.Object x$8 = null;
+                            if ((x$8 = x) instanceof .ceylon.language.Integer) {
+                                x$9 = ((.ceylon.language.Integer)x$8).longValue();
+                                if ((y$10 = y) instanceof .ceylon.language.Integer) {
+                                    y$11 = ((.ceylon.language.Integer)y$10).longValue();
                                     break;
                                 }
                             }
@@ -157,7 +157,7 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                         if (this.next2()) {
                             final .java.lang.Object x = this.x;
                             final .java.lang.Object y = this.y;
-                            return .ceylon.language.Boolean.instance($x$9 == $y$11);
+                            return .ceylon.language.Boolean.instance(x$9 == y$11);
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

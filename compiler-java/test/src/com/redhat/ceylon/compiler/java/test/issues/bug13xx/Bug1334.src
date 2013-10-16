@@ -10,9 +10,9 @@ class Bug1334_1 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (int)(
             let
             {
-                long $ceylontmphash1 = 23L;
+                long $ceylontmphash$1 = 23L;
             }
-            returning $ceylontmphash1 ^ $ceylontmphash1 >>> 32;
+            returning $ceylontmphash$1 ^ $ceylontmphash$1 >>> 32;
         );
     }
     
@@ -39,9 +39,9 @@ class Bug1334_2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (int)(
             let
             {
-                long $ceylontmphash2 = hash;
+                long $ceylontmphash$2 = hash;
             }
-            returning $ceylontmphash2 ^ $ceylontmphash2 >>> 32;
+            returning $ceylontmphash$2 ^ $ceylontmphash$2 >>> 32;
         );
     }
     
@@ -68,9 +68,9 @@ class Bug1334_3 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (int)(
             let
             {
-                long $ceylontmphash3 = hash;
+                long $ceylontmphash$3 = hash;
             }
-            returning $ceylontmphash3 ^ $ceylontmphash3 >>> 32;
+            returning $ceylontmphash$3 ^ $ceylontmphash$3 >>> 32;
         );
     }
     
@@ -95,9 +95,9 @@ class Bug1334_4 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (int)(
             let
             {
-                long $ceylontmphash5 = 23L;
+                long $ceylontmphash$5 = 23L;
             }
-            returning $ceylontmphash5 ^ $ceylontmphash5 >>> 32;
+            returning $ceylontmphash$5 ^ $ceylontmphash$5 >>> 32;
         );
     }
     
@@ -122,9 +122,9 @@ class Bug1334_5 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (int)(
             let
             {
-                long $ceylontmphash7 = 23L;
+                long $ceylontmphash$7 = 23L;
             }
-            returning $ceylontmphash7 ^ $ceylontmphash7 >>> 32;
+            returning $ceylontmphash$7 ^ $ceylontmphash$7 >>> 32;
         );
     }
     
@@ -151,9 +151,9 @@ class Bug1334_6 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (int)(
             let
             {
-                long $ceylontmphash8 = hash;
+                long $ceylontmphash$8 = hash;
             }
-            returning $ceylontmphash8 ^ $ceylontmphash8 >>> 32;
+            returning $ceylontmphash$8 ^ $ceylontmphash$8 >>> 32;
         );
     }
     
@@ -169,8 +169,8 @@ class Bug1334_7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         (
             let
             {
-                long $ceylontmp$hash$10 = .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_7.$init$hash();
-                this($ceylontmp$hash$10);
+                long $ceylontmp$hash$$10 = .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_7.$init$hash();
+                this($ceylontmp$hash$$10);
             }
             returning null;
         );
@@ -186,9 +186,9 @@ class Bug1334_7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (int)(
             let
             {
-                long $ceylontmphash9 = hash;
+                long $ceylontmphash$9 = hash;
             }
-            returning $ceylontmphash9 ^ $ceylontmphash9 >>> 32;
+            returning $ceylontmphash$9 ^ $ceylontmphash$9 >>> 32;
         );
     }
     
@@ -219,9 +219,9 @@ class Bug1334_8 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (int)(
             let
             {
-                long $ceylontmphash11 = hash;
+                long $ceylontmphash$11 = hash;
             }
-            returning $ceylontmphash11 ^ $ceylontmphash11 >>> 32;
+            returning $ceylontmphash$11 ^ $ceylontmphash$11 >>> 32;
         );
     }
     
@@ -237,8 +237,8 @@ class Bug1334_9 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         (
             let
             {
-                long $ceylontmp$hash$12 = .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_9.$init$hash();
-                this($ceylontmp$hash$12);
+                long $ceylontmp$hash$$12 = .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_9.$init$hash();
+                this($ceylontmp$hash$$12);
             }
             returning null;
         );
@@ -258,9 +258,9 @@ class Bug1334_9 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (int)(
             let
             {
-                long $ceylontmphash13 = hash;
+                long $ceylontmphash$13 = hash;
             }
-            returning $ceylontmphash13 ^ $ceylontmphash13 >>> 32;
+            returning $ceylontmphash$13 ^ $ceylontmphash$13 >>> 32;
         );
     }
     
@@ -299,9 +299,9 @@ class Bug1334_10 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         return (int)(
             let
             {
-                long $ceylontmphash14 = hash;
+                long $ceylontmphash$14 = hash;
             }
-            returning $ceylontmphash14 ^ $ceylontmphash14 >>> 32;
+            returning $ceylontmphash$14 ^ $ceylontmphash$14 >>> 32;
         );
     }
     
@@ -339,9 +339,9 @@ final class Bug1334_11$impl {
         return (int)(
             let
             {
-                long $ceylontmphash19 = 23L;
+                long $ceylontmphash$19 = 23L;
             }
-            returning $ceylontmphash19 ^ $ceylontmphash19 >>> 32;
+            returning $ceylontmphash$19 ^ $ceylontmphash$19 >>> 32;
         );
     }
 }

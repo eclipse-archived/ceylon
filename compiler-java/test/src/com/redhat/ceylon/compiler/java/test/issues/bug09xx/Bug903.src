@@ -41,10 +41,10 @@ public final class Bug903$impl {
                 (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903 $arg$0$callable$ = $this;
-                        long $arg$0$0 = 0L;
+                        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903 arg$0$callable$ = $this;
+                        long arg$0$0 = 0L;
                     }
-                    returning $arg$0$callable$.item($arg$0$0);
+                    returning arg$0$callable$.item(arg$0$0);
                 );
                 return $this.item(0L);
             }
@@ -65,10 +65,10 @@ public final class Bug903$impl {
                 (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903 $arg$1$callable$ = $this;
-                        long $arg$1$0 = 0L;
+                        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903 arg$1$callable$ = $this;
+                        long arg$1$0 = 0L;
                     }
-                    returning $arg$1$callable$.item($arg$1$0);
+                    returning arg$1$callable$.item(arg$1$0);
                 );
                 return $this.item(0L);
             }
@@ -90,10 +90,10 @@ public final class Bug903$impl {
                 (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903 $arg$2$callable$ = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903$impl.this.$this;
-                        long $arg$2$0 = 0L;
+                        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903 arg$2$callable$ = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903$impl.this.$this;
+                        long arg$2$0 = 0L;
                     }
-                    returning $arg$2$callable$.item($arg$2$0);
+                    returning arg$2$callable$.item(arg$2$0);
                 );
                 return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903$impl.this.$this.item(0L);
             }

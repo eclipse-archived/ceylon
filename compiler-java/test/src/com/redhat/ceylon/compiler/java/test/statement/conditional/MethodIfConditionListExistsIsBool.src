@@ -6,27 +6,27 @@ class MethodIfConditionListExistsIsBool implements .com.redhat.ceylon.compiler.j
     }
     
     private final boolean m$priv(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
-        boolean $ceylontmpif0 = false;
-        .java.lang.Object $z$1;
-        final .java.lang.Object $z$2;
-        .java.lang.Object $y$3;
-        final long $y$4;
-        if (($z$1 = x.get(.ceylon.language.Integer.instance(0L))) != null) {
-            $z$2 = $z$1;
-            if (($y$3 = $z$2) instanceof .ceylon.language.Integer) {
-                $y$4 = ((.ceylon.language.Integer)$y$3).longValue();
-                if ($y$4 > 0L) {
-                    $ceylontmpif0 = true;
+        boolean $ceylontmpif$0 = false;
+        .java.lang.Object z$1;
+        final .java.lang.Object z$2;
+        .java.lang.Object y$3;
+        final long y$4;
+        if ((z$1 = x.get(.ceylon.language.Integer.instance(0L))) != null) {
+            z$2 = z$1;
+            if ((y$3 = z$2) instanceof .ceylon.language.Integer) {
+                y$4 = ((.ceylon.language.Integer)y$3).longValue();
+                if (y$4 > 0L) {
+                    $ceylontmpif$0 = true;
                 }
             } else {
-                $y$4 = 0L;
+                y$4 = 0L;
             }
         } else {
-            $y$4 = 0L;
-            $z$2 = null;
+            y$4 = 0L;
+            z$2 = null;
         }
-        if ($ceylontmpif0) {
-            return $y$4 == 1L;
+        if ($ceylontmpif$0) {
+            return y$4 == 1L;
         } else {
             return false;
         }

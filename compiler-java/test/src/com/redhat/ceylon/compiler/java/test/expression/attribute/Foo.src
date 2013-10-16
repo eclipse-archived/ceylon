@@ -34,8 +34,8 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType 
         (
             let
             {
-                .java.lang.String $ceylontmp$a$0 = m$a();
-                m$($ceylontmp$a$0);
+                .java.lang.String $ceylontmp$a$$0 = m$a();
+                m$($ceylontmp$a$$0);
             }
             returning null;
         );

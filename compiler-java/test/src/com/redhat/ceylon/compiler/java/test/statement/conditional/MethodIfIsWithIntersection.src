@@ -14,12 +14,12 @@ class MethodIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime
     }
     
     public final void mvar(final .java.lang.Object y) {
-        .java.lang.Object $x$3;
-        if (($x$3 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo && $x$3 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface) {
-            final .java.lang.Object $x$4 = $x$3;
-            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)$x$4).common();
-            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)$x$4).foo();
-            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface)$x$4).bar();
+        .java.lang.Object x$3;
+        if ((x$3 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo && x$3 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface) {
+            final .java.lang.Object x$4 = x$3;
+            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x$4).common();
+            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x$4).foo();
+            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface)x$4).bar();
         }
     }
     

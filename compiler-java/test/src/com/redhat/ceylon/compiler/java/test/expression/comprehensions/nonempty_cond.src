@@ -24,23 +24,23 @@ final class nonemptyCond_ {
                     private boolean x$exhausted;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.ceylon.language.Integer)$ceylontmpitem0;
+                            x = (.ceylon.language.Integer)$ceylontmpitem$0;
                             return true;
                         }
                     }
-                    private .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ints$2;
+                    private .ceylon.language.Sequence<? extends .ceylon.language.Integer> ints$2;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ints$1 = null;
-                            if (($ints$1 = ints) instanceof .ceylon.language.Sequence) {
-                                $ints$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)$ints$1;
+                            .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints$1 = null;
+                            if ((ints$1 = ints) instanceof .ceylon.language.Sequence) {
+                                ints$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)ints$1;
                                 break;
                             }
                         }
@@ -50,7 +50,7 @@ final class nonemptyCond_ {
                     public final .java.lang.Object next() {
                         if (this.next1()) {
                             final .ceylon.language.Integer x = this.x;
-                            return $ints$2.getFirst();
+                            return ints$2.getFirst();
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

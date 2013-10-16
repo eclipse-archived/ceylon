@@ -56,10 +56,10 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
                 (
                     let
                     {
-                        long $ceylontmpop0 = innerGetterSetter;
-                        m.ref = $ceylontmpop0;
+                        long $ceylontmpop$0 = innerGetterSetter;
+                        m.ref = $ceylontmpop$0;
                     }
-                    returning $ceylontmpop0;
+                    returning $ceylontmpop$0;
                 );
             }
         }

@@ -14,9 +14,9 @@ final class nullSafeMethodReference_ {
                 return (
                     let
                     {
-                        .ceylon.language.String $safe$1 = s;
+                        .ceylon.language.String safe$1 = s;
                     }
-                    returning $safe$1 != null ? $safe$1.initial($$length) : null;
+                    returning safe$1 != null ? safe$1.initial($$length) : null;
                 );
             }
         };

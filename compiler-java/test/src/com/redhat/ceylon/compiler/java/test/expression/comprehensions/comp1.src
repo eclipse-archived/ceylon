@@ -18,12 +18,12 @@ final class comp1_ {
                     private boolean str$exhausted;
                     
                     private final boolean str() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        str$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
+                        str$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
                         if (str$exhausted) {
                             return false;
                         } else {
-                            str = (.ceylon.language.String)$ceylontmpitem0;
+                            str = (.ceylon.language.String)$ceylontmpitem$0;
                             return true;
                         }
                     }

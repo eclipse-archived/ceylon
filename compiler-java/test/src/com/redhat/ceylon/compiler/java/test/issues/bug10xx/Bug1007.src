@@ -10,10 +10,10 @@ final class bug1007_ {
         final byte[] fileData = (
             let
             {
-                int $arg$0$0 = (int)file.length();
-                byte $arg$0$1 = (byte)0L;
+                int arg$0$0 = (int)file.length();
+                byte arg$0$1 = (byte)0L;
             }
-            returning .com.redhat.ceylon.compiler.java.Util.fillArray(new byte[$arg$0$0], $arg$0$1);
+            returning .com.redhat.ceylon.compiler.java.Util.fillArray(new byte[arg$0$0], arg$0$1);
         );
         final .java.io.FileInputStream fileIn = new .java.io.FileInputStream(file);
         fileIn.read(fileData);

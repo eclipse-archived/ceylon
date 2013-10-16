@@ -34,11 +34,11 @@ class ClassDefaultMemberClassWithTypeParams<T> implements .com.redhat.ceylon.com
         (
             let
             {
-                .ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance(1L);
-                T $arg$0$0 = getTt$priv();
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .ceylon.language.Integer arg$0$1 = .ceylon.language.Integer.instance(1L);
+                T arg$0$0 = getTt$priv();
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning Member$new($arg$0$reified$0, $arg$0$0, $arg$0$1);
+            returning Member$new(arg$0$reified$0, arg$0$0, arg$0$1);
         );
         return Member$new(.ceylon.language.Integer.$TypeDescriptor, getTt$priv(), .ceylon.language.Integer.instance(1L));
     }
@@ -85,11 +85,11 @@ class ClassDefaultMemberClassWithTypeParams_sub<X> extends .com.redhat.ceylon.co
         (
             let
             {
-                .ceylon.language.String $arg$1$1 = .ceylon.language.String.instance("");
-                X $arg$1$0 = getXx$priv();
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$0 = .ceylon.language.String.$TypeDescriptor;
+                .ceylon.language.String arg$1$1 = .ceylon.language.String.instance("");
+                X arg$1$0 = getXx$priv();
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.String.$TypeDescriptor;
             }
-            returning Member$new($arg$1$reified$0, $arg$1$0, $arg$1$1);
+            returning Member$new(arg$1$reified$0, arg$1$0, arg$1$1);
         );
         return Member$new(.ceylon.language.String.$TypeDescriptor, getXx$priv(), .ceylon.language.String.instance(""));
     }

@@ -292,12 +292,12 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle).top();
         final long n1 = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle).getTopAttribute();
         takesTop$priv((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle);
-        .java.lang.Object $middle$1;
-        if (($middle$1 = middle) instanceof .com.redhat.ceylon.compiler.java.test.expression.erasure.Left) {
-            final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left $middle$2 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)$middle$1;
-            final long n2 = $middle$2.getLeftAttribute();
-            $middle$2.left();
-            takesLeft$priv($middle$2);
+        .java.lang.Object middle$1;
+        if ((middle$1 = middle) instanceof .com.redhat.ceylon.compiler.java.test.expression.erasure.Left) {
+            final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left middle$2 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)middle$1;
+            final long n2 = middle$2.getLeftAttribute();
+            middle$2.left();
+            takesLeft$priv(middle$2);
         }
     }
     
@@ -319,16 +319,16 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.Top $arg$3$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle;
-                takesTop$priv($arg$3$0);
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.Top arg$3$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle;
+                takesTop$priv(arg$3$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.Left $arg$4$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)middle;
-                takesLeft$priv($arg$4$0);
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.Left arg$4$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)middle;
+                takesLeft$priv(arg$4$0);
             }
             returning null;
         );
@@ -343,19 +343,19 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         ((.com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle)(
             let
             {
-                .java.lang.Object $ceylontmpop5 = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
-                middleVar = $ceylontmpop5;
+                .java.lang.Object $ceylontmpop$5 = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
+                middleVar = $ceylontmpop$5;
             }
-            returning $ceylontmpop5;
+            returning $ceylontmpop$5;
         )).left();
         ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)(
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.Test $ceylontmpopE6 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Test)erasedTest;
-                .java.lang.Object $ceylontmpopV7 = middleVar;
-                $ceylontmpopE6.setMiddleAttribute($ceylontmpopV7);
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.Test $ceylontmpopE$6 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Test)erasedTest;
+                .java.lang.Object $ceylontmpopV$7 = middleVar;
+                $ceylontmpopE$6.setMiddleAttribute($ceylontmpopV$7);
             }
-            returning $ceylontmpopV7;
+            returning $ceylontmpopV$7;
         )).left();
         final .ceylon.language.Entry entry = new .ceylon.language.Entry(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.ceylon.language.Number.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.ceylon.language.Number.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface.$TypeDescriptor), p1, p1);
         if (true || true) {
@@ -368,9 +368,9 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
     }
     
     private final void testNullHandlingOperators$priv(final .java.lang.Object p1, final .java.lang.Object p1OrNull) {
-        .java.lang.Object $p1OrNull$10;
-        if (($p1OrNull$10 = p1OrNull) != null) {
-            final .java.lang.Object $p1OrNull$11 = $p1OrNull$10;
+        .java.lang.Object p1OrNull$10;
+        if ((p1OrNull$10 = p1OrNull) != null) {
+            final .java.lang.Object p1OrNull$11 = p1OrNull$10;
         }
         boolean bSync = false;
         bSync = p1OrNull != null;
@@ -437,44 +437,44 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         subrange = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>)(.ceylon.language.Ranged)naturals).spanFrom((.ceylon.language.Integer)p1);
         subrange = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>)(.ceylon.language.Ranged)naturals).spanTo((.ceylon.language.Integer)p1);
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> plainIntegers = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .java.lang.Object[]{p1});
-        .java.lang.Object $elem$18;
-        for (.ceylon.language.Iterator<? extends .java.lang.Object> $it$iter$19 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)naturals).iterator(); !(($elem$18 = $it$iter$19.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Object it = (.java.lang.Object)$elem$18;
+        .java.lang.Object elem$18;
+        for (.ceylon.language.Iterator<? extends .java.lang.Object> it$iter$19 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)naturals).iterator(); !((elem$18 = it$iter$19.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Object it = (.java.lang.Object)elem$18;
             final .ceylon.language.Numeric<.ceylon.language.Integer> n6 = (.ceylon.language.Numeric)it;
         }
-        .java.lang.Object $elem$20;
-        for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left> $itLeft$iter$21 = ((.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights).iterator(); !(($elem$20 = $itLeft$iter$21.next()) instanceof .ceylon.language.Finished); ) {
-            final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left itLeft = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)$elem$20;
+        .java.lang.Object elem$20;
+        for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left> itLeft$iter$21 = ((.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights).iterator(); !((elem$20 = itLeft$iter$21.next()) instanceof .ceylon.language.Finished); ) {
+            final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left itLeft = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)elem$20;
             itLeft.top();
             itLeft.left();
         }
-        .java.lang.Object $elem$22;
-        for (.ceylon.language.Iterator<? extends .java.lang.Object> $itErased$iter$23 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights).iterator(); !(($elem$22 = $itErased$iter$23.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Object itErased = (.java.lang.Object)$elem$22;
+        .java.lang.Object elem$22;
+        for (.ceylon.language.Iterator<? extends .java.lang.Object> itErased$iter$23 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights).iterator(); !((elem$22 = itErased$iter$23.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Object itErased = (.java.lang.Object)elem$22;
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)itErased).top();
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)itErased).left();
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Right)itErased).right();
         }
-        .java.lang.Object $elem$24;
-        for (.ceylon.language.Iterator<? extends .java.lang.Object> $itErasedValue$iter$25 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights).iterator(); !(($elem$24 = $itErasedValue$iter$25.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Object itErasedValue = (.java.lang.Object)$elem$24;
+        .java.lang.Object elem$24;
+        for (.ceylon.language.Iterator<? extends .java.lang.Object> itErasedValue$iter$25 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights).iterator(); !((elem$24 = itErasedValue$iter$25.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Object itErasedValue = (.java.lang.Object)elem$24;
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)itErasedValue).top();
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)itErasedValue).left();
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Right)itErasedValue).right();
         }
-        .java.lang.Object $elem$26;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left, ? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left>> $itLeft1$iter$27 = ((.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left, ? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRightsEntries).iterator(); !(($elem$26 = $itLeft1$iter$27.next()) instanceof .ceylon.language.Finished); ) {
-            final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left itLeft1 = ((.ceylon.language.Entry<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left, ? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left>)$elem$26).getKey();
-            final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left itLeft2 = ((.ceylon.language.Entry<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left, ? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left>)$elem$26).getItem();
+        .java.lang.Object elem$26;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left, ? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left>> itLeft1$iter$27 = ((.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left, ? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRightsEntries).iterator(); !((elem$26 = itLeft1$iter$27.next()) instanceof .ceylon.language.Finished); ) {
+            final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left itLeft1 = ((.ceylon.language.Entry<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left, ? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left>)elem$26).getKey();
+            final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left itLeft2 = ((.ceylon.language.Entry<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left, ? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left>)elem$26).getItem();
             itLeft1.top();
             itLeft1.left();
             itLeft2.top();
             itLeft2.left();
         }
-        .java.lang.Object $elem$28;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .java.lang.Object>> $itErased1$iter$29 = ((.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRightsEntries).iterator(); !(($elem$28 = $itErased1$iter$29.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Object itErased1 = ((.ceylon.language.Entry)$elem$28).getKey();
-            final .java.lang.Object itErased2 = ((.ceylon.language.Entry)$elem$28).getItem();
+        .java.lang.Object elem$28;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .java.lang.Object>> itErased1$iter$29 = ((.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRightsEntries).iterator(); !((elem$28 = itErased1$iter$29.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Object itErased1 = ((.ceylon.language.Entry)elem$28).getKey();
+            final .java.lang.Object itErased2 = ((.ceylon.language.Entry)elem$28).getItem();
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)itErased1).top();
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)itErased1).left();
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Right)itErased1).right();
@@ -482,10 +482,10 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)itErased2).left();
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Right)itErased2).right();
         }
-        .java.lang.Object $elem$30;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .java.lang.Object>> $itErasedValue1$iter$31 = ((.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRightsEntries).iterator(); !(($elem$30 = $itErasedValue1$iter$31.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Object itErasedValue1 = ((.ceylon.language.Entry)$elem$30).getKey();
-            final .java.lang.Object itErasedValue2 = ((.ceylon.language.Entry)$elem$30).getItem();
+        .java.lang.Object elem$30;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .java.lang.Object>> itErasedValue1$iter$31 = ((.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRightsEntries).iterator(); !((elem$30 = itErasedValue1$iter$31.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Object itErasedValue1 = ((.ceylon.language.Entry)elem$30).getKey();
+            final .java.lang.Object itErasedValue2 = ((.ceylon.language.Entry)elem$30).getItem();
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)itErasedValue1).top();
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)itErasedValue1).left();
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Right)itErasedValue1).right();
@@ -494,17 +494,17 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Right)itErasedValue2).right();
         }
         final .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> topSequence = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle, .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle>>(.com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle.$TypeDescriptor, new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle()});
-        .java.lang.Object $elem$32;
-        for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> $it$iter$33 = topSequence.iterator(); !(($elem$32 = $it$iter$33.next()) instanceof .ceylon.language.Finished); ) {
-            final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top it = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$elem$32;
+        .java.lang.Object elem$32;
+        for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> it$iter$33 = topSequence.iterator(); !((elem$32 = it$iter$33.next()) instanceof .ceylon.language.Finished); ) {
+            final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top it = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)elem$32;
             it.top();
         }
         long sync = 0L;
         sync = ((.ceylon.language.List<? extends .java.lang.Object>)(.ceylon.language.List)naturals).getSize();
         sync = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights).getSize();
-        .ceylon.language.Sequential<? extends .java.lang.Object> $naturals$35;
-        if (($naturals$35 = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)naturals) instanceof .ceylon.language.Sequence) {
-            final .ceylon.language.Sequence<? extends .java.lang.Object> $naturals$36 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$naturals$35;
+        .ceylon.language.Sequential<? extends .java.lang.Object> naturals$35;
+        if ((naturals$35 = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)naturals) instanceof .ceylon.language.Sequence) {
+            final .ceylon.language.Sequence<? extends .java.lang.Object> naturals$36 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)naturals$35;
         }
         boolean bSync = false;
         bSync = (
@@ -517,50 +517,50 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         final .ceylon.language.Sequential spreadMember = (.ceylon.language.Sequential)(.ceylon.language.Sequence)(
             let
             {
-                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> $spread$38$iterable = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
-                .ceylon.language.SequenceBuilder $spread$38$sequenceBuilder = new .ceylon.language.SequenceBuilder(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor));
-                .java.lang.Object $spread$38$iteration;
-                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> $spread$38$iterator = $spread$38$iterable.iterator(); !(($spread$38$iteration = $spread$38$iterator.next()) instanceof .ceylon.language.Finished); ) {
-                    .com.redhat.ceylon.compiler.java.test.expression.erasure.Top $spread$38$element = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$spread$38$iteration;
-                    $spread$38$sequenceBuilder.append(((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$spread$38$element).getLeftAndRightAttribute());
+                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> spread$38$iterable = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
+                .ceylon.language.SequenceBuilder spread$38$sequenceBuilder = new .ceylon.language.SequenceBuilder(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor));
+                .java.lang.Object spread$38$iteration;
+                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> spread$38$iterator = spread$38$iterable.iterator(); !((spread$38$iteration = spread$38$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                    .com.redhat.ceylon.compiler.java.test.expression.erasure.Top spread$38$element = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)spread$38$iteration;
+                    spread$38$sequenceBuilder.append(((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)spread$38$element).getLeftAndRightAttribute());
                 }
             }
-            returning $spread$38$sequenceBuilder.getSequence();
+            returning spread$38$sequenceBuilder.getSequence();
         );
         .ceylon.language.Sequential spreadInvocation = null;
         spreadInvocation = (.ceylon.language.Sequential)(.ceylon.language.Sequence)(
             let
             {
-                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> $spread$39$iterable = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
-                .ceylon.language.SequenceBuilder $spread$39$sequenceBuilder = new .ceylon.language.SequenceBuilder(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor));
-                .java.lang.Object $spread$39$arg$0 = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
-                .java.lang.Object $spread$39$iteration;
-                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> $spread$39$iterator = $spread$39$iterable.iterator(); !(($spread$39$iteration = $spread$39$iterator.next()) instanceof .ceylon.language.Finished); ) {
-                    .com.redhat.ceylon.compiler.java.test.expression.erasure.Top $spread$39$element = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$spread$39$iteration;
-                    $spread$39$sequenceBuilder.append(((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$spread$39$element).leftAndRightMethod($spread$39$arg$0));
+                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> spread$39$iterable = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
+                .ceylon.language.SequenceBuilder spread$39$sequenceBuilder = new .ceylon.language.SequenceBuilder(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor));
+                .java.lang.Object spread$39$arg$0 = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
+                .java.lang.Object spread$39$iteration;
+                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> spread$39$iterator = spread$39$iterable.iterator(); !((spread$39$iteration = spread$39$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                    .com.redhat.ceylon.compiler.java.test.expression.erasure.Top spread$39$element = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)spread$39$iteration;
+                    spread$39$sequenceBuilder.append(((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)spread$39$element).leftAndRightMethod(spread$39$arg$0));
                 }
             }
-            returning $spread$39$sequenceBuilder.getSequence();
+            returning spread$39$sequenceBuilder.getSequence();
         );
         spreadInvocation = (.ceylon.language.Sequential)(.ceylon.language.Sequence)(
             let
             {
-                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> $spread$41$iterable = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
-                .ceylon.language.SequenceBuilder $spread$41$sequenceBuilder = new .ceylon.language.SequenceBuilder(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor));
-                .java.lang.Object $spread$41$iteration;
-                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> $spread$41$iterator = $spread$41$iterable.iterator(); !(($spread$41$iteration = $spread$41$iterator.next()) instanceof .ceylon.language.Finished); ) {
-                    .com.redhat.ceylon.compiler.java.test.expression.erasure.Top $spread$41$element = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$spread$41$iteration;
-                    $spread$41$sequenceBuilder.append((
+                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> spread$41$iterable = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
+                .ceylon.language.SequenceBuilder spread$41$sequenceBuilder = new .ceylon.language.SequenceBuilder(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor));
+                .java.lang.Object spread$41$iteration;
+                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> spread$41$iterator = spread$41$iterable.iterator(); !((spread$41$iteration = spread$41$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                    .com.redhat.ceylon.compiler.java.test.expression.erasure.Top spread$41$element = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)spread$41$iteration;
+                    spread$41$sequenceBuilder.append((
                         let
                         {
-                            .com.redhat.ceylon.compiler.java.test.expression.erasure.Top $arg$40$callable$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$spread$41$element;
-                            .java.lang.Object $arg$40$0 = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
+                            .com.redhat.ceylon.compiler.java.test.expression.erasure.Top arg$40$callable$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)spread$41$element;
+                            .java.lang.Object arg$40$0 = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
                         }
-                        returning $arg$40$callable$.leftAndRightMethod($arg$40$0);
+                        returning arg$40$callable$.leftAndRightMethod(arg$40$0);
                     ));
                 }
             }
-            returning $spread$41$sequenceBuilder.getSequence();
+            returning spread$41$sequenceBuilder.getSequence();
         );
     }
     

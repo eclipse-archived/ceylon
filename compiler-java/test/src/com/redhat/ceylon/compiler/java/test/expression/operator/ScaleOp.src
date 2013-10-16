@@ -21,18 +21,18 @@ class ScaleOp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         final .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp twice = (
             let
             {
-                .ceylon.language.Float $scale$1 = .ceylon.language.Float.instance(2.0);
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp $scalable$0 = this;
+                .ceylon.language.Float scale$1 = .ceylon.language.Float.instance(2.0);
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp scalable$0 = this;
             }
-            returning $scalable$0.scale($scale$1);
+            returning scalable$0.scale(scale$1);
         );
         final .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp thrice = (
             let
             {
-                .ceylon.language.Float $scale$3 = .ceylon.language.Float.instance(2L + 2L);
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp $scalable$2 = this;
+                .ceylon.language.Float scale$3 = .ceylon.language.Float.instance(2L + 2L);
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp scalable$2 = this;
             }
-            returning $scalable$2.scale($scale$3);
+            returning scalable$2.scale(scale$3);
         );
     }
     

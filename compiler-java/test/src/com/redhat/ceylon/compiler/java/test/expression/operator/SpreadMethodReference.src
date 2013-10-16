@@ -14,15 +14,15 @@ class SpreadMethodReference implements .com.redhat.ceylon.compiler.java.runtime.
                 return (
                     let
                     {
-                        .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $spread$1$iterable = seq;
-                        .ceylon.language.SequenceBuilder<.ceylon.language.String> $spread$1$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor);
-                        .java.lang.Object $spread$1$iteration;
-                        for (.ceylon.language.Iterator<? extends .ceylon.language.String> $spread$1$iterator = $spread$1$iterable.iterator(); !(($spread$1$iteration = $spread$1$iterator.next()) instanceof .ceylon.language.Finished); ) {
-                            .ceylon.language.String $spread$1$element = (.ceylon.language.String)$spread$1$iteration;
-                            $spread$1$sequenceBuilder.append($spread$1$element.initial($$length));
+                        .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$1$iterable = seq;
+                        .ceylon.language.SequenceBuilder<.ceylon.language.String> spread$1$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor);
+                        .java.lang.Object spread$1$iteration;
+                        for (.ceylon.language.Iterator<? extends .ceylon.language.String> spread$1$iterator = spread$1$iterable.iterator(); !((spread$1$iteration = spread$1$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                            .ceylon.language.String spread$1$element = (.ceylon.language.String)spread$1$iteration;
+                            spread$1$sequenceBuilder.append(spread$1$element.initial($$length));
                         }
                     }
-                    returning $spread$1$sequenceBuilder.getSequence();
+                    returning spread$1$sequenceBuilder.getSequence();
                 );
             }
         };

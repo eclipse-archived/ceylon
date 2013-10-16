@@ -92,11 +92,11 @@ final class bug253_ {
         boxer.setOne((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.IntBoxer $ceylontmpopE0 = boxer;
-                .ceylon.language.Integer $ceylontmpopV1 = .ceylon.language.Integer.instance(3L);
-                $ceylontmpopE0.setTwo($ceylontmpopV1);
+                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.IntBoxer $ceylontmpopE$0 = boxer;
+                .ceylon.language.Integer $ceylontmpopV$1 = .ceylon.language.Integer.instance(3L);
+                $ceylontmpopE$0.setTwo($ceylontmpopV$1);
             }
-            returning $ceylontmpopV1;
+            returning $ceylontmpopV$1;
         ));
     }
     

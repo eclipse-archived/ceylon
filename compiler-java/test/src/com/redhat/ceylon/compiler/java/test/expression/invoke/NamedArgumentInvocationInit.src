@@ -23,19 +23,19 @@ class NamedArgumentInvocationInit implements .com.redhat.ceylon.compiler.java.ru
         (
             let
             {
-                long $arg$0$1 = 13L;
-                .java.lang.String $arg$0$0 = "a";
+                long arg$0$1 = 13L;
+                .java.lang.String arg$0$0 = "a";
             }
-            returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInit($arg$0$0, $arg$0$1);
+            returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInit(arg$0$0, arg$0$1);
         ).m$priv();
         (
             let
             {
-                .java.lang.String $arg$1$1 = "";
-                long $arg$1$2 = -4L;
-                boolean $arg$1$0 = true;
+                .java.lang.String arg$1$1 = "";
+                long arg$1$2 = -4L;
+                boolean arg$1$0 = true;
             }
-            returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInit.Inner($arg$1$0, $arg$1$1, $arg$1$2);
+            returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInit.Inner(arg$1$0, arg$1$1, arg$1$2);
         ).m2();
     }
     

@@ -29,29 +29,29 @@ public class NullHandlingOperators implements .com.redhat.ceylon.compiler.java.r
         .ceylon.language.Integer nullSafeMember = (
             let
             {
-                .ceylon.language.Integer $safe$2 = intOrNothing;
+                .ceylon.language.Integer safe$2 = intOrNothing;
             }
-            returning $safe$2 != null ? $safe$2.getNegativeValue() : null;
+            returning safe$2 != null ? safe$2.getNegativeValue() : null;
         );
         .ceylon.language.Integer nullSafeInvoke = (
             let
             {
-                .ceylon.language.Integer $safe$3 = intOrNothing;
+                .ceylon.language.Integer safe$3 = intOrNothing;
             }
-            returning $safe$3 != null ? $safe$3.plus(.ceylon.language.Integer.instance(1L)) : null;
+            returning safe$3 != null ? safe$3.plus(.ceylon.language.Integer.instance(1L)) : null;
         );
         nullSafeInvoke = (
             let
             {
-                .ceylon.language.Integer $safe$5 = intOrNothing;
+                .ceylon.language.Integer safe$5 = intOrNothing;
             }
-            returning $safe$5 != null ? (
+            returning safe$5 != null ? (
                 let
                 {
-                    .ceylon.language.Integer $arg$4$callable$ = $safe$5;
-                    .ceylon.language.Integer $arg$4$0 = .ceylon.language.Integer.instance(1L);
+                    .ceylon.language.Integer arg$4$callable$ = safe$5;
+                    .ceylon.language.Integer arg$4$0 = .ceylon.language.Integer.instance(1L);
                 }
-                returning $arg$4$callable$.plus($arg$4$0);
+                returning arg$4$callable$.plus(arg$4$0);
             ) : null;
         );
         final .ceylon.language.Sequential<? extends .ceylon.language.String> s1 = null;

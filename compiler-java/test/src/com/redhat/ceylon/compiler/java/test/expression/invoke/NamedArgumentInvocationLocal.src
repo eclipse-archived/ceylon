@@ -30,19 +30,19 @@ public class NamedArgumentInvocationLocal implements .com.redhat.ceylon.compiler
         (
             let
             {
-                .java.lang.String $arg$0$1 = "abc";
-                long $arg$0$0 = 123L;
-                v.v($arg$0$0, $arg$0$1);
+                .java.lang.String arg$0$1 = "abc";
+                long arg$0$0 = 123L;
+                v.v(arg$0$0, arg$0$1);
             }
             returning null;
         );
         final long x = (
             let
             {
-                .java.lang.String $arg$1$1 = "abc";
-                long $arg$1$0 = 123L;
+                .java.lang.String arg$1$1 = "abc";
+                long arg$1$0 = 123L;
             }
-            returning m.m($arg$1$0, $arg$1$1);
+            returning m.m(arg$1$0, arg$1$1);
         );
     }
     
@@ -79,19 +79,19 @@ class X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         (
             let
             {
-                boolean $arg$2$1 = true;
-                .java.lang.String $arg$2$0 = "a";
-                foo.foo($arg$2$0, $arg$2$1);
+                boolean arg$2$1 = true;
+                .java.lang.String arg$2$0 = "a";
+                foo.foo(arg$2$0, arg$2$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.X $arg$3$callable$ = this;
-                boolean $arg$3$1 = true;
-                .java.lang.String $arg$3$0 = "a";
-                $arg$3$callable$.foo$priv($arg$3$0, $arg$3$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.X arg$3$callable$ = this;
+                boolean arg$3$1 = true;
+                .java.lang.String arg$3$0 = "a";
+                arg$3$callable$.foo$priv(arg$3$0, arg$3$1);
             }
             returning null;
         );

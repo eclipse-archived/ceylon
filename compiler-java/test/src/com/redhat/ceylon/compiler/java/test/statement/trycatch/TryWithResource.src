@@ -24,63 +24,63 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     public final void m() {
         {
-            .ceylon.language.Closeable $ceylontmptry0 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(0L);
-            $ceylontmptry0.open();
-            .java.lang.Exception $ceylontmpex1 = null;
+            .ceylon.language.Closeable $ceylontmptry$0 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(0L);
+            $ceylontmptry$0.open();
+            .java.lang.Exception $ceylontmpex$1 = null;
             try {
-            } catch (final .java.lang.Exception $ceylontmpex2) {
-                $ceylontmpex1 = $ceylontmpex2;
-                throw $ceylontmpex2;
+            } catch (final .java.lang.Exception $ceylontmpex$2) {
+                $ceylontmpex$1 = $ceylontmpex$2;
+                throw $ceylontmpex$2;
             } finally {
-                if ($ceylontmpex1 != null) try {
-                    $ceylontmptry0.close($ceylontmpex1);
-                } catch (final .java.lang.Exception $ceylontmpclosex3) {
-                    $ceylontmpex1.addSuppressed($ceylontmpclosex3);
-                } else $ceylontmptry0.close($ceylontmpex1);
+                if ($ceylontmpex$1 != null) try {
+                    $ceylontmptry$0.close($ceylontmpex$1);
+                } catch (final .java.lang.Exception $ceylontmpclosex$3) {
+                    $ceylontmpex$1.addSuppressed($ceylontmpclosex$3);
+                } else $ceylontmptry$0.close($ceylontmpex$1);
             }
         }
         {
-            .ceylon.language.Closeable $ceylontmptry12 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(1L);
-            $ceylontmptry12.open();
-            .java.lang.Exception $ceylontmpex13 = null;
+            .ceylon.language.Closeable $ceylontmptry$12 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(1L);
+            $ceylontmptry$12.open();
+            .java.lang.Exception $ceylontmpex$13 = null;
             try {
-                .ceylon.language.Closeable $ceylontmptry8 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(2L);
-                $ceylontmptry8.open();
-                .java.lang.Exception $ceylontmpex9 = null;
+                .ceylon.language.Closeable $ceylontmptry$8 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(2L);
+                $ceylontmptry$8.open();
+                .java.lang.Exception $ceylontmpex$9 = null;
                 try {
-                    .ceylon.language.Closeable $ceylontmptry4 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(3L);
-                    $ceylontmptry4.open();
-                    .java.lang.Exception $ceylontmpex5 = null;
+                    .ceylon.language.Closeable $ceylontmptry$4 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(3L);
+                    $ceylontmptry$4.open();
+                    .java.lang.Exception $ceylontmpex$5 = null;
                     try {
-                    } catch (final .java.lang.Exception $ceylontmpex6) {
-                        $ceylontmpex5 = $ceylontmpex6;
-                        throw $ceylontmpex6;
+                    } catch (final .java.lang.Exception $ceylontmpex$6) {
+                        $ceylontmpex$5 = $ceylontmpex$6;
+                        throw $ceylontmpex$6;
                     } finally {
-                        if ($ceylontmpex5 != null) try {
-                            $ceylontmptry4.close($ceylontmpex5);
-                        } catch (final .java.lang.Exception $ceylontmpclosex7) {
-                            $ceylontmpex5.addSuppressed($ceylontmpclosex7);
-                        } else $ceylontmptry4.close($ceylontmpex5);
+                        if ($ceylontmpex$5 != null) try {
+                            $ceylontmptry$4.close($ceylontmpex$5);
+                        } catch (final .java.lang.Exception $ceylontmpclosex$7) {
+                            $ceylontmpex$5.addSuppressed($ceylontmpclosex$7);
+                        } else $ceylontmptry$4.close($ceylontmpex$5);
                     }
-                } catch (final .java.lang.Exception $ceylontmpex10) {
-                    $ceylontmpex9 = $ceylontmpex10;
-                    throw $ceylontmpex10;
+                } catch (final .java.lang.Exception $ceylontmpex$10) {
+                    $ceylontmpex$9 = $ceylontmpex$10;
+                    throw $ceylontmpex$10;
                 } finally {
-                    if ($ceylontmpex9 != null) try {
-                        $ceylontmptry8.close($ceylontmpex9);
-                    } catch (final .java.lang.Exception $ceylontmpclosex11) {
-                        $ceylontmpex9.addSuppressed($ceylontmpclosex11);
-                    } else $ceylontmptry8.close($ceylontmpex9);
+                    if ($ceylontmpex$9 != null) try {
+                        $ceylontmptry$8.close($ceylontmpex$9);
+                    } catch (final .java.lang.Exception $ceylontmpclosex$11) {
+                        $ceylontmpex$9.addSuppressed($ceylontmpclosex$11);
+                    } else $ceylontmptry$8.close($ceylontmpex$9);
                 }
-            } catch (final .java.lang.Exception $ceylontmpex14) {
-                $ceylontmpex13 = $ceylontmpex14;
-                throw $ceylontmpex14;
+            } catch (final .java.lang.Exception $ceylontmpex$14) {
+                $ceylontmpex$13 = $ceylontmpex$14;
+                throw $ceylontmpex$14;
             } finally {
-                if ($ceylontmpex13 != null) try {
-                    $ceylontmptry12.close($ceylontmpex13);
-                } catch (final .java.lang.Exception $ceylontmpclosex15) {
-                    $ceylontmpex13.addSuppressed($ceylontmpclosex15);
-                } else $ceylontmptry12.close($ceylontmpex13);
+                if ($ceylontmpex$13 != null) try {
+                    $ceylontmptry$12.close($ceylontmpex$13);
+                } catch (final .java.lang.Exception $ceylontmpclosex$15) {
+                    $ceylontmpex$13.addSuppressed($ceylontmpclosex$15);
+                } else $ceylontmptry$12.close($ceylontmpex$13);
             }
         }
     }

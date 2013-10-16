@@ -16,8 +16,8 @@ final class zeroSequencedArgs_ {
                 (
                     let
                     {
-                        .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                        m($reifiedElement, $ceylontmp$elements$0);
+                        .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                        m($reifiedElement, $ceylontmp$elements$$0);
                     }
                     returning null;
                 );

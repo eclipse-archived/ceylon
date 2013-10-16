@@ -18,28 +18,28 @@ class ForIfConditionListExistsIsBool implements .com.redhat.ceylon.compiler.java
                     private boolean x$exhausted;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.ceylon.language.Sequential<? extends .java.lang.Object>)$ceylontmpitem0;
+                            x = (.ceylon.language.Sequential<? extends .java.lang.Object>)$ceylontmpitem$0;
                             return true;
                         }
                     }
-                    private long $y$4;
-                    private .java.lang.Object $z$2;
+                    private long y$4;
+                    private .java.lang.Object z$2;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .java.lang.Object $y$3 = null;
-                            .java.lang.Object $z$1 = null;
-                            if (($z$1 = x.get(.ceylon.language.Integer.instance(0L))) != null) {
-                                $z$2 = $z$1;
-                                if (($y$3 = $z$2) instanceof .ceylon.language.Integer) {
-                                    $y$4 = ((.ceylon.language.Integer)$y$3).longValue();
-                                    if ($y$4 > 0L) {
+                            .java.lang.Object y$3 = null;
+                            .java.lang.Object z$1 = null;
+                            if ((z$1 = x.get(.ceylon.language.Integer.instance(0L))) != null) {
+                                z$2 = z$1;
+                                if ((y$3 = z$2) instanceof .ceylon.language.Integer) {
+                                    y$4 = ((.ceylon.language.Integer)y$3).longValue();
+                                    if (y$4 > 0L) {
                                         break;
                                     }
                                 }
@@ -51,7 +51,7 @@ class ForIfConditionListExistsIsBool implements .com.redhat.ceylon.compiler.java
                     public final .java.lang.Object next() {
                         if (this.next1()) {
                             final .ceylon.language.Sequential<? extends .java.lang.Object> x = this.x;
-                            return .ceylon.language.Boolean.instance($y$4 == 1L);
+                            return .ceylon.language.Boolean.instance(y$4 == 1L);
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

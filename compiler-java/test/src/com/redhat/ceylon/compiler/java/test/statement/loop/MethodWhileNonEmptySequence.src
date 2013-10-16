@@ -7,11 +7,11 @@ class MethodWhileNonEmptySequence implements .com.redhat.ceylon.compiler.java.ru
     
     public final long m(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x) {
         while (true) {
-            .ceylon.language.Sequential<? extends .ceylon.language.Integer> $x$0;
-            if (($x$0 = x) instanceof .ceylon.language.Sequence) {
-                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> $x$1 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)$x$0;
-                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s = $x$1;
-                return $x$1.getFirst().longValue();
+            .ceylon.language.Sequential<? extends .ceylon.language.Integer> x$0;
+            if ((x$0 = x) instanceof .ceylon.language.Sequence) {
+                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> x$1 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)x$0;
+                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s = x$1;
+                return x$1.getFirst().longValue();
             } else break;
         }
         return 0L;
@@ -19,10 +19,10 @@ class MethodWhileNonEmptySequence implements .com.redhat.ceylon.compiler.java.ru
     
     public final long mvar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x) {
         while (true) {
-            .ceylon.language.Sequential<? extends .ceylon.language.Integer> $s$2;
-            if (($s$2 = x) instanceof .ceylon.language.Sequence) {
-                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> $s$3 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)$s$2;
-                return $s$3.getFirst().longValue();
+            .ceylon.language.Sequential<? extends .ceylon.language.Integer> s$2;
+            if ((s$2 = x) instanceof .ceylon.language.Sequence) {
+                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s$3 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)s$2;
+                return s$3.getFirst().longValue();
             } else break;
         }
         return 0L;

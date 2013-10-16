@@ -7,9 +7,9 @@ class MethodIfIsNullUnion implements .com.redhat.ceylon.compiler.java.runtime.mo
     
     public final void m() {
         final .java.lang.Object nothing = null;
-        .java.lang.Object $nothing$1;
-        if (($nothing$1 = nothing) == null || $nothing$1 instanceof .ceylon.language.Character) {
-            final .ceylon.language.Character $nothing$2 = (.ceylon.language.Character)$nothing$1;
+        .java.lang.Object nothing$1;
+        if ((nothing$1 = nothing) == null || nothing$1 instanceof .ceylon.language.Character) {
+            final .ceylon.language.Character nothing$2 = (.ceylon.language.Character)nothing$1;
         }
     }
     

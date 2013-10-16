@@ -8,18 +8,18 @@ class SwitchIsExhaustive implements .com.redhat.ceylon.compiler.java.runtime.mod
     private final .java.lang.String m$priv(final .java.lang.Object b) {
         final .java.lang.String name;
         {
-            .java.lang.Object $sel$0 = b;
-            if ($sel$0 instanceof .ceylon.language.String) {
-                final .java.lang.String $b$4 = ((.ceylon.language.String)$sel$0).toString();
+            .java.lang.Object sel$0 = b;
+            if (sel$0 instanceof .ceylon.language.String) {
+                final .java.lang.String b$4 = ((.ceylon.language.String)sel$0).toString();
                 name = "String";
-            } else if ($sel$0 instanceof .ceylon.language.Integer) {
-                final long $b$3 = ((.ceylon.language.Integer)$sel$0).longValue();
+            } else if (sel$0 instanceof .ceylon.language.Integer) {
+                final long b$3 = ((.ceylon.language.Integer)sel$0).longValue();
                 name = "Integer";
-            } else if ($sel$0 == null) {
-                final .java.lang.Object $b$2 = (.java.lang.Object)$sel$0;
+            } else if (sel$0 == null) {
+                final .java.lang.Object b$2 = (.java.lang.Object)sel$0;
                 name = "Nothing";
-            } else if ($sel$0 instanceof .java.lang.Throwable) {
-                final .java.lang.Throwable $b$1 = (.java.lang.Throwable)$sel$0;
+            } else if (sel$0 instanceof .java.lang.Throwable) {
+                final .java.lang.Throwable b$1 = (.java.lang.Throwable)sel$0;
                 name = "Exception";
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }

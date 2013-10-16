@@ -6,20 +6,20 @@ class MethodIfConditionListIsBoolBool implements .com.redhat.ceylon.compiler.jav
     }
     
     private final boolean m$priv(final .java.lang.Object x, final long z) {
-        boolean $ceylontmpif0 = false;
-        .java.lang.Object $x$1;
-        final long $x$2;
-        if (($x$1 = x) instanceof .ceylon.language.Integer) {
-            $x$2 = ((.ceylon.language.Integer)$x$1).longValue();
-            if ($x$2 > 0L) {
+        boolean $ceylontmpif$0 = false;
+        .java.lang.Object x$1;
+        final long x$2;
+        if ((x$1 = x) instanceof .ceylon.language.Integer) {
+            x$2 = ((.ceylon.language.Integer)x$1).longValue();
+            if (x$2 > 0L) {
                 if (z < 10L) {
-                    $ceylontmpif0 = true;
+                    $ceylontmpif$0 = true;
                 }
             }
         } else {
-            $x$2 = 0L;
+            x$2 = 0L;
         }
-        if ($ceylontmpif0) {
+        if ($ceylontmpif$0) {
             return z == 1L;
         } else {
             return false;
@@ -27,20 +27,20 @@ class MethodIfConditionListIsBoolBool implements .com.redhat.ceylon.compiler.jav
     }
     
     private final boolean synthetic$priv(final .java.lang.Object x, final long z) {
-        boolean $ceylontmpif3 = false;
-        .java.lang.Object $y$4;
-        final long $y$5;
-        if (($y$4 = x) instanceof .ceylon.language.Integer) {
-            $y$5 = ((.ceylon.language.Integer)$y$4).longValue();
-            if ($y$5 > 0L) {
+        boolean $ceylontmpif$3 = false;
+        .java.lang.Object y$4;
+        final long y$5;
+        if ((y$4 = x) instanceof .ceylon.language.Integer) {
+            y$5 = ((.ceylon.language.Integer)y$4).longValue();
+            if (y$5 > 0L) {
                 if (z < 10L) {
-                    $ceylontmpif3 = true;
+                    $ceylontmpif$3 = true;
                 }
             }
         } else {
-            $y$5 = 0L;
+            y$5 = 0L;
         }
-        if ($ceylontmpif3) {
+        if ($ceylontmpif$3) {
             return z == 1L;
         } else {
             return false;

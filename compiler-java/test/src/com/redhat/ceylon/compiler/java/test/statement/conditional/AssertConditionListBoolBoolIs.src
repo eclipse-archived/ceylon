@@ -6,51 +6,51 @@ class AssertConditionListBoolBoolIs implements .com.redhat.ceylon.compiler.java.
     }
     
     private final boolean m$priv(final .java.lang.Object x, final long z) {
-        .java.lang.String $ceylontmpassert0 = null;
-        final long $x$2;
+        .java.lang.String $ceylontmpassert$0 = null;
+        final long x$2;
         if (z < 10L) {
             if (z > 0L) {
-                .java.lang.Object $x$1 = null;
-                if (($x$1 = x) instanceof .ceylon.language.Integer) {
-                    $x$2 = ((.ceylon.language.Integer)$x$1).longValue();
+                .java.lang.Object x$1 = null;
+                if ((x$1 = x) instanceof .ceylon.language.Integer) {
+                    x$2 = ((.ceylon.language.Integer)x$1).longValue();
                 } else {
-                    $x$2 = 0L;
-                    $ceylontmpassert0 = .java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tunviolated ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tviolated ") + "is Integer x";
+                    x$2 = 0L;
+                    $ceylontmpassert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tunviolated ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tviolated ") + "is Integer x";
                 }
             } else {
-                $x$2 = 0L;
-                $ceylontmpassert0 = .java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tviolated ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer x";
+                x$2 = 0L;
+                $ceylontmpassert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tviolated ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer x";
             }
         } else {
-            $x$2 = 0L;
-            $ceylontmpassert0 = .java.lang.System.lineSeparator() + "\tviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tuntested ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer x";
+            x$2 = 0L;
+            $ceylontmpassert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tuntested ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer x";
         }
-        if ($ceylontmpassert0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert0);
-        return $x$2 == 1L;
+        if ($ceylontmpassert$0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert$0);
+        return x$2 == 1L;
     }
     
     private final boolean mvar$priv(final .java.lang.Object x, final long z) {
-        .java.lang.String $ceylontmpassert3 = null;
-        final long $y$5;
+        .java.lang.String $ceylontmpassert$3 = null;
+        final long y$5;
         if (z < 10L) {
             if (z > 0L) {
-                .java.lang.Object $y$4 = null;
-                if (($y$4 = x) instanceof .ceylon.language.Integer) {
-                    $y$5 = ((.ceylon.language.Integer)$y$4).longValue();
+                .java.lang.Object y$4 = null;
+                if ((y$4 = x) instanceof .ceylon.language.Integer) {
+                    y$5 = ((.ceylon.language.Integer)y$4).longValue();
                 } else {
-                    $y$5 = 0L;
-                    $ceylontmpassert3 = .java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tunviolated ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tviolated ") + "is Integer y = x";
+                    y$5 = 0L;
+                    $ceylontmpassert$3 = .java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tunviolated ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tviolated ") + "is Integer y = x";
                 }
             } else {
-                $y$5 = 0L;
-                $ceylontmpassert3 = .java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tviolated ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y = x";
+                y$5 = 0L;
+                $ceylontmpassert$3 = .java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tviolated ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y = x";
             }
         } else {
-            $y$5 = 0L;
-            $ceylontmpassert3 = .java.lang.System.lineSeparator() + "\tviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tuntested ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y = x";
+            y$5 = 0L;
+            $ceylontmpassert$3 = .java.lang.System.lineSeparator() + "\tviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tuntested ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y = x";
         }
-        if ($ceylontmpassert3 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert3);
-        return $y$5 == 1L;
+        if ($ceylontmpassert$3 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert$3);
+        return y$5 == 1L;
     }
     
     public static void main(.java.lang.String[] args) {

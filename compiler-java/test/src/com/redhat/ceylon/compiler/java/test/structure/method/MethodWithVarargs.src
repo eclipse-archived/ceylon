@@ -9,17 +9,17 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                f1$($ceylontmp$ns$2);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                f1$($ceylontmp$ns$$2);
             }
             returning null;
         );
     }
     
     private void f1$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
-        .java.lang.Object $elem$0;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n$iter$1 = ns.iterator(); !(($elem$0 = $n$iter$1.next()) instanceof .ceylon.language.Finished); ) {
-            final long n = ((.ceylon.language.Integer)$elem$0).longValue();
+        .java.lang.Object elem$0;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iter$1 = ns.iterator(); !((elem$0 = n$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+            final long n = ((.ceylon.language.Integer)elem$0).longValue();
         }
     }
     
@@ -37,17 +37,17 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$5 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                f2$(i, $ceylontmp$ns$5);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$$5 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                f2$(i, $ceylontmp$ns$$5);
             }
             returning null;
         );
     }
     
     private void f2$(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
-        .java.lang.Object $elem$3;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n$iter$4 = ns.iterator(); !(($elem$3 = $n$iter$4.next()) instanceof .ceylon.language.Finished); ) {
-            final long n = ((.ceylon.language.Integer)$elem$3).longValue();
+        .java.lang.Object elem$3;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iter$4 = ns.iterator(); !((elem$3 = n$iter$4.next()) instanceof .ceylon.language.Finished); ) {
+            final long n = ((.ceylon.language.Integer)elem$3).longValue();
         }
     }
     
@@ -65,17 +65,17 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$os$8 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                f3$($ceylontmp$os$8);
+                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$os$$8 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                f3$($ceylontmp$os$$8);
             }
             returning null;
         );
     }
     
     private void f3$(final .ceylon.language.Sequential<? extends .java.lang.Object> os) {
-        .java.lang.Object $elem$6;
-        for (.ceylon.language.Iterator<? extends .java.lang.Object> $o$iter$7 = os.iterator(); !(($elem$6 = $o$iter$7.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Object o = (.java.lang.Object)$elem$6;
+        .java.lang.Object elem$6;
+        for (.ceylon.language.Iterator<? extends .java.lang.Object> o$iter$7 = os.iterator(); !((elem$6 = o$iter$7.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Object o = (.java.lang.Object)elem$6;
         }
     }
     

@@ -9,8 +9,8 @@ public final class volatile_ {
         (
             let
             {
-                .java.lang.String $ceylontmp$message$0 = .com.redhat.ceylon.compiler.java.test.issues.bug03xx.$assert.volatile_.volatile$message(assertion);
-                $volatile(assertion, $ceylontmp$message$0);
+                .java.lang.String $ceylontmp$message$$0 = .com.redhat.ceylon.compiler.java.test.issues.bug03xx.$assert.volatile_.volatile$message(assertion);
+                $volatile(assertion, $ceylontmp$message$$0);
             }
             returning null;
         );

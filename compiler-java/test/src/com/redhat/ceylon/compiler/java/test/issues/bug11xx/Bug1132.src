@@ -6,9 +6,9 @@ public class Bug1132Class implements .com.redhat.ceylon.compiler.java.runtime.mo
         (
             let
             {
-                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$f1$0 = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1132Class.$init$f1();
-                .java.lang.String $ceylontmp$o$1 = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1132Class.$init$o($ceylontmp$f1$0);
-                this($ceylontmp$f1$0, $ceylontmp$o$1);
+                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$f1$$0 = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1132Class.$init$f1();
+                .java.lang.String $ceylontmp$o$$1 = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1132Class.$init$o($ceylontmp$f1$$0);
+                this($ceylontmp$f1$$0, $ceylontmp$o$$1);
             }
             returning null;
         );
@@ -18,8 +18,8 @@ public class Bug1132Class implements .com.redhat.ceylon.compiler.java.runtime.mo
         (
             let
             {
-                .java.lang.String $ceylontmp$o$2 = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1132Class.$init$o(f1);
-                this(f1, $ceylontmp$o$2);
+                .java.lang.String $ceylontmp$o$$2 = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1132Class.$init$o(f1);
+                this(f1, $ceylontmp$o$$2);
             }
             returning null;
         );
@@ -60,8 +60,8 @@ public class Bug1132Class2<T> implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                .ceylon.language.Callable<? extends T> $ceylontmp$f1$3 = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1132Class2.<T>$init$f1($reifiedT);
-                this($reifiedT, $ceylontmp$f1$3);
+                .ceylon.language.Callable<? extends T> $ceylontmp$f1$$3 = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1132Class2.<T>$init$f1($reifiedT);
+                this($reifiedT, $ceylontmp$f1$$3);
             }
             returning null;
         );

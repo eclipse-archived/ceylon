@@ -23,18 +23,18 @@ class QualifiedInstantiation implements .com.redhat.ceylon.compiler.java.runtime
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation $arg$0$callable$ = this;
-                .java.lang.String $arg$0$0 = "";
+                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation arg$0$callable$ = this;
+                .java.lang.String arg$0$0 = "";
             }
-            returning $arg$0$callable$.new Inner($arg$0$0);
+            returning arg$0$callable$.new Inner(arg$0$0);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation $arg$1$callable$ = q;
-                .java.lang.String $arg$1$0 = "";
+                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation arg$1$callable$ = q;
+                .java.lang.String arg$1$0 = "";
             }
-            returning $arg$1$callable$.new Inner($arg$1$0);
+            returning arg$1$callable$.new Inner(arg$1$0);
         );
     }
     

@@ -19,12 +19,12 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     private boolean i$exhausted;
                     
                     private final boolean i() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        i$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
+                        i$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
-                            i = (.ceylon.language.Integer)$ceylontmpitem0;
+                            i = (.ceylon.language.Integer)$ceylontmpitem$0;
                             return true;
                         }
                     }
@@ -50,12 +50,12 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     private boolean i$exhausted;
                     
                     private final boolean i() {
-                        final .java.lang.Object $ceylontmpitem1 = iter$0.next();
-                        i$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$1 = iter$0.next();
+                        i$exhausted = $ceylontmpitem$1 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
-                            i = (.ceylon.language.Integer)$ceylontmpitem1;
+                            i = (.ceylon.language.Integer)$ceylontmpitem$1;
                             return true;
                         }
                     }
@@ -81,12 +81,12 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     private boolean i$exhausted;
                     
                     private final boolean i() {
-                        final .java.lang.Object $ceylontmpitem2 = iter$0.next();
-                        i$exhausted = $ceylontmpitem2 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$2 = iter$0.next();
+                        i$exhausted = $ceylontmpitem$2 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
-                            i = (.ceylon.language.Integer)$ceylontmpitem2;
+                            i = (.ceylon.language.Integer)$ceylontmpitem$2;
                             return true;
                         }
                     }
@@ -112,12 +112,12 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     private boolean i$exhausted;
                     
                     private final boolean i() {
-                        final .java.lang.Object $ceylontmpitem3 = iter$0.next();
-                        i$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$3 = iter$0.next();
+                        i$exhausted = $ceylontmpitem$3 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
-                            i = (.ceylon.language.Integer)$ceylontmpitem3;
+                            i = (.ceylon.language.Integer)$ceylontmpitem$3;
                             return true;
                         }
                     }
@@ -144,12 +144,12 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     private boolean i$exhausted;
                     
                     private final boolean i() {
-                        final .java.lang.Object $ceylontmpitem4 = iter$0.next();
-                        i$exhausted = $ceylontmpitem4 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$4 = iter$0.next();
+                        i$exhausted = $ceylontmpitem$4 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
-                            i = (.ceylon.language.Integer)$ceylontmpitem4;
+                            i = (.ceylon.language.Integer)$ceylontmpitem$4;
                             return true;
                         }
                     }
@@ -175,12 +175,12 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     private boolean i$exhausted;
                     
                     private final boolean i() {
-                        final .java.lang.Object $ceylontmpitem5 = iter$0.next();
-                        i$exhausted = $ceylontmpitem5 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$5 = iter$0.next();
+                        i$exhausted = $ceylontmpitem$5 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
-                            i = (.ceylon.language.Integer)$ceylontmpitem5;
+                            i = (.ceylon.language.Integer)$ceylontmpitem$5;
                             return true;
                         }
                     }
@@ -207,12 +207,12 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     private boolean i$exhausted;
                     
                     private final boolean i() {
-                        final .java.lang.Object $ceylontmpitem6 = iter$0.next();
-                        i$exhausted = $ceylontmpitem6 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$6 = iter$0.next();
+                        i$exhausted = $ceylontmpitem$6 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
-                            i = (.ceylon.language.Integer)$ceylontmpitem6;
+                            i = (.ceylon.language.Integer)$ceylontmpitem$6;
                             return true;
                         }
                     }
@@ -238,12 +238,12 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     private boolean i$exhausted;
                     
                     private final boolean i() {
-                        final .java.lang.Object $ceylontmpitem7 = iter$0.next();
-                        i$exhausted = $ceylontmpitem7 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$7 = iter$0.next();
+                        i$exhausted = $ceylontmpitem$7 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
-                            i = (.ceylon.language.Integer)$ceylontmpitem7;
+                            i = (.ceylon.language.Integer)$ceylontmpitem$7;
                             return true;
                         }
                     }

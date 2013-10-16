@@ -22,19 +22,19 @@ class StringBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     private final .ceylon.language.String upper2$priv(final .ceylon.language.String s) {
-        .ceylon.language.String $s$1;
-        if (($s$1 = s) != null) {
-            final .java.lang.String $s$2 = $s$1.toString();
-            return .ceylon.language.String.instance(.ceylon.language.String.getUppercased($s$2));
+        .ceylon.language.String s$1;
+        if ((s$1 = s) != null) {
+            final .java.lang.String s$2 = s$1.toString();
+            return .ceylon.language.String.instance(.ceylon.language.String.getUppercased(s$2));
         }
         return null;
     }
     
     private final .java.lang.String upper3$priv(final .ceylon.language.String s) {
-        .ceylon.language.String $s$4;
-        if (($s$4 = s) != null) {
-            final .java.lang.String $s$5 = $s$4.toString();
-            return .ceylon.language.String.getUppercased($s$5);
+        .ceylon.language.String s$4;
+        if ((s$4 = s) != null) {
+            final .java.lang.String s$5 = s$4.toString();
+            return .ceylon.language.String.getUppercased(s$5);
         } else {
             return "";
         }

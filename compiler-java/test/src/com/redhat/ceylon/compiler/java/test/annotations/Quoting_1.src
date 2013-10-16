@@ -89,9 +89,9 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         return (int)(
             let
             {
-                long $ceylontmphash0 = hash;
+                long $ceylontmphash$0 = hash;
             }
-            returning $ceylontmphash0 ^ $ceylontmphash0 >>> 32;
+            returning $ceylontmphash$0 ^ $ceylontmphash$0 >>> 32;
         );
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

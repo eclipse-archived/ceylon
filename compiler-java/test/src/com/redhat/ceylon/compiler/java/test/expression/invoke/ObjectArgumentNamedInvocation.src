@@ -39,9 +39,9 @@ public final class objectArgumentNamedInvocation_ {
                         return (int)(
                             let
                             {
-                                long $ceylontmphash1 = hash;
+                                long $ceylontmphash$1 = hash;
                             }
-                            returning $ceylontmphash1 ^ $ceylontmphash1 >>> 32;
+                            returning $ceylontmphash$1 ^ $ceylontmphash$1 >>> 32;
                         );
                     }
                     
@@ -50,8 +50,8 @@ public final class objectArgumentNamedInvocation_ {
                         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class);
                     }
                 }
-                final o_ $arg$0$0 = new o_();
-                callFunction.callFunction($arg$0$0);
+                final o_ arg$0$0 = new o_();
+                callFunction.callFunction(arg$0$0);
             }
             returning null;
         );

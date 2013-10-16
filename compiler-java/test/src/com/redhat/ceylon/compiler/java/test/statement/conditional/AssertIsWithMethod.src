@@ -10,16 +10,16 @@ class AssertIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     public final void m() {
-        final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub $y$2;
-        .java.lang.Object $y$1 = null;
-        if (($y$1 = give$priv()) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
-            $y$2 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)$y$1;
+        final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub y$2;
+        .java.lang.Object y$1 = null;
+        if ((y$1 = give$priv()) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
+            y$2 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)y$1;
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is FooSub y = give()"));
-        $y$2.foo();
-        final .java.lang.Object $y2$5;
-        .java.lang.Object $y2$4 = null;
-        if (($y2$4 = give$priv()) == null) {
-            $y2$5 = $y2$4;
+        y$2.foo();
+        final .java.lang.Object y2$5;
+        .java.lang.Object y2$4 = null;
+        if ((y2$4 = give$priv()) == null) {
+            y2$5 = y2$4;
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null y2 = give()"));
     }
     

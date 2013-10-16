@@ -6,19 +6,19 @@ class MethodIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     public final long m(final .ceylon.language.Integer x) {
-        .ceylon.language.Integer $x$1;
-        if (($x$1 = x) != null) {
-            final long $x$2 = $x$1.longValue();
-            return $x$2;
+        .ceylon.language.Integer x$1;
+        if ((x$1 = x) != null) {
+            final long x$2 = x$1.longValue();
+            return x$2;
         }
         return 0L;
     }
     
     public final long m2(final .ceylon.language.Integer x) {
-        .ceylon.language.Integer $y$4;
-        if (($y$4 = x) != null) {
-            final long $y$5 = $y$4.longValue();
-            return $y$5;
+        .ceylon.language.Integer y$4;
+        if ((y$4 = x) != null) {
+            final long y$5 = y$4.longValue();
+            return y$5;
         }
         return 0L;
     }

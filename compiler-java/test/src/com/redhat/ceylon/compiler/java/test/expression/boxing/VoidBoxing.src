@@ -60,8 +60,8 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 (
                     let
                     {
-                        .java.lang.Object $arg$0$0 = .ceylon.language.String.instance("");
-                        returnsvoid$priv($arg$0$0);
+                        .java.lang.Object arg$0$0 = .ceylon.language.String.instance("");
+                        returnsvoid$priv(arg$0$0);
                     }
                     returning null;
                 );
@@ -72,9 +72,9 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
         final .java.lang.Object v6 = (
             let
             {
-                .java.lang.Object $arg$1$0 = .ceylon.language.String.instance("");
+                .java.lang.Object arg$1$0 = .ceylon.language.String.instance("");
             }
-            returning returnsAnything$priv($arg$1$0);
+            returning returnsAnything$priv(arg$1$0);
         );
         returnsvoid$priv((
             let
@@ -186,8 +186,8 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 (
                     let
                     {
-                        .java.lang.Object $arg$2$0 = .ceylon.language.String.instance("");
-                        returnsvoid$priv($arg$2$0);
+                        .java.lang.Object arg$2$0 = .ceylon.language.String.instance("");
+                        returnsvoid$priv(arg$2$0);
                     }
                     returning null;
                 );
@@ -198,9 +198,9 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
         v = (
             let
             {
-                .java.lang.Object $arg$3$0 = .ceylon.language.String.instance("");
+                .java.lang.Object arg$3$0 = .ceylon.language.String.instance("");
             }
-            returning returnsAnything$priv($arg$3$0);
+            returning returnsAnything$priv(arg$3$0);
         );
         v = (
             let

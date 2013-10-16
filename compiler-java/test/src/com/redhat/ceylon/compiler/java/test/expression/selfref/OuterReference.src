@@ -44,8 +44,8 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
             (
                 let
                 {
-                    boolean $ceylontmp$b$0 = $InnerClass$init$b();
-                    this($ceylontmp$b$0);
+                    boolean $ceylontmp$b$$0 = $InnerClass$init$b();
+                    this($ceylontmp$b$$0);
                 }
                 returning null;
             );
@@ -58,9 +58,9 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
             return (
                 let
                 {
-                    boolean $ceylontmp$b$1 = m$b();
+                    boolean $ceylontmp$b$$1 = m$b();
                 }
-                returning m$priv$($ceylontmp$b$1);
+                returning m$priv$($ceylontmp$b$$1);
             );
         }
         
@@ -94,9 +94,9 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
             return (
                 let
                 {
-                    boolean $ceylontmp$b$2 = m$b();
+                    boolean $ceylontmp$b$$2 = m$b();
                 }
-                returning m$priv$($ceylontmp$b$2);
+                returning m$priv$($ceylontmp$b$$2);
             );
         }
         
@@ -129,9 +129,9 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
                 (
                     let
                     {
-                        LocalClass$impl $ceylontmp$impl$3 = new LocalClass$impl();
-                        boolean $ceylontmp$b$4 = $ceylontmp$impl$3.$init$b();
-                        this($ceylontmp$b$4);
+                        LocalClass$impl $ceylontmp$impl$$3 = new LocalClass$impl();
+                        boolean $ceylontmp$b$$4 = $ceylontmp$impl$$3.$init$b();
+                        this($ceylontmp$b$$4);
                     }
                     returning null;
                 );
@@ -159,8 +159,8 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
                 (
                     let
                     {
-                        boolean $ceylontmp$b$5 = m$b();
-                        m$priv$($ceylontmp$b$5);
+                        boolean $ceylontmp$b$$5 = m$b();
+                        m$priv$($ceylontmp$b$$5);
                     }
                     returning null;
                 );

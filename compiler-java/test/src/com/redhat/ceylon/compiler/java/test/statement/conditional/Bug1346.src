@@ -40,16 +40,16 @@ public final class bug1346_ {
     public static void bug1346() {
         final .java.lang.Object x = new .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_A();
         if (true) {
-            final .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_A $x$6;
-            .java.lang.Object $x$5 = null;
-            if (($x$5 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_A) {
-                $x$6 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_A)$x$5;
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_A x$6;
+            .java.lang.Object x$5 = null;
+            if ((x$5 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_A) {
+                x$6 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_A)x$5;
             } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Bug1346_A x"));
         } else {
-            final .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_B $x$3;
-            .java.lang.Object $x$2 = null;
-            if (($x$2 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_B) {
-                $x$3 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_B)$x$2;
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_B x$3;
+            .java.lang.Object x$2 = null;
+            if ((x$2 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_B) {
+                x$3 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_B)x$2;
             } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Bug1346_B x"));
         }
     }

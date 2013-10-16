@@ -7,10 +7,10 @@ class AssertIsNullUnion implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     public final void m() {
         final .java.lang.Object nothing = null;
-        final .ceylon.language.Character $nothing$2;
-        .java.lang.Object $nothing$1 = null;
-        if (($nothing$1 = nothing) == null || $nothing$1 instanceof .ceylon.language.Character) {
-            $nothing$2 = (.ceylon.language.Character)$nothing$1;
+        final .ceylon.language.Character nothing$2;
+        .java.lang.Object nothing$1 = null;
+        if ((nothing$1 = nothing) == null || nothing$1 instanceof .ceylon.language.Character) {
+            nothing$2 = (.ceylon.language.Character)nothing$1;
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Character? nothing"));
     }
     

@@ -34,8 +34,8 @@ class FuctionalParameter implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .java.lang.String $arg$0$0 = "";
-                voidFp$priv($arg$0$0);
+                .java.lang.String arg$0$0 = "";
+                voidFp$priv(arg$0$0);
             }
             returning null;
         );
@@ -43,8 +43,8 @@ class FuctionalParameter implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .java.lang.String $arg$1$0 = "";
-                sharedVoidFp($arg$1$0);
+                .java.lang.String arg$1$0 = "";
+                sharedVoidFp(arg$1$0);
             }
             returning null;
         );
@@ -53,17 +53,17 @@ class FuctionalParameter implements .com.redhat.ceylon.compiler.java.runtime.mod
         s = (
             let
             {
-                .java.lang.String $arg$2$0 = "";
+                .java.lang.String arg$2$0 = "";
             }
-            returning stringFp$priv($arg$2$0);
+            returning stringFp$priv(arg$2$0);
         );
         s = sharedStringFp("");
         s = (
             let
             {
-                .java.lang.String $arg$3$0 = "";
+                .java.lang.String arg$3$0 = "";
             }
-            returning sharedStringFp($arg$3$0);
+            returning sharedStringFp(arg$3$0);
         );
     }
     
@@ -72,8 +72,8 @@ class FuctionalParameter implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .ceylon.language.String $arg$4$0 = .ceylon.language.String.instance("");
-                voidFp1.$call($arg$4$0);
+                .ceylon.language.String arg$4$0 = .ceylon.language.String.instance("");
+                voidFp1.$call(arg$4$0);
             }
             returning null;
         );
@@ -82,9 +82,9 @@ class FuctionalParameter implements .com.redhat.ceylon.compiler.java.runtime.mod
         s = (
             let
             {
-                .ceylon.language.String $arg$5$0 = .ceylon.language.String.instance("");
+                .ceylon.language.String arg$5$0 = .ceylon.language.String.instance("");
             }
-            returning stringFp1.$call($arg$5$0);
+            returning stringFp1.$call(arg$5$0);
         ).toString();
     }
     

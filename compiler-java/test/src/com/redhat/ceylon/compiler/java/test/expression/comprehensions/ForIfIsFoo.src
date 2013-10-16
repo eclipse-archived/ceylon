@@ -18,23 +18,23 @@ class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                     private boolean x$exhausted;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmpitem0;
+                            x = (.java.lang.Object)$ceylontmpitem$0;
                             return true;
                         }
                     }
-                    private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo $x$2;
+                    private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo x$2;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .java.lang.Object $x$1 = null;
-                            if (($x$1 = x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo) {
-                                $x$2 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)$x$1;
+                            .java.lang.Object x$1 = null;
+                            if ((x$1 = x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo) {
+                                x$2 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x$1;
                                 break;
                             }
                         }
@@ -44,7 +44,7 @@ class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                     public final .java.lang.Object next() {
                         if (this.next1()) {
                             final .java.lang.Object x = this.x;
-                            return $x$2.foo();
+                            return x$2.foo();
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
@@ -65,23 +65,23 @@ class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                     private boolean y$exhausted;
                     
                     private final boolean y() {
-                        final .java.lang.Object $ceylontmpitem3 = iter$0.next();
-                        y$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$3 = iter$0.next();
+                        y$exhausted = $ceylontmpitem$3 == .ceylon.language.finished_.get_();
                         if (y$exhausted) {
                             return false;
                         } else {
-                            y = (.java.lang.Object)$ceylontmpitem3;
+                            y = (.java.lang.Object)$ceylontmpitem$3;
                             return true;
                         }
                     }
-                    private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo $x$5;
+                    private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo x$5;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.y()) break;
-                            .java.lang.Object $x$4 = null;
-                            if (($x$4 = y) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo) {
-                                $x$5 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)$x$4;
+                            .java.lang.Object x$4 = null;
+                            if ((x$4 = y) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo) {
+                                x$5 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x$4;
                                 break;
                             }
                         }
@@ -91,7 +91,7 @@ class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                     public final .java.lang.Object next() {
                         if (this.next1()) {
                             final .java.lang.Object y = this.y;
-                            return $x$5.foo();
+                            return x$5.foo();
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

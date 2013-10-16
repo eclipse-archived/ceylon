@@ -23,9 +23,9 @@ final class test_ {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.operator.NullSafeAnythingMethodReference $safe$0 = handler;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.NullSafeAnythingMethodReference safe$0 = handler;
             }
-            returning $safe$0 != null ? $safe$0.invoke() : null;
+            returning safe$0 != null ? safe$0.invoke() : null;
         );
     }
 }

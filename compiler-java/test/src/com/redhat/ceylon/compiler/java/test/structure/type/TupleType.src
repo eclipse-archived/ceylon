@@ -21,9 +21,9 @@ final class add_ {
         return (
             let
             {
-                .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>>> $ceylontmp$floats$0 = .com.redhat.ceylon.compiler.java.test.structure.type.add_.add$floats();
+                .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>>> $ceylontmp$floats$$0 = .com.redhat.ceylon.compiler.java.test.structure.type.add_.add$floats();
             }
-            returning add($ceylontmp$floats$0);
+            returning add($ceylontmp$floats$$0);
         );
     }
     
@@ -103,12 +103,12 @@ final class tupleTypeTest_ {
                     private boolean s$exhausted;
                     
                     private final boolean s() {
-                        final .java.lang.Object $ceylontmpitem1 = iter$0.next();
-                        s$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$1 = iter$0.next();
+                        s$exhausted = $ceylontmpitem$1 == .ceylon.language.finished_.get_();
                         if (s$exhausted) {
                             return false;
                         } else {
-                            s = (.ceylon.language.String)$ceylontmpitem1;
+                            s = (.ceylon.language.String)$ceylontmpitem$1;
                             return true;
                         }
                     }

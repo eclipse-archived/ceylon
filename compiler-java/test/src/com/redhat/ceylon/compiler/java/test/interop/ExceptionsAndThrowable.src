@@ -25,9 +25,9 @@ public final class testExceptions_ {
     public static void testExceptions(final .java.lang.Throwable param) {
         final .java.lang.Throwable x = new .com.redhat.ceylon.compiler.java.test.interop.MyException();
         final .java.lang.Object o = x;
-        .java.lang.Object $o$1;
-        if (($o$1 = o) instanceof .java.lang.Throwable) {
-            final .java.lang.Throwable $o$2 = (.java.lang.Throwable)$o$1;
+        .java.lang.Object o$1;
+        if ((o$1 = o) instanceof .java.lang.Throwable) {
+            final .java.lang.Throwable o$2 = (.java.lang.Throwable)o$1;
         }
         try {
         } catch (final .java.lang.Exception z) {
@@ -44,21 +44,21 @@ public final class testThrowable_ {
         if (2L > 1L) {
             throw new .ceylon.language.Exception(.ceylon.language.String.instance("error"), j.throwable());
         }
-        .java.lang.Object $t$5;
-        if (($t$5 = t) instanceof .com.redhat.ceylon.compiler.java.test.interop.MyException) {
-            final .com.redhat.ceylon.compiler.java.test.interop.MyException $t$6 = (.com.redhat.ceylon.compiler.java.test.interop.MyException)$t$5;
+        .java.lang.Object t$5;
+        if ((t$5 = t) instanceof .com.redhat.ceylon.compiler.java.test.interop.MyException) {
+            final .com.redhat.ceylon.compiler.java.test.interop.MyException t$6 = (.com.redhat.ceylon.compiler.java.test.interop.MyException)t$5;
         }
-        .java.lang.Object $t$8;
-        if (($t$8 = t) instanceof .java.lang.Error) {
-            final .java.lang.Error $t$9 = (.java.lang.Error)$t$8;
+        .java.lang.Object t$8;
+        if ((t$8 = t) instanceof .java.lang.Error) {
+            final .java.lang.Error t$9 = (.java.lang.Error)t$8;
         }
-        .java.lang.Object $t$11;
-        if (($t$11 = t) instanceof .java.lang.RuntimeException) {
-            final .java.lang.RuntimeException $t$12 = (.java.lang.RuntimeException)$t$11;
+        .java.lang.Object t$11;
+        if ((t$11 = t) instanceof .java.lang.RuntimeException) {
+            final .java.lang.RuntimeException t$12 = (.java.lang.RuntimeException)t$11;
         }
-        .java.lang.Object $t$14;
-        if (($t$14 = t) instanceof .java.lang.Exception) {
-            final .java.lang.Exception $t$15 = (.java.lang.Exception)$t$14;
+        .java.lang.Object t$14;
+        if ((t$14 = t) instanceof .java.lang.Exception) {
+            final .java.lang.Exception t$15 = (.java.lang.Exception)t$14;
         }
     }
 }
@@ -70,10 +70,10 @@ public class ExceptionsAndThrowableRefinement extends .com.redhat.ceylon.compile
     
     @.java.lang.Override
     public final .java.lang.Throwable t(final .java.lang.Throwable x) {
-        .java.lang.Throwable $x$17;
-        if (($x$17 = x) != null) {
-            final .java.lang.Throwable $x$18 = $x$17;
-            return $x$18;
+        .java.lang.Throwable x$17;
+        if ((x$17 = x) != null) {
+            final .java.lang.Throwable x$18 = x$17;
+            return x$18;
         } else {
             return (.java.lang.Throwable).ceylon.language.nothing_.get_();
         }
@@ -81,10 +81,10 @@ public class ExceptionsAndThrowableRefinement extends .com.redhat.ceylon.compile
     
     @.java.lang.Override
     public final .java.lang.Error e(final .java.lang.Error x) {
-        .java.lang.Error $x$20;
-        if (($x$20 = x) != null) {
-            final .java.lang.Error $x$21 = $x$20;
-            return $x$21;
+        .java.lang.Error x$20;
+        if ((x$20 = x) != null) {
+            final .java.lang.Error x$21 = x$20;
+            return x$21;
         } else {
             return (.java.lang.Error).ceylon.language.nothing_.get_();
         }
@@ -92,10 +92,10 @@ public class ExceptionsAndThrowableRefinement extends .com.redhat.ceylon.compile
     
     @.java.lang.Override
     public final .java.lang.Exception x(final .java.lang.Exception x) {
-        .java.lang.Exception $x$23;
-        if (($x$23 = x) != null) {
-            final .java.lang.Exception $x$24 = $x$23;
-            return $x$24;
+        .java.lang.Exception x$23;
+        if ((x$23 = x) != null) {
+            final .java.lang.Exception x$24 = x$23;
+            return x$24;
         } else {
             return (.java.lang.Exception).ceylon.language.nothing_.get_();
         }
@@ -103,10 +103,10 @@ public class ExceptionsAndThrowableRefinement extends .com.redhat.ceylon.compile
     
     @.java.lang.Override
     public final .java.lang.RuntimeException rtx(final .java.lang.RuntimeException x) {
-        .java.lang.RuntimeException $x$26;
-        if (($x$26 = x) != null) {
-            final .java.lang.RuntimeException $x$27 = $x$26;
-            return $x$27;
+        .java.lang.RuntimeException x$26;
+        if ((x$26 = x) != null) {
+            final .java.lang.RuntimeException x$27 = x$26;
+            return x$27;
         } else {
             return (.java.lang.RuntimeException).ceylon.language.nothing_.get_();
         }

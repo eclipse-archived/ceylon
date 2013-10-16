@@ -21,12 +21,12 @@ public final class innerMethodInvocation_ {
             }
         }
         final fib_ fib = new fib_();
-        final long $ceylontmpstart1 = 0L;
-        final long $ceylontmpend2 = 50L;
-        final boolean $ceylontmpincreasing3 = $ceylontmpstart1 <= $ceylontmpend2;
-        final long $ceylontmpincr4 = $ceylontmpincreasing3 ? 1L : -1L;
-        for (long $n$5 = $ceylontmpstart1; $ceylontmpincreasing3 ? $n$5 - $ceylontmpend2 <= 0L : $n$5 - $ceylontmpend2 >= 0L; $n$5 += $ceylontmpincr4) {
-            final long n = $n$5;
+        final long $ceylontmpstart$1 = 0L;
+        final long $ceylontmpend$2 = 50L;
+        final boolean $ceylontmpincreasing$3 = $ceylontmpstart$1 <= $ceylontmpend$2;
+        final long $ceylontmpincr$4 = $ceylontmpincreasing$3 ? 1L : -1L;
+        for (long n$5 = $ceylontmpstart$1; $ceylontmpincreasing$3 ? n$5 - $ceylontmpend$2 <= 0L : n$5 - $ceylontmpend$2 >= 0L; n$5 += $ceylontmpincr$4) {
+            final long n = n$5;
             .ceylon.language.print_.print(.ceylon.language.String.instance("n! = " + .ceylon.language.Integer.toString(fib.fib(n))));
         }
     }

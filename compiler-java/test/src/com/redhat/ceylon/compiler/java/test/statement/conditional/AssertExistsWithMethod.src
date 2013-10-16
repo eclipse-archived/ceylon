@@ -10,12 +10,12 @@ class AssertExistsWithMethod implements .com.redhat.ceylon.compiler.java.runtime
     }
     
     public final long m() {
-        final long $y$2;
-        .ceylon.language.Integer $y$1 = null;
-        if (($y$1 = give$priv()) != null) {
-            $y$2 = $y$1.longValue();
+        final long y$2;
+        .ceylon.language.Integer y$1 = null;
+        if ((y$1 = give$priv()) != null) {
+            y$2 = y$1.longValue();
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists y=give()"));
-        return $y$2;
+        return y$2;
     }
     
     public static void main(.java.lang.String[] args) {

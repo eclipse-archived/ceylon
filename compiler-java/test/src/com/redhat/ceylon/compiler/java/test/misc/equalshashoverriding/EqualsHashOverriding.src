@@ -16,10 +16,10 @@ class EqualsHashOverriding implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {
-        .java.lang.Object $that$1;
-        if (($that$1 = that) instanceof .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding) {
-            final .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding $that$2 = (.com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding)$that$1;
-            return .ceylon.language.String.equals(getS$priv(), .ceylon.language.String.instance($that$2.getS$priv()));
+        .java.lang.Object that$1;
+        if ((that$1 = that) instanceof .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding) {
+            final .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding that$2 = (.com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding)that$1;
+            return .ceylon.language.String.equals(getS$priv(), .ceylon.language.String.instance(that$2.getS$priv()));
         } else {
             return false;
         }
@@ -30,9 +30,9 @@ class EqualsHashOverriding implements .com.redhat.ceylon.compiler.java.runtime.m
         return (int)(
             let
             {
-                long $ceylontmphash4 = .ceylon.language.String.hashCode(getS$priv());
+                long $ceylontmphash$4 = .ceylon.language.String.hashCode(getS$priv());
             }
-            returning $ceylontmphash4 ^ $ceylontmphash4 >>> 32;
+            returning $ceylontmphash$4 ^ $ceylontmphash$4 >>> 32;
         );
     }
     
@@ -54,9 +54,9 @@ class EqualsHashOverriding2 implements .com.redhat.ceylon.compiler.java.runtime.
         return (int)(
             let
             {
-                long $ceylontmphash5 = hash;
+                long $ceylontmphash$5 = hash;
             }
-            returning $ceylontmphash5 ^ $ceylontmphash5 >>> 32;
+            returning $ceylontmphash$5 ^ $ceylontmphash$5 >>> 32;
         );
     }
     
@@ -78,9 +78,9 @@ class EqualsHashOverriding3 implements .com.redhat.ceylon.compiler.java.runtime.
         return (int)(
             let
             {
-                long $ceylontmphash6 = hash;
+                long $ceylontmphash$6 = hash;
             }
-            returning $ceylontmphash6 ^ $ceylontmphash6 >>> 32;
+            returning $ceylontmphash$6 ^ $ceylontmphash$6 >>> 32;
         );
     }
     

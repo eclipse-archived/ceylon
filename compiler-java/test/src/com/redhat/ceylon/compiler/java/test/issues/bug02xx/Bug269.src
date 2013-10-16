@@ -19,9 +19,9 @@ class Bug269 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (int)(
             let
             {
-                long $ceylontmphash0 = hash;
+                long $ceylontmphash$0 = hash;
             }
-            returning $ceylontmphash0 ^ $ceylontmphash0 >>> 32;
+            returning $ceylontmphash$0 ^ $ceylontmphash$0 >>> 32;
         );
     }
     
@@ -53,9 +53,9 @@ class Bug269_2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         return (int)(
             let
             {
-                long $ceylontmphash2 = 0L;
+                long $ceylontmphash$2 = 0L;
             }
-            returning $ceylontmphash2 ^ $ceylontmphash2 >>> 32;
+            returning $ceylontmphash$2 ^ $ceylontmphash$2 >>> 32;
         );
     }
     

@@ -11,9 +11,9 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning narySequenced$(s1, s2, s3, s4, $ceylontmp$s$0);
+            returning narySequenced$(s1, s2, s3, s4, $ceylontmp$s$$0);
         );
     }
     

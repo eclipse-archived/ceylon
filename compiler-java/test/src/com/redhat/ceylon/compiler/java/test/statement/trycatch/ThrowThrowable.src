@@ -8,10 +8,10 @@ class ThrowThrowable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     private final void m$priv() {
         try {
         } catch (final .java.lang.Exception e) {
-            .java.lang.Throwable $cause$1;
-            if (($cause$1 = e.getCause()) != null) {
-                final .java.lang.Throwable $cause$2 = $cause$1;
-                throw $cause$2;
+            .java.lang.Throwable cause$1;
+            if ((cause$1 = e.getCause()) != null) {
+                final .java.lang.Throwable cause$2 = cause$1;
+                throw cause$2;
             }
         }
     }

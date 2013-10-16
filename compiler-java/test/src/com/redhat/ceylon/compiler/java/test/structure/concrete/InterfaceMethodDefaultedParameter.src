@@ -112,79 +112,79 @@ final class named_ {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$0$callable$ = i;
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$0$this$ = $arg$0$callable$;
-                long $arg$0$0 = $arg$0$this$.m$i();
-                $arg$0$callable$.m($arg$0$0);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$0$callable$ = i;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$0$this$ = arg$0$callable$;
+                long arg$0$0 = arg$0$this$.m$i();
+                arg$0$callable$.m(arg$0$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> $arg$1$callable$ = i2;
-                long $arg$1$0 = 2L;
-                $arg$1$callable$.m($arg$1$0);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> arg$1$callable$ = i2;
+                long arg$1$0 = 2L;
+                arg$1$callable$.m(arg$1$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> $arg$2$callable$ = i2;
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> $arg$2$this$ = $arg$2$callable$;
-                long $arg$2$0 = $arg$2$this$.m2$i();
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> arg$2$callable$ = i2;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> arg$2$this$ = arg$2$callable$;
+                long arg$2$0 = arg$2$this$.m2$i();
             }
-            returning $arg$2$callable$.m2($arg$2$0);
+            returning arg$2$callable$.m2(arg$2$0);
         );
         i.m2(2L);
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$3$callable$ = i;
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$3$this$ = $arg$3$callable$;
-                long $arg$3$0 = $arg$3$this$.m3$i();
-                long $arg$3$1 = $arg$3$this$.m3$n($arg$3$0);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$3$callable$ = i;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$3$this$ = arg$3$callable$;
+                long arg$3$0 = arg$3$this$.m3$i();
+                long arg$3$1 = arg$3$this$.m3$n(arg$3$0);
             }
-            returning $arg$3$callable$.m3($arg$3$0, $arg$3$1);
+            returning arg$3$callable$.m3(arg$3$0, arg$3$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$4$callable$ = i;
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$4$this$ = $arg$4$callable$;
-                long $arg$4$0 = 5L;
-                long $arg$4$1 = $arg$4$this$.m3$n($arg$4$0);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$4$callable$ = i;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$4$this$ = arg$4$callable$;
+                long arg$4$0 = 5L;
+                long arg$4$1 = arg$4$this$.m3$n(arg$4$0);
             }
-            returning $arg$4$callable$.m3($arg$4$0, $arg$4$1);
+            returning arg$4$callable$.m3(arg$4$0, arg$4$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$5$callable$ = i;
-                long $arg$5$0 = 4L;
-                long $arg$5$1 = 5L;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$5$callable$ = i;
+                long arg$5$0 = 4L;
+                long arg$5$1 = 5L;
             }
-            returning $arg$5$callable$.m3($arg$5$0, $arg$5$1);
+            returning arg$5$callable$.m3(arg$5$0, arg$5$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$6$callable$ = i;
-                long $arg$6$1 = 5L;
-                long $arg$6$0 = 4L;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$6$callable$ = i;
+                long arg$6$1 = 5L;
+                long arg$6$0 = 4L;
             }
-            returning $arg$6$callable$.m3($arg$6$0, $arg$6$1);
+            returning arg$6$callable$.m3(arg$6$0, arg$6$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$7$callable$ = i;
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$7$this$ = $arg$7$callable$;
-                long $arg$7$1 = 5L;
-                long $arg$7$0 = $arg$7$this$.m3$i();
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$7$callable$ = i;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$7$this$ = arg$7$callable$;
+                long arg$7$1 = 5L;
+                long arg$7$0 = arg$7$this$.m3$i();
             }
-            returning $arg$7$callable$.m3($arg$7$0, $arg$7$1);
+            returning arg$7$callable$.m3(arg$7$0, arg$7$1);
         );
         i.m4(5L);
         i.m4(4L, 5L);
@@ -246,9 +246,9 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$i$8 = m$i();
+                long $ceylontmp$i$$8 = m$i();
             }
-            returning m$($ceylontmp$i$8);
+            returning m$($ceylontmp$i$$8);
         );
     }
     
@@ -265,9 +265,9 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$i$9 = m2$i();
+                long $ceylontmp$i$$9 = m2$i();
             }
-            returning m2$($ceylontmp$i$9);
+            returning m2$($ceylontmp$i$$9);
         );
     }
     
@@ -284,10 +284,10 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$i$10 = m3$i();
-                long $ceylontmp$n$11 = m3$n($ceylontmp$i$10);
+                long $ceylontmp$i$$10 = m3$i();
+                long $ceylontmp$n$$11 = m3$n($ceylontmp$i$$10);
             }
-            returning m3$($ceylontmp$i$10, $ceylontmp$n$11);
+            returning m3$($ceylontmp$i$$10, $ceylontmp$n$$11);
         );
     }
     
@@ -295,9 +295,9 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$n$12 = m3$n(i);
+                long $ceylontmp$n$$12 = m3$n(i);
             }
-            returning m3$(i, $ceylontmp$n$12);
+            returning m3$(i, $ceylontmp$n$$12);
         );
     }
     
@@ -314,9 +314,9 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$n$13 = m4$n(i);
+                long $ceylontmp$n$$13 = m4$n(i);
             }
-            returning m4$(i, $ceylontmp$n$13);
+            returning m4$(i, $ceylontmp$n$$13);
         );
     }
     
@@ -333,10 +333,10 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                T $ceylontmp$t$14 = m5$t($reifiedU, i);
-                U $ceylontmp$u$15 = m5$u($reifiedU, i, $ceylontmp$t$14);
+                T $ceylontmp$t$$14 = m5$t($reifiedU, i);
+                U $ceylontmp$u$$15 = m5$u($reifiedU, i, $ceylontmp$t$$14);
             }
-            returning m5$($reifiedU, i, $ceylontmp$t$14, $ceylontmp$u$15);
+            returning m5$($reifiedU, i, $ceylontmp$t$$14, $ceylontmp$u$$15);
         );
     }
     
@@ -344,9 +344,9 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                U $ceylontmp$u$16 = m5$u($reifiedU, i, t);
+                U $ceylontmp$u$$16 = m5$u($reifiedU, i, t);
             }
-            returning m5$($reifiedU, i, t, $ceylontmp$u$16);
+            returning m5$($reifiedU, i, t, $ceylontmp$u$$16);
         );
     }
     

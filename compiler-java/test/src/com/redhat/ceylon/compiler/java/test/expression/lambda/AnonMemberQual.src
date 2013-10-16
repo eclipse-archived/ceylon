@@ -49,8 +49,8 @@ class AnonMemberQualClass implements .com.redhat.ceylon.compiler.java.runtime.mo
         (
             let
             {
-                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$f$0 = m$f();
-                m$priv$($ceylontmp$f$0);
+                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$f$$0 = m$f();
+                m$priv$($ceylontmp$f$$0);
             }
             returning null;
         );

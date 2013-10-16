@@ -6,39 +6,39 @@ class AssertConditionListIsBool implements .com.redhat.ceylon.compiler.java.runt
     }
     
     private final void m$priv(final .java.lang.Object x) {
-        .java.lang.String $ceylontmpassert0 = null;
-        final .java.lang.String $x$2;
-        .java.lang.Object $x$1 = null;
-        if (($x$1 = x) instanceof .ceylon.language.String) {
-            $x$2 = ((.ceylon.language.String)$x$1).toString();
-            if (.ceylon.language.String.getUppercased($x$2).equals("S")) {
+        .java.lang.String $ceylontmpassert$0 = null;
+        final .java.lang.String x$2;
+        .java.lang.Object x$1 = null;
+        if ((x$1 = x) instanceof .ceylon.language.String) {
+            x$2 = ((.ceylon.language.String)x$1).toString();
+            if (.ceylon.language.String.getUppercased(x$2).equals("S")) {
             } else {
-                $ceylontmpassert0 = .java.lang.System.lineSeparator() + "\tunviolated " + "is String x" + (.java.lang.System.lineSeparator() + "\tviolated ") + "x.uppercased==\"S\"";
+                $ceylontmpassert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "is String x" + (.java.lang.System.lineSeparator() + "\tviolated ") + "x.uppercased==\"S\"";
             }
         } else {
-            $x$2 = null;
-            $ceylontmpassert0 = .java.lang.System.lineSeparator() + "\tviolated " + "is String x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "x.uppercased==\"S\"";
+            x$2 = null;
+            $ceylontmpassert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "is String x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "x.uppercased==\"S\"";
         }
-        if ($ceylontmpassert0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert0);
-        .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased($x$2)));
+        if ($ceylontmpassert$0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert$0);
+        .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased(x$2)));
     }
     
     private final void mvar$priv(final .java.lang.Object x) {
-        .java.lang.String $ceylontmpassert3 = null;
-        final .java.lang.String $z$5;
-        .java.lang.Object $z$4 = null;
-        if (($z$4 = x) instanceof .ceylon.language.String) {
-            $z$5 = ((.ceylon.language.String)$z$4).toString();
-            if (.ceylon.language.String.getUppercased($z$5).equals("S")) {
+        .java.lang.String $ceylontmpassert$3 = null;
+        final .java.lang.String z$5;
+        .java.lang.Object z$4 = null;
+        if ((z$4 = x) instanceof .ceylon.language.String) {
+            z$5 = ((.ceylon.language.String)z$4).toString();
+            if (.ceylon.language.String.getUppercased(z$5).equals("S")) {
             } else {
-                $ceylontmpassert3 = .java.lang.System.lineSeparator() + "\tunviolated " + "is String z=x" + (.java.lang.System.lineSeparator() + "\tviolated ") + "z.uppercased==\"S\"";
+                $ceylontmpassert$3 = .java.lang.System.lineSeparator() + "\tunviolated " + "is String z=x" + (.java.lang.System.lineSeparator() + "\tviolated ") + "z.uppercased==\"S\"";
             }
         } else {
-            $z$5 = null;
-            $ceylontmpassert3 = .java.lang.System.lineSeparator() + "\tviolated " + "is String z=x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "z.uppercased==\"S\"";
+            z$5 = null;
+            $ceylontmpassert$3 = .java.lang.System.lineSeparator() + "\tviolated " + "is String z=x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "z.uppercased==\"S\"";
         }
-        if ($ceylontmpassert3 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert3);
-        .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased($z$5)));
+        if ($ceylontmpassert$3 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert$3);
+        .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased(z$5)));
     }
     
     public static void main(.java.lang.String[] args) {

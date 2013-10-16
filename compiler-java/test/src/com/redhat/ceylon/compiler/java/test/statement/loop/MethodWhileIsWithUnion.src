@@ -15,10 +15,10 @@ class MethodWhileIsUnion implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     public final void mvar(final .java.lang.Object y) {
         while (true) {
-            .java.lang.Object $x$1;
-            if (($x$1 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Foo || $x$1 instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Bar) {
-                final .java.lang.Object $x$2 = $x$1;
-                ((.com.redhat.ceylon.compiler.java.test.statement.loop.Common)$x$2).common();
+            .java.lang.Object x$1;
+            if ((x$1 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Foo || x$1 instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Bar) {
+                final .java.lang.Object x$2 = x$1;
+                ((.com.redhat.ceylon.compiler.java.test.statement.loop.Common)x$2).common();
             } else break;
         }
     }

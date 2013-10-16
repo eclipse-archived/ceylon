@@ -17,9 +17,9 @@ class MethodWhile implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     public final void whileExists() {
         .ceylon.language.Boolean cont = .ceylon.language.Boolean.instance(true);
         while (true) {
-            .ceylon.language.Boolean $c$0;
-            if (($c$0 = cont) != null) {
-                final boolean $c$1 = $c$0.booleanValue();
+            .ceylon.language.Boolean c$0;
+            if ((c$0 = cont) != null) {
+                final boolean c$1 = c$0.booleanValue();
                 cont = null;
             } else break;
         }
@@ -28,9 +28,9 @@ class MethodWhile implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     public final void whileNonEmpty() {
         .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
         while (true) {
-            .ceylon.language.Sequential<? extends .ceylon.language.Integer> $s$2;
-            if (($s$2 = seq) instanceof .ceylon.language.Sequence) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $s$3 = $s$2;
+            .ceylon.language.Sequential<? extends .ceylon.language.Integer> s$2;
+            if ((s$2 = seq) instanceof .ceylon.language.Sequence) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> s$3 = s$2;
                 seq = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
             } else break;
         }
@@ -39,9 +39,9 @@ class MethodWhile implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     public final void whileIs() {
         .java.lang.Object int = .ceylon.language.Integer.instance(1L);
         while (true) {
-            .java.lang.Object $i$4;
-            if (($i$4 = int) instanceof .ceylon.language.Integer) {
-                final long $i$5 = ((.ceylon.language.Integer)$i$4).longValue();
+            .java.lang.Object i$4;
+            if ((i$4 = int) instanceof .ceylon.language.Integer) {
+                final long i$5 = ((.ceylon.language.Integer)i$4).longValue();
                 int = .ceylon.language.String.instance("");
             } else break;
         }

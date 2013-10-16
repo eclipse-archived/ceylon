@@ -48,10 +48,10 @@ abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler
                 (
                     let
                     {
-                        .java.lang.String $ceylontmpop0 = f6;
-                        setF2($ceylontmpop0);
+                        .java.lang.String $ceylontmpop$0 = f6;
+                        setF2($ceylontmpop$0);
                     }
-                    returning $ceylontmpop0;
+                    returning $ceylontmpop$0;
                 );
             }
         }
@@ -90,10 +90,10 @@ abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler
         (
             let
             {
-                .java.lang.String $ceylontmpop1 = f7;
-                setF2($ceylontmpop1);
+                .java.lang.String $ceylontmpop$1 = f7;
+                setF2($ceylontmpop$1);
             }
-            returning $ceylontmpop1;
+            returning $ceylontmpop$1;
         );
     }
     
@@ -109,10 +109,10 @@ abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler
         (
             let
             {
-                .java.lang.String $ceylontmpop2 = f9;
-                setF2($ceylontmpop2);
+                .java.lang.String $ceylontmpop$2 = f9;
+                setF2($ceylontmpop$2);
             }
-            returning $ceylontmpop2;
+            returning $ceylontmpop$2;
         );
     }
     private final .java.lang.String f10;
@@ -167,10 +167,10 @@ class SubClassAttributeGetterSetter extends .com.redhat.ceylon.compiler.java.tes
         (
             let
             {
-                .java.lang.String $ceylontmpop3 = f8;
-                setF2($ceylontmpop3);
+                .java.lang.String $ceylontmpop$3 = f8;
+                setF2($ceylontmpop$3);
             }
-            returning $ceylontmpop3;
+            returning $ceylontmpop$3;
         );
     }
     
@@ -184,10 +184,10 @@ class SubClassAttributeGetterSetter extends .com.redhat.ceylon.compiler.java.tes
         (
             let
             {
-                .java.lang.String $ceylontmpop4 = f9;
-                setF2($ceylontmpop4);
+                .java.lang.String $ceylontmpop$4 = f9;
+                setF2($ceylontmpop$4);
             }
-            returning $ceylontmpop4;
+            returning $ceylontmpop$4;
         );
     }
     
@@ -200,10 +200,10 @@ class SubClassAttributeGetterSetter extends .com.redhat.ceylon.compiler.java.tes
         (
             let
             {
-                .java.lang.String $ceylontmpop5 = f10;
-                setF2($ceylontmpop5);
+                .java.lang.String $ceylontmpop$5 = f10;
+                setF2($ceylontmpop$5);
             }
-            returning $ceylontmpop5;
+            returning $ceylontmpop$5;
         );
     }
     

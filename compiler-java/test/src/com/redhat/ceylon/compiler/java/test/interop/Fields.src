@@ -14,38 +14,38 @@ final class fields_ {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE0 = java;
-                long $ceylontmpopV1 = $ceylontmpopE0.readWriteField;
-                $ceylontmpopE0.readWriteField = $ceylontmpopV1 + 1;
+                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE$0 = java;
+                long $ceylontmpopV$1 = $ceylontmpopE$0.readWriteField;
+                $ceylontmpopE$0.readWriteField = $ceylontmpopV$1 + 1;
             }
-            returning $ceylontmpopV1;
+            returning $ceylontmpopV$1;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE2 = java;
-                long $ceylontmpopV3 = $ceylontmpopE2.readWriteField + 1;
-                $ceylontmpopE2.readWriteField = $ceylontmpopV3;
+                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE$2 = java;
+                long $ceylontmpopV$3 = $ceylontmpopE$2.readWriteField + 1;
+                $ceylontmpopE$2.readWriteField = $ceylontmpopV$3;
             }
-            returning $ceylontmpopV3;
+            returning $ceylontmpopV$3;
         );
         java.readWriteField = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE4 = java;
-                long $ceylontmpopV5 = java.readWriteField;
-                $ceylontmpopE4.readWriteField = $ceylontmpopV5;
+                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE$4 = java;
+                long $ceylontmpopV$5 = java.readWriteField;
+                $ceylontmpopE$4.readWriteField = $ceylontmpopV$5;
             }
-            returning $ceylontmpopV5;
+            returning $ceylontmpopV$5;
         );
         java.readWriteField = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE6 = java;
-                long $ceylontmpopV7 = $ceylontmpopE6.readWriteField + java.readWriteField;
-                $ceylontmpopE6.readWriteField = $ceylontmpopV7;
+                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE$6 = java;
+                long $ceylontmpopV$7 = $ceylontmpopE$6.readWriteField + java.readWriteField;
+                $ceylontmpopE$6.readWriteField = $ceylontmpopV$7;
             }
-            returning $ceylontmpopV7;
+            returning $ceylontmpopV$7;
         );
         sync = java.fieldWithNoGetter;
         java.setFieldWithNoGetter(2L);
@@ -69,34 +69,34 @@ class CeylonFields extends .com.redhat.ceylon.compiler.java.test.interop.JavaFie
         (
             let
             {
-                long $ceylontmpop8 = readWriteField;
-                readWriteField = $ceylontmpop8 + 1;
+                long $ceylontmpop$8 = readWriteField;
+                readWriteField = $ceylontmpop$8 + 1;
             }
-            returning $ceylontmpop8;
+            returning $ceylontmpop$8;
         );
         (
             let
             {
-                long $ceylontmpop9 = readWriteField + 1;
-                readWriteField = $ceylontmpop9;
+                long $ceylontmpop$9 = readWriteField + 1;
+                readWriteField = $ceylontmpop$9;
             }
-            returning $ceylontmpop9;
+            returning $ceylontmpop$9;
         );
         readWriteField = (
             let
             {
-                long $ceylontmpop10 = readWriteField;
-                readWriteField = $ceylontmpop10;
+                long $ceylontmpop$10 = readWriteField;
+                readWriteField = $ceylontmpop$10;
             }
-            returning $ceylontmpop10;
+            returning $ceylontmpop$10;
         );
         readWriteField = (
             let
             {
-                long $ceylontmpop11 = readWriteField + readWriteField;
-                readWriteField = $ceylontmpop11;
+                long $ceylontmpop$11 = readWriteField + readWriteField;
+                readWriteField = $ceylontmpop$11;
             }
-            returning $ceylontmpop11;
+            returning $ceylontmpop$11;
         );
     }
     

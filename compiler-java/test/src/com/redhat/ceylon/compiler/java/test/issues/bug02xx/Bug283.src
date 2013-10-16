@@ -19,70 +19,70 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                .ceylon.language.Integer $ceylontmpop0 = (.ceylon.language.Integer)getOi$priv();
-                setOi$priv($ceylontmpop0.getSuccessor());
+                .ceylon.language.Integer $ceylontmpop$0 = (.ceylon.language.Integer)getOi$priv();
+                setOi$priv($ceylontmpop$0.getSuccessor());
             }
-            returning $ceylontmpop0;
+            returning $ceylontmpop$0;
         );
         (
             let
             {
-                .ceylon.language.Integer $ceylontmpop1 = (.ceylon.language.Integer)getOi$priv();
-                setOi$priv($ceylontmpop1.getPredecessor());
+                .ceylon.language.Integer $ceylontmpop$1 = (.ceylon.language.Integer)getOi$priv();
+                setOi$priv($ceylontmpop$1.getPredecessor());
             }
-            returning $ceylontmpop1;
+            returning $ceylontmpop$1;
         );
         (
             let
             {
-                .ceylon.language.Integer $ceylontmpop2 = getOi$priv().getSuccessor();
-                setOi$priv($ceylontmpop2);
+                .ceylon.language.Integer $ceylontmpop$2 = getOi$priv().getSuccessor();
+                setOi$priv($ceylontmpop$2);
             }
-            returning $ceylontmpop2;
+            returning $ceylontmpop$2;
         );
         (
             let
             {
-                .ceylon.language.Integer $ceylontmpop3 = getOi$priv().getPredecessor();
-                setOi$priv($ceylontmpop3);
+                .ceylon.language.Integer $ceylontmpop$3 = getOi$priv().getPredecessor();
+                setOi$priv($ceylontmpop$3);
             }
-            returning $ceylontmpop3;
+            returning $ceylontmpop$3;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug283 $ceylontmpopE4 = x;
-                .ceylon.language.Integer $ceylontmpopV5 = (.ceylon.language.Integer)$ceylontmpopE4.getOi$priv();
-                $ceylontmpopE4.setOi$priv($ceylontmpopV5.getSuccessor());
+                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug283 $ceylontmpopE$4 = x;
+                .ceylon.language.Integer $ceylontmpopV$5 = (.ceylon.language.Integer)$ceylontmpopE$4.getOi$priv();
+                $ceylontmpopE$4.setOi$priv($ceylontmpopV$5.getSuccessor());
             }
-            returning $ceylontmpopV5;
+            returning $ceylontmpopV$5;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug283 $ceylontmpopE6 = x;
-                .ceylon.language.Integer $ceylontmpopV7 = (.ceylon.language.Integer)$ceylontmpopE6.getOi$priv();
-                $ceylontmpopE6.setOi$priv($ceylontmpopV7.getPredecessor());
+                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug283 $ceylontmpopE$6 = x;
+                .ceylon.language.Integer $ceylontmpopV$7 = (.ceylon.language.Integer)$ceylontmpopE$6.getOi$priv();
+                $ceylontmpopE$6.setOi$priv($ceylontmpopV$7.getPredecessor());
             }
-            returning $ceylontmpopV7;
+            returning $ceylontmpopV$7;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug283 $ceylontmpopE8 = x;
-                .ceylon.language.Integer $ceylontmpopV9 = $ceylontmpopE8.getOi$priv().getSuccessor();
-                $ceylontmpopE8.setOi$priv($ceylontmpopV9);
+                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug283 $ceylontmpopE$8 = x;
+                .ceylon.language.Integer $ceylontmpopV$9 = $ceylontmpopE$8.getOi$priv().getSuccessor();
+                $ceylontmpopE$8.setOi$priv($ceylontmpopV$9);
             }
-            returning $ceylontmpopV9;
+            returning $ceylontmpopV$9;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug283 $ceylontmpopE10 = x;
-                .ceylon.language.Integer $ceylontmpopV11 = $ceylontmpopE10.getOi$priv().getPredecessor();
-                $ceylontmpopE10.setOi$priv($ceylontmpopV11);
+                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug283 $ceylontmpopE$10 = x;
+                .ceylon.language.Integer $ceylontmpopV$11 = $ceylontmpopE$10.getOi$priv().getPredecessor();
+                $ceylontmpopE$10.setOi$priv($ceylontmpopV$11);
             }
-            returning $ceylontmpopV11;
+            returning $ceylontmpopV$11;
         );
     }
     
@@ -91,34 +91,34 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                .ceylon.language.Integer $ceylontmpop12 = (.ceylon.language.Integer)oi2;
-                oi2 = $ceylontmpop12.getSuccessor();
+                .ceylon.language.Integer $ceylontmpop$12 = (.ceylon.language.Integer)oi2;
+                oi2 = $ceylontmpop$12.getSuccessor();
             }
-            returning $ceylontmpop12;
+            returning $ceylontmpop$12;
         );
         (
             let
             {
-                .ceylon.language.Integer $ceylontmpop13 = (.ceylon.language.Integer)oi2;
-                oi2 = $ceylontmpop13.getPredecessor();
+                .ceylon.language.Integer $ceylontmpop$13 = (.ceylon.language.Integer)oi2;
+                oi2 = $ceylontmpop$13.getPredecessor();
             }
-            returning $ceylontmpop13;
+            returning $ceylontmpop$13;
         );
         (
             let
             {
-                .ceylon.language.Integer $ceylontmpop14 = oi2.getSuccessor();
-                oi2 = $ceylontmpop14;
+                .ceylon.language.Integer $ceylontmpop$14 = oi2.getSuccessor();
+                oi2 = $ceylontmpop$14;
             }
-            returning $ceylontmpop14;
+            returning $ceylontmpop$14;
         );
         (
             let
             {
-                .ceylon.language.Integer $ceylontmpop15 = oi2.getPredecessor();
-                oi2 = $ceylontmpop15;
+                .ceylon.language.Integer $ceylontmpop$15 = oi2.getPredecessor();
+                oi2 = $ceylontmpop$15;
             }
-            returning $ceylontmpop15;
+            returning $ceylontmpop$15;
         );
     }
     
@@ -127,34 +127,34 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                T $ceylontmpop16 = (T)t;
-                t = $ceylontmpop16.getSuccessor();
+                T $ceylontmpop$16 = (T)t;
+                t = $ceylontmpop$16.getSuccessor();
             }
-            returning $ceylontmpop16;
+            returning $ceylontmpop$16;
         );
         (
             let
             {
-                T $ceylontmpop17 = ((.ceylon.language.Ordinal<? extends T>)(.ceylon.language.Ordinal)t).getSuccessor();
-                t = $ceylontmpop17;
+                T $ceylontmpop$17 = ((.ceylon.language.Ordinal<? extends T>)(.ceylon.language.Ordinal)t).getSuccessor();
+                t = $ceylontmpop$17;
             }
-            returning $ceylontmpop17;
+            returning $ceylontmpop$17;
         );
         (
             let
             {
-                T $ceylontmpop18 = (T)t;
-                t = $ceylontmpop18.getPredecessor();
+                T $ceylontmpop$18 = (T)t;
+                t = $ceylontmpop$18.getPredecessor();
             }
-            returning $ceylontmpop18;
+            returning $ceylontmpop$18;
         );
         (
             let
             {
-                T $ceylontmpop19 = ((.ceylon.language.Ordinal<? extends T>)(.ceylon.language.Ordinal)t).getPredecessor();
-                t = $ceylontmpop19;
+                T $ceylontmpop$19 = ((.ceylon.language.Ordinal<? extends T>)(.ceylon.language.Ordinal)t).getPredecessor();
+                t = $ceylontmpop$19;
             }
-            returning $ceylontmpop19;
+            returning $ceylontmpop$19;
         );
     }
     

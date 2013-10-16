@@ -228,11 +228,11 @@ class Conversions implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         final .ceylon.language.Integer n2 = null;
         final .java.lang.Object u1 = new .com.redhat.ceylon.compiler.java.test.structure.type.Bar();
         ((.com.redhat.ceylon.compiler.java.test.structure.type.Foo)u1).a();
-        .java.lang.Object $u1$1;
-        if (($u1$1 = u1) instanceof .com.redhat.ceylon.compiler.java.test.structure.type.Bar) {
-            final .com.redhat.ceylon.compiler.java.test.structure.type.Bar $u1$2 = (.com.redhat.ceylon.compiler.java.test.structure.type.Bar)$u1$1;
-            $u1$2.a();
-            $u1$2.b();
+        .java.lang.Object u1$1;
+        if ((u1$1 = u1) instanceof .com.redhat.ceylon.compiler.java.test.structure.type.Bar) {
+            final .com.redhat.ceylon.compiler.java.test.structure.type.Bar u1$2 = (.com.redhat.ceylon.compiler.java.test.structure.type.Bar)u1$1;
+            u1$2.a();
+            u1$2.b();
         }
         final .java.lang.Object i1 = new .com.redhat.ceylon.compiler.java.test.structure.type.BarSats();
         ((.com.redhat.ceylon.compiler.java.test.structure.type.Foo)i1).a();

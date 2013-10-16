@@ -9,8 +9,8 @@ class VarargsMethodSpecifyingMethodWithVarargs implements .com.redhat.ceylon.com
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                foo$priv$($ceylontmp$seq$0);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                foo$priv$($ceylontmp$seq$$0);
             }
             returning null;
         );
@@ -33,9 +33,9 @@ class VarargsMethodSpecifyingMethodWithVarargs implements .com.redhat.ceylon.com
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ints$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ints$$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning bar$priv$($ceylontmp$ints$1);
+            returning bar$priv$($ceylontmp$ints$$1);
         );
     }
     

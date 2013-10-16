@@ -6,19 +6,19 @@ class NamedArgumentInvocation implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                .java.lang.String $arg$6$1 = "foo";
-                long $arg$6$0 = 0L;
-                v$priv($arg$6$0, $arg$6$1);
+                .java.lang.String arg$6$1 = "foo";
+                long arg$6$0 = 0L;
+                v$priv(arg$6$0, arg$6$1);
             }
             returning null;
         );
         (
             let
             {
-                .java.lang.String $arg$7$1 = "foo";
-                long $arg$7$0 = 0L;
+                .java.lang.String arg$7$1 = "foo";
+                long arg$7$0 = 0L;
             }
-            returning f$priv($arg$7$0, $arg$7$1);
+            returning f$priv(arg$7$0, arg$7$1);
         );
     }
     
@@ -33,19 +33,19 @@ class NamedArgumentInvocation implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                .java.lang.String $arg$0$1 = "foo";
-                long $arg$0$0 = 1L;
-                v$priv($arg$0$0, $arg$0$1);
+                .java.lang.String arg$0$1 = "foo";
+                long arg$0$0 = 1L;
+                v$priv(arg$0$0, arg$0$1);
             }
             returning null;
         );
         return (
             let
             {
-                .java.lang.String $arg$1$1 = "foo";
-                long $arg$1$0 = 1L;
+                .java.lang.String arg$1$1 = "foo";
+                long arg$1$0 = 1L;
             }
-            returning f$priv($arg$1$0, $arg$1$1);
+            returning f$priv(arg$1$0, arg$1$1);
         );
     }
     
@@ -53,21 +53,21 @@ class NamedArgumentInvocation implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation $arg$2$callable$ = this;
-                .java.lang.String $arg$2$1 = "bar";
-                long $arg$2$0 = 2L;
-                $arg$2$callable$.v$priv($arg$2$0, $arg$2$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation arg$2$callable$ = this;
+                .java.lang.String arg$2$1 = "bar";
+                long arg$2$0 = 2L;
+                arg$2$callable$.v$priv(arg$2$0, arg$2$1);
             }
             returning null;
         );
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation $arg$3$callable$ = this;
-                .java.lang.String $arg$3$1 = "bar";
-                long $arg$3$0 = 2L;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation arg$3$callable$ = this;
+                .java.lang.String arg$3$1 = "bar";
+                long arg$3$0 = 2L;
             }
-            returning $arg$3$callable$.f$priv($arg$3$0, $arg$3$1);
+            returning arg$3$callable$.f$priv(arg$3$0, arg$3$1);
         );
     }
     
@@ -75,21 +75,21 @@ class NamedArgumentInvocation implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation $arg$4$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation();
-                .java.lang.String $arg$4$1 = "bar";
-                long $arg$4$0 = 2L;
-                $arg$4$callable$.v$priv($arg$4$0, $arg$4$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation arg$4$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation();
+                .java.lang.String arg$4$1 = "bar";
+                long arg$4$0 = 2L;
+                arg$4$callable$.v$priv(arg$4$0, arg$4$1);
             }
             returning null;
         );
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation $arg$5$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation();
-                .java.lang.String $arg$5$1 = "bar";
-                long $arg$5$0 = 2L;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation arg$5$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation();
+                .java.lang.String arg$5$1 = "bar";
+                long arg$5$0 = 2L;
             }
-            returning $arg$5$callable$.f$priv($arg$5$0, $arg$5$1);
+            returning arg$5$callable$.f$priv(arg$5$0, arg$5$1);
         );
     }
     

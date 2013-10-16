@@ -10,14 +10,14 @@ class MethodIfIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     public final void m() {
-        .java.lang.Object $y$1;
-        if (($y$1 = give$priv()) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
-            final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub $y$2 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)$y$1;
-            $y$2.foo();
+        .java.lang.Object y$1;
+        if ((y$1 = give$priv()) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub y$2 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)y$1;
+            y$2.foo();
         }
-        .java.lang.Object $y$4;
-        if (($y$4 = give$priv()) == null) {
-            final .java.lang.Object $y$5 = $y$4;
+        .java.lang.Object y$4;
+        if ((y$4 = give$priv()) == null) {
+            final .java.lang.Object y$5 = y$4;
         }
     }
     

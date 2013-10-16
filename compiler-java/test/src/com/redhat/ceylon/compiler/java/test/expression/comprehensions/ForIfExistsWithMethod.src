@@ -22,23 +22,23 @@ class ForIfExistsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.
                     private boolean x$exhausted;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod)$ceylontmpitem0;
+                            x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod)$ceylontmpitem$0;
                             return true;
                         }
                     }
-                    private long $y$2;
+                    private long y$2;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .ceylon.language.Integer $y$1 = null;
-                            if (($y$1 = x.give$priv()) != null) {
-                                $y$2 = $y$1.longValue();
+                            .ceylon.language.Integer y$1 = null;
+                            if ((y$1 = x.give$priv()) != null) {
+                                y$2 = y$1.longValue();
                                 break;
                             }
                         }
@@ -48,7 +48,7 @@ class ForIfExistsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.
                     public final .java.lang.Object next() {
                         if (this.next1()) {
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod x = this.x;
-                            return .ceylon.language.Integer.instance($y$2);
+                            return .ceylon.language.Integer.instance(y$2);
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

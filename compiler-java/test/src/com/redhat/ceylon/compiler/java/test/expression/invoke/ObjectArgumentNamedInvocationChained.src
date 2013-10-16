@@ -44,10 +44,10 @@ public final class objectArgumentNamedInvocationChained_ {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained $arg$0$callable$ = (
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained arg$0$callable$ = (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained $arg$1$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained();
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained arg$1$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained();
                         
                         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
                         @.com.redhat.ceylon.compiler.java.metadata.Name("o")
@@ -100,9 +100,9 @@ public final class objectArgumentNamedInvocationChained_ {
                                 return (int)(
                                     let
                                     {
-                                        long $ceylontmphash2 = hash;
+                                        long $ceylontmphash$2 = hash;
                                     }
-                                    returning $ceylontmphash2 ^ $ceylontmphash2 >>> 32;
+                                    returning $ceylontmphash$2 ^ $ceylontmphash$2 >>> 32;
                                 );
                             }
                             
@@ -112,9 +112,9 @@ public final class objectArgumentNamedInvocationChained_ {
                                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class);
                             }
                         }
-                        final o_ $arg$1$0 = new o_();
+                        final o_ arg$1$0 = new o_();
                     }
-                    returning $arg$1$callable$.callFunction($arg$1$0);
+                    returning arg$1$callable$.callFunction(arg$1$0);
                 );
                 
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
@@ -168,9 +168,9 @@ public final class objectArgumentNamedInvocationChained_ {
                         return (int)(
                             let
                             {
-                                long $ceylontmphash3 = hash;
+                                long $ceylontmphash$3 = hash;
                             }
-                            returning $ceylontmphash3 ^ $ceylontmphash3 >>> 32;
+                            returning $ceylontmphash$3 ^ $ceylontmphash$3 >>> 32;
                         );
                     }
                     
@@ -180,9 +180,9 @@ public final class objectArgumentNamedInvocationChained_ {
                         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class);
                     }
                 }
-                final o_ $arg$0$0 = new o_();
+                final o_ arg$0$0 = new o_();
             }
-            returning $arg$0$callable$.callFunction($arg$0$0);
+            returning arg$0$callable$.callFunction(arg$0$0);
         );
     }
     

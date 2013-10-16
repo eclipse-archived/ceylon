@@ -15,31 +15,31 @@ class Bug270 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         this.bug270 = (
             let
             {
-                .ceylon.language.String $arg$0$1 = .ceylon.language.String.instance("hello");
-                .ceylon.language.Integer $arg$0$0 = .ceylon.language.Integer.instance(1L);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$1 = .ceylon.language.String.$TypeDescriptor;
+                .ceylon.language.String arg$0$1 = .ceylon.language.String.instance("hello");
+                .ceylon.language.Integer arg$0$0 = .ceylon.language.Integer.instance(1L);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$1 = .ceylon.language.String.$TypeDescriptor;
             }
-            returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>($arg$0$reified$0, $arg$0$reified$1, $arg$0$0, $arg$0$1);
+            returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(arg$0$reified$0, arg$0$reified$1, arg$0$0, arg$0$1);
         );
         final .ceylon.language.Entry<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.String> bug270_2 = .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug270_eatEntry_.<.ceylon.language.Entry<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.String>>bug270_eatEntry(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), .ceylon.language.String.$TypeDescriptor), (
             let
             {
-                .ceylon.language.String $arg$1$1 = .ceylon.language.String.instance("hello");
-                .ceylon.language.Entry $arg$1$0 = (
+                .ceylon.language.String arg$1$1 = .ceylon.language.String.instance("hello");
+                .ceylon.language.Entry arg$1$0 = (
                     let
                     {
-                        .ceylon.language.String $arg$2$1 = .ceylon.language.String.instance("hello");
-                        .ceylon.language.Integer $arg$2$0 = .ceylon.language.Integer.instance(1L);
-                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
-                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$1 = .ceylon.language.String.$TypeDescriptor;
+                        .ceylon.language.String arg$2$1 = .ceylon.language.String.instance("hello");
+                        .ceylon.language.Integer arg$2$0 = .ceylon.language.Integer.instance(1L);
+                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$1 = .ceylon.language.String.$TypeDescriptor;
                     }
-                    returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>($arg$2$reified$0, $arg$2$reified$1, $arg$2$0, $arg$2$1);
+                    returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(arg$2$reified$0, arg$2$reified$1, arg$2$0, arg$2$1);
                 );
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$1 = .ceylon.language.String.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$1 = .ceylon.language.String.$TypeDescriptor;
             }
-            returning new .ceylon.language.Entry<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, .ceylon.language.String>($arg$1$reified$0, $arg$1$reified$1, $arg$1$0, $arg$1$1);
+            returning new .ceylon.language.Entry<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, .ceylon.language.String>(arg$1$reified$0, arg$1$reified$1, arg$1$0, arg$1$1);
         ));
     }
     private final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> bug270;
@@ -56,44 +56,44 @@ class Bug270 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> bug270 = (
             let
             {
-                .ceylon.language.String $arg$3$1 = .ceylon.language.String.instance("hello");
-                .ceylon.language.Integer $arg$3$0 = .ceylon.language.Integer.instance(1L);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$3$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$3$reified$1 = .ceylon.language.String.$TypeDescriptor;
+                .ceylon.language.String arg$3$1 = .ceylon.language.String.instance("hello");
+                .ceylon.language.Integer arg$3$0 = .ceylon.language.Integer.instance(1L);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$3$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$3$reified$1 = .ceylon.language.String.$TypeDescriptor;
             }
-            returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>($arg$3$reified$0, $arg$3$reified$1, $arg$3$0, $arg$3$1);
+            returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(arg$3$reified$0, arg$3$reified$1, arg$3$0, arg$3$1);
         );
         .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> bug270Variable = (
             let
             {
-                .ceylon.language.String $arg$4$1 = .ceylon.language.String.instance("hello");
-                .ceylon.language.Integer $arg$4$0 = .ceylon.language.Integer.instance(1L);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$4$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$4$reified$1 = .ceylon.language.String.$TypeDescriptor;
+                .ceylon.language.String arg$4$1 = .ceylon.language.String.instance("hello");
+                .ceylon.language.Integer arg$4$0 = .ceylon.language.Integer.instance(1L);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$4$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$4$reified$1 = .ceylon.language.String.$TypeDescriptor;
             }
-            returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>($arg$4$reified$0, $arg$4$reified$1, $arg$4$0, $arg$4$1);
+            returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(arg$4$reified$0, arg$4$reified$1, arg$4$0, arg$4$1);
         );
         if (true) {
             final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> bug270_2 = (
                 let
                 {
-                    .ceylon.language.String $arg$6$1 = .ceylon.language.String.instance("hello");
-                    .ceylon.language.Integer $arg$6$0 = .ceylon.language.Integer.instance(1L);
-                    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$6$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
-                    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$6$reified$1 = .ceylon.language.String.$TypeDescriptor;
+                    .ceylon.language.String arg$6$1 = .ceylon.language.String.instance("hello");
+                    .ceylon.language.Integer arg$6$0 = .ceylon.language.Integer.instance(1L);
+                    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$6$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$6$reified$1 = .ceylon.language.String.$TypeDescriptor;
                 }
-                returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>($arg$6$reified$0, $arg$6$reified$1, $arg$6$0, $arg$6$1);
+                returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(arg$6$reified$0, arg$6$reified$1, arg$6$0, arg$6$1);
             );
         }
         .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug270_eatEntry_.<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>>bug270_eatEntry(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), (
             let
             {
-                .ceylon.language.String $arg$7$1 = .ceylon.language.String.instance("hello");
-                .ceylon.language.Integer $arg$7$0 = .ceylon.language.Integer.instance(1L);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$7$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$7$reified$1 = .ceylon.language.String.$TypeDescriptor;
+                .ceylon.language.String arg$7$1 = .ceylon.language.String.instance("hello");
+                .ceylon.language.Integer arg$7$0 = .ceylon.language.Integer.instance(1L);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$7$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$7$reified$1 = .ceylon.language.String.$TypeDescriptor;
             }
-            returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>($arg$7$reified$0, $arg$7$reified$1, $arg$7$0, $arg$7$1);
+            returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(arg$7$reified$0, arg$7$reified$1, arg$7$0, arg$7$1);
         ));
     }
     
@@ -117,12 +117,12 @@ final class bug270_ {
         value = new .ceylon.language.Entry[]{(
             let
             {
-                .ceylon.language.String $arg$8$1 = .ceylon.language.String.instance("hello");
-                .ceylon.language.Integer $arg$8$0 = .ceylon.language.Integer.instance(1L);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$8$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$8$reified$1 = .ceylon.language.String.$TypeDescriptor;
+                .ceylon.language.String arg$8$1 = .ceylon.language.String.instance("hello");
+                .ceylon.language.Integer arg$8$0 = .ceylon.language.Integer.instance(1L);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$8$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$8$reified$1 = .ceylon.language.String.$TypeDescriptor;
             }
-            returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>($arg$8$reified$0, $arg$8$reified$1, $arg$8$0, $arg$8$1);
+            returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(arg$8$reified$0, arg$8$reified$1, arg$8$0, arg$8$1);
         )};
     }
     
@@ -143,12 +143,12 @@ final class bug270Variable_ {
         value = new .ceylon.language.Entry[]{(
             let
             {
-                .ceylon.language.String $arg$9$1 = .ceylon.language.String.instance("hello");
-                .ceylon.language.Integer $arg$9$0 = .ceylon.language.Integer.instance(1L);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$9$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$9$reified$1 = .ceylon.language.String.$TypeDescriptor;
+                .ceylon.language.String arg$9$1 = .ceylon.language.String.instance("hello");
+                .ceylon.language.Integer arg$9$0 = .ceylon.language.Integer.instance(1L);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$9$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$9$reified$1 = .ceylon.language.String.$TypeDescriptor;
             }
-            returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>($arg$9$reified$0, $arg$9$reified$1, $arg$9$0, $arg$9$1);
+            returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(arg$9$reified$0, arg$9$reified$1, arg$9$0, arg$9$1);
         )};
     }
     
@@ -173,21 +173,21 @@ final class bug270_2_ {
         value = new .ceylon.language.Entry[]{.com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug270_eatEntry_.<.ceylon.language.Entry<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.String>>bug270_eatEntry(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), .ceylon.language.String.$TypeDescriptor), (
             let
             {
-                .ceylon.language.String $arg$10$1 = .ceylon.language.String.instance("hello");
-                .ceylon.language.Entry $arg$10$0 = (
+                .ceylon.language.String arg$10$1 = .ceylon.language.String.instance("hello");
+                .ceylon.language.Entry arg$10$0 = (
                     let
                     {
-                        .ceylon.language.String $arg$11$1 = .ceylon.language.String.instance("hello");
-                        .ceylon.language.Integer $arg$11$0 = .ceylon.language.Integer.instance(1L);
-                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$11$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
-                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$11$reified$1 = .ceylon.language.String.$TypeDescriptor;
+                        .ceylon.language.String arg$11$1 = .ceylon.language.String.instance("hello");
+                        .ceylon.language.Integer arg$11$0 = .ceylon.language.Integer.instance(1L);
+                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$11$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$11$reified$1 = .ceylon.language.String.$TypeDescriptor;
                     }
-                    returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>($arg$11$reified$0, $arg$11$reified$1, $arg$11$0, $arg$11$1);
+                    returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(arg$11$reified$0, arg$11$reified$1, arg$11$0, arg$11$1);
                 );
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$10$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$10$reified$1 = .ceylon.language.String.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$10$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$10$reified$1 = .ceylon.language.String.$TypeDescriptor;
             }
-            returning new .ceylon.language.Entry<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, .ceylon.language.String>($arg$10$reified$0, $arg$10$reified$1, $arg$10$0, $arg$10$1);
+            returning new .ceylon.language.Entry<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, .ceylon.language.String>(arg$10$reified$0, arg$10$reified$1, arg$10$0, arg$10$1);
         ))};
     }
     

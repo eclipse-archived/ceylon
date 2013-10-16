@@ -13,12 +13,12 @@ final class reifiedInstantiateFromModelLoader_ {
         final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c2 = (
             let
             {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$1 = .ceylon.language.String.$TypeDescriptor;
-                long $arg$0$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$a($arg$0$reified$0, $arg$0$reified$1);
-                long $arg$0$1 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$b($arg$0$reified$0, $arg$0$reified$1, $arg$0$0);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$1 = .ceylon.language.String.$TypeDescriptor;
+                long arg$0$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$a(arg$0$reified$0, arg$0$reified$1);
+                long arg$0$1 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$b(arg$0$reified$0, arg$0$reified$1, arg$0$0);
             }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>($arg$0$reified$0, $arg$0$reified$1, $arg$0$0, $arg$0$1);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(arg$0$reified$0, arg$0$reified$1, arg$0$0, arg$0$1);
         );
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>> constr = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Class.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)))), "Class<Integer,String>(Integer=, Integer=)", (short)-1){
             
@@ -47,12 +47,12 @@ final class reifiedInstantiateFromModelLoader_ {
         final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c4 = (
             let
             {
-                long $arg$1$1 = 5L;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$1 = .ceylon.language.String.$TypeDescriptor;
-                long $arg$1$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$a($arg$1$reified$0, $arg$1$reified$1);
+                long arg$1$1 = 5L;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$1 = .ceylon.language.String.$TypeDescriptor;
+                long arg$1$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$a(arg$1$reified$0, arg$1$reified$1);
             }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>($arg$1$reified$0, $arg$1$reified$1, $arg$1$0, $arg$1$1);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(arg$1$reified$0, arg$1$reified$1, arg$1$0, arg$1$1);
         );
         final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.java.lang.Object, .java.lang.Object> c5 = new .com.redhat.ceylon.compiler.java.test.structure.reified.Class(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }

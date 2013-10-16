@@ -18,23 +18,23 @@ class ForIfIsNullUnion implements .com.redhat.ceylon.compiler.java.runtime.model
                     private boolean x$exhausted;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmpitem0;
+                            x = (.java.lang.Object)$ceylontmpitem$0;
                             return true;
                         }
                     }
-                    private .ceylon.language.Character $x$2;
+                    private .ceylon.language.Character x$2;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .java.lang.Object $x$1 = null;
-                            if (($x$1 = x) == null || $x$1 instanceof .ceylon.language.Character) {
-                                $x$2 = (.ceylon.language.Character)$x$1;
+                            .java.lang.Object x$1 = null;
+                            if ((x$1 = x) == null || x$1 instanceof .ceylon.language.Character) {
+                                x$2 = (.ceylon.language.Character)x$1;
                                 break;
                             }
                         }
@@ -44,7 +44,7 @@ class ForIfIsNullUnion implements .com.redhat.ceylon.compiler.java.runtime.model
                     public final .java.lang.Object next() {
                         if (this.next1()) {
                             final .java.lang.Object x = this.x;
-                            return $x$2;
+                            return x$2;
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

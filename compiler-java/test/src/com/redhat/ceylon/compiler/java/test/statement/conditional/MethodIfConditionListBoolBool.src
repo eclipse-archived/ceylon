@@ -6,13 +6,13 @@ class MethodIfConditionListBoolBool implements .com.redhat.ceylon.compiler.java.
     }
     
     private final boolean m$priv(final long x) {
-        boolean $ceylontmpif0 = false;
+        boolean $ceylontmpif$0 = false;
         if (x > 0L) {
             if (x < 10L) {
-                $ceylontmpif0 = true;
+                $ceylontmpif$0 = true;
             }
         }
-        if ($ceylontmpif0) {
+        if ($ceylontmpif$0) {
             return x == 1L;
         } else {
             return false;

@@ -6,8 +6,8 @@ class FunctionalParameterDefault implements .com.redhat.ceylon.compiler.java.run
         (
             let
             {
-                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$m$0 = .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault.$init$m();
-                this($ceylontmp$m$0);
+                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$m$$0 = .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault.$init$m();
+                this($ceylontmp$m$$0);
             }
             returning null;
         );

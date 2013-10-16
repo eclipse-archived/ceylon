@@ -28,10 +28,10 @@ final class This$impl {
         return (
             let
             {
-                long $ceylontmp$i1$0 = m2$i1();
-                long $ceylontmp$i2$1 = m2$i2($ceylontmp$i1$0);
+                long $ceylontmp$i1$$0 = m2$i1();
+                long $ceylontmp$i2$$1 = m2$i2($ceylontmp$i1$$0);
             }
-            returning m2$($ceylontmp$i1$0, $ceylontmp$i2$1);
+            returning m2$($ceylontmp$i1$$0, $ceylontmp$i2$$1);
         );
     }
     
@@ -43,9 +43,9 @@ final class This$impl {
         return (
             let
             {
-                long $ceylontmp$i2$2 = m2$i2(i1);
+                long $ceylontmp$i2$$2 = m2$i2(i1);
             }
-            returning m2$(i1, $ceylontmp$i2$2);
+            returning m2$(i1, $ceylontmp$i2$$2);
         );
     }
     

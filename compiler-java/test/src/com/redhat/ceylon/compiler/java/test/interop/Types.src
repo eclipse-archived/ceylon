@@ -242,56 +242,56 @@ final class operationsOnBytes_ {
         java.byte_attr = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE2 = java;
-                byte $ceylontmpopV3 = $ceylontmpopE2.byte_attr;
-                $ceylontmpopE2.byte_attr = (byte)($ceylontmpopV3 + 1);
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE$2 = java;
+                byte $ceylontmpopV$3 = $ceylontmpopE$2.byte_attr;
+                $ceylontmpopE$2.byte_attr = (byte)($ceylontmpopV$3 + 1);
             }
-            returning $ceylontmpopV3;
+            returning $ceylontmpopV$3;
         );
         java.byte_attr = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE4 = java;
-                byte $ceylontmpopV5 = (byte)($ceylontmpopE4.byte_attr + 1);
-                $ceylontmpopE4.byte_attr = $ceylontmpopV5;
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE$4 = java;
+                byte $ceylontmpopV$5 = (byte)($ceylontmpopE$4.byte_attr + 1);
+                $ceylontmpopE$4.byte_attr = $ceylontmpopV$5;
             }
-            returning $ceylontmpopV5;
+            returning $ceylontmpopV$5;
         );
         java.byte_attr = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE6 = java;
-                byte $ceylontmpopV7 = (byte)($ceylontmpopE6.byte_attr + java.byte_attr);
-                $ceylontmpopE6.byte_attr = $ceylontmpopV7;
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE$6 = java;
+                byte $ceylontmpopV$7 = (byte)($ceylontmpopE$6.byte_attr + java.byte_attr);
+                $ceylontmpopE$6.byte_attr = $ceylontmpopV$7;
             }
-            returning $ceylontmpopV7;
+            returning $ceylontmpopV$7;
         );
         java.byte_attr = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE8 = java;
-                byte $ceylontmpopV9 = (byte)($ceylontmpopE8.byte_attr - java.byte_attr);
-                $ceylontmpopE8.byte_attr = $ceylontmpopV9;
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE$8 = java;
+                byte $ceylontmpopV$9 = (byte)($ceylontmpopE$8.byte_attr - java.byte_attr);
+                $ceylontmpopE$8.byte_attr = $ceylontmpopV$9;
             }
-            returning $ceylontmpopV9;
+            returning $ceylontmpopV$9;
         );
         java.byte_attr = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE10 = java;
-                byte $ceylontmpopV11 = (byte)($ceylontmpopE10.byte_attr * java.byte_attr);
-                $ceylontmpopE10.byte_attr = $ceylontmpopV11;
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE$10 = java;
+                byte $ceylontmpopV$11 = (byte)($ceylontmpopE$10.byte_attr * java.byte_attr);
+                $ceylontmpopE$10.byte_attr = $ceylontmpopV$11;
             }
-            returning $ceylontmpopV11;
+            returning $ceylontmpopV$11;
         );
         java.byte_attr = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE12 = java;
-                byte $ceylontmpopV13 = (byte)($ceylontmpopE12.byte_attr / java.byte_attr);
-                $ceylontmpopE12.byte_attr = $ceylontmpopV13;
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE$12 = java;
+                byte $ceylontmpopV$13 = (byte)($ceylontmpopE$12.byte_attr / java.byte_attr);
+                $ceylontmpopE$12.byte_attr = $ceylontmpopV$13;
             }
-            returning $ceylontmpopV13;
+            returning $ceylontmpopV$13;
         );
         boolean sync = false;
         sync = java.byte_attr == java.byte_attr;
@@ -319,56 +319,56 @@ final class operationsOnBytes2_ {
         java.setByte((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE14 = java;
-                byte $ceylontmpopV15 = $ceylontmpopE14.getByte();
-                $ceylontmpopE14.setByte((byte)($ceylontmpopV15 + 1));
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE$14 = java;
+                byte $ceylontmpopV$15 = $ceylontmpopE$14.getByte();
+                $ceylontmpopE$14.setByte((byte)($ceylontmpopV$15 + 1));
             }
-            returning $ceylontmpopV15;
+            returning $ceylontmpopV$15;
         ));
         java.setByte((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE16 = java;
-                byte $ceylontmpopV17 = (byte)($ceylontmpopE16.getByte() + 1);
-                $ceylontmpopE16.setByte($ceylontmpopV17);
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE$16 = java;
+                byte $ceylontmpopV$17 = (byte)($ceylontmpopE$16.getByte() + 1);
+                $ceylontmpopE$16.setByte($ceylontmpopV$17);
             }
-            returning $ceylontmpopV17;
+            returning $ceylontmpopV$17;
         ));
         java.setByte((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE18 = java;
-                byte $ceylontmpopV19 = (byte)($ceylontmpopE18.getByte() + java.getByte());
-                $ceylontmpopE18.setByte($ceylontmpopV19);
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE$18 = java;
+                byte $ceylontmpopV$19 = (byte)($ceylontmpopE$18.getByte() + java.getByte());
+                $ceylontmpopE$18.setByte($ceylontmpopV$19);
             }
-            returning $ceylontmpopV19;
+            returning $ceylontmpopV$19;
         ));
         java.setByte((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE20 = java;
-                byte $ceylontmpopV21 = (byte)($ceylontmpopE20.getByte() - java.getByte());
-                $ceylontmpopE20.setByte($ceylontmpopV21);
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE$20 = java;
+                byte $ceylontmpopV$21 = (byte)($ceylontmpopE$20.getByte() - java.getByte());
+                $ceylontmpopE$20.setByte($ceylontmpopV$21);
             }
-            returning $ceylontmpopV21;
+            returning $ceylontmpopV$21;
         ));
         java.setByte((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE22 = java;
-                byte $ceylontmpopV23 = (byte)($ceylontmpopE22.getByte() * java.getByte());
-                $ceylontmpopE22.setByte($ceylontmpopV23);
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE$22 = java;
+                byte $ceylontmpopV$23 = (byte)($ceylontmpopE$22.getByte() * java.getByte());
+                $ceylontmpopE$22.setByte($ceylontmpopV$23);
             }
-            returning $ceylontmpopV23;
+            returning $ceylontmpopV$23;
         ));
         java.setByte((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE24 = java;
-                byte $ceylontmpopV25 = (byte)($ceylontmpopE24.getByte() / java.getByte());
-                $ceylontmpopE24.setByte($ceylontmpopV25);
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE$24 = java;
+                byte $ceylontmpopV$25 = (byte)($ceylontmpopE$24.getByte() / java.getByte());
+                $ceylontmpopE$24.setByte($ceylontmpopV$25);
             }
-            returning $ceylontmpopV25;
+            returning $ceylontmpopV$25;
         ));
         boolean sync = false;
         sync = java.getByte() == java.getByte();
@@ -396,50 +396,50 @@ class OperationsOnBytes extends .com.redhat.ceylon.compiler.java.test.interop.Ty
         byte_attr = (
             let
             {
-                byte $ceylontmpop26 = byte_attr;
-                byte_attr = (byte)($ceylontmpop26 + 1);
+                byte $ceylontmpop$26 = byte_attr;
+                byte_attr = (byte)($ceylontmpop$26 + 1);
             }
-            returning $ceylontmpop26;
+            returning $ceylontmpop$26;
         );
         byte_attr = (
             let
             {
-                byte $ceylontmpop27 = (byte)(byte_attr + 1);
-                byte_attr = $ceylontmpop27;
+                byte $ceylontmpop$27 = (byte)(byte_attr + 1);
+                byte_attr = $ceylontmpop$27;
             }
-            returning $ceylontmpop27;
+            returning $ceylontmpop$27;
         );
         byte_attr = (
             let
             {
-                byte $ceylontmpop28 = (byte)(byte_attr + byte_attr);
-                byte_attr = $ceylontmpop28;
+                byte $ceylontmpop$28 = (byte)(byte_attr + byte_attr);
+                byte_attr = $ceylontmpop$28;
             }
-            returning $ceylontmpop28;
+            returning $ceylontmpop$28;
         );
         byte_attr = (
             let
             {
-                byte $ceylontmpop29 = (byte)(byte_attr - byte_attr);
-                byte_attr = $ceylontmpop29;
+                byte $ceylontmpop$29 = (byte)(byte_attr - byte_attr);
+                byte_attr = $ceylontmpop$29;
             }
-            returning $ceylontmpop29;
+            returning $ceylontmpop$29;
         );
         byte_attr = (
             let
             {
-                byte $ceylontmpop30 = (byte)(byte_attr * byte_attr);
-                byte_attr = $ceylontmpop30;
+                byte $ceylontmpop$30 = (byte)(byte_attr * byte_attr);
+                byte_attr = $ceylontmpop$30;
             }
-            returning $ceylontmpop30;
+            returning $ceylontmpop$30;
         );
         byte_attr = (
             let
             {
-                byte $ceylontmpop31 = (byte)(byte_attr / byte_attr);
-                byte_attr = $ceylontmpop31;
+                byte $ceylontmpop$31 = (byte)(byte_attr / byte_attr);
+                byte_attr = $ceylontmpop$31;
             }
-            returning $ceylontmpop31;
+            returning $ceylontmpop$31;
         );
         boolean sync = false;
         sync = byte_attr == byte_attr;
@@ -474,38 +474,38 @@ final class operationsOnMixedTypes_ {
         java.byte_attr = (byte)(
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE32 = java;
-                int $ceylontmpopV33 = $ceylontmpopE32.int_attr;
-                $ceylontmpopE32.int_attr = (int)($ceylontmpopV33 + 1);
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE$32 = java;
+                int $ceylontmpopV$33 = $ceylontmpopE$32.int_attr;
+                $ceylontmpopE$32.int_attr = (int)($ceylontmpopV$33 + 1);
             }
-            returning $ceylontmpopV33;
+            returning $ceylontmpopV$33;
         );
         java.byte_attr = (byte)(
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE34 = java;
-                int $ceylontmpopV35 = (int)($ceylontmpopE34.int_attr + 1);
-                $ceylontmpopE34.int_attr = $ceylontmpopV35;
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE$34 = java;
+                int $ceylontmpopV$35 = (int)($ceylontmpopE$34.int_attr + 1);
+                $ceylontmpopE$34.int_attr = $ceylontmpopV$35;
             }
-            returning $ceylontmpopV35;
+            returning $ceylontmpopV$35;
         );
         java.byte_attr = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE36 = java;
-                byte $ceylontmpopV37 = (byte)($ceylontmpopE36.byte_attr + (byte)java.int_attr);
-                $ceylontmpopE36.byte_attr = $ceylontmpopV37;
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE$36 = java;
+                byte $ceylontmpopV$37 = (byte)($ceylontmpopE$36.byte_attr + (byte)java.int_attr);
+                $ceylontmpopE$36.byte_attr = $ceylontmpopV$37;
             }
-            returning $ceylontmpopV37;
+            returning $ceylontmpopV$37;
         );
         java.byte_attr = (byte)(
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE38 = java;
-                int $ceylontmpopV39 = (int)($ceylontmpopE38.int_attr + (int)java.byte_attr);
-                $ceylontmpopE38.int_attr = $ceylontmpopV39;
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmpopE$38 = java;
+                int $ceylontmpopV$39 = (int)($ceylontmpopE$38.int_attr + (int)java.byte_attr);
+                $ceylontmpopE$38.int_attr = $ceylontmpopV$39;
             }
-            returning $ceylontmpopV39;
+            returning $ceylontmpopV$39;
         );
         boolean sync = false;
         sync = java.byte_attr == java.int_attr;

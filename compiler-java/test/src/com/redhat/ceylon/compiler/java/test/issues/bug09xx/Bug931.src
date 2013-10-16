@@ -15,9 +15,9 @@ class Bug931BinaryOperator implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $arg$0$0 = 1L;
+                long arg$0$0 = 1L;
             }
-            returning f$priv($arg$0$0);
+            returning f$priv(arg$0$0);
         );
     }
     

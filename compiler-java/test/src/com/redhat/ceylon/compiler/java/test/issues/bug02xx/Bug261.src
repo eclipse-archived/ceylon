@@ -43,19 +43,19 @@ final class bug261_ {
         inner.setVi((
             let
             {
-                Inner $ceylontmpopE0 = inner;
-                long $ceylontmpopV1 = 2L;
-                $ceylontmpopE0.setVj($ceylontmpopV1);
+                Inner $ceylontmpopE$0 = inner;
+                long $ceylontmpopV$1 = 2L;
+                $ceylontmpopE$0.setVj($ceylontmpopV$1);
             }
-            returning $ceylontmpopV1;
+            returning $ceylontmpopV$1;
         ));
         vk = (
             let
             {
-                long $ceylontmpop2 = 2L;
-                vl = $ceylontmpop2;
+                long $ceylontmpop$2 = 2L;
+                vl = $ceylontmpop$2;
             }
-            returning $ceylontmpop2;
+            returning $ceylontmpop$2;
         );
     }
     

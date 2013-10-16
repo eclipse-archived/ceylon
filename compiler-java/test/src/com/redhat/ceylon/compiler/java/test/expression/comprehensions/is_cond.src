@@ -24,23 +24,23 @@ final class isCond_ {
                     private boolean x$exhausted;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmpitem0;
+                            x = (.java.lang.Object)$ceylontmpitem$0;
                             return true;
                         }
                     }
-                    private long $x$2;
+                    private long x$2;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .java.lang.Object $x$1 = null;
-                            if (($x$1 = x) instanceof .ceylon.language.Integer) {
-                                $x$2 = ((.ceylon.language.Integer)$x$1).longValue();
+                            .java.lang.Object x$1 = null;
+                            if ((x$1 = x) instanceof .ceylon.language.Integer) {
+                                x$2 = ((.ceylon.language.Integer)x$1).longValue();
                                 break;
                             }
                         }
@@ -50,7 +50,7 @@ final class isCond_ {
                     public final .java.lang.Object next() {
                         if (this.next1()) {
                             final .java.lang.Object x = this.x;
-                            return .ceylon.language.Integer.instance($x$2 * 2L);
+                            return .ceylon.language.Integer.instance(x$2 * 2L);
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

@@ -7,18 +7,18 @@ class ClassWithVariableParameterInit implements .com.redhat.ceylon.compiler.java
         (
             let
             {
-                long $ceylontmpop0 = i;
-                i = $ceylontmpop0 + 1;
+                long $ceylontmpop$0 = i;
+                i = $ceylontmpop$0 + 1;
             }
-            returning $ceylontmpop0;
+            returning $ceylontmpop$0;
         );
         (
             let
             {
-                long $ceylontmpop1 = i + 1L;
-                i = $ceylontmpop1;
+                long $ceylontmpop$1 = i + 1L;
+                i = $ceylontmpop$1;
             }
-            returning $ceylontmpop1;
+            returning $ceylontmpop$1;
         );
     }
     
@@ -36,18 +36,18 @@ class ClassWithVariableParameter implements .com.redhat.ceylon.compiler.java.run
         (
             let
             {
-                long $ceylontmpop2 = getI();
-                setI($ceylontmpop2 + 1);
+                long $ceylontmpop$2 = getI();
+                setI($ceylontmpop$2 + 1);
             }
-            returning $ceylontmpop2;
+            returning $ceylontmpop$2;
         );
         (
             let
             {
-                long $ceylontmpop3 = getI() + 1L;
-                setI($ceylontmpop3);
+                long $ceylontmpop$3 = getI() + 1L;
+                setI($ceylontmpop$3);
             }
-            returning $ceylontmpop3;
+            returning $ceylontmpop$3;
         );
     }
     private long i;
@@ -73,18 +73,18 @@ class ClassWithHiddenVariableParameterInit implements .com.redhat.ceylon.compile
         (
             let
             {
-                long $ceylontmpop4 = i;
-                i = $ceylontmpop4 + 1;
+                long $ceylontmpop$4 = i;
+                i = $ceylontmpop$4 + 1;
             }
-            returning $ceylontmpop4;
+            returning $ceylontmpop$4;
         );
         (
             let
             {
-                long $ceylontmpop5 = i + 1L;
-                i = $ceylontmpop5;
+                long $ceylontmpop$5 = i + 1L;
+                i = $ceylontmpop$5;
             }
-            returning $ceylontmpop5;
+            returning $ceylontmpop$5;
         );
     }
     
@@ -102,18 +102,18 @@ class ClassWithHiddenVariableParameter implements .com.redhat.ceylon.compiler.ja
         (
             let
             {
-                long $ceylontmpop6 = getI();
-                setI($ceylontmpop6 + 1);
+                long $ceylontmpop$6 = getI();
+                setI($ceylontmpop$6 + 1);
             }
-            returning $ceylontmpop6;
+            returning $ceylontmpop$6;
         );
         (
             let
             {
-                long $ceylontmpop7 = getI() + 1L;
-                setI($ceylontmpop7);
+                long $ceylontmpop$7 = getI() + 1L;
+                setI($ceylontmpop$7);
             }
-            returning $ceylontmpop7;
+            returning $ceylontmpop$7;
         );
     }
     private long i;
@@ -153,18 +153,18 @@ class ClassWithVariableParameterCapturedInit implements .com.redhat.ceylon.compi
         (
             let
             {
-                long $ceylontmpop8 = getI$priv();
-                setI$priv($ceylontmpop8 + 1);
+                long $ceylontmpop$8 = getI$priv();
+                setI$priv($ceylontmpop$8 + 1);
             }
-            returning $ceylontmpop8;
+            returning $ceylontmpop$8;
         );
         (
             let
             {
-                long $ceylontmpop9 = getI$priv() + 1L;
-                setI$priv($ceylontmpop9);
+                long $ceylontmpop$9 = getI$priv() + 1L;
+                setI$priv($ceylontmpop$9);
             }
-            returning $ceylontmpop9;
+            returning $ceylontmpop$9;
         );
     }
     
@@ -195,18 +195,18 @@ class ClassWithVariableParameterCaptured implements .com.redhat.ceylon.compiler.
         (
             let
             {
-                long $ceylontmpop10 = getI();
-                setI($ceylontmpop10 + 1);
+                long $ceylontmpop$10 = getI();
+                setI($ceylontmpop$10 + 1);
             }
-            returning $ceylontmpop10;
+            returning $ceylontmpop$10;
         );
         (
             let
             {
-                long $ceylontmpop11 = getI() + 1L;
-                setI($ceylontmpop11);
+                long $ceylontmpop$11 = getI() + 1L;
+                setI($ceylontmpop$11);
             }
-            returning $ceylontmpop11;
+            returning $ceylontmpop$11;
         );
     }
     
@@ -237,18 +237,18 @@ class ClassWithHiddenVariableParameterCapturedInit implements .com.redhat.ceylon
         (
             let
             {
-                long $ceylontmpop12 = getI$priv();
-                setI$priv($ceylontmpop12 + 1);
+                long $ceylontmpop$12 = getI$priv();
+                setI$priv($ceylontmpop$12 + 1);
             }
-            returning $ceylontmpop12;
+            returning $ceylontmpop$12;
         );
         (
             let
             {
-                long $ceylontmpop13 = getI$priv() + 1L;
-                setI$priv($ceylontmpop13);
+                long $ceylontmpop$13 = getI$priv() + 1L;
+                setI$priv($ceylontmpop$13);
             }
-            returning $ceylontmpop13;
+            returning $ceylontmpop$13;
         );
     }
     
@@ -279,18 +279,18 @@ class ClassWithHiddenVariableParameterCaptured implements .com.redhat.ceylon.com
         (
             let
             {
-                long $ceylontmpop14 = getI();
-                setI($ceylontmpop14 + 1);
+                long $ceylontmpop$14 = getI();
+                setI($ceylontmpop$14 + 1);
             }
-            returning $ceylontmpop14;
+            returning $ceylontmpop$14;
         );
         (
             let
             {
-                long $ceylontmpop15 = getI() + 1L;
-                setI($ceylontmpop15);
+                long $ceylontmpop$15 = getI() + 1L;
+                setI($ceylontmpop$15);
             }
-            returning $ceylontmpop15;
+            returning $ceylontmpop$15;
         );
     }
     
@@ -306,10 +306,10 @@ class ClassWithVariableParameterCapturedInitSub extends .com.redhat.ceylon.compi
         super((
             let
             {
-                long $ceylontmpop16 = i$;
-                i$ = $ceylontmpop16 + 1;
+                long $ceylontmpop$16 = i$;
+                i$ = $ceylontmpop$16 + 1;
             }
-            returning $ceylontmpop16;
+            returning $ceylontmpop$16;
         ));
         this.i = i$;
         fn$priv();
@@ -329,18 +329,18 @@ class ClassWithVariableParameterCapturedInitSub extends .com.redhat.ceylon.compi
         (
             let
             {
-                long $ceylontmpop17 = getI$priv();
-                setI$priv($ceylontmpop17 + 1);
+                long $ceylontmpop$17 = getI$priv();
+                setI$priv($ceylontmpop$17 + 1);
             }
-            returning $ceylontmpop17;
+            returning $ceylontmpop$17;
         );
         (
             let
             {
-                long $ceylontmpop18 = getI$priv() + 1L;
-                setI$priv($ceylontmpop18);
+                long $ceylontmpop$18 = getI$priv() + 1L;
+                setI$priv($ceylontmpop$18);
             }
-            returning $ceylontmpop18;
+            returning $ceylontmpop$18;
         );
     }
     

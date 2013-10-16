@@ -9,19 +9,19 @@ public final class bug675_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning bug675($reifiedElement, $ceylontmp$elements$2);
+            returning bug675($reifiedElement, $ceylontmp$elements$$2);
         );
     }
     
     public static <Element>.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>, ? extends .java.lang.Object> bug675(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .ceylon.language.Sequential<? extends Element> elements) {
-        .java.lang.Object $elem$0;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>> $k$iter$1 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug675_.<.ceylon.language.Integer>bug675(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+        .java.lang.Object elem$0;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>> k$iter$1 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug675_.<.ceylon.language.Integer>bug675(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
-                .ceylon.language.Integer.instance(2L)})).iterator(); !(($elem$0 = $k$iter$1.next()) instanceof .ceylon.language.Finished); ) {
-            final long k = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>)$elem$0).getKey().longValue();
-            final long v = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>)$elem$0).getItem().longValue();
+                .ceylon.language.Integer.instance(2L)})).iterator(); !((elem$0 = k$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+            final long k = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>)elem$0).getKey().longValue();
+            final long v = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>)elem$0).getItem().longValue();
         }
         return elements.getIndexed();
     }

@@ -7,14 +7,14 @@ class MethodWhileConditionList implements .com.redhat.ceylon.compiler.java.runti
     
     private final boolean m$priv(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
         while (true) {
-            .java.lang.Object $y$2;
-            .ceylon.language.Sequential<? extends .java.lang.Object> $x$0;
-            if (($x$0 = x) instanceof .ceylon.language.Sequence) {
-                final .ceylon.language.Sequence<? extends .java.lang.Object> $x$1 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$x$0;
-                if (($y$2 = $x$1.get(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
-                    final long $y$3 = ((.ceylon.language.Integer)$y$2).longValue();
-                    if ($y$3 > 0L) {
-                        return $y$3 == 1L;
+            .java.lang.Object y$2;
+            .ceylon.language.Sequential<? extends .java.lang.Object> x$0;
+            if ((x$0 = x) instanceof .ceylon.language.Sequence) {
+                final .ceylon.language.Sequence<? extends .java.lang.Object> x$1 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)x$0;
+                if ((y$2 = x$1.get(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
+                    final long y$3 = ((.ceylon.language.Integer)y$2).longValue();
+                    if (y$3 > 0L) {
+                        return y$3 == 1L;
                     } else break;
                 } else break;
             } else break;

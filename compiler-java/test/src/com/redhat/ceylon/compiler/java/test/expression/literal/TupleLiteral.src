@@ -27,12 +27,12 @@ class TupleLiteral<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
                     private boolean s$exhausted;
                     
                     private final boolean s() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        s$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
+                        s$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
                         if (s$exhausted) {
                             return false;
                         } else {
-                            s = (.ceylon.language.String)$ceylontmpitem0;
+                            s = (.ceylon.language.String)$ceylontmpitem$0;
                             return true;
                         }
                     }
@@ -58,12 +58,12 @@ class TupleLiteral<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
                     private boolean s$exhausted;
                     
                     private final boolean s() {
-                        final .java.lang.Object $ceylontmpitem1 = iter$0.next();
-                        s$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$1 = iter$0.next();
+                        s$exhausted = $ceylontmpitem$1 == .ceylon.language.finished_.get_();
                         if (s$exhausted) {
                             return false;
                         } else {
-                            s = (.ceylon.language.String)$ceylontmpitem1;
+                            s = (.ceylon.language.String)$ceylontmpitem$1;
                             return true;
                         }
                     }

@@ -31,10 +31,10 @@ class IntegerBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         localAttrObject = <.ceylon.language.Integer>id$priv(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L));
         final .java.lang.Object localAttrConstantObject = .ceylon.language.Integer.instance(localAttrInteger);
         final long localAttrConstantInteger = localAttrInteger;
-        .java.lang.Object $localAttrConstantObject$1;
-        if (($localAttrConstantObject$1 = localAttrConstantObject) instanceof .ceylon.language.Integer) {
-            final long $localAttrConstantObject$2 = ((.ceylon.language.Integer)$localAttrConstantObject$1).longValue();
-            localAttrInteger = $localAttrConstantObject$2;
+        .java.lang.Object localAttrConstantObject$1;
+        if ((localAttrConstantObject$1 = localAttrConstantObject) instanceof .ceylon.language.Integer) {
+            final long localAttrConstantObject$2 = ((.ceylon.language.Integer)localAttrConstantObject$1).longValue();
+            localAttrInteger = localAttrConstantObject$2;
         }
         localAttrInteger = localAttrInteger + 2L;
         localAttrObject = .ceylon.language.Integer.instance(localAttrInteger + 2L);
@@ -52,37 +52,37 @@ class IntegerBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         setAttrInteger$priv((
             let
             {
-                long $ceylontmpop3 = getAttrInteger$priv();
-                setAttrInteger$priv($ceylontmpop3 + 1);
+                long $ceylontmpop$3 = getAttrInteger$priv();
+                setAttrInteger$priv($ceylontmpop$3 + 1);
             }
-            returning $ceylontmpop3;
+            returning $ceylontmpop$3;
         ));
         this.setAttrInteger$priv((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmpopE4 = this;
-                long $ceylontmpopV5 = $ceylontmpopE4.getAttrInteger$priv();
-                $ceylontmpopE4.setAttrInteger$priv($ceylontmpopV5 + 1);
+                .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmpopE$4 = this;
+                long $ceylontmpopV$5 = $ceylontmpopE$4.getAttrInteger$priv();
+                $ceylontmpopE$4.setAttrInteger$priv($ceylontmpopV$5 + 1);
             }
-            returning $ceylontmpopV5;
+            returning $ceylontmpopV$5;
         ));
         test$priv(localAttrInteger++);
         test$priv((
             let
             {
-                long $ceylontmpop6 = getAttrInteger$priv();
-                setAttrInteger$priv($ceylontmpop6 + 1);
+                long $ceylontmpop$6 = getAttrInteger$priv();
+                setAttrInteger$priv($ceylontmpop$6 + 1);
             }
-            returning $ceylontmpop6;
+            returning $ceylontmpop$6;
         ));
         test$priv((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmpopE7 = this;
-                long $ceylontmpopV8 = $ceylontmpopE7.getAttrInteger$priv();
-                $ceylontmpopE7.setAttrInteger$priv($ceylontmpopV8 + 1);
+                .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmpopE$7 = this;
+                long $ceylontmpopV$8 = $ceylontmpopE$7.getAttrInteger$priv();
+                $ceylontmpopE$7.setAttrInteger$priv($ceylontmpopV$8 + 1);
             }
-            returning $ceylontmpopV8;
+            returning $ceylontmpopV$8;
         ));
         localAttrInteger = .ceylon.language.Integer.getSuccessor(localAttrInteger);
         setAttrInteger$priv(.ceylon.language.Integer.getSuccessor(getAttrInteger$priv()));

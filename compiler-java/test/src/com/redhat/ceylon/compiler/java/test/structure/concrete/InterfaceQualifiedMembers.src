@@ -84,74 +84,74 @@ final class InterfaceQualifiedIncrement$impl {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE0 = ii;
-                long $ceylontmpopV1 = $ceylontmpopE0.getI1();
-                $ceylontmpopE0.setI1($ceylontmpopV1 + 1);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$0 = ii;
+                long $ceylontmpopV$1 = $ceylontmpopE$0.getI1();
+                $ceylontmpopE$0.setI1($ceylontmpopV$1 + 1);
             }
-            returning $ceylontmpopV1;
+            returning $ceylontmpopV$1;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE2 = ii;
-                long $ceylontmpopV3 = $ceylontmpopE2.getI2();
-                $ceylontmpopE2.setI2($ceylontmpopV3 + 1);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$2 = ii;
+                long $ceylontmpopV$3 = $ceylontmpopE$2.getI2();
+                $ceylontmpopE$2.setI2($ceylontmpopV$3 + 1);
             }
-            returning $ceylontmpopV3;
+            returning $ceylontmpopV$3;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE4 = ii;
-                long $ceylontmpopV5 = $ceylontmpopE4.getI3();
-                $ceylontmpopE4.setI3($ceylontmpopV5 + 1);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$4 = ii;
+                long $ceylontmpopV$5 = $ceylontmpopE$4.getI3();
+                $ceylontmpopE$4.setI3($ceylontmpopV$5 + 1);
             }
-            returning $ceylontmpopV5;
+            returning $ceylontmpopV$5;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE6 = ii;
-                long $ceylontmpopV7 = $ceylontmpopE6.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().getI4$priv();
-                $ceylontmpopE6.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().setI4$priv($ceylontmpopV7 + 1);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$6 = ii;
+                long $ceylontmpopV$7 = $ceylontmpopE$6.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().getI4$priv();
+                $ceylontmpopE$6.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().setI4$priv($ceylontmpopV$7 + 1);
             }
-            returning $ceylontmpopV7;
+            returning $ceylontmpopV$7;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE8 = ii;
-                long $ceylontmpopV9 = $ceylontmpopE8.getI1() + 1;
-                $ceylontmpopE8.setI1($ceylontmpopV9);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$8 = ii;
+                long $ceylontmpopV$9 = $ceylontmpopE$8.getI1() + 1;
+                $ceylontmpopE$8.setI1($ceylontmpopV$9);
             }
-            returning $ceylontmpopV9;
+            returning $ceylontmpopV$9;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE10 = ii;
-                long $ceylontmpopV11 = $ceylontmpopE10.getI2() + 1;
-                $ceylontmpopE10.setI2($ceylontmpopV11);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$10 = ii;
+                long $ceylontmpopV$11 = $ceylontmpopE$10.getI2() + 1;
+                $ceylontmpopE$10.setI2($ceylontmpopV$11);
             }
-            returning $ceylontmpopV11;
+            returning $ceylontmpopV$11;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE12 = ii;
-                long $ceylontmpopV13 = $ceylontmpopE12.getI3() + 1;
-                $ceylontmpopE12.setI3($ceylontmpopV13);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$12 = ii;
+                long $ceylontmpopV$13 = $ceylontmpopE$12.getI3() + 1;
+                $ceylontmpopE$12.setI3($ceylontmpopV$13);
             }
-            returning $ceylontmpopV13;
+            returning $ceylontmpopV$13;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE14 = ii;
-                long $ceylontmpopV15 = $ceylontmpopE14.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().getI4$priv() + 1;
-                $ceylontmpopE14.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().setI4$priv($ceylontmpopV15);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$14 = ii;
+                long $ceylontmpopV$15 = $ceylontmpopE$14.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().getI4$priv() + 1;
+                $ceylontmpopE$14.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().setI4$priv($ceylontmpopV$15);
             }
-            returning $ceylontmpopV15;
+            returning $ceylontmpopV$15;
         );
     }
     
@@ -173,74 +173,74 @@ final class InterfaceQualifiedIncrement$impl {
             (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE16 = ii;
-                    long $ceylontmpopV17 = $ceylontmpopE16.getI1();
-                    $ceylontmpopE16.setI1($ceylontmpopV17 + 1);
+                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$16 = ii;
+                    long $ceylontmpopV$17 = $ceylontmpopE$16.getI1();
+                    $ceylontmpopE$16.setI1($ceylontmpopV$17 + 1);
                 }
-                returning $ceylontmpopV17;
+                returning $ceylontmpopV$17;
             );
             (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE18 = ii;
-                    long $ceylontmpopV19 = $ceylontmpopE18.getI2();
-                    $ceylontmpopE18.setI2($ceylontmpopV19 + 1);
+                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$18 = ii;
+                    long $ceylontmpopV$19 = $ceylontmpopE$18.getI2();
+                    $ceylontmpopE$18.setI2($ceylontmpopV$19 + 1);
                 }
-                returning $ceylontmpopV19;
+                returning $ceylontmpopV$19;
             );
             (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE20 = ii;
-                    long $ceylontmpopV21 = $ceylontmpopE20.getI3();
-                    $ceylontmpopE20.setI3($ceylontmpopV21 + 1);
+                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$20 = ii;
+                    long $ceylontmpopV$21 = $ceylontmpopE$20.getI3();
+                    $ceylontmpopE$20.setI3($ceylontmpopV$21 + 1);
                 }
-                returning $ceylontmpopV21;
+                returning $ceylontmpopV$21;
             );
             (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE22 = ii;
-                    long $ceylontmpopV23 = $ceylontmpopE22.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().getI4$priv();
-                    $ceylontmpopE22.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().setI4$priv($ceylontmpopV23 + 1);
+                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$22 = ii;
+                    long $ceylontmpopV$23 = $ceylontmpopE$22.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().getI4$priv();
+                    $ceylontmpopE$22.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().setI4$priv($ceylontmpopV$23 + 1);
                 }
-                returning $ceylontmpopV23;
+                returning $ceylontmpopV$23;
             );
             (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE24 = ii;
-                    long $ceylontmpopV25 = $ceylontmpopE24.getI1() + 1;
-                    $ceylontmpopE24.setI1($ceylontmpopV25);
+                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$24 = ii;
+                    long $ceylontmpopV$25 = $ceylontmpopE$24.getI1() + 1;
+                    $ceylontmpopE$24.setI1($ceylontmpopV$25);
                 }
-                returning $ceylontmpopV25;
+                returning $ceylontmpopV$25;
             );
             (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE26 = ii;
-                    long $ceylontmpopV27 = $ceylontmpopE26.getI2() + 1;
-                    $ceylontmpopE26.setI2($ceylontmpopV27);
+                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$26 = ii;
+                    long $ceylontmpopV$27 = $ceylontmpopE$26.getI2() + 1;
+                    $ceylontmpopE$26.setI2($ceylontmpopV$27);
                 }
-                returning $ceylontmpopV27;
+                returning $ceylontmpopV$27;
             );
             (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE28 = ii;
-                    long $ceylontmpopV29 = $ceylontmpopE28.getI3() + 1;
-                    $ceylontmpopE28.setI3($ceylontmpopV29);
+                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$28 = ii;
+                    long $ceylontmpopV$29 = $ceylontmpopE$28.getI3() + 1;
+                    $ceylontmpopE$28.setI3($ceylontmpopV$29);
                 }
-                returning $ceylontmpopV29;
+                returning $ceylontmpopV$29;
             );
             (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE30 = ii;
-                    long $ceylontmpopV31 = $ceylontmpopE30.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().getI4$priv() + 1;
-                    $ceylontmpopE30.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().setI4$priv($ceylontmpopV31);
+                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$30 = ii;
+                    long $ceylontmpopV$31 = $ceylontmpopE$30.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().getI4$priv() + 1;
+                    $ceylontmpopE$30.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().setI4$priv($ceylontmpopV$31);
                 }
-                returning $ceylontmpopV31;
+                returning $ceylontmpopV$31;
             );
         }
         
@@ -270,74 +270,74 @@ final class InterfaceQualifiedIncrement$impl {
             (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE32 = ii;
-                    long $ceylontmpopV33 = $ceylontmpopE32.getI1();
-                    $ceylontmpopE32.setI1($ceylontmpopV33 + 1);
+                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$32 = ii;
+                    long $ceylontmpopV$33 = $ceylontmpopE$32.getI1();
+                    $ceylontmpopE$32.setI1($ceylontmpopV$33 + 1);
                 }
-                returning $ceylontmpopV33;
+                returning $ceylontmpopV$33;
             );
             (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE34 = ii;
-                    long $ceylontmpopV35 = $ceylontmpopE34.getI2();
-                    $ceylontmpopE34.setI2($ceylontmpopV35 + 1);
+                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$34 = ii;
+                    long $ceylontmpopV$35 = $ceylontmpopE$34.getI2();
+                    $ceylontmpopE$34.setI2($ceylontmpopV$35 + 1);
                 }
-                returning $ceylontmpopV35;
+                returning $ceylontmpopV$35;
             );
             (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE36 = ii;
-                    long $ceylontmpopV37 = $ceylontmpopE36.getI3();
-                    $ceylontmpopE36.setI3($ceylontmpopV37 + 1);
+                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$36 = ii;
+                    long $ceylontmpopV$37 = $ceylontmpopE$36.getI3();
+                    $ceylontmpopE$36.setI3($ceylontmpopV$37 + 1);
                 }
-                returning $ceylontmpopV37;
+                returning $ceylontmpopV$37;
             );
             (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE38 = ii;
-                    long $ceylontmpopV39 = $ceylontmpopE38.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().getI4$priv();
-                    $ceylontmpopE38.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().setI4$priv($ceylontmpopV39 + 1);
+                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$38 = ii;
+                    long $ceylontmpopV$39 = $ceylontmpopE$38.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().getI4$priv();
+                    $ceylontmpopE$38.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().setI4$priv($ceylontmpopV$39 + 1);
                 }
-                returning $ceylontmpopV39;
+                returning $ceylontmpopV$39;
             );
             (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE40 = ii;
-                    long $ceylontmpopV41 = $ceylontmpopE40.getI1() + 1;
-                    $ceylontmpopE40.setI1($ceylontmpopV41);
+                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$40 = ii;
+                    long $ceylontmpopV$41 = $ceylontmpopE$40.getI1() + 1;
+                    $ceylontmpopE$40.setI1($ceylontmpopV$41);
                 }
-                returning $ceylontmpopV41;
+                returning $ceylontmpopV$41;
             );
             (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE42 = ii;
-                    long $ceylontmpopV43 = $ceylontmpopE42.getI2() + 1;
-                    $ceylontmpopE42.setI2($ceylontmpopV43);
+                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$42 = ii;
+                    long $ceylontmpopV$43 = $ceylontmpopE$42.getI2() + 1;
+                    $ceylontmpopE$42.setI2($ceylontmpopV$43);
                 }
-                returning $ceylontmpopV43;
+                returning $ceylontmpopV$43;
             );
             (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE44 = ii;
-                    long $ceylontmpopV45 = $ceylontmpopE44.getI3() + 1;
-                    $ceylontmpopE44.setI3($ceylontmpopV45);
+                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$44 = ii;
+                    long $ceylontmpopV$45 = $ceylontmpopE$44.getI3() + 1;
+                    $ceylontmpopE$44.setI3($ceylontmpopV$45);
                 }
-                returning $ceylontmpopV45;
+                returning $ceylontmpopV$45;
             );
             (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE46 = ii;
-                    long $ceylontmpopV47 = $ceylontmpopE46.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().getI4$priv() + 1;
-                    $ceylontmpopE46.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().setI4$priv($ceylontmpopV47);
+                    .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$46 = ii;
+                    long $ceylontmpopV$47 = $ceylontmpopE$46.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().getI4$priv() + 1;
+                    $ceylontmpopE$46.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceQualifiedIncrement$impl().setI4$priv($ceylontmpopV$47);
                 }
-                returning $ceylontmpopV47;
+                returning $ceylontmpopV$47;
             );
         }
     }
@@ -358,56 +358,56 @@ final class outsideInterfaceQualifiedIncrement_ {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE48 = ii;
-                long $ceylontmpopV49 = $ceylontmpopE48.getI1();
-                $ceylontmpopE48.setI1($ceylontmpopV49 + 1);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$48 = ii;
+                long $ceylontmpopV$49 = $ceylontmpopE$48.getI1();
+                $ceylontmpopE$48.setI1($ceylontmpopV$49 + 1);
             }
-            returning $ceylontmpopV49;
+            returning $ceylontmpopV$49;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE50 = ii;
-                long $ceylontmpopV51 = $ceylontmpopE50.getI2();
-                $ceylontmpopE50.setI2($ceylontmpopV51 + 1);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$50 = ii;
+                long $ceylontmpopV$51 = $ceylontmpopE$50.getI2();
+                $ceylontmpopE$50.setI2($ceylontmpopV$51 + 1);
             }
-            returning $ceylontmpopV51;
+            returning $ceylontmpopV$51;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE52 = ii;
-                long $ceylontmpopV53 = $ceylontmpopE52.getI3();
-                $ceylontmpopE52.setI3($ceylontmpopV53 + 1);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$52 = ii;
+                long $ceylontmpopV$53 = $ceylontmpopE$52.getI3();
+                $ceylontmpopE$52.setI3($ceylontmpopV$53 + 1);
             }
-            returning $ceylontmpopV53;
+            returning $ceylontmpopV$53;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE54 = ii;
-                long $ceylontmpopV55 = $ceylontmpopE54.getI1() + 1;
-                $ceylontmpopE54.setI1($ceylontmpopV55);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$54 = ii;
+                long $ceylontmpopV$55 = $ceylontmpopE$54.getI1() + 1;
+                $ceylontmpopE$54.setI1($ceylontmpopV$55);
             }
-            returning $ceylontmpopV55;
+            returning $ceylontmpopV$55;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE56 = ii;
-                long $ceylontmpopV57 = $ceylontmpopE56.getI2() + 1;
-                $ceylontmpopE56.setI2($ceylontmpopV57);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$56 = ii;
+                long $ceylontmpopV$57 = $ceylontmpopE$56.getI2() + 1;
+                $ceylontmpopE$56.setI2($ceylontmpopV$57);
             }
-            returning $ceylontmpopV57;
+            returning $ceylontmpopV$57;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE58 = ii;
-                long $ceylontmpopV59 = $ceylontmpopE58.getI3() + 1;
-                $ceylontmpopE58.setI3($ceylontmpopV59);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $ceylontmpopE$58 = ii;
+                long $ceylontmpopV$59 = $ceylontmpopE$58.getI3() + 1;
+                $ceylontmpopE$58.setI3($ceylontmpopV$59);
             }
-            returning $ceylontmpopV59;
+            returning $ceylontmpopV$59;
         );
     }
 }

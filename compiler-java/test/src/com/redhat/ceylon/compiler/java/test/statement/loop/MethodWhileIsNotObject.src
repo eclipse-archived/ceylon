@@ -16,11 +16,11 @@ class MethodWhileIsNotObject implements .com.redhat.ceylon.compiler.java.runtime
     
     public final void mvar(final .java.lang.Object y) {
         while (true) {
-            .java.lang.Object $x$1;
-            if (!(($x$1 = y) != null)) {
-                final .java.lang.Object $x$2 = $x$1;
+            .java.lang.Object x$1;
+            if (!((x$1 = y) != null)) {
+                final .java.lang.Object x$2 = x$1;
                 .ceylon.language.print_.print(.ceylon.language.String.instance("x is null"));
-                .ceylon.language.print_.print($x$2);
+                .ceylon.language.print_.print(x$2);
             } else break;
         }
     }

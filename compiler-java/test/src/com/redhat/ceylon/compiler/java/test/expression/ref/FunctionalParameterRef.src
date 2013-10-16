@@ -46,9 +46,9 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning nullarySequenced$($ceylontmp$s$0);
+            returning nullarySequenced$($ceylontmp$s$$0);
         );
     }
     
@@ -65,9 +65,9 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning unarySequenced$(s1, $ceylontmp$s$1);
+            returning unarySequenced$(s1, $ceylontmp$s$$1);
         );
     }
     
@@ -84,9 +84,9 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning binarySequenced$(s1, s2, $ceylontmp$s$2);
+            returning binarySequenced$(s1, s2, $ceylontmp$s$$2);
         );
     }
     
@@ -103,9 +103,9 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning ternarySequenced$(s1, s2, s3, $ceylontmp$s$3);
+            returning ternarySequenced$(s1, s2, s3, $ceylontmp$s$$3);
         );
     }
     
@@ -122,9 +122,9 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$4 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$$4 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning narySequenced$(s1, s2, s3, s4, $ceylontmp$s$4);
+            returning narySequenced$(s1, s2, s3, s4, $ceylontmp$s$$4);
         );
     }
     
@@ -756,7 +756,7 @@ final class functionalParameterRef_ {
         final .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef mr = (
             let
             {
-                .ceylon.language.Callable $arg$35$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+                .ceylon.language.Callable arg$35$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -764,7 +764,7 @@ final class functionalParameterRef_ {
                         return .ceylon.language.String.instance("nullary()");
                     }
                 };
-                .ceylon.language.Callable $arg$35$1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(String)", (short)-1){
+                .ceylon.language.Callable arg$35$1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(String)", (short)-1){
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -773,7 +773,7 @@ final class functionalParameterRef_ {
                         return .ceylon.language.String.instance(new .java.lang.StringBuilder().append("unary(").append(s).append(")").toString());
                     }
                 };
-                .ceylon.language.Callable $arg$35$2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), "String(String, String)", (short)-1){
+                .ceylon.language.Callable arg$35$2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), "String(String, String)", (short)-1){
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -783,7 +783,7 @@ final class functionalParameterRef_ {
                         return .ceylon.language.String.instance(new .java.lang.StringBuilder().append("binary(").append(s1).append(", ").append(s2).append(")").toString());
                     }
                 };
-                .ceylon.language.Callable $arg$35$3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor))), "String(String, String, String)", (short)-1){
+                .ceylon.language.Callable arg$35$3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor))), "String(String, String, String)", (short)-1){
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -794,7 +794,7 @@ final class functionalParameterRef_ {
                         return .ceylon.language.String.instance(new .java.lang.StringBuilder().append("ternary(").append(s1).append(", ").append(s2).append(", ").append(s3).append(")").toString());
                     }
                 };
-                .ceylon.language.Callable $arg$35$4 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)))), "String(String, String, String, String)", (short)-1){
+                .ceylon.language.Callable arg$35$4 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)))), "String(String, String, String, String)", (short)-1){
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -806,7 +806,7 @@ final class functionalParameterRef_ {
                         return .ceylon.language.String.instance(new .java.lang.StringBuilder().append("nary(").append(s1).append(", ").append(s2).append(", ").append(s3).append(", ").append(s4).append(")").toString());
                     }
                 };
-                .ceylon.language.Callable $arg$35$5 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor), "String(String*)", (short)0){
+                .ceylon.language.Callable arg$35$5 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor), "String(String*)", (short)0){
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -887,7 +887,7 @@ final class functionalParameterRef_ {
                         return .ceylon.language.String.instance(new .java.lang.StringBuilder().append("nullarySequenced(").append(s.toString()).append(")").toString());
                     }
                 };
-                .ceylon.language.Callable $arg$35$6 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor)), "String(String, String*)", (short)1){
+                .ceylon.language.Callable arg$35$6 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor)), "String(String, String*)", (short)1){
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -965,7 +965,7 @@ final class functionalParameterRef_ {
                         return .ceylon.language.String.instance(new .java.lang.StringBuilder().append("unarySequenced(").append(s1).append("; ").append(s.toString()).append(")").toString());
                     }
                 };
-                .ceylon.language.Callable $arg$35$7 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor))), "String(String, String, String*)", (short)2){
+                .ceylon.language.Callable arg$35$7 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor))), "String(String, String, String*)", (short)2){
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -1031,7 +1031,7 @@ final class functionalParameterRef_ {
                         return .ceylon.language.String.instance(new .java.lang.StringBuilder().append("binarySequenced(").append(s1).append(", ").append(s2).append("; ").append(s.toString()).append(")").toString());
                     }
                 };
-                .ceylon.language.Callable $arg$35$8 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor)))), "String(String, String, String, String*)", (short)3){
+                .ceylon.language.Callable arg$35$8 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor)))), "String(String, String, String, String*)", (short)3){
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -1085,7 +1085,7 @@ final class functionalParameterRef_ {
                         return .ceylon.language.String.instance(new .java.lang.StringBuilder().append("ternarySequenced(").append(s1).append(", ").append(s2).append(", ").append(s3).append("; ").append(s.toString()).append(")").toString());
                     }
                 };
-                .ceylon.language.Callable $arg$35$9 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor))))), "String(String, String, String, String, String*)", (short)4){
+                .ceylon.language.Callable arg$35$9 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor))))), "String(String, String, String, String, String*)", (short)4){
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -1122,7 +1122,7 @@ final class functionalParameterRef_ {
                         return .ceylon.language.String.instance(new .java.lang.StringBuilder().append("narySequenced(").append(s1).append(", ").append(s2).append(", ").append(s3).append(", ").append(s4).append("; ").append(s.toString()).append(")").toString());
                     }
                 };
-                .ceylon.language.Callable $arg$35$10 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(Integer)(String)", (short)-1){
+                .ceylon.language.Callable arg$35$10 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(Integer)(String)", (short)-1){
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -1140,7 +1140,7 @@ final class functionalParameterRef_ {
                     }
                 };
             }
-            returning new .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef($arg$35$0, $arg$35$1, $arg$35$2, $arg$35$3, $arg$35$4, $arg$35$5, $arg$35$6, $arg$35$7, $arg$35$8, $arg$35$9, $arg$35$10);
+            returning new .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef(arg$35$0, arg$35$1, arg$35$2, arg$35$3, arg$35$4, arg$35$5, arg$35$6, arg$35$7, arg$35$8, arg$35$9, arg$35$10);
         );
         mr.simple();
         mr.sequenced();

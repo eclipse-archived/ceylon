@@ -6,8 +6,8 @@ class NamedArgumentInvocationInitWithSequence implements .com.redhat.ceylon.comp
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                this(a, $ceylontmp$b$0);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this(a, $ceylontmp$b$$0);
             }
             returning null;
         );
@@ -22,8 +22,8 @@ class NamedArgumentInvocationInitWithSequence implements .com.redhat.ceylon.comp
             (
                 let
                 {
-                    .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$z$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                    this(x, y, $ceylontmp$z$1);
+                    .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$z$$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                    this(x, y, $ceylontmp$z$$1);
                 }
                 returning null;
             );
@@ -45,25 +45,25 @@ class NamedArgumentInvocationInitWithSequence implements .com.redhat.ceylon.comp
         (
             let
             {
-                .java.lang.String $arg$2$0 = "a";
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$2$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                .java.lang.String arg$2$0 = "a";
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> arg$2$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
                         .ceylon.language.Integer.instance(1L),
                         .ceylon.language.Integer.instance(2L),
                         .ceylon.language.Integer.instance(3L)});
             }
-            returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithSequence($arg$2$0, $arg$2$1);
+            returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithSequence(arg$2$0, arg$2$1);
         ).m$priv();
         (
             let
             {
-                .java.lang.String $arg$3$1 = "";
-                boolean $arg$3$0 = true;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$3$2 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                .java.lang.String arg$3$1 = "";
+                boolean arg$3$0 = true;
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> arg$3$2 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
                         .ceylon.language.Integer.instance(4L),
                         .ceylon.language.Integer.instance(5L),
                         .ceylon.language.Integer.instance(6L)});
             }
-            returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithSequence.Inner($arg$3$0, $arg$3$1, $arg$3$2);
+            returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithSequence.Inner(arg$3$0, arg$3$1, arg$3$2);
         ).m2();
     }
     

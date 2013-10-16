@@ -8,13 +8,13 @@ class SwitchIsVarSubst implements .com.redhat.ceylon.compiler.java.runtime.model
     private final .java.lang.String m$priv(final .java.lang.Object b) {
         final .java.lang.String name;
         {
-            .java.lang.Object $sel$0 = b;
-            if ($sel$0 instanceof .ceylon.language.String) {
-                final .java.lang.String $b$2 = ((.ceylon.language.String)$sel$0).toString();
-                name = "String: " + $b$2;
-            } else if ($sel$0 instanceof .java.lang.Throwable) {
-                final .java.lang.Throwable $b$1 = (.java.lang.Throwable)$sel$0;
-                name = "Exception: " + $b$1.getMessage();
+            .java.lang.Object sel$0 = b;
+            if (sel$0 instanceof .ceylon.language.String) {
+                final .java.lang.String b$2 = ((.ceylon.language.String)sel$0).toString();
+                name = "String: " + b$2;
+            } else if (sel$0 instanceof .java.lang.Throwable) {
+                final .java.lang.Throwable b$1 = (.java.lang.Throwable)sel$0;
+                name = "Exception: " + b$1.getMessage();
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
         return name;

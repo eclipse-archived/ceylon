@@ -27,12 +27,12 @@ public final class utilCalls_ {
                     private boolean i$exhausted;
                     
                     private final boolean i() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        i$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
+                        i$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
-                            i = (.ceylon.language.Integer)$ceylontmpitem0;
+                            i = (.ceylon.language.Integer)$ceylontmpitem$0;
                             return true;
                         }
                     }
@@ -62,12 +62,12 @@ public final class utilCalls_ {
                     private boolean i$exhausted;
                     
                     private final boolean i() {
-                        final .java.lang.Object $ceylontmpitem1 = iter$0.next();
-                        i$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$1 = iter$0.next();
+                        i$exhausted = $ceylontmpitem$1 == .ceylon.language.finished_.get_();
                         if (i$exhausted) {
                             return false;
                         } else {
-                            i = (.ceylon.language.Integer)$ceylontmpitem1;
+                            i = (.ceylon.language.Integer)$ceylontmpitem$1;
                             return true;
                         }
                     }
@@ -87,15 +87,15 @@ public final class utilCalls_ {
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ignore1 = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $spread$2$iterable = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
-                .ceylon.language.SequenceBuilder<.ceylon.language.Integer> $spread$2$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor);
-                .java.lang.Object $spread$2$iteration;
-                for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $spread$2$iterator = $spread$2$iterable.iterator(); !(($spread$2$iteration = $spread$2$iterator.next()) instanceof .ceylon.language.Finished); ) {
-                    .ceylon.language.Integer $spread$2$element = (.ceylon.language.Integer)$spread$2$iteration;
-                    $spread$2$sequenceBuilder.append($spread$2$element.getWholePart());
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$2$iterable = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
+                .ceylon.language.SequenceBuilder<.ceylon.language.Integer> spread$2$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor);
+                .java.lang.Object spread$2$iteration;
+                for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$2$iterator = spread$2$iterable.iterator(); !((spread$2$iteration = spread$2$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                    .ceylon.language.Integer spread$2$element = (.ceylon.language.Integer)spread$2$iteration;
+                    spread$2$sequenceBuilder.append(spread$2$element.getWholePart());
                 }
             }
-            returning $spread$2$sequenceBuilder.getSequence();
+            returning spread$2$sequenceBuilder.getSequence();
         );
         .com.redhat.ceylon.compiler.java.test.structure.reified.variadicMethod_.variadicMethod(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor, new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
     }
@@ -118,8 +118,8 @@ public final class variadicMethod_ {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ints$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                variadicMethod($ceylontmp$ints$3);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ints$$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                variadicMethod($ceylontmp$ints$$3);
             }
             returning null;
         );

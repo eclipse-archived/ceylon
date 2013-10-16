@@ -20,8 +20,8 @@ public class Bug1235A implements .com.redhat.ceylon.compiler.java.runtime.model.
         (
             let
             {
-                .ceylon.language.String $ceylontmp$s$0 = .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235A.$init$s();
-                this($ceylontmp$s$0);
+                .ceylon.language.String $ceylontmp$s$$0 = .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235A.$init$s();
+                this($ceylontmp$s$$0);
             }
             returning null;
         );
@@ -65,8 +65,8 @@ public class Bug1235B implements .com.redhat.ceylon.compiler.java.runtime.model.
         (
             let
             {
-                .ceylon.language.String $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235B.$init$s();
-                this($ceylontmp$s$1);
+                .ceylon.language.String $ceylontmp$s$$1 = .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235B.$init$s();
+                this($ceylontmp$s$$1);
             }
             returning null;
         );

@@ -20,12 +20,12 @@ final class forIfFor_ {
                     private boolean x$exhausted;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.ceylon.language.Integer)$ceylontmpitem0;
+                            x = (.ceylon.language.Integer)$ceylontmpitem$0;
                             return true;
                         }
                     }
@@ -53,12 +53,12 @@ final class forIfFor_ {
                     
                     private final boolean y() {
                         while (this.iter$2()) {
-                            final .java.lang.Object $ceylontmpitem1 = iter$2.next();
-                            y$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.get_();
+                            final .java.lang.Object $ceylontmpitem$1 = iter$2.next();
+                            y$exhausted = $ceylontmpitem$1 == .ceylon.language.finished_.get_();
                             if (y$exhausted) {
                                 iter$2 = null;
                             } else {
-                                y = (.ceylon.language.Integer)$ceylontmpitem1;
+                                y = (.ceylon.language.Integer)$ceylontmpitem$1;
                                 return true;
                             }
                         }

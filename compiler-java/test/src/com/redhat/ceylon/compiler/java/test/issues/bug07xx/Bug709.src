@@ -6,9 +6,9 @@ final class bug709_ {
     }
     
     static void bug709(final .ceylon.language.List<? extends .ceylon.language.String> list) {
-        .java.lang.Object $list$1;
-        if (($list$1 = list) instanceof .ceylon.language.Sequential) {
-            final .ceylon.language.Sequential<? extends .java.lang.Object> $list$2 = (.ceylon.language.Sequential)$list$1;
+        .java.lang.Object list$1;
+        if ((list$1 = list) instanceof .ceylon.language.Sequential) {
+            final .ceylon.language.Sequential<? extends .java.lang.Object> list$2 = (.ceylon.language.Sequential)list$1;
         }
     }
 }

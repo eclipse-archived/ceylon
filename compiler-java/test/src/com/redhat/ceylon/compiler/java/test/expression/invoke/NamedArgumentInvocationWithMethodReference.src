@@ -21,7 +21,7 @@ class NamedArgumentInvocationWithMethodReference implements .com.redhat.ceylon.c
         (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+                .ceylon.language.Callable<? extends .java.lang.Object> arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -35,7 +35,7 @@ class NamedArgumentInvocationWithMethodReference implements .com.redhat.ceylon.c
                         );
                     }
                 };
-                m2$priv($arg$0$0);
+                m2$priv(arg$0$0);
             }
             returning null;
         );

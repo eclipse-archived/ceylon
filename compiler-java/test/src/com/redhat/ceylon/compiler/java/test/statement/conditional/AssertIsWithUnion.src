@@ -12,12 +12,12 @@ class AssertIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     public final void mvar(final .java.lang.Object y) {
-        final .java.lang.Object $x$4;
-        .java.lang.Object $x$3 = null;
-        if (($x$3 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo || $x$3 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar) {
-            $x$4 = $x$3;
+        final .java.lang.Object x$4;
+        .java.lang.Object x$3 = null;
+        if ((x$3 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo || x$3 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar) {
+            x$4 = x$3;
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo|Bar x=y"));
-        ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Common)$x$4).common();
+        ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Common)x$4).common();
     }
     
     public static void main(.java.lang.String[] args) {

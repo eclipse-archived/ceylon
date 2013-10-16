@@ -42,21 +42,21 @@ class Bug1288<Element> implements .com.redhat.ceylon.compiler.java.runtime.model
     final long inc) {
         if (x instanceof .ceylon.language.Integer) {
             final long result = ((.ceylon.language.Summable<.ceylon.language.Integer>)(.ceylon.language.Summable)x).plus(.ceylon.language.Integer.instance(inc)).longValue();
-            final .java.lang.Object $result$4;
-            .java.lang.Object $result$3 = null;
-            if (.com.redhat.ceylon.compiler.java.Util.isReified($result$3 = .ceylon.language.Integer.instance(result), $reifiedElement)) {
-                $result$4 = $result$3;
+            final .java.lang.Object result$4;
+            .java.lang.Object result$3 = null;
+            if (.com.redhat.ceylon.compiler.java.Util.isReified(result$3 = .ceylon.language.Integer.instance(result), $reifiedElement)) {
+                result$4 = result$3;
             } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Element result"));
-            return (Element)$result$4;
+            return (Element)result$4;
         }
         if (.com.redhat.ceylon.compiler.java.Util.isReified(x, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo.class, .ceylon.language.Integer.$TypeDescriptor))) {
             final long result = ((.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo<.ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo)x).foo(.ceylon.language.Boolean.instance(true)).longValue();
-            final .java.lang.Object $result$9;
-            .java.lang.Object $result$8 = null;
-            if (.com.redhat.ceylon.compiler.java.Util.isReified($result$8 = .ceylon.language.Integer.instance(result), $reifiedElement)) {
-                $result$9 = $result$8;
+            final .java.lang.Object result$9;
+            .java.lang.Object result$8 = null;
+            if (.com.redhat.ceylon.compiler.java.Util.isReified(result$8 = .ceylon.language.Integer.instance(result), $reifiedElement)) {
+                result$9 = result$8;
             } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Element result"));
-            return (Element)$result$9;
+            return (Element)result$9;
         }
         return (Element).ceylon.language.nothing_.get_();
     }
