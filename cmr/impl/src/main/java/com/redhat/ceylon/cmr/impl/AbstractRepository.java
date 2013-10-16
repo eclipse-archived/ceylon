@@ -262,6 +262,12 @@ public abstract class AbstractRepository implements Repository {
 
     private boolean isArtifactOfType(String name, Node node, String module, String version, ModuleQuery lookup) {
         switch (lookup.getType()) {
+            case ALL:
+                return true;
+            case CODE:
+                return ((getArtifactName(module, version, ArtifactContext.CAR).equals(name) || getArtifactName(module, version, ArtifactContext.JS).equals(name))
+                        && checkBinaryVersion(module, node, lookup))
+                        || getArtifactName(module, version, ArtifactContext.JAR).equals(name);
             case JS:
                 return getArtifactName(module, version, ArtifactContext.JS).equals(name)
                         && checkBinaryVersion(module, node, lookup);
