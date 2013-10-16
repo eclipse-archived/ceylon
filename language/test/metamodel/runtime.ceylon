@@ -802,6 +802,15 @@ shared void checkObjectDeclaration(){
     // make sure we can't instantiate it
     // FIXME: this may actually be wrong and we may want to be able to instantiate them
     assert(!is Class<Anything, []> topLevelObjectClass);
+    assert(is Class<Anything, Nothing> topLevelObjectClass);
+    
+    // make sure we get a proper exception when trying to instantiate it
+    try{
+        topLevelObjectClass.apply();
+        assert(false);
+    }catch(Exception x){
+        assert(is InvocationException x);
+    }
 }
 
 @test
