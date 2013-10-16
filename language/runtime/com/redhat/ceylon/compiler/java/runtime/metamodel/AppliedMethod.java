@@ -1,13 +1,15 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.util.List;
+
 import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
+import ceylon.language.meta.declaration.FunctionDeclaration;
 import ceylon.language.meta.model.Function;
 import ceylon.language.meta.model.FunctionModel$impl;
 import ceylon.language.meta.model.Method$impl;
 import ceylon.language.meta.model.Model$impl;
-import ceylon.language.meta.declaration.FunctionDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -17,6 +19,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 
 @Ceylon(major = 6)
@@ -39,6 +43,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     private TypeDescriptor $reifiedArguments;
     
     private Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> typeArguments;
+    private Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
 
     public AppliedMethod(@Ignore TypeDescriptor $reifiedContainer, 
                          @Ignore TypeDescriptor $reifiedType, 
@@ -53,6 +58,11 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
         this.declaration = declaration;
         this.typeArguments = Metamodel.getTypeArguments(declaration, appliedFunction);
         this.closedType = Metamodel.getAppliedMetamodel(Metamodel.getFunctionReturnType(appliedFunction));
+        // get a list of produced parameter types
+        com.redhat.ceylon.compiler.typechecker.model.Method method = (com.redhat.ceylon.compiler.typechecker.model.Method)appliedFunction.getDeclaration();
+        List<Parameter> parameters = method.getParameterLists().get(0).getParameters();
+        List<ProducedType> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
+        this.parameterTypes = Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
     }
 
     @Override
@@ -174,6 +184,12 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     @Override
     public Function<? extends Type, ? super Arguments> bind(@TypeInfo("ceylon.language::Object") @Name("container") java.lang.Object container){
         return (Function<? extends Type, ? super Arguments>) Metamodel.bind(this, this.appliedFunction.getQualifyingType(), container);
+    }
+
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>")
+    @Override
+    public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> getParameterTypes(){
+        return parameterTypes;
     }
 
     @Override

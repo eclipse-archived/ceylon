@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ceylon.language.Anything;
 import ceylon.language.ArraySequence;
 import ceylon.language.Callable;
 import ceylon.language.Iterator;
@@ -264,6 +265,18 @@ public class Metamodel {
             ret[i++] = Metamodel.getMetamodel(pt);
         }
         return Util.sequentialInstance(ceylon.language.meta.declaration.OpenType.$TypeDescriptor, ret);
+    }
+
+    public static Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> getAppliedMetamodelSequential(List<ProducedType> types) {
+        if(types.isEmpty())
+            return (Sequential)empty_.get_();
+        ceylon.language.meta.model.Type<?>[] ret = new ceylon.language.meta.model.Type[types.size()];
+        int i=0;
+        for(ProducedType pt : types){
+            ret[i++] = Metamodel.getAppliedMetamodel(pt);
+        }
+        return Util.sequentialInstance(TypeDescriptor.klass(ceylon.language.meta.model.Type.class, Anything.$TypeDescriptor), 
+                                       ret);
     }
 
     public static <T> ceylon.language.meta.model.Type<T> getAppliedMetamodel(ProducedType pt) {

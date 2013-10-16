@@ -19,4 +19,7 @@ shared interface FunctionModel<out Type=Anything, in Arguments=Nothing>
 
     "This function's return closed type."
     shared formal ClosedType<Type> type;
+    
+    "This function's parameter closed types"
+    shared formal ClosedType<Anything>[] parameterTypes;
 }

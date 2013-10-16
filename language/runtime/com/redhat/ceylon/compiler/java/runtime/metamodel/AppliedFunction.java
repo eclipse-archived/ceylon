@@ -54,6 +54,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     private Object instance;
     private ceylon.language.meta.model.Type<? extends java.lang.Object> container;
     private List<ProducedType> parameterProducedTypes;
+    private Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
 
     public AppliedFunction(@Ignore TypeDescriptor $reifiedType, 
                            @Ignore TypeDescriptor $reifiedArguments,
@@ -87,6 +88,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 
         // get a list of produced parameter types
         this.parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
+        this.parameterTypes = Metamodel.getAppliedMetamodelSequential(this.parameterProducedTypes);
 
         // FIXME: delay method setup for when we actually use it?
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(function.declaration);
@@ -387,7 +389,13 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         
         return Metamodel.apply(this, arguments, parameterProducedTypes, firstDefaulted, variadicIndex);
     }
-    
+
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>")
+    @Override
+    public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> getParameterTypes(){
+        return parameterTypes;
+    }
+
     @Override
     public int hashCode() {
         int result = 1;

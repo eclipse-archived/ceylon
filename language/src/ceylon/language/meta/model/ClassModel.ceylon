@@ -1,6 +1,9 @@
 import ceylon.language.meta.declaration {
     ClassDeclaration
 }
+import ceylon.language.meta.model {
+    ClosedType = Type
+}
 
 "A class model represents the model of a Ceylon class that you can inspect.
  
@@ -11,4 +14,7 @@ shared interface ClassModel<out Type=Anything, in Arguments=Nothing>
     given Arguments satisfies Anything[] {
     
     shared formal actual ClassDeclaration declaration;
+    
+    "This function's parameter closed types"
+    shared formal ClosedType<Anything>[] parameterTypes;
 }

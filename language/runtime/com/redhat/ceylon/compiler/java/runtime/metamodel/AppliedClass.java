@@ -41,11 +41,12 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     final TypeDescriptor $reifiedArguments;
     private MethodHandle constructor;
     private Object instance;
-    private int firstDefaulted;
+    private int firstDefaulted = -1;
     private int variadicIndex = -1;
     private MethodHandle[] dispatch;
     private ceylon.language.meta.model.Type<?> container;
     private List<ProducedType> parameterProducedTypes;
+    private Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
     
     // FIXME: get rid of duplicate instantiations of AppliedClassType when the type in question has no type parameters
     public AppliedClass(@Ignore TypeDescriptor $reifiedType, 
@@ -104,6 +105,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
 
         // get a list of produced parameter types
         this.parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, producedType);
+        this.parameterTypes = Metamodel.getAppliedMetamodelSequential(this.parameterProducedTypes);
 
         // FIXME: delay constructor setup for when we actually use it?
         // FIXME: finding the right MethodHandle for the constructor could actually be done in the Class declaration
@@ -397,6 +399,13 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         return Metamodel.apply(this, arguments, parameterProducedTypes, firstDefaulted, variadicIndex);
     }
 
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>")
+    @Override
+    public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> getParameterTypes(){
+        checkInit();
+        return parameterTypes;
+    }
+    
     @Override
     public int hashCode() {
         int result = 1;

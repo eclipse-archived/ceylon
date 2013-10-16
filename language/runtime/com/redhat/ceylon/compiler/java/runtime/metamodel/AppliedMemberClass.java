@@ -50,6 +50,24 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
         return null;
     }
 
+    private Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
+
+    @Override
+    protected void init() {
+        super.init();
+        com.redhat.ceylon.compiler.typechecker.model.Class decl = (com.redhat.ceylon.compiler.typechecker.model.Class) producedType.getDeclaration();
+
+        // anonymous classes don't have constructors
+        // local classes have constructors but if they capture anything it will get extra parameters that nobody knows about
+        // FIXME: so we really want to disallow that in the metamodel?
+        if(!decl.isAnonymous() && !Metamodel.isLocalType(decl)){
+            // get a list of produced parameter types
+            java.util.List<ProducedType> parameterProducedTypes = Metamodel.getParameterProducedTypes(decl.getParameterList().getParameters(), producedType);
+            this.parameterTypes = Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
+        }
+
+    }
+    
     @Override
     @Ignore
     public Class<? extends Type, ? super Arguments> $call() {
@@ -169,6 +187,13 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
     @Override
     public Class<? extends Type, ? super Arguments> bind(@TypeInfo("ceylon.language::Object") @Name("container") java.lang.Object container){
         return (Class<? extends Type, ? super Arguments>) Metamodel.bind(this, this.producedType.getQualifyingType(), container);
+    }
+
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>")
+    @Override
+    public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> getParameterTypes(){
+        checkInit();
+        return parameterTypes;
     }
 
     @Override
