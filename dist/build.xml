@@ -157,7 +157,7 @@ Used with another target such as 'package'.">
         <property name="ceylon-runtime.dir" value="${projects.base.dir}/ceylon-runtime"/>
         <property name="ceylon-js.dir" value="${projects.base.dir}/ceylon-js"/>
         <property name="dist.name" value="ceylon-${ceylon.version}"/>
-        <property name="github-url" value="git://github.com/"/>
+        <property name="github-url" value="https://github.com/"/>
     </target>
 
     <target name="siblings"
@@ -172,7 +172,7 @@ Used with another target such as 'package'">
         <property name="ceylon-runtime.dir" value="${projects.base.dir}/ceylon-runtime"/>
         <property name="ceylon-js.dir" value="${projects.base.dir}/ceylon-js"/>
         <property name="dist.name" value="ceylon-${ceylon.version}-custom-${NOW}"/>
-        <property name="github-url" value="git://github.com/"/>
+        <property name="github-url" value="https://github.com/"/>
     </target>
 
     <target name="package" 
