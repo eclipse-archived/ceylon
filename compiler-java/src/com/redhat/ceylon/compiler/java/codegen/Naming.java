@@ -293,6 +293,10 @@ public class Naming implements LocalId {
         String name;
         if (decl.isClassOrInterfaceMember()
                 && decl instanceof Method) {
+            Declaration refined = decl.getRefinedDeclaration();
+            if (refined instanceof JavaMethod) {
+                return ((JavaMethod)refined).getRealName();
+            }
             name = quoteMethodNameIfProperty((Method)decl);
         } else {
             name = decl.getName();
