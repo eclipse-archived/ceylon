@@ -193,9 +193,7 @@
         <copy 
             overwrite="true"
             todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository">
-            <fileset dir="${build.dist.repo}">
-                <include name="**/*"/>
-            </fileset>
+            <fileset dir="${build.dist.repo}"/>
         </copy>
     </target>
 
