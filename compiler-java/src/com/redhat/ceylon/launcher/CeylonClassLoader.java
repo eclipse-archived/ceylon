@@ -80,6 +80,7 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "org.jboss.modules", "main"));
         archives.add(getRepoJar(ceylonRepo, "org.jboss.logmanager", "main"));
         archives.add(getRepoJar(ceylonRepo, "org.antlr-runtime", "3.4"));
+        archives.add(getRepoJar(ceylonRepo, "net.minidev.json-smart", "1.1.1"));
 
         return archives;
     }
