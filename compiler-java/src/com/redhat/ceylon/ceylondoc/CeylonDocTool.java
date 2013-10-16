@@ -70,6 +70,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.Referenceable;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
@@ -131,8 +132,8 @@ public class CeylonDocTool extends RepoUsingTool {
     private boolean includeNonShared;
     private boolean includeSourceCode;
     private boolean ignoreMissingDoc;
-    private Map<Declaration, PhasedUnit> declarationUnitMap = new HashMap<Declaration, PhasedUnit>();
-    private Map<Declaration, Node> declarationNodeMap = new HashMap<Declaration, Node>();
+    private Map<Referenceable, PhasedUnit> modelUnitMap = new HashMap<Referenceable, PhasedUnit>();
+    private Map<Referenceable, Node> modelNodeMap = new HashMap<Referenceable, Node>();
     private Map<Parameter, PhasedUnit> parameterUnitMap = new HashMap<Parameter, PhasedUnit>();
     private Map<Parameter, Node> parameterNodeMap = new HashMap<Parameter, Node>();
     private File tempDestDir;
@@ -479,7 +480,7 @@ public class CeylonDocTool extends RepoUsingTool {
     
     public void makeDoc() throws IOException {
         
-        buildDeclarationMaps();
+        buildNodesMaps();
         if (includeSourceCode) {
             copySourceFiles();
         }
@@ -624,29 +625,43 @@ public class CeylonDocTool extends RepoUsingTool {
         }
     }
 
-    private void buildDeclarationMaps() {
+    private void buildNodesMaps() {
         for (final PhasedUnit pu : phasedUnits) {
             CompilationUnit cu = pu.getCompilationUnit();
             Walker.walkCompilationUnit(new Visitor() {
-                public void visit(Tree.Declaration decl) {
-                    declarationUnitMap.put(decl.getDeclarationModel(), pu);
-                    declarationNodeMap.put(decl.getDeclarationModel(), decl);
-                    super.visit(decl);
+                public void visit(Tree.Declaration that) {
+                    modelUnitMap.put(that.getDeclarationModel(), pu);
+                    modelNodeMap.put(that.getDeclarationModel(), that);
+                    super.visit(that);
                 }
-                public void visit(Tree.MethodDeclaration decl) {
-                    declarationUnitMap.put(decl.getDeclarationModel(), pu);
-                    declarationNodeMap.put(decl.getDeclarationModel(), decl);
-                    super.visit(decl);
+                public void visit(Tree.ObjectDefinition that) {
+                    if( that.getDeclarationModel() != null && that.getDeclarationModel().getTypeDeclaration() != null ) {
+                        TypeDeclaration typeDecl = that.getDeclarationModel().getTypeDeclaration();
+                        modelUnitMap.put(typeDecl, pu);
+                        modelNodeMap.put(typeDecl, that);
+                    }
+                    super.visit(that);
                 }
-                public void visit(Tree.AttributeDeclaration decl) {
-                    declarationUnitMap.put(decl.getDeclarationModel(), pu);
-                    declarationNodeMap.put(decl.getDeclarationModel(), decl);
-                    super.visit(decl);
+                public void visit(Tree.PackageDescriptor that) {
+                    if (that.getImportPath() != null && that.getImportPath().getModel() != null) {
+                        Referenceable model = that.getImportPath().getModel();
+                        modelUnitMap.put(model, pu);
+                        modelNodeMap.put(model, that);
+                    }
+                    super.visit(that);
                 }
-                public void visit(Tree.Parameter decl) {
-                    parameterUnitMap.put(decl.getParameterModel(), pu);
-                    parameterNodeMap.put(decl.getParameterModel(), decl);
-                    super.visit(decl);
+                public void visit(Tree.ModuleDescriptor that) {
+                    if (that.getImportPath() != null && that.getImportPath().getModel() != null) {
+                        Referenceable model = that.getImportPath().getModel();
+                        modelUnitMap.put(model, pu);
+                        modelNodeMap.put(model, that);
+                    }
+                    super.visit(that);
+                }
+                public void visit(Tree.Parameter param) {
+                    parameterUnitMap.put(param.getParameterModel(), pu);
+                    parameterNodeMap.put(param.getParameterModel(), param);
+                    super.visit(param);
                 }
             }, cu);
         }
@@ -997,12 +1012,12 @@ public class CeylonDocTool extends RepoUsingTool {
         return result;
     }
     
-    protected PhasedUnit getDeclarationUnit(Declaration decl) {
-        return declarationUnitMap.get(decl);
+    protected PhasedUnit getUnit(Referenceable referenceable) {
+        return modelUnitMap.get(referenceable);
     }
     
-    protected Node getDeclarationNode(Declaration decl) {
-        return declarationNodeMap.get(decl);
+    protected Node getNode(Referenceable referenceable) {
+        return modelNodeMap.get(referenceable);
     }
     protected PhasedUnit getParameterUnit(Parameter parameter) {
         return parameterUnitMap.get(parameter);
@@ -1017,7 +1032,7 @@ public class CeylonDocTool extends RepoUsingTool {
      * @return [start, end]
      */
     protected int[] getDeclarationSrcLocation(Declaration decl) {
-        Node node = declarationNodeMap.get(decl);
+        Node node = modelNodeMap.get(decl);
         if (node == null) {
             return null;
         } else {

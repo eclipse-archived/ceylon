@@ -769,13 +769,21 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("StubClass = <a class='link' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'>StubClass</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
+                Pattern.compile("class StubClass = <a class='link' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'>StubClass</a>"));
+        assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("StubInterface = <a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>StubInterface</a>"));
+        assertMatchInFile(destDir, "StubClass.type.html", 
+                Pattern.compile("interface StubInterface = <a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>StubInterface</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("StubInnerException = <a class='link' href='StubClass.StubInnerException.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.StubInnerException'>StubInnerException</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("stubTopLevelMethod = <a class='link' href='index.html#stubTopLevelMethod' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubTopLevelMethod'>stubTopLevelMethod</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
+                Pattern.compile("function stubTopLevelMethod = <a class='link' href='index.html#stubTopLevelMethod' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubTopLevelMethod'>stubTopLevelMethod</a>"));
+        assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("stubTopLevelAttribute = <a class='link' href='index.html#stubTopLevelAttribute' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubTopLevelAttribute'>stubTopLevelAttribute</a>"));
+        assertMatchInFile(destDir, "StubClass.type.html", 
+                Pattern.compile("value stubTopLevelAttribute = <a class='link' href='index.html#stubTopLevelAttribute' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubTopLevelAttribute'>stubTopLevelAttribute</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("StubInterface.formalMethodFromStubInterface = <a class='link' href='StubInterface.type.html#formalMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface'>StubInterface.formalMethodFromStubInterface</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
@@ -790,11 +798,11 @@ public class CeylonDocToolTest {
                 Pattern.compile("unresolvable2 = <span class='link-unresolvable'>\\[unresolvable with custom name|unresolvable\\]</span>"));
         
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("stubObject = <a class='link' href='stubObject.object.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubObject'>stubObject</a>"));
+                Pattern.compile("stubObject = <a class='link' href='index.html#stubObject' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubObject'>stubObject</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("stubObject.foo = <a class='link' href='stubObject.object.html#foo' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubObject.foo'>stubObject.foo</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("stubObject.stubInnerObject = <a class='link' href='stubObject.stubInnerObject.object.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubObject.stubInnerObject'>stubObject.stubInnerObject</a>"));
+                Pattern.compile("stubObject.stubInnerObject = <a class='link' href='stubObject.object.html#stubInnerObject' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubObject.stubInnerObject'>stubObject.stubInnerObject</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("stubObject.stubInnerObject.fooInner = <a class='link' href='stubObject.stubInnerObject.object.html#fooInner' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubObject.stubInnerObject.fooInner'>stubObject.stubInnerObject.fooInner</a>"));
         
@@ -807,6 +815,11 @@ public class CeylonDocToolTest {
                 Pattern.compile("StubClassWithGenericTypeParams = <a class='link' href='StubClassWithGenericTypeParams.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClassWithGenericTypeParams'>StubClassWithGenericTypeParams</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("StubClassWithGenericTypeParams with custom name = <a class='link-custom-text' href='StubClassWithGenericTypeParams.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClassWithGenericTypeParams'>custom with type params</a>"));
+                
+        assertMatchInFile(destDir, "StubClass.type.html", 
+                Pattern.compile("module = <a class='link' href='index.html' title='Go to module'>com.redhat.ceylon.ceylondoc.test.modules.single</a>"));
+        assertMatchInFile(destDir, "StubClass.type.html", 
+                Pattern.compile("package = <a class='link' href='index.html#section-package' title='Go to package com.redhat.ceylon.ceylondoc.test.modules.single'>com.redhat.ceylon.ceylondoc.test.modules.single</a>"));
         
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("fullStubInterface = <a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface</a>"));

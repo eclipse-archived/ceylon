@@ -133,10 +133,14 @@ shared class StubClass(
     "Wiki-style links:
      
      1. StubClass = [[StubClass]]
+     1. class StubClass = [[class StubClass]]
      1. StubInterface = [[StubInterface]]
+     1. interface StubInterface = [[interface StubInterface]]
      1. StubInnerException = [[StubInnerException]]
      1. stubTopLevelMethod = [[stubTopLevelMethod]]
+     1. function stubTopLevelMethod = [[function stubTopLevelMethod]]
      1. stubTopLevelAttribute = [[stubTopLevelAttribute]]
+     1. value stubTopLevelAttribute = [[value stubTopLevelAttribute]]
      1. StubInterface.formalMethodFromStubInterface = [[StubInterface.formalMethodFromStubInterface]]
      1. StubClass.StubInnerClass = [[StubClass.StubInnerClass]]
      1. StubClass.StubInnerClass.innerMethod = [[StubClass.StubInnerClass.innerMethod]]
@@ -151,6 +155,8 @@ shared class StubClass(
      1. imported AliasA2 = [[AliasA2]]
      1. StubClassWithGenericTypeParams = [[StubClassWithGenericTypeParams]]
      1. StubClassWithGenericTypeParams with custom name = [[custom with type params|StubClassWithGenericTypeParams]]
+     1. module = [[module com.redhat.ceylon.ceylondoc.test.modules.single]]
+     1. package = [[package com.redhat.ceylon.ceylondoc.test.modules.single]]
      
      Wiki-style links with full qualified name:
      

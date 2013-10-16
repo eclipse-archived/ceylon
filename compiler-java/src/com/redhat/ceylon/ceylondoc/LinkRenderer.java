@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Referenceable;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -45,6 +46,9 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter;
 
 public class LinkRenderer {
@@ -54,7 +58,7 @@ public class LinkRenderer {
     private CeylonDocTool ceylonDocTool;
     private Writer writer;
     private String customText;
-    private Scope scope;
+    private Referenceable scope;
     private Declaration anchor;
     private boolean printAbbreviated = true;
     private boolean printTypeParameters = true;
@@ -141,7 +145,7 @@ public class LinkRenderer {
     }
     
     public LinkRenderer useScope(Module module) {
-        scope = module.getPackage(module.getNameAsString());
+        scope = module;
         return this;
     }
 
@@ -151,7 +155,7 @@ public class LinkRenderer {
     }
 
     public LinkRenderer useScope(Declaration decl) {
-        scope = resolveScope(decl);
+        scope = decl;
         return this;
     }
     
@@ -183,13 +187,15 @@ public class LinkRenderer {
     public String getLink() {
         String link = null;
         if (to instanceof String) {
-            link = processWikiLink((String) to);
+            if (printWikiStyleLinks) {
+                link = processWikiLink((String) to);
+            } else {
+                link = processAnnotationParam((String) to);
+            }
         } else if (to instanceof ProducedType) {
             link = processProducedType((ProducedType) to);
-        } else if (to instanceof TypeDeclaration) {
-            link = processProducedType(((TypeDeclaration) to).getType());
-        } else if (to instanceof TypedDeclaration) {
-            link = processTypedDeclaration((TypedDeclaration) to);
+        } else if (to instanceof Declaration) {
+            link = processDeclaration(((Declaration) to));
         } else if (to instanceof Module) {
             link = processModule((Module) to);
         } else if (to instanceof Package) {
@@ -232,6 +238,14 @@ public class LinkRenderer {
             return pkg.getNameAsString();
         }
     }
+    
+    private String processDeclaration(Declaration decl) {
+        if (decl instanceof TypeDeclaration) {
+            return processProducedType(((TypeDeclaration) decl).getType());
+        } else {
+            return processTypedDeclaration((TypedDeclaration) decl);
+        }
+    }
 
     private String processProducedType(ProducedType producedType) {
         String result = producedTypeNamePrinter.getProducedTypeName(producedType, null);
@@ -262,14 +276,43 @@ public class LinkRenderer {
         }
     }
 
-    private String processWikiLink(String declLink) {
+    private String processWikiLink(final String docLinkText) {
+        Node scopeNode = ceylonDocTool.getNode(scope);
+        if( scopeNode != null ) {
+            final Tree.DocLink[] docLinks = new Tree.DocLink[1];
+            scopeNode.visit(new Visitor() {
+                @Override
+                public void visit(Tree.DocLink docLink) {
+                    if (docLink.getText().equals(docLinkText)) {
+                        docLinks[0] = docLink;
+                        return;
+                    }
+                }
+            });
+            Tree.DocLink docLink = docLinks[0];
+            if (docLink != null) {
+                if (docLink.getQualified() != null && docLink.getQualified().size() > 0) {
+                    return processDeclaration(docLink.getQualified().get(docLink.getQualified().size() - 1));
+                } else if (docLink.getBase() != null) {
+                    return processDeclaration(docLink.getBase());
+                } else if (docLink.getModule() != null) {
+                    return processModule(docLink.getModule());
+                } else if (docLink.getPkg() != null) {
+                    return processPackage(docLink.getPkg());
+                }
+            }
+        }
+        return getUnresolvableLink(docLinkText);
+    }
+
+    private String processAnnotationParam(String declLink) {
         String declName;
         Scope currentScope;
         
         int pkgSeparatorIndex = declLink.indexOf("::");
         if( pkgSeparatorIndex == -1 ) {
             declName = declLink;
-            currentScope = scope;
+            currentScope = resolveScope(scope);
         } else {
             String pkgName = declLink.substring(0, pkgSeparatorIndex);
             declName = declLink.substring(pkgSeparatorIndex+2, declLink.length());
@@ -303,21 +346,7 @@ public class LinkRenderer {
                 return processTypedDeclaration((TypedDeclaration) currentDecl);
             }
         } else {
-            StringBuilder unresolvable = new StringBuilder();
-            unresolvable.append("<span class='link-unresolvable'>");
-            if( printWikiStyleLinks ) {
-                unresolvable.append("[");
-            }
-            if (customText != null && !customText.equals(declLink)) {
-                unresolvable.append(customText);
-                unresolvable.append("|");
-            }
-            unresolvable.append(declLink);
-            if( printWikiStyleLinks ) {
-                unresolvable.append("]");
-            }
-            unresolvable.append("</span>");
-            return unresolvable.toString();
+            return getUnresolvableLink(declLink);
         }
     }
 
@@ -363,13 +392,15 @@ public class LinkRenderer {
         return decl;
     }
 
-    private Scope resolveScope(Declaration decl) {
-        if (decl == null) {
-            return null;
-        } else if (decl instanceof Scope) {
-            return (Scope) decl;
+    private Scope resolveScope(Referenceable referenceable) {
+        if (referenceable instanceof Module) {
+            return ((Module) referenceable).getPackage(referenceable.getNameAsString());
+        } else if (referenceable instanceof Scope) {
+            return (Scope) referenceable;
+        } else if (referenceable instanceof Declaration) {
+            return ((Declaration) referenceable).getContainer();
         } else {
-            return decl.getContainer();
+            return null;
         }
     }
 
@@ -391,25 +422,64 @@ public class LinkRenderer {
         return false;
     }
     
+    private String getUnresolvableLink(final String docLinkText) {
+        StringBuilder unresolvable = new StringBuilder();
+        unresolvable.append("<span class='link-unresolvable'>");
+        if( printWikiStyleLinks ) {
+            unresolvable.append("[");
+        }
+        if (customText != null && !customText.equals(docLinkText)) {
+            unresolvable.append(customText);
+            unresolvable.append("|");
+        }
+        unresolvable.append(docLinkText);
+        if( printWikiStyleLinks ) {
+            unresolvable.append("]");
+        }
+        unresolvable.append("</span>");
+        return unresolvable.toString();
+    }
+    
     private String getLinkText(Declaration decl) {
         String text;
         if( customText != null  ) {
             text = customText;
         } else if (to instanceof String) {
+            String name = removeTypeLiteralPrefix((String) to);
             if (from instanceof Element) {
                 String aliasedName = ((Element) from).getUnit().getAliasedName(decl);
-                if (aliasedName != null && !aliasedName.equals(decl.getName()) && aliasedName.equals(to)) {
+                if (aliasedName != null && !aliasedName.equals(decl.getName()) && aliasedName.equals(name)) {
                     text = decl.getQualifiedNameString();
                 } else {
-                    text = (String) to;
+                    text = name;
                 }
             } else {
-                text = (String) to;
+                text = name;
             }
         } else {
             text = decl.getName();
         }
         return text;
+    }
+    
+    private String removeTypeLiteralPrefix(String text) {
+        if( text.startsWith("module ") ) {
+            return text.substring(7);
+        } else if( text.startsWith("package ") ) {
+            return text.substring(8);
+        } else if( text.startsWith("class ") ) {
+            return text.substring(6);                        
+        } else if( text.startsWith("interface ") ) {
+            return text.substring(10);
+        } else if( text.startsWith("function ") ) {
+            return text.substring(9);
+        } else if( text.startsWith("value ") ) {
+            return text.substring(6);
+        } else if( text.startsWith("alias ") ) {
+            return text.substring(6);
+        } else {
+            return text;
+        }
     }
 
     private Package getPackage(Scope scope) {

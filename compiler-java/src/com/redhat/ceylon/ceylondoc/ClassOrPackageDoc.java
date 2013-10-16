@@ -182,8 +182,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
 
     private void writeConstantValue(Value v) throws IOException {
-        Node node = tool.getDeclarationNode(v);
-        PhasedUnit pu = tool.getDeclarationUnit(v);
+        Node node = tool.getNode(v);
+        PhasedUnit pu = tool.getUnit(v);
         if (pu == null || !(node instanceof Tree.AttributeDeclaration)) {
             return;
         }

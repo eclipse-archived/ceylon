@@ -389,19 +389,11 @@ public class Util {
 
         @Override
         public void emitSpan(StringBuilder out, String content) {
-            String customName;
-            String declName; 
-            int indexOf = content.indexOf("|");
-            if( indexOf == -1 ) {
-                customName = null;
-                declName = content;
-            } else {
-                customName = content.substring(0, indexOf);
-                declName = content.substring(indexOf+1, content.length()); 
-            }
+            int pipeIndex = content.indexOf("|");
+            String customText = pipeIndex != -1 ? content.substring(0, pipeIndex) : null;
             String link = new LinkRenderer(linkRenderer).
-                    to(declName).
-                    useCustomText(customName).
+                    to(content).
+                    useCustomText(customText).
                     printTypeParameters(false).
                     printWikiStyleLinks(true).
                     getLink();
