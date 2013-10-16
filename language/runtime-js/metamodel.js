@@ -18,7 +18,7 @@ function type$meta(x,$$targs$$) {
       x.$$metamodel$$=x.$$metamodel$$();
     }
     if (x.$$metamodel$$.$t) //it's an object
-      return AppliedValue(x.$$metamodel$$.$t.t, {Type:x.$$metamodel$$.$t});
+      return AppliedValue(undefined,x.$$metamodel$$.$t.t, {Type:x.$$metamodel$$.$t});
   }
   return AppliedClass($$targs$$.Type.t, {Type:$$targs$$.Type, Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
 }
