@@ -131,6 +131,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         writeLinkSource(d);
         writeTagged(d);
         
+        if(d instanceof Functional)
+            writeParameterLinksIfRequired((Functional) d);
         open("div class='signature'");
         around("span class='modifiers'", getModifiers(d));
         write(" ");
@@ -342,6 +344,26 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
     }
 
+    protected final void writeParameterLinksIfRequired(Functional f) throws IOException {
+        // check if any parameter has documentation
+        boolean hasDoc = false;
+        for (ParameterList lists : f.getParameterLists()) {
+            for (Parameter param : lists.getParameters()) {
+                if(!hasDoc){
+                    String doc = getDoc(param.getModel(), linkRenderer());
+                    hasDoc = !doc.isEmpty();
+                }
+            }
+        }
+        // if no parameter has any documentation, we need to produce url anchors for them
+        // because writeParameters() will not produce a parameter list with url anchors
+        for (ParameterList lists : f.getParameterLists()) {
+            for (Parameter param : lists.getParameters()) {
+                around("a id='" + f.getName() + "-" + param.getName() + "'", "");
+            }
+        }
+    }
+
     protected final void writeParameterList(Functional f) throws IOException {
         for (ParameterList lists : f.getParameterLists()) {
             write("(");
@@ -423,7 +445,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                             open("ul");
                         }
                         open("li");
-                        around("span class='parameter'", parameter.getName());
+                        around("span class='parameter' id='" + decl.getName() + "-" + parameter.getName() + "'", parameter.getName());
                         write(doc);
                         close("li");
                     }

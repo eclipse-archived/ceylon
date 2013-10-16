@@ -547,6 +547,9 @@ $(document).ready(function() {
 
         var anchor = location.hash;
         if (anchor) {
+            // if we're linking to a method parameter, get rid of the parameter suffix for now
+            // until we know how to highlight the parameter
+            anchor = anchor.replace(/^(#[^-]+)-.*$/, "$1");
             var td = $(anchor);
             var tr = td.parent();
             if (tr.is('tr') ) {

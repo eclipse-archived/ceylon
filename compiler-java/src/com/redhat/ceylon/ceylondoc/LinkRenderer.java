@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
@@ -492,6 +493,12 @@ public class LinkRenderer {
     private String getUrl(Object to, Declaration anchor) {
         String url;
         
+        Method method = null;
+        if(to instanceof Method){
+            method = (Method) to;
+            to = method.getContainer();
+        }
+        
         if (isInCurrentModule(to)) {
             url = getLocalUrl(to);
         } else {
@@ -503,7 +510,12 @@ public class LinkRenderer {
             if (url.endsWith(sectionPackageAnchor)) {
                 url = url.substring(0, url.length() - sectionPackageAnchor.length());
             }
-            url = url + "#" + anchor.getName();
+            String fragment;
+            if(method == null)
+                fragment = anchor.getName();
+            else
+                fragment = method.getName() + "-" + anchor.getName();
+            url = url + "#" + fragment;
         }            
             
         return url;

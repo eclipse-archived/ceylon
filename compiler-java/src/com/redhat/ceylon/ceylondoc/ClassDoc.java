@@ -514,6 +514,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         openTable("section-initializer", "Initializer", 1, true);
         open("tr", "td");
         
+        writeParameterLinksIfRequired(klass);
         writeIcon(klass);
         write(klass.getName());
         writeParameterList(klass);
