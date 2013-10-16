@@ -4806,9 +4806,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             Map<Class, ListBuffer<JCAnnotation>> annotationSet) {
         at(invocation);
         JCAnnotation annotation = AnnotationInvocationVisitor.transformConstructor(this, invocation);
-        Class annotationClass = AnnotationInvocationVisitor.annoClass(invocation);
-        
-        putAnnotation(annotationSet, annotation, annotationClass);
+        if (annotation != null) {
+            Class annotationClass = AnnotationInvocationVisitor.annoClass(invocation);
+            putAnnotation(annotationSet, annotation, annotationClass);
+        }
     }
 
     /**

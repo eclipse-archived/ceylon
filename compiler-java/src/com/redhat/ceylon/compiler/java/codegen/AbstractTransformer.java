@@ -3022,6 +3022,10 @@ public abstract class AbstractTransformer implements Transformation {
         }
         return make().Erroneous(errs);
     }
+    
+    void logError(Node node, String message) {
+        log.error(getPosition(node), "ceylon.codegen.error", message);
+    }
 
     List<JCExpression> makeTypeParameterBounds(java.util.List<ProducedType> satisfiedTypes){
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
