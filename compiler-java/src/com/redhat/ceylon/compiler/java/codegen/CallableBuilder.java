@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
+import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -796,7 +797,7 @@ public class CallableBuilder {
                         varargsSequence = gen.makeSequence(varargs.toList(), 
                                 getVariadicIteratedType(), 0);
                     }
-                    SyntheticName vname = getCallableTempVarName(getVariadicParameter(), forwardCallTo).suffixedBy("$");
+                    SyntheticName vname = getCallableTempVarName(getVariadicParameter(), forwardCallTo).suffixedBy(Suffix.$variadic);
                     args.append(vname.makeIdent());
                     makeVar(stmts, variadicParameter, getVariadicType(), 
                             forwardCallTo, vname, varargsSequence);
@@ -829,7 +830,7 @@ public class CallableBuilder {
                 varargsSequence = gen.makeSequence(varargs.toList(), 
                         getVariadicIteratedType(), 0);
             }
-            SyntheticName vname = getCallableTempVarName(getVariadicParameter(), forwardCallTo).suffixedBy("$");
+            SyntheticName vname = getCallableTempVarName(getVariadicParameter(), forwardCallTo).suffixedBy(Suffix.$variadic);
             args.append(vname.makeIdent());
             makeVar(stmts, getVariadicParameter(), getVariadicType(), 
                     forwardCallTo, vname, varargsSequence);
@@ -878,7 +879,7 @@ public class CallableBuilder {
                 varargsSequence = gen.makeSequence(varargs.toList(), 
                         getVariadicIteratedType(), 0);
             }
-            SyntheticName vname = getCallableTempVarName(getVariadicParameter(), forwardCallTo).suffixedBy("$");
+            SyntheticName vname = getCallableTempVarName(getVariadicParameter(), forwardCallTo).suffixedBy(Suffix.$variadic);
             args.append(vname.makeIdent());
             makeVar(stmts, getVariadicParameter(), getVariadicType(), 
                     forwardCallTo, vname, varargsSequence);

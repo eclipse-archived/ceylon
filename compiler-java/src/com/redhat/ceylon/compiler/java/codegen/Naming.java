@@ -102,7 +102,7 @@ public class Naming implements LocalId {
         $annotation, 
         $annotations, 
         $this$, 
-        $qual, $callable$, $iter, $exhausted, $iterable, $sequenceBuilder, $element, $iteration, $iterator, $arg$, $reified$,
+        $qual, $callable$, $iter, $exhausted, $iterable, $sequenceBuilder, $element, $iteration, $iterator, $arg$, $reified$, $variadic,
     }
     
     /**
@@ -1543,11 +1543,6 @@ public class Naming implements LocalId {
         
         SyntheticName suffixedBy(Suffix suffix, int i) {
             return new SyntheticName(names.fromString(getName() + suffix + Integer.toString(i)));
-        }
-        
-        @Deprecated
-        SyntheticName suffixedBy(String suffix) {
-            return new SyntheticName(names.fromString(getName() + suffix));
         }
         
         SyntheticName suffixedBy(int i) {
