@@ -1923,7 +1923,7 @@ public class Naming implements LocalId {
     }
     
     public static String getCallableTempVarName(Parameter param){
-        return "$$" + param.getName();
+        return prefixName(Prefix.$ceylontmp, param.getName());
     }
     
     public static String getImplClassName(String name){
