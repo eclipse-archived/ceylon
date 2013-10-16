@@ -16,6 +16,7 @@
     <!-- Set build directories for all formats. -->
     <property name="build.dir" value="${basedir}/build"/>
     <property name="build.dist" value="${build.dir}/dist"/>
+    <property name="build.dist.repo" value="${build.dist}/repo"/>
     <property name="build.classes" location="${build.dir}/classes"/>
 
     <property name="src" location="src"/>
@@ -39,7 +40,7 @@
     <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
     <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}"/>
     <property name="ceylon.typechecker.repo" value="${ceylon.repo.dir}/${ceylon.typechecker.dir}"/>
-    <property name="ceylon.typechecker.dist" value="${build.dist}/${ceylon.typechecker.dir}"/>
+    <property name="ceylon.typechecker.dist" value="${build.dist.repo}/${ceylon.typechecker.dir}"/>
 
     <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}"/>
     <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
@@ -420,26 +421,24 @@
     <target name="ide-quick">
         <copy 
             overwrite="true"
-            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository/${ceylon.typechecker.dir}">
-            <fileset dir="${ceylon.typechecker.dist}">
-                <include name="**/*"/>
-            </fileset>
+            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository">
+            <fileset dir="${build.dist.repo}"/>
         </copy>
         <copy 
             overwrite="true"
-            file="${build.dist}/${ceylon.typechecker.jar}"
+            file="${build.dist.repo}/${ceylon.typechecker.jar}"
             tofile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}-ide.jar"/>
     </target>
     
     <target name="dist" depends="compile">
-        <mkdir dir="${build.dist}"/>
-        <zip destfile="${build.dist}/${ceylon.typechecker.jar}">
+        <mkdir dir="${build.dist.repo}"/>
+        <zip destfile="${build.dist.repo}/${ceylon.typechecker.jar}">
             <fileset dir="${build.classes}">
                 <include name="**/*.class"/>
             </fileset>
         </zip>
         <antcall target="sha1sum">
-            <param name="file" value="${build.dist}/${ceylon.typechecker.jar}" />
+            <param name="file" value="${build.dist.repo}/${ceylon.typechecker.jar}" />
         </antcall>
     </target>
 
@@ -448,8 +447,8 @@
     </target>
 
     <target name="publish-internal" depends="init.repo">
-        <copy todir="${ceylon.typechecker.repo}" overwrite="true">
-            <fileset dir="${ceylon.typechecker.dist}"/>
+        <copy todir="${ceylon.repo.dir}" overwrite="true">
+            <fileset dir="${build.dist.repo}"/>
         </copy>
     </target>
 
