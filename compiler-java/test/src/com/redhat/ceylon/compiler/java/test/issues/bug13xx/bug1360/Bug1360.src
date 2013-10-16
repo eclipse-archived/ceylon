@@ -1,0 +1,146 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360;
+
+class Bug1360 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1360() {
+    }
+    
+    private final void f$priv$() {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$$priv$$0 = f$priv();
+                f$priv$$canonical$($ceylontmp$$priv$$0);
+            }
+            returning null;
+        );
+    }
+    
+    private final .java.lang.String f$priv() {
+        return "";
+    }
+    
+    private void f$priv$$canonical$(final .java.lang.String priv) {
+    }
+    
+    private final void f$priv$(final .java.lang.String priv) {
+        (
+            let
+            {
+                f$priv$$canonical$(priv);
+            }
+            returning null;
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.Bug1360();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.Bug1360.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.Bug1360.class);
+}
+interface I<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.I$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug13xx$bug1360$I$impl();
+    
+    public void $main();
+    
+    public abstract T[] main$s();
+    
+    public void $main(final T[] s);
+}
+final class I$impl<T> {
+    
+    I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.I<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.I<T> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public void $main() {
+        (
+            let
+            {
+                T[] $ceylontmp$$s$$1 = main$s();
+                $main$canonical$($ceylontmp$$s$$1);
+            }
+            returning null;
+        );
+    }
+    
+    public final T[] main$s() {
+        return (T[]).ceylon.language.nothing_.get_();
+    }
+    
+    private void $main$canonical$(final T[] s) {
+    }
+    
+    public void $main(final T[] s) {
+        (
+            let
+            {
+                $main$canonical$(s);
+            }
+            returning null;
+        );
+    }
+}
+class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.I<.java.lang.String> {
+    
+    C() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug13xx$bug1360$I$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.I$impl<.java.lang.String>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class), this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.I$impl<.java.lang.String> $com$redhat$ceylon$compiler$java$test$issues$bug13xx$bug1360$I$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.I$impl<.java.lang.String> $com$redhat$ceylon$compiler$java$test$issues$bug13xx$bug1360$I$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug13xx$bug1360$I$this$;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String[] main$s() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug13xx$bug1360$I$this$.main$s();
+    }
+    
+    @.java.lang.Override
+    public void $main() {
+        (
+            let
+            {
+                .java.lang.String[] $ceylontmp$$s$$2 = main$s();
+                $main$canonical$($ceylontmp$$s$$2);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public final void $main(final .java.lang.String[] s) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug13xx$bug1360$I$this$.$main(s);
+    }
+    
+    private void $main$canonical$(final .java.lang.String[] s) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug13xx$bug1360$I$this$.$main(s);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.C();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.C.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.C.class);
+}
