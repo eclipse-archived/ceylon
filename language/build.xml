@@ -6,6 +6,7 @@
     <property name="build.dir" value="${basedir}/build"/>
     <property name="build.classes" location="${build.dir}/classes"/>
     <property name="build.dist" location="${build.dir}/dist"/>
+    <property name="build.dist.repo" location="${build.dist}/repo"/>
     <property name="build.lib" location="${build.dir}/lib"/>
     <property name="build.test" location="${build.dir}/test"/>
     <property name="build.test.repo" location="${build.dir}/test-repo"/>
@@ -40,7 +41,7 @@
     <property name="ceylon.language.car" value="${ceylon.language.dir}/${ceylon.language.name}.car"/>
     <property name="ceylon.language.js" value="${ceylon.language.dir}/${ceylon.language.name}.js"/> 
     <property name="ceylon.language.repo" value="${ceylon.repo.dir}/${ceylon.language.dir}"/>
-    <property name="ceylon.language.dist" value="${build.dist}/${ceylon.language.dir}"/>
+    <property name="ceylon.language.dist" value="${build.dist.repo}/${ceylon.language.dir}"/>
     <property name="ceylon.compiler.loc" value="${ceylon.dist.dir}/bin/ceylon"/>
     <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}"/>
     <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
@@ -68,7 +69,7 @@
     </path>
     
     <path id="test.compile.classpath">
-        <pathelement path="${build.dist}/${ceylon.language.car}"/>
+        <pathelement path="${build.dist.repo}/${ceylon.language.car}"/>
         <pathelement path="${junit.lib}"/>
     </path>
     
@@ -127,8 +128,8 @@
 
         <copy 
             overwrite="true"
-            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository/${ceylon.language.dir}">
-            <fileset dir="${ceylon.language.dist}">
+            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository">
+            <fileset dir="${build.dist.repo}">
                 <include name="**/*"/>
                 <exclude name="**/module-doc/**/*"/>
             </fileset>
@@ -138,9 +139,9 @@
     <target name="dist"
             depends="build"
             description="Create Ceylon language distribution">
-        <delete file="${build.dist}/${ceylon.language.src}"/>
-        <delete file="${build.dist}/${ceylon.language.src}.sha1"/>
-        <zip destfile="${build.dist}/${ceylon.language.src}">
+        <delete file="${build.dist.repo}/${ceylon.language.src}"/>
+        <delete file="${build.dist.repo}/${ceylon.language.src}.sha1"/>
+        <zip destfile="${build.dist.repo}/${ceylon.language.src}">
             <fileset dir="${module.language.src}">
                 <include name="ceylon/language/**/*.ceylon"/>
             </fileset>
@@ -149,7 +150,7 @@
             </fileset>
         </zip>
         <antcall target="sha1sum">
-            <param name="file" value="${build.dist}/${ceylon.language.src}" />
+            <param name="file" value="${build.dist.repo}/${ceylon.language.src}" />
         </antcall>
     </target>
 
@@ -160,8 +161,8 @@
     </target>
 
     <target name="publish-internal" depends="init.repo">
-        <copy todir="${ceylon.language.repo}" overwrite="true">
-            <fileset dir="${ceylon.language.dist}"/>
+        <copy todir="${ceylon.repo.dir}" overwrite="true">
+            <fileset dir="${build.dist.repo}"/>
         </copy>
     </target>
 
@@ -185,7 +186,7 @@
             encoding="UTF-8"
             noMtimeCheck="true"
             src="${module.language.src}:${runtime.src}"
-            out="${build.dist}">
+            out="${build.dist.repo}">
             <javacoption>-Xbootstrapceylon</javacoption>
             <javacoption>-g</javacoption>
             <files>
@@ -263,7 +264,7 @@
         <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="js.compiler.classpath" fork="true" failonerror="yes">
             <arg value="${runtime-js.src}/ceylon.language.js" />
             <arg value="${runtime-js.src}/language-module.txt" />
-            <arg value="${build.dist}/${ceylon.language.js}" />
+            <arg value="${build.dist.repo}/${ceylon.language.js}" />
         </java>
     </target>
 
@@ -273,7 +274,7 @@
             executable="${ceylon.compiler.loc}"
             src="${module.language.src}"
             encoding="UTF-8"
-            out="${build.dist}">
+            out="${build.dist.repo}">
             <module name="ceylon.language"/>
         </ceylon-doc>
     </target>
@@ -283,7 +284,7 @@
         <!-- Temporary hack to prevent problems in the IDE when the compilation fails -->
         <mkdir dir="${ide.dist}"/>
         <copy todir="${ide.dist}">
-            <fileset dir="${build.dist}/${ceylon.language.dir}">
+            <fileset dir="${build.dist.repo}/${ceylon.language.dir}">
                 <include name="${ceylon.language.name}.car"/>
             </fileset>
         </copy>
@@ -298,7 +299,7 @@
             </fileset>
         </copy>
         <copy todir="${build.test.repo}">
-            <fileset dir="${build.dist}">
+            <fileset dir="${build.dist.repo}">
                 <include name="ceylon/language/**"/>
             </fileset>
         </copy>
