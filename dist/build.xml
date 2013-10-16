@@ -201,8 +201,7 @@ Used with another target such as 'package'">
     <target name="install-all" 
             depends="setup-repo, install-compiler, install-js, copy-compiler-binaries, 
                      copy-samples, copy-templates, copy-jvm-compiler-libraries,
-                     copy-js-compiler-libraries, copy-cmr-libraries, copy-licenses,
-                     install-runtime-libs, install-language, install-runtime"
+                     copy-licenses, install-runtime-libs, install-language, install-runtime"
             description="Generates all binaries and copies them to the distribution folder">
     </target>
 
@@ -245,32 +244,8 @@ Used with another target such as 'package'">
             <fileset dir="${ceylon-compiler.dir}/build/lib">
                 <include name="ceylon-bootstrap.jar"/>
                 <include name="ceylon-ant.jar"/>
-                <include name="markdownj-*.jar"/>
                 <include name="txtmark-*.jar"/>
                 <include name="markdownpapers-core-*.jar"/>
-            </fileset>
-        </copy>
-    </target>
-
-    <target name="copy-cmr-libraries">
-        <mkdir dir="${ceylon.dist.dir}/lib"/>
-        <copy todir="${ceylon.dist.dir}/lib">
-            <fileset dir="${ceylon-module-resolver.dir}/lib">
-                <include name="sardine-*.jar"/>
-                <include name="httpclient-*.jar"/>
-                <include name="httpcore-*.jar"/>
-                <include name="commons-logging-*.jar"/>
-                <include name="commons-codec-*.jar"/>
-                <include name="slf4j-*.jar"/>
-            </fileset>
-        </copy>
-    </target>
-
-    <target name="copy-js-compiler-libraries">
-        <mkdir dir="${ceylon.dist.dir}/lib"/>
-        <copy todir="${ceylon.dist.dir}/lib">
-            <fileset dir="${ceylon-js.dir}/lib">
-                <include name="json-smart-*.jar"/>
             </fileset>
         </copy>
     </target>
@@ -331,7 +306,7 @@ Used with another target such as 'package'">
         </ant>
     </target>
 
-    <target name="install-language" depends="install-compiler,install-js,copy-compiler-binaries,copy-jvm-compiler-libraries,copy-js-compiler-libraries,copy-cmr-libraries">
+    <target name="install-language" depends="install-compiler,install-js,copy-compiler-binaries,copy-jvm-compiler-libraries">
         <ant antfile="${ceylon.language.dir}/build.xml" target="publish" dir="${ceylon.language.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
