@@ -3,6 +3,7 @@
 dist
 projects
 ceylon-*.zip
+.ant-targets-build.xml
 
 # OS
 
