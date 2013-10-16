@@ -2,16 +2,16 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 public class InnerClassUsingOutersTypeParam<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    public InnerClassUsingOutersTypeParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        this.$reifiedT = $reifiedT;
+    public InnerClassUsingOutersTypeParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
     public final T item(final .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell cell) {
         return cell.getCar();
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell Cell$new(final T car, final .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell cdr) {
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell Cell$new$(final T car, final .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell cdr) {
         return new Cell(car, cdr);
     }
     
@@ -33,8 +33,8 @@ public class InnerClassUsingOutersTypeParam<T> implements .com.redhat.ceylon.com
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam.class, .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam.Cell.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam.class, .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam.Cell.class));
         }
     }
     
@@ -44,7 +44,7 @@ public class InnerClassUsingOutersTypeParam<T> implements .com.redhat.ceylon.com
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam.class, $reifiedT);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam.class, $reified$T);
     }
 }

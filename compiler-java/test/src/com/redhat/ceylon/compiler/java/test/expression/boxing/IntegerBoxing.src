@@ -7,28 +7,28 @@ class IntegerBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     private long attrInteger;
     
-    private final long getAttrInteger$priv() {
+    private final long getAttrInteger$priv$() {
         return attrInteger;
     }
     
-    private final void setAttrInteger$priv(final long attrInteger) {
+    private final void setAttrInteger$priv$(final long attrInteger) {
         this.attrInteger = attrInteger;
     }
     
-    private final <T>T id$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T x) {
+    private final <T>T id$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T x) {
         return x;
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         long localAttrInteger = 1L;
         long localAttrOptionalInteger = 1L;
         .java.lang.Object localAttrObject = .ceylon.language.Integer.instance(1L);
         localAttrInteger = localAttrInteger;
         localAttrOptionalInteger = localAttrInteger;
         localAttrObject = .ceylon.language.Integer.instance(localAttrInteger);
-        localAttrInteger = <.ceylon.language.Integer>id$priv(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).longValue();
-        localAttrOptionalInteger = <.ceylon.language.Integer>id$priv(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).longValue();
-        localAttrObject = <.ceylon.language.Integer>id$priv(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L));
+        localAttrInteger = <.ceylon.language.Integer>id$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)).longValue();
+        localAttrOptionalInteger = <.ceylon.language.Integer>id$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)).longValue();
+        localAttrObject = <.ceylon.language.Integer>id$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L));
         final .java.lang.Object localAttrConstantObject = .ceylon.language.Integer.instance(localAttrInteger);
         final long localAttrConstantInteger = localAttrInteger;
         .java.lang.Object localAttrConstantObject$1;
@@ -38,73 +38,73 @@ class IntegerBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         }
         localAttrInteger = localAttrInteger + 2L;
         localAttrObject = .ceylon.language.Integer.instance(localAttrInteger + 2L);
-        setAttrInteger$priv(getAttrInteger$priv() + 2L);
-        test$priv(localAttrInteger + 2L);
-        test$priv(getAttrInteger$priv() + 2L);
-        test$priv(this.getAttrInteger$priv() + 2L);
+        setAttrInteger$priv$(getAttrInteger$priv$() + 2L);
+        test$priv$(localAttrInteger + 2L);
+        test$priv$(getAttrInteger$priv$() + 2L);
+        test$priv$(this.getAttrInteger$priv$() + 2L);
         localAttrInteger = .ceylon.language.Integer.plus(localAttrInteger, 2L);
-        setAttrInteger$priv(.ceylon.language.Integer.plus(getAttrInteger$priv(), 2L));
-        this.setAttrInteger$priv(.ceylon.language.Integer.plus(this.getAttrInteger$priv(), 2L));
-        test$priv(.ceylon.language.Integer.plus(localAttrInteger, 2L));
-        test$priv(.ceylon.language.Integer.plus(getAttrInteger$priv(), 2L));
-        test$priv(.ceylon.language.Integer.plus(this.getAttrInteger$priv(), 2L));
+        setAttrInteger$priv$(.ceylon.language.Integer.plus(getAttrInteger$priv$(), 2L));
+        this.setAttrInteger$priv$(.ceylon.language.Integer.plus(this.getAttrInteger$priv$(), 2L));
+        test$priv$(.ceylon.language.Integer.plus(localAttrInteger, 2L));
+        test$priv$(.ceylon.language.Integer.plus(getAttrInteger$priv$(), 2L));
+        test$priv$(.ceylon.language.Integer.plus(this.getAttrInteger$priv$(), 2L));
         localAttrInteger = localAttrInteger++;
-        setAttrInteger$priv((
+        setAttrInteger$priv$((
             let
             {
-                long $ceylontmpop$3 = getAttrInteger$priv();
-                setAttrInteger$priv($ceylontmpop$3 + 1);
+                long $ceylontmp$op$3 = getAttrInteger$priv$();
+                setAttrInteger$priv$($ceylontmp$op$3 + 1);
             }
-            returning $ceylontmpop$3;
+            returning $ceylontmp$op$3;
         ));
-        this.setAttrInteger$priv((
+        this.setAttrInteger$priv$((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmpopE$4 = this;
-                long $ceylontmpopV$5 = $ceylontmpopE$4.getAttrInteger$priv();
-                $ceylontmpopE$4.setAttrInteger$priv($ceylontmpopV$5 + 1);
+                .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmp$opE$4 = this;
+                long $ceylontmp$opV$5 = $ceylontmp$opE$4.getAttrInteger$priv$();
+                $ceylontmp$opE$4.setAttrInteger$priv$($ceylontmp$opV$5 + 1);
             }
-            returning $ceylontmpopV$5;
+            returning $ceylontmp$opV$5;
         ));
-        test$priv(localAttrInteger++);
-        test$priv((
+        test$priv$(localAttrInteger++);
+        test$priv$((
             let
             {
-                long $ceylontmpop$6 = getAttrInteger$priv();
-                setAttrInteger$priv($ceylontmpop$6 + 1);
+                long $ceylontmp$op$6 = getAttrInteger$priv$();
+                setAttrInteger$priv$($ceylontmp$op$6 + 1);
             }
-            returning $ceylontmpop$6;
+            returning $ceylontmp$op$6;
         ));
-        test$priv((
+        test$priv$((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmpopE$7 = this;
-                long $ceylontmpopV$8 = $ceylontmpopE$7.getAttrInteger$priv();
-                $ceylontmpopE$7.setAttrInteger$priv($ceylontmpopV$8 + 1);
+                .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmp$opE$7 = this;
+                long $ceylontmp$opV$8 = $ceylontmp$opE$7.getAttrInteger$priv$();
+                $ceylontmp$opE$7.setAttrInteger$priv$($ceylontmp$opV$8 + 1);
             }
-            returning $ceylontmpopV$8;
+            returning $ceylontmp$opV$8;
         ));
         localAttrInteger = .ceylon.language.Integer.getSuccessor(localAttrInteger);
-        setAttrInteger$priv(.ceylon.language.Integer.getSuccessor(getAttrInteger$priv()));
-        this.setAttrInteger$priv(.ceylon.language.Integer.getSuccessor(this.getAttrInteger$priv()));
-        test$priv(.ceylon.language.Integer.getSuccessor(localAttrInteger));
-        test$priv(.ceylon.language.Integer.getSuccessor(getAttrInteger$priv()));
-        test$priv(.ceylon.language.Integer.getSuccessor(this.getAttrInteger$priv()));
+        setAttrInteger$priv$(.ceylon.language.Integer.getSuccessor(getAttrInteger$priv$()));
+        this.setAttrInteger$priv$(.ceylon.language.Integer.getSuccessor(this.getAttrInteger$priv$()));
+        test$priv$(.ceylon.language.Integer.getSuccessor(localAttrInteger));
+        test$priv$(.ceylon.language.Integer.getSuccessor(getAttrInteger$priv$()));
+        test$priv$(.ceylon.language.Integer.getSuccessor(this.getAttrInteger$priv$()));
         localAttrInteger = .ceylon.language.Integer.getPositiveValue(localAttrInteger);
-        setAttrInteger$priv(.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv()));
-        this.setAttrInteger$priv(.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv()));
-        test$priv(.ceylon.language.Integer.getPositiveValue(localAttrInteger));
-        test$priv(.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv()));
-        test$priv(.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv()));
+        setAttrInteger$priv$(.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv$()));
+        this.setAttrInteger$priv$(.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv$()));
+        test$priv$(.ceylon.language.Integer.getPositiveValue(localAttrInteger));
+        test$priv$(.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv$()));
+        test$priv$(.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv$()));
         localAttrInteger = -.ceylon.language.Integer.getPositiveValue(localAttrInteger);
-        setAttrInteger$priv(-.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv()));
-        this.setAttrInteger$priv(-.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv()));
-        test$priv(-.ceylon.language.Integer.getPositiveValue(localAttrInteger));
-        test$priv(-.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv()));
-        test$priv(-.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv()));
+        setAttrInteger$priv$(-.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv$()));
+        this.setAttrInteger$priv$(-.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv$()));
+        test$priv$(-.ceylon.language.Integer.getPositiveValue(localAttrInteger));
+        test$priv$(-.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv$()));
+        test$priv$(-.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv$()));
     }
     
-    private final void test$priv(final long i) {
+    private final void test$priv$(final long i) {
     }
     
     public static void main(.java.lang.String[] args) {
@@ -113,8 +113,8 @@ class IntegerBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing.class);
 }

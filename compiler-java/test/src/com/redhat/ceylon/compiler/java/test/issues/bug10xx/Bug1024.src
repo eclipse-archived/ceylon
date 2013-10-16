@@ -5,7 +5,7 @@ class Bug1024 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     Bug1024() {
     }
     
-    private final void m$priv(final .java.lang.Object next) {
+    private final void m$priv$(final .java.lang.Object next) {
         .java.lang.Object n$1;
         if (!((n$1 = next) instanceof .ceylon.language.Finished)) {
             final .ceylon.language.String n$2 = (.ceylon.language.String)n$1;
@@ -17,7 +17,7 @@ class Bug1024 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         }
     }
     
-    private final void m2$priv(final .java.lang.Object next) {
+    private final void m2$priv$(final .java.lang.Object next) {
         while (true) {
             .java.lang.Object n$6;
             if (!((n$6 = next) instanceof .ceylon.language.Finished)) {
@@ -37,8 +37,8 @@ class Bug1024 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1024.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1024.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1024.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1024.class);
 }

@@ -18,7 +18,7 @@ public final class Object implements .com.redhat.ceylon.compiler.java.runtime.mo
         private InnerObject() {
         }
         
-        @.ceylon.language.SharedAnnotation$annotation
+        @.ceylon.language.SharedAnnotation$annotation$
         @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
         public final void m() {
@@ -26,19 +26,19 @@ public final class Object implements .com.redhat.ceylon.compiler.java.runtime.mo
         
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject.class));
         }
     }
     
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.lettercase::Object.InnerObject")
     public final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject getInnerObject() {
         return InnerObject;
     }
     
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void m() {
@@ -50,7 +50,7 @@ public final class Object implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.lettercase::Object")
     public static .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object get_() {
@@ -63,7 +63,7 @@ public final class Object implements .com.redhat.ceylon.compiler.java.runtime.mo
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.class);
     }
 }

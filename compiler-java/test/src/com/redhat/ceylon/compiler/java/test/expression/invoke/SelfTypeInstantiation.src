@@ -2,20 +2,20 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 abstract class SelfTypeInstantiation<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    SelfTypeInstantiation(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        this.$reifiedT = $reifiedT;
+    SelfTypeInstantiation(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfTypeInstantiation.class, $reifiedT);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfTypeInstantiation.class, $reified$T);
     }
 }
 class BaseSelfTypeInstantiation extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfTypeInstantiation<.com.redhat.ceylon.compiler.java.test.expression.invoke.BaseSelfTypeInstantiation> {
     
     BaseSelfTypeInstantiation() {
-        super(.com.redhat.ceylon.compiler.java.test.expression.invoke.BaseSelfTypeInstantiation.$TypeDescriptor);
+        super(.com.redhat.ceylon.compiler.java.test.expression.invoke.BaseSelfTypeInstantiation.$TypeDescriptor$);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -24,8 +24,8 @@ class BaseSelfTypeInstantiation extends .com.redhat.ceylon.compiler.java.test.ex
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.invoke.BaseSelfTypeInstantiation.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.BaseSelfTypeInstantiation.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.BaseSelfTypeInstantiation.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.BaseSelfTypeInstantiation.class);
 }

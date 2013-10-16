@@ -9,7 +9,7 @@ interface SuperInterface {
     public void setI(final long i);
     
     public long m();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.class);
 }
 final class SuperInterface$impl {
     
@@ -32,23 +32,23 @@ final class SuperInterface$impl {
 class SuperInterface_Sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface {
     
     SuperInterface_Sub() {
-        this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this = new .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$ = new .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface$impl $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface$impl $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface$impl $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this;
+        return $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$;
     }
     
     @.java.lang.Override
     public final long getI() {
-        return $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this.getI();
+        return $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.getI();
     }
     
     @.java.lang.Override
     public final void setI(final long i) {
-        $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this.setI(i);
+        $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.setI(i);
     }
     
     @.java.lang.Override
@@ -56,32 +56,32 @@ class SuperInterface_Sub implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                long $ceylontmpopV$1 = $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this.getI();
-                $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this.setI($ceylontmpopV$1 + 1);
+                long $ceylontmp$opV$1 = $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.getI();
+                $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.setI($ceylontmp$opV$1 + 1);
             }
-            returning $ceylontmpopV$1;
+            returning $ceylontmp$opV$1;
         );
         (
             let
             {
-                long $ceylontmpopV$3 = $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this.getI() + 1;
-                $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this.setI($ceylontmpopV$3);
+                long $ceylontmp$opV$3 = $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.getI() + 1;
+                $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.setI($ceylontmp$opV$3);
             }
-            returning $ceylontmpopV$3;
+            returning $ceylontmp$opV$3;
         );
         (
             let
             {
-                long $ceylontmpopV$5 = $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this.getI() + 1L;
-                $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this.setI($ceylontmpopV$5);
+                long $ceylontmp$opV$5 = $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.getI() + 1L;
+                $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.setI($ceylontmp$opV$5);
             }
-            returning $ceylontmpopV$5;
+            returning $ceylontmp$opV$5;
         );
-        return $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this.getI() + $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this.m();
+        return $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.getI() + $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.m();
     }
     
     public final long m2() {
-        return $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this.getI() + $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this.m();
+        return $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.getI() + $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this$.m();
     }
     
     @.java.lang.Override
@@ -95,10 +95,10 @@ class SuperInterface_Sub implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface_Sub.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface_Sub.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface_Sub.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface_Sub.class);
 }
 interface SuperInterface_SubInterface extends .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface {
     
@@ -111,7 +111,7 @@ interface SuperInterface_SubInterface extends .com.redhat.ceylon.compiler.java.t
     
     @.java.lang.Override
     public .java.lang.String toString();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface_SubInterface.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface_SubInterface.class);
 }
 final class SuperInterface_SubInterface$impl {
     
@@ -124,26 +124,26 @@ final class SuperInterface_SubInterface$impl {
         (
             let
             {
-                long $ceylontmpopV$7 = $this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().getI();
-                $this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().setI($ceylontmpopV$7 + 1);
+                long $ceylontmp$opV$7 = $this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().getI();
+                $this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().setI($ceylontmp$opV$7 + 1);
             }
-            returning $ceylontmpopV$7;
+            returning $ceylontmp$opV$7;
         );
         (
             let
             {
-                long $ceylontmpopV$9 = $this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().getI() + 1;
-                $this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().setI($ceylontmpopV$9);
+                long $ceylontmp$opV$9 = $this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().getI() + 1;
+                $this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().setI($ceylontmp$opV$9);
             }
-            returning $ceylontmpopV$9;
+            returning $ceylontmp$opV$9;
         );
         (
             let
             {
-                long $ceylontmpopV$11 = $this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().getI() + 1L;
-                $this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().setI($ceylontmpopV$11);
+                long $ceylontmp$opV$11 = $this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().getI() + 1L;
+                $this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().setI($ceylontmp$opV$11);
             }
-            returning $ceylontmpopV$11;
+            returning $ceylontmp$opV$11;
         );
         return $this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().getI() + $this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().m();
     }

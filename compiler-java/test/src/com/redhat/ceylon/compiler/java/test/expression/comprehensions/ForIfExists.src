@@ -6,30 +6,30 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> xs) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{xs}){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{xs}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
                     private .ceylon.language.Integer x;
-                    private boolean x$exhausted;
+                    private boolean x$exhausted$;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
-                        if (x$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.ceylon.language.Integer)$ceylontmpitem$0;
+                            x = (.ceylon.language.Integer)$ceylontmp$item$0;
                             return true;
                         }
                     }
                     private long x$2;
                     
-                    private final boolean next1() {
+                    private final boolean $next$1() {
                         while (true) {
                             if (!this.x()) break;
                             .ceylon.language.Integer x$1 = null;
@@ -38,11 +38,11 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                                 break;
                             }
                         }
-                        return !x$exhausted;
+                        return !x$exhausted$;
                     }
                     
                     public final .java.lang.Object next() {
-                        if (this.next1()) {
+                        if (this.$next$1()) {
                             final .ceylon.language.Integer x = this.x;
                             return .ceylon.language.Integer.instance(x$2);
                         } else return .ceylon.language.finished_.get_();
@@ -53,30 +53,30 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m2(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> xs) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{xs}){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{xs}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
                     private .ceylon.language.Integer x;
-                    private boolean x$exhausted;
+                    private boolean x$exhausted$;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem$3 = iter$0.next();
-                        x$exhausted = $ceylontmpitem$3 == .ceylon.language.finished_.get_();
-                        if (x$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$3 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$3 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.ceylon.language.Integer)$ceylontmpitem$3;
+                            x = (.ceylon.language.Integer)$ceylontmp$item$3;
                             return true;
                         }
                     }
                     private long y$5;
                     
-                    private final boolean next1() {
+                    private final boolean $next$1() {
                         while (true) {
                             if (!this.x()) break;
                             .ceylon.language.Integer y$4 = null;
@@ -85,11 +85,11 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                                 break;
                             }
                         }
-                        return !x$exhausted;
+                        return !x$exhausted$;
                     }
                     
                     public final .java.lang.Object next() {
-                        if (this.next1()) {
+                        if (this.$next$1()) {
                             final .ceylon.language.Integer x = this.x;
                             return .ceylon.language.Integer.instance(y$5);
                         } else return .ceylon.language.finished_.get_();
@@ -105,8 +105,8 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExists.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExists.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExists.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExists.class);
 }

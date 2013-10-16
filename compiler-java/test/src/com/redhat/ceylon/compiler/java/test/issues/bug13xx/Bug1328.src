@@ -4,35 +4,35 @@ interface Bug1328_Factory<Things> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328_Factory$impl<Things> $com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1328_Factory$impl();
     
-    public abstract <Thing extends Things>Thing make(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedThing, final Thing provided);
+    public abstract <Thing extends Things>Thing make(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Thing, final Thing provided);
 }
 final class Bug1328_Factory$impl<Things> {
     
-    Bug1328_Factory$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedThings, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328_Factory<Things> $this) {
-        this.$reifiedThings = $reifiedThings;
+    Bug1328_Factory$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Things, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328_Factory<Things> $this) {
+        this.$reified$Things = $reified$Things;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedThings;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Things;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328_Factory<Things> $this;
     
-    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedThings) {
-        this.$reifiedThings = $reifiedThings;
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Things) {
+        this.$reified$Things = $reified$Things;
     }
 }
 class Bug1328 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328_Factory<.ceylon.language.Integer> {
     
     Bug1328() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1328_Factory$this = new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328_Factory$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1328_Factory$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328_Factory$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328_Factory$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1328_Factory$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328_Factory$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1328_Factory$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328_Factory$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1328_Factory$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1328_Factory$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1328_Factory$this$;
     }
     
     @.java.lang.Override
-    public final <Thing2 extends .ceylon.language.Integer>Thing2 make(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedThing2, final Thing2 provided) {
+    public final <Thing2 extends .ceylon.language.Integer>Thing2 make(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Thing2, final Thing2 provided) {
         return (Thing2).ceylon.language.nothing_.get_();
     }
     
@@ -42,8 +42,8 @@ class Bug1328 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328.class);
 }

@@ -5,8 +5,8 @@ class MethodIfConditionList implements .com.redhat.ceylon.compiler.java.runtime.
     MethodIfConditionList() {
     }
     
-    private final boolean m$priv(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
-        boolean $ceylontmpif$0 = false;
+    private final boolean m$priv$(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
+        boolean $ceylontmp$if$0 = false;
         .ceylon.language.Sequential<? extends .java.lang.Object> x$1;
         final .ceylon.language.Sequence<? extends .java.lang.Object> x$2;
         .java.lang.Object y$3;
@@ -16,7 +16,7 @@ class MethodIfConditionList implements .com.redhat.ceylon.compiler.java.runtime.
             if ((y$3 = x$2.get(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
                 y$4 = ((.ceylon.language.Integer)y$3).longValue();
                 if (y$4 > 0L) {
-                    $ceylontmpif$0 = true;
+                    $ceylontmp$if$0 = true;
                 }
             } else {
                 y$4 = 0L;
@@ -25,7 +25,7 @@ class MethodIfConditionList implements .com.redhat.ceylon.compiler.java.runtime.
             y$4 = 0L;
             x$2 = null;
         }
-        if ($ceylontmpif$0) {
+        if ($ceylontmp$if$0) {
             return y$4 == 1L;
         } else {
             return false;
@@ -38,8 +38,8 @@ class MethodIfConditionList implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionList.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionList.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionList.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionList.class);
 }

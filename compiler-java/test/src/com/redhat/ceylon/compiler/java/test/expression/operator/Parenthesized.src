@@ -5,10 +5,10 @@ public class Parenthesized implements .com.redhat.ceylon.compiler.java.runtime.m
     public Parenthesized() {
     }
     
-    private final long m$priv() {
+    private final long m$priv$() {
         final double f = (2.0E300 + (1.0 - 1.0)) / 3L;
-        final long f2 = .ceylon.language.Integer.instance(2L).power(.ceylon.language.Integer.instance(m$priv() + 1L)).longValue();
-        return 1000000L / (m$priv() + 1L);
+        final long f2 = .ceylon.language.Integer.instance(2L).power(.ceylon.language.Integer.instance(m$priv$() + 1L)).longValue();
+        return 1000000L / (m$priv$() + 1L);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -17,8 +17,8 @@ public class Parenthesized implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.Parenthesized.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.Parenthesized.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.Parenthesized.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.Parenthesized.class);
 }

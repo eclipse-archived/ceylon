@@ -5,7 +5,7 @@ class ClassDefaultMemberClassReference implements .com.redhat.ceylon.compiler.ja
     ClassDefaultMemberClassReference() {
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member Member$new() {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member Member$new$() {
         return new Member();
     }
     
@@ -15,28 +15,28 @@ class ClassDefaultMemberClassReference implements .com.redhat.ceylon.compiler.ja
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member.class));
         }
     }
     
-    private final void m$priv(final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member> f) {
-        f.$call();
+    private final void m$priv$(final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member> f) {
+        f.$call$();
     }
     
-    private final void m2$priv(final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference i) {
-        m$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member.class)), .ceylon.language.Empty.$TypeDescriptor, "ClassDefaultMemberClassReference.Member()", (short)-1){
+    private final void m2$priv$(final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference i) {
+        m$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member.class)), .ceylon.language.Empty.$TypeDescriptor$, "ClassDefaultMemberClassReference.Member()", (short)-1){
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member $call() {
-                return Member$new();
+            public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member $call$() {
+                return Member$new$();
             }
         });
-        m$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member.class)), .ceylon.language.Empty.$TypeDescriptor, "ClassDefaultMemberClassReference.Member()", (short)-1){
+        m$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member.class)), .ceylon.language.Empty.$TypeDescriptor$, "ClassDefaultMemberClassReference.Member()", (short)-1){
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member $call() {
-                return i.Member$new();
+            public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member $call$() {
+                return i.Member$new$();
             }
         });
     }
@@ -47,8 +47,8 @@ class ClassDefaultMemberClassReference implements .com.redhat.ceylon.compiler.ja
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.class);
 }

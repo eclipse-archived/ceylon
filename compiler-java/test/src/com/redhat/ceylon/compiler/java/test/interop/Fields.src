@@ -14,38 +14,38 @@ final class fields_ {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE$0 = java;
-                long $ceylontmpopV$1 = $ceylontmpopE$0.readWriteField;
-                $ceylontmpopE$0.readWriteField = $ceylontmpopV$1 + 1;
+                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmp$opE$0 = java;
+                long $ceylontmp$opV$1 = $ceylontmp$opE$0.readWriteField;
+                $ceylontmp$opE$0.readWriteField = $ceylontmp$opV$1 + 1;
             }
-            returning $ceylontmpopV$1;
+            returning $ceylontmp$opV$1;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE$2 = java;
-                long $ceylontmpopV$3 = $ceylontmpopE$2.readWriteField + 1;
-                $ceylontmpopE$2.readWriteField = $ceylontmpopV$3;
+                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmp$opE$2 = java;
+                long $ceylontmp$opV$3 = $ceylontmp$opE$2.readWriteField + 1;
+                $ceylontmp$opE$2.readWriteField = $ceylontmp$opV$3;
             }
-            returning $ceylontmpopV$3;
+            returning $ceylontmp$opV$3;
         );
         java.readWriteField = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE$4 = java;
-                long $ceylontmpopV$5 = java.readWriteField;
-                $ceylontmpopE$4.readWriteField = $ceylontmpopV$5;
+                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmp$opE$4 = java;
+                long $ceylontmp$opV$5 = java.readWriteField;
+                $ceylontmp$opE$4.readWriteField = $ceylontmp$opV$5;
             }
-            returning $ceylontmpopV$5;
+            returning $ceylontmp$opV$5;
         );
         java.readWriteField = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmpopE$6 = java;
-                long $ceylontmpopV$7 = $ceylontmpopE$6.readWriteField + java.readWriteField;
-                $ceylontmpopE$6.readWriteField = $ceylontmpopV$7;
+                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmp$opE$6 = java;
+                long $ceylontmp$opV$7 = $ceylontmp$opE$6.readWriteField + java.readWriteField;
+                $ceylontmp$opE$6.readWriteField = $ceylontmp$opV$7;
             }
-            returning $ceylontmpopV$7;
+            returning $ceylontmp$opV$7;
         );
         sync = java.fieldWithNoGetter;
         java.setFieldWithNoGetter(2L);
@@ -62,41 +62,41 @@ class CeylonFields extends .com.redhat.ceylon.compiler.java.test.interop.JavaFie
         super();
     }
     
-    private final void f$priv() {
+    private final void f$priv$() {
         final long i1 = readOnlyField;
         final long i2 = readWriteField;
         readWriteField = 2L;
         (
             let
             {
-                long $ceylontmpop$8 = readWriteField;
-                readWriteField = $ceylontmpop$8 + 1;
+                long $ceylontmp$op$8 = readWriteField;
+                readWriteField = $ceylontmp$op$8 + 1;
             }
-            returning $ceylontmpop$8;
+            returning $ceylontmp$op$8;
         );
         (
             let
             {
-                long $ceylontmpop$9 = readWriteField + 1;
-                readWriteField = $ceylontmpop$9;
+                long $ceylontmp$op$9 = readWriteField + 1;
+                readWriteField = $ceylontmp$op$9;
             }
-            returning $ceylontmpop$9;
+            returning $ceylontmp$op$9;
         );
         readWriteField = (
             let
             {
-                long $ceylontmpop$10 = readWriteField;
-                readWriteField = $ceylontmpop$10;
+                long $ceylontmp$op$10 = readWriteField;
+                readWriteField = $ceylontmp$op$10;
             }
-            returning $ceylontmpop$10;
+            returning $ceylontmp$op$10;
         );
         readWriteField = (
             let
             {
-                long $ceylontmpop$11 = readWriteField + readWriteField;
-                readWriteField = $ceylontmpop$11;
+                long $ceylontmp$op$11 = readWriteField + readWriteField;
+                readWriteField = $ceylontmp$op$11;
             }
-            returning $ceylontmpop$11;
+            returning $ceylontmp$op$11;
         );
     }
     
@@ -106,8 +106,8 @@ class CeylonFields extends .com.redhat.ceylon.compiler.java.test.interop.JavaFie
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.interop.CeylonFields.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.CeylonFields.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.CeylonFields.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.CeylonFields.class);
 }

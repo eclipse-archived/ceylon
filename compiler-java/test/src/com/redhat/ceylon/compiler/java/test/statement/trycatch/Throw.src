@@ -5,7 +5,7 @@ class Throw implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     Throw() {
     }
     
-    private final void t$priv() {
+    private final void t$priv$() {
         throw new .ceylon.language.Exception(null, null);
     }
     
@@ -15,8 +15,8 @@ class Throw implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.Throw.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.Throw.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.Throw.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.Throw.class);
 }

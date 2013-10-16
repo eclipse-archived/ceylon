@@ -35,7 +35,7 @@ final class bug261_ {
             }
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.class);
             }
         }
@@ -43,19 +43,19 @@ final class bug261_ {
         inner.setVi((
             let
             {
-                Inner $ceylontmpopE$0 = inner;
-                long $ceylontmpopV$1 = 2L;
-                $ceylontmpopE$0.setVj($ceylontmpopV$1);
+                Inner $ceylontmp$opE$0 = inner;
+                long $ceylontmp$opV$1 = 2L;
+                $ceylontmp$opE$0.setVj($ceylontmp$opV$1);
             }
-            returning $ceylontmpopV$1;
+            returning $ceylontmp$opV$1;
         ));
         vk = (
             let
             {
-                long $ceylontmpop$2 = 2L;
-                vl = $ceylontmpop$2;
+                long $ceylontmp$op$2 = 2L;
+                vl = $ceylontmp$op$2;
             }
-            returning $ceylontmpop$2;
+            returning $ceylontmp$op$2;
         );
     }
     

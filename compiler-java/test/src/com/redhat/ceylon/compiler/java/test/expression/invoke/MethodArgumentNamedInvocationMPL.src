@@ -5,263 +5,263 @@ class MethodArgumentNamedInvocationMPL implements .com.redhat.ceylon.compiler.ja
     MethodArgumentNamedInvocationMPL() {
     }
     
-    private final void m1$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
-        final .java.lang.String s = f.$call().$call(.ceylon.language.Integer.instance(1L)).toString();
+    private final void m1$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
+        final .java.lang.String s = f.$call$().$call$(.ceylon.language.Integer.instance(1L)).toString();
     }
     
-    private final void m2$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
-        final .java.lang.Object v = f.$call().$call(.ceylon.language.Integer.instance(1L));
+    private final void m2$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
+        final .java.lang.Object v = f.$call$().$call$(.ceylon.language.Integer.instance(1L));
     }
     
-    private final void m3$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
-        final .java.lang.String s = f.$call().$call(.ceylon.language.Integer.instance(1L)).toString();
+    private final void m3$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
+        final .java.lang.String s = f.$call$().$call$(.ceylon.language.Integer.instance(1L)).toString();
     }
     
-    private final void m4$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
-        final .java.lang.Object v = f.$call().$call(.ceylon.language.Integer.instance(1L));
+    private final void m4$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
+        final .java.lang.Object v = f.$call$().$call$(.ceylon.language.Integer.instance(1L));
     }
     
-    private final void m5$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
-        final .java.lang.Object v = f.$call().$call(.ceylon.language.Integer.instance(1L));
+    private final void m5$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
+        final .java.lang.Object v = f.$call$().$call$(.ceylon.language.Integer.instance(1L));
     }
     
-    private final void m6$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
-        final .java.lang.Object v = f.$call().$call(.ceylon.language.Integer.instance(1L));
+    private final void m6$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
+        final .java.lang.Object v = f.$call$().$call$(.ceylon.language.Integer.instance(1L));
     }
     
-    private final void m7$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
-        final .java.lang.String s = f.$call().$call(.ceylon.language.Integer.instance(1L)).toString();
+    private final void m7$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
+        final .java.lang.String s = f.$call$().$call$(.ceylon.language.Integer.instance(1L)).toString();
     }
     
-    private final void callsite$priv() {
+    private final void callsite$priv$() {
         (
             let
             {
-                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Empty.$TypeDescriptor, "String(Integer)()", (short)-1){
+                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$, "String(Integer)()", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.Callable<? extends .ceylon.language.String> $call() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+                    public .ceylon.language.Callable<? extends .ceylon.language.String> $call$() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
                             
                             @.java.lang.Override
-                            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                                 final long x = ((.ceylon.language.Integer)$param$0).longValue();
                                 return .ceylon.language.String.instance(.ceylon.language.Integer.toString(x));
                             }
                         };
                     }
                 };
-                m1$priv(arg$0$0);
+                m1$priv$(arg$0$0);
             }
             returning null;
         );
         (
             let
             {
-                .ceylon.language.Callable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Empty.$TypeDescriptor, "Anything(Integer)()", (short)-1){
+                .ceylon.language.Callable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$, "Anything(Integer)()", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.Callable<? extends .java.lang.Object> $call() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+                    public .ceylon.language.Callable<? extends .java.lang.Object> $call$() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
                             
                             @.java.lang.Override
-                            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
                                 final long x = ((.ceylon.language.Integer)$param$0).longValue();
                                 return null;
                             }
                         };
                     }
                 };
-                m2$priv(arg$1$0);
+                m2$priv$(arg$1$0);
             }
             returning null;
         );
         (
             let
             {
-                .ceylon.language.Callable arg$2$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Empty.$TypeDescriptor, "String(Integer)()", (short)-1){
+                .ceylon.language.Callable arg$2$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$, "String(Integer)()", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.Callable<? extends .ceylon.language.String> $call() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+                    public .ceylon.language.Callable<? extends .ceylon.language.String> $call$() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
                             
                             @.java.lang.Override
-                            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                                 final long x = ((.ceylon.language.Integer)$param$0).longValue();
                                 return .ceylon.language.String.instance(.ceylon.language.Integer.toString(x));
                             }
                         };
                     }
                 };
-                m2$priv(arg$2$0);
+                m2$priv$(arg$2$0);
             }
             returning null;
         );
         (
             let
             {
-                .ceylon.language.Callable arg$3$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Empty.$TypeDescriptor, "String(Integer)()", (short)-1){
+                .ceylon.language.Callable arg$3$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$, "String(Integer)()", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.Callable<? extends .ceylon.language.String> $call() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+                    public .ceylon.language.Callable<? extends .ceylon.language.String> $call$() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
                             
                             @.java.lang.Override
-                            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                                 final long x = ((.ceylon.language.Integer)$param$0).longValue();
                                 return .ceylon.language.String.instance(.ceylon.language.Integer.toString(x));
                             }
                         };
                     }
                 };
-                m3$priv(arg$3$0);
+                m3$priv$(arg$3$0);
             }
             returning null;
         );
         (
             let
             {
-                .ceylon.language.Callable arg$4$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Empty.$TypeDescriptor, "Anything(Integer)()", (short)-1){
+                .ceylon.language.Callable arg$4$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$, "Anything(Integer)()", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.Callable<? extends .java.lang.Object> $call() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+                    public .ceylon.language.Callable<? extends .java.lang.Object> $call$() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
                             
                             @.java.lang.Override
-                            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
                                 final long x = ((.ceylon.language.Integer)$param$0).longValue();
                                 return null;
                             }
                         };
                     }
                 };
-                m4$priv(arg$4$0);
+                m4$priv$(arg$4$0);
             }
             returning null;
         );
         (
             let
             {
-                .ceylon.language.Callable arg$5$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Empty.$TypeDescriptor, "String(Integer)()", (short)-1){
+                .ceylon.language.Callable arg$5$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$, "String(Integer)()", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.Callable<? extends .ceylon.language.String> $call() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+                    public .ceylon.language.Callable<? extends .ceylon.language.String> $call$() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
                             
                             @.java.lang.Override
-                            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                                 final long x = ((.ceylon.language.Integer)$param$0).longValue();
                                 return .ceylon.language.String.instance(.ceylon.language.Integer.toString(x));
                             }
                         };
                     }
                 };
-                m4$priv(arg$5$0);
+                m4$priv$(arg$5$0);
             }
             returning null;
         );
         (
             let
             {
-                .ceylon.language.Callable arg$6$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Empty.$TypeDescriptor, "Anything(Integer)()", (short)-1){
+                .ceylon.language.Callable arg$6$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$, "Anything(Integer)()", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.Callable<? extends .java.lang.Object> $call() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+                    public .ceylon.language.Callable<? extends .java.lang.Object> $call$() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
                             
                             @.java.lang.Override
-                            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
                                 final long x = ((.ceylon.language.Integer)$param$0).longValue();
                                 return null;
                             }
                         };
                     }
                 };
-                m5$priv(arg$6$0);
+                m5$priv$(arg$6$0);
             }
             returning null;
         );
         (
             let
             {
-                .ceylon.language.Callable arg$7$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Empty.$TypeDescriptor, "String(Integer)()", (short)-1){
+                .ceylon.language.Callable arg$7$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$, "String(Integer)()", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.Callable<? extends .ceylon.language.String> $call() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+                    public .ceylon.language.Callable<? extends .ceylon.language.String> $call$() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
                             
                             @.java.lang.Override
-                            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                                 final long x = ((.ceylon.language.Integer)$param$0).longValue();
                                 return .ceylon.language.String.instance(.ceylon.language.Integer.toString(x));
                             }
                         };
                     }
                 };
-                m5$priv(arg$7$0);
+                m5$priv$(arg$7$0);
             }
             returning null;
         );
         (
             let
             {
-                .ceylon.language.Callable arg$8$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Empty.$TypeDescriptor, "Anything(Integer)()", (short)-1){
+                .ceylon.language.Callable arg$8$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$, "Anything(Integer)()", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.Callable<? extends .java.lang.Object> $call() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+                    public .ceylon.language.Callable<? extends .java.lang.Object> $call$() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
                             
                             @.java.lang.Override
-                            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
                                 final long x = ((.ceylon.language.Integer)$param$0).longValue();
                                 return null;
                             }
                         };
                     }
                 };
-                m6$priv(arg$8$0);
+                m6$priv$(arg$8$0);
             }
             returning null;
         );
         (
             let
             {
-                .ceylon.language.Callable arg$9$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Empty.$TypeDescriptor, "String(Integer)()", (short)-1){
+                .ceylon.language.Callable arg$9$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$, "String(Integer)()", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.Callable<? extends .ceylon.language.String> $call() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+                    public .ceylon.language.Callable<? extends .ceylon.language.String> $call$() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
                             
                             @.java.lang.Override
-                            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                                 final long x = ((.ceylon.language.Integer)$param$0).longValue();
                                 return .ceylon.language.String.instance(.ceylon.language.Integer.toString(x));
                             }
                         };
                     }
                 };
-                m6$priv(arg$9$0);
+                m6$priv$(arg$9$0);
             }
             returning null;
         );
         (
             let
             {
-                .ceylon.language.Callable arg$10$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Empty.$TypeDescriptor, "String(Integer)()", (short)-1){
+                .ceylon.language.Callable arg$10$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$, "String(Integer)()", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.Callable<? extends .ceylon.language.String> $call() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+                    public .ceylon.language.Callable<? extends .ceylon.language.String> $call$() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
                             
                             @.java.lang.Override
-                            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                                 final long x = ((.ceylon.language.Integer)$param$0).longValue();
                                 return .ceylon.language.String.instance(.ceylon.language.Integer.toString(x));
                             }
                         };
                     }
                 };
-                m7$priv(arg$10$0);
+                m7$priv$(arg$10$0);
             }
             returning null;
         );
@@ -273,8 +273,8 @@ class MethodArgumentNamedInvocationMPL implements .com.redhat.ceylon.compiler.ja
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.invoke.MethodArgumentNamedInvocationMPL.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.MethodArgumentNamedInvocationMPL.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.MethodArgumentNamedInvocationMPL.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.MethodArgumentNamedInvocationMPL.class);
 }

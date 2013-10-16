@@ -5,20 +5,20 @@ class BooleanBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     BooleanBoxing() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         final boolean b1 = true;
         final boolean b2 = !b1;
-        final boolean b3 = negate$priv(b2);
-        final .ceylon.language.Boolean b4 = negate2$priv(.ceylon.language.Boolean.instance(b3));
-        final boolean b5 = negate3$priv(b4);
+        final boolean b3 = negate$priv$(b2);
+        final .ceylon.language.Boolean b4 = negate2$priv$(.ceylon.language.Boolean.instance(b3));
+        final boolean b5 = negate3$priv$(b4);
         .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.Boolean.toString(b5)));
     }
     
-    private final boolean negate$priv(final boolean b) {
+    private final boolean negate$priv$(final boolean b) {
         return !b;
     }
     
-    private final .ceylon.language.Boolean negate2$priv(final .ceylon.language.Boolean b) {
+    private final .ceylon.language.Boolean negate2$priv$(final .ceylon.language.Boolean b) {
         .ceylon.language.Boolean b$1;
         if ((b$1 = b) != null) {
             final boolean b$2 = b$1.booleanValue();
@@ -27,7 +27,7 @@ class BooleanBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         return b;
     }
     
-    private final boolean negate3$priv(final .ceylon.language.Boolean b) {
+    private final boolean negate3$priv$(final .ceylon.language.Boolean b) {
         .ceylon.language.Boolean b$4;
         if ((b$4 = b) != null) {
             final boolean b$5 = b$4.booleanValue();
@@ -43,8 +43,8 @@ class BooleanBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.boxing.BooleanBoxing.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.boxing.BooleanBoxing.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.boxing.BooleanBoxing.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.boxing.BooleanBoxing.class);
 }

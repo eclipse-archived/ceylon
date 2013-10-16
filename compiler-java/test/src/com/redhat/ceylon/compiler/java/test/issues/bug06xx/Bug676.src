@@ -7,7 +7,7 @@ final class bug676_ {
     
     static void bug676() {
         .ceylon.language.Integer l$1;
-        if ((l$1 = new .ceylon.language.Array<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), new .java.lang.Object[]{
+        if ((l$1 = new .ceylon.language.Array<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
                 null,

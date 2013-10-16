@@ -6,11 +6,11 @@ final class mplFatArrow_ {
     }
     
     static .ceylon.language.Callable<? extends .java.lang.Object> mplFatArrow() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call() {
-                new .ceylon.language.String(.ceylon.language.ArraySequence.<.ceylon.language.Character>instance(.ceylon.language.Character.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Character.instance(32)}));
+            public .java.lang.Object $call$() {
+                new .ceylon.language.String(.ceylon.language.ArraySequence.<.ceylon.language.Character>instance(.ceylon.language.Character.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Character.instance(32)}));
                 return null;
             }
         };

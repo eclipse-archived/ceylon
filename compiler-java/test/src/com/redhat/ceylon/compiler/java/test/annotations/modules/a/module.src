@@ -8,13 +8,13 @@ package com.redhat.ceylon.compiler.java.test.annotations.modules.a;
         by = {"Tom"},
         version = "0.1",
         dependencies = {})
-@.ceylon.language.DocAnnotation$annotation(description = "Module A doc")
-@.ceylon.language.AuthorsAnnotation$annotation(authors = "Tom")
-@.ceylon.language.LicenseAnnotation$annotation(description = "http://www.apache.org/licenses/LICENSE-2.0.html")
-@.ceylon.language.TagsAnnotation$annotation(tags = {
+@.ceylon.language.DocAnnotation$annotation$(description = "Module A doc")
+@.ceylon.language.AuthorsAnnotation$annotation$(authors = "Tom")
+@.ceylon.language.LicenseAnnotation$annotation$(description = "http://www.apache.org/licenses/LICENSE-2.0.html")
+@.ceylon.language.TagsAnnotation$annotation$(tags = {
         "test",
         "annotations"})
-@.ceylon.language.DeprecationAnnotation$annotation(description = "doesn\'t _do_ anything")
+@.ceylon.language.DeprecationAnnotation$annotation$(description = "doesn\'t _do_ anything")
 @.java.lang.Deprecated
 final class module_ {
     

@@ -3,208 +3,208 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Iterable<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object> {
     
     Bug626() {
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Null.$TypeDescriptor, this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Null.$TypeDescriptor, this);
-        this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Container$this$ = new .ceylon.language.Container$impl<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl(this);
         this.hash = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
     }
-    protected final .ceylon.language.Iterable$impl<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> $ceylon$language$Iterable$this;
+    protected final .ceylon.language.Iterable$impl<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> $ceylon$language$Iterable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Iterable$impl<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> $ceylon$language$Iterable$impl() {
-        return $ceylon$language$Iterable$this;
+        return $ceylon$language$Iterable$this$;
     }
     
     @.java.lang.Override
     public boolean getEmpty() {
-        return $ceylon$language$Iterable$this.getEmpty();
+        return $ceylon$language$Iterable$this$.getEmpty();
     }
     
     @.java.lang.Override
     public long getSize() {
-        return $ceylon$language$Iterable$this.getSize();
+        return $ceylon$language$Iterable$this$.getSize();
     }
     
     @.java.lang.Override
     public boolean longerThan(final long length) {
-        return $ceylon$language$Iterable$this.longerThan(length);
+        return $ceylon$language$Iterable$this$.longerThan(length);
     }
     
     @.java.lang.Override
     public boolean shorterThan(final long length) {
-        return $ceylon$language$Iterable$this.shorterThan(length);
+        return $ceylon$language$Iterable$this$.shorterThan(length);
     }
     
     @.java.lang.Override
     public boolean contains(final .java.lang.Object element) {
-        return $ceylon$language$Iterable$this.contains(element);
+        return $ceylon$language$Iterable$this$.contains(element);
     }
     
     @.java.lang.Override
     public .ceylon.language.Sequential<? extends .java.lang.Object> getFirst() {
-        return (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)$ceylon$language$Iterable$this.getFirst();
+        return (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)$ceylon$language$Iterable$this$.getFirst();
     }
     
     @.java.lang.Override
     public .ceylon.language.Sequential<? extends .java.lang.Object> getLast() {
-        return (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)$ceylon$language$Iterable$this.getLast();
+        return (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)$ceylon$language$Iterable$this$.getLast();
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> getRest() {
-        return $ceylon$language$Iterable$this.getRest();
+        return $ceylon$language$Iterable$this$.getRest();
     }
     
     @.java.lang.Override
     public .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> getSequence() {
-        return $ceylon$language$Iterable$this.getSequence();
+        return $ceylon$language$Iterable$this$.getSequence();
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$Iterable$this.map($reifiedResult, collecting);
+    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this$.map($reified$Result, collecting);
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this.filter(selecting);
+        return $ceylon$language$Iterable$this$.filter(selecting);
     }
     
     @.java.lang.Override
-    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-        return $ceylon$language$Iterable$this.fold($reifiedResult, initial, accumulating);
+    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this$.fold($reified$Result, initial, accumulating);
     }
     
     @.java.lang.Override
     public .ceylon.language.Sequential<? extends .java.lang.Object> find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this.find(selecting);
+        return $ceylon$language$Iterable$this$.find(selecting);
     }
     
     @.java.lang.Override
     public .ceylon.language.Sequential<? extends .java.lang.Object> findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this.findLast(selecting);
+        return $ceylon$language$Iterable$this$.findLast(selecting);
     }
     
     @.java.lang.Override
     public .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
-        return $ceylon$language$Iterable$this.sort(comparing);
+        return $ceylon$language$Iterable$this$.sort(comparing);
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$Iterable$this.collect($reifiedResult, collecting);
+    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this$.collect($reified$Result, collecting);
     }
     
     @.java.lang.Override
     public .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> select(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this.select(selecting);
+        return $ceylon$language$Iterable$this$.select(selecting);
     }
     
     @.java.lang.Override
     public boolean any(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this.any(selecting);
+        return $ceylon$language$Iterable$this$.any(selecting);
     }
     
     @.java.lang.Override
     public boolean every(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this.every(selecting);
+        return $ceylon$language$Iterable$this$.every(selecting);
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> skipping(final long skip) {
-        return $ceylon$language$Iterable$this.skipping(skip);
+        return $ceylon$language$Iterable$this$.skipping(skip);
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> taking(final long take) {
-        return $ceylon$language$Iterable$this.taking(take);
+        return $ceylon$language$Iterable$this$.taking(take);
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> skippingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> skip) {
-        return $ceylon$language$Iterable$this.skippingWhile(skip);
+        return $ceylon$language$Iterable$this$.skippingWhile(skip);
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> takingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> take) {
-        return $ceylon$language$Iterable$this.takingWhile(take);
+        return $ceylon$language$Iterable$this$.takingWhile(take);
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> by(final long step) {
-        return $ceylon$language$Iterable$this.by(step);
+        return $ceylon$language$Iterable$this$.by(step);
     }
     
     @.java.lang.Override
     public long count(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this.count(selecting);
+        return $ceylon$language$Iterable$this$.count(selecting);
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> getCoalesced() {
-        return $ceylon$language$Iterable$this.getCoalesced();
+        return $ceylon$language$Iterable$this$.getCoalesced();
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>, ? extends .java.lang.Object> getIndexed() {
-        return $ceylon$language$Iterable$this.getIndexed();
+        return $ceylon$language$Iterable$this$.getIndexed();
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> following(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other head) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.following($reifiedOther, head);
+    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> following(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other head) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.following($reified$Other, head);
     }
     
     @.java.lang.Override
-    public <Other, OtherAbsent>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent> chain(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
+    public <Other, OtherAbsent>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent> chain(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.chain($reified$Other, $reified$OtherAbsent, other);
     }
     
     @.java.lang.Override
-    public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedDefault, final Default defaultValue) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
+    public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Default, final Default defaultValue) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.defaultNullElements($reified$Default, defaultValue);
     }
     
     @.java.lang.Override
     public .java.lang.String toString() {
-        return $ceylon$language$Iterable$this.toString();
+        return $ceylon$language$Iterable$this$.toString();
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> getCycled() {
-        return $ceylon$language$Iterable$this.getCycled();
+        return $ceylon$language$Iterable$this$.getCycled();
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> cycle(final long times) {
-        return $ceylon$language$Iterable$this.cycle(times);
+        return $ceylon$language$Iterable$this$.cycle(times);
     }
     
     @.java.lang.Override
     public .ceylon.language.List<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> repeat(final long times) {
-        return $ceylon$language$Iterable$this.repeat(times);
+        return $ceylon$language$Iterable$this$.repeat(times);
     }
-    protected final .ceylon.language.Container$impl<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> $ceylon$language$Container$this;
+    protected final .ceylon.language.Container$impl<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> $ceylon$language$Container$this$;
     
     @.java.lang.Override
     public .ceylon.language.Container$impl<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> $ceylon$language$Container$impl() {
-        return $ceylon$language$Container$this;
+        return $ceylon$language$Container$this$;
     }
-    protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
+    protected final .ceylon.language.Category$impl $ceylon$language$Category$this$;
     
     @.java.lang.Override
     public .ceylon.language.Category$impl $ceylon$language$Category$impl() {
-        return $ceylon$language$Category$this;
+        return $ceylon$language$Category$this$;
     }
     
     @.java.lang.Override
     public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
-        return $ceylon$language$Category$this.containsEvery(elements);
+        return $ceylon$language$Category$this$.containsEvery(elements);
     }
     
     @.java.lang.Override
     public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
-        return $ceylon$language$Category$this.containsAny(elements);
+        return $ceylon$language$Category$this$.containsAny(elements);
     }
     
     @.java.lang.Override
@@ -218,9 +218,9 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (int)(
             let
             {
-                long $ceylontmphash$0 = hash;
+                long $ceylontmp$hash$0 = hash;
             }
-            returning $ceylontmphash$0 ^ $ceylontmphash$0 >>> 32;
+            returning $ceylontmp$hash$0 ^ $ceylontmp$hash$0 >>> 32;
         );
     }
     
@@ -235,10 +235,10 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug626.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug626.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug626.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug626.class);
 }
 final class bug626f_ {
     

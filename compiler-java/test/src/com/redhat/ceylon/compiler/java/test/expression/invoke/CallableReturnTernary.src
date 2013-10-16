@@ -14,17 +14,17 @@ final class callableReturnTernary_bar_ {
     }
     
     static .ceylon.language.Callable<? extends .java.lang.Object> callableReturnTernary_bar() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor), .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor), .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor))), "Anything(Integer, String, Boolean)", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), "Anything(Integer, String, Boolean)", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                final long $ceylontmpi = ((.ceylon.language.Integer)$param$0).longValue();
-                final .java.lang.String $ceylontmps = ((.ceylon.language.String)$param$1).toString();
-                final boolean $ceylontmpb = ((.ceylon.language.Boolean)$param$2).booleanValue();
+            public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String $ceylontmp$s = ((.ceylon.language.String)$param$1).toString();
+                final boolean $ceylontmp$b = ((.ceylon.language.Boolean)$param$2).booleanValue();
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnTernary_foo_.callableReturnTernary_foo($ceylontmpi, $ceylontmps, $ceylontmpb);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnTernary_foo_.callableReturnTernary_foo($ceylontmp$i, $ceylontmp$s, $ceylontmp$b);
                     }
                     returning null;
                 );

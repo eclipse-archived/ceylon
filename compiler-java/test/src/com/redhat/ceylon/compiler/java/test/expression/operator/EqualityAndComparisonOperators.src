@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.expression.operator;
 interface BasicOperatorsA {
     
     public .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA$impl $com$redhat$ceylon$compiler$java$test$expression$operator$BasicOperatorsA$impl();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA.class);
 }
 final class BasicOperatorsA$impl {
     
@@ -15,7 +15,7 @@ final class BasicOperatorsA$impl {
 interface BasicOperatorsB {
     
     public .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB$impl $com$redhat$ceylon$compiler$java$test$expression$operator$BasicOperatorsB$impl();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB.class);
 }
 final class BasicOperatorsB$impl {
     
@@ -28,74 +28,74 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
     
     public EqualityAndComparisonInteger() {
         super();
-        this.$ceylon$language$Integral$this = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor, this);
-        this.$ceylon$language$Numeric$this = new .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor, this);
-        this.$ceylon$language$Summable$this = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor, this);
-        this.$ceylon$language$Invertable$this = new .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor, this);
-        this.$ceylon$language$Enumerable$this = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor, this);
-        this.$ceylon$language$Ordinal$this = new .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor, this);
-        this.$ceylon$language$Comparable$this = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Integral$this$ = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Numeric$this$ = new .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Summable$this$ = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Invertable$this$ = new .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Enumerable$this$ = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Ordinal$this$ = new .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Comparable$this$ = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor$, this);
     }
-    protected final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Integral$this;
+    protected final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Integral$this$;
     
     @.java.lang.Override
     public .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Integral$impl() {
-        return $ceylon$language$Integral$this;
+        return $ceylon$language$Integral$this$;
     }
     
     @.java.lang.Override
     public final boolean divides(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger other) {
-        return $ceylon$language$Integral$this.divides(other);
+        return $ceylon$language$Integral$this$.divides(other);
     }
-    protected final .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Numeric$this;
+    protected final .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Numeric$this$;
     
     @.java.lang.Override
     public .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Numeric$impl() {
-        return $ceylon$language$Numeric$this;
+        return $ceylon$language$Numeric$this$;
     }
-    protected final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Summable$this;
+    protected final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Summable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Summable$impl() {
-        return $ceylon$language$Summable$this;
+        return $ceylon$language$Summable$this$;
     }
-    protected final .ceylon.language.Invertable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Invertable$this;
+    protected final .ceylon.language.Invertable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Invertable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Invertable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Invertable$impl() {
-        return $ceylon$language$Invertable$this;
+        return $ceylon$language$Invertable$this$;
     }
-    protected final .ceylon.language.Enumerable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Enumerable$this;
+    protected final .ceylon.language.Enumerable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Enumerable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Enumerable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Enumerable$impl() {
-        return $ceylon$language$Enumerable$this;
+        return $ceylon$language$Enumerable$this$;
     }
-    protected final .ceylon.language.Ordinal$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Ordinal$this;
+    protected final .ceylon.language.Ordinal$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Ordinal$this$;
     
     @.java.lang.Override
     public .ceylon.language.Ordinal$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Ordinal$impl() {
-        return $ceylon$language$Ordinal$this;
+        return $ceylon$language$Ordinal$this$;
     }
-    protected final .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Comparable$this;
+    protected final .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Comparable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Comparable$impl() {
-        return $ceylon$language$Comparable$this;
+        return $ceylon$language$Comparable$this$;
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.class);
 }
 public class EqualityAndComparisonOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public EqualityAndComparisonOperators() {
     }
     
-    private final void equalityAndComparisonUnboxed$priv(final .java.lang.Object o1, final .java.lang.Object o2) {
+    private final void equalityAndComparisonUnboxed$priv$(final .java.lang.Object o1, final .java.lang.Object o2) {
         boolean sync = o1 == o2;
         long n1 = 0L;
         long n2 = 0L;
@@ -108,7 +108,7 @@ public class EqualityAndComparisonOperators implements .com.redhat.ceylon.compil
         sync = n1 >= n2;
     }
     
-    private final void equalityAndComparisonBoxed$priv(final .java.lang.Object o1, final .java.lang.Object o2, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n1, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n2) {
+    private final void equalityAndComparisonBoxed$priv$(final .java.lang.Object o1, final .java.lang.Object o2, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n1, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n2) {
         .ceylon.language.Boolean sync = .ceylon.language.Boolean.instance(o1 == o2);
         sync = .ceylon.language.Boolean.instance(n1.equals(n2));
         sync = .ceylon.language.Boolean.instance(!n1.equals(n2));
@@ -119,81 +119,81 @@ public class EqualityAndComparisonOperators implements .com.redhat.ceylon.compil
         sync = .ceylon.language.Boolean.instance(n1.compare(n2).asLargeAs());
     }
     
-    private final void testInBoxed$priv(final long n1, final long n2) {
+    private final void testInBoxed$priv$(final long n1, final long n2) {
         final boolean b1 = (
             let
             {
-                .ceylon.language.Integer $ceylontmp0 = .ceylon.language.Integer.instance(n1);
+                .ceylon.language.Integer $ceylontmp$0 = .ceylon.language.Integer.instance(n1);
             }
-            returning new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(n1), .ceylon.language.Integer.instance(n2)).contains($ceylontmp0);
+            returning new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(n1), .ceylon.language.Integer.instance(n2)).contains($ceylontmp$0);
         );
     }
     
-    private final void testInUnboxed$priv(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n1, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n2) {
+    private final void testInUnboxed$priv$(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n1, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n2) {
         final .ceylon.language.Boolean b1 = .ceylon.language.Boolean.instance((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger $ceylontmp1 = n1;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger $ceylontmp$1 = n1;
             }
-            returning new .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor, n1, n2).contains($ceylontmp1);
+            returning new .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor$, n1, n2).contains($ceylontmp$1);
         ));
     }
     
-    private final void testIs$priv() {
+    private final void testIs$priv$() {
         boolean sync = false;
         final .java.lang.Object foo = .ceylon.language.Boolean.instance(sync);
         sync = (
             let
             {
-                .java.lang.Object $ceylontmp2 = foo;
+                .java.lang.Object $ceylontmp$2 = foo;
             }
-            returning $ceylontmp2 instanceof .ceylon.language.Boolean;
+            returning $ceylontmp$2 instanceof .ceylon.language.Boolean;
         );
         sync = (
             let
             {
-                .java.lang.Object $ceylontmp3 = foo;
+                .java.lang.Object $ceylontmp$3 = foo;
             }
-            returning $ceylontmp3 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA || $ceylontmp3 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
+            returning $ceylontmp$3 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA || $ceylontmp$3 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
         );
         sync = (
             let
             {
-                .java.lang.Object $ceylontmp4 = foo;
+                .java.lang.Object $ceylontmp$4 = foo;
             }
-            returning $ceylontmp4 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA && $ceylontmp4 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
+            returning $ceylontmp$4 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA && $ceylontmp$4 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
         );
         sync = (
             let
             {
-                .java.lang.Object $ceylontmp5 = foo;
+                .java.lang.Object $ceylontmp$5 = foo;
             }
-            returning $ceylontmp5 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA || $ceylontmp5 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
+            returning $ceylontmp$5 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA || $ceylontmp$5 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
         );
         sync = (
             let
             {
-                .java.lang.Object $ceylontmp6 = foo;
+                .java.lang.Object $ceylontmp$6 = foo;
             }
-            returning $ceylontmp6 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA && $ceylontmp6 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
+            returning $ceylontmp$6 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA && $ceylontmp$6 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
         );
         sync = (
             let
             {
-                .java.lang.Object $ceylontmp7 = foo;
+                .java.lang.Object $ceylontmp$7 = foo;
             }
-            returning .com.redhat.ceylon.compiler.java.Util.isBasic($ceylontmp7);
+            returning .com.redhat.ceylon.compiler.java.Util.isBasic($ceylontmp$7);
         );
         sync = (
             let
             {
-                .java.lang.Object $ceylontmp8 = foo;
+                .java.lang.Object $ceylontmp$8 = foo;
             }
-            returning $ceylontmp8 instanceof .java.lang.Throwable;
+            returning $ceylontmp$8 instanceof .java.lang.Throwable;
         );
     }
     
-    private final void withinUnboxed$priv() {
+    private final void withinUnboxed$priv$() {
         boolean sync = false;
         final long x = 0L;
         sync = (
@@ -226,7 +226,7 @@ public class EqualityAndComparisonOperators implements .com.redhat.ceylon.compil
         );
     }
     
-    private final void withinBoxed$priv(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger x, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger l, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger u) {
+    private final void withinBoxed$priv$(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger x, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger l, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger u) {
         boolean sync = false;
         sync = (
             let
@@ -264,8 +264,8 @@ public class EqualityAndComparisonOperators implements .com.redhat.ceylon.compil
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonOperators.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonOperators.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonOperators.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonOperators.class);
 }

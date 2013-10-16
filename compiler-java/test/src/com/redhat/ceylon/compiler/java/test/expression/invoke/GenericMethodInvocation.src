@@ -5,7 +5,7 @@ public class KlassMethodTypeParams implements .com.redhat.ceylon.compiler.java.r
     public KlassMethodTypeParams() {
     }
     
-    public final <U, V>U bar(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final U u, final V v) {
+    public final <U, V>U bar(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, final U u, final V v) {
         return u;
     }
     
@@ -15,10 +15,10 @@ public class KlassMethodTypeParams implements .com.redhat.ceylon.compiler.java.r
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams.class);
 }
 class GenericMethodInvocation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -27,7 +27,7 @@ class GenericMethodInvocation implements .com.redhat.ceylon.compiler.java.runtim
     
     public final .java.lang.String m() {
         final .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams();
-        return k.<.ceylon.language.String, .ceylon.language.Integer>bar(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.instance("hello"), .ceylon.language.Integer.instance(1L)).toString();
+        return k.<.ceylon.language.String, .ceylon.language.Integer>bar(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.instance("hello"), .ceylon.language.Integer.instance(1L)).toString();
     }
     
     public final .java.lang.String m2() {
@@ -38,8 +38,8 @@ class GenericMethodInvocation implements .com.redhat.ceylon.compiler.java.runtim
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams arg$0$callable$ = k;
                 .ceylon.language.String arg$0$0 = .ceylon.language.String.instance("hello");
                 .ceylon.language.Integer arg$0$1 = .ceylon.language.Integer.instance(1L);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.String.$TypeDescriptor;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$1 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.String.$TypeDescriptor$;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$1 = .ceylon.language.Integer.$TypeDescriptor$;
             }
             returning arg$0$callable$.<.ceylon.language.String, .ceylon.language.Integer>bar(arg$0$reified$0, arg$0$reified$1, arg$0$0, arg$0$1);
         ).toString();
@@ -51,8 +51,8 @@ class GenericMethodInvocation implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocation.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocation.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocation.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocation.class);
 }

@@ -4,27 +4,27 @@ class KeywordInClassGetter implements .com.redhat.ceylon.compiler.java.runtime.m
     
     KeywordInClassGetter() {
         
-        final class goto$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+        final class goto$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
             
-            private goto$getter_() {
+            private goto$getter$_() {
             }
             
             public .java.lang.String get_() {
                 return "";
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> goto$getter_ = new goto$getter_();
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> goto$getter$_ = new goto$getter$_();
         
-        final class goto$setter_ {
+        final class goto$setter$_ {
             
-            private goto$setter_() {
+            private goto$setter$_() {
             }
             private .java.lang.String value;
             
             public void set_(final .java.lang.String goto) {
             }
         }
-        final goto$setter_ goto$setter_ = new goto$setter_();
+        final goto$setter$_ goto$setter$_ = new goto$setter$_();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -33,8 +33,8 @@ class KeywordInClassGetter implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassGetter.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassGetter.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassGetter.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassGetter.class);
 }

@@ -7,31 +7,31 @@ class NamedArgumentWithEmptySequence implements .com.redhat.ceylon.compiler.java
             let
             {
                 .ceylon.language.Sequential arg$1$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                m$priv(arg$1$0);
+                m$priv$(arg$1$0);
             }
             returning null;
         );
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                m$priv$($ceylontmp$b$$0);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$b$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                m$priv$$($ceylontmp$$b$$0);
             }
             returning null;
         );
     }
     
-    private void m$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
+    private void m$priv$$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
     }
     
-    private final void m$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
+    private final void m$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
         (
             let
             {
-                m$priv$(b);
+                m$priv$$(b);
             }
             returning null;
         );
@@ -43,8 +43,8 @@ class NamedArgumentWithEmptySequence implements .com.redhat.ceylon.compiler.java
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithEmptySequence.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithEmptySequence.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithEmptySequence.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithEmptySequence.class);
 }

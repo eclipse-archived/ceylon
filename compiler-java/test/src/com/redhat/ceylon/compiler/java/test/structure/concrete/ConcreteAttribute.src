@@ -16,23 +16,23 @@ interface ConcreteAttribute<A> {
 }
 final class ConcreteAttribute$impl<A> {
     
-    ConcreteAttribute$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<A> $this) {
-        this.$reifiedA = $reifiedA;
+    ConcreteAttribute$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<A> $this) {
+        this.$reified$A = $reified$A;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A;
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<A> $this;
     
-    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA) {
-        this.$reifiedA = $reifiedA;
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A) {
+        this.$reified$A = $reified$A;
     }
     
-    private final A getANonShared$priv() {
+    private final A getANonShared$priv$() {
         return null;
     }
     
     public final A getAShared() {
-        return getANonShared$priv();
+        return getANonShared$priv$();
     }
     
     public final void setAVariableFormal(final A aVariableFormal) {
@@ -61,21 +61,21 @@ final class concreteAttributeCallsite_ {
 }
 class ConcreteAttributeGetterImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<B> {
     
-    ConcreteAttributeGetterImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB) {
-        this.$reifiedB = $reifiedB;
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<B>($reifiedB, this);
+    ConcreteAttributeGetterImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B) {
+        this.$reified$B = $reified$B;
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<B>($reified$B, this);
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB;
-    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<B> $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<B> $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<B> $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this$;
     }
     
     @.java.lang.Override
     public final B getAShared() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this.getAShared();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this$.getAShared();
     }
     
     @.java.lang.Override
@@ -106,8 +106,8 @@ class ConcreteAttributeGetterImpl<B> implements .com.redhat.ceylon.compiler.java
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttributeGetterImpl.class, $reifiedB);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttributeGetterImpl.class, $reified$B);
     }
 }
 final class concreteAttributeGetterImplCallsite_ {
@@ -131,24 +131,24 @@ final class concreteAttributeGetterImplCallsite_ {
 }
 class ConcreteAttributeValueImpl<C> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<C> {
     
-    ConcreteAttributeValueImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC) {
-        this.$reifiedC = $reifiedC;
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<C>($reifiedC, this);
+    ConcreteAttributeValueImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C) {
+        this.$reified$C = $reified$C;
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<C>($reified$C, this);
         this.aFormal = null;
         this.aVariableFormal = null;
         this.aDefault = null;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC;
-    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<C> $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<C> $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<C> $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this$;
     }
     
     @.java.lang.Override
     public final C getAShared() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this.getAShared();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this$.getAShared();
     }
     private final C aFormal;
     
@@ -184,8 +184,8 @@ class ConcreteAttributeValueImpl<C> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttributeValueImpl.class, $reifiedC);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttributeValueImpl.class, $reified$C);
     }
 }
 final class concreteAttributeValueImplCallsite_ {

@@ -5,61 +5,61 @@ final class ctorDefaultedParam_callsite_ {
     private ctorDefaultedParam_callsite_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotations({
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 2L),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 3L)})
-    @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotations({
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
+    @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotations$({
+            @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 2L),
+            @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 3L)})
+    @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotations$({
+            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
                     s = "nestedBranchDPClassWithLiteralArgument",
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 100L)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
+                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 100L)),
+            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
                     s = "nestedBranchDPClassDefaultedArgument",
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
+                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$),
+            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
                     s = "nestedBranchDPClassWithLiteralArgument",
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
+                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$),
+            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
                     s = "nestedBranchDPClassWithLiteralArgument",
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 3L)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
+                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 3L)),
+            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
                     s = "nestedBranchDPClassWithLiteralArgument",
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 4L)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
+                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 4L)),
+            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
                     s = "nestedBranchDPClassWithLiteralArgument",
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 2L)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
+                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 2L)),
+            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
                     s = "nestedBranchDPClassWithLiteralArgument",
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 5L)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
+                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 5L)),
+            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
                     s = "nestedBranchDPClassWithLiteralArgument",
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 6L)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
+                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 6L)),
+            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
                     s = "nestedBranchDPClassWithLiteralArgument",
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 3L)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
+                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 3L)),
+            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
                     s = "nestedBranchDPCtorWithLiteralArgument",
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 101L)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
+                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 101L)),
+            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
                     s = "nestedBranchDPCtorNullary",
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 3L)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
+                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 3L)),
+            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
                     s = "nestedBranchDPCtorWithDefaultedArgument",
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 2L)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
+                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 2L)),
+            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
                     s = "nestedBranchClassNullary",
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
+                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$),
+            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
                     s = "nestedBranchClassLiteral",
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 110L)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
+                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 110L)),
+            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
                     s = "nestedBranchCtorNullary",
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 3L)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
+                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 3L)),
+            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
                     s = "nestedBranchCtorDefaultedArgument",
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 2L)),
-            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation(
+                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 2L)),
+            @.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
                     s = "nestedBranchCtorLiteral",
-                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation(i1 = 512L))})
+                    b = @.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 512L))})
     static void ctorDefaultedParam_callsite() {
     }
     

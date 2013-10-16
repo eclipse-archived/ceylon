@@ -34,7 +34,7 @@ class ClassAttributeLate implements .com.redhat.ceylon.compiler.java.runtime.mod
         this.lateVariableAttr[0] = lateVariableAttr;
     }
     
-    private final void init$priv() {
+    private final void init$priv$() {
         setLateAttr(0L);
         setLateVariableAttr(0L);
     }
@@ -45,8 +45,8 @@ class ClassAttributeLate implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeLate.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeLate.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeLate.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeLate.class);
 }

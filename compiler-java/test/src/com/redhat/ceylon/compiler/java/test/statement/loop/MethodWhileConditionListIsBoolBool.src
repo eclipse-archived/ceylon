@@ -5,7 +5,7 @@ class MethodWhileConditionListIsBoolBool implements .com.redhat.ceylon.compiler.
     MethodWhileConditionListIsBoolBool() {
     }
     
-    private final boolean m$priv(final .java.lang.Object x, final long z) {
+    private final boolean m$priv$(final .java.lang.Object x, final long z) {
         while (true) {
             .java.lang.Object x$0;
             if ((x$0 = x) instanceof .ceylon.language.Integer) {
@@ -20,7 +20,7 @@ class MethodWhileConditionListIsBoolBool implements .com.redhat.ceylon.compiler.
         return false;
     }
     
-    private final boolean synthetic$priv(final .java.lang.Object x, final long z) {
+    private final boolean synthetic$priv$(final .java.lang.Object x, final long z) {
         while (true) {
             .java.lang.Object y$2;
             if ((y$2 = x) instanceof .ceylon.language.Integer) {
@@ -41,8 +41,8 @@ class MethodWhileConditionListIsBoolBool implements .com.redhat.ceylon.compiler.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListIsBoolBool.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListIsBoolBool.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListIsBoolBool.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListIsBoolBool.class);
 }

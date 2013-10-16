@@ -5,60 +5,60 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     Bug1095() {
     }
     
-    public final <Value extends .ceylon.language.Summable<Value>>Value variadicSum(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
+    public final <Value extends .ceylon.language.Summable<Value>>Value variadicSum(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends Value> $ceylontmp$values$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends Value> $ceylontmp$$values$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning variadicSum$($reifiedValue, $ceylontmp$values$$0);
+            returning variadicSum$($reified$Value, $ceylontmp$$values$$0);
         );
     }
     
-    private <Value extends .ceylon.language.Summable<Value>>Value variadicSum$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, final .ceylon.language.Sequential<? extends Value> values) {
+    private <Value extends .ceylon.language.Summable<Value>>Value variadicSum$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, final .ceylon.language.Sequential<? extends Value> values) {
         return (Value).ceylon.language.nothing_.get_();
     }
     
-    public final <Value extends .ceylon.language.Summable<Value>>Value variadicSum(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, final .ceylon.language.Sequential<? extends Value> values) {
-        return variadicSum$($reifiedValue, values);
+    public final <Value extends .ceylon.language.Summable<Value>>Value variadicSum(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, final .ceylon.language.Sequential<? extends Value> values) {
+        return variadicSum$($reified$Value, values);
     }
     
-    public final <Value extends .ceylon.language.Summable<Value>>Value defaultedSum(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
+    public final <Value extends .ceylon.language.Summable<Value>>Value defaultedSum(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
         return (
             let
             {
-                .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> $ceylontmp$dummy$$1 = defaultedSum$dummy($reifiedValue);
+                .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> $ceylontmp$$dummy$$1 = defaultedSum$dummy($reified$Value);
             }
-            returning defaultedSum$($reifiedValue, $ceylontmp$dummy$$1);
+            returning defaultedSum$($reified$Value, $ceylontmp$$dummy$$1);
         );
     }
     
-    public final <Value extends .ceylon.language.Summable<Value>>.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> defaultedSum$dummy(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
+    public final <Value extends .ceylon.language.Summable<Value>>.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> defaultedSum$dummy(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
         return (.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_();
     }
     
-    private <Value extends .ceylon.language.Summable<Value>>Value defaultedSum$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, final .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> dummy) {
+    private <Value extends .ceylon.language.Summable<Value>>Value defaultedSum$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, final .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> dummy) {
         return (Value).ceylon.language.nothing_.get_();
     }
     
-    public final <Value extends .ceylon.language.Summable<Value>>Value defaultedSum(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, final .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> dummy) {
-        return defaultedSum$($reifiedValue, dummy);
+    public final <Value extends .ceylon.language.Summable<Value>>Value defaultedSum(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, final .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> dummy) {
+        return defaultedSum$($reified$Value, dummy);
     }
     
-    private final <Summand extends .ceylon.language.Summable<Summand>>void constrainedTypeParameter$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedSummand, final .ceylon.language.Iterable<? extends Summand, ? extends .java.lang.Object> values) {
-        final Summand x = (Summand)(.java.lang.Object).ceylon.language.sum_.<Summand>sum($reifiedSummand, (.ceylon.language.Iterable)values);
+    private final <Summand extends .ceylon.language.Summable<Summand>>void constrainedTypeParameter$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Summand, final .ceylon.language.Iterable<? extends Summand, ? extends .java.lang.Object> values) {
+        final Summand x = (Summand)(.java.lang.Object).ceylon.language.sum_.<Summand>sum($reified$Summand, (.ceylon.language.Iterable)values);
         final Summand y = (Summand)(.java.lang.Object)(
             let
             {
                 .ceylon.language.Iterable arg$2$0 = (.ceylon.language.Iterable)values;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = $reifiedSummand;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = $reified$Summand;
             }
             returning .ceylon.language.sum_.<Summand>sum(arg$2$reified$0, arg$2$0);
         );
         final Summand z = (Summand)(.java.lang.Object)(
             let
             {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$3$reified$0 = $reifiedSummand;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$3$reified$0 = $reified$Summand;
                 .ceylon.language.Sequential arg$3$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning <Summand>variadicSum(arg$3$reified$0, arg$3$0);
@@ -66,9 +66,9 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         final Summand a = (Summand)(.java.lang.Object)(
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095 arg$4$this$ = this;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$4$reified$0 = $reifiedSummand;
-                .ceylon.language.Iterable arg$4$0 = arg$4$this$.defaultedSum$dummy(arg$4$reified$0);
+                .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095 arg$4$argthis$ = this;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$4$reified$0 = $reified$Summand;
+                .ceylon.language.Iterable arg$4$0 = arg$4$argthis$.defaultedSum$dummy(arg$4$reified$0);
             }
             returning <Summand>defaultedSum(arg$4$reified$0, arg$4$0);
         );
@@ -80,8 +80,8 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095.class);
 }

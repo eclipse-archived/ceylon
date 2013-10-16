@@ -15,7 +15,7 @@ abstract class ClassAttribute implements .com.redhat.ceylon.compiler.java.runtim
     }
     private final .java.lang.String capturedvar;
     
-    private final .java.lang.String getCapturedvar$priv() {
+    private final .java.lang.String getCapturedvar$priv$() {
         return capturedvar;
     }
     
@@ -23,15 +23,15 @@ abstract class ClassAttribute implements .com.redhat.ceylon.compiler.java.runtim
     
     public abstract .java.lang.String getFormalvarShortcut();
     
-    private final .java.lang.String m$priv() {
-        return getCapturedvar$priv();
+    private final .java.lang.String m$priv$() {
+        return getCapturedvar$priv$();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttribute.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttribute.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttribute.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttribute.class);
 }
 class SubClassAttribute extends .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttribute {
     
@@ -59,8 +59,8 @@ class SubClassAttribute extends .com.redhat.ceylon.compiler.java.test.structure.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttribute.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttribute.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttribute.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttribute.class);
 }

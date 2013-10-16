@@ -18,7 +18,7 @@ class MethodSpecifierTopLevel implements .com.redhat.ceylon.compiler.java.runtim
     MethodSpecifierTopLevel() {
     }
     
-    private final .java.lang.Object foo$priv() {
+    private final .java.lang.Object foo$priv$() {
         return (
             let
             {
@@ -34,8 +34,8 @@ class MethodSpecifierTopLevel implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierTopLevel.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierTopLevel.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierTopLevel.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierTopLevel.class);
 }

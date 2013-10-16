@@ -5,18 +5,18 @@ class InnerAttributeGetterWithConflictingMethods implements .com.redhat.ceylon.c
     InnerAttributeGetterWithConflictingMethods() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         
-        final class x$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+        final class x$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
-            private x$getter_() {
+            private x$getter$_() {
             }
             
             public long get_() {
                 return 2L;
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.GetterLong x$getter_ = new x$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong x$getter$_ = new x$getter$_();
         
         final class getX_ {
             
@@ -24,26 +24,26 @@ class InnerAttributeGetterWithConflictingMethods implements .com.redhat.ceylon.c
             }
             
             long getX() {
-                return x$getter_.get_();
+                return x$getter$_.get_();
             }
         }
         final getX_ getX = new getX_();
-        final long n = x$getter_.get_();
+        final long n = x$getter$_.get_();
         final long n2 = getX.getX();
     }
     
-    private final void m2$priv() {
+    private final void m2$priv$() {
         
-        final class x$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+        final class x$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
-            private x$getter_() {
+            private x$getter$_() {
             }
             
             public long get_() {
                 return 2L;
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.GetterLong x$getter_ = new x$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong x$getter$_ = new x$getter$_();
         
         final class getX_ {
             
@@ -51,11 +51,11 @@ class InnerAttributeGetterWithConflictingMethods implements .com.redhat.ceylon.c
             }
             
             long getX() {
-                return x$getter_.get_();
+                return x$getter$_.get_();
             }
         }
         final getX_ getX = new getX_();
-        final long n = x$getter_.get_();
+        final long n = x$getter$_.get_();
         final long n2 = getX.getX();
     }
     
@@ -65,8 +65,8 @@ class InnerAttributeGetterWithConflictingMethods implements .com.redhat.ceylon.c
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterWithConflictingMethods.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterWithConflictingMethods.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterWithConflictingMethods.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterWithConflictingMethods.class);
 }

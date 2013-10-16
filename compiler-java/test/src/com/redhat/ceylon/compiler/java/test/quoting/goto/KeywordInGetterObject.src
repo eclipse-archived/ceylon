@@ -4,9 +4,9 @@ class KeywordInGetterObject implements .com.redhat.ceylon.compiler.java.runtime.
     
     KeywordInGetterObject() {
         
-        final class i$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+        final class i$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
-            private i$getter_() {
+            private i$getter$_() {
             }
             
             public long get_() {
@@ -17,7 +17,7 @@ class KeywordInGetterObject implements .com.redhat.ceylon.compiler.java.runtime.
                     }
                     
                     @.java.lang.Override
-                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(goto_.class);
                     }
                 }
@@ -26,7 +26,7 @@ class KeywordInGetterObject implements .com.redhat.ceylon.compiler.java.runtime.
                 return 0L;
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.GetterLong i$getter_ = new i$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong i$getter$_ = new i$getter$_();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -35,8 +35,8 @@ class KeywordInGetterObject implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInGetterObject.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInGetterObject.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInGetterObject.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInGetterObject.class);
 }

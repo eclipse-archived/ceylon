@@ -6,7 +6,7 @@ class MethodParamHidingAttribute implements .com.redhat.ceylon.compiler.java.run
         final boolean b = true;
     }
     
-    private final void m$priv(final boolean b) {
+    private final void m$priv$(final boolean b) {
         final boolean b2 = b;
     }
     
@@ -16,8 +16,8 @@ class MethodParamHidingAttribute implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.MethodParamHidingAttribute.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.MethodParamHidingAttribute.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.MethodParamHidingAttribute.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.MethodParamHidingAttribute.class);
 }

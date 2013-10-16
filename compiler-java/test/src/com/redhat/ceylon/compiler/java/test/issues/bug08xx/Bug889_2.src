@@ -14,11 +14,11 @@ final class bug889_2_ {
             satisfies = {},
             caseTypes = {})})
     static <T>void bug889_2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
     final T t) {
-        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> c = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug889_.<T>bug889($reifiedT, t);
-        boolean b = c.$call(t).booleanValue();
-        b = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug889_.<T>bug889($reifiedT, t).$call(t).booleanValue();
+        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> c = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug889_.<T>bug889($reified$T, t);
+        boolean b = c.$call$(t).booleanValue();
+        b = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug889_.<T>bug889($reified$T, t).$call$(t).booleanValue();
     }
 }

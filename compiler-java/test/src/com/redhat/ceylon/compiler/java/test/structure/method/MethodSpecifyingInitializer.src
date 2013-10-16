@@ -5,7 +5,7 @@ class MethodSpecifierType implements .com.redhat.ceylon.compiler.java.runtime.mo
     MethodSpecifierType() {
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierType foo$priv() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierType foo$priv$() {
         return new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierType();
     }
     
@@ -15,8 +15,8 @@ class MethodSpecifierType implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierType.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierType.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierType.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierType.class);
 }

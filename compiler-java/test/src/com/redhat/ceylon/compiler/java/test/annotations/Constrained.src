@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface ConstrainedToClass$annotation {
+@interface ConstrainedToClass$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.FinalAnnotation$annotation
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -14,44 +14,44 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 final class ConstrainedToClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, .ceylon.language.meta.declaration.ClassDeclaration> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    ConstrainedToClass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass$annotation anno) {
+    ConstrainedToClass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass$annotation$ anno) {
         this();
     }
     
     ConstrainedToClass() {
-        this.$ceylon$language$OptionalAnnotation$this = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, .ceylon.language.meta.declaration.ClassDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass.$TypeDescriptor, .ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, .ceylon.language.meta.declaration.ClassDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass.$TypeDescriptor), .ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass.$TypeDescriptor, this);
+        this.$ceylon$language$OptionalAnnotation$this$ = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, .ceylon.language.meta.declaration.ClassDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass.$TypeDescriptor$, .ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, .ceylon.language.meta.declaration.ClassDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass.$TypeDescriptor$), .ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$OptionalAnnotation$this;
+    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$OptionalAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$OptionalAnnotation$impl() {
-        return $ceylon$language$OptionalAnnotation$this;
+        return $ceylon$language$OptionalAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -62,26 +62,26 @@ final class ConstrainedToClass implements .com.redhat.ceylon.compiler.java.runti
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
-@interface ConstrainedToClassSeq$annotation {
+@interface ConstrainedToClassSeq$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface ConstrainedToClassSeq$annotations {
+@interface ConstrainedToClassSeq$annotations$ {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq$annotation[] value();
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.FinalAnnotation$annotation
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -89,44 +89,44 @@ final class ConstrainedToClass implements .com.redhat.ceylon.compiler.java.runti
 final class ConstrainedToClassSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, .ceylon.language.meta.declaration.ClassDeclaration> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    ConstrainedToClassSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq$annotation anno) {
+    ConstrainedToClassSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq$annotation$ anno) {
         this();
     }
     
     ConstrainedToClassSeq() {
-        this.$ceylon$language$SequencedAnnotation$this = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, .ceylon.language.meta.declaration.ClassDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq.$TypeDescriptor, .ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq>, .ceylon.language.meta.declaration.ClassDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq.$TypeDescriptor), .ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq.$TypeDescriptor, this);
+        this.$ceylon$language$SequencedAnnotation$this$ = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, .ceylon.language.meta.declaration.ClassDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq.$TypeDescriptor$, .ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq>, .ceylon.language.meta.declaration.ClassDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq.$TypeDescriptor$), .ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$SequencedAnnotation$impl() {
-        return $ceylon$language$SequencedAnnotation$this;
+        return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq>, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq>, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq>, ? super .ceylon.language.meta.declaration.ClassDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -137,19 +137,19 @@ final class ConstrainedToClassSeq implements .com.redhat.ceylon.compiler.java.ru
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface ConstrainedToInterface$annotation {
+@interface ConstrainedToInterface$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.FinalAnnotation$annotation
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -157,44 +157,44 @@ final class ConstrainedToClassSeq implements .com.redhat.ceylon.compiler.java.ru
 final class ConstrainedToInterface implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, .ceylon.language.meta.declaration.InterfaceDeclaration> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    ConstrainedToInterface(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface$annotation anno) {
+    ConstrainedToInterface(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface$annotation$ anno) {
         this();
     }
     
     ConstrainedToInterface() {
-        this.$ceylon$language$OptionalAnnotation$this = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, .ceylon.language.meta.declaration.InterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface.$TypeDescriptor, .ceylon.language.meta.declaration.InterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, .ceylon.language.meta.declaration.InterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface.$TypeDescriptor), .ceylon.language.meta.declaration.InterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface.$TypeDescriptor, this);
+        this.$ceylon$language$OptionalAnnotation$this$ = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, .ceylon.language.meta.declaration.InterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface.$TypeDescriptor$, .ceylon.language.meta.declaration.InterfaceDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, .ceylon.language.meta.declaration.InterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface.$TypeDescriptor$), .ceylon.language.meta.declaration.InterfaceDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$OptionalAnnotation$this;
+    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$OptionalAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$OptionalAnnotation$impl() {
-        return $ceylon$language$OptionalAnnotation$this;
+        return $ceylon$language$OptionalAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -205,26 +205,26 @@ final class ConstrainedToInterface implements .com.redhat.ceylon.compiler.java.r
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
-@interface ConstrainedToInterfaceSeq$annotation {
+@interface ConstrainedToInterfaceSeq$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface ConstrainedToInterfaceSeq$annotations {
+@interface ConstrainedToInterfaceSeq$annotations$ {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq$annotation[] value();
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.FinalAnnotation$annotation
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -232,44 +232,44 @@ final class ConstrainedToInterface implements .com.redhat.ceylon.compiler.java.r
 final class ConstrainedToInterfaceSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, .ceylon.language.meta.declaration.InterfaceDeclaration> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    ConstrainedToInterfaceSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq$annotation anno) {
+    ConstrainedToInterfaceSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq$annotation$ anno) {
         this();
     }
     
     ConstrainedToInterfaceSeq() {
-        this.$ceylon$language$SequencedAnnotation$this = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, .ceylon.language.meta.declaration.InterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq.$TypeDescriptor, .ceylon.language.meta.declaration.InterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq>, .ceylon.language.meta.declaration.InterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq.$TypeDescriptor), .ceylon.language.meta.declaration.InterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq.$TypeDescriptor, this);
+        this.$ceylon$language$SequencedAnnotation$this$ = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, .ceylon.language.meta.declaration.InterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq.$TypeDescriptor$, .ceylon.language.meta.declaration.InterfaceDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq>, .ceylon.language.meta.declaration.InterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq.$TypeDescriptor$), .ceylon.language.meta.declaration.InterfaceDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$SequencedAnnotation$impl() {
-        return $ceylon$language$SequencedAnnotation$this;
+        return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq>, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq>, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq>, ? super .ceylon.language.meta.declaration.InterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -280,19 +280,19 @@ final class ConstrainedToInterfaceSeq implements .com.redhat.ceylon.compiler.jav
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface ConstrainedToFunction$annotation {
+@interface ConstrainedToFunction$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.FinalAnnotation$annotation
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -300,44 +300,44 @@ final class ConstrainedToInterfaceSeq implements .com.redhat.ceylon.compiler.jav
 final class ConstrainedToFunction implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, .ceylon.language.meta.declaration.FunctionDeclaration> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    ConstrainedToFunction(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction$annotation anno) {
+    ConstrainedToFunction(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction$annotation$ anno) {
         this();
     }
     
     ConstrainedToFunction() {
-        this.$ceylon$language$OptionalAnnotation$this = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction.$TypeDescriptor, .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction.$TypeDescriptor), .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction.$TypeDescriptor, this);
+        this.$ceylon$language$OptionalAnnotation$this$ = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction.$TypeDescriptor$, .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction.$TypeDescriptor$), .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$OptionalAnnotation$this;
+    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$OptionalAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$OptionalAnnotation$impl() {
-        return $ceylon$language$OptionalAnnotation$this;
+        return $ceylon$language$OptionalAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -348,26 +348,26 @@ final class ConstrainedToFunction implements .com.redhat.ceylon.compiler.java.ru
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
-@interface ConstrainedToFunctionSeq$annotation {
+@interface ConstrainedToFunctionSeq$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface ConstrainedToFunctionSeq$annotations {
+@interface ConstrainedToFunctionSeq$annotations$ {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq$annotation[] value();
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.FinalAnnotation$annotation
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -375,44 +375,44 @@ final class ConstrainedToFunction implements .com.redhat.ceylon.compiler.java.ru
 final class ConstrainedToFunctionSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, .ceylon.language.meta.declaration.FunctionDeclaration> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    ConstrainedToFunctionSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq$annotation anno) {
+    ConstrainedToFunctionSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq$annotation$ anno) {
         this();
     }
     
     ConstrainedToFunctionSeq() {
-        this.$ceylon$language$SequencedAnnotation$this = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq.$TypeDescriptor, .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq>, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq.$TypeDescriptor), .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq.$TypeDescriptor, this);
+        this.$ceylon$language$SequencedAnnotation$this$ = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq.$TypeDescriptor$, .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq>, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq.$TypeDescriptor$), .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$impl() {
-        return $ceylon$language$SequencedAnnotation$this;
+        return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq>, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq>, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq>, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -423,19 +423,19 @@ final class ConstrainedToFunctionSeq implements .com.redhat.ceylon.compiler.java
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface ConstrainedToValue$annotation {
+@interface ConstrainedToValue$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.FinalAnnotation$annotation
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -443,44 +443,44 @@ final class ConstrainedToFunctionSeq implements .com.redhat.ceylon.compiler.java
 final class ConstrainedToValue implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, .ceylon.language.meta.declaration.ValueDeclaration> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    ConstrainedToValue(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue$annotation anno) {
+    ConstrainedToValue(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue$annotation$ anno) {
         this();
     }
     
     ConstrainedToValue() {
-        this.$ceylon$language$OptionalAnnotation$this = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, .ceylon.language.meta.declaration.ValueDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue.$TypeDescriptor, .ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, .ceylon.language.meta.declaration.ValueDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue.$TypeDescriptor), .ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue.$TypeDescriptor, this);
+        this.$ceylon$language$OptionalAnnotation$this$ = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, .ceylon.language.meta.declaration.ValueDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue.$TypeDescriptor$, .ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, .ceylon.language.meta.declaration.ValueDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue.$TypeDescriptor$), .ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$this;
+    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$impl() {
-        return $ceylon$language$OptionalAnnotation$this;
+        return $ceylon$language$OptionalAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -491,26 +491,26 @@ final class ConstrainedToValue implements .com.redhat.ceylon.compiler.java.runti
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
-@interface ConstrainedToValueSeq$annotation {
+@interface ConstrainedToValueSeq$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface ConstrainedToValueSeq$annotations {
+@interface ConstrainedToValueSeq$annotations$ {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq$annotation[] value();
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.FinalAnnotation$annotation
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -518,44 +518,44 @@ final class ConstrainedToValue implements .com.redhat.ceylon.compiler.java.runti
 final class ConstrainedToValueSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, .ceylon.language.meta.declaration.ValueDeclaration> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    ConstrainedToValueSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq$annotation anno) {
+    ConstrainedToValueSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq$annotation$ anno) {
         this();
     }
     
     ConstrainedToValueSeq() {
-        this.$ceylon$language$SequencedAnnotation$this = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, .ceylon.language.meta.declaration.ValueDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq.$TypeDescriptor, .ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq>, .ceylon.language.meta.declaration.ValueDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq.$TypeDescriptor), .ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq.$TypeDescriptor, this);
+        this.$ceylon$language$SequencedAnnotation$this$ = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, .ceylon.language.meta.declaration.ValueDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq.$TypeDescriptor$, .ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq>, .ceylon.language.meta.declaration.ValueDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq.$TypeDescriptor$), .ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$SequencedAnnotation$impl() {
-        return $ceylon$language$SequencedAnnotation$this;
+        return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq>, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq>, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq>, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -566,19 +566,19 @@ final class ConstrainedToValueSeq implements .com.redhat.ceylon.compiler.java.ru
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface ConstrainedToVariable$annotation {
+@interface ConstrainedToVariable$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.FinalAnnotation$annotation
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -586,44 +586,44 @@ final class ConstrainedToValueSeq implements .com.redhat.ceylon.compiler.java.ru
 final class ConstrainedToVariable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, .ceylon.language.meta.declaration.VariableDeclaration> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    ConstrainedToVariable(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable$annotation anno) {
+    ConstrainedToVariable(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable$annotation$ anno) {
         this();
     }
     
     ConstrainedToVariable() {
-        this.$ceylon$language$OptionalAnnotation$this = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, .ceylon.language.meta.declaration.VariableDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable.$TypeDescriptor, .ceylon.language.meta.declaration.VariableDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, .ceylon.language.meta.declaration.VariableDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable.$TypeDescriptor), .ceylon.language.meta.declaration.VariableDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable.$TypeDescriptor, this);
+        this.$ceylon$language$OptionalAnnotation$this$ = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, .ceylon.language.meta.declaration.VariableDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable.$TypeDescriptor$, .ceylon.language.meta.declaration.VariableDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, .ceylon.language.meta.declaration.VariableDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable.$TypeDescriptor$), .ceylon.language.meta.declaration.VariableDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$OptionalAnnotation$this;
+    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$OptionalAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$OptionalAnnotation$impl() {
-        return $ceylon$language$OptionalAnnotation$this;
+        return $ceylon$language$OptionalAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -634,26 +634,26 @@ final class ConstrainedToVariable implements .com.redhat.ceylon.compiler.java.ru
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
-@interface ConstrainedToVariableSeq$annotation {
+@interface ConstrainedToVariableSeq$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface ConstrainedToVariableSeq$annotations {
+@interface ConstrainedToVariableSeq$annotations$ {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq$annotation[] value();
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.FinalAnnotation$annotation
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -661,44 +661,44 @@ final class ConstrainedToVariable implements .com.redhat.ceylon.compiler.java.ru
 final class ConstrainedToVariableSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq, .ceylon.language.meta.declaration.VariableDeclaration> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    ConstrainedToVariableSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq$annotation anno) {
+    ConstrainedToVariableSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq$annotation$ anno) {
         this();
     }
     
     ConstrainedToVariableSeq() {
-        this.$ceylon$language$SequencedAnnotation$this = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq, .ceylon.language.meta.declaration.VariableDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq.$TypeDescriptor, .ceylon.language.meta.declaration.VariableDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq>, .ceylon.language.meta.declaration.VariableDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq.$TypeDescriptor), .ceylon.language.meta.declaration.VariableDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq.$TypeDescriptor, this);
+        this.$ceylon$language$SequencedAnnotation$this$ = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq, .ceylon.language.meta.declaration.VariableDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq.$TypeDescriptor$, .ceylon.language.meta.declaration.VariableDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq>, .ceylon.language.meta.declaration.VariableDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq.$TypeDescriptor$), .ceylon.language.meta.declaration.VariableDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$SequencedAnnotation$impl() {
-        return $ceylon$language$SequencedAnnotation$this;
+        return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq>, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq>, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq>, ? super .ceylon.language.meta.declaration.VariableDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -709,19 +709,19 @@ final class ConstrainedToVariableSeq implements .com.redhat.ceylon.compiler.java
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface ConstrainedToPackage$annotation {
+@interface ConstrainedToPackage$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.FinalAnnotation$annotation
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -729,44 +729,44 @@ final class ConstrainedToVariableSeq implements .com.redhat.ceylon.compiler.java
 final class ConstrainedToPackage implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, .ceylon.language.meta.declaration.Package> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    ConstrainedToPackage(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage$annotation anno) {
+    ConstrainedToPackage(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage$annotation$ anno) {
         this();
     }
     
     ConstrainedToPackage() {
-        this.$ceylon$language$OptionalAnnotation$this = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, .ceylon.language.meta.declaration.Package>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage.$TypeDescriptor, .ceylon.language.meta.declaration.Package.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, .ceylon.language.meta.declaration.Package>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage.$TypeDescriptor), .ceylon.language.meta.declaration.Package.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage.$TypeDescriptor, this);
+        this.$ceylon$language$OptionalAnnotation$this$ = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, .ceylon.language.meta.declaration.Package>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage.$TypeDescriptor$, .ceylon.language.meta.declaration.Package.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, .ceylon.language.meta.declaration.Package>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage.$TypeDescriptor$), .ceylon.language.meta.declaration.Package.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$OptionalAnnotation$this;
+    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$OptionalAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$OptionalAnnotation$impl() {
-        return $ceylon$language$OptionalAnnotation$this;
+        return $ceylon$language$OptionalAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -777,26 +777,26 @@ final class ConstrainedToPackage implements .com.redhat.ceylon.compiler.java.run
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
-@interface ConstrainedToPackageSeq$annotation {
+@interface ConstrainedToPackageSeq$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface ConstrainedToPackageSeq$annotations {
+@interface ConstrainedToPackageSeq$annotations$ {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq$annotation[] value();
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.FinalAnnotation$annotation
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -804,44 +804,44 @@ final class ConstrainedToPackage implements .com.redhat.ceylon.compiler.java.run
 final class ConstrainedToPackageSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, .ceylon.language.meta.declaration.Package> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    ConstrainedToPackageSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq$annotation anno) {
+    ConstrainedToPackageSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq$annotation$ anno) {
         this();
     }
     
     ConstrainedToPackageSeq() {
-        this.$ceylon$language$SequencedAnnotation$this = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, .ceylon.language.meta.declaration.Package>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq.$TypeDescriptor, .ceylon.language.meta.declaration.Package.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq>, .ceylon.language.meta.declaration.Package>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq.$TypeDescriptor), .ceylon.language.meta.declaration.Package.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq.$TypeDescriptor, this);
+        this.$ceylon$language$SequencedAnnotation$this$ = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, .ceylon.language.meta.declaration.Package>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq.$TypeDescriptor$, .ceylon.language.meta.declaration.Package.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq>, .ceylon.language.meta.declaration.Package>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq.$TypeDescriptor$), .ceylon.language.meta.declaration.Package.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$SequencedAnnotation$impl() {
-        return $ceylon$language$SequencedAnnotation$this;
+        return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq>, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq>, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq>, ? super .ceylon.language.meta.declaration.Package> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -852,19 +852,19 @@ final class ConstrainedToPackageSeq implements .com.redhat.ceylon.compiler.java.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface ConstrainedToModule$annotation {
+@interface ConstrainedToModule$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.FinalAnnotation$annotation
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -872,44 +872,44 @@ final class ConstrainedToPackageSeq implements .com.redhat.ceylon.compiler.java.
 final class ConstrainedToModule implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, .ceylon.language.meta.declaration.Module> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    ConstrainedToModule(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule$annotation anno) {
+    ConstrainedToModule(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule$annotation$ anno) {
         this();
     }
     
     ConstrainedToModule() {
-        this.$ceylon$language$OptionalAnnotation$this = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, .ceylon.language.meta.declaration.Module>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule.$TypeDescriptor, .ceylon.language.meta.declaration.Module.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, .ceylon.language.meta.declaration.Module>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule.$TypeDescriptor), .ceylon.language.meta.declaration.Module.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule.$TypeDescriptor, this);
+        this.$ceylon$language$OptionalAnnotation$this$ = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, .ceylon.language.meta.declaration.Module>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule.$TypeDescriptor$, .ceylon.language.meta.declaration.Module.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, .ceylon.language.meta.declaration.Module>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule.$TypeDescriptor$), .ceylon.language.meta.declaration.Module.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$OptionalAnnotation$this;
+    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$OptionalAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$OptionalAnnotation$impl() {
-        return $ceylon$language$OptionalAnnotation$this;
+        return $ceylon$language$OptionalAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -920,26 +920,26 @@ final class ConstrainedToModule implements .com.redhat.ceylon.compiler.java.runt
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
-@interface ConstrainedToModuleSeq$annotation {
+@interface ConstrainedToModuleSeq$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface ConstrainedToModuleSeq$annotations {
+@interface ConstrainedToModuleSeq$annotations$ {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq$annotation[] value();
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.FinalAnnotation$annotation
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -947,44 +947,44 @@ final class ConstrainedToModule implements .com.redhat.ceylon.compiler.java.runt
 final class ConstrainedToModuleSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, .ceylon.language.meta.declaration.Module> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    ConstrainedToModuleSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq$annotation anno) {
+    ConstrainedToModuleSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq$annotation$ anno) {
         this();
     }
     
     ConstrainedToModuleSeq() {
-        this.$ceylon$language$SequencedAnnotation$this = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, .ceylon.language.meta.declaration.Module>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq.$TypeDescriptor, .ceylon.language.meta.declaration.Module.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq>, .ceylon.language.meta.declaration.Module>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq.$TypeDescriptor), .ceylon.language.meta.declaration.Module.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq.$TypeDescriptor, this);
+        this.$ceylon$language$SequencedAnnotation$this$ = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, .ceylon.language.meta.declaration.Module>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq.$TypeDescriptor$, .ceylon.language.meta.declaration.Module.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq>, .ceylon.language.meta.declaration.Module>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq.$TypeDescriptor$), .ceylon.language.meta.declaration.Module.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$SequencedAnnotation$impl() {
-        return $ceylon$language$SequencedAnnotation$this;
+        return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq>, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq>, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq>, ? super .ceylon.language.meta.declaration.Module> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -995,19 +995,19 @@ final class ConstrainedToModuleSeq implements .com.redhat.ceylon.compiler.java.r
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface ConstrainedToImport$annotation {
+@interface ConstrainedToImport$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.FinalAnnotation$annotation
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -1015,44 +1015,44 @@ final class ConstrainedToModuleSeq implements .com.redhat.ceylon.compiler.java.r
 final class ConstrainedToImport implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, .ceylon.language.meta.declaration.Import> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    ConstrainedToImport(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport$annotation anno) {
+    ConstrainedToImport(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport$annotation$ anno) {
         this();
     }
     
     ConstrainedToImport() {
-        this.$ceylon$language$OptionalAnnotation$this = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, .ceylon.language.meta.declaration.Import>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport.$TypeDescriptor, .ceylon.language.meta.declaration.Import.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, .ceylon.language.meta.declaration.Import>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport.$TypeDescriptor), .ceylon.language.meta.declaration.Import.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport.$TypeDescriptor, this);
+        this.$ceylon$language$OptionalAnnotation$this$ = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, .ceylon.language.meta.declaration.Import>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport.$TypeDescriptor$, .ceylon.language.meta.declaration.Import.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, .ceylon.language.meta.declaration.Import>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport.$TypeDescriptor$), .ceylon.language.meta.declaration.Import.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$OptionalAnnotation$this;
+    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$OptionalAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$OptionalAnnotation$impl() {
-        return $ceylon$language$OptionalAnnotation$this;
+        return $ceylon$language$OptionalAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, ? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -1063,26 +1063,26 @@ final class ConstrainedToImport implements .com.redhat.ceylon.compiler.java.runt
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
-@interface ConstrainedToImportSeq$annotation {
+@interface ConstrainedToImportSeq$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface ConstrainedToImportSeq$annotations {
+@interface ConstrainedToImportSeq$annotations$ {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq$annotation[] value();
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.FinalAnnotation$annotation
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
@@ -1090,44 +1090,44 @@ final class ConstrainedToImport implements .com.redhat.ceylon.compiler.java.runt
 final class ConstrainedToImportSeq implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, .ceylon.language.meta.declaration.Import> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    ConstrainedToImportSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq$annotation anno) {
+    ConstrainedToImportSeq(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq$annotation$ anno) {
         this();
     }
     
     ConstrainedToImportSeq() {
-        this.$ceylon$language$SequencedAnnotation$this = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, .ceylon.language.meta.declaration.Import>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq.$TypeDescriptor, .ceylon.language.meta.declaration.Import.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq>, .ceylon.language.meta.declaration.Import>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq.$TypeDescriptor), .ceylon.language.meta.declaration.Import.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq.$TypeDescriptor, this);
+        this.$ceylon$language$SequencedAnnotation$this$ = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, .ceylon.language.meta.declaration.Import>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq.$TypeDescriptor$, .ceylon.language.meta.declaration.Import.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq>, .ceylon.language.meta.declaration.Import>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq.$TypeDescriptor$), .ceylon.language.meta.declaration.Import.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq>(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$SequencedAnnotation$impl() {
-        return $ceylon$language$SequencedAnnotation$this;
+        return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq>, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq>, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq>, ? super .ceylon.language.meta.declaration.Import> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -1138,9 +1138,9 @@ final class ConstrainedToImportSeq implements .com.redhat.ceylon.compiler.java.r
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq.class);
 }

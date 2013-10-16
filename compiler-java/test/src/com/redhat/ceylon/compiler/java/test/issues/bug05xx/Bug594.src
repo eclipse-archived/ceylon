@@ -5,7 +5,7 @@ final class bug594_ {
     private bug594_() {
     }
     
-    static <T>void bug594(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
+    static <T>void bug594(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
         final .java.lang.Object s = .ceylon.language.String.instance("s");
         final .ceylon.language.String s2 = .ceylon.language.String.instance("s");
         .java.lang.Object s$1;

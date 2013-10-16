@@ -3,18 +3,18 @@ package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
 class Bug597 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super {
     
     Bug597() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$this = new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super$impl $com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super$impl $com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super$impl $com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$this$;
     }
     
     @.java.lang.Override
     public .java.lang.String getFoo() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$this.getFoo();
+        return $com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$this$.getFoo();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -23,17 +23,17 @@ class Bug597 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug597.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug597.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug597.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug597.class);
 }
 public interface Super {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super$impl $com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$impl();
     
     public .java.lang.String getFoo();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super.class);
 }
 public final class Super$impl {
     

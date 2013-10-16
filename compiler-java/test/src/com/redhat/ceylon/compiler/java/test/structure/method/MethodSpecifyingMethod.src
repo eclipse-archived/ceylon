@@ -5,43 +5,43 @@ class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.
     MethodSpecifierMethod() {
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod noParam$priv() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod noParam$priv$() {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod noParam1$priv() {
-        return noParam$priv();
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod noParam1$priv$() {
+        return noParam$priv$();
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod noParam2$priv() {
-        return noParam$priv();
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod noParam2$priv$() {
+        return noParam$priv$();
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneParam$priv(final long i) {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneParam$priv$(final long i) {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneParam1$priv() {
-        return oneParam$priv(1L);
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneParam1$priv$() {
+        return oneParam$priv$(1L);
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneParam2$priv() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneParam2$priv$() {
         return (
             let
             {
                 long arg$1$0 = 1L;
             }
-            returning oneParam$priv(arg$1$0);
+            returning oneParam$priv$(arg$1$0);
         );
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam$priv() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam$priv$() {
         return (
             let
             {
-                long $ceylontmp$i$$2 = oneDefaultedParam$i();
+                long $ceylontmp$$i$$2 = oneDefaultedParam$i();
             }
-            returning oneDefaultedParam$priv$($ceylontmp$i$$2);
+            returning oneDefaultedParam$priv$$($ceylontmp$$i$$2);
         );
     }
     
@@ -49,84 +49,84 @@ class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.
         return 2L;
     }
     
-    private .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam$priv$(final long i) {
+    private .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam$priv$$(final long i) {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam$priv(final long i) {
-        return oneDefaultedParam$priv$(i);
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam$priv$(final long i) {
+        return oneDefaultedParam$priv$$(i);
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam1$priv() {
-        return oneDefaultedParam$priv();
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam1$priv$() {
+        return oneDefaultedParam$priv$();
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam2$priv() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam2$priv$() {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod arg$3$this$ = this;
-                long arg$3$0 = arg$3$this$.oneDefaultedParam$i();
+                .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod arg$3$argthis$ = this;
+                long arg$3$0 = arg$3$argthis$.oneDefaultedParam$i();
             }
-            returning oneDefaultedParam$priv(arg$3$0);
+            returning oneDefaultedParam$priv$(arg$3$0);
         );
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam$priv() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam$priv$() {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$$4 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$i$$4 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning oneSequencedParam$priv$($ceylontmp$i$$4);
+            returning oneSequencedParam$priv$$($ceylontmp$$i$$4);
         );
     }
     
-    private .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+    private .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam$priv$$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
-        return oneSequencedParam$priv$(i);
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+        return oneSequencedParam$priv$$(i);
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam1$priv() {
-        return oneSequencedParam$priv(.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam1$priv$() {
+        return oneSequencedParam$priv$(.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L)}));
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam2$priv() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam2$priv$() {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> arg$5$0 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> arg$5$0 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                         .ceylon.language.Integer.instance(2L),
                         .ceylon.language.Integer.instance(3L)});
             }
-            returning oneSequencedParam$priv(arg$5$0);
+            returning oneSequencedParam$priv$(arg$5$0);
         );
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam3$priv() {
-        return oneSequencedParam$priv(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam3$priv$() {
+        return oneSequencedParam$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
                     private .ceylon.language.Integer i;
-                    private boolean i$exhausted;
+                    private boolean i$exhausted$;
                     
                     private final boolean i() {
-                        final .java.lang.Object $ceylontmpitem$6 = iter$0.next();
-                        i$exhausted = $ceylontmpitem$6 == .ceylon.language.finished_.get_();
-                        if (i$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$6 = $iterator$0.next();
+                        i$exhausted$ = $ceylontmp$item$6 == .ceylon.language.finished_.get_();
+                        if (i$exhausted$) {
                             return false;
                         } else {
-                            i = (.ceylon.language.Integer)$ceylontmpitem$6;
+                            i = (.ceylon.language.Integer)$ceylontmp$item$6;
                             return true;
                         }
                     }
@@ -148,8 +148,8 @@ class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod.class);
 }

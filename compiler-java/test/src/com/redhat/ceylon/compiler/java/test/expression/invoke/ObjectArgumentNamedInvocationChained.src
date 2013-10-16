@@ -6,7 +6,7 @@ class ObjectArgumentNamedInvocationChained implements .com.redhat.ceylon.compile
     ObjectArgumentNamedInvocationChained() {
     }
     
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.expression.invoke::ObjectArgumentNamedInvocationChained")
     public final .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained callFunction(@.com.redhat.ceylon.compiler.java.metadata.Name("o")
@@ -24,11 +24,11 @@ class ObjectArgumentNamedInvocationChained implements .com.redhat.ceylon.compile
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
@@ -37,7 +37,7 @@ public final class objectArgumentNamedInvocationChained_ {
     private objectArgumentNamedInvocationChained_() {
     }
     
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void objectArgumentNamedInvocationChained() {
@@ -63,8 +63,8 @@ public final class objectArgumentNamedInvocationChained_ {
                             @.com.redhat.ceylon.compiler.java.metadata.Ignore
                             private final .java.lang.String string;
                             
-                            @.ceylon.language.SharedAnnotation$annotation
-                            @.ceylon.language.ActualAnnotation$annotation
+                            @.ceylon.language.SharedAnnotation$annotation$
+                            @.ceylon.language.ActualAnnotation$annotation$
                             @.com.redhat.ceylon.compiler.java.metadata.Annotations({
                                     @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
                                     @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
@@ -74,8 +74,8 @@ public final class objectArgumentNamedInvocationChained_ {
                                 return string;
                             }
                             
-                            @.ceylon.language.SharedAnnotation$annotation
-                            @.ceylon.language.ActualAnnotation$annotation
+                            @.ceylon.language.SharedAnnotation$annotation$
+                            @.ceylon.language.ActualAnnotation$annotation$
                             @.com.redhat.ceylon.compiler.java.metadata.Annotations({
                                     @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
                                     @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
@@ -89,8 +89,8 @@ public final class objectArgumentNamedInvocationChained_ {
                             @.com.redhat.ceylon.compiler.java.metadata.Ignore
                             private final long hash;
                             
-                            @.ceylon.language.SharedAnnotation$annotation
-                            @.ceylon.language.ActualAnnotation$annotation
+                            @.ceylon.language.SharedAnnotation$annotation$
+                            @.ceylon.language.ActualAnnotation$annotation$
                             @.com.redhat.ceylon.compiler.java.metadata.Annotations({
                                     @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
                                     @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
@@ -100,15 +100,15 @@ public final class objectArgumentNamedInvocationChained_ {
                                 return (int)(
                                     let
                                     {
-                                        long $ceylontmphash$2 = hash;
+                                        long $ceylontmp$hash$2 = hash;
                                     }
-                                    returning $ceylontmphash$2 ^ $ceylontmphash$2 >>> 32;
+                                    returning $ceylontmp$hash$2 ^ $ceylontmp$hash$2 >>> 32;
                                 );
                             }
                             
                             @.java.lang.Override
                             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class);
                             }
                         }
@@ -131,8 +131,8 @@ public final class objectArgumentNamedInvocationChained_ {
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     private final .java.lang.String string;
                     
-                    @.ceylon.language.SharedAnnotation$annotation
-                    @.ceylon.language.ActualAnnotation$annotation
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.ceylon.language.ActualAnnotation$annotation$
                     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
                             @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
                             @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
@@ -142,8 +142,8 @@ public final class objectArgumentNamedInvocationChained_ {
                         return string;
                     }
                     
-                    @.ceylon.language.SharedAnnotation$annotation
-                    @.ceylon.language.ActualAnnotation$annotation
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.ceylon.language.ActualAnnotation$annotation$
                     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
                             @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
                             @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
@@ -157,8 +157,8 @@ public final class objectArgumentNamedInvocationChained_ {
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     private final long hash;
                     
-                    @.ceylon.language.SharedAnnotation$annotation
-                    @.ceylon.language.ActualAnnotation$annotation
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.ceylon.language.ActualAnnotation$annotation$
                     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
                             @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
                             @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
@@ -168,15 +168,15 @@ public final class objectArgumentNamedInvocationChained_ {
                         return (int)(
                             let
                             {
-                                long $ceylontmphash$3 = hash;
+                                long $ceylontmp$hash$3 = hash;
                             }
-                            returning $ceylontmphash$3 ^ $ceylontmphash$3 >>> 32;
+                            returning $ceylontmp$hash$3 ^ $ceylontmp$hash$3 >>> 32;
                         );
                     }
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class);
                     }
                 }

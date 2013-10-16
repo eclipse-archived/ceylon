@@ -6,39 +6,39 @@ final class bug1206_ {
     }
     
     static void bug1206() {
-        final long s0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()", (short)-1){
+        final long s0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.Integer $call() {
+            public .ceylon.language.Integer $call$() {
                 return .ceylon.language.Integer.instance(2L);
             }
-        }.$call().longValue();
-        final .java.lang.String s1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()", (short)-1){
+        }.$call$().longValue();
+        final .java.lang.String s1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.Integer $call() {
+            public .ceylon.language.Integer $call$() {
                 return .ceylon.language.Integer.instance(2L);
             }
-        }.$call().toString();
+        }.$call$().toString();
         final long s2 = (
             let
             {
-                .ceylon.language.Callable<? extends .ceylon.language.Integer> $ceylontmp0 = 1L == 2L ? new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()", (short)-1){
+                .ceylon.language.Callable<? extends .ceylon.language.Integer> $ceylontmp$0 = 1L == 2L ? new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.Integer $call() {
+                    public .ceylon.language.Integer $call$() {
                         return .ceylon.language.Integer.instance(3L);
                     }
                 } : null;
             }
-            returning $ceylontmp0 != null ? $ceylontmp0 : new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()", (short)-1){
+            returning $ceylontmp$0 != null ? $ceylontmp$0 : new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
                 
                 @.java.lang.Override
-                public .ceylon.language.Integer $call() {
+                public .ceylon.language.Integer $call$() {
                     return .ceylon.language.Integer.instance(4L);
                 }
             };
-        ).$call().longValue();
+        ).$call$().longValue();
         .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1206_.bug1206();
     }
     

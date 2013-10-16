@@ -5,7 +5,7 @@ class CallsDefaultAccessMethod implements .com.redhat.ceylon.compiler.java.runti
     CallsDefaultAccessMethod() {
     }
     
-    private final void m$priv(final .com.redhat.ceylon.compiler.java.test.interop.access.JavaAccessModifiers j) {
+    private final void m$priv$(final .com.redhat.ceylon.compiler.java.test.interop.access.JavaAccessModifiers j) {
         j.defaultAccessMethod();
     }
     
@@ -15,8 +15,8 @@ class CallsDefaultAccessMethod implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.interop.access.CallsDefaultAccessMethod.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.access.CallsDefaultAccessMethod.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.access.CallsDefaultAccessMethod.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.access.CallsDefaultAccessMethod.class);
 }

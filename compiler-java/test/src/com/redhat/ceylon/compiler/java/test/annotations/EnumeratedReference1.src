@@ -3,20 +3,20 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
-@interface EnumeratedReference$annotation {
+@interface EnumeratedReference$annotation$ {
     
     @.com.redhat.ceylon.compiler.java.metadata.EnumerationReference
     public abstract .java.lang.Class<? extends .ceylon.language.Comparison> comparison();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface EnumeratedReference$annotations {
+@interface EnumeratedReference$annotations$ {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference$annotation[] value();
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.FinalAnnotation$annotation
-@.ceylon.language.AnnotationAnnotation$annotation
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
@@ -24,7 +24,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 final class EnumeratedReference implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    EnumeratedReference(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference$annotation anno) {
+    EnumeratedReference(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference$annotation$ anno) {
         this(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.parseEnumerationReference(anno.comparison()));
     }
     
@@ -32,57 +32,57 @@ final class EnumeratedReference implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Comparison")
     final .ceylon.language.Comparison comparison) {
         this.comparison = comparison;
-        this.$ceylon$language$SequencedAnnotation$this = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference.$TypeDescriptor, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference.$TypeDescriptor), .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference.$TypeDescriptor, this);
+        this.$ceylon$language$SequencedAnnotation$this$ = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference.$TypeDescriptor$, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference.$TypeDescriptor$), .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .ceylon.language.Comparison comparison;
     
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Comparison")
     public final .ceylon.language.Comparison getComparison() {
         return comparison;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$impl() {
-        return $ceylon$language$SequencedAnnotation$this;
+        return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
@@ -94,7 +94,7 @@ final class enumeratedReference_ {
     private enumeratedReference_() {
     }
     
-    @.ceylon.language.AnnotationAnnotation$annotation
+    @.ceylon.language.AnnotationAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::EnumeratedReference")
     static .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference enumeratedReference(@.com.redhat.ceylon.compiler.java.metadata.Name("comparison")
@@ -106,20 +106,20 @@ final class enumeratedReference_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
-@interface EnumeratedReferenceVariadic$annotation {
+@interface EnumeratedReferenceVariadic$annotation$ {
     
     @.com.redhat.ceylon.compiler.java.metadata.EnumerationReference
     public abstract .java.lang.Class<? extends .ceylon.language.Comparison>[] comparison();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface EnumeratedReferenceVariadic$annotations {
+@interface EnumeratedReferenceVariadic$annotations$ {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic$annotation[] value();
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.FinalAnnotation$annotation
-@.ceylon.language.AnnotationAnnotation$annotation
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
@@ -131,16 +131,16 @@ final class EnumeratedReferenceVariadic implements .com.redhat.ceylon.compiler.j
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Comparison> $ceylontmp$comparison$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                this($ceylontmp$comparison$$0);
+                .ceylon.language.Sequential<? extends .ceylon.language.Comparison> $ceylontmp$$comparison$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this($ceylontmp$$comparison$$0);
             }
             returning null;
         );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    EnumeratedReferenceVariadic(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic$annotation anno) {
-        this(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.<.ceylon.language.Comparison>parseEnumerationReferences(.ceylon.language.Comparison.$TypeDescriptor, anno.comparison()));
+    EnumeratedReferenceVariadic(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic$annotation$ anno) {
+        this(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.<.ceylon.language.Comparison>parseEnumerationReferences(.ceylon.language.Comparison.$TypeDescriptor$, anno.comparison()));
     }
     
     EnumeratedReferenceVariadic(@.com.redhat.ceylon.compiler.java.metadata.Name("comparison")
@@ -148,57 +148,57 @@ final class EnumeratedReferenceVariadic implements .com.redhat.ceylon.compiler.j
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Comparison>")
     final .ceylon.language.Sequential<? extends .ceylon.language.Comparison> comparison) {
         this.comparison = comparison;
-        this.$ceylon$language$SequencedAnnotation$this = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic.$TypeDescriptor, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic.$TypeDescriptor), .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic.$TypeDescriptor, this);
+        this.$ceylon$language$SequencedAnnotation$this$ = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic.$TypeDescriptor$, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic.$TypeDescriptor$), .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .ceylon.language.Sequential<? extends .ceylon.language.Comparison> comparison;
     
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Comparison>")
     public final .ceylon.language.Sequential<? extends .ceylon.language.Comparison> getComparison() {
         return comparison;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$impl() {
-        return $ceylon$language$SequencedAnnotation$this;
+        return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
@@ -215,13 +215,13 @@ final class enumeratedReferenceVariadic_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Comparison> $ceylontmp$comparison$$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.Comparison> $ceylontmp$$comparison$$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning enumeratedReferenceVariadic($ceylontmp$comparison$$1);
+            returning enumeratedReferenceVariadic($ceylontmp$$comparison$$1);
         );
     }
     
-    @.ceylon.language.AnnotationAnnotation$annotation
+    @.ceylon.language.AnnotationAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::EnumeratedReferenceVariadic")
     static .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic enumeratedReferenceVariadic(@.com.redhat.ceylon.compiler.java.metadata.Name("comparison")
@@ -234,20 +234,20 @@ final class enumeratedReferenceVariadic_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
-@interface EnumeratedReferenceDefaulted$annotation {
+@interface EnumeratedReferenceDefaulted$annotation$ {
     
     @.com.redhat.ceylon.compiler.java.metadata.EnumerationReference
     public abstract .java.lang.Class<? extends .ceylon.language.Comparison> comparison() default .ceylon.language.larger_.class;
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface EnumeratedReferenceDefaulted$annotations {
+@interface EnumeratedReferenceDefaulted$annotations$ {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted$annotation[] value();
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.FinalAnnotation$annotation
-@.ceylon.language.AnnotationAnnotation$annotation
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final"),
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
@@ -259,15 +259,15 @@ final class EnumeratedReferenceDefaulted implements .com.redhat.ceylon.compiler.
         (
             let
             {
-                .ceylon.language.Comparison $ceylontmp$comparison$$2 = .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted.$default$comparison();
-                this($ceylontmp$comparison$$2);
+                .ceylon.language.Comparison $ceylontmp$$comparison$$2 = .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted.$default$comparison();
+                this($ceylontmp$$comparison$$2);
             }
             returning null;
         );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    EnumeratedReferenceDefaulted(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted$annotation anno) {
+    EnumeratedReferenceDefaulted(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted$annotation$ anno) {
         this(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.parseEnumerationReference(anno.comparison()));
     }
     
@@ -276,14 +276,14 @@ final class EnumeratedReferenceDefaulted implements .com.redhat.ceylon.compiler.
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Comparison")
     final .ceylon.language.Comparison comparison) {
         this.comparison = comparison;
-        this.$ceylon$language$SequencedAnnotation$this = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted.$TypeDescriptor, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted.$TypeDescriptor), .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted.$TypeDescriptor, this);
+        this.$ceylon$language$SequencedAnnotation$this$ = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted.$TypeDescriptor$, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted.$TypeDescriptor$), .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .ceylon.language.Comparison comparison;
     
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Comparison")
     public final .ceylon.language.Comparison getComparison() {
@@ -295,34 +295,34 @@ final class EnumeratedReferenceDefaulted implements .com.redhat.ceylon.compiler.
         return .ceylon.language.larger_.get_();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$impl() {
-        return $ceylon$language$SequencedAnnotation$this;
+        return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -333,11 +333,11 @@ final class EnumeratedReferenceDefaulted implements .com.redhat.ceylon.compiler.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
@@ -354,9 +354,9 @@ final class enumeratedReferenceDefaulted_ {
         return (
             let
             {
-                .ceylon.language.Comparison $ceylontmp$comparison$$3 = .com.redhat.ceylon.compiler.java.test.annotations.enumeratedReferenceDefaulted_.enumeratedReferenceDefaulted$comparison();
+                .ceylon.language.Comparison $ceylontmp$$comparison$$3 = .com.redhat.ceylon.compiler.java.test.annotations.enumeratedReferenceDefaulted_.enumeratedReferenceDefaulted$comparison();
             }
-            returning enumeratedReferenceDefaulted($ceylontmp$comparison$$3);
+            returning enumeratedReferenceDefaulted($ceylontmp$$comparison$$3);
         );
     }
     
@@ -366,7 +366,7 @@ final class enumeratedReferenceDefaulted_ {
         return .ceylon.language.smaller_.get_();
     }
     
-    @.ceylon.language.AnnotationAnnotation$annotation
+    @.ceylon.language.AnnotationAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::EnumeratedReferenceDefaulted")
     static .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted enumeratedReferenceDefaulted(@.com.redhat.ceylon.compiler.java.metadata.Name("comparison")

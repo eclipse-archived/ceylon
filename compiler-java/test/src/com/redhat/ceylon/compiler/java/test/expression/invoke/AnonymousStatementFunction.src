@@ -26,10 +26,10 @@ final class anonymousStatementFunction_ {
             }
         }
         final ggg_ ggg = new ggg_();
-        fff.fff(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(Object)", (short)-1){
+        fff.fff(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Object)", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
                 final .java.lang.Object o = $param$0;
                 .ceylon.language.print_.print(o);
                 return null;
@@ -38,10 +38,10 @@ final class anonymousStatementFunction_ {
         (
             let
             {
-                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(Object)", (short)-1){
+                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Object)", (short)-1){
                     
                     @.java.lang.Override
-                    public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
                         final .java.lang.Object o = $param$0;
                         .ceylon.language.print_.print(o);
                         return null;
@@ -51,10 +51,10 @@ final class anonymousStatementFunction_ {
             }
             returning null;
         );
-        ggg.ggg(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Float(Float)", (short)-1){
+        ggg.ggg(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Float(Float)", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.Float $call(final .java.lang.Object $param$0) {
+            public .ceylon.language.Float $call$(final .java.lang.Object $param$0) {
                 final double x = ((.ceylon.language.Float)$param$0).doubleValue();
                 return .ceylon.language.Float.instance(x * x);
             }
@@ -62,10 +62,10 @@ final class anonymousStatementFunction_ {
         (
             let
             {
-                .ceylon.language.Callable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Float(Float)", (short)-1){
+                .ceylon.language.Callable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Float(Float)", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.Float $call(final .java.lang.Object $param$0) {
+                    public .ceylon.language.Float $call$(final .java.lang.Object $param$0) {
                         final double x = ((.ceylon.language.Float)$param$0).doubleValue();
                         return .ceylon.language.Float.instance(x * x);
                     }

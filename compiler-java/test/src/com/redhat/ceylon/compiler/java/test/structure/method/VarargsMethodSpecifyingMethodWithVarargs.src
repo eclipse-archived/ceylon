@@ -5,52 +5,52 @@ class VarargsMethodSpecifyingMethodWithVarargs implements .com.redhat.ceylon.com
     VarargsMethodSpecifyingMethodWithVarargs() {
     }
     
-    private final void foo$priv() {
+    private final void foo$priv$() {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                foo$priv$($ceylontmp$seq$$0);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$seq$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                foo$priv$$($ceylontmp$$seq$$0);
             }
             returning null;
         );
     }
     
-    private void foo$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    private void foo$priv$$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
     }
     
-    private final void foo$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    private final void foo$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
         (
             let
             {
-                foo$priv$(seq);
+                foo$priv$$(seq);
             }
             returning null;
         );
     }
     
-    private final .java.lang.Object bar$priv() {
+    private final .java.lang.Object bar$priv$() {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ints$$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$ints$$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning bar$priv$($ceylontmp$ints$$1);
+            returning bar$priv$$($ceylontmp$$ints$$1);
         );
     }
     
-    private .java.lang.Object bar$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
+    private .java.lang.Object bar$priv$$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
         return (
             let
             {
-                foo$priv(ints);
+                foo$priv$(ints);
             }
             returning null;
         );
     }
     
-    private final .java.lang.Object bar$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
-        return bar$priv$(ints);
+    private final .java.lang.Object bar$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
+        return bar$priv$$(ints);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -59,8 +59,8 @@ class VarargsMethodSpecifyingMethodWithVarargs implements .com.redhat.ceylon.com
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.VarargsMethodSpecifyingMethodWithVarargs.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.VarargsMethodSpecifyingMethodWithVarargs.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.VarargsMethodSpecifyingMethodWithVarargs.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.VarargsMethodSpecifyingMethodWithVarargs.class);
 }

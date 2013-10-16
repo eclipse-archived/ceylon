@@ -52,20 +52,20 @@ public class NamedArgumentInvocationLocal implements .com.redhat.ceylon.compiler
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationLocal.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationLocal.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationLocal.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationLocal.class);
 }
 class X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     X() {
     }
     
-    private final void foo$priv(final .java.lang.String s, final boolean b) {
+    private final void foo$priv$(final .java.lang.String s, final boolean b) {
     }
     
-    private final void bar$priv() {
+    private final void bar$priv$() {
         
         final class foo_ {
             
@@ -91,7 +91,7 @@ class X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.X arg$3$callable$ = this;
                 boolean arg$3$1 = true;
                 .java.lang.String arg$3$0 = "a";
-                arg$3$callable$.foo$priv(arg$3$0, arg$3$1);
+                arg$3$callable$.foo$priv$(arg$3$0, arg$3$1);
             }
             returning null;
         );
@@ -103,8 +103,8 @@ class X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.invoke.X.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.X.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.X.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.X.class);
 }

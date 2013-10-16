@@ -4,10 +4,10 @@ interface SubclassedTwiceTop {
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceTop$impl();
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop$impl.Member Member$new();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop$impl.Member Member$new$();
     
     public void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop qual);
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop.class);
 }
 final class SubclassedTwiceTop$impl {
     
@@ -22,26 +22,26 @@ final class SubclassedTwiceTop$impl {
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop$impl.Member.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop$impl.Member.class));
         }
     }
     
     public void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop qual) {
-        $this.Member$new();
-        $this.Member$new();
-        $this.Member$new();
-        $this.Member$new();
-        qual.Member$new();
-        qual.Member$new();
+        $this.Member$new$();
+        $this.Member$new$();
+        $this.Member$new$();
+        $this.Member$new$();
+        qual.Member$new$();
+        qual.Member$new$();
     }
 }
 interface SubclassedTwiceFirst extends .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop {
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceFirst$impl();
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl.Member Member$new();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst.class);
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl.Member Member$new$();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst.class);
 }
 final class SubclassedTwiceFirst$impl {
     
@@ -50,7 +50,7 @@ final class SubclassedTwiceFirst$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst $this;
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl.Member Member$new() {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl.Member Member$new$() {
         return new Member();
     }
     
@@ -61,58 +61,58 @@ final class SubclassedTwiceFirst$impl {
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl.Member.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl.Member.class));
         }
     }
 }
 class SubclassedTwiceSecond implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst {
     
     SubclassedTwiceSecond() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceFirst$this = new .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceTop$this = new .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceFirst$this$ = new .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceTop$this$ = new .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceFirst$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceFirst$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceFirst$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceFirst$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceFirst$this$;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceTop$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceTop$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceTop$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceTop$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceTop$this$;
     }
     
     @.java.lang.Override
     public final void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop qual) {
-        $com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceTop$this.m1(qual);
+        $com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceTop$this$.m1(qual);
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceSecond.Member Member$new() {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceSecond.Member Member$new$() {
         return new Member();
     }
     
     public class Member extends .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl.Member {
         
         protected Member() {
-            $com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceFirst$this.super();
+            $com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceFirst$this$.super();
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceSecond.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceSecond.Member.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceSecond.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceSecond.Member.class));
         }
     }
     
     public final void m2(final .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceSecond qual) {
-        Member$new();
-        Member$new();
-        this.Member$new();
-        this.Member$new();
-        qual.Member$new();
-        qual.Member$new();
+        Member$new$();
+        Member$new$();
+        this.Member$new$();
+        this.Member$new$();
+        qual.Member$new$();
+        qual.Member$new$();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -121,8 +121,8 @@ class SubclassedTwiceSecond implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceSecond.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceSecond.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceSecond.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceSecond.class);
 }

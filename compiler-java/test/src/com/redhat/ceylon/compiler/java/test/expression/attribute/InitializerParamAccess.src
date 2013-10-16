@@ -7,17 +7,17 @@ class InitializerParamAccess implements .com.redhat.ceylon.compiler.java.runtime
     }
     private final boolean b;
     
-    private final boolean getB$priv() {
+    private final boolean getB$priv$() {
         return b;
     }
     
-    private final boolean m$priv() {
-        return getB$priv();
+    private final boolean m$priv$() {
+        return getB$priv$();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccess.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccess.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccess.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccess.class);
 }

@@ -5,7 +5,7 @@ interface Bug329_Something {
     public .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$impl();
     
     public abstract .java.lang.Object getSomething();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something.class);
 }
 final class Bug329_Something$impl {
     
@@ -18,7 +18,7 @@ final class bug329_se_ implements .com.redhat.ceylon.compiler.java.runtime.model
     
     private bug329_se_() {
         this.something = .ceylon.language.String.instance("somethingElse");
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl(this);
     }
     private final .ceylon.language.String something;
     
@@ -26,11 +26,11 @@ final class bug329_se_ implements .com.redhat.ceylon.compiler.java.runtime.model
     public final .ceylon.language.String getSomething() {
         return something;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this$;
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_[] value;
     static {
@@ -46,25 +46,25 @@ final class bug329_se_ implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_.class);
     }
 }
 final class bug329_se2_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something {
     
     private bug329_se2_() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl(this);
     }
     
     @.java.lang.Override
     public final .ceylon.language.String getSomething() {
         return .ceylon.language.String.instance("somethingElse");
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this$;
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_[] value;
     static {
@@ -80,7 +80,7 @@ final class bug329_se2_ implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_.class);
     }
 }

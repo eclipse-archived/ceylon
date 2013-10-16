@@ -7,20 +7,20 @@ public class Bug227 implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     private long _num;
     
-    private final long get_num$priv() {
+    private final long get_num$priv$() {
         return _num;
     }
     
-    private final void set_num$priv(final long _num) {
+    private final void set_num$priv$(final long _num) {
         this._num = _num;
     }
     
     public final long getNum() {
-        return this.get_num$priv();
+        return this.get_num$priv$();
     }
     
     public final void setNum(final long num) {
-        set_num$priv(num);
+        set_num$priv$(num);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -29,8 +29,8 @@ public class Bug227 implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug227.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug227.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug227.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug227.class);
 }

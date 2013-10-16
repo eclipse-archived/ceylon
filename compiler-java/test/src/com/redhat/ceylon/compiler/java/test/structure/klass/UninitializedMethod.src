@@ -7,12 +7,12 @@ public abstract class UninitializedMethod implements .com.redhat.ceylon.compiler
         final class t_ {
             
             private t_() {
-                this.t$priv = null;
+                this.t$priv$ = null;
             }
-            private .ceylon.language.Callable<? extends .ceylon.language.Integer> t$priv;
+            private .ceylon.language.Callable<? extends .ceylon.language.Integer> t$priv$;
             
-            private final long t$priv() {
-                if (t$priv == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return t$priv.$call().longValue();
+            private final long t$priv$() {
+                if (t$priv$ == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return t$priv$.$call$().longValue();
             }
         }
         final t_ t = new t_();
@@ -20,8 +20,8 @@ public abstract class UninitializedMethod implements .com.redhat.ceylon.compiler
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.UninitializedMethod.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.UninitializedMethod.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.UninitializedMethod.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.UninitializedMethod.class);
 }

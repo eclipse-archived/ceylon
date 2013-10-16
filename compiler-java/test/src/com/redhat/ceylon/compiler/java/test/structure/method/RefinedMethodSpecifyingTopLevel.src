@@ -24,10 +24,10 @@ class RefinedMethodSpecifyingTopLevel implements .com.redhat.ceylon.compiler.jav
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevel.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevel.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevel.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevel.class);
 }
 class RefinedMethodSpecifyingTopLevelSub extends .com.redhat.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevel {
     
@@ -46,8 +46,8 @@ class RefinedMethodSpecifyingTopLevelSub extends .com.redhat.ceylon.compiler.jav
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevelSub.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevelSub.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevelSub.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevelSub.class);
 }

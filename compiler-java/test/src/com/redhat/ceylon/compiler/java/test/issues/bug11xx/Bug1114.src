@@ -4,15 +4,15 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     Bug1114(final boolean test) {
         this.test = test;
-        .com.redhat.ceylon.compiler.java.language.GetterLong j$getter_;
-        if (getTest$priv()) {
-            j$getter_ = (
+        .com.redhat.ceylon.compiler.java.language.GetterLong j$getter$_;
+        if (getTest$priv$()) {
+            j$getter$_ = (
                 let
                 {
                     
-                    final class j$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+                    final class j$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
                         
-                        private j$getter_() {
+                        private j$getter$_() {
                         }
                         
                         public long get_() {
@@ -20,16 +20,16 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                         }
                     }
                 }
-                returning new j$getter_();
+                returning new j$getter$_();
             );
         } else {
-            j$getter_ = (
+            j$getter$_ = (
                 let
                 {
                     
-                    final class j$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+                    final class j$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
                         
-                        private j$getter_() {
+                        private j$getter$_() {
                         }
                         
                         public long get_() {
@@ -37,10 +37,10 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                         }
                     }
                 }
-                returning new j$getter_();
+                returning new j$getter$_();
             );
         }
-        if (getTest$priv()) {
+        if (getTest$priv$()) {
             g_ = (
                 let
                 {
@@ -78,26 +78,26 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     private final boolean test;
     
-    private final boolean getTest$priv() {
+    private final boolean getTest$priv$() {
         return test;
     }
     private final .com.redhat.ceylon.compiler.java.language.GetterDouble g_;
     
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     public final double getG() {
         return g_.get_();
     }
     
-    private final void foo$priv() {
-        .com.redhat.ceylon.compiler.java.language.GetterLong i$getter_;
-        if (getTest$priv()) {
-            i$getter_ = (
+    private final void foo$priv$() {
+        .com.redhat.ceylon.compiler.java.language.GetterLong i$getter$_;
+        if (getTest$priv$()) {
+            i$getter$_ = (
                 let
                 {
                     
-                    final class i$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+                    final class i$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
                         
-                        private i$getter_() {
+                        private i$getter$_() {
                         }
                         
                         public long get_() {
@@ -105,16 +105,16 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                         }
                     }
                 }
-                returning new i$getter_();
+                returning new i$getter$_();
             );
         } else {
-            i$getter_ = (
+            i$getter$_ = (
                 let
                 {
                     
-                    final class i$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+                    final class i$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
                         
-                        private i$getter_() {
+                        private i$getter$_() {
                         }
                         
                         public long get_() {
@@ -122,17 +122,17 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                         }
                     }
                 }
-                returning new i$getter_();
+                returning new i$getter$_();
             );
         }
-        .com.redhat.ceylon.compiler.java.language.GetterDouble f$getter_;
-        f$getter_ = (
+        .com.redhat.ceylon.compiler.java.language.GetterDouble f$getter$_;
+        f$getter$_ = (
             let
             {
                 
-                final class f$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterDouble {
+                final class f$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterDouble {
                     
-                    private f$getter_() {
+                    private f$getter$_() {
                     }
                     
                     public double get_() {
@@ -140,16 +140,16 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                     }
                 }
             }
-            returning new f$getter_();
+            returning new f$getter$_();
         );
-        .com.redhat.ceylon.compiler.java.language.GetterInt c$getter_;
-        c$getter_ = (
+        .com.redhat.ceylon.compiler.java.language.GetterInt c$getter$_;
+        c$getter$_ = (
             let
             {
                 
-                final class c$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterInt {
+                final class c$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterInt {
                     
-                    private c$getter_() {
+                    private c$getter$_() {
                     }
                     
                     public int get_() {
@@ -157,16 +157,16 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                     }
                 }
             }
-            returning new c$getter_();
+            returning new c$getter$_();
         );
-        .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> s$getter_;
-        s$getter_ = (
+        .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> s$getter$_;
+        s$getter$_ = (
             let
             {
                 
-                final class s$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+                final class s$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
                     
-                    private s$getter_() {
+                    private s$getter$_() {
                     }
                     
                     public .java.lang.String get_() {
@@ -174,30 +174,30 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                     }
                 }
             }
-            returning new s$getter_();
+            returning new s$getter$_();
         );
-        .com.redhat.ceylon.compiler.java.language.Getter<.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114> bug$getter_;
-        bug$getter_ = (
+        .com.redhat.ceylon.compiler.java.language.Getter<.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114> bug$getter$_;
+        bug$getter$_ = (
             let
             {
                 
-                final class bug$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114> {
+                final class bug$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114> {
                     
-                    private bug$getter_() {
+                    private bug$getter$_() {
                     }
                     
                     public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114 get_() {
-                        return new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114(getTest$priv());
+                        return new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114(getTest$priv$());
                     }
                 }
             }
-            returning new bug$getter_();
+            returning new bug$getter$_();
         );
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114.class);
 }

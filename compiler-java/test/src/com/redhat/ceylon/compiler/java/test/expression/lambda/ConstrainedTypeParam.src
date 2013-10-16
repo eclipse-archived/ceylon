@@ -2,19 +2,19 @@ package com.redhat.ceylon.compiler.java.test.expression.lambda;
 
 class ConstrainedTypeParam<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    ConstrainedTypeParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        this.$reifiedT = $reifiedT;
+    ConstrainedTypeParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
-    private final void method$priv(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+    private final void method$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
     }
     
-    private final void test$priv() {
-        method$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reifiedT, $reifiedT, .ceylon.language.Empty.$TypeDescriptor), "Anything(T)", (short)-1){
+    private final void test$priv$() {
+        method$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$T, $reified$T, .ceylon.language.Empty.$TypeDescriptor$), "Anything(T)", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
                 final T t = (T)$param$0;
                 return (
                     let
@@ -33,7 +33,7 @@ class ConstrainedTypeParam<T> implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.lambda.ConstrainedTypeParam.class, $reifiedT);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.lambda.ConstrainedTypeParam.class, $reified$T);
     }
 }

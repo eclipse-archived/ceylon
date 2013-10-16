@@ -5,13 +5,13 @@ class DefaultedAndSequenced implements .com.redhat.ceylon.compiler.java.runtime.
     DefaultedAndSequenced() {
     }
     
-    private final void m$priv(final .java.lang.String s) {
+    private final void m$priv$(final .java.lang.String s) {
         (
             let
             {
-                long $ceylontmp$i$$0 = m$i(s);
-                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp$b$$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                m$priv$(s, $ceylontmp$i$$0, $ceylontmp$b$$1);
+                long $ceylontmp$$i$$0 = m$i(s);
+                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp$$b$$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                m$priv$$(s, $ceylontmp$$i$$0, $ceylontmp$$b$$1);
             }
             returning null;
         );
@@ -21,73 +21,73 @@ class DefaultedAndSequenced implements .com.redhat.ceylon.compiler.java.runtime.
         return 1L;
     }
     
-    private final void m$priv(final .java.lang.String s, final long i) {
+    private final void m$priv$(final .java.lang.String s, final long i) {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp$b$$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                m$priv$(s, i, $ceylontmp$b$$2);
+                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp$$b$$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                m$priv$$(s, i, $ceylontmp$$b$$2);
             }
             returning null;
         );
     }
     
-    private void m$priv$(final .java.lang.String s, final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> b) {
+    private void m$priv$$(final .java.lang.String s, final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> b) {
     }
     
-    private final void m$priv(final .java.lang.String s, final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> b) {
+    private final void m$priv$(final .java.lang.String s, final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> b) {
         (
             let
             {
-                m$priv$(s, i, b);
+                m$priv$$(s, i, b);
             }
             returning null;
         );
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced self$priv() {
+    private final .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced self$priv$() {
         return this;
     }
     
-    private final void positional$priv() {
-        m$priv("");
-        m$priv("", 2L);
-        m$priv("", 2L, .ceylon.language.ArraySequence.<.ceylon.language.Boolean>instance(.ceylon.language.Boolean.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Boolean.instance(false)}));
-        final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> x = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>>(.ceylon.language.Boolean.$TypeDescriptor, new .java.lang.Object[]{
+    private final void positional$priv$() {
+        m$priv$("");
+        m$priv$("", 2L);
+        m$priv$("", 2L, .ceylon.language.ArraySequence.<.ceylon.language.Boolean>instance(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Boolean.instance(false)}));
+        final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> x = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>>(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Boolean.instance(false),
                 .ceylon.language.Boolean.instance(false)});
-        m$priv("", 2L, x);
+        m$priv$("", 2L, x);
     }
     
-    private final void qmePositional$priv() {
-        self$priv().m$priv("");
-        self$priv().m$priv("", 2L);
-        self$priv().m$priv("", 2L, .ceylon.language.ArraySequence.<.ceylon.language.Boolean>instance(.ceylon.language.Boolean.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Boolean.instance(false)}));
-        final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> x = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>>(.ceylon.language.Boolean.$TypeDescriptor, new .java.lang.Object[]{
+    private final void qmePositional$priv$() {
+        self$priv$().m$priv$("");
+        self$priv$().m$priv$("", 2L);
+        self$priv$().m$priv$("", 2L, .ceylon.language.ArraySequence.<.ceylon.language.Boolean>instance(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Boolean.instance(false)}));
+        final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> x = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>>(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Boolean.instance(false),
                 .ceylon.language.Boolean.instance(false)});
-        self$priv().m$priv("", 2L, x);
+        self$priv$().m$priv$("", 2L, x);
     }
     
-    private final void qtePositional$priv() {
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced().m$priv("");
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced().m$priv("", 2L);
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced().m$priv("", 2L, .ceylon.language.ArraySequence.<.ceylon.language.Boolean>instance(.ceylon.language.Boolean.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Boolean.instance(false)}));
-        final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> x = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>>(.ceylon.language.Boolean.$TypeDescriptor, new .java.lang.Object[]{
+    private final void qtePositional$priv$() {
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced().m$priv$("");
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced().m$priv$("", 2L);
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced().m$priv$("", 2L, .ceylon.language.ArraySequence.<.ceylon.language.Boolean>instance(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Boolean.instance(false)}));
+        final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> x = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>>(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Boolean.instance(false),
                 .ceylon.language.Boolean.instance(false)});
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced().m$priv("", 2L, x);
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced().m$priv$("", 2L, x);
     }
     
-    private final void namedArgs$priv() {
+    private final void namedArgs$priv$() {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced arg$3$this$ = this;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced arg$3$argthis$ = this;
                 .java.lang.String arg$3$0 = "";
-                long arg$3$1 = arg$3$this$.m$i(arg$3$0);
+                long arg$3$1 = arg$3$argthis$.m$i(arg$3$0);
                 .ceylon.language.Sequential arg$3$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                m$priv(arg$3$0, arg$3$1, arg$3$2);
+                m$priv$(arg$3$0, arg$3$1, arg$3$2);
             }
             returning null;
         );
@@ -97,7 +97,7 @@ class DefaultedAndSequenced implements .com.redhat.ceylon.compiler.java.runtime.
                 .java.lang.String arg$4$0 = "";
                 long arg$4$1 = 2L;
                 .ceylon.language.Sequential arg$4$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                m$priv(arg$4$0, arg$4$1, arg$4$2);
+                m$priv$(arg$4$0, arg$4$1, arg$4$2);
             }
             returning null;
         );
@@ -106,8 +106,8 @@ class DefaultedAndSequenced implements .com.redhat.ceylon.compiler.java.runtime.
             {
                 .java.lang.String arg$5$0 = "";
                 long arg$5$1 = 2L;
-                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> arg$5$2 = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>(.ceylon.language.Boolean.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Boolean.instance(false)});
-                m$priv(arg$5$0, arg$5$1, arg$5$2);
+                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> arg$5$2 = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Boolean.instance(false)});
+                m$priv$(arg$5$0, arg$5$1, arg$5$2);
             }
             returning null;
         );
@@ -116,75 +116,75 @@ class DefaultedAndSequenced implements .com.redhat.ceylon.compiler.java.runtime.
             {
                 .java.lang.String arg$6$0 = "";
                 long arg$6$1 = 2L;
-                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> arg$6$2 = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>>(.ceylon.language.Boolean.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> arg$6$2 = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>>(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{
                         .ceylon.language.Boolean.instance(true),
                         .ceylon.language.Boolean.instance(true)});
-                m$priv(arg$6$0, arg$6$1, arg$6$2);
+                m$priv$(arg$6$0, arg$6$1, arg$6$2);
             }
             returning null;
         );
     }
     
-    private final void qmeNamedArgs$priv() {
+    private final void qmeNamedArgs$priv$() {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced arg$7$callable$ = self$priv();
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced arg$7$this$ = arg$7$callable$;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced arg$7$callable$ = self$priv$();
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced arg$7$argthis$ = arg$7$callable$;
                 .java.lang.String arg$7$0 = "";
-                long arg$7$1 = arg$7$this$.m$i(arg$7$0);
+                long arg$7$1 = arg$7$argthis$.m$i(arg$7$0);
                 .ceylon.language.Sequential arg$7$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                arg$7$callable$.m$priv(arg$7$0, arg$7$1, arg$7$2);
+                arg$7$callable$.m$priv$(arg$7$0, arg$7$1, arg$7$2);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced arg$8$callable$ = self$priv();
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced arg$8$callable$ = self$priv$();
                 .java.lang.String arg$8$0 = "";
                 long arg$8$1 = 2L;
                 .ceylon.language.Sequential arg$8$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                arg$8$callable$.m$priv(arg$8$0, arg$8$1, arg$8$2);
+                arg$8$callable$.m$priv$(arg$8$0, arg$8$1, arg$8$2);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced arg$9$callable$ = self$priv();
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced arg$9$callable$ = self$priv$();
                 .java.lang.String arg$9$0 = "";
                 long arg$9$1 = 2L;
-                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> arg$9$2 = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>(.ceylon.language.Boolean.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Boolean.instance(false)});
-                arg$9$callable$.m$priv(arg$9$0, arg$9$1, arg$9$2);
+                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> arg$9$2 = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Boolean.instance(false)});
+                arg$9$callable$.m$priv$(arg$9$0, arg$9$1, arg$9$2);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced arg$10$callable$ = self$priv();
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced arg$10$callable$ = self$priv$();
                 .java.lang.String arg$10$0 = "";
                 long arg$10$1 = 2L;
-                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> arg$10$2 = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>>(.ceylon.language.Boolean.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> arg$10$2 = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>>(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{
                         .ceylon.language.Boolean.instance(true),
                         .ceylon.language.Boolean.instance(true)});
-                arg$10$callable$.m$priv(arg$10$0, arg$10$1, arg$10$2);
+                arg$10$callable$.m$priv$(arg$10$0, arg$10$1, arg$10$2);
             }
             returning null;
         );
     }
     
-    private final void qteNamedArgs$priv() {
+    private final void qteNamedArgs$priv$() {
         (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced arg$11$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced();
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced arg$11$this$ = arg$11$callable$;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced arg$11$argthis$ = arg$11$callable$;
                 .java.lang.String arg$11$0 = "";
-                long arg$11$1 = arg$11$this$.m$i(arg$11$0);
+                long arg$11$1 = arg$11$argthis$.m$i(arg$11$0);
                 .ceylon.language.Sequential arg$11$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                arg$11$callable$.m$priv(arg$11$0, arg$11$1, arg$11$2);
+                arg$11$callable$.m$priv$(arg$11$0, arg$11$1, arg$11$2);
             }
             returning null;
         );
@@ -195,7 +195,7 @@ class DefaultedAndSequenced implements .com.redhat.ceylon.compiler.java.runtime.
                 .java.lang.String arg$12$0 = "";
                 long arg$12$1 = 2L;
                 .ceylon.language.Sequential arg$12$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                arg$12$callable$.m$priv(arg$12$0, arg$12$1, arg$12$2);
+                arg$12$callable$.m$priv$(arg$12$0, arg$12$1, arg$12$2);
             }
             returning null;
         );
@@ -205,8 +205,8 @@ class DefaultedAndSequenced implements .com.redhat.ceylon.compiler.java.runtime.
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced arg$13$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced();
                 .java.lang.String arg$13$0 = "";
                 long arg$13$1 = 2L;
-                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> arg$13$2 = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>(.ceylon.language.Boolean.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Boolean.instance(false)});
-                arg$13$callable$.m$priv(arg$13$0, arg$13$1, arg$13$2);
+                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> arg$13$2 = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Boolean.instance(false)});
+                arg$13$callable$.m$priv$(arg$13$0, arg$13$1, arg$13$2);
             }
             returning null;
         );
@@ -216,10 +216,10 @@ class DefaultedAndSequenced implements .com.redhat.ceylon.compiler.java.runtime.
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced arg$14$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced();
                 .java.lang.String arg$14$0 = "";
                 long arg$14$1 = 2L;
-                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> arg$14$2 = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>>(.ceylon.language.Boolean.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> arg$14$2 = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>>(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{
                         .ceylon.language.Boolean.instance(true),
                         .ceylon.language.Boolean.instance(true)});
-                arg$14$callable$.m$priv(arg$14$0, arg$14$1, arg$14$2);
+                arg$14$callable$.m$priv$(arg$14$0, arg$14$1, arg$14$2);
             }
             returning null;
         );
@@ -231,8 +231,8 @@ class DefaultedAndSequenced implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced.class);
 }

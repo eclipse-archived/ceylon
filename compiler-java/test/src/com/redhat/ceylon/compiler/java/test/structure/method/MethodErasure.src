@@ -15,17 +15,17 @@ class MethodErasure implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         return (int)(
             let
             {
-                long $ceylontmphash$1 = 0L;
+                long $ceylontmp$hash$1 = 0L;
             }
-            returning $ceylontmphash$1 ^ $ceylontmphash$1 >>> 32;
+            returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
         );
     }
     
-    private final .java.lang.String hashCode$priv() {
+    private final .java.lang.String hashCode$priv$() {
         return "bar";
     }
     
-    private final long toString$priv() {
+    private final long toString$priv$() {
         return 0L;
     }
     
@@ -35,8 +35,8 @@ class MethodErasure implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodErasure.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodErasure.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodErasure.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodErasure.class);
 }

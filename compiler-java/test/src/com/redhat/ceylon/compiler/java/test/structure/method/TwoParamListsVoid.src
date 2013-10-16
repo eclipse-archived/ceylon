@@ -13,10 +13,10 @@ final class twoParamListsAnything_ {
             }
             
             .ceylon.language.Callable<? extends .java.lang.Object> f(final .java.lang.String s) {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
                     
                     @.java.lang.Override
-                    public .java.lang.Object $call() {
+                    public .java.lang.Object $call$() {
                         .ceylon.language.print_.print(.ceylon.language.String.instance(s));
                         return null;
                     }
@@ -31,10 +31,10 @@ final class twoParamListsAnything_ {
             }
             
             .ceylon.language.Callable<? extends .java.lang.Object> g(final .java.lang.String s) {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
                     
                     @.java.lang.Override
-                    public .java.lang.Object $call() {
+                    public .java.lang.Object $call$() {
                         return (
                             let
                             {
@@ -47,8 +47,8 @@ final class twoParamListsAnything_ {
             }
         }
         final g_ g = new g_();
-        f.f("hello").$call();
-        g.g("hello").$call();
+        f.f("hello").$call$();
+        g.g("hello").$call$();
     }
     
     public static void main(.java.lang.String[] args) {

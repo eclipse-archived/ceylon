@@ -9,49 +9,49 @@ class QualifiedAttributeAccess implements .com.redhat.ceylon.compiler.java.runti
     }
     private final boolean b;
     
-    private final boolean getB$priv() {
+    private final boolean getB$priv$() {
         return b;
     }
     private boolean b2;
     
-    private final boolean getB2$priv() {
+    private final boolean getB2$priv$() {
         return b2;
     }
     
-    private final void setB2$priv(final boolean b2) {
+    private final void setB2$priv$(final boolean b2) {
         this.b2 = b2;
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess q;
     
-    private final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess getQ$priv() {
+    private final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess getQ$priv$() {
         return q;
     }
     
-    private final boolean m$priv() {
-        return this.getB$priv();
+    private final boolean m$priv$() {
+        return this.getB$priv$();
     }
     
-    private final boolean m2$priv() {
-        return this.getB2$priv();
+    private final boolean m2$priv$() {
+        return this.getB2$priv$();
     }
     
-    private final boolean m3$priv() {
-        return new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess().getB$priv();
+    private final boolean m3$priv$() {
+        return new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess().getB$priv$();
     }
     
-    private final boolean m4$priv() {
-        return new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess().getB2$priv();
+    private final boolean m4$priv$() {
+        return new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess().getB2$priv$();
     }
     
-    private final boolean m5$priv() {
-        return getQ$priv().getB$priv();
+    private final boolean m5$priv$() {
+        return getQ$priv$().getB$priv$();
     }
     
-    private final boolean m6$priv() {
-        return getQ$priv().getB2$priv();
+    private final boolean m6$priv$() {
+        return getQ$priv$().getB2$priv$();
     }
     
-    private final boolean m7$priv(final .com.redhat.ceylon.compiler.java.test.expression.attribute.Foo f) {
+    private final boolean m7$priv$(final .com.redhat.ceylon.compiler.java.test.expression.attribute.Foo f) {
         return f.getB();
     }
     
@@ -61,10 +61,10 @@ class QualifiedAttributeAccess implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess.class);
 }
 class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -83,8 +83,8 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType 
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.Foo.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.Foo.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.Foo.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.Foo.class);
 }

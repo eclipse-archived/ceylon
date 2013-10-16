@@ -9,15 +9,15 @@ public interface Bug963<Element> extends .ceylon.language.List<Element> {
 }
 public final class Bug963$impl<Element> {
     
-    public Bug963$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug963<? extends Element> $this) {
-        this.$reifiedElement = $reifiedElement;
+    public Bug963$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug963<? extends Element> $this) {
+        this.$reified$Element = $reified$Element;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug963<? extends Element> $this;
     
-    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
-        this.$reifiedElement = $reifiedElement;
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
     }
     
     public final long getSize() {

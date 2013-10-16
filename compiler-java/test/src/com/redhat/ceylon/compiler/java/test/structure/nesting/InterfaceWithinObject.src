@@ -18,24 +18,24 @@ final class interfaceWithinObject_ implements .com.redhat.ceylon.compiler.java.r
         private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_ $this;
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.ZI ZI$new() {
+    public .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.ZI ZI$new$() {
         return new ZI();
     }
     
     public class ZI implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_ {
         
         protected ZI() {
-            this.$com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl(this);
+            this.$com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this$ = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl(this);
         }
-        protected final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this;
+        protected final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this$;
         
         @.java.lang.Override
         public .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject_$Z$impl() {
-            return $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this;
+            return $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this$;
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.ZI.class));
         }
     }
@@ -44,17 +44,17 @@ final class interfaceWithinObject_ implements .com.redhat.ceylon.compiler.java.r
     public final class z_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_ {
         
         private z_() {
-            this.$com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl(this);
+            this.$com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this$ = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl(this);
         }
-        protected final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this;
+        protected final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this$;
         
         @.java.lang.Override
         public .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject_$Z$impl() {
-            return $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this;
+            return $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this$;
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_.class));
         }
     }
@@ -76,7 +76,7 @@ final class interfaceWithinObject_ implements .com.redhat.ceylon.compiler.java.r
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.class);
     }
 }

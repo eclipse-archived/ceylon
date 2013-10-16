@@ -7,17 +7,17 @@ class MethodSpecifyingInitParam implements .com.redhat.ceylon.compiler.java.runt
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> x;
     
-    private final .ceylon.language.Callable<? extends .java.lang.Object> getX$priv() {
+    private final .ceylon.language.Callable<? extends .java.lang.Object> getX$priv$() {
         return x;
     }
     
-    private final .java.lang.Object foo$priv() {
-        return getX$priv().$call();
+    private final .java.lang.Object foo$priv$() {
+        return getX$priv$().$call$();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingInitParam.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingInitParam.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingInitParam.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingInitParam.class);
 }

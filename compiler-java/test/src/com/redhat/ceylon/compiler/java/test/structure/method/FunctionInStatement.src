@@ -5,7 +5,7 @@ class FunctionInStatement implements .com.redhat.ceylon.compiler.java.runtime.mo
     FunctionInStatement() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         if (true) {
             final long i = 1L;
             
@@ -29,8 +29,8 @@ class FunctionInStatement implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.FunctionInStatement.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.FunctionInStatement.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.FunctionInStatement.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.FunctionInStatement.class);
 }

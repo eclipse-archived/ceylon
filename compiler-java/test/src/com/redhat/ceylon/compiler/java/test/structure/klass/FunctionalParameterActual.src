@@ -2,10 +2,10 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class FunctionalParameterActual<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    FunctionalParameterActual(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        this.$reifiedT = $reifiedT;
+    FunctionalParameterActual(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
     public T m(final T t) {
         return t;
@@ -17,26 +17,26 @@ class FunctionalParameterActual<T> implements .com.redhat.ceylon.compiler.java.r
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterActual.class, $reifiedT);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterActual.class, $reified$T);
     }
 }
 class FunctionalParameterActualString extends .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterActual<.ceylon.language.String> {
     
     FunctionalParameterActualString(final .ceylon.language.Callable<? extends .ceylon.language.String> m) {
-        super(.ceylon.language.String.$TypeDescriptor);
+        super(.ceylon.language.String.$TypeDescriptor$);
         this.m = m;
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.String> m;
     
     @.java.lang.Override
     public final .ceylon.language.String m(final .ceylon.language.String t) {
-        return m.$call(t);
+        return m.$call$(t);
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterActualString.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterActualString.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterActualString.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterActualString.class);
 }

@@ -5,7 +5,7 @@ final class getterArgumentNamedInvocationGeneric_ {
     private getterArgumentNamedInvocationGeneric_() {
     }
     
-    static <T>void getterArgumentNamedInvocationGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
+    static <T>void getterArgumentNamedInvocationGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
         
         final class callFunction_ {
             

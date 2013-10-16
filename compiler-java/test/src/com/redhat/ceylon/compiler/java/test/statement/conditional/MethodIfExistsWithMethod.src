@@ -5,13 +5,13 @@ class MethodIfExistsWithMethod implements .com.redhat.ceylon.compiler.java.runti
     MethodIfExistsWithMethod() {
     }
     
-    private final .ceylon.language.Integer give$priv() {
+    private final .ceylon.language.Integer give$priv$() {
         return .ceylon.language.Integer.instance(0L);
     }
     
     public final long m() {
         .ceylon.language.Integer y$1;
-        if ((y$1 = give$priv()) != null) {
+        if ((y$1 = give$priv$()) != null) {
             final long y$2 = y$1.longValue();
             return y$2;
         }
@@ -24,8 +24,8 @@ class MethodIfExistsWithMethod implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfExistsWithMethod.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfExistsWithMethod.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfExistsWithMethod.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfExistsWithMethod.class);
 }

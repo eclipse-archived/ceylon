@@ -4,84 +4,84 @@ abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceyl
     
     BWMyInteger() {
         super();
-        this.$ceylon$language$Binary$this = new .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor, this);
-        this.$ceylon$language$Integral$this = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor, this);
-        this.$ceylon$language$Numeric$this = new .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor, this);
-        this.$ceylon$language$Summable$this = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor, this);
-        this.$ceylon$language$Invertable$this = new .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor, this);
-        this.$ceylon$language$Enumerable$this = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor, this);
-        this.$ceylon$language$Ordinal$this = new .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor, this);
-        this.$ceylon$language$Exponentiable$this = new .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Binary$this$ = new .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Integral$this$ = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Numeric$this$ = new .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Summable$this$ = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Invertable$this$ = new .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Enumerable$this$ = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Ordinal$this$ = new .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Exponentiable$this$ = new .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
     }
-    protected final .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Binary$this;
+    protected final .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Binary$this$;
     
     @.java.lang.Override
     public .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Binary$impl() {
-        return $ceylon$language$Binary$this;
+        return $ceylon$language$Binary$this$;
     }
     
     @.java.lang.Override
     public final boolean set$bit(final long index) {
-        return $ceylon$language$Binary$this.set$bit(index);
+        return $ceylon$language$Binary$this$.set$bit(index);
     }
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger clear(final long index) {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Binary$this.clear(index);
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Binary$this$.clear(index);
     }
-    protected final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Integral$this;
+    protected final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Integral$this$;
     
     @.java.lang.Override
     public .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Integral$impl() {
-        return $ceylon$language$Integral$this;
+        return $ceylon$language$Integral$this$;
     }
     
     @.java.lang.Override
     public final boolean divides(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger other) {
-        return $ceylon$language$Integral$this.divides(other);
+        return $ceylon$language$Integral$this$.divides(other);
     }
-    protected final .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Numeric$this;
+    protected final .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Numeric$this$;
     
     @.java.lang.Override
     public .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Numeric$impl() {
-        return $ceylon$language$Numeric$this;
+        return $ceylon$language$Numeric$this$;
     }
-    protected final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Summable$this;
+    protected final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Summable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Summable$impl() {
-        return $ceylon$language$Summable$this;
+        return $ceylon$language$Summable$this$;
     }
-    protected final .ceylon.language.Invertable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Invertable$this;
+    protected final .ceylon.language.Invertable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Invertable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Invertable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Invertable$impl() {
-        return $ceylon$language$Invertable$this;
+        return $ceylon$language$Invertable$this$;
     }
-    protected final .ceylon.language.Enumerable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Enumerable$this;
+    protected final .ceylon.language.Enumerable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Enumerable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Enumerable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Enumerable$impl() {
-        return $ceylon$language$Enumerable$this;
+        return $ceylon$language$Enumerable$this$;
     }
-    protected final .ceylon.language.Ordinal$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Ordinal$this;
+    protected final .ceylon.language.Ordinal$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Ordinal$this$;
     
     @.java.lang.Override
     public .ceylon.language.Ordinal$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Ordinal$impl() {
-        return $ceylon$language$Ordinal$this;
+        return $ceylon$language$Ordinal$this$;
     }
-    protected final .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Exponentiable$this;
+    protected final .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Exponentiable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Exponentiable$impl() {
-        return $ceylon$language$Exponentiable$this;
+        return $ceylon$language$Exponentiable$this$;
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.class);
 }
 class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -91,18 +91,18 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
         this.n1 = 0L;
         this.n2 = 0L;
         this.i1 = 0L;
-        this.boxedN1 = getInitN$priv();
-        this.boxedN2 = getInitN$priv();
-        this.boxedI1 = getInitI$priv();
+        this.boxedN1 = getInitN$priv$();
+        this.boxedN2 = getInitN$priv$();
+        this.boxedI1 = getInitI$priv$();
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initN;
     
-    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getInitN$priv() {
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getInitN$priv$() {
         return initN;
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initI;
     
-    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getInitI$priv() {
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getInitI$priv$() {
         return initI;
     }
     private long n1;
@@ -184,7 +184,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
         this.boxedI1 = boxedI1;
     }
     
-    private final void unboxedAttributes$priv() {
+    private final void unboxedAttributes$priv$() {
         setI1(~getN1());
         setN1(getN1() & getN2());
         setI1(getN1() | getN2());
@@ -194,7 +194,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
         setN1(getN1() >> getN2());
     }
     
-    private final void unboxedGetterAttributes$priv() {
+    private final void unboxedGetterAttributes$priv$() {
         setGetterI1(~getGetterN1());
         setGetterN1(getGetterN1() & getGetterN2());
         setGetterI1(getGetterN1() | getGetterN2());
@@ -237,7 +237,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
         return null;
     }
     
-    private final void unboxedLocals$priv() {
+    private final void unboxedLocals$priv$() {
         long n1 = 0L;
         long n2 = 0L;
         long i1 = 0L;
@@ -250,25 +250,25 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
         n1 = n1 >> n2;
     }
     
-    private final void unboxedLocalGetters$priv() {
+    private final void unboxedLocalGetters$priv$() {
         final .com.redhat.ceylon.compiler.java.language.VariableBoxLong n1 = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
         final .com.redhat.ceylon.compiler.java.language.VariableBoxLong n2 = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
         final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i1 = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
         
-        final class getterN1$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+        final class getterN1$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
-            private getterN1$getter_() {
+            private getterN1$getter$_() {
             }
             
             public long get_() {
                 return n1.ref;
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.GetterLong getterN1$getter_ = new getterN1$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong getterN1$getter$_ = new getterN1$getter$_();
         
-        final class getterN1$setter_ {
+        final class getterN1$setter$_ {
             
-            private getterN1$setter_() {
+            private getterN1$setter$_() {
             }
             private long value;
             
@@ -276,22 +276,22 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
                 n1.ref = getterN1;
             }
         }
-        final getterN1$setter_ getterN1$setter_ = new getterN1$setter_();
+        final getterN1$setter$_ getterN1$setter$_ = new getterN1$setter$_();
         
-        final class getterN2$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+        final class getterN2$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
-            private getterN2$getter_() {
+            private getterN2$getter$_() {
             }
             
             public long get_() {
                 return n2.ref;
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.GetterLong getterN2$getter_ = new getterN2$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong getterN2$getter$_ = new getterN2$getter$_();
         
-        final class getterN2$setter_ {
+        final class getterN2$setter$_ {
             
-            private getterN2$setter_() {
+            private getterN2$setter$_() {
             }
             private long value;
             
@@ -299,22 +299,22 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
                 n2.ref = getterN2;
             }
         }
-        final getterN2$setter_ getterN2$setter_ = new getterN2$setter_();
+        final getterN2$setter$_ getterN2$setter$_ = new getterN2$setter$_();
         
-        final class getterI1$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+        final class getterI1$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
-            private getterI1$getter_() {
+            private getterI1$getter$_() {
             }
             
             public long get_() {
                 return i1.ref;
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.GetterLong getterI1$getter_ = new getterI1$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong getterI1$getter$_ = new getterI1$getter$_();
         
-        final class getterI1$setter_ {
+        final class getterI1$setter$_ {
             
-            private getterI1$setter_() {
+            private getterI1$setter$_() {
             }
             private long value;
             
@@ -322,20 +322,20 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
                 i1.ref = getterI1;
             }
         }
-        final getterI1$setter_ getterI1$setter_ = new getterI1$setter_();
-        getterI1$setter_.set_(~getterN1$getter_.get_());
-        getterN1$setter_.set_(getterN1$getter_.get_() & getterN2$getter_.get_());
-        getterI1$setter_.set_(getterN1$getter_.get_() | getterN2$getter_.get_());
-        getterN1$setter_.set_(getterN1$getter_.get_() ^ getterN2$getter_.get_());
-        getterN1$setter_.set_(getterN1$getter_.get_() << getterN2$getter_.get_());
-        getterN1$setter_.set_(getterN1$getter_.get_() >>> getterN2$getter_.get_());
-        getterN1$setter_.set_(getterN1$getter_.get_() >> getterN2$getter_.get_());
+        final getterI1$setter$_ getterI1$setter$_ = new getterI1$setter$_();
+        getterI1$setter$_.set_(~getterN1$getter$_.get_());
+        getterN1$setter$_.set_(getterN1$getter$_.get_() & getterN2$getter$_.get_());
+        getterI1$setter$_.set_(getterN1$getter$_.get_() | getterN2$getter$_.get_());
+        getterN1$setter$_.set_(getterN1$getter$_.get_() ^ getterN2$getter$_.get_());
+        getterN1$setter$_.set_(getterN1$getter$_.get_() << getterN2$getter$_.get_());
+        getterN1$setter$_.set_(getterN1$getter$_.get_() >>> getterN2$getter$_.get_());
+        getterN1$setter$_.set_(getterN1$getter$_.get_() >> getterN2$getter$_.get_());
     }
     
-    private final void boxedLocals$priv() {
-        .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger n1 = getInitN$priv();
-        .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger n2 = getInitN$priv();
-        .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger i1 = getInitI$priv();
+    private final void boxedLocals$priv$() {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger n1 = getInitN$priv$();
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger n2 = getInitN$priv$();
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger i1 = getInitI$priv$();
         i1 = (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)n1.getNot();
         n1 = (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)n1.and(n2);
         i1 = (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)n1.or(n2);
@@ -345,7 +345,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
         n1 = (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)n1.rightArithmeticShift(1L);
     }
     
-    private final void unboxedToplevel$priv() {
+    private final void unboxedToplevel$priv$() {
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.set_(~.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.get_());
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.get_() & .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.get_());
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.get_() | .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.get_());
@@ -355,7 +355,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.get_() >> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.get_());
     }
     
-    private final void unboxedToplevelGetter$priv() {
+    private final void unboxedToplevelGetter$priv$() {
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterI1_.set_(~.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.get_());
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.get_() & .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.get_());
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterI1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.get_() | .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.get_());
@@ -366,10 +366,10 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.class);
 }
 class BitwiseOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators {
     
@@ -414,10 +414,10 @@ class BitwiseOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expressi
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperatorsSub.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperatorsSub.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperatorsSub.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperatorsSub.class);
 }
 final class bwToplevelN1_ {
     

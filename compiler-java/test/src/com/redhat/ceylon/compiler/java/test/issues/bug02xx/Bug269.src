@@ -19,9 +19,9 @@ class Bug269 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (int)(
             let
             {
-                long $ceylontmphash$0 = hash;
+                long $ceylontmp$hash$0 = hash;
             }
-            returning $ceylontmphash$0 ^ $ceylontmphash$0 >>> 32;
+            returning $ceylontmp$hash$0 ^ $ceylontmp$hash$0 >>> 32;
         );
     }
     
@@ -31,10 +31,10 @@ class Bug269 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269.class);
 }
 class Bug269_2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -53,9 +53,9 @@ class Bug269_2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         return (int)(
             let
             {
-                long $ceylontmphash$2 = 0L;
+                long $ceylontmp$hash$2 = 0L;
             }
-            returning $ceylontmphash$2 ^ $ceylontmphash$2 >>> 32;
+            returning $ceylontmp$hash$2 ^ $ceylontmp$hash$2 >>> 32;
         );
     }
     
@@ -65,10 +65,10 @@ class Bug269_2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269_2.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269_2.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269_2.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269_2.class);
 }
 final class string_ {
     

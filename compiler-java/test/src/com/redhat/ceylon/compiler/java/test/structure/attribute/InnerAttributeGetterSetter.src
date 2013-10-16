@@ -5,50 +5,50 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
     InnerAttributeGetterSetter() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         
-        final class innerGetterSetter$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+        final class innerGetterSetter$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
-            private innerGetterSetter$getter_() {
+            private innerGetterSetter$getter$_() {
             }
             
             public long get_() {
                 return 0L;
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.GetterLong innerGetterSetter$getter_ = new innerGetterSetter$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong innerGetterSetter$getter$_ = new innerGetterSetter$getter$_();
         
-        final class innerGetterSetter$setter_ {
+        final class innerGetterSetter$setter$_ {
             
-            private innerGetterSetter$setter_() {
+            private innerGetterSetter$setter$_() {
             }
             private long value;
             
             public void set_(final long innerGetterSetter) {
             }
         }
-        final innerGetterSetter$setter_ innerGetterSetter$setter_ = new innerGetterSetter$setter_();
-        final long n = innerGetterSetter$getter_.get_();
-        innerGetterSetter$setter_.set_(1L);
+        final innerGetterSetter$setter$_ innerGetterSetter$setter$_ = new innerGetterSetter$setter$_();
+        final long n = innerGetterSetter$getter$_.get_();
+        innerGetterSetter$setter$_.set_(1L);
     }
     
-    private final void m2$priv() {
+    private final void m2$priv$() {
         final .com.redhat.ceylon.compiler.java.language.VariableBoxLong m = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
         
-        final class innerGetterSetter$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+        final class innerGetterSetter$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
-            private innerGetterSetter$getter_() {
+            private innerGetterSetter$getter$_() {
             }
             
             public long get_() {
                 return m.ref;
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.GetterLong innerGetterSetter$getter_ = new innerGetterSetter$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong innerGetterSetter$getter$_ = new innerGetterSetter$getter$_();
         
-        final class innerGetterSetter$setter_ {
+        final class innerGetterSetter$setter$_ {
             
-            private innerGetterSetter$setter_() {
+            private innerGetterSetter$setter$_() {
             }
             private long value;
             
@@ -56,16 +56,16 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
                 (
                     let
                     {
-                        long $ceylontmpop$0 = innerGetterSetter;
-                        m.ref = $ceylontmpop$0;
+                        long $ceylontmp$op$0 = innerGetterSetter;
+                        m.ref = $ceylontmp$op$0;
                     }
-                    returning $ceylontmpop$0;
+                    returning $ceylontmp$op$0;
                 );
             }
         }
-        final innerGetterSetter$setter_ innerGetterSetter$setter_ = new innerGetterSetter$setter_();
-        final long n = innerGetterSetter$getter_.get_();
-        innerGetterSetter$setter_.set_(1L);
+        final innerGetterSetter$setter$_ innerGetterSetter$setter$_ = new innerGetterSetter$setter$_();
+        final long n = innerGetterSetter$getter$_.get_();
+        innerGetterSetter$setter$_.set_(1L);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -74,8 +74,8 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterSetter.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterSetter.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterSetter.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterSetter.class);
 }

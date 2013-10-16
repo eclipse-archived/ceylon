@@ -6,6 +6,6 @@ final class callableNamedInvocationNullary_f_ {
     }
     
     static void callableNamedInvocationNullary_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
-        foo.$call();
+        foo.$call$();
     }
 }

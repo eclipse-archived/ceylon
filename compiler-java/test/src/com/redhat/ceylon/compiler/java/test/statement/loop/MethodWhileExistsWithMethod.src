@@ -5,14 +5,14 @@ class MethodWhileExistsWithMethod implements .com.redhat.ceylon.compiler.java.ru
     MethodWhileExistsWithMethod() {
     }
     
-    private final .ceylon.language.Integer give$priv() {
+    private final .ceylon.language.Integer give$priv$() {
         return .ceylon.language.Integer.instance(0L);
     }
     
     public final long m() {
         while (true) {
             .ceylon.language.Integer y$0;
-            if ((y$0 = give$priv()) != null) {
+            if ((y$0 = give$priv$()) != null) {
                 final long y$1 = y$0.longValue();
                 return y$1;
             } else break;
@@ -26,8 +26,8 @@ class MethodWhileExistsWithMethod implements .com.redhat.ceylon.compiler.java.ru
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileExistsWithMethod.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileExistsWithMethod.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileExistsWithMethod.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileExistsWithMethod.class);
 }

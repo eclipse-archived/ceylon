@@ -5,7 +5,7 @@ class SwitchIsExhaustive implements .com.redhat.ceylon.compiler.java.runtime.mod
     SwitchIsExhaustive() {
     }
     
-    private final .java.lang.String m$priv(final .java.lang.Object b) {
+    private final .java.lang.String m$priv$(final .java.lang.Object b) {
         final .java.lang.String name;
         {
             .java.lang.Object sel$0 = b;
@@ -32,8 +32,8 @@ class SwitchIsExhaustive implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchIsExhaustive.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchIsExhaustive.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchIsExhaustive.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchIsExhaustive.class);
 }

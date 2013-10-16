@@ -2,31 +2,31 @@ package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
 
 class Bug1242<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug1242(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
-        this.$reifiedT = $reifiedT;
+    Bug1242(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        this.$reified$T = $reified$T;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
-    public <S>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<T>.Y<S> Y$new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final S s) {
-        return new Y<S>($reifiedS, s);
+    public <S>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<T>.Y<S> Y$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
+        return new Y<S>($reified$S, s);
     }
     
     public class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        protected Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final S s) {
-            this.$reifiedS = $reifiedS;
+        protected Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
+            this.$reified$S = $reified$S;
         }
-        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS;
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S;
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242.class, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242.Y.class, $reifiedS));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242.class, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242.Y.class, $reified$S));
         }
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242.class, $reifiedT);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242.class, $reified$T);
     }
 }
 final class testBug1242_ {
@@ -35,7 +35,7 @@ final class testBug1242_ {
     }
     
     static void testBug1242() {
-        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<.ceylon.language.String>.Y<.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>> yi = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("hello")).<.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>Y$new(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}));
+        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<.ceylon.language.String>.Y<.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>> yi = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("hello")).<.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>Y$new$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}));
     }
     
     public static void main(.java.lang.String[] args) {
@@ -49,7 +49,7 @@ final class bug1242_yi_ {
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<.ceylon.language.String>.Y<.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242.Y[]{new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("hello")).<.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>Y$new(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}))};
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242.Y[]{new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("hello")).<.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>Y$new$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}))};
     }
     
     public static .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<.ceylon.language.String>.Y<.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>> get_() {

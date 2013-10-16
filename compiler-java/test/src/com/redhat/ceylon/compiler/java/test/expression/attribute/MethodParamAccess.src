@@ -5,7 +5,7 @@ class MethodParamAccess implements .com.redhat.ceylon.compiler.java.runtime.mode
     MethodParamAccess() {
     }
     
-    private final boolean m$priv(final boolean b) {
+    private final boolean m$priv$(final boolean b) {
         return b;
     }
     
@@ -15,8 +15,8 @@ class MethodParamAccess implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.MethodParamAccess.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.MethodParamAccess.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.MethodParamAccess.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.MethodParamAccess.class);
 }

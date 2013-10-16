@@ -5,7 +5,7 @@ public final class bug242_ {
     private bug242_() {
     }
     
-    public static <T>void bug242(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Sequential<? extends T> a, final long i) {
+    public static <T>void bug242(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Sequential<? extends T> a, final long i) {
         final T t = a.get(.ceylon.language.Integer.instance(i));
     }
 }

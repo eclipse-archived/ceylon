@@ -5,7 +5,7 @@ class ReplaceExceptionAtJavaCallSite implements .com.redhat.ceylon.compiler.java
     ReplaceExceptionAtJavaCallSite() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         final .com.redhat.ceylon.compiler.java.test.statement.trycatch.JavaThrower jt = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.JavaThrower();
         final boolean n = jt.throwException();
         final boolean m = jt.throwThrowable();
@@ -20,8 +20,8 @@ class ReplaceExceptionAtJavaCallSite implements .com.redhat.ceylon.compiler.java
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ReplaceExceptionAtJavaCallSite.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ReplaceExceptionAtJavaCallSite.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ReplaceExceptionAtJavaCallSite.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ReplaceExceptionAtJavaCallSite.class);
 }

@@ -11,7 +11,7 @@ interface InterfaceWithMembers {
     public abstract void setB2(final boolean b2);
     
     public abstract .java.lang.Object m();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithMembers.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithMembers.class);
 }
 final class InterfaceWithMembers$impl {
     

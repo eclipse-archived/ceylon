@@ -5,7 +5,7 @@ class LocalClassWithLocalObject implements .com.redhat.ceylon.compiler.java.runt
     LocalClassWithLocalObject() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         
         class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
@@ -20,7 +20,7 @@ class LocalClassWithLocalObject implements .com.redhat.ceylon.compiler.java.runt
                 }
                 
                 @.java.lang.Override
-                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                     return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.o_.class));
                 }
             }
@@ -30,7 +30,7 @@ class LocalClassWithLocalObject implements .com.redhat.ceylon.compiler.java.runt
             }
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.class);
             }
         }
@@ -42,8 +42,8 @@ class LocalClassWithLocalObject implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.LocalClassWithLocalObject.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.LocalClassWithLocalObject.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.LocalClassWithLocalObject.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.LocalClassWithLocalObject.class);
 }

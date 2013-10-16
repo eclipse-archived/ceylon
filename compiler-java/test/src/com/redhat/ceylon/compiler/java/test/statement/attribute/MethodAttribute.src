@@ -5,7 +5,7 @@ class MethodAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.
     MethodAttribute() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         final .java.lang.String f;
     }
     
@@ -15,8 +15,8 @@ class MethodAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.attribute.MethodAttribute.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.attribute.MethodAttribute.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.attribute.MethodAttribute.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.attribute.MethodAttribute.class);
 }

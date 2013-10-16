@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.SharedAnnotation$annotation
+@.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "T",
@@ -13,8 +13,8 @@ public interface References<T> {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.annotations.References$impl<T> $com$redhat$ceylon$compiler$java$test$annotations$References$impl();
     
-    @.ceylon.language.SharedAnnotation$annotation
-    @.ceylon.language.FormalAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
@@ -23,8 +23,8 @@ public interface References<T> {
             erased = true)
     public abstract .java.lang.Object iface();
     
-    @.ceylon.language.SharedAnnotation$annotation
-    @.ceylon.language.FormalAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
@@ -33,8 +33,8 @@ public interface References<T> {
             erased = true)
     public abstract .java.lang.Object klass();
     
-    @.ceylon.language.SharedAnnotation$annotation
-    @.ceylon.language.FormalAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
@@ -43,8 +43,8 @@ public interface References<T> {
             erased = true)
     public abstract .java.lang.Object memberKlass();
     
-    @.ceylon.language.SharedAnnotation$annotation
-    @.ceylon.language.FormalAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
@@ -56,14 +56,14 @@ public interface References<T> {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class References$impl<T> {
     
-    public References$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.annotations.References<T> $this) {
-        this.$reifiedT = $reifiedT;
+    public References$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.annotations.References<T> $this) {
+        this.$reified$T = $reified$T;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     private final .com.redhat.ceylon.compiler.java.test.annotations.References<T> $this;
     
-    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        this.$reifiedT = $reifiedT;
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
     }
 }

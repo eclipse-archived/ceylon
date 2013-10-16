@@ -5,26 +5,26 @@ public class NullHandlingOperators implements .com.redhat.ceylon.compiler.java.r
     public NullHandlingOperators() {
     }
     
-    private final <T>T box$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
+    private final <T>T box$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
         return t;
     }
     
-    private final void nullHandling$priv() {
+    private final void nullHandling$priv$() {
         final .ceylon.language.Integer natOrNothing1 = .ceylon.language.Integer.instance(0L);
         final .ceylon.language.Integer intOrNothing = .ceylon.language.Integer.instance(0L);
         final long n = (
             let
             {
-                .ceylon.language.Integer $ceylontmp0 = natOrNothing1;
+                .ceylon.language.Integer $ceylontmp$0 = natOrNothing1;
             }
-            returning $ceylontmp0 != null ? $ceylontmp0 : .ceylon.language.Integer.instance(2L);
+            returning $ceylontmp$0 != null ? $ceylontmp$0 : .ceylon.language.Integer.instance(2L);
         ).longValue();
         final .ceylon.language.Integer nBoxed = (
             let
             {
-                .ceylon.language.Integer $ceylontmp1 = natOrNothing1;
+                .ceylon.language.Integer $ceylontmp$1 = natOrNothing1;
             }
-            returning $ceylontmp1 != null ? $ceylontmp1 : <.ceylon.language.Integer>box$priv(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(0L));
+            returning $ceylontmp$1 != null ? $ceylontmp$1 : <.ceylon.language.Integer>box$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L));
         );
         .ceylon.language.Integer nullSafeMember = (
             let
@@ -58,76 +58,76 @@ public class NullHandlingOperators implements .com.redhat.ceylon.compiler.java.r
         final .ceylon.language.Sequential<? extends .ceylon.language.String> s2 = (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp6 = s1;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$6 = s1;
             }
-            returning $ceylontmp6 != null ? $ceylontmp6 : (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            returning $ceylontmp$6 != null ? $ceylontmp$6 : (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
         );
     }
     
-    private final void testEmpty$priv() {
+    private final void testEmpty$priv$() {
         boolean sync = false;
         sync = (
             let
             {
-                .java.lang.Object $ceylontmp7 = .ceylon.language.String.getCharacters("").getSequence();
+                .java.lang.Object $ceylontmp$7 = .ceylon.language.String.getCharacters("").getSequence();
             }
-            returning $ceylontmp7 instanceof .ceylon.language.Sequence;
+            returning $ceylontmp$7 instanceof .ceylon.language.Sequence;
         );
         final .ceylon.language.Sequential<? extends .ceylon.language.String> seq = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
         sync = (
             let
             {
-                .java.lang.Object $ceylontmp8 = seq;
+                .java.lang.Object $ceylontmp$8 = seq;
             }
-            returning $ceylontmp8 instanceof .ceylon.language.Sequence;
+            returning $ceylontmp$8 instanceof .ceylon.language.Sequence;
         );
         final .ceylon.language.Boolean boxed = .ceylon.language.Boolean.instance((
             let
             {
-                .java.lang.Object $ceylontmp9 = seq;
+                .java.lang.Object $ceylontmp$9 = seq;
             }
-            returning $ceylontmp9 instanceof .ceylon.language.Sequence;
+            returning $ceylontmp$9 instanceof .ceylon.language.Sequence;
         ));
     }
     
-    private final void testExists$priv() {
+    private final void testExists$priv$() {
         boolean sync = false;
         final .java.lang.Object foo = .ceylon.language.Boolean.instance(sync);
         sync = foo != null;
         final .ceylon.language.Boolean boxed = .ceylon.language.Boolean.instance(foo != null);
     }
     
-    private final void testThenElse$priv() {
+    private final void testThenElse$priv$() {
         final long n = 5L;
         final .ceylon.language.String foo = n > 0L ? .ceylon.language.String.instance("yes") : null;
         final .ceylon.language.String bar = (
             let
             {
-                .ceylon.language.String $ceylontmp10 = foo;
+                .ceylon.language.String $ceylontmp$10 = foo;
             }
-            returning $ceylontmp10 != null ? $ceylontmp10 : .ceylon.language.String.instance("yes");
+            returning $ceylontmp$10 != null ? $ceylontmp$10 : .ceylon.language.String.instance("yes");
         );
         final .ceylon.language.String baz = (
             let
             {
-                .ceylon.language.String $ceylontmp11 = n > 0L ? .ceylon.language.String.instance("yes") : null;
+                .ceylon.language.String $ceylontmp$11 = n > 0L ? .ceylon.language.String.instance("yes") : null;
             }
-            returning $ceylontmp11 != null ? $ceylontmp11 : .ceylon.language.String.instance("no");
+            returning $ceylontmp$11 != null ? $ceylontmp$11 : .ceylon.language.String.instance("no");
         );
         final double x = 5.0;
         final double y = (
             let
             {
-                .ceylon.language.Float $ceylontmp12 = x > 0.0 ? .ceylon.language.Float.instance(x) : null;
+                .ceylon.language.Float $ceylontmp$12 = x > 0.0 ? .ceylon.language.Float.instance(x) : null;
             }
-            returning $ceylontmp12 != null ? $ceylontmp12 : .ceylon.language.Float.instance(1.0);
+            returning $ceylontmp$12 != null ? $ceylontmp$12 : .ceylon.language.Float.instance(1.0);
         ).doubleValue();
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq = (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp13 = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(false ? .ceylon.language.empty_.get_() : null);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$13 = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(false ? .ceylon.language.empty_.get_() : null);
             }
-            returning $ceylontmp13 != null ? $ceylontmp13 : new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(2L));
+            returning $ceylontmp$13 != null ? $ceylontmp$13 : new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(2L));
         );
     }
     
@@ -137,8 +137,8 @@ public class NullHandlingOperators implements .com.redhat.ceylon.compiler.java.r
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.NullHandlingOperators.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.NullHandlingOperators.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.NullHandlingOperators.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.NullHandlingOperators.class);
 }

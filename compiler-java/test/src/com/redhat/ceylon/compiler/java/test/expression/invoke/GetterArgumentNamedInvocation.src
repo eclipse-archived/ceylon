@@ -16,9 +16,9 @@ final class getterArgumentNamedInvocation_ {
                 (
                     let
                     {
-                        long $ceylontmp$i$$0 = callFunction$i();
-                        .java.lang.String $ceylontmp$s$$1 = callFunction$s($ceylontmp$i$$0);
-                        callFunction($ceylontmp$i$$0, $ceylontmp$s$$1);
+                        long $ceylontmp$$i$$0 = callFunction$i();
+                        .java.lang.String $ceylontmp$$s$$1 = callFunction$s($ceylontmp$$i$$0);
+                        callFunction($ceylontmp$$i$$0, $ceylontmp$$s$$1);
                     }
                     returning null;
                 );
@@ -32,8 +32,8 @@ final class getterArgumentNamedInvocation_ {
                 (
                     let
                     {
-                        .java.lang.String $ceylontmp$s$$2 = callFunction$s(i);
-                        callFunction(i, $ceylontmp$s$$2);
+                        .java.lang.String $ceylontmp$$s$$2 = callFunction$s(i);
+                        callFunction(i, $ceylontmp$$s$$2);
                     }
                     returning null;
                 );
@@ -119,7 +119,7 @@ final class getterArgumentNamedInvocation_ {
         (
             let
             {
-                callFunction_ arg$11$this$ = callFunction;
+                callFunction_ arg$11$argthis$ = callFunction;
                 
                 final class s$12 implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
                     
@@ -132,7 +132,7 @@ final class getterArgumentNamedInvocation_ {
                 }
                 final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> s$12 = new s$12();
                 final .java.lang.String arg$11$1 = s$12.get_();
-                long arg$11$0 = arg$11$this$.callFunction$i();
+                long arg$11$0 = arg$11$argthis$.callFunction$i();
                 callFunction.callFunction(arg$11$0, arg$11$1);
             }
             returning null;
@@ -140,7 +140,7 @@ final class getterArgumentNamedInvocation_ {
         (
             let
             {
-                callFunction_ arg$13$this$ = callFunction;
+                callFunction_ arg$13$argthis$ = callFunction;
                 
                 final class i$14 implements .com.redhat.ceylon.compiler.java.language.GetterLong {
                     
@@ -156,7 +156,7 @@ final class getterArgumentNamedInvocation_ {
                 }
                 final .com.redhat.ceylon.compiler.java.language.GetterLong i$14 = new i$14();
                 final long arg$13$0 = i$14.get_();
-                .java.lang.String arg$13$1 = arg$13$this$.callFunction$s(arg$13$0);
+                .java.lang.String arg$13$1 = arg$13$argthis$.callFunction$s(arg$13$0);
                 callFunction.callFunction(arg$13$0, arg$13$1);
             }
             returning null;

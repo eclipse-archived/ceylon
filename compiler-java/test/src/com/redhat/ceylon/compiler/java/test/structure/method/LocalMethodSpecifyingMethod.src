@@ -5,11 +5,11 @@ class LocalMethodSpecifyingMethod implements .com.redhat.ceylon.compiler.java.ru
     LocalMethodSpecifyingMethod() {
     }
     
-    private final long bar$priv(final .java.lang.String s) {
+    private final long bar$priv$(final .java.lang.String s) {
         return 1L;
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         
         final class foo_ {
             
@@ -17,7 +17,7 @@ class LocalMethodSpecifyingMethod implements .com.redhat.ceylon.compiler.java.ru
             }
             
             long foo(final .java.lang.String x) {
-                return bar$priv(x);
+                return bar$priv$(x);
             }
         }
         final foo_ foo = new foo_();
@@ -29,8 +29,8 @@ class LocalMethodSpecifyingMethod implements .com.redhat.ceylon.compiler.java.ru
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.LocalMethodSpecifyingMethod.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.LocalMethodSpecifyingMethod.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.LocalMethodSpecifyingMethod.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.LocalMethodSpecifyingMethod.class);
 }

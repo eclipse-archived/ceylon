@@ -7,8 +7,8 @@ class Bug931BinaryOperator implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> f;
     
-    private final long f$priv(final long a) {
-        return f.$call(.ceylon.language.Integer.instance(a)).longValue();
+    private final long f$priv$(final long a) {
+        return f.$call$(.ceylon.language.Integer.instance(a)).longValue();
     }
     
     public final long evaluate2() {
@@ -17,13 +17,13 @@ class Bug931BinaryOperator implements .com.redhat.ceylon.compiler.java.runtime.m
             {
                 long arg$0$0 = 1L;
             }
-            returning f$priv(arg$0$0);
+            returning f$priv$(arg$0$0);
         );
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug931BinaryOperator.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug931BinaryOperator.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug931BinaryOperator.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug931BinaryOperator.class);
 }

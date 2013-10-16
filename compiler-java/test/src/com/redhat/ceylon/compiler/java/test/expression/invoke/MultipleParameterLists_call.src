@@ -7,17 +7,17 @@ public final class multipleParameterLists_call_ {
     private multipleParameterLists_call_() {
     }
     
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void multipleParameterLists_call() {
-        .java.lang.String s = .com.redhat.ceylon.compiler.java.test.expression.invoke.multipleParameterLists_.multipleParameterLists().$call(.ceylon.language.Integer.instance(1L)).toString();
+        .java.lang.String s = .com.redhat.ceylon.compiler.java.test.expression.invoke.multipleParameterLists_.multipleParameterLists().$call$(.ceylon.language.Integer.instance(1L)).toString();
         final .ceylon.language.Callable<? extends .ceylon.language.String> c = .com.redhat.ceylon.compiler.java.test.expression.invoke.multipleParameterLists_.multipleParameterLists();
-        s = c.$call(.ceylon.language.Integer.instance(1L)).toString();
-        s = .com.redhat.ceylon.compiler.java.test.expression.invoke.multipleParameterLists2_.multipleParameterLists2(1L).$call(.ceylon.language.Float.instance(1.0)).$call(.ceylon.language.String.instance(s)).toString();
+        s = c.$call$(.ceylon.language.Integer.instance(1L)).toString();
+        s = .com.redhat.ceylon.compiler.java.test.expression.invoke.multipleParameterLists2_.multipleParameterLists2(1L).$call$(.ceylon.language.Float.instance(1.0)).$call$(.ceylon.language.String.instance(s)).toString();
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> c2 = .com.redhat.ceylon.compiler.java.test.expression.invoke.multipleParameterLists2_.multipleParameterLists2(1L);
-        final .ceylon.language.Callable<? extends .ceylon.language.String> c3 = c2.$call(.ceylon.language.Float.instance(1.0));
-        s = c3.$call(.ceylon.language.String.instance(s)).toString();
+        final .ceylon.language.Callable<? extends .ceylon.language.String> c3 = c2.$call$(.ceylon.language.Float.instance(1.0));
+        s = c3.$call$(.ceylon.language.String.instance(s)).toString();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

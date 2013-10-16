@@ -14,11 +14,11 @@ class MemberOverriding_Foo implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
@@ -36,11 +36,11 @@ class MemberOverriding_Bar extends .com.redhat.ceylon.compiler.java.test.structu
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Bar.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Bar.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Bar.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Bar.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super.Inner.class)})
@@ -50,13 +50,13 @@ class MemberOverriding_Super implements .com.redhat.ceylon.compiler.java.runtime
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo Inner$new() {
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo Inner$new$() {
         return new MemberOverriding_Foo();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-    @.ceylon.language.SharedAnnotation$annotation
-    @.ceylon.language.DefaultAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -76,11 +76,11 @@ class MemberOverriding_Super implements .com.redhat.ceylon.compiler.java.runtime
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1.Inner.class)})
@@ -92,13 +92,13 @@ class MemberOverriding_Sub1 extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Bar Inner$new() {
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Bar Inner$new$() {
         return new MemberOverriding_Bar();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-    @.ceylon.language.SharedAnnotation$annotation
-    @.ceylon.language.ActualAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Bar")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -118,11 +118,11 @@ class MemberOverriding_Sub1 extends .com.redhat.ceylon.compiler.java.test.struct
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2.Inner.class)})
@@ -134,13 +134,13 @@ class MemberOverriding_Sub2 extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo Inner$new() {
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo Inner$new$() {
         return new MemberOverriding_Foo();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-    @.ceylon.language.SharedAnnotation$annotation
-    @.ceylon.language.ActualAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -160,11 +160,11 @@ class MemberOverriding_Sub2 extends .com.redhat.ceylon.compiler.java.test.struct
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.Inner.class)})
@@ -177,13 +177,13 @@ class MemberOverriding_Sub3 extends .com.redhat.ceylon.compiler.java.test.struct
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.Inner Inner$new() {
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.Inner Inner$new$() {
         return new Inner();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-    @.ceylon.language.SharedAnnotation$annotation
-    @.ceylon.language.ActualAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.class)
     @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -197,8 +197,8 @@ class MemberOverriding_Sub3 extends .com.redhat.ceylon.compiler.java.test.struct
         
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.Inner.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.Inner.class));
         }
     }
     
@@ -210,11 +210,11 @@ class MemberOverriding_Sub3 extends .com.redhat.ceylon.compiler.java.test.struct
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.Inner.class)})
@@ -226,13 +226,13 @@ class MemberOverriding_Sub4 extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.Inner Inner$new() {
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.Inner Inner$new$() {
         return new Inner();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-    @.ceylon.language.SharedAnnotation$annotation
-    @.ceylon.language.ActualAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.class)
     @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -246,8 +246,8 @@ class MemberOverriding_Sub4 extends .com.redhat.ceylon.compiler.java.test.struct
         
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.Inner.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.Inner.class));
         }
     }
     
@@ -259,11 +259,11 @@ class MemberOverriding_Sub4 extends .com.redhat.ceylon.compiler.java.test.struct
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.Inner.class)})
@@ -275,13 +275,13 @@ class MemberOverriding_Sub5 extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.Inner Inner$new() {
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.Inner Inner$new$() {
         return new Inner();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-    @.ceylon.language.SharedAnnotation$annotation
-    @.ceylon.language.ActualAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.class)
     @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Bar")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -295,8 +295,8 @@ class MemberOverriding_Sub5 extends .com.redhat.ceylon.compiler.java.test.struct
         
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.Inner.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.Inner.class));
         }
     }
     
@@ -308,9 +308,9 @@ class MemberOverriding_Sub5 extends .com.redhat.ceylon.compiler.java.test.struct
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.class);
 }

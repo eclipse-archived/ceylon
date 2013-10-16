@@ -4,9 +4,9 @@ class ObjectInGetter implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     ObjectInGetter() {
         
-        final class foo$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+        final class foo$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
             
-            private foo$getter_() {
+            private foo$getter$_() {
             }
             
             public .java.lang.String get_() {
@@ -24,7 +24,7 @@ class ObjectInGetter implements .com.redhat.ceylon.compiler.java.runtime.model.R
                         }
                         
                         @.java.lang.Override
-                        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(bar_.class);
                         }
                     }
@@ -34,7 +34,7 @@ class ObjectInGetter implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 return "";
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> foo$getter_ = new foo$getter_();
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> foo$getter$_ = new foo$getter$_();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -43,8 +43,8 @@ class ObjectInGetter implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInGetter.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInGetter.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInGetter.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInGetter.class);
 }

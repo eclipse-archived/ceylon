@@ -39,14 +39,14 @@ public final class objectArgumentNamedInvocation_ {
                         return (int)(
                             let
                             {
-                                long $ceylontmphash$1 = hash;
+                                long $ceylontmp$hash$1 = hash;
                             }
-                            returning $ceylontmphash$1 ^ $ceylontmphash$1 >>> 32;
+                            returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
                         );
                     }
                     
                     @.java.lang.Override
-                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class);
                     }
                 }

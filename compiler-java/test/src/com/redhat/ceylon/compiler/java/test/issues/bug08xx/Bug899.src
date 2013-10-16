@@ -14,16 +14,16 @@ public final class bug899_ {
             }
             private final long i;
             
-            private final long getI$priv() {
+            private final long getI$priv$() {
                 return i;
             }
             
             public final long f() {
-                return getI$priv() + 1L;
+                return getI$priv$() + 1L;
             }
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class);
             }
         }

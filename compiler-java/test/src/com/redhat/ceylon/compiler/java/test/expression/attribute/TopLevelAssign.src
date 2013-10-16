@@ -5,7 +5,7 @@ class TopLevelAssign implements .com.redhat.ceylon.compiler.java.runtime.model.R
     TopLevelAssign() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB1_.set_(false);
         .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB2_.set_(false);
         .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB3_.set_(false);
@@ -18,10 +18,10 @@ class TopLevelAssign implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAssign.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAssign.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAssign.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAssign.class);
 }
 final class topLevelAssignB1_ {
     

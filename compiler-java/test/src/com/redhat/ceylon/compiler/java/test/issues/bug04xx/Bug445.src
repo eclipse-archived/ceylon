@@ -6,15 +6,15 @@ interface Bug445<T> {
 }
 final class Bug445$impl<T> {
     
-    Bug445$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445<T> $this) {
-        this.$reifiedT = $reifiedT;
+    Bug445$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445<T> $this) {
+        this.$reified$T = $reified$T;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445<T> $this;
     
-    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        this.$reifiedT = $reifiedT;
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
     }
     
     class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -22,12 +22,12 @@ final class Bug445$impl<T> {
         Inner() {
         }
         
-        private final void t$priv(final T t) {
+        private final void t$priv$(final T t) {
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445.class, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445$impl.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445$impl.Inner.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445.class, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445$impl.Inner.class));
         }
     }
 }

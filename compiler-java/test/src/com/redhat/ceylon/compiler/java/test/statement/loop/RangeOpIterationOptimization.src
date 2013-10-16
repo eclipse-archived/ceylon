@@ -8,119 +8,119 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
     }
     private final long start;
     
-    private final long getStart$priv() {
+    private final long getStart$priv$() {
         return start;
     }
     private final long end;
     
-    private final long getEnd$priv() {
+    private final long getEnd$priv$() {
         return end;
     }
     
-    private final void literals$priv() {
+    private final void literals$priv$() {
         long sum = 0L;
-        final long $ceylontmpstart$0 = 1L;
-        final long $ceylontmpend$1 = 10L;
-        final boolean $ceylontmpincreasing$2 = $ceylontmpstart$0 <= $ceylontmpend$1;
-        final long $ceylontmpincr$3 = $ceylontmpincreasing$2 ? 1L : -1L;
-        for (long i$4 = $ceylontmpstart$0; $ceylontmpincreasing$2 ? i$4 - $ceylontmpend$1 <= 0L : i$4 - $ceylontmpend$1 >= 0L; i$4 += $ceylontmpincr$3) {
+        final long $ceylontmp$start$0 = 1L;
+        final long $ceylontmp$end$1 = 10L;
+        final boolean $ceylontmp$increasing$2 = $ceylontmp$start$0 <= $ceylontmp$end$1;
+        final long $ceylontmp$incr$3 = $ceylontmp$increasing$2 ? 1L : -1L;
+        for (long i$4 = $ceylontmp$start$0; $ceylontmp$increasing$2 ? i$4 - $ceylontmp$end$1 <= 0L : i$4 - $ceylontmp$end$1 >= 0L; i$4 += $ceylontmp$incr$3) {
             final long i = i$4;
             sum += i;
         }
-        final int $ceylontmpstart$5 = 97;
-        final int $ceylontmpend$6 = 122;
-        final boolean $ceylontmpincreasing$7 = $ceylontmpstart$5 <= $ceylontmpend$6;
-        final int $ceylontmpincr$8 = $ceylontmpincreasing$7 ? 1 : -1;
-        for (int c$9 = $ceylontmpstart$5; $ceylontmpincreasing$7 ? c$9 - $ceylontmpend$6 <= 0 : c$9 - $ceylontmpend$6 >= 0; c$9 += $ceylontmpincr$8) {
+        final int $ceylontmp$start$5 = 97;
+        final int $ceylontmp$end$6 = 122;
+        final boolean $ceylontmp$increasing$7 = $ceylontmp$start$5 <= $ceylontmp$end$6;
+        final int $ceylontmp$incr$8 = $ceylontmp$increasing$7 ? 1 : -1;
+        for (int c$9 = $ceylontmp$start$5; $ceylontmp$increasing$7 ? c$9 - $ceylontmp$end$6 <= 0 : c$9 - $ceylontmp$end$6 >= 0; c$9 += $ceylontmp$incr$8) {
             final int c = c$9;
             sum += .ceylon.language.Character.getInteger(c);
         }
     }
     
-    private final void expressions$priv() {
+    private final void expressions$priv$() {
         long sum = 0L;
-        final long $ceylontmpstart$10 = getStart$priv();
-        final long $ceylontmpend$11 = getEnd$priv();
-        final boolean $ceylontmpincreasing$12 = $ceylontmpstart$10 <= $ceylontmpend$11;
-        final long $ceylontmpincr$13 = $ceylontmpincreasing$12 ? 1L : -1L;
-        for (long i$14 = $ceylontmpstart$10; $ceylontmpincreasing$12 ? i$14 - $ceylontmpend$11 <= 0L : i$14 - $ceylontmpend$11 >= 0L; i$14 += $ceylontmpincr$13) {
+        final long $ceylontmp$start$10 = getStart$priv$();
+        final long $ceylontmp$end$11 = getEnd$priv$();
+        final boolean $ceylontmp$increasing$12 = $ceylontmp$start$10 <= $ceylontmp$end$11;
+        final long $ceylontmp$incr$13 = $ceylontmp$increasing$12 ? 1L : -1L;
+        for (long i$14 = $ceylontmp$start$10; $ceylontmp$increasing$12 ? i$14 - $ceylontmp$end$11 <= 0L : i$14 - $ceylontmp$end$11 >= 0L; i$14 += $ceylontmp$incr$13) {
             final long i = i$14;
             sum += i;
         }
-        final long $ceylontmpstart$15 = getStart$priv() + 10L;
-        final long $ceylontmpend$16 = getEnd$priv() + 10L;
-        final boolean $ceylontmpincreasing$17 = $ceylontmpstart$15 <= $ceylontmpend$16;
-        final long $ceylontmpincr$18 = $ceylontmpincreasing$17 ? 1L : -1L;
-        for (long i$19 = $ceylontmpstart$15; $ceylontmpincreasing$17 ? i$19 - $ceylontmpend$16 <= 0L : i$19 - $ceylontmpend$16 >= 0L; i$19 += $ceylontmpincr$18) {
+        final long $ceylontmp$start$15 = getStart$priv$() + 10L;
+        final long $ceylontmp$end$16 = getEnd$priv$() + 10L;
+        final boolean $ceylontmp$increasing$17 = $ceylontmp$start$15 <= $ceylontmp$end$16;
+        final long $ceylontmp$incr$18 = $ceylontmp$increasing$17 ? 1L : -1L;
+        for (long i$19 = $ceylontmp$start$15; $ceylontmp$increasing$17 ? i$19 - $ceylontmp$end$16 <= 0L : i$19 - $ceylontmp$end$16 >= 0L; i$19 += $ceylontmp$incr$18) {
             final long i = i$19;
             sum += i;
         }
     }
     
-    private final void by$priv() {
+    private final void by$priv$() {
         long sum = 0L;
-        final long $ceylontmpstart$20 = 1L;
-        final long $ceylontmpend$21 = 10L;
-        final long $ceylontmpby$22 = 3L;
-        if ($ceylontmpby$22 <= 0) throw new .ceylon.language.AssertionException("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
-        final boolean $ceylontmpincreasing$23 = $ceylontmpstart$20 <= $ceylontmpend$21;
-        final long $ceylontmpincr$24 = $ceylontmpincreasing$23 ? $ceylontmpby$22 : -$ceylontmpby$22;
-        for (long i$25 = $ceylontmpstart$20; $ceylontmpincreasing$23 ? i$25 - $ceylontmpend$21 <= 0L : i$25 - $ceylontmpend$21 >= 0L; i$25 += $ceylontmpincr$24) {
+        final long $ceylontmp$start$20 = 1L;
+        final long $ceylontmp$end$21 = 10L;
+        final long $ceylontmp$by$22 = 3L;
+        if ($ceylontmp$by$22 <= 0) throw new .ceylon.language.AssertionException("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        final boolean $ceylontmp$increasing$23 = $ceylontmp$start$20 <= $ceylontmp$end$21;
+        final long $ceylontmp$incr$24 = $ceylontmp$increasing$23 ? $ceylontmp$by$22 : -$ceylontmp$by$22;
+        for (long i$25 = $ceylontmp$start$20; $ceylontmp$increasing$23 ? i$25 - $ceylontmp$end$21 <= 0L : i$25 - $ceylontmp$end$21 >= 0L; i$25 += $ceylontmp$incr$24) {
             final long i = i$25;
             sum += i;
         }
-        final long $ceylontmpstart$26 = 1L;
-        final long $ceylontmpend$27 = 10L;
-        final long $ceylontmpby$28 = 3L;
-        if ($ceylontmpby$28 <= 0) throw new .ceylon.language.AssertionException("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
-        final boolean $ceylontmpincreasing$29 = $ceylontmpstart$26 <= $ceylontmpend$27;
-        final long $ceylontmpincr$30 = $ceylontmpincreasing$29 ? $ceylontmpby$28 : -$ceylontmpby$28;
-        for (long i$31 = $ceylontmpstart$26; $ceylontmpincreasing$29 ? i$31 - $ceylontmpend$27 <= 0L : i$31 - $ceylontmpend$27 >= 0L; i$31 += $ceylontmpincr$30) {
+        final long $ceylontmp$start$26 = 1L;
+        final long $ceylontmp$end$27 = 10L;
+        final long $ceylontmp$by$28 = 3L;
+        if ($ceylontmp$by$28 <= 0) throw new .ceylon.language.AssertionException("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        final boolean $ceylontmp$increasing$29 = $ceylontmp$start$26 <= $ceylontmp$end$27;
+        final long $ceylontmp$incr$30 = $ceylontmp$increasing$29 ? $ceylontmp$by$28 : -$ceylontmp$by$28;
+        for (long i$31 = $ceylontmp$start$26; $ceylontmp$increasing$29 ? i$31 - $ceylontmp$end$27 <= 0L : i$31 - $ceylontmp$end$27 >= 0L; i$31 += $ceylontmp$incr$30) {
             final long i = i$31;
             sum += i;
         }
     }
     
-    private final void disabled$priv() {
+    private final void disabled$priv$() {
         long sum = 0L;
         .java.lang.Object elem$32;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iter$33 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator(); !((elem$32 = i$iter$33.next()) instanceof .ceylon.language.Finished); ) {
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$33 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator(); !((elem$32 = i$iterator$$33.next()) instanceof .ceylon.language.Finished); ) {
             final long i = ((.ceylon.language.Integer)elem$32).longValue();
             sum += i;
         }
         .java.lang.Object elem$34;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iter$35 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator(); !((elem$34 = i$iter$35.next()) instanceof .ceylon.language.Finished); ) {
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$35 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator(); !((elem$34 = i$iterator$$35.next()) instanceof .ceylon.language.Finished); ) {
             final long i = ((.ceylon.language.Integer)elem$34).longValue();
             sum += i;
         }
     }
     
-    private final void flow$priv() {
+    private final void flow$priv$() {
         long sum = 0L;
-        final long $ceylontmpstart$36 = 1L;
-        final long $ceylontmpend$37 = 10L;
-        final boolean $ceylontmpincreasing$38 = $ceylontmpstart$36 <= $ceylontmpend$37;
-        final long $ceylontmpincr$39 = $ceylontmpincreasing$38 ? 1L : -1L;
-        for (long withElse$40 = $ceylontmpstart$36; $ceylontmpincreasing$38 ? withElse$40 - $ceylontmpend$37 <= 0L : withElse$40 - $ceylontmpend$37 >= 0L; withElse$40 += $ceylontmpincr$39) {
+        final long $ceylontmp$start$36 = 1L;
+        final long $ceylontmp$end$37 = 10L;
+        final boolean $ceylontmp$increasing$38 = $ceylontmp$start$36 <= $ceylontmp$end$37;
+        final long $ceylontmp$incr$39 = $ceylontmp$increasing$38 ? 1L : -1L;
+        for (long withElse$40 = $ceylontmp$start$36; $ceylontmp$increasing$38 ? withElse$40 - $ceylontmp$end$37 <= 0L : withElse$40 - $ceylontmp$end$37 >= 0L; withElse$40 += $ceylontmp$incr$39) {
             final long withElse = withElse$40;
             sum += withElse;
         }
         sum = 0L;
-        final long $ceylontmpstart$41 = 10L;
-        final long $ceylontmpend$42 = 1L;
-        final boolean $ceylontmpincreasing$43 = $ceylontmpstart$41 <= $ceylontmpend$42;
-        final long $ceylontmpincr$44 = $ceylontmpincreasing$43 ? 1L : -1L;
-        for (long breaks$45 = $ceylontmpstart$41; $ceylontmpincreasing$43 ? breaks$45 - $ceylontmpend$42 <= 0L : breaks$45 - $ceylontmpend$42 >= 0L; breaks$45 += $ceylontmpincr$44) {
+        final long $ceylontmp$start$41 = 10L;
+        final long $ceylontmp$end$42 = 1L;
+        final boolean $ceylontmp$increasing$43 = $ceylontmp$start$41 <= $ceylontmp$end$42;
+        final long $ceylontmp$incr$44 = $ceylontmp$increasing$43 ? 1L : -1L;
+        for (long breaks$45 = $ceylontmp$start$41; $ceylontmp$increasing$43 ? breaks$45 - $ceylontmp$end$42 <= 0L : breaks$45 - $ceylontmp$end$42 >= 0L; breaks$45 += $ceylontmp$incr$44) {
             final long breaks = breaks$45;
             sum += breaks;
             break;
         }
         boolean doforelse$46 = true;
-        final long $ceylontmpstart$47 = 10L;
-        final long $ceylontmpend$48 = 1L;
-        final boolean $ceylontmpincreasing$49 = $ceylontmpstart$47 <= $ceylontmpend$48;
-        final long $ceylontmpincr$50 = $ceylontmpincreasing$49 ? 1L : -1L;
-        for (long breaksWithElse$51 = $ceylontmpstart$47; $ceylontmpincreasing$49 ? breaksWithElse$51 - $ceylontmpend$48 <= 0L : breaksWithElse$51 - $ceylontmpend$48 >= 0L; breaksWithElse$51 += $ceylontmpincr$50) {
+        final long $ceylontmp$start$47 = 10L;
+        final long $ceylontmp$end$48 = 1L;
+        final boolean $ceylontmp$increasing$49 = $ceylontmp$start$47 <= $ceylontmp$end$48;
+        final long $ceylontmp$incr$50 = $ceylontmp$increasing$49 ? 1L : -1L;
+        for (long breaksWithElse$51 = $ceylontmp$start$47; $ceylontmp$increasing$49 ? breaksWithElse$51 - $ceylontmp$end$48 <= 0L : breaksWithElse$51 - $ceylontmp$end$48 >= 0L; breaksWithElse$51 += $ceylontmp$incr$50) {
             final long breaksWithElse = breaksWithElse$51;
             sum += breaksWithElse;
             doforelse$46 = false;
@@ -130,11 +130,11 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
             sum = 0L;
         }
         boolean doforelse$52 = true;
-        final long $ceylontmpstart$53 = 10L;
-        final long $ceylontmpend$54 = 1L;
-        final boolean $ceylontmpincreasing$55 = $ceylontmpstart$53 <= $ceylontmpend$54;
-        final long $ceylontmpincr$56 = $ceylontmpincreasing$55 ? 1L : -1L;
-        for (long breaksWithElse$57 = $ceylontmpstart$53; $ceylontmpincreasing$55 ? breaksWithElse$57 - $ceylontmpend$54 <= 0L : breaksWithElse$57 - $ceylontmpend$54 >= 0L; breaksWithElse$57 += $ceylontmpincr$56) {
+        final long $ceylontmp$start$53 = 10L;
+        final long $ceylontmp$end$54 = 1L;
+        final boolean $ceylontmp$increasing$55 = $ceylontmp$start$53 <= $ceylontmp$end$54;
+        final long $ceylontmp$incr$56 = $ceylontmp$increasing$55 ? 1L : -1L;
+        for (long breaksWithElse$57 = $ceylontmp$start$53; $ceylontmp$increasing$55 ? breaksWithElse$57 - $ceylontmp$end$54 <= 0L : breaksWithElse$57 - $ceylontmp$end$54 >= 0L; breaksWithElse$57 += $ceylontmp$incr$56) {
             final long breaksWithElse = breaksWithElse$57;
             sum += breaksWithElse;
             if (breaksWithElse == 5L) {
@@ -145,21 +145,21 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
         if (doforelse$52) {
             sum = 0L;
         }
-        final long $ceylontmpstart$59 = 10L;
-        final long $ceylontmpend$60 = 1L;
-        final boolean $ceylontmpincreasing$61 = $ceylontmpstart$59 <= $ceylontmpend$60;
-        final long $ceylontmpincr$62 = $ceylontmpincreasing$61 ? 1L : -1L;
-        for (long returns$63 = $ceylontmpstart$59; $ceylontmpincreasing$61 ? returns$63 - $ceylontmpend$60 <= 0L : returns$63 - $ceylontmpend$60 >= 0L; returns$63 += $ceylontmpincr$62) {
+        final long $ceylontmp$start$59 = 10L;
+        final long $ceylontmp$end$60 = 1L;
+        final boolean $ceylontmp$increasing$61 = $ceylontmp$start$59 <= $ceylontmp$end$60;
+        final long $ceylontmp$incr$62 = $ceylontmp$increasing$61 ? 1L : -1L;
+        for (long returns$63 = $ceylontmp$start$59; $ceylontmp$increasing$61 ? returns$63 - $ceylontmp$end$60 <= 0L : returns$63 - $ceylontmp$end$60 >= 0L; returns$63 += $ceylontmp$incr$62) {
             final long returns = returns$63;
             sum += returns;
             break;
         }
         boolean doforelse$64 = true;
-        final long $ceylontmpstart$65 = 10L;
-        final long $ceylontmpend$66 = 1L;
-        final boolean $ceylontmpincreasing$67 = $ceylontmpstart$65 <= $ceylontmpend$66;
-        final long $ceylontmpincr$68 = $ceylontmpincreasing$67 ? 1L : -1L;
-        for (long returnsWithElse$69 = $ceylontmpstart$65; $ceylontmpincreasing$67 ? returnsWithElse$69 - $ceylontmpend$66 <= 0L : returnsWithElse$69 - $ceylontmpend$66 >= 0L; returnsWithElse$69 += $ceylontmpincr$68) {
+        final long $ceylontmp$start$65 = 10L;
+        final long $ceylontmp$end$66 = 1L;
+        final boolean $ceylontmp$increasing$67 = $ceylontmp$start$65 <= $ceylontmp$end$66;
+        final long $ceylontmp$incr$68 = $ceylontmp$increasing$67 ? 1L : -1L;
+        for (long returnsWithElse$69 = $ceylontmp$start$65; $ceylontmp$increasing$67 ? returnsWithElse$69 - $ceylontmp$end$66 <= 0L : returnsWithElse$69 - $ceylontmp$end$66 >= 0L; returnsWithElse$69 += $ceylontmp$incr$68) {
             final long returnsWithElse = returnsWithElse$69;
             sum += returnsWithElse;
             doforelse$64 = false;
@@ -169,11 +169,11 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
             sum = 0L;
         }
         boolean doforelse$70 = true;
-        final long $ceylontmpstart$71 = 10L;
-        final long $ceylontmpend$72 = 1L;
-        final boolean $ceylontmpincreasing$73 = $ceylontmpstart$71 <= $ceylontmpend$72;
-        final long $ceylontmpincr$74 = $ceylontmpincreasing$73 ? 1L : -1L;
-        for (long returnsWithElse$75 = $ceylontmpstart$71; $ceylontmpincreasing$73 ? returnsWithElse$75 - $ceylontmpend$72 <= 0L : returnsWithElse$75 - $ceylontmpend$72 >= 0L; returnsWithElse$75 += $ceylontmpincr$74) {
+        final long $ceylontmp$start$71 = 10L;
+        final long $ceylontmp$end$72 = 1L;
+        final boolean $ceylontmp$increasing$73 = $ceylontmp$start$71 <= $ceylontmp$end$72;
+        final long $ceylontmp$incr$74 = $ceylontmp$increasing$73 ? 1L : -1L;
+        for (long returnsWithElse$75 = $ceylontmp$start$71; $ceylontmp$increasing$73 ? returnsWithElse$75 - $ceylontmp$end$72 <= 0L : returnsWithElse$75 - $ceylontmp$end$72 >= 0L; returnsWithElse$75 += $ceylontmp$incr$74) {
             final long returnsWithElse = returnsWithElse$75;
             sum += returnsWithElse;
             if (returnsWithElse == 5L) {
@@ -184,21 +184,21 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
         if (doforelse$70) {
             sum = 0L;
         }
-        final long $ceylontmpstart$77 = 10L;
-        final long $ceylontmpend$78 = 1L;
-        final boolean $ceylontmpincreasing$79 = $ceylontmpstart$77 <= $ceylontmpend$78;
-        final long $ceylontmpincr$80 = $ceylontmpincreasing$79 ? 1L : -1L;
-        for (long throws$81 = $ceylontmpstart$77; $ceylontmpincreasing$79 ? throws$81 - $ceylontmpend$78 <= 0L : throws$81 - $ceylontmpend$78 >= 0L; throws$81 += $ceylontmpincr$80) {
+        final long $ceylontmp$start$77 = 10L;
+        final long $ceylontmp$end$78 = 1L;
+        final boolean $ceylontmp$increasing$79 = $ceylontmp$start$77 <= $ceylontmp$end$78;
+        final long $ceylontmp$incr$80 = $ceylontmp$increasing$79 ? 1L : -1L;
+        for (long throws$81 = $ceylontmp$start$77; $ceylontmp$increasing$79 ? throws$81 - $ceylontmp$end$78 <= 0L : throws$81 - $ceylontmp$end$78 >= 0L; throws$81 += $ceylontmp$incr$80) {
             final long throws = throws$81;
             sum += throws;
             break;
         }
         boolean doforelse$82 = true;
-        final long $ceylontmpstart$83 = 10L;
-        final long $ceylontmpend$84 = 1L;
-        final boolean $ceylontmpincreasing$85 = $ceylontmpstart$83 <= $ceylontmpend$84;
-        final long $ceylontmpincr$86 = $ceylontmpincreasing$85 ? 1L : -1L;
-        for (long throwsWithElse$87 = $ceylontmpstart$83; $ceylontmpincreasing$85 ? throwsWithElse$87 - $ceylontmpend$84 <= 0L : throwsWithElse$87 - $ceylontmpend$84 >= 0L; throwsWithElse$87 += $ceylontmpincr$86) {
+        final long $ceylontmp$start$83 = 10L;
+        final long $ceylontmp$end$84 = 1L;
+        final boolean $ceylontmp$increasing$85 = $ceylontmp$start$83 <= $ceylontmp$end$84;
+        final long $ceylontmp$incr$86 = $ceylontmp$increasing$85 ? 1L : -1L;
+        for (long throwsWithElse$87 = $ceylontmp$start$83; $ceylontmp$increasing$85 ? throwsWithElse$87 - $ceylontmp$end$84 <= 0L : throwsWithElse$87 - $ceylontmp$end$84 >= 0L; throwsWithElse$87 += $ceylontmp$incr$86) {
             final long throwsWithElse = throwsWithElse$87;
             sum += throwsWithElse;
             doforelse$82 = false;
@@ -208,11 +208,11 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
             sum = 0L;
         }
         boolean doforelse$88 = true;
-        final long $ceylontmpstart$89 = 10L;
-        final long $ceylontmpend$90 = 1L;
-        final boolean $ceylontmpincreasing$91 = $ceylontmpstart$89 <= $ceylontmpend$90;
-        final long $ceylontmpincr$92 = $ceylontmpincreasing$91 ? 1L : -1L;
-        for (long throwsWithElse$93 = $ceylontmpstart$89; $ceylontmpincreasing$91 ? throwsWithElse$93 - $ceylontmpend$90 <= 0L : throwsWithElse$93 - $ceylontmpend$90 >= 0L; throwsWithElse$93 += $ceylontmpincr$92) {
+        final long $ceylontmp$start$89 = 10L;
+        final long $ceylontmp$end$90 = 1L;
+        final boolean $ceylontmp$increasing$91 = $ceylontmp$start$89 <= $ceylontmp$end$90;
+        final long $ceylontmp$incr$92 = $ceylontmp$increasing$91 ? 1L : -1L;
+        for (long throwsWithElse$93 = $ceylontmp$start$89; $ceylontmp$increasing$91 ? throwsWithElse$93 - $ceylontmp$end$90 <= 0L : throwsWithElse$93 - $ceylontmp$end$90 >= 0L; throwsWithElse$93 += $ceylontmp$incr$92) {
             final long throwsWithElse = throwsWithElse$93;
             sum += throwsWithElse;
             if (throwsWithElse == 5L) {
@@ -225,12 +225,12 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
         }
     }
     
-    private final void captured$priv() {
-        final long $ceylontmpstart$95 = 0L;
-        final long $ceylontmpend$96 = 10L;
-        final boolean $ceylontmpincreasing$97 = $ceylontmpstart$95 <= $ceylontmpend$96;
-        final long $ceylontmpincr$98 = $ceylontmpincreasing$97 ? 1L : -1L;
-        for (long i$99 = $ceylontmpstart$95; $ceylontmpincreasing$97 ? i$99 - $ceylontmpend$96 <= 0L : i$99 - $ceylontmpend$96 >= 0L; i$99 += $ceylontmpincr$98) {
+    private final void captured$priv$() {
+        final long $ceylontmp$start$95 = 0L;
+        final long $ceylontmp$end$96 = 10L;
+        final boolean $ceylontmp$increasing$97 = $ceylontmp$start$95 <= $ceylontmp$end$96;
+        final long $ceylontmp$incr$98 = $ceylontmp$increasing$97 ? 1L : -1L;
+        for (long i$99 = $ceylontmp$start$95; $ceylontmp$increasing$97 ? i$99 - $ceylontmp$end$96 <= 0L : i$99 - $ceylontmp$end$96 >= 0L; i$99 += $ceylontmp$incr$98) {
             final long i = i$99;
             
             final class x_ {
@@ -247,8 +247,8 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.loop.OptimizedForWithRange.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.OptimizedForWithRange.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.OptimizedForWithRange.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.OptimizedForWithRange.class);
 }

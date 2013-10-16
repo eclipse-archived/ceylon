@@ -4,53 +4,53 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     AnythingBoxing() {
         this.valueAnything = .ceylon.language.Integer.instance(1L);
-        this.variableAnything = getValueAnything$priv();
+        this.variableAnything = getValueAnything$priv$();
     }
     private final .java.lang.Object valueAnything;
     
-    private final .java.lang.Object getValueAnything$priv() {
+    private final .java.lang.Object getValueAnything$priv$() {
         return valueAnything;
     }
     private .java.lang.Object variableAnything;
     
-    private final .java.lang.Object getVariableAnything$priv() {
+    private final .java.lang.Object getVariableAnything$priv$() {
         return variableAnything;
     }
     
-    private final void setVariableAnything$priv(final .java.lang.Object variableAnything) {
+    private final void setVariableAnything$priv$(final .java.lang.Object variableAnything) {
         this.variableAnything = variableAnything;
     }
     
-    private final .java.lang.Object getGetterAnything$priv() {
-        return getVariableAnything$priv();
+    private final .java.lang.Object getGetterAnything$priv$() {
+        return getVariableAnything$priv$();
     }
     
-    private final void setGetterAnything$priv(final .java.lang.Object getterAnything) {
-        setVariableAnything$priv(getterAnything);
+    private final void setGetterAnything$priv$(final .java.lang.Object getterAnything) {
+        setVariableAnything$priv$(getterAnything);
     }
     
-    private final void returnsvoid$priv(final .java.lang.Object v) {
+    private final void returnsvoid$priv$(final .java.lang.Object v) {
     }
     
-    private final .java.lang.Object returnsAnything$priv(final .java.lang.Object v) {
+    private final .java.lang.Object returnsAnything$priv$(final .java.lang.Object v) {
         return v;
     }
     
-    private final void callablevoid$priv(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
-        f.$call(getValueAnything$priv());
+    private final void callablevoid$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+        f.$call$(getValueAnything$priv$());
     }
     
-    private final .java.lang.Object callableAnything$priv(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
-        return f.$call(getValueAnything$priv());
+    private final .java.lang.Object callableAnything$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+        return f.$call$(getValueAnything$priv$());
     }
     
-    private final void test$priv() {
-        final .java.lang.Object v1 = getValueAnything$priv();
-        final .java.lang.Object v2 = getGetterAnything$priv();
+    private final void test$priv$() {
+        final .java.lang.Object v1 = getValueAnything$priv$();
+        final .java.lang.Object v2 = getGetterAnything$priv$();
         final .java.lang.Object v3 = (
             let
             {
-                returnsvoid$priv(.ceylon.language.String.instance(""));
+                returnsvoid$priv$(.ceylon.language.String.instance(""));
             }
             returning null;
         );
@@ -61,49 +61,49 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     let
                     {
                         .java.lang.Object arg$0$0 = .ceylon.language.String.instance("");
-                        returnsvoid$priv(arg$0$0);
+                        returnsvoid$priv$(arg$0$0);
                     }
                     returning null;
                 );
             }
             returning null;
         );
-        final .java.lang.Object v5 = returnsAnything$priv(.ceylon.language.String.instance(""));
+        final .java.lang.Object v5 = returnsAnything$priv$(.ceylon.language.String.instance(""));
         final .java.lang.Object v6 = (
             let
             {
                 .java.lang.Object arg$1$0 = .ceylon.language.String.instance("");
             }
-            returning returnsAnything$priv(arg$1$0);
+            returning returnsAnything$priv$(arg$1$0);
         );
-        returnsvoid$priv((
+        returnsvoid$priv$((
             let
             {
-                returnsvoid$priv(.ceylon.language.String.instance(""));
+                returnsvoid$priv$(.ceylon.language.String.instance(""));
             }
             returning null;
         ));
-        returnsvoid$priv(returnsAnything$priv(.ceylon.language.String.instance("")));
-        returnsAnything$priv((
+        returnsvoid$priv$(returnsAnything$priv$(.ceylon.language.String.instance("")));
+        returnsAnything$priv$((
             let
             {
-                returnsvoid$priv(.ceylon.language.String.instance(""));
+                returnsvoid$priv$(.ceylon.language.String.instance(""));
             }
             returning null;
         ));
-        returnsAnything$priv(returnsAnything$priv(.ceylon.language.String.instance("")));
+        returnsAnything$priv$(returnsAnything$priv$(.ceylon.language.String.instance("")));
         final .java.lang.Object v7 = (
             let
             {
-                callablevoid$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(Anything)", (short)-1){
+                callablevoid$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1){
                     
                     @.java.lang.Override
-                    public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                        final .java.lang.Object $ceylontmpv = $param$0;
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                        final .java.lang.Object $ceylontmp$v = $param$0;
                         return (
                             let
                             {
-                                .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsvoid$priv($ceylontmpv);
+                                .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsvoid$priv$($ceylontmp$v);
                             }
                             returning null;
                         );
@@ -115,46 +115,46 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
         final .java.lang.Object v8 = (
             let
             {
-                callablevoid$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(Anything)", (short)-1){
+                callablevoid$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1){
                     
                     @.java.lang.Override
-                    public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                        final .java.lang.Object $ceylontmpv = $param$0;
-                        return .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsAnything$priv($ceylontmpv);
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                        final .java.lang.Object $ceylontmp$v = $param$0;
+                        return .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsAnything$priv$($ceylontmp$v);
                     }
                 });
             }
             returning null;
         );
-        final .java.lang.Object v9 = callableAnything$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(Anything)", (short)-1){
+        final .java.lang.Object v9 = callableAnything$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .java.lang.Object $ceylontmpv = $param$0;
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$v = $param$0;
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsvoid$priv($ceylontmpv);
+                        .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsvoid$priv$($ceylontmp$v);
                     }
                     returning null;
                 );
             }
         });
-        final .java.lang.Object v10 = callableAnything$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(Anything)", (short)-1){
+        final .java.lang.Object v10 = callableAnything$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .java.lang.Object $ceylontmpv = $param$0;
-                return .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsAnything$priv($ceylontmpv);
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$v = $param$0;
+                return .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsAnything$priv$($ceylontmp$v);
             }
         });
         final .java.lang.Object v11 = (
             let
             {
-                callablevoid$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(Anything)", (short)-1){
+                callablevoid$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1){
                     
                     @.java.lang.Override
-                    public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
                         final .java.lang.Object s = $param$0;
                         return s;
                     }
@@ -162,21 +162,21 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
             }
             returning null;
         );
-        final .java.lang.Object v12 = callableAnything$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(Anything)", (short)-1){
+        final .java.lang.Object v12 = callableAnything$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
                 final .java.lang.Object s = $param$0;
                 return s;
             }
         });
         .java.lang.Object v = null;
-        v = getValueAnything$priv();
-        v = getGetterAnything$priv();
+        v = getValueAnything$priv$();
+        v = getGetterAnything$priv$();
         v = (
             let
             {
-                returnsvoid$priv(.ceylon.language.String.instance(""));
+                returnsvoid$priv$(.ceylon.language.String.instance(""));
             }
             returning null;
         );
@@ -187,33 +187,33 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     let
                     {
                         .java.lang.Object arg$2$0 = .ceylon.language.String.instance("");
-                        returnsvoid$priv(arg$2$0);
+                        returnsvoid$priv$(arg$2$0);
                     }
                     returning null;
                 );
             }
             returning null;
         );
-        v = returnsAnything$priv(.ceylon.language.String.instance(""));
+        v = returnsAnything$priv$(.ceylon.language.String.instance(""));
         v = (
             let
             {
                 .java.lang.Object arg$3$0 = .ceylon.language.String.instance("");
             }
-            returning returnsAnything$priv(arg$3$0);
+            returning returnsAnything$priv$(arg$3$0);
         );
         v = (
             let
             {
-                callablevoid$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(Anything)", (short)-1){
+                callablevoid$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1){
                     
                     @.java.lang.Override
-                    public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                        final .java.lang.Object $ceylontmpv = $param$0;
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                        final .java.lang.Object $ceylontmp$v = $param$0;
                         return (
                             let
                             {
-                                .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsvoid$priv($ceylontmpv);
+                                .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsvoid$priv$($ceylontmp$v);
                             }
                             returning null;
                         );
@@ -225,46 +225,46 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
         v = (
             let
             {
-                callablevoid$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(Anything)", (short)-1){
+                callablevoid$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1){
                     
                     @.java.lang.Override
-                    public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                        final .java.lang.Object $ceylontmpv = $param$0;
-                        return .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsAnything$priv($ceylontmpv);
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                        final .java.lang.Object $ceylontmp$v = $param$0;
+                        return .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsAnything$priv$($ceylontmp$v);
                     }
                 });
             }
             returning null;
         );
-        v = callableAnything$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(Anything)", (short)-1){
+        v = callableAnything$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .java.lang.Object $ceylontmpv = $param$0;
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$v = $param$0;
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsvoid$priv($ceylontmpv);
+                        .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsvoid$priv$($ceylontmp$v);
                     }
                     returning null;
                 );
             }
         });
-        v = callableAnything$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(Anything)", (short)-1){
+        v = callableAnything$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .java.lang.Object $ceylontmpv = $param$0;
-                return .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsAnything$priv($ceylontmpv);
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$v = $param$0;
+                return .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.this.returnsAnything$priv$($ceylontmp$v);
             }
         });
         v = (
             let
             {
-                callablevoid$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(Anything)", (short)-1){
+                callablevoid$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1){
                     
                     @.java.lang.Override
-                    public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
                         final .java.lang.Object s = $param$0;
                         return s;
                     }
@@ -272,10 +272,10 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
             }
             returning null;
         );
-        v = callableAnything$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(Anything)", (short)-1){
+        v = callableAnything$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
                 final .java.lang.Object s = $param$0;
                 return s;
             }
@@ -288,8 +288,8 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.class);
 }

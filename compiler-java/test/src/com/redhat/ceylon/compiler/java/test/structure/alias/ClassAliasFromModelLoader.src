@@ -8,8 +8,8 @@ final class classAliasFromModelLoader_ {
     static void classAliasFromModelLoader() {
         final .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAlias_Foo a = new .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAlias_Foo();
         final .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo b = new .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo(1L, "a");
-        final .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer> c = new .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L));
-        final .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer> d = new .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L));
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer> c = new .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L));
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer> d = new .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L));
     }
     
     public static void main(.java.lang.String[] args) {

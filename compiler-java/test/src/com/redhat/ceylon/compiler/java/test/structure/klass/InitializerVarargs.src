@@ -6,8 +6,8 @@ class InitializerVarargs implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$fs$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                this(f, $ceylontmp$fs$$0);
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$fs$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this(f, $ceylontmp$$fs$$0);
             }
             returning null;
         );
@@ -15,14 +15,14 @@ class InitializerVarargs implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     InitializerVarargs(final .java.lang.String f, final .ceylon.language.Sequential<? extends .ceylon.language.String> fs) {
         .java.lang.Object elem$1;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.String> ff$iter$2 = fs.iterator(); !((elem$1 = ff$iter$2.next()) instanceof .ceylon.language.Finished); ) {
+        for (.ceylon.language.Iterator<? extends .ceylon.language.String> ff$iterator$$2 = fs.iterator(); !((elem$1 = ff$iterator$$2.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.String ff = ((.ceylon.language.String)elem$1).toString();
         }
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.InitializerVarargs.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.InitializerVarargs.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InitializerVarargs.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InitializerVarargs.class);
 }

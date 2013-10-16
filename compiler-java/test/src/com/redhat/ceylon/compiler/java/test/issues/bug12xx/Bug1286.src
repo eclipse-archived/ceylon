@@ -38,15 +38,15 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                         
                         final class Consumer$impl<E> {
                             
-                            Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$setterArgument$2$Consumer_<? super E> $this) {
-                                this.$reifiedE = $reifiedE;
+                            Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$setterArgument$2$Consumer_<? super E> $this) {
+                                this.$reified$E = $reified$E;
                                 this.$this = $this;
                             }
-                            private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE;
+                            private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E;
                             private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$setterArgument$2$Consumer_<? super E> $this;
                             
-                            public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE) {
-                                this.$reifiedE = $reifiedE;
+                            public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E) {
+                                this.$reified$E = $reified$E;
                             }
                             
                             public void add(final E e) {
@@ -57,24 +57,24 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                 }
                 final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> setterArgument$2 = new setterArgument$2();
                 final .java.lang.String arg$1$0 = setterArgument$2.get_();
-                .ceylon.language.Callable arg$1$1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+                .ceylon.language.Callable arg$1$1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
                     
                     @.java.lang.Override
-                    public .java.lang.Object $call() {
+                    public .java.lang.Object $call$() {
                         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$methodArgument$3$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$methodArgument$3$Consumer_).ceylon.language.nothing_.get_();
                         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$methodArgument$3$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$methodArgument$3$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$methodArgument$3$Consumer_)times1;
                         
                         final class Consumer$impl<E> {
                             
-                            Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$methodArgument$3$Consumer_<? super E> $this) {
-                                this.$reifiedE = $reifiedE;
+                            Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$methodArgument$3$Consumer_<? super E> $this) {
+                                this.$reified$E = $reified$E;
                                 this.$this = $this;
                             }
-                            private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE;
+                            private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E;
                             private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$methodArgument$3$Consumer_<? super E> $this;
                             
-                            public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE) {
-                                this.$reifiedE = $reifiedE;
+                            public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E) {
+                                this.$reified$E = $reified$E;
                             }
                             
                             public void add(final E e) {
@@ -99,9 +99,9 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                         return (int)(
                             let
                             {
-                                long $ceylontmphash$3 = hash;
+                                long $ceylontmp$hash$3 = hash;
                             }
-                            returning $ceylontmphash$3 ^ $ceylontmphash$3 >>> 32;
+                            returning $ceylontmp$hash$3 ^ $ceylontmp$hash$3 >>> 32;
                         );
                     }
                     
@@ -112,15 +112,15 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                     
                     final class Consumer$impl<E> {
                         
-                        Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$objectArgument$Consumer_<? super E> $this) {
-                            this.$reifiedE = $reifiedE;
+                        Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$objectArgument$Consumer_<? super E> $this) {
+                            this.$reified$E = $reified$E;
                             this.$this = $this;
                         }
-                        private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE;
+                        private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E;
                         private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$objectArgument$Consumer_<? super E> $this;
                         
-                        public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE) {
-                            this.$reifiedE = $reifiedE;
+                        public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E) {
+                            this.$reified$E = $reified$E;
                         }
                         
                         public void add(final E e) {
@@ -128,12 +128,12 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                     }
                     
                     @.java.lang.Override
-                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(objectArgument_.class);
                     }
                 }
                 final objectArgument_ arg$1$2 = new objectArgument_();
-                m$priv(arg$1$0, arg$1$1, arg$1$2);
+                m$priv$(arg$1$0, arg$1$1, arg$1$2);
             }
             returning null;
         );
@@ -145,9 +145,9 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
         return (int)(
             let
             {
-                long $ceylontmphash$0 = hash;
+                long $ceylontmp$hash$0 = hash;
             }
-            returning $ceylontmphash$0 ^ $ceylontmphash$0 >>> 32;
+            returning $ceylontmp$hash$0 ^ $ceylontmp$hash$0 >>> 32;
         );
     }
     
@@ -156,7 +156,7 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
         return false;
     }
     
-    private final void m$priv(final .java.lang.String setterArgument, final .ceylon.language.Callable<? extends .java.lang.Object> methodArgument, final .java.lang.Object objectArgument) {
+    private final void m$priv$(final .java.lang.String setterArgument, final .ceylon.language.Callable<? extends .java.lang.Object> methodArgument, final .java.lang.Object objectArgument) {
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_[] value;
     static {
@@ -172,7 +172,7 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.class);
     }
 }
@@ -210,9 +210,9 @@ final class bug1286_method_ {
                                 return (int)(
                                     let
                                     {
-                                        long $ceylontmphash$6 = hash;
+                                        long $ceylontmp$hash$6 = hash;
                                     }
-                                    returning $ceylontmphash$6 ^ $ceylontmphash$6 >>> 32;
+                                    returning $ceylontmp$hash$6 ^ $ceylontmp$hash$6 >>> 32;
                                 );
                             }
                             
@@ -223,15 +223,15 @@ final class bug1286_method_ {
                             
                             final class Consumer$impl<E> {
                                 
-                                Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method$5$bug1286_method$6$bug1286_method$7$objectArgument$Consumer_<? super E> $this) {
-                                    this.$reifiedE = $reifiedE;
+                                Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method$5$bug1286_method$6$bug1286_method$7$objectArgument$Consumer_<? super E> $this) {
+                                    this.$reified$E = $reified$E;
                                     this.$this = $this;
                                 }
-                                private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE;
+                                private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E;
                                 private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method$5$bug1286_method$6$bug1286_method$7$objectArgument$Consumer_<? super E> $this;
                                 
-                                public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE) {
-                                    this.$reifiedE = $reifiedE;
+                                public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E) {
+                                    this.$reified$E = $reified$E;
                                 }
                                 
                                 public void add(final E e) {
@@ -239,7 +239,7 @@ final class bug1286_method_ {
                             }
                             
                             @.java.lang.Override
-                            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(objectArgument_.class);
                             }
                         }
@@ -283,9 +283,9 @@ class Bug1286_initializer implements .com.redhat.ceylon.compiler.java.runtime.mo
                                 return (int)(
                                     let
                                     {
-                                        long $ceylontmphash$9 = hash;
+                                        long $ceylontmp$hash$9 = hash;
                                     }
-                                    returning $ceylontmphash$9 ^ $ceylontmphash$9 >>> 32;
+                                    returning $ceylontmp$hash$9 ^ $ceylontmp$hash$9 >>> 32;
                                 );
                             }
                             
@@ -296,15 +296,15 @@ class Bug1286_initializer implements .com.redhat.ceylon.compiler.java.runtime.mo
                             
                             final class Consumer$impl<E> {
                                 
-                                Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer$Bug1286_initializer$1$Bug1286_initializer$2$objectArgument$Consumer<? super E> $this) {
-                                    this.$reifiedE = $reifiedE;
+                                Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer$Bug1286_initializer$1$Bug1286_initializer$2$objectArgument$Consumer<? super E> $this) {
+                                    this.$reified$E = $reified$E;
                                     this.$this = $this;
                                 }
-                                private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE;
+                                private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E;
                                 private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer$Bug1286_initializer$1$Bug1286_initializer$2$objectArgument$Consumer<? super E> $this;
                                 
-                                public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE) {
-                                    this.$reifiedE = $reifiedE;
+                                public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E) {
+                                    this.$reified$E = $reified$E;
                                 }
                                 
                                 public void add(final E e) {
@@ -312,7 +312,7 @@ class Bug1286_initializer implements .com.redhat.ceylon.compiler.java.runtime.mo
                             }
                             
                             @.java.lang.Override
-                            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(objectArgument_.class);
                             }
                         }
@@ -326,10 +326,10 @@ class Bug1286_initializer implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer.class);
 }
 interface bug1286_getterSetter$0$getterSetter$1$Consumer_<E> {
     
@@ -356,9 +356,9 @@ final class bug1286_getterSetter_ {
     
     public static .java.lang.String get_() {
         
-        final class getterSetter$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+        final class getterSetter$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
             
-            private getterSetter$getter_() {
+            private getterSetter$getter$_() {
             }
             
             public .java.lang.String get_() {
@@ -367,15 +367,15 @@ final class bug1286_getterSetter_ {
                 
                 final class Consumer$impl<E> {
                     
-                    Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$0$getterSetter$1$Consumer_<? super E> $this) {
-                        this.$reifiedE = $reifiedE;
+                    Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$0$getterSetter$1$Consumer_<? super E> $this) {
+                        this.$reified$E = $reified$E;
                         this.$this = $this;
                     }
-                    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE;
+                    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E;
                     private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$0$getterSetter$1$Consumer_<? super E> $this;
                     
-                    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE) {
-                        this.$reifiedE = $reifiedE;
+                    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E) {
+                        this.$reified$E = $reified$E;
                     }
                     
                     public void add(final E e) {
@@ -384,11 +384,11 @@ final class bug1286_getterSetter_ {
                 return "";
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> getterSetter$getter_ = new getterSetter$getter_();
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> getterSetter$getter$_ = new getterSetter$getter$_();
         
-        final class getterSetter$setter_ {
+        final class getterSetter$setter$_ {
             
-            private getterSetter$setter_() {
+            private getterSetter$setter$_() {
             }
             private .java.lang.String value;
             
@@ -398,15 +398,15 @@ final class bug1286_getterSetter_ {
                 
                 final class Consumer$impl<E> {
                     
-                    Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$0$getterSetter$2$Consumer_<? super E> $this) {
-                        this.$reifiedE = $reifiedE;
+                    Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$0$getterSetter$2$Consumer_<? super E> $this) {
+                        this.$reified$E = $reified$E;
                         this.$this = $this;
                     }
-                    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE;
+                    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E;
                     private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$0$getterSetter$2$Consumer_<? super E> $this;
                     
-                    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE) {
-                        this.$reifiedE = $reifiedE;
+                    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E) {
+                        this.$reified$E = $reified$E;
                     }
                     
                     public void add(final E e) {
@@ -414,7 +414,7 @@ final class bug1286_getterSetter_ {
                 }
             }
         }
-        final getterSetter$setter_ getterSetter$setter_ = new getterSetter$setter_();
+        final getterSetter$setter$_ getterSetter$setter$_ = new getterSetter$setter$_();
         return "";
     }
     
@@ -435,9 +435,9 @@ final class bug1286_getterSetter_ {
                 return (int)(
                     let
                     {
-                        long $ceylontmphash$10 = hash;
+                        long $ceylontmp$hash$10 = hash;
                     }
-                    returning $ceylontmphash$10 ^ $ceylontmphash$10 >>> 32;
+                    returning $ceylontmp$hash$10 ^ $ceylontmp$hash$10 >>> 32;
                 );
             }
             
@@ -448,15 +448,15 @@ final class bug1286_getterSetter_ {
             
             final class Consumer$impl<E> {
                 
-                Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$3$objectDefinition$Consumer_<? super E> $this) {
-                    this.$reifiedE = $reifiedE;
+                Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$3$objectDefinition$Consumer_<? super E> $this) {
+                    this.$reified$E = $reified$E;
                     this.$this = $this;
                 }
-                private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE;
+                private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E;
                 private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$3$objectDefinition$Consumer_<? super E> $this;
                 
-                public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE) {
-                    this.$reifiedE = $reifiedE;
+                public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E) {
+                    this.$reified$E = $reified$E;
                 }
                 
                 public void add(final E e) {
@@ -464,7 +464,7 @@ final class bug1286_getterSetter_ {
             }
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(objectDefinition_.class);
             }
         }

@@ -9,24 +9,24 @@ final class defaultedParameter_ {
         return (
             let
             {
-                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$f$$0 = .com.redhat.ceylon.compiler.java.test.expression.lambda.defaultedParameter_.defaultedParameter$f();
+                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$$f$$0 = .com.redhat.ceylon.compiler.java.test.expression.lambda.defaultedParameter_.defaultedParameter$f();
             }
-            returning defaultedParameter($ceylontmp$f$$0);
+            returning defaultedParameter($ceylontmp$$f$$0);
         );
     }
     
     static final .ceylon.language.Callable<? extends .ceylon.language.String> defaultedParameter$f() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.String $call() {
+            public .ceylon.language.String $call$() {
                 return .ceylon.language.String.instance("bye");
             }
         };
     }
     
     static .java.lang.String defaultedParameter(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
-        return f.$call().toString();
+        return f.$call$().toString();
     }
     
     public static void main(.java.lang.String[] args) {

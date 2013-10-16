@@ -5,48 +5,48 @@ class MethodWithVariableParameter implements .com.redhat.ceylon.compiler.java.ru
     MethodWithVariableParameter() {
     }
     
-    private final void methodWithVariableParameter$priv(long i) {
+    private final void methodWithVariableParameter$priv$(long i) {
         i = 0L;
         (
             let
             {
-                long $ceylontmpop$0 = i;
-                i = $ceylontmpop$0 + 1;
+                long $ceylontmp$op$0 = i;
+                i = $ceylontmp$op$0 + 1;
             }
-            returning $ceylontmpop$0;
+            returning $ceylontmp$op$0;
         );
         (
             let
             {
-                long $ceylontmpop$1 = i + 1L;
-                i = $ceylontmpop$1;
+                long $ceylontmp$op$1 = i + 1L;
+                i = $ceylontmp$op$1;
             }
-            returning $ceylontmpop$1;
+            returning $ceylontmp$op$1;
         );
     }
     
-    private final void methodWithHiddenVariableParameter$priv(long i) {
+    private final void methodWithHiddenVariableParameter$priv$(long i) {
         i = 0L;
         (
             let
             {
-                long $ceylontmpop$2 = i;
-                i = $ceylontmpop$2 + 1;
+                long $ceylontmp$op$2 = i;
+                i = $ceylontmp$op$2 + 1;
             }
-            returning $ceylontmpop$2;
+            returning $ceylontmp$op$2;
         );
         (
             let
             {
-                long $ceylontmpop$3 = i + 1L;
-                i = $ceylontmpop$3;
+                long $ceylontmp$op$3 = i + 1L;
+                i = $ceylontmp$op$3;
             }
-            returning $ceylontmpop$3;
+            returning $ceylontmp$op$3;
         );
     }
     
-    private final void methodWithVariableParameterCaptured$priv(final long i$param) {
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(i$param);
+    private final void methodWithVariableParameterCaptured$priv$(final long i$param$) {
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(i$param$);
         
         final class fn_ {
             
@@ -58,26 +58,26 @@ class MethodWithVariableParameter implements .com.redhat.ceylon.compiler.java.ru
                 (
                     let
                     {
-                        long $ceylontmpop$4 = i.ref;
-                        i.ref = $ceylontmpop$4 + 1;
+                        long $ceylontmp$op$4 = i.ref;
+                        i.ref = $ceylontmp$op$4 + 1;
                     }
-                    returning $ceylontmpop$4;
+                    returning $ceylontmp$op$4;
                 );
                 (
                     let
                     {
-                        long $ceylontmpop$5 = i.ref + 1L;
-                        i.ref = $ceylontmpop$5;
+                        long $ceylontmp$op$5 = i.ref + 1L;
+                        i.ref = $ceylontmp$op$5;
                     }
-                    returning $ceylontmpop$5;
+                    returning $ceylontmp$op$5;
                 );
             }
         }
         final fn_ fn = new fn_();
     }
     
-    private final void methodWithHiddenVariableParameterCaptured$priv(final long i$param) {
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(i$param);
+    private final void methodWithHiddenVariableParameterCaptured$priv$(final long i$param$) {
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(i$param$);
         
         final class fn_ {
             
@@ -89,18 +89,18 @@ class MethodWithVariableParameter implements .com.redhat.ceylon.compiler.java.ru
                 (
                     let
                     {
-                        long $ceylontmpop$6 = i.ref;
-                        i.ref = $ceylontmpop$6 + 1;
+                        long $ceylontmp$op$6 = i.ref;
+                        i.ref = $ceylontmp$op$6 + 1;
                     }
-                    returning $ceylontmpop$6;
+                    returning $ceylontmp$op$6;
                 );
                 (
                     let
                     {
-                        long $ceylontmpop$7 = i.ref + 1L;
-                        i.ref = $ceylontmpop$7;
+                        long $ceylontmp$op$7 = i.ref + 1L;
+                        i.ref = $ceylontmp$op$7;
                     }
-                    returning $ceylontmpop$7;
+                    returning $ceylontmp$op$7;
                 );
             }
         }
@@ -113,8 +113,8 @@ class MethodWithVariableParameter implements .com.redhat.ceylon.compiler.java.ru
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithVariableParameter.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithVariableParameter.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithVariableParameter.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithVariableParameter.class);
 }

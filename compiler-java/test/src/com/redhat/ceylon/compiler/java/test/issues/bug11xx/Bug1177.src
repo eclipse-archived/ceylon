@@ -18,9 +18,9 @@ final class bug1177_ {
                 return (
                     let
                     {
-                        .ceylon.language.String $ceylontmp$s$$0 = m$s();
+                        .ceylon.language.String $ceylontmp$$s$$0 = m$s();
                     }
-                    returning m($ceylontmp$s$$0);
+                    returning m($ceylontmp$$s$$0);
                 );
             }
             
@@ -29,19 +29,19 @@ final class bug1177_ {
             }
             
             .java.lang.Object m(final .ceylon.language.String s) {
-                if (m == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return m.$call(s);
+                if (m == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return m.$call$(s);
             }
         }
         final m_ m = new m_();
-        m.m = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), .ceylon.language.Empty.$TypeDescriptor)), "Anything(String?=)", (short)-1){
+        m.m = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$)), "Anything(String?=)", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
                 final .ceylon.language.String s = (.ceylon.language.String)$param$0;
-                return $call$typed(s);
+                return $calltyped$(s);
             }
             
-            private .java.lang.Object $call$typed(.ceylon.language.String s) {
+            private .java.lang.Object $calltyped$(.ceylon.language.String s) {
                 return .ceylon.language.String.instance("");
             }
         };

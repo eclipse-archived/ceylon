@@ -5,7 +5,7 @@ class CallsProtectedAccessMethod implements .com.redhat.ceylon.compiler.java.run
     CallsProtectedAccessMethod() {
     }
     
-    private final void m$priv(final .com.redhat.ceylon.compiler.java.test.interop.access.JavaAccessModifiers j) {
+    private final void m$priv$(final .com.redhat.ceylon.compiler.java.test.interop.access.JavaAccessModifiers j) {
         j.protectedAccessMethod();
     }
     
@@ -15,8 +15,8 @@ class CallsProtectedAccessMethod implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.interop.access.CallsProtectedAccessMethod.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.access.CallsProtectedAccessMethod.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.access.CallsProtectedAccessMethod.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.access.CallsProtectedAccessMethod.class);
 }

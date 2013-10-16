@@ -14,24 +14,24 @@ abstract class ActualMethodShortcut implements .com.redhat.ceylon.compiler.java.
     public abstract .java.lang.String foo2(final .java.lang.String s);
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.ActualMethodShortcut.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.ActualMethodShortcut.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.ActualMethodShortcut.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.ActualMethodShortcut.class);
 }
 class ActualMethodShortcutSub extends .com.redhat.ceylon.compiler.java.test.structure.method.ActualMethodShortcut {
     
     ActualMethodShortcutSub() {
         super();
-        this.print2$specifier = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(String)", (short)-1){
+        this.print2$specifier$ = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(String)", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .java.lang.String $ceylontmpline = ((.ceylon.language.String)$param$0).toString();
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String $ceylontmp$line = ((.ceylon.language.String)$param$0).toString();
                 return (
                     let
                     {
-                        .ceylon.language.process_.get_().writeLine($ceylontmpline);
+                        .ceylon.language.process_.get_().writeLine($ceylontmp$line);
                     }
                     returning null;
                 );
@@ -44,11 +44,11 @@ class ActualMethodShortcutSub extends .com.redhat.ceylon.compiler.java.test.stru
         .ceylon.language.process_.get_().writeLine("hello");
         return null;
     }
-    private final .ceylon.language.Callable<? extends .java.lang.Object> print2$specifier;
+    private final .ceylon.language.Callable<? extends .java.lang.Object> print2$specifier$;
     
     @.java.lang.Override
     public final .java.lang.Object print2(final .java.lang.String s) {
-        return print2$specifier.$call(.ceylon.language.String.instance(s));
+        return print2$specifier$.$call$(.ceylon.language.String.instance(s));
     }
     
     @.java.lang.Override
@@ -68,8 +68,8 @@ class ActualMethodShortcutSub extends .com.redhat.ceylon.compiler.java.test.stru
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.ActualMethodShortcutSub.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.ActualMethodShortcutSub.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.ActualMethodShortcutSub.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.ActualMethodShortcutSub.class);
 }

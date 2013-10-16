@@ -6,7 +6,7 @@ final class bug494_ {
     }
     
     static void bug494() {
-        final .ceylon.language.Array<.ceylon.language.Integer> a2 = .ceylon.language.arrayOfSize_.<.ceylon.language.Integer>arrayOfSize(.ceylon.language.Integer.$TypeDescriptor, 20L, .ceylon.language.Integer.instance(0L));
+        final .ceylon.language.Array<.ceylon.language.Integer> a2 = .ceylon.language.arrayOfSize_.<.ceylon.language.Integer>arrayOfSize(.ceylon.language.Integer.$TypeDescriptor$, 20L, .ceylon.language.Integer.instance(0L));
     }
     
     public static void main(.java.lang.String[] args) {

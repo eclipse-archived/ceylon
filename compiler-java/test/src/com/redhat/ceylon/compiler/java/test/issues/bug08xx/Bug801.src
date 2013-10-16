@@ -7,7 +7,7 @@ public interface Bug801_Interface$MemberInterface {
 public interface Bug801_Interface {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface.class);
 }
 public final class Bug801_Interface$impl {
     
@@ -47,10 +47,10 @@ public class Bug801_Class implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.class);
 }
 public interface Bug801_ImplClass$MemberInterface2 extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface {
     
@@ -63,34 +63,34 @@ interface Bug801_ImplClass$method$0$MemberInterface2 extends .com.redhat.ceylon.
 public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface {
     
     public Bug801_ImplClass() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$;
     }
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.MemberInterfaceImpl MemberInterfaceImpl$new() {
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.MemberInterfaceImpl MemberInterfaceImpl$new$() {
         return new MemberInterfaceImpl();
     }
     
     public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface {
         
         protected MemberInterfaceImpl() {
-            this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this.new MemberInterface$impl(this);
+            this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this$ = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$.new MemberInterface$impl(this);
         }
-        protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+        protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this$;
         
         @.java.lang.Override
         public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl$MemberInterface$impl() {
-            return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+            return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this$;
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.MemberInterfaceImpl.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.MemberInterfaceImpl.class));
         }
     }
     
@@ -102,7 +102,7 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.runtim
         private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass$MemberInterface2 $this;
     }
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Foo Foo$new() {
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Foo Foo$new$() {
         return new Foo();
     }
     
@@ -111,94 +111,94 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.runtim
         protected Foo() {
         }
         
-        public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Foo.MemberInterfaceImpl MemberInterfaceImpl$new() {
+        public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Foo.MemberInterfaceImpl MemberInterfaceImpl$new$() {
             return new MemberInterfaceImpl();
         }
         
         public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface {
             
             protected MemberInterfaceImpl() {
-                this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this.new MemberInterface$impl(this);
+                this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this$ = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$.new MemberInterface$impl(this);
             }
-            protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+            protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this$;
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl$MemberInterface$impl() {
-                return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+                return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this$;
             }
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Foo.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Foo.MemberInterfaceImpl.class));
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Foo.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Foo.MemberInterfaceImpl.class));
             }
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Foo.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Foo.class));
         }
     }
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Bar Bar$new() {
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Bar Bar$new$() {
         return new Bar();
     }
     
     public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface {
         
         protected Bar() {
-            this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl(this);
+            this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl(this);
         }
-        protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this;
+        protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$;
         
         @.java.lang.Override
         public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl() {
-            return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this;
+            return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$;
         }
         
-        public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Bar.MemberInterfaceImpl MemberInterfaceImpl$new() {
+        public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Bar.MemberInterfaceImpl MemberInterfaceImpl$new$() {
             return new MemberInterfaceImpl();
         }
         
         public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface {
             
             protected MemberInterfaceImpl() {
-                this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Bar.this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this.new MemberInterface$impl(this);
+                this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this$ = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Bar.this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$.new MemberInterface$impl(this);
             }
-            protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+            protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this$;
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl$MemberInterface$impl() {
-                return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+                return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this$;
             }
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Bar.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Bar.MemberInterfaceImpl.class));
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Bar.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Bar.MemberInterfaceImpl.class));
             }
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Bar.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Bar.class));
         }
     }
     
-    private final void method$priv() {
+    private final void method$priv$() {
         
         class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface {
             
             MemberInterfaceImpl() {
-                this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this.new MemberInterface$impl(this);
+                this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this$ = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$.new MemberInterface$impl(this);
             }
-            protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+            protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this$;
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl$MemberInterface$impl() {
-                return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+                return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this$;
             }
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(MemberInterfaceImpl.class);
             }
         }
@@ -218,10 +218,10 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.class);
 }
 public interface Bug801_ImplClass2$MemberInterface2 extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface {
     
@@ -237,25 +237,25 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
         super();
     }
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.MemberInterfaceImpl MemberInterfaceImpl$new() {
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.MemberInterfaceImpl MemberInterfaceImpl$new$() {
         return new MemberInterfaceImpl();
     }
     
     public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface {
         
         protected MemberInterfaceImpl() {
-            this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl(this);
+            this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl(this);
         }
-        protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this;
+        protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this$;
         
         @.java.lang.Override
         public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$impl() {
-            return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this;
+            return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this$;
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.MemberInterfaceImpl.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.MemberInterfaceImpl.class));
         }
     }
     
@@ -267,7 +267,7 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
         private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2$MemberInterface2 $this;
     }
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Foo Foo$new() {
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Foo Foo$new$() {
         return new Foo();
     }
     
@@ -276,94 +276,94 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
         protected Foo() {
         }
         
-        public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Foo.MemberInterfaceImpl MemberInterfaceImpl$new() {
+        public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Foo.MemberInterfaceImpl MemberInterfaceImpl$new$() {
             return new MemberInterfaceImpl();
         }
         
         public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface {
             
             protected MemberInterfaceImpl() {
-                this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl(this);
+                this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl(this);
             }
-            protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this;
+            protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this$;
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$impl() {
-                return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this;
+                return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this$;
             }
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Foo.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Foo.MemberInterfaceImpl.class));
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Foo.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Foo.MemberInterfaceImpl.class));
             }
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Foo.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Foo.class));
         }
     }
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Bar Bar$new() {
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Bar Bar$new$() {
         return new Bar();
     }
     
     public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface {
         
         protected Bar() {
-            this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl(this);
+            this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl(this);
         }
-        protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this;
+        protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$;
         
         @.java.lang.Override
         public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl() {
-            return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this;
+            return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$;
         }
         
-        public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Bar.MemberInterfaceImpl MemberInterfaceImpl$new() {
+        public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Bar.MemberInterfaceImpl MemberInterfaceImpl$new$() {
             return new MemberInterfaceImpl();
         }
         
         public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface {
             
             protected MemberInterfaceImpl() {
-                this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Bar.this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this.new MemberInterface$impl(this);
+                this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this$ = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Bar.this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$.new MemberInterface$impl(this);
             }
-            protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+            protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this$;
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl$MemberInterface$impl() {
-                return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+                return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this$;
             }
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Bar.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Bar.MemberInterfaceImpl.class));
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Bar.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Bar.MemberInterfaceImpl.class));
             }
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Bar.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Bar.class));
         }
     }
     
-    private final void method$priv() {
+    private final void method$priv$() {
         
         class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface {
             
             MemberInterfaceImpl() {
-                this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl(this);
+                this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl(this);
             }
-            protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this;
+            protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this$;
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$impl() {
-                return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this;
+                return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this$;
             }
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(MemberInterfaceImpl.class);
             }
         }
@@ -383,8 +383,8 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.class);
 }

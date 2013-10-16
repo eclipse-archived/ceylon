@@ -5,7 +5,7 @@ class MethodWhileConditionList implements .com.redhat.ceylon.compiler.java.runti
     MethodWhileConditionList() {
     }
     
-    private final boolean m$priv(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
+    private final boolean m$priv$(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
         while (true) {
             .java.lang.Object y$2;
             .ceylon.language.Sequential<? extends .java.lang.Object> x$0;
@@ -28,8 +28,8 @@ class MethodWhileConditionList implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionList.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionList.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionList.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionList.class);
 }

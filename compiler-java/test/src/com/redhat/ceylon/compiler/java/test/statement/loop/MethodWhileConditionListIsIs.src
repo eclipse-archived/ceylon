@@ -5,7 +5,7 @@ class MethodWhileConditionListIsIs implements .com.redhat.ceylon.compiler.java.r
     MethodWhileConditionListIsIs() {
     }
     
-    private final boolean m$priv(final .java.lang.Object x, final .java.lang.Object y) {
+    private final boolean m$priv$(final .java.lang.Object x, final .java.lang.Object y) {
         while (true) {
             .java.lang.Object y1$2;
             .java.lang.Object x1$0;
@@ -20,7 +20,7 @@ class MethodWhileConditionListIsIs implements .com.redhat.ceylon.compiler.java.r
         return false;
     }
     
-    private final boolean synthetic$priv(final .java.lang.Object x, final .java.lang.Object y) {
+    private final boolean synthetic$priv$(final .java.lang.Object x, final .java.lang.Object y) {
         while (true) {
             .java.lang.Object y$6;
             .java.lang.Object x$4;
@@ -35,7 +35,7 @@ class MethodWhileConditionListIsIs implements .com.redhat.ceylon.compiler.java.r
         return false;
     }
     
-    private final boolean mElseIf$priv(final .java.lang.Object x, final .java.lang.Object y) {
+    private final boolean mElseIf$priv$(final .java.lang.Object x, final .java.lang.Object y) {
         while (true) {
             .java.lang.Object y1$10;
             .java.lang.Object x1$8;
@@ -56,8 +56,8 @@ class MethodWhileConditionListIsIs implements .com.redhat.ceylon.compiler.java.r
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListIsIs.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListIsIs.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListIsIs.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListIsIs.class);
 }

@@ -5,15 +5,15 @@ class MethodIfConditionListBoolBoolIs implements .com.redhat.ceylon.compiler.jav
     MethodIfConditionListBoolBoolIs() {
     }
     
-    private final boolean m$priv(final .java.lang.Object x, final long z) {
-        boolean $ceylontmpif$0 = false;
+    private final boolean m$priv$(final .java.lang.Object x, final long z) {
+        boolean $ceylontmp$if$0 = false;
         .java.lang.Object x$1;
         final long x$2;
         if (z < 10L) {
             if (z > 0L) {
                 if ((x$1 = x) instanceof .ceylon.language.Integer) {
                     x$2 = ((.ceylon.language.Integer)x$1).longValue();
-                    $ceylontmpif$0 = true;
+                    $ceylontmp$if$0 = true;
                 } else {
                     x$2 = 0L;
                 }
@@ -23,22 +23,22 @@ class MethodIfConditionListBoolBoolIs implements .com.redhat.ceylon.compiler.jav
         } else {
             x$2 = 0L;
         }
-        if ($ceylontmpif$0) {
+        if ($ceylontmp$if$0) {
             return x$2 == 1L;
         } else {
             return false;
         }
     }
     
-    private final boolean synthetic$priv(final .java.lang.Object x, final long z) {
-        boolean $ceylontmpif$3 = false;
+    private final boolean synthetic$priv$(final .java.lang.Object x, final long z) {
+        boolean $ceylontmp$if$3 = false;
         .java.lang.Object y$4;
         final long y$5;
         if (z < 10L) {
             if (z > 0L) {
                 if ((y$4 = x) instanceof .ceylon.language.Integer) {
                     y$5 = ((.ceylon.language.Integer)y$4).longValue();
-                    $ceylontmpif$3 = true;
+                    $ceylontmp$if$3 = true;
                 } else {
                     y$5 = 0L;
                 }
@@ -48,7 +48,7 @@ class MethodIfConditionListBoolBoolIs implements .com.redhat.ceylon.compiler.jav
         } else {
             y$5 = 0L;
         }
-        if ($ceylontmpif$3) {
+        if ($ceylontmp$if$3) {
             return y$5 == 1L;
         } else {
             return false;
@@ -61,8 +61,8 @@ class MethodIfConditionListBoolBoolIs implements .com.redhat.ceylon.compiler.jav
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionListBoolBoolIs.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionListBoolBoolIs.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionListBoolBoolIs.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionListBoolBoolIs.class);
 }

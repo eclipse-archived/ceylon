@@ -5,8 +5,8 @@ class MethodIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runt
     MethodIfConditionListIsIs() {
     }
     
-    private final boolean m$priv(final .java.lang.Object x, final .java.lang.Object y) {
-        boolean $ceylontmpif$0 = false;
+    private final boolean m$priv$(final .java.lang.Object x, final .java.lang.Object y) {
+        boolean $ceylontmp$if$0 = false;
         .java.lang.Object x1$1;
         final long x1$2;
         .java.lang.Object y1$3;
@@ -15,7 +15,7 @@ class MethodIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runt
             x1$2 = ((.ceylon.language.Integer)x1$1).longValue();
             if ((y1$3 = y) instanceof .ceylon.language.Integer) {
                 y1$4 = ((.ceylon.language.Integer)y1$3).longValue();
-                $ceylontmpif$0 = true;
+                $ceylontmp$if$0 = true;
             } else {
                 y1$4 = 0L;
             }
@@ -23,15 +23,15 @@ class MethodIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runt
             y1$4 = 0L;
             x1$2 = 0L;
         }
-        if ($ceylontmpif$0) {
+        if ($ceylontmp$if$0) {
             return x1$2 == y1$4;
         } else {
             return false;
         }
     }
     
-    private final boolean synthetic$priv(final .java.lang.Object x, final .java.lang.Object y) {
-        boolean $ceylontmpif$5 = false;
+    private final boolean synthetic$priv$(final .java.lang.Object x, final .java.lang.Object y) {
+        boolean $ceylontmp$if$5 = false;
         .java.lang.Object x$6;
         final long x$7;
         .java.lang.Object y$8;
@@ -40,7 +40,7 @@ class MethodIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runt
             x$7 = ((.ceylon.language.Integer)x$6).longValue();
             if ((y$8 = y) instanceof .ceylon.language.Integer) {
                 y$9 = ((.ceylon.language.Integer)y$8).longValue();
-                $ceylontmpif$5 = true;
+                $ceylontmp$if$5 = true;
             } else {
                 y$9 = 0L;
             }
@@ -48,15 +48,15 @@ class MethodIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runt
             y$9 = 0L;
             x$7 = 0L;
         }
-        if ($ceylontmpif$5) {
+        if ($ceylontmp$if$5) {
             return x$7 == y$9;
         } else {
             return false;
         }
     }
     
-    private final boolean mElseIf$priv(final .java.lang.Object x, final .java.lang.Object y) {
-        boolean $ceylontmpif$10 = false;
+    private final boolean mElseIf$priv$(final .java.lang.Object x, final .java.lang.Object y) {
+        boolean $ceylontmp$if$10 = false;
         .java.lang.Object x1$11;
         final long x1$12;
         .java.lang.Object y1$13;
@@ -65,7 +65,7 @@ class MethodIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runt
             x1$12 = ((.ceylon.language.Integer)x1$11).longValue();
             if ((y1$13 = y) instanceof .ceylon.language.Integer) {
                 y1$14 = ((.ceylon.language.Integer)y1$13).longValue();
-                $ceylontmpif$10 = true;
+                $ceylontmp$if$10 = true;
             } else {
                 y1$14 = 0L;
             }
@@ -73,7 +73,7 @@ class MethodIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runt
             y1$14 = 0L;
             x1$12 = 0L;
         }
-        if ($ceylontmpif$10) {
+        if ($ceylontmp$if$10) {
             return x1$12 == y1$14;
         } else {
             .java.lang.Object x1$16;
@@ -98,8 +98,8 @@ class MethodIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionListIsIs.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionListIsIs.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionListIsIs.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionListIsIs.class);
 }

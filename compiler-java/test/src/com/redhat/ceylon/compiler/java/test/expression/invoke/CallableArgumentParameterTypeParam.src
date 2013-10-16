@@ -5,7 +5,7 @@ final class callableArgumentParameterTypeParam_f_ {
     private callableArgumentParameterTypeParam_f_() {
     }
     
-    static <T>void callableArgumentParameterTypeParam_f(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+    static <T>void callableArgumentParameterTypeParam_f(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
 }
 final class callableArgumentParameterTypeParam_bar_ {
@@ -13,7 +13,7 @@ final class callableArgumentParameterTypeParam_bar_ {
     private callableArgumentParameterTypeParam_bar_() {
     }
     
-    static <X>void callableArgumentParameterTypeParam_bar(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, final X s) {
+    static <X>void callableArgumentParameterTypeParam_bar(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final X s) {
     }
 }
 final class callableArgumentParameterTypeParam_baz_ {
@@ -30,29 +30,29 @@ final class callableArgumentParameterTypeParam_m_ {
     }
     
     static void callableArgumentParameterTypeParam_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_f_.<.ceylon.language.String>callableArgumentParameterTypeParam_f(.ceylon.language.String.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(String)", (short)-1){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_f_.<.ceylon.language.String>callableArgumentParameterTypeParam_f(.ceylon.language.String.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(String)", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .ceylon.language.String $ceylontmps = (.ceylon.language.String)$param$0;
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.String $ceylontmp$s = (.ceylon.language.String)$param$0;
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_bar_.<.ceylon.language.String>callableArgumentParameterTypeParam_bar(.ceylon.language.String.$TypeDescriptor, $ceylontmps);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_bar_.<.ceylon.language.String>callableArgumentParameterTypeParam_bar(.ceylon.language.String.$TypeDescriptor$, $ceylontmp$s);
                     }
                     returning null;
                 );
             }
         });
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_f_.<.ceylon.language.Integer>callableArgumentParameterTypeParam_f(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(Integer)", (short)-1){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_f_.<.ceylon.language.Integer>callableArgumentParameterTypeParam_f(.ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Integer)", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final long $ceylontmpi = ((.ceylon.language.Integer)$param$0).longValue();
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_baz_.callableArgumentParameterTypeParam_baz($ceylontmpi);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_baz_.callableArgumentParameterTypeParam_baz($ceylontmp$i);
                     }
                     returning null;
                 );

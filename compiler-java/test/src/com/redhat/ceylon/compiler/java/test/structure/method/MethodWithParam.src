@@ -5,7 +5,7 @@ class MethodWithParam implements .com.redhat.ceylon.compiler.java.runtime.model.
     MethodWithParam() {
     }
     
-    private final void f$priv(final long i) {
+    private final void f$priv$(final long i) {
     }
     
     public final void f2(final long i) {
@@ -17,8 +17,8 @@ class MethodWithParam implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithParam.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithParam.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithParam.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithParam.class);
 }

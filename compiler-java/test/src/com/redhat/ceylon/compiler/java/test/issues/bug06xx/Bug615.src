@@ -5,7 +5,7 @@ interface I {
     public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$impl();
     
     public abstract .ceylon.language.Integer getX();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.I.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.I.class);
 }
 final class I$impl {
     
@@ -18,13 +18,13 @@ class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
     
     C(final .ceylon.language.Integer x) {
         this.x = x;
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$this$;
     }
     private final .ceylon.language.Integer x;
     
@@ -34,8 +34,8 @@ class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.C.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.C.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.C.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.C.class);
 }

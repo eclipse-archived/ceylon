@@ -5,8 +5,8 @@ package com.redhat.ceylon.compiler.java.test.structure.pkg;
         name = "com.redhat.ceylon.compiler.java.test.structure.pkg",
         doc = "Great documentation",
         shared = true)
-@.ceylon.language.DocAnnotation$annotation(description = "Great documentation")
-@.ceylon.language.SharedAnnotation$annotation
+@.ceylon.language.DocAnnotation$annotation$(description = "Great documentation")
+@.ceylon.language.SharedAnnotation$annotation$
 final class package_ {
     
     private package_() {

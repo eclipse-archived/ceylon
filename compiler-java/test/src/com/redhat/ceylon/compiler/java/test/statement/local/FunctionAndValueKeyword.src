@@ -5,12 +5,12 @@ class FunctionAndValueKeyword implements .com.redhat.ceylon.compiler.java.runtim
     FunctionAndValueKeyword() {
     }
     
-    private final long test$priv() {
+    private final long test$priv$() {
         return 0L;
     }
     
-    private final void m$priv() {
-        final long n = test$priv();
+    private final void m$priv$() {
+        final long n = test$priv$();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -19,8 +19,8 @@ class FunctionAndValueKeyword implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.local.FunctionAndValueKeyword.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.local.FunctionAndValueKeyword.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.local.FunctionAndValueKeyword.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.local.FunctionAndValueKeyword.class);
 }

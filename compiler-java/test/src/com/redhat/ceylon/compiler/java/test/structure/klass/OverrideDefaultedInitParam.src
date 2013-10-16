@@ -6,8 +6,8 @@ class OverrideDefaultedInitParam implements .com.redhat.ceylon.compiler.java.run
         (
             let
             {
-                .java.lang.String $ceylontmp$id$$0 = .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParam.$default$id();
-                this($ceylontmp$id$$0);
+                .java.lang.String $ceylontmp$$id$$0 = .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParam.$default$id();
+                this($ceylontmp$$id$$0);
             }
             returning null;
         );
@@ -26,10 +26,10 @@ class OverrideDefaultedInitParam implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParam.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParam.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParam.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParam.class);
 }
 class OverrideDefaultedInitParamSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParam {
     
@@ -37,8 +37,8 @@ class OverrideDefaultedInitParamSub extends .com.redhat.ceylon.compiler.java.tes
         (
             let
             {
-                .java.lang.String $ceylontmp$id$$1 = .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParamSub.$default$id();
-                this($ceylontmp$id$$1);
+                .java.lang.String $ceylontmp$$id$$1 = .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParamSub.$default$id();
+                this($ceylontmp$$id$$1);
             }
             returning null;
         );
@@ -58,8 +58,8 @@ class OverrideDefaultedInitParamSub extends .com.redhat.ceylon.compiler.java.tes
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParamSub.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParamSub.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParamSub.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParamSub.class);
 }

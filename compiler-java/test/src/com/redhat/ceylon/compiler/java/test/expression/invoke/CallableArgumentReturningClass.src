@@ -11,10 +11,10 @@ class CallableArgumentReturningClass implements .com.redhat.ceylon.compiler.java
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass.class);
 }
 final class callableArgumentReturningClass_f_ {
     
@@ -30,10 +30,10 @@ final class callableArgumentReturningClass_m_ {
     }
     
     static void callableArgumentReturningClass_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningClass_f_.callableArgumentReturningClass_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass>(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "CallableArgumentReturningClass()", (short)-1){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningClass_f_.callableArgumentReturningClass_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass>(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "CallableArgumentReturningClass()", (short)-1){
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass $call() {
+            public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass $call$() {
                 return new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass();
             }
         });

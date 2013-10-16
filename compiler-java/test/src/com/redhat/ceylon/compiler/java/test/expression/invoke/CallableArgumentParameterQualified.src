@@ -15,18 +15,18 @@ class CallableArgumentParameterQualified implements .com.redhat.ceylon.compiler.
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> bar;
     
-    private final .ceylon.language.Callable<? extends .java.lang.Object> getBar$priv() {
+    private final .ceylon.language.Callable<? extends .java.lang.Object> getBar$priv$() {
         return bar;
     }
     
-    private final void m$priv(final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterQualified c) {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterQualified_f_.callableArgumentParameterQualified_f(c.getBar$priv());
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterQualified_f_.callableArgumentParameterQualified_f(this.getBar$priv());
+    private final void m$priv$(final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterQualified c) {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterQualified_f_.callableArgumentParameterQualified_f(c.getBar$priv$());
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterQualified_f_.callableArgumentParameterQualified_f(this.getBar$priv$());
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterQualified.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterQualified.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterQualified.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterQualified.class);
 }

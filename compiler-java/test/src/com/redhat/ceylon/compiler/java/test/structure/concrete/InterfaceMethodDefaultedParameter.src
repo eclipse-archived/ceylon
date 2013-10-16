@@ -32,27 +32,27 @@ interface I<T> {
     
     public abstract long m4(final long i, final long n);
     
-    public abstract <U>long m5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i);
+    public abstract <U>long m5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i);
     
-    public abstract <U>T m5$t(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i);
+    public abstract <U>T m5$t(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i);
     
-    public abstract <U>long m5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i, final T t);
+    public abstract <U>long m5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i, final T t);
     
-    public abstract <U>U m5$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i, final T t);
+    public abstract <U>U m5$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i, final T t);
     
-    public abstract <U>long m5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i, final T t, final U u);
+    public abstract <U>long m5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i, final T t, final U u);
 }
 final class I$impl<T> {
     
-    I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $this) {
-        this.$reifiedT = $reifiedT;
+    I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $this) {
+        this.$reified$T = $reified$T;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $this;
     
-    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        this.$reifiedT = $reifiedT;
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
     }
     
     public final long m$i() {
@@ -75,11 +75,11 @@ final class I$impl<T> {
         return 2L * i;
     }
     
-    public final <U>T m5$t(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i) {
+    public final <U>T m5$t(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i) {
         return null;
     }
     
-    public final <U>U m5$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i, final T t) {
+    public final <U>U m5$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i, final T t) {
         return null;
     }
 }
@@ -88,7 +88,7 @@ final class positional_ {
     private positional_() {
     }
     
-    static <T>void positional(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> i, final .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> i2) {
+    static <T>void positional(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> i, final .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> i2) {
         i.m();
         i2.m(2L);
         i2.m2();
@@ -98,9 +98,9 @@ final class positional_ {
         i.m3(4L, 5L);
         i.m4(5L);
         i.m4(4L, 5L);
-        i.<.ceylon.language.String>m5(.ceylon.language.String.$TypeDescriptor, 5L);
-        i.<.ceylon.language.String>m5(.ceylon.language.String.$TypeDescriptor, 5L, null);
-        i.<.ceylon.language.String>m5(.ceylon.language.String.$TypeDescriptor, 5L, null, .ceylon.language.String.instance(""));
+        i.<.ceylon.language.String>m5(.ceylon.language.String.$TypeDescriptor$, 5L);
+        i.<.ceylon.language.String>m5(.ceylon.language.String.$TypeDescriptor$, 5L, null);
+        i.<.ceylon.language.String>m5(.ceylon.language.String.$TypeDescriptor$, 5L, null, .ceylon.language.String.instance(""));
     }
 }
 final class named_ {
@@ -108,13 +108,13 @@ final class named_ {
     private named_() {
     }
     
-    static <T>void named(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> i, final .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> i2) {
+    static <T>void named(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> i, final .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> i2) {
         (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$0$callable$ = i;
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$0$this$ = arg$0$callable$;
-                long arg$0$0 = arg$0$this$.m$i();
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$0$argthis$ = arg$0$callable$;
+                long arg$0$0 = arg$0$argthis$.m$i();
                 arg$0$callable$.m(arg$0$0);
             }
             returning null;
@@ -132,8 +132,8 @@ final class named_ {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> arg$2$callable$ = i2;
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> arg$2$this$ = arg$2$callable$;
-                long arg$2$0 = arg$2$this$.m2$i();
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> arg$2$argthis$ = arg$2$callable$;
+                long arg$2$0 = arg$2$argthis$.m2$i();
             }
             returning arg$2$callable$.m2(arg$2$0);
         );
@@ -142,9 +142,9 @@ final class named_ {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$3$callable$ = i;
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$3$this$ = arg$3$callable$;
-                long arg$3$0 = arg$3$this$.m3$i();
-                long arg$3$1 = arg$3$this$.m3$n(arg$3$0);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$3$argthis$ = arg$3$callable$;
+                long arg$3$0 = arg$3$argthis$.m3$i();
+                long arg$3$1 = arg$3$argthis$.m3$n(arg$3$0);
             }
             returning arg$3$callable$.m3(arg$3$0, arg$3$1);
         );
@@ -152,9 +152,9 @@ final class named_ {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$4$callable$ = i;
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$4$this$ = arg$4$callable$;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$4$argthis$ = arg$4$callable$;
                 long arg$4$0 = 5L;
-                long arg$4$1 = arg$4$this$.m3$n(arg$4$0);
+                long arg$4$1 = arg$4$argthis$.m3$n(arg$4$0);
             }
             returning arg$4$callable$.m3(arg$4$0, arg$4$1);
         );
@@ -180,75 +180,75 @@ final class named_ {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$7$callable$ = i;
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$7$this$ = arg$7$callable$;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> arg$7$argthis$ = arg$7$callable$;
                 long arg$7$1 = 5L;
-                long arg$7$0 = arg$7$this$.m3$i();
+                long arg$7$0 = arg$7$argthis$.m3$i();
             }
             returning arg$7$callable$.m3(arg$7$0, arg$7$1);
         );
         i.m4(5L);
         i.m4(4L, 5L);
-        i.<.ceylon.language.String>m5(.ceylon.language.String.$TypeDescriptor, 5L);
-        i.<.ceylon.language.String>m5(.ceylon.language.String.$TypeDescriptor, 5L, null);
-        i.<.ceylon.language.String>m5(.ceylon.language.String.$TypeDescriptor, 5L, null, .ceylon.language.String.instance(""));
+        i.<.ceylon.language.String>m5(.ceylon.language.String.$TypeDescriptor$, 5L);
+        i.<.ceylon.language.String>m5(.ceylon.language.String.$TypeDescriptor$, 5L, null);
+        i.<.ceylon.language.String>m5(.ceylon.language.String.$TypeDescriptor$, 5L, null, .ceylon.language.String.instance(""));
     }
 }
 class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> {
     
-    C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        this.$reifiedT = $reifiedT;
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T>($reifiedT, this);
+    C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T>($reified$T, this);
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
-    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T> $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T> $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T> $com$redhat$ceylon$compiler$java$test$structure$concrete$I$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this$;
     }
     
     @.java.lang.Override
     public final long m$i() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m$i();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this$.m$i();
     }
     
     @.java.lang.Override
     public final long m2$i() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m2$i();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this$.m2$i();
     }
     
     @.java.lang.Override
     public final long m3$i() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m3$i();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this$.m3$i();
     }
     
     @.java.lang.Override
     public final long m3$n(final long i) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m3$n(i);
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this$.m3$n(i);
     }
     
     @.java.lang.Override
     public final long m4$n(final long i) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m4$n(i);
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this$.m4$n(i);
     }
     
     @.java.lang.Override
-    public final <U>T m5$t(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m5$t($reifiedU, i);
+    public final <U>T m5$t(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this$.m5$t($reified$U, i);
     }
     
     @.java.lang.Override
-    public final <U>U m5$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i, final T t) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m5$u($reifiedU, i, t);
+    public final <U>U m5$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i, final T t) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this$.m5$u($reified$U, i, t);
     }
     
     public final .java.lang.Object m() {
         return (
             let
             {
-                long $ceylontmp$i$$8 = m$i();
+                long $ceylontmp$$i$$8 = m$i();
             }
-            returning m$($ceylontmp$i$$8);
+            returning m$($ceylontmp$$i$$8);
         );
     }
     
@@ -265,9 +265,9 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$i$$9 = m2$i();
+                long $ceylontmp$$i$$9 = m2$i();
             }
-            returning m2$($ceylontmp$i$$9);
+            returning m2$($ceylontmp$$i$$9);
         );
     }
     
@@ -284,10 +284,10 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$i$$10 = m3$i();
-                long $ceylontmp$n$$11 = m3$n($ceylontmp$i$$10);
+                long $ceylontmp$$i$$10 = m3$i();
+                long $ceylontmp$$n$$11 = m3$n($ceylontmp$$i$$10);
             }
-            returning m3$($ceylontmp$i$$10, $ceylontmp$n$$11);
+            returning m3$($ceylontmp$$i$$10, $ceylontmp$$n$$11);
         );
     }
     
@@ -295,9 +295,9 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$n$$12 = m3$n(i);
+                long $ceylontmp$$n$$12 = m3$n(i);
             }
-            returning m3$(i, $ceylontmp$n$$12);
+            returning m3$(i, $ceylontmp$$n$$12);
         );
     }
     
@@ -314,9 +314,9 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$n$$13 = m4$n(i);
+                long $ceylontmp$$n$$13 = m4$n(i);
             }
-            returning m4$(i, $ceylontmp$n$$13);
+            returning m4$(i, $ceylontmp$$n$$13);
         );
     }
     
@@ -329,34 +329,34 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return m4$(i, n);
     }
     
-    public final <U>long m5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i) {
+    public final <U>long m5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i) {
         return (
             let
             {
-                T $ceylontmp$t$$14 = m5$t($reifiedU, i);
-                U $ceylontmp$u$$15 = m5$u($reifiedU, i, $ceylontmp$t$$14);
+                T $ceylontmp$$t$$14 = m5$t($reified$U, i);
+                U $ceylontmp$$u$$15 = m5$u($reified$U, i, $ceylontmp$$t$$14);
             }
-            returning m5$($reifiedU, i, $ceylontmp$t$$14, $ceylontmp$u$$15);
+            returning m5$($reified$U, i, $ceylontmp$$t$$14, $ceylontmp$$u$$15);
         );
     }
     
-    public final <U>long m5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i, final T t) {
+    public final <U>long m5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i, final T t) {
         return (
             let
             {
-                U $ceylontmp$u$$16 = m5$u($reifiedU, i, t);
+                U $ceylontmp$$u$$16 = m5$u($reified$U, i, t);
             }
-            returning m5$($reifiedU, i, t, $ceylontmp$u$$16);
+            returning m5$($reified$U, i, t, $ceylontmp$$u$$16);
         );
     }
     
-    private <U>long m5$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i, final T t, final U u) {
+    private <U>long m5$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i, final T t, final U u) {
         return i;
     }
     
     @.java.lang.Override
-    public final <U>long m5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i, final T t, final U u) {
-        return m5$($reifiedU, i, t, u);
+    public final <U>long m5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i, final T t, final U u) {
+        return m5$($reified$U, i, t, u);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -365,7 +365,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.C.class, $reifiedT);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.C.class, $reified$T);
     }
 }

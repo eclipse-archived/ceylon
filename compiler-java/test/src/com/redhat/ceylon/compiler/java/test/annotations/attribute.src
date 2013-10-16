@@ -32,7 +32,7 @@ final class attr2_ {
         value = new long[]{1L};
     }
     
-    @.ceylon.language.VariableAnnotation$annotation
+    @.ceylon.language.VariableAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("variable")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")

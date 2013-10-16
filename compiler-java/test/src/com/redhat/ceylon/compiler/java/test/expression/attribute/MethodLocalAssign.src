@@ -5,26 +5,26 @@ class MethodLocalAssign implements .com.redhat.ceylon.compiler.java.runtime.mode
     MethodLocalAssign() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         boolean b = true;
         b = false;
         final .com.redhat.ceylon.compiler.java.language.VariableBoxBoolean b1 = new .com.redhat.ceylon.compiler.java.language.VariableBoxBoolean(true);
         b1.ref = false;
         
-        final class b2$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterBoolean {
+        final class b2$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterBoolean {
             
-            private b2$getter_() {
+            private b2$getter$_() {
             }
             
             public boolean get_() {
                 return b1.ref;
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.GetterBoolean b2$getter_ = new b2$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterBoolean b2$getter$_ = new b2$getter$_();
         
-        final class b2$setter_ {
+        final class b2$setter$_ {
             
-            private b2$setter_() {
+            private b2$setter$_() {
             }
             private boolean value;
             
@@ -32,8 +32,8 @@ class MethodLocalAssign implements .com.redhat.ceylon.compiler.java.runtime.mode
                 b1.ref = b2;
             }
         }
-        final b2$setter_ b2$setter_ = new b2$setter_();
-        b2$setter_.set_(true);
+        final b2$setter$_ b2$setter$_ = new b2$setter$_();
+        b2$setter$_.set_(true);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -42,8 +42,8 @@ class MethodLocalAssign implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalAssign.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalAssign.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalAssign.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalAssign.class);
 }

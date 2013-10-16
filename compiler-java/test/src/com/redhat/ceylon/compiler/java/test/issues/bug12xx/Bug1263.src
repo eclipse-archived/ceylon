@@ -20,9 +20,9 @@ final class bug1263_ {
                 (
                     let
                     {
-                        Node$impl $ceylontmp$impl$$0 = new Node$impl();
-                        Node $ceylontmp$foo$$1 = $ceylontmp$impl$$0.$default$foo();
-                        this($ceylontmp$foo$$1);
+                        Node$impl $ceylontmp$$impl$$0 = new Node$impl();
+                        Node $ceylontmp$$foo$$1 = $ceylontmp$$impl$$0.$default$foo();
+                        this($ceylontmp$$foo$$1);
                     }
                     returning null;
                 );
@@ -32,7 +32,7 @@ final class bug1263_ {
             }
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Node.class);
             }
         }

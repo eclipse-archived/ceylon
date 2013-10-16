@@ -2,14 +2,14 @@ package com.redhat.ceylon.compiler.java.test.issues.bug03xx;
 
 public class Bug366<T> extends .java.lang.ref.WeakReference<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    public Bug366(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T obj, final .java.lang.ref.ReferenceQueue<T> q) {
+    public Bug366(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T obj, final .java.lang.ref.ReferenceQueue<T> q) {
         super(obj, q);
-        this.$reifiedT = $reifiedT;
+        this.$reified$T = $reified$T;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug366.class, $reifiedT);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug366.class, $reified$T);
     }
 }

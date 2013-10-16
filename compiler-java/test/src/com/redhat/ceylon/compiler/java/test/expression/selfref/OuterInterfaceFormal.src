@@ -6,19 +6,19 @@ interface OuterInterfaceFormal<T> {
     
     public abstract .java.lang.Object m();
     
-    public abstract .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl<T>.Formal Formal$new();
+    public abstract .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl<T>.Formal Formal$new$();
 }
 final class OuterInterfaceFormal$impl<T> {
     
-    OuterInterfaceFormal$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal<T> $this) {
-        this.$reifiedT = $reifiedT;
+    OuterInterfaceFormal$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal<T> $this) {
+        this.$reified$T = $reified$T;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     private final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal<T> $this;
     
-    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        this.$reifiedT = $reifiedT;
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
     }
     
     public abstract class Formal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -27,8 +27,8 @@ final class OuterInterfaceFormal$impl<T> {
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal.class, .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.Formal.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal.class, .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.Formal.class));
         }
     }
     
@@ -36,12 +36,12 @@ final class OuterInterfaceFormal$impl<T> {
         
         InnerClass() {
             .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.this.$this.m();
-            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.this.$this.Formal$new();
+            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.this.$this.Formal$new$();
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal.class, .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.InnerClass.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal.class, .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.InnerClass.class));
         }
     }
 }

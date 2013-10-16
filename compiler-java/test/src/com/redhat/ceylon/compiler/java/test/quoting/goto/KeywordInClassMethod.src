@@ -5,7 +5,7 @@ class KeywordInMethod implements .com.redhat.ceylon.compiler.java.runtime.model.
     KeywordInMethod() {
     }
     
-    private final void goto$priv() {
+    private final void goto$priv$() {
     }
     
     public static void main(.java.lang.String[] args) {
@@ -14,8 +14,8 @@ class KeywordInMethod implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInMethod.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInMethod.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInMethod.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInMethod.class);
 }

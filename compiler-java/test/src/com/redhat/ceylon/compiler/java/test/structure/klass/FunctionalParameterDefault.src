@@ -6,8 +6,8 @@ class FunctionalParameterDefault implements .com.redhat.ceylon.compiler.java.run
         (
             let
             {
-                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$m$$0 = .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault.$default$m();
-                this($ceylontmp$m$$0);
+                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$$m$$0 = .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault.$default$m();
+                this($ceylontmp$$m$$0);
             }
             returning null;
         );
@@ -19,14 +19,14 @@ class FunctionalParameterDefault implements .com.redhat.ceylon.compiler.java.run
     private final .ceylon.language.Callable<? extends .ceylon.language.String> m;
     
     public .java.lang.String m(final .java.lang.String arg) {
-        return m.$call(.ceylon.language.String.instance(arg)).toString();
+        return m.$call$(.ceylon.language.String.instance(arg)).toString();
     }
     
     static .ceylon.language.Callable<? extends .ceylon.language.String> $default$m() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(String)", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String)", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                 final .java.lang.String arg = ((.ceylon.language.String)$param$0).toString();
                 return .ceylon.language.String.instance(arg);
             }
@@ -39,18 +39,18 @@ class FunctionalParameterDefault implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault.class);
 }
 class FunctionalParameterDefaultSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault {
     
     FunctionalParameterDefaultSub() {
-        super(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(String)", (short)-1){
+        super(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String)", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                 final .java.lang.String arg = ((.ceylon.language.String)$param$0).toString();
                 return .ceylon.language.String.instance(arg + "!");
             }
@@ -63,8 +63,8 @@ class FunctionalParameterDefaultSub extends .com.redhat.ceylon.compiler.java.tes
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefaultSub.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefaultSub.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefaultSub.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefaultSub.class);
 }

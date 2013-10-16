@@ -7,21 +7,21 @@ final class variance_ {
     
     static void variance() {
         final .com.redhat.ceylon.compiler.java.test.interop.JavaVariance var = new .com.redhat.ceylon.compiler.java.test.interop.JavaVariance();
-        final .ceylon.language.Callable<? extends .java.lang.Object> interfaceMethod = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.Interface.class, .ceylon.language.Object.$TypeDescriptor)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.Interface.class, .ceylon.language.Object.$TypeDescriptor)), .ceylon.language.Empty.$TypeDescriptor), "Object(Interface<Object>?)", (short)-1){
+        final .ceylon.language.Callable<? extends .java.lang.Object> interfaceMethod = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.Interface.class, .ceylon.language.Object.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.Interface.class, .ceylon.language.Object.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$), "Object(Interface<Object>?)", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .com.redhat.ceylon.compiler.java.test.interop.Interface $ceylontmparg0 = (.com.redhat.ceylon.compiler.java.test.interop.Interface<.java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.interop.Interface)$param$0;
-                return var.interfaceMethod($ceylontmparg0);
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.interop.Interface $ceylontmp$arg0 = (.com.redhat.ceylon.compiler.java.test.interop.Interface<.java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.interop.Interface)$param$0;
+                return var.interfaceMethod($ceylontmp$arg0);
             }
         };
         final .java.lang.Object ret1 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.interfaceMethod(var));
-        final .ceylon.language.Callable<? extends .java.lang.Object> classMethod = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.Class.class, .ceylon.language.Object.$TypeDescriptor)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.Class.class, .ceylon.language.Object.$TypeDescriptor)), .ceylon.language.Empty.$TypeDescriptor), "Object(Class<Object>?)", (short)-1){
+        final .ceylon.language.Callable<? extends .java.lang.Object> classMethod = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.Class.class, .ceylon.language.Object.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.Class.class, .ceylon.language.Object.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$), "Object(Class<Object>?)", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .com.redhat.ceylon.compiler.java.test.interop.Class $ceylontmparg0 = (.com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.interop.Class)$param$0;
-                return var.classMethod($ceylontmparg0);
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.interop.Class $ceylontmp$arg0 = (.com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.interop.Class)$param$0;
+                return var.classMethod($ceylontmp$arg0);
             }
         };
         final .java.lang.Object ret2 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.classMethod(var));

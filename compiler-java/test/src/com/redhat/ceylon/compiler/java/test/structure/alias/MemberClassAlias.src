@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.structure.alias;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.SharedAnnotation$annotation
+@.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Members({
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.MemberClassAlias.class),
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member.class)})
@@ -12,12 +12,12 @@ public class MemberClassAlias_Foo implements .com.redhat.ceylon.compiler.java.ru
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member Member$new() {
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member Member$new$() {
         return new Member();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -27,18 +27,18 @@ public class MemberClassAlias_Foo implements .com.redhat.ceylon.compiler.java.ru
         
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member.class));
         }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member MemberClassAlias$new() {
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member MemberClassAlias$new$() {
         return new Member();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAlias_Foo.Member")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -49,8 +49,8 @@ public class MemberClassAlias_Foo implements .com.redhat.ceylon.compiler.java.ru
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
-    private final void test$priv() {
-        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member m = MemberClassAlias$new();
+    private final void test$priv$() {
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member m = MemberClassAlias$new$();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -61,11 +61,11 @@ public class MemberClassAlias_Foo implements .com.redhat.ceylon.compiler.java.ru
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.class);
 }
 final class memberClassAliasMethod_ {
     
@@ -73,7 +73,7 @@ final class memberClassAliasMethod_ {
     }
     
     static void memberClassAliasMethod() {
-        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member foo = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo().MemberClassAlias$new();
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member foo = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo().MemberClassAlias$new$();
     }
     
     public static void main(.java.lang.String[] args) {

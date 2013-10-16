@@ -6,30 +6,30 @@ class ForIfIsNullUnion implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     public final void m(final .ceylon.language.Sequential<? extends .java.lang.Object> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor), .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{xs}){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{xs}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Character> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor)){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$)){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
                     private .java.lang.Object x;
-                    private boolean x$exhausted;
+                    private boolean x$exhausted$;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
-                        if (x$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmpitem$0;
+                            x = (.java.lang.Object)$ceylontmp$item$0;
                             return true;
                         }
                     }
                     private .ceylon.language.Character x$2;
                     
-                    private final boolean next1() {
+                    private final boolean $next$1() {
                         while (true) {
                             if (!this.x()) break;
                             .java.lang.Object x$1 = null;
@@ -38,11 +38,11 @@ class ForIfIsNullUnion implements .com.redhat.ceylon.compiler.java.runtime.model
                                 break;
                             }
                         }
-                        return !x$exhausted;
+                        return !x$exhausted$;
                     }
                     
                     public final .java.lang.Object next() {
-                        if (this.next1()) {
+                        if (this.$next$1()) {
                             final .java.lang.Object x = this.x;
                             return x$2;
                         } else return .ceylon.language.finished_.get_();
@@ -58,8 +58,8 @@ class ForIfIsNullUnion implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsNullUnion.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsNullUnion.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsNullUnion.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsNullUnion.class);
 }

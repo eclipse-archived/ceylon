@@ -26,7 +26,7 @@ abstract class ClassAttributeWithConflictingMethods implements .com.redhat.ceylo
     public final void $setAttr(final .java.lang.String attr) {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         setAttr(getAttr());
         this.setAttr(this.getAttr());
         $setAttr($getAttr());
@@ -36,10 +36,10 @@ abstract class ClassAttributeWithConflictingMethods implements .com.redhat.ceylo
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeWithConflictingMethods.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeWithConflictingMethods.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeWithConflictingMethods.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeWithConflictingMethods.class);
 }
 interface InterfaceAttributeWithConflictingMethods {
     
@@ -54,7 +54,7 @@ interface InterfaceAttributeWithConflictingMethods {
     public abstract .java.lang.String $getAttr();
     
     public abstract .java.lang.Object $setAttr(final .java.lang.String attr);
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.InterfaceAttributeWithConflictingMethods.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.InterfaceAttributeWithConflictingMethods.class);
 }
 final class InterfaceAttributeWithConflictingMethods$impl {
     
@@ -67,7 +67,7 @@ final class InterfaceAttributeWithConflictingMethods$impl {
         $this.setAttr(attr);
     }
     
-    private void m$priv() {
+    private void m$priv$() {
         $this.setAttr($this.getAttr());
         $this.setAttr($this.getAttr());
         $this.$setAttr($this.$getAttr());

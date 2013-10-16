@@ -4,17 +4,17 @@ class Bug1291 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     Bug1291(final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1291 other, final long i) {
         this.i = i;
-        final long x = getI$priv() + other.getI$priv();
+        final long x = getI$priv$() + other.getI$priv$();
     }
     private final long i;
     
-    private final long getI$priv() {
+    private final long getI$priv$() {
         return i;
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1291.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1291.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1291.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1291.class);
 }

@@ -5,31 +5,31 @@ class Bug1116 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     Bug1116() {
     }
     
-    private final void m$priv(final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> s) {
+    private final void m$priv$(final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> s) {
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Empty> objects = (.ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Empty>)(.ceylon.language.Tuple)s;
     }
     
-    private final void m5$priv(final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> s) {
+    private final void m5$priv$(final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> s) {
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> objects = (.ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>)(.ceylon.language.Tuple)s;
     }
     
-    private final void m2$priv(final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> s) {
+    private final void m2$priv$(final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> s) {
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> objects = (.ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Tuple)s;
     }
     
-    private final void m6$priv(final .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> s) {
+    private final void m6$priv$(final .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> s) {
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Empty>> objects = (.ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Empty>>)(.ceylon.language.Tuple)s;
     }
     
-    private final void m3$priv(final .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> s) {
+    private final void m3$priv$(final .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> s) {
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>> objects = s;
     }
     
-    private final void m4$priv(final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>> s) {
+    private final void m4$priv$(final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>> s) {
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>> objects = s;
     }
     
-    private final void m7$priv(final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Empty>> s) {
+    private final void m7$priv$(final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Empty>> s) {
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Object, ? extends .ceylon.language.Empty>> objects = s;
     }
     
@@ -39,8 +39,8 @@ class Bug1116 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1116.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1116.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1116.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1116.class);
 }

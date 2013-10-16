@@ -5,7 +5,7 @@ class ImportTypeAlias implements .com.redhat.ceylon.compiler.java.runtime.model.
     ImportTypeAlias() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         new .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.C1();
     }
     
@@ -15,8 +15,8 @@ class ImportTypeAlias implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.import_.ImportTypeAlias.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.import_.ImportTypeAlias.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.import_.ImportTypeAlias.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.import_.ImportTypeAlias.class);
 }

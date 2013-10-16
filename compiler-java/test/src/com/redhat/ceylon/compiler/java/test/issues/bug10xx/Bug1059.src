@@ -2,26 +2,26 @@ package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
 
 public class Bug1059<SomeType> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    public Bug1059(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedSomeType, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> i) {
-        this.$reifiedSomeType = $reifiedSomeType;
+    public Bug1059(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$SomeType, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> i) {
+        this.$reified$SomeType = $reified$SomeType;
         this.i = i;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedSomeType;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$SomeType;
     private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> i;
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> getI$priv() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> getI$priv$() {
         return i;
     }
     
     public final .ceylon.language.Iterator<? extends SomeType> iterator() {
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(getI$priv(), $reifiedSomeType)) {
-            return new .ceylon.language.Singleton<SomeType>($reifiedSomeType, (SomeType)getI$priv()).iterator();
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(getI$priv$(), $reified$SomeType)) {
+            return new .ceylon.language.Singleton<SomeType>($reified$SomeType, (SomeType)getI$priv$()).iterator();
         }
         return (.ceylon.language.Iterator).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1059.class, $reifiedSomeType);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1059.class, $reified$SomeType);
     }
 }

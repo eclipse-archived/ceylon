@@ -23,7 +23,7 @@ final class bug1134Toplevel2_ {
     }
     private static final .java.lang.String[] value;
     static {
-        value = new .java.lang.String[]{.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1134Toplevel1_.get_().$call$variadic(.ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Anything.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})).toString()};
+        value = new .java.lang.String[]{.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1134Toplevel1_.get_().$callvariadic$(.ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Anything.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})).toString()};
     }
     
     public static .java.lang.String get_() {

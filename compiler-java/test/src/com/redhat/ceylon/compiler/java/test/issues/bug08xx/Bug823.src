@@ -6,7 +6,7 @@ final class bug823_ {
     }
     
     static void bug823(final .ceylon.language.Sequential<? extends .java.lang.Object> xx) {
-        .java.lang.String $ceylontmpassert$0 = null;
+        .java.lang.String $ceylontmp$assert$0 = null;
         final int z$4;
         final .ceylon.language.Sequence<? extends .java.lang.Object> xx$2;
         .ceylon.language.Sequential<? extends .java.lang.Object> xx$1 = null;
@@ -17,13 +17,13 @@ final class bug823_ {
                 z$4 = ((.ceylon.language.Character)z$3).intValue();
             } else {
                 z$4 = 0;
-                $ceylontmpassert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "nonempty xx" + (.java.lang.System.lineSeparator() + "\tviolated ") + "is Character z=xx[0]";
+                $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "nonempty xx" + (.java.lang.System.lineSeparator() + "\tviolated ") + "is Character z=xx[0]";
             }
         } else {
             xx$2 = null;
             z$4 = 0;
-            $ceylontmpassert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "nonempty xx" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Character z=xx[0]";
+            $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "nonempty xx" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Character z=xx[0]";
         }
-        if ($ceylontmpassert$0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert$0);
+        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$0);
     }
 }

@@ -9,7 +9,7 @@ interface SuperOfTop {
     public void setA(final long a);
     
     public long m();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfTop.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfTop.class);
 }
 final class SuperOfTop$impl {
     
@@ -41,7 +41,7 @@ interface SuperOfLeft extends .com.redhat.ceylon.compiler.java.test.expression.o
     
     @.java.lang.Override
     public long m();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft.class);
 }
 final class SuperOfLeft$impl {
     
@@ -61,10 +61,10 @@ final class SuperOfLeft$impl {
         return $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfTop$impl().m() + (
             let
             {
-                long $ceylontmpopV$1 = $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfTop$impl().getA();
-                $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfTop$impl().setA($ceylontmpopV$1 + 1);
+                long $ceylontmp$opV$1 = $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfTop$impl().getA();
+                $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfTop$impl().setA($ceylontmp$opV$1 + 1);
             }
-            returning $ceylontmpopV$1;
+            returning $ceylontmp$opV$1;
         );
     }
 }
@@ -80,7 +80,7 @@ interface SuperOfRight extends .com.redhat.ceylon.compiler.java.test.expression.
     
     @.java.lang.Override
     public long m();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfRight.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfRight.class);
 }
 final class SuperOfRight$impl {
     
@@ -112,7 +112,7 @@ interface SuperOfBottom extends .com.redhat.ceylon.compiler.java.test.expression
     
     @.java.lang.Override
     public long m();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfBottom.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfBottom.class);
 }
 final class SuperOfBottom$impl {
     
@@ -134,26 +134,26 @@ final class SuperOfBottom$impl {
         (
             let
             {
-                long $ceylontmpopV$3 = $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$impl().getA() + 1L;
-                $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$impl().setA($ceylontmpopV$3);
+                long $ceylontmp$opV$3 = $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$impl().getA() + 1L;
+                $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$impl().setA($ceylontmp$opV$3);
             }
-            returning $ceylontmpopV$3;
+            returning $ceylontmp$opV$3;
         );
         (
             let
             {
-                long $ceylontmpopV$5 = $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$impl().getA();
-                $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$impl().setA($ceylontmpopV$5 + 1);
+                long $ceylontmp$opV$5 = $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$impl().getA();
+                $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$impl().setA($ceylontmp$opV$5 + 1);
             }
-            returning $ceylontmpopV$5;
+            returning $ceylontmp$opV$5;
         );
         (
             let
             {
-                long $ceylontmpopV$7 = $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$impl().getA() - 1;
-                $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$impl().setA($ceylontmpopV$7);
+                long $ceylontmp$opV$7 = $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$impl().getA() - 1;
+                $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$impl().setA($ceylontmp$opV$7);
             }
-            returning $ceylontmpopV$7;
+            returning $ceylontmp$opV$7;
         );
         return $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$impl().m() + $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$impl().getA() + $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$impl().m() + $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$impl().getA();
     }
@@ -161,43 +161,43 @@ final class SuperOfBottom$impl {
 class SuperOfBottomClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft, .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfRight {
     
     SuperOfBottomClass() {
-        this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this = new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfTop$this = new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfTop$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this = new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfRight$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$ = new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfTop$this$ = new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfTop$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this$ = new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfRight$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft$impl $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft$impl $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft$impl $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this;
+        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfTop$impl $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfTop$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfTop$impl $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfTop$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfTop$impl $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfTop$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfTop$this;
+        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfTop$this$;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfRight$impl $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfRight$impl $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfRight$impl $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this;
+        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this$;
     }
     
     @.java.lang.Override
     public long getA() {
-        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this.getA() + $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this.getA();
+        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$.getA() + $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this$.getA();
     }
     
     @.java.lang.Override
     public void setA(final long a) {
-        $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this.setA(a);
-        $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this.setA(a);
+        $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$.setA(a);
+        $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this$.setA(a);
     }
     
     @.java.lang.Override
     public long m() {
-        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this.m() + $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this.getA() + $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this.m() + $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this.getA();
+        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$.m() + $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$.getA() + $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this$.m() + $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this$.getA();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -206,43 +206,43 @@ class SuperOfBottomClass implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfBottomClass.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfBottomClass.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfBottomClass.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfBottomClass.class);
 }
 class SuperOfLeftClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft {
     
     SuperOfLeftClass() {
-        this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this = new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfTop$this = new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfTop$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$ = new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfTop$this$ = new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfTop$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft$impl $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft$impl $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft$impl $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this;
+        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$;
     }
     
     @.java.lang.Override
     public long getA() {
-        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this.getA();
+        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$.getA();
     }
     
     @.java.lang.Override
     public void setA(final long a) {
-        $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this.setA(a);
+        $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$.setA(a);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfTop$impl $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfTop$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfTop$impl $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfTop$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfTop$impl $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfTop$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfTop$this;
+        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfTop$this$;
     }
     
     @.java.lang.Override
     public long m() {
-        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this.m() + 2L;
+        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$.m() + 2L;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -251,38 +251,38 @@ class SuperOfLeftClass implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeftClass.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeftClass.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeftClass.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeftClass.class);
 }
 class SuperOfBottomLeftClass extends .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeftClass implements .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfRight {
     
     SuperOfBottomLeftClass() {
         super();
-        this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this = new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfRight$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this$ = new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfRight$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfRight$impl $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfRight$impl $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfRight$impl $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this;
+        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this$;
     }
     
     @.java.lang.Override
     public long getA() {
-        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this.getA() + super.getA();
+        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$.getA() + super.getA();
     }
     
     @.java.lang.Override
     public void setA(final long a) {
-        $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this.setA(a);
-        $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this.setA(a);
+        $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$.setA(a);
+        $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$.setA(a);
     }
     
     @.java.lang.Override
     public long m() {
-        return super.m() + super.getA() + $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this.m() + $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this.getA();
+        return super.m() + super.getA() + $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this$.m() + $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$this$.getA();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -291,8 +291,8 @@ class SuperOfBottomLeftClass extends .com.redhat.ceylon.compiler.java.test.expre
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfBottomLeftClass.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfBottomLeftClass.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfBottomLeftClass.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfBottomLeftClass.class);
 }

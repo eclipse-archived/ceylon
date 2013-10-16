@@ -30,28 +30,28 @@ final class bug1152_ {
         final enum_ enum = new enum_();
         enum.$enum();
         
-        final class getter$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+        final class getter$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
-            private getter$getter_() {
+            private getter$getter$_() {
             }
             
             public long get_() {
                 
-                final class g$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+                final class g$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
                     
-                    private g$getter_() {
+                    private g$getter$_() {
                     }
                     
                     public long get_() {
                         return get_() + get_();
                     }
                 }
-                final .com.redhat.ceylon.compiler.java.language.GetterLong g$getter_ = new g$getter_();
-                return get_() + g$getter_.get_();
+                final .com.redhat.ceylon.compiler.java.language.GetterLong g$getter$_ = new g$getter$_();
+                return get_() + g$getter$_.get_();
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.GetterLong getter$getter_ = new getter$getter_();
-        final long g = getter$getter_.get_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong getter$getter$_ = new getter$getter$_();
+        final long g = getter$getter$_.get_();
     }
     
     public static void main(.java.lang.String[] args) {

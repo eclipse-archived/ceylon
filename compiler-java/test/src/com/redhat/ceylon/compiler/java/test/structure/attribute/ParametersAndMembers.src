@@ -11,7 +11,7 @@ class ParametersAndMembers implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     private final .java.lang.String unsharedCapturedVpd;
     
-    private final .java.lang.String getUnsharedCapturedVpd$priv() {
+    private final .java.lang.String getUnsharedCapturedVpd$priv$() {
         return unsharedCapturedVpd;
     }
     private final .java.lang.String sharedVpd;
@@ -21,7 +21,7 @@ class ParametersAndMembers implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     private final .java.lang.String unsharedCapturedHidden;
     
-    private final .java.lang.String getUnsharedCapturedHidden$priv() {
+    private final .java.lang.String getUnsharedCapturedHidden$priv$() {
         return unsharedCapturedHidden;
     }
     private final .java.lang.String sharedHidden;
@@ -31,12 +31,12 @@ class ParametersAndMembers implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     public final void capture() {
-        .ceylon.language.print_.print(.ceylon.language.String.instance(getUnsharedCapturedHidden$priv() + getUnsharedCapturedVpd$priv()));
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getUnsharedCapturedHidden$priv$() + getUnsharedCapturedVpd$priv$()));
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ParametersAndMembers.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ParametersAndMembers.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ParametersAndMembers.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ParametersAndMembers.class);
 }

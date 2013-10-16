@@ -12,18 +12,18 @@ final class zeroSequencedArgs_ {
             private m_() {
             }
             
-            <Element>void m(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+            <Element>void m(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
                 (
                     let
                     {
-                        .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                        m($reifiedElement, $ceylontmp$elements$$0);
+                        .ceylon.language.Sequential<? extends Element> $ceylontmp$$elements$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                        m($reified$Element, $ceylontmp$$elements$$0);
                     }
                     returning null;
                 );
             }
             
-            <Element>void m(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .ceylon.language.Sequential<? extends Element> elements) {
+            <Element>void m(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .ceylon.language.Sequential<? extends Element> elements) {
             }
         }
         final m_ m = new m_();

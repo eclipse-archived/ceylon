@@ -6,9 +6,9 @@ interface Bug630 {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$impl();
     
-    @.ceylon.language.SharedAnnotation$annotation
-    @.ceylon.language.DefaultAnnotation$annotation
-    @.ceylon.language.ActualAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("default"),
@@ -18,9 +18,9 @@ interface Bug630 {
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public int hashCode();
     
-    @.ceylon.language.SharedAnnotation$annotation
-    @.ceylon.language.DefaultAnnotation$annotation
-    @.ceylon.language.ActualAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("default"),
@@ -31,7 +31,7 @@ interface Bug630 {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object other);
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 final class Bug630$impl {
@@ -45,9 +45,9 @@ final class Bug630$impl {
         return (int)(
             let
             {
-                long $ceylontmphash$2 = 42L;
+                long $ceylontmp$hash$2 = 42L;
             }
-            returning $ceylontmphash$2 ^ $ceylontmphash$2 >>> 32;
+            returning $ceylontmp$hash$2 ^ $ceylontmp$hash$2 >>> 32;
         );
     }
     

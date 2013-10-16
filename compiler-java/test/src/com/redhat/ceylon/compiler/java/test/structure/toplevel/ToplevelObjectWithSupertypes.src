@@ -6,17 +6,17 @@ public class C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.toplevel.C.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.toplevel.C.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.C.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.C.class);
 }
 public interface I {
     
     public .com.redhat.ceylon.compiler.java.test.structure.toplevel.I$impl $com$redhat$ceylon$compiler$java$test$structure$toplevel$I$impl();
     
     public abstract boolean id(final boolean x);
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.I.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.I.class);
 }
 public final class I$impl {
     
@@ -29,18 +29,18 @@ public final class topLevelObjectWithSuperTypes_ extends .com.redhat.ceylon.comp
     
     private topLevelObjectWithSuperTypes_() {
         super(2L);
-        this.$com$redhat$ceylon$compiler$java$test$structure$toplevel$I$this = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.I$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$toplevel$I$this$ = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.I$impl(this);
     }
     
     @.java.lang.Override
     public final boolean id(final boolean x) {
         return x;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.toplevel.I$impl $com$redhat$ceylon$compiler$java$test$structure$toplevel$I$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.toplevel.I$impl $com$redhat$ceylon$compiler$java$test$structure$toplevel$I$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.toplevel.I$impl $com$redhat$ceylon$compiler$java$test$structure$toplevel$I$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$toplevel$I$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$toplevel$I$this$;
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_[] value;
     static {
@@ -56,7 +56,7 @@ public final class topLevelObjectWithSuperTypes_ extends .com.redhat.ceylon.comp
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_.class);
     }
 }

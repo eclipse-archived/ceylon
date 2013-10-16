@@ -11,10 +11,10 @@ final class bug1207_ {
         final .ceylon.language.Callable<? extends .java.lang.Object> c1 = (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp0 = 1L == 2L ? new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$0 = 1L == 2L ? new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
                     
                     @.java.lang.Override
-                    public .java.lang.Object $call() {
+                    public .java.lang.Object $call$() {
                         return (
                             let
                             {
@@ -25,10 +25,10 @@ final class bug1207_ {
                     }
                 } : null;
             }
-            returning $ceylontmp0 != null ? $ceylontmp0 : new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+            returning $ceylontmp$0 != null ? $ceylontmp$0 : new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
                 
                 @.java.lang.Override
-                public .java.lang.Object $call() {
+                public .java.lang.Object $call$() {
                     return (
                         let
                         {
@@ -42,10 +42,10 @@ final class bug1207_ {
         (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp1 = 1L == 2L ? new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$1 = 1L == 2L ? new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
                     
                     @.java.lang.Override
-                    public .java.lang.Object $call() {
+                    public .java.lang.Object $call$() {
                         return (
                             let
                             {
@@ -56,10 +56,10 @@ final class bug1207_ {
                     }
                 } : null;
             }
-            returning $ceylontmp1 != null ? $ceylontmp1 : new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+            returning $ceylontmp$1 != null ? $ceylontmp$1 : new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
                 
                 @.java.lang.Override
-                public .java.lang.Object $call() {
+                public .java.lang.Object $call$() {
                     return (
                         let
                         {
@@ -69,14 +69,14 @@ final class bug1207_ {
                     );
                 }
             };
-        ).$call();
-        final .ceylon.language.Callable<? extends .ceylon.language.String> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), "String(String, String)", (short)-1){
+        ).$call$();
+        final .ceylon.language.Callable<? extends .ceylon.language.String> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "String(String, String)", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.String $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final .java.lang.String $ceylontmpsubstring = ((.ceylon.language.String)$param$0).toString();
-                final .java.lang.String $ceylontmpreplacement = ((.ceylon.language.String)$param$1).toString();
-                return .ceylon.language.String.instance(.ceylon.language.String.replace("hello", $ceylontmpsubstring, $ceylontmpreplacement));
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .java.lang.String $ceylontmp$substring = ((.ceylon.language.String)$param$0).toString();
+                final .java.lang.String $ceylontmp$replacement = ((.ceylon.language.String)$param$1).toString();
+                return .ceylon.language.String.instance(.ceylon.language.String.replace("hello", $ceylontmp$substring, $ceylontmp$replacement));
             }
         };
     }

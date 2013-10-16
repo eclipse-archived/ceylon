@@ -85,7 +85,7 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
         this.urlEncoderForHTML = urlEncoderForHTML;
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         boolean sync = false;
         sync = getBooleanWithGet();
         setBooleanWithGet(false);
@@ -106,8 +106,8 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.interop.CeylonAttributes.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.CeylonAttributes.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.CeylonAttributes.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.CeylonAttributes.class);
 }

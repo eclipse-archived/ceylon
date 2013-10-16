@@ -8,17 +8,17 @@ class IndirectQualifiedAttributeAccess implements .com.redhat.ceylon.compiler.ja
     }
     private final boolean b;
     
-    private final boolean getB$priv() {
+    private final boolean getB$priv$() {
         return b;
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess q;
     
-    private final .com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess getQ$priv() {
+    private final .com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess getQ$priv$() {
         return q;
     }
     
-    private final boolean test$priv() {
-        return getQ$priv().getB$priv();
+    private final boolean test$priv$() {
+        return getQ$priv$().getB$priv$();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -27,8 +27,8 @@ class IndirectQualifiedAttributeAccess implements .com.redhat.ceylon.compiler.ja
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess.class);
 }

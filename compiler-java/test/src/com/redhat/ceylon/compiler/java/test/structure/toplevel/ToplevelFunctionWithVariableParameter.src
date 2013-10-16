@@ -10,18 +10,18 @@ final class functionWithVariableParameter_ {
         (
             let
             {
-                long $ceylontmpop$0 = i;
-                i = $ceylontmpop$0 + 1;
+                long $ceylontmp$op$0 = i;
+                i = $ceylontmp$op$0 + 1;
             }
-            returning $ceylontmpop$0;
+            returning $ceylontmp$op$0;
         );
         (
             let
             {
-                long $ceylontmpop$1 = i + 1L;
-                i = $ceylontmpop$1;
+                long $ceylontmp$op$1 = i + 1L;
+                i = $ceylontmp$op$1;
             }
-            returning $ceylontmpop$1;
+            returning $ceylontmp$op$1;
         );
     }
 }
@@ -35,18 +35,18 @@ final class functionWithHiddenVariableParameter_ {
         (
             let
             {
-                long $ceylontmpop$2 = i;
-                i = $ceylontmpop$2 + 1;
+                long $ceylontmp$op$2 = i;
+                i = $ceylontmp$op$2 + 1;
             }
-            returning $ceylontmpop$2;
+            returning $ceylontmp$op$2;
         );
         (
             let
             {
-                long $ceylontmpop$3 = i + 1L;
-                i = $ceylontmpop$3;
+                long $ceylontmp$op$3 = i + 1L;
+                i = $ceylontmp$op$3;
             }
-            returning $ceylontmpop$3;
+            returning $ceylontmp$op$3;
         );
     }
 }
@@ -55,8 +55,8 @@ final class functionWithVariableParameterCaptured_ {
     private functionWithVariableParameterCaptured_() {
     }
     
-    static void functionWithVariableParameterCaptured(final long i$param) {
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(i$param);
+    static void functionWithVariableParameterCaptured(final long i$param$) {
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(i$param$);
         
         final class fn_ {
             
@@ -68,18 +68,18 @@ final class functionWithVariableParameterCaptured_ {
                 (
                     let
                     {
-                        long $ceylontmpop$4 = i.ref;
-                        i.ref = $ceylontmpop$4 + 1;
+                        long $ceylontmp$op$4 = i.ref;
+                        i.ref = $ceylontmp$op$4 + 1;
                     }
-                    returning $ceylontmpop$4;
+                    returning $ceylontmp$op$4;
                 );
                 (
                     let
                     {
-                        long $ceylontmpop$5 = i.ref + 1L;
-                        i.ref = $ceylontmpop$5;
+                        long $ceylontmp$op$5 = i.ref + 1L;
+                        i.ref = $ceylontmp$op$5;
                     }
-                    returning $ceylontmpop$5;
+                    returning $ceylontmp$op$5;
                 );
             }
         }
@@ -91,8 +91,8 @@ final class functionWithHiddenVariableParameterCaptured_ {
     private functionWithHiddenVariableParameterCaptured_() {
     }
     
-    static void functionWithHiddenVariableParameterCaptured(final long i$param) {
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(i$param);
+    static void functionWithHiddenVariableParameterCaptured(final long i$param$) {
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(i$param$);
         
         final class fn_ {
             
@@ -104,18 +104,18 @@ final class functionWithHiddenVariableParameterCaptured_ {
                 (
                     let
                     {
-                        long $ceylontmpop$6 = i.ref;
-                        i.ref = $ceylontmpop$6 + 1;
+                        long $ceylontmp$op$6 = i.ref;
+                        i.ref = $ceylontmp$op$6 + 1;
                     }
-                    returning $ceylontmpop$6;
+                    returning $ceylontmp$op$6;
                 );
                 (
                     let
                     {
-                        long $ceylontmpop$7 = i.ref + 1L;
-                        i.ref = $ceylontmpop$7;
+                        long $ceylontmp$op$7 = i.ref + 1L;
+                        i.ref = $ceylontmp$op$7;
                     }
-                    returning $ceylontmpop$7;
+                    returning $ceylontmp$op$7;
                 );
             }
         }

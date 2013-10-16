@@ -9,7 +9,7 @@ public interface MultipleInheritance {
     public void setA(final long a);
     
     public .java.lang.Object m();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance.class);
 }
 public final class MultipleInheritance$impl {
     
@@ -32,28 +32,28 @@ public final class MultipleInheritance$impl {
 class MultipleInheritanceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance {
     
     MultipleInheritanceImpl() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$;
     }
     
     @.java.lang.Override
     public long getA() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this.getA();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$.getA();
     }
     
     @.java.lang.Override
     public void setA(final long a) {
-        $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this.setA(a);
+        $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$.setA(a);
     }
     
     @.java.lang.Override
     public .java.lang.Object m() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this.m();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$.m();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -62,15 +62,15 @@ class MultipleInheritanceImpl implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImpl.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImpl.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImpl.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImpl.class);
 }
 interface MultipleInheritanceSub extends .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance {
     
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$impl();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub.class);
 }
 final class MultipleInheritanceSub$impl {
     
@@ -82,35 +82,35 @@ final class MultipleInheritanceSub$impl {
 class MultipleInheritanceSubImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub {
     
     MultipleInheritanceSubImpl() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$this$;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$;
     }
     
     @.java.lang.Override
     public long getA() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this.getA();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$.getA();
     }
     
     @.java.lang.Override
     public void setA(final long a) {
-        $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this.setA(a);
+        $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$.setA(a);
     }
     
     @.java.lang.Override
     public .java.lang.Object m() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this.m();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$.m();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -119,23 +119,23 @@ class MultipleInheritanceSubImpl implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSubImpl.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSubImpl.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSubImpl.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSubImpl.class);
 }
 class MultipleInheritanceImplSub extends .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImpl implements .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub {
     
     MultipleInheritanceImplSub() {
         super();
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub$impl(this);
         this.a = 1L;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$this$;
     }
     private long a;
     
@@ -151,7 +151,7 @@ class MultipleInheritanceImplSub extends .com.redhat.ceylon.compiler.java.test.s
     
     @.java.lang.Override
     public final .java.lang.Object m() {
-        $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this.m();
+        $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$.m();
         return null;
     }
     
@@ -161,10 +161,10 @@ class MultipleInheritanceImplSub extends .com.redhat.ceylon.compiler.java.test.s
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImplSub.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImplSub.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImplSub.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImplSub.class);
 }
 class MultipleInheritanceSubImplSub extends .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSubImpl implements .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance {
     
@@ -186,7 +186,7 @@ class MultipleInheritanceSubImplSub extends .com.redhat.ceylon.compiler.java.tes
     
     @.java.lang.Override
     public final .java.lang.Object m() {
-        $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this.m();
+        $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$.m();
         return null;
     }
     
@@ -196,8 +196,8 @@ class MultipleInheritanceSubImplSub extends .com.redhat.ceylon.compiler.java.tes
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSubImplSub.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSubImplSub.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSubImplSub.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSubImplSub.class);
 }

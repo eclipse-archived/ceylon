@@ -12,10 +12,10 @@ class ImplementOverloadedConstructor1 extends .com.redhat.ceylon.compiler.java.t
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor1.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor1.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor1.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor1.class);
 }
 class ImplementOverloadedConstructor2 extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -29,10 +29,10 @@ class ImplementOverloadedConstructor2 extends .com.redhat.ceylon.compiler.java.t
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor2.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor2.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor2.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor2.class);
 }
 class ImplementOverloadedConstructor3 extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -41,8 +41,8 @@ class ImplementOverloadedConstructor3 extends .com.redhat.ceylon.compiler.java.t
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor3.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor3.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor3.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor3.class);
 }

@@ -6,40 +6,40 @@ class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     public final void m(final .ceylon.language.Sequential<? extends .java.lang.Object> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{xs}){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{xs}){
             
             public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
                     private .java.lang.Object x;
-                    private boolean x$exhausted;
+                    private boolean x$exhausted$;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
-                        if (x$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmpitem$0;
+                            x = (.java.lang.Object)$ceylontmp$item$0;
                             return true;
                         }
                     }
                     
-                    private final boolean next1() {
+                    private final boolean $next$1() {
                         while (true) {
                             if (!this.x()) break;
                             if (x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo || x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar) {
                                 break;
                             }
                         }
-                        return !x$exhausted;
+                        return !x$exhausted$;
                     }
                     
                     public final .java.lang.Object next() {
-                        if (this.next1()) {
+                        if (this.$next$1()) {
                             final .java.lang.Object x = this.x;
                             return ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)x).common();
                         } else return .ceylon.language.finished_.get_();
@@ -50,30 +50,30 @@ class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     public final void mvar(final .ceylon.language.Sequential<? extends .java.lang.Object> ys) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{ys}){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{ys}){
             
             public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
                     private .java.lang.Object y;
-                    private boolean y$exhausted;
+                    private boolean y$exhausted$;
                     
                     private final boolean y() {
-                        final .java.lang.Object $ceylontmpitem$2 = iter$0.next();
-                        y$exhausted = $ceylontmpitem$2 == .ceylon.language.finished_.get_();
-                        if (y$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$2 = $iterator$0.next();
+                        y$exhausted$ = $ceylontmp$item$2 == .ceylon.language.finished_.get_();
+                        if (y$exhausted$) {
                             return false;
                         } else {
-                            y = (.java.lang.Object)$ceylontmpitem$2;
+                            y = (.java.lang.Object)$ceylontmp$item$2;
                             return true;
                         }
                     }
                     private .java.lang.Object x$4;
                     
-                    private final boolean next1() {
+                    private final boolean $next$1() {
                         while (true) {
                             if (!this.y()) break;
                             .java.lang.Object x$3 = null;
@@ -82,11 +82,11 @@ class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                                 break;
                             }
                         }
-                        return !y$exhausted;
+                        return !y$exhausted$;
                     }
                     
                     public final .java.lang.Object next() {
-                        if (this.next1()) {
+                        if (this.$next$1()) {
                             final .java.lang.Object y = this.y;
                             return ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)x$4).common();
                         } else return .ceylon.language.finished_.get_();
@@ -102,8 +102,8 @@ class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsUnion.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsUnion.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsUnion.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsUnion.class);
 }

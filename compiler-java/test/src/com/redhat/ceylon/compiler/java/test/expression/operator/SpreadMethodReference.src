@@ -5,24 +5,24 @@ class SpreadMethodReference implements .com.redhat.ceylon.compiler.java.runtime.
     SpreadMethodReference() {
     }
     
-    private final void m$priv(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq) {
-        final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String[](Integer)", (short)-1){
+    private final void m$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq) {
+        final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String[](Integer)", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends .ceylon.language.String> $call(final .java.lang.Object $param$0) {
-                final long $ceylontmplength = ((.ceylon.language.Integer)$param$0).longValue();
+            public .ceylon.language.Sequential<? extends .ceylon.language.String> $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$length = ((.ceylon.language.Integer)$param$0).longValue();
                 return (
                     let
                     {
-                        .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$1$iterable = seq;
-                        .ceylon.language.SequenceBuilder<.ceylon.language.String> spread$1$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor);
-                        .java.lang.Object spread$1$iteration;
-                        for (.ceylon.language.Iterator<? extends .ceylon.language.String> spread$1$iterator = spread$1$iterable.iterator(); !((spread$1$iteration = spread$1$iterator.next()) instanceof .ceylon.language.Finished); ) {
-                            .ceylon.language.String spread$1$element = (.ceylon.language.String)spread$1$iteration;
-                            spread$1$sequenceBuilder.append(spread$1$element.initial($ceylontmplength));
+                        .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$1$iterable$ = seq;
+                        .ceylon.language.SequenceBuilder<.ceylon.language.String> spread$1$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
+                        .java.lang.Object spread$1$iteration$;
+                        for (.ceylon.language.Iterator<? extends .ceylon.language.String> spread$1$iterator$ = spread$1$iterable$.iterator(); !((spread$1$iteration$ = spread$1$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                            .ceylon.language.String spread$1$element$ = (.ceylon.language.String)spread$1$iteration$;
+                            spread$1$sb$.append(spread$1$element$.initial($ceylontmp$length));
                         }
                     }
-                    returning spread$1$sequenceBuilder.getSequence();
+                    returning spread$1$sb$.getSequence();
                 );
             }
         };
@@ -34,8 +34,8 @@ class SpreadMethodReference implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.SpreadMethodReference.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.SpreadMethodReference.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SpreadMethodReference.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SpreadMethodReference.class);
 }

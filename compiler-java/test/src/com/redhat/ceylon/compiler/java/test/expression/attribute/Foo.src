@@ -7,11 +7,11 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType 
         this.sharedInit = sharedInit;
         this.param = param;
         this.sharedParam = sharedParam;
-        final .java.lang.String s3 = getInit$priv() + getSharedInit() + getParam$priv() + getSharedParam();
+        final .java.lang.String s3 = getInit$priv$() + getSharedInit() + getParam$priv$() + getSharedParam();
     }
     private final .java.lang.String param;
     
-    private final .java.lang.String getParam$priv() {
+    private final .java.lang.String getParam$priv$() {
         return param;
     }
     private final .java.lang.String sharedParam;
@@ -21,7 +21,7 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType 
     }
     private final .java.lang.String init;
     
-    private final .java.lang.String getInit$priv() {
+    private final .java.lang.String getInit$priv$() {
         return init;
     }
     private final .java.lang.String sharedInit;
@@ -34,15 +34,15 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType 
         (
             let
             {
-                .java.lang.String $ceylontmp$a$$0 = m$a();
-                m$($ceylontmp$a$$0);
+                .java.lang.String $ceylontmp$$a$$0 = m$a();
+                m$($ceylontmp$$a$$0);
             }
             returning null;
         );
     }
     
     public final .java.lang.String m$a() {
-        return getInit$priv() + getSharedInit() + getParam$priv() + getSharedParam();
+        return getInit$priv$() + getSharedInit() + getParam$priv$() + getSharedParam();
     }
     
     private void m$(final .java.lang.String a) {
@@ -59,60 +59,60 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType 
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.Foo.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.Foo.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.Foo.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.Foo.class);
 }
 class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bar(final .ceylon.language.String init, .ceylon.language.String variableInit$param) {
+    Bar(final .ceylon.language.String init, .ceylon.language.String variableInit$param$) {
         this.init = init;
-        this.variableInit = variableInit$param;
-        this.variableAttr = getVariableInit$priv();
-        this.attr = getVariableInit$priv();
+        this.variableInit = variableInit$param$;
+        this.variableAttr = getVariableInit$priv$();
+        this.attr = getVariableInit$priv$();
     }
     private final .ceylon.language.String init;
     
-    private final .ceylon.language.String getInit$priv() {
+    private final .ceylon.language.String getInit$priv$() {
         return init;
     }
     private .ceylon.language.String variableInit;
     
-    private final .ceylon.language.String getVariableInit$priv() {
+    private final .ceylon.language.String getVariableInit$priv$() {
         return variableInit;
     }
     
-    private final void setVariableInit$priv(final .ceylon.language.String variableInit) {
+    private final void setVariableInit$priv$(final .ceylon.language.String variableInit) {
         this.variableInit = variableInit;
     }
     private .ceylon.language.String variableAttr;
     
-    private final .ceylon.language.String getVariableAttr$priv() {
+    private final .ceylon.language.String getVariableAttr$priv$() {
         return variableAttr;
     }
     
-    private final void setVariableAttr$priv(final .ceylon.language.String variableAttr) {
+    private final void setVariableAttr$priv$(final .ceylon.language.String variableAttr) {
         this.variableAttr = variableAttr;
     }
     private final .ceylon.language.String attr;
     
-    private final .ceylon.language.String getAttr$priv() {
+    private final .ceylon.language.String getAttr$priv$() {
         return attr;
     }
     
     public final void m() {
-        final .ceylon.language.String x1 = getInit$priv();
-        final .ceylon.language.String x2 = getAttr$priv();
-        final .ceylon.language.String x3 = getVariableAttr$priv();
-        final .ceylon.language.String x4 = getVariableInit$priv();
-        setVariableAttr$priv(.ceylon.language.String.instance(""));
-        setVariableInit$priv(.ceylon.language.String.instance(""));
+        final .ceylon.language.String x1 = getInit$priv$();
+        final .ceylon.language.String x2 = getAttr$priv$();
+        final .ceylon.language.String x3 = getVariableAttr$priv$();
+        final .ceylon.language.String x4 = getVariableInit$priv$();
+        setVariableAttr$priv$(.ceylon.language.String.instance(""));
+        setVariableInit$priv$(.ceylon.language.String.instance(""));
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.Bar.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.Bar.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.Bar.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.Bar.class);
 }

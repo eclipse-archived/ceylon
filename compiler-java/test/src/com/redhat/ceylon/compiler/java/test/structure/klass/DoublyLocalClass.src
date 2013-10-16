@@ -5,7 +5,7 @@ class DoublyLocalClass implements .com.redhat.ceylon.compiler.java.runtime.model
     DoublyLocalClass() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         
         class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
@@ -19,13 +19,13 @@ class DoublyLocalClass implements .com.redhat.ceylon.compiler.java.runtime.model
                 }
                 
                 @.java.lang.Override
-                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                     return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.Innermost.class));
                 }
             }
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class);
             }
         }
@@ -37,8 +37,8 @@ class DoublyLocalClass implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.DoublyLocalClass.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.DoublyLocalClass.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.DoublyLocalClass.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.DoublyLocalClass.class);
 }

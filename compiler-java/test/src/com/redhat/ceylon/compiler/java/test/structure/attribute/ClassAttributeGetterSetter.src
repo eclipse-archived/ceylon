@@ -4,43 +4,43 @@ abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler
     
     ClassAttributeGetterSetter() {
         
-        final class f$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+        final class f$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
             
-            private f$getter_() {
+            private f$getter$_() {
             }
             
             public .java.lang.String get_() {
                 return "";
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> f$getter_ = new f$getter_();
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> f$getter$_ = new f$getter$_();
         
-        final class f$setter_ {
+        final class f$setter$_ {
             
-            private f$setter_() {
+            private f$setter$_() {
             }
             private .java.lang.String value;
             
             public void set_(final .java.lang.String f) {
             }
         }
-        final f$setter_ f$setter_ = new f$setter_();
+        final f$setter$_ f$setter$_ = new f$setter$_();
         this.f5 = "";
         
-        final class f6$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+        final class f6$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
             
-            private f6$getter_() {
+            private f6$getter$_() {
             }
             
             public .java.lang.String get_() {
                 return "";
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> f6$getter_ = new f6$getter_();
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> f6$getter$_ = new f6$getter$_();
         
-        final class f6$setter_ {
+        final class f6$setter$_ {
             
-            private f6$setter_() {
+            private f6$setter$_() {
             }
             private .java.lang.String value;
             
@@ -48,14 +48,14 @@ abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler
                 (
                     let
                     {
-                        .java.lang.String $ceylontmpop$0 = f6;
-                        setF2($ceylontmpop$0);
+                        .java.lang.String $ceylontmp$op$0 = f6;
+                        setF2($ceylontmp$op$0);
                     }
-                    returning $ceylontmpop$0;
+                    returning $ceylontmp$op$0;
                 );
             }
         }
-        final f6$setter_ f6$setter_ = new f6$setter_();
+        final f6$setter$_ f6$setter$_ = new f6$setter$_();
         this.f10 = "";
     }
     
@@ -90,10 +90,10 @@ abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler
         (
             let
             {
-                .java.lang.String $ceylontmpop$1 = f7;
-                setF2($ceylontmpop$1);
+                .java.lang.String $ceylontmp$op$1 = f7;
+                setF2($ceylontmp$op$1);
             }
-            returning $ceylontmpop$1;
+            returning $ceylontmp$op$1;
         );
     }
     
@@ -109,10 +109,10 @@ abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler
         (
             let
             {
-                .java.lang.String $ceylontmpop$2 = f9;
-                setF2($ceylontmpop$2);
+                .java.lang.String $ceylontmp$op$2 = f9;
+                setF2($ceylontmp$op$2);
             }
-            returning $ceylontmpop$2;
+            returning $ceylontmp$op$2;
         );
     }
     private final .java.lang.String f10;
@@ -122,10 +122,10 @@ abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetterSetter.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetterSetter.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetterSetter.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetterSetter.class);
 }
 class SubClassAttributeGetterSetter extends .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetterSetter {
     
@@ -167,10 +167,10 @@ class SubClassAttributeGetterSetter extends .com.redhat.ceylon.compiler.java.tes
         (
             let
             {
-                .java.lang.String $ceylontmpop$3 = f8;
-                setF2($ceylontmpop$3);
+                .java.lang.String $ceylontmp$op$3 = f8;
+                setF2($ceylontmp$op$3);
             }
-            returning $ceylontmpop$3;
+            returning $ceylontmp$op$3;
         );
     }
     
@@ -184,10 +184,10 @@ class SubClassAttributeGetterSetter extends .com.redhat.ceylon.compiler.java.tes
         (
             let
             {
-                .java.lang.String $ceylontmpop$4 = f9;
-                setF2($ceylontmpop$4);
+                .java.lang.String $ceylontmp$op$4 = f9;
+                setF2($ceylontmp$op$4);
             }
-            returning $ceylontmpop$4;
+            returning $ceylontmp$op$4;
         );
     }
     
@@ -200,10 +200,10 @@ class SubClassAttributeGetterSetter extends .com.redhat.ceylon.compiler.java.tes
         (
             let
             {
-                .java.lang.String $ceylontmpop$5 = f10;
-                setF2($ceylontmpop$5);
+                .java.lang.String $ceylontmp$op$5 = f10;
+                setF2($ceylontmp$op$5);
             }
-            returning $ceylontmpop$5;
+            returning $ceylontmp$op$5;
         );
     }
     
@@ -213,8 +213,8 @@ class SubClassAttributeGetterSetter extends .com.redhat.ceylon.compiler.java.tes
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttributeGetterSetter.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttributeGetterSetter.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttributeGetterSetter.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttributeGetterSetter.class);
 }

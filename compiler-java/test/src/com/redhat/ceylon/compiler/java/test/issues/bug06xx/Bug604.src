@@ -2,14 +2,14 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
 abstract class Bug604<N extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604<N, E>.Node, E extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604<N, E>.Edge> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug604(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedN, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE) {
-        this.$reifiedN = $reifiedN;
-        this.$reifiedE = $reifiedE;
+    Bug604(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$N, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E) {
+        this.$reified$N = $reified$N;
+        this.$reified$E = $reified$E;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedN;
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$N;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E;
     
-    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604<N, E>.Edge Edge$new(final N n1, final N n2);
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604<N, E>.Edge Edge$new$(final N n1, final N n2);
     
     public abstract class Edge implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
@@ -33,12 +33,12 @@ abstract class Bug604<N extends .com.redhat.ceylon.compiler.java.test.issues.bug
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.class, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.this.$reifiedN, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.this.$reifiedE), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.Edge.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.class, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.this.$reified$N, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.this.$reified$E), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.Edge.class));
         }
     }
     
-    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604<N, E>.Node Node$new();
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604<N, E>.Node Node$new$();
     
     public abstract class Node implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
@@ -50,13 +50,13 @@ abstract class Bug604<N extends .com.redhat.ceylon.compiler.java.test.issues.bug
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.class, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.this.$reifiedN, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.this.$reifiedE), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.Node.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.class, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.this.$reified$N, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.this.$reified$E), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.Node.class));
         }
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.class, $reifiedN, $reifiedE);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.class, $reified$N, $reified$E);
     }
 }

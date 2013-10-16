@@ -2,14 +2,14 @@ package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
 
 public abstract class Bug1332<Attached> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    public Bug1332(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAttached) {
-        this.$reifiedAttached = $reifiedAttached;
+    public Bug1332(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Attached) {
+        this.$reified$Attached = $reified$Attached;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAttached;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Attached;
     
     public abstract Attached m(final Attached p);
     
-    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332<Attached>.Node Node$new(final Attached attached);
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332<Attached>.Node Node$new$(final Attached attached);
     
     public abstract class Node implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
@@ -23,20 +23,20 @@ public abstract class Bug1332<Attached> implements .com.redhat.ceylon.compiler.j
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332.class, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332.this.$reifiedAttached), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332.Node.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332.class, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332.this.$reified$Attached), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332.Node.class));
         }
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332.class, $reifiedAttached);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332.class, $reified$Attached);
     }
 }
 public class Bug1332_2 extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332<.ceylon.language.String> {
     
     public Bug1332_2() {
-        super(.ceylon.language.String.$TypeDescriptor);
+        super(.ceylon.language.String.$TypeDescriptor$);
     }
     
     @.java.lang.Override
@@ -45,7 +45,7 @@ public class Bug1332_2 extends .com.redhat.ceylon.compiler.java.test.issues.bug1
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332_2.Node Node$new(final .ceylon.language.String attached0) {
+    public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332_2.Node Node$new$(final .ceylon.language.String attached0) {
         return new Node(attached0);
     }
     
@@ -56,8 +56,8 @@ public class Bug1332_2 extends .com.redhat.ceylon.compiler.java.test.issues.bug1
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332_2.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332_2.Node.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332_2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332_2.Node.class));
         }
     }
     
@@ -67,8 +67,8 @@ public class Bug1332_2 extends .com.redhat.ceylon.compiler.java.test.issues.bug1
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332_2.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332_2.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332_2.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1332_2.class);
 }

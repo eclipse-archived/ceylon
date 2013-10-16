@@ -5,7 +5,7 @@ class ImportMethodSingle implements .com.redhat.ceylon.compiler.java.runtime.mod
     ImportMethodSingle() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.m1_.m1();
     }
     
@@ -15,8 +15,8 @@ class ImportMethodSingle implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.import_.ImportMethodSingle.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.import_.ImportMethodSingle.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.import_.ImportMethodSingle.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.import_.ImportMethodSingle.class);
 }

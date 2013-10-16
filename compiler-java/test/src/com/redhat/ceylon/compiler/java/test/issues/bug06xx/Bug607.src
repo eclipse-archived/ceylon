@@ -5,8 +5,8 @@ final class bug607mth_ {
     private bug607mth_() {
     }
     
-    static void bug607mth(final .java.lang.String arg1, .java.lang.String arg2, final .java.lang.String arg3$param) {
-        final VariableBox<.java.lang.String> arg3 = new VariableBox<.java.lang.String>(arg3$param);
+    static void bug607mth(final .java.lang.String arg1, .java.lang.String arg2, final .java.lang.String arg3$param$) {
+        final VariableBox<.java.lang.String> arg3 = new VariableBox<.java.lang.String>(arg3$param$);
         arg2 = "foo";
         
         final class cap_ {
@@ -26,8 +26,8 @@ class Bug607cls implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     Bug607cls() {
     }
     
-    private final void mth$priv(final .java.lang.String arg1, .java.lang.String arg2, final .java.lang.String arg3$param) {
-        final VariableBox<.java.lang.String> arg3 = new VariableBox<.java.lang.String>(arg3$param);
+    private final void mth$priv$(final .java.lang.String arg1, .java.lang.String arg2, final .java.lang.String arg3$param$) {
+        final VariableBox<.java.lang.String> arg3 = new VariableBox<.java.lang.String>(arg3$param$);
         arg2 = "bar";
         
         final class cap_ {
@@ -48,8 +48,8 @@ class Bug607cls implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug607cls.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug607cls.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug607cls.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug607cls.class);
 }

@@ -7,7 +7,7 @@ class EqualsHashOverriding implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     private final .java.lang.String s;
     
-    private final .java.lang.String getS$priv() {
+    private final .java.lang.String getS$priv$() {
         return s;
     }
     
@@ -19,7 +19,7 @@ class EqualsHashOverriding implements .com.redhat.ceylon.compiler.java.runtime.m
         .java.lang.Object that$1;
         if ((that$1 = that) instanceof .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding) {
             final .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding that$2 = (.com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding)that$1;
-            return .ceylon.language.String.equals(getS$priv(), .ceylon.language.String.instance(that$2.getS$priv()));
+            return .ceylon.language.String.equals(getS$priv$(), .ceylon.language.String.instance(that$2.getS$priv$()));
         } else {
             return false;
         }
@@ -30,17 +30,17 @@ class EqualsHashOverriding implements .com.redhat.ceylon.compiler.java.runtime.m
         return (int)(
             let
             {
-                long $ceylontmphash$4 = .ceylon.language.String.hashCode(getS$priv());
+                long $ceylontmp$hash$4 = .ceylon.language.String.hashCode(getS$priv$());
             }
-            returning $ceylontmphash$4 ^ $ceylontmphash$4 >>> 32;
+            returning $ceylontmp$hash$4 ^ $ceylontmp$hash$4 >>> 32;
         );
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding.class);
 }
 class EqualsHashOverriding2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -54,17 +54,17 @@ class EqualsHashOverriding2 implements .com.redhat.ceylon.compiler.java.runtime.
         return (int)(
             let
             {
-                long $ceylontmphash$5 = hash;
+                long $ceylontmp$hash$5 = hash;
             }
-            returning $ceylontmphash$5 ^ $ceylontmphash$5 >>> 32;
+            returning $ceylontmp$hash$5 ^ $ceylontmp$hash$5 >>> 32;
         );
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding2.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding2.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding2.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding2.class);
 }
 class EqualsHashOverriding3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -78,15 +78,15 @@ class EqualsHashOverriding3 implements .com.redhat.ceylon.compiler.java.runtime.
         return (int)(
             let
             {
-                long $ceylontmphash$6 = hash;
+                long $ceylontmp$hash$6 = hash;
             }
-            returning $ceylontmphash$6 ^ $ceylontmphash$6 >>> 32;
+            returning $ceylontmp$hash$6 ^ $ceylontmp$hash$6 >>> 32;
         );
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding3.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding3.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding3.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding3.class);
 }

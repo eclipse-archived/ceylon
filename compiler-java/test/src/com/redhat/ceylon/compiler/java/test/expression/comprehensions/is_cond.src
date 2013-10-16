@@ -6,36 +6,36 @@ final class isCond_ {
     }
     
     static void isCond() {
-        final .ceylon.language.Sequence seq = new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), new .java.lang.Object[]{
+        final .ceylon.language.Sequence seq = new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.String.instance("2"),
                 .ceylon.language.Integer.instance(3L),
                 .ceylon.language.String.instance("4"),
                 .ceylon.language.Integer.instance(5L)});
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{seq}){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{seq}){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator iter$0;
+                    private final .ceylon.language.Iterator $iterator$0;
                     private .java.lang.Object x;
-                    private boolean x$exhausted;
+                    private boolean x$exhausted$;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
-                        if (x$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmpitem$0;
+                            x = (.java.lang.Object)$ceylontmp$item$0;
                             return true;
                         }
                     }
                     private long x$2;
                     
-                    private final boolean next1() {
+                    private final boolean $next$1() {
                         while (true) {
                             if (!this.x()) break;
                             .java.lang.Object x$1 = null;
@@ -44,11 +44,11 @@ final class isCond_ {
                                 break;
                             }
                         }
-                        return !x$exhausted;
+                        return !x$exhausted$;
                     }
                     
                     public final .java.lang.Object next() {
-                        if (this.next1()) {
+                        if (this.$next$1()) {
                             final .java.lang.Object x = this.x;
                             return .ceylon.language.Integer.instance(x$2 * 2L);
                         } else return .ceylon.language.finished_.get_();

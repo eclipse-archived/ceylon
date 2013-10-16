@@ -30,10 +30,10 @@ class SuperReference implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference.class);
 }
 class SuperReferenceChild extends .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference {
     
@@ -46,10 +46,10 @@ class SuperReferenceChild extends .com.redhat.ceylon.compiler.java.test.expressi
         (
             let
             {
-                long $ceylontmpopV$1 = super.getA();
-                super.setA($ceylontmpopV$1 + 1);
+                long $ceylontmp$opV$1 = super.getA();
+                super.setA($ceylontmp$opV$1 + 1);
             }
-            returning $ceylontmpopV$1;
+            returning $ceylontmp$opV$1;
         );
         super.test();
         return null;
@@ -61,8 +61,8 @@ class SuperReferenceChild extends .com.redhat.ceylon.compiler.java.test.expressi
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReferenceChild.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReferenceChild.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReferenceChild.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReferenceChild.class);
 }

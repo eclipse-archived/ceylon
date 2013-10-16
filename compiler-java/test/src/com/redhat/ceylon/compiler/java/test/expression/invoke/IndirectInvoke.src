@@ -2,200 +2,200 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class IndirectInvoke<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    IndirectInvoke(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
-        this.$reifiedX = $reifiedX;
-        this.value1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+    IndirectInvoke(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
+        this.$reified$X = $reified$X;
+        this.value1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call() {
+            public .java.lang.Object $call$() {
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke.this.mGetter1$priv();
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke.this.mGetter1$priv$();
                     }
                     returning null;
                 );
             }
         };
-        this.value2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()", (short)-1){
+        this.value2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.Integer $call() {
-                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke.this.mGetter2$priv());
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke.this.mGetter2$priv$());
             }
         };
-        this.value3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Boolean()", (short)-1){
+        this.value3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Boolean()", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.Boolean $call() {
-                return .ceylon.language.Boolean.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke.this.mGetter3$priv());
+            public .ceylon.language.Boolean $call$() {
+                return .ceylon.language.Boolean.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke.this.mGetter3$priv$());
             }
         };
-        this.value4 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+        this.value4 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.String $call() {
-                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke.this.mGetter4$priv());
+            public .ceylon.language.String $call$() {
+                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke.this.mGetter4$priv$());
             }
         };
-        this.value5 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<X>($reifiedX, .ceylon.language.Empty.$TypeDescriptor, "X()", (short)-1){
+        this.value5 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<X>($reified$X, .ceylon.language.Empty.$TypeDescriptor$, "X()", (short)-1){
             
             @.java.lang.Override
-            public X $call() {
-                return .com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke.this.mGetter5$priv();
+            public X $call$() {
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke.this.mGetter5$priv$();
             }
         };
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
     
-    private final void mParameter$priv(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
-        indirect.$call();
+    private final void mParameter$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
+        indirect.$call$();
     }
     
-    private final void mParameter2$priv(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
-        indirect.$call(.ceylon.language.Integer.instance(1L));
+    private final void mParameter2$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
+        indirect.$call$(.ceylon.language.Integer.instance(1L));
     }
     
-    private final void mParameter3$priv(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
-        indirect.$call(.ceylon.language.Boolean.instance(true));
+    private final void mParameter3$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
+        indirect.$call$(.ceylon.language.Boolean.instance(true));
     }
     
-    private final void mParameter4$priv(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
-        indirect.$call(.ceylon.language.String.instance(""));
+    private final void mParameter4$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
+        indirect.$call$(.ceylon.language.String.instance(""));
     }
     
-    private final <T>void mParameter5$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Callable<? extends .java.lang.Object> indirect, final T t) {
-        indirect.$call(t);
+    private final <T>void mParameter5$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Callable<? extends .java.lang.Object> indirect, final T t) {
+        indirect.$call$(t);
     }
     
-    private final void mLocal$priv(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+    private final void mLocal$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
         final .ceylon.language.Callable<? extends .java.lang.Object> indirect = f;
-        indirect.$call();
+        indirect.$call$();
     }
     
-    private final long mLocal2$priv(final .ceylon.language.Callable<? extends .ceylon.language.Integer> f) {
+    private final long mLocal2$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Integer> f) {
         final .ceylon.language.Callable<? extends .ceylon.language.Integer> indirect = f;
-        return indirect.$call(.ceylon.language.Integer.instance(1L)).longValue();
+        return indirect.$call$(.ceylon.language.Integer.instance(1L)).longValue();
     }
     
-    private final boolean mLocal3$priv(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f) {
+    private final boolean mLocal3$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f) {
         final .ceylon.language.Callable<? extends .ceylon.language.Boolean> indirect = f;
-        return indirect.$call(.ceylon.language.Boolean.instance(true)).booleanValue();
+        return indirect.$call$(.ceylon.language.Boolean.instance(true)).booleanValue();
     }
     
-    private final .java.lang.String mLocal4$priv(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
+    private final .java.lang.String mLocal4$priv$(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
         final .ceylon.language.Callable<? extends .ceylon.language.String> indirect = f;
-        return indirect.$call(.ceylon.language.String.instance("")).toString();
+        return indirect.$call$(.ceylon.language.String.instance("")).toString();
     }
     
-    private final <T>T mLocal5$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Callable<? extends T> f, final T t) {
+    private final <T>T mLocal5$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Callable<? extends T> f, final T t) {
         final .ceylon.language.Callable<? extends T> indirect = f;
-        return indirect.$call(t);
+        return indirect.$call$(t);
     }
     
-    private final void mMethod$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> indirect) {
-        indirect.$call().$call();
+    private final void mMethod$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> indirect) {
+        indirect.$call$().$call$();
     }
     
-    private final long mMethod2$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> indirect) {
-        return indirect.$call().$call(.ceylon.language.Integer.instance(1L)).longValue();
+    private final long mMethod2$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> indirect) {
+        return indirect.$call$().$call$(.ceylon.language.Integer.instance(1L)).longValue();
     }
     
-    private final boolean mMethod3$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Boolean>> indirect) {
-        return indirect.$call().$call(.ceylon.language.Boolean.instance(true)).booleanValue();
+    private final boolean mMethod3$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Boolean>> indirect) {
+        return indirect.$call$().$call$(.ceylon.language.Boolean.instance(true)).booleanValue();
     }
     
-    private final .java.lang.String mMethod4$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> indirect) {
-        return indirect.$call().$call(.ceylon.language.String.instance("")).toString();
+    private final .java.lang.String mMethod4$priv$(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> indirect) {
+        return indirect.$call$().$call$(.ceylon.language.String.instance("")).toString();
     }
     
-    private final <T>T mMethod5$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends T>> indirect, final T t) {
-        return indirect.$call().$call(t);
+    private final <T>T mMethod5$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends T>> indirect, final T t) {
+        return indirect.$call$().$call$(t);
     }
     
-    private final .ceylon.language.Callable<? extends .java.lang.Object> getGetter1$priv() {
+    private final .ceylon.language.Callable<? extends .java.lang.Object> getGetter1$priv$() {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final void mGetter1$priv() {
-        getGetter1$priv().$call();
+    private final void mGetter1$priv$() {
+        getGetter1$priv$().$call$();
     }
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getGetter2$priv() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getGetter2$priv$() {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final long mGetter2$priv() {
-        return getGetter2$priv().$call().longValue();
+    private final long mGetter2$priv$() {
+        return getGetter2$priv$().$call$().longValue();
     }
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> getGetter3$priv() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> getGetter3$priv$() {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final boolean mGetter3$priv() {
-        return getGetter3$priv().$call().booleanValue();
+    private final boolean mGetter3$priv$() {
+        return getGetter3$priv$().$call$().booleanValue();
     }
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.String> getGetter4$priv() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> getGetter4$priv$() {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final .java.lang.String mGetter4$priv() {
-        return getGetter4$priv().$call().toString();
+    private final .java.lang.String mGetter4$priv$() {
+        return getGetter4$priv$().$call$().toString();
     }
     
-    private final .ceylon.language.Callable<? extends X> getGetter5$priv() {
+    private final .ceylon.language.Callable<? extends X> getGetter5$priv$() {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final X mGetter5$priv() {
-        return getGetter5$priv().$call();
+    private final X mGetter5$priv$() {
+        return getGetter5$priv$().$call$();
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> value1;
     
-    private final .ceylon.language.Callable<? extends .java.lang.Object> getValue1$priv() {
+    private final .ceylon.language.Callable<? extends .java.lang.Object> getValue1$priv$() {
         return value1;
     }
     
-    private final void mValue1$priv() {
-        getValue1$priv().$call();
+    private final void mValue1$priv$() {
+        getValue1$priv$().$call$();
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> value2;
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getValue2$priv() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getValue2$priv$() {
         return value2;
     }
     
-    private final long mValue2$priv() {
-        return getValue2$priv().$call().longValue();
+    private final long mValue2$priv$() {
+        return getValue2$priv$().$call$().longValue();
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> value3;
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> getValue3$priv() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> getValue3$priv$() {
         return value3;
     }
     
-    private final boolean mValue3$priv() {
-        return getValue3$priv().$call().booleanValue();
+    private final boolean mValue3$priv$() {
+        return getValue3$priv$().$call$().booleanValue();
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.String> value4;
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.String> getValue4$priv() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> getValue4$priv$() {
         return value4;
     }
     
-    private final .java.lang.String mValue4$priv() {
-        return getValue4$priv().$call().toString();
+    private final .java.lang.String mValue4$priv$() {
+        return getValue4$priv$().$call$().toString();
     }
     private final .ceylon.language.Callable<? extends X> value5;
     
-    private final .ceylon.language.Callable<? extends X> getValue5$priv() {
+    private final .ceylon.language.Callable<? extends X> getValue5$priv$() {
         return value5;
     }
     
-    private final X mValue5$priv() {
-        return getValue5$priv().$call();
+    private final X mValue5$priv$() {
+        return getValue5$priv$().$call$();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -204,7 +204,7 @@ class IndirectInvoke<X> implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke.class, $reifiedX);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke.class, $reified$X);
     }
 }

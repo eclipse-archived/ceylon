@@ -5,17 +5,17 @@ class TryFinally implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     TryFinally() {
     }
     
-    private final void t$priv() {
+    private final void t$priv$() {
     }
     
-    private final void f$priv() {
+    private final void f$priv$() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         try {
-            t$priv();
+            t$priv$();
         } finally {
-            f$priv();
+            f$priv$();
         }
     }
     
@@ -25,8 +25,8 @@ class TryFinally implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryFinally.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryFinally.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.TryFinally.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.TryFinally.class);
 }

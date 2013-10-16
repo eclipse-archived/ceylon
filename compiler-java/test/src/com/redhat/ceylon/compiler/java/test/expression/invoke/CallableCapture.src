@@ -24,12 +24,12 @@ final class callableCapture_m_ {
     }
     
     static void callableCapture_m() {
-        final .ceylon.language.Callable<? extends .ceylon.language.String> callableCapture_bar = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(Integer)", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.String> callableCapture_bar = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(Integer)", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
-                final long $ceylontmpi = ((.ceylon.language.Integer)$param$0).longValue();
-                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableCapture_foo_.callableCapture_foo($ceylontmpi));
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableCapture_foo_.callableCapture_foo($ceylontmp$i));
             }
         };
         final boolean b = .com.redhat.ceylon.compiler.java.test.expression.invoke.higher_.higher(callableCapture_bar).equals("");

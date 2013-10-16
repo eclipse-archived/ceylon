@@ -5,15 +5,15 @@ public abstract class Bug1251X implements .com.redhat.ceylon.compiler.java.runti
     public Bug1251X() {
     }
     
-    public abstract <Type>Type refined(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedType);
+    public abstract <Type>Type refined(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Type);
     
-    public abstract <Type extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1251X>Type refined2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedType);
+    public abstract <Type extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1251X>Type refined2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Type);
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1251X.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1251X.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1251X.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1251X.class);
 }
 public class Bug1251A extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1251X {
     
@@ -22,12 +22,12 @@ public class Bug1251A extends .com.redhat.ceylon.compiler.java.test.issues.bug12
     }
     
     @.java.lang.Override
-    public final <TypeRenamed>TypeRenamed refined(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedTypeRenamed) {
+    public final <TypeRenamed>TypeRenamed refined(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TypeRenamed) {
         return (TypeRenamed).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
-    public final <Type extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1251X>Type refined2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedType) {
+    public final <Type extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1251X>Type refined2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Type) {
         return (Type).ceylon.language.nothing_.get_();
     }
     
@@ -37,8 +37,8 @@ public class Bug1251A extends .com.redhat.ceylon.compiler.java.test.issues.bug12
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1251A.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1251A.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1251A.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1251A.class);
 }

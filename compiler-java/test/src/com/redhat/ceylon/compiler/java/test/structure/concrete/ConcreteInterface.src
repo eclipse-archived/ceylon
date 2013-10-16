@@ -13,7 +13,7 @@ interface I1 {
     public abstract boolean m1$b(final long i);
     
     public abstract .java.lang.String m1(final long i, final boolean b);
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.I1.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.I1.class);
 }
 final class I1$impl {
     
@@ -43,7 +43,7 @@ interface I2 {
     public abstract boolean m2$b(final long i);
     
     public abstract .java.lang.String m2(final long i, final boolean b);
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.I2.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.I2.class);
 }
 final class I2$impl {
     
@@ -63,50 +63,50 @@ final class I2$impl {
 class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 {
     
     C() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$;
     }
     
     @.java.lang.Override
     public final long m1$i() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this.m1$i();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$.m1$i();
     }
     
     @.java.lang.Override
     public final boolean m1$b(final long i) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this.m1$b(i);
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$.m1$b(i);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this$;
     }
     
     @.java.lang.Override
     public final long m2$i() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this.m2$i();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this$.m2$i();
     }
     
     @.java.lang.Override
     public final boolean m2$b(final long i) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this.m2$b(i);
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this$.m2$b(i);
     }
     
     public final .java.lang.String m1() {
         return (
             let
             {
-                long $ceylontmp$i$$0 = m1$i();
-                boolean $ceylontmp$b$$1 = m1$b($ceylontmp$i$$0);
+                long $ceylontmp$$i$$0 = m1$i();
+                boolean $ceylontmp$$b$$1 = m1$b($ceylontmp$$i$$0);
             }
-            returning m1$($ceylontmp$i$$0, $ceylontmp$b$$1);
+            returning m1$($ceylontmp$$i$$0, $ceylontmp$$b$$1);
         );
     }
     
@@ -114,9 +114,9 @@ class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
         return (
             let
             {
-                boolean $ceylontmp$b$$2 = m1$b(i);
+                boolean $ceylontmp$$b$$2 = m1$b(i);
             }
-            returning m1$(i, $ceylontmp$b$$2);
+            returning m1$(i, $ceylontmp$$b$$2);
         );
     }
     
@@ -133,10 +133,10 @@ class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
         return (
             let
             {
-                long $ceylontmp$i$$3 = m2$i();
-                boolean $ceylontmp$b$$4 = m2$b($ceylontmp$i$$3);
+                long $ceylontmp$$i$$3 = m2$i();
+                boolean $ceylontmp$$b$$4 = m2$b($ceylontmp$$i$$3);
             }
-            returning m2$($ceylontmp$i$$3, $ceylontmp$b$$4);
+            returning m2$($ceylontmp$$i$$3, $ceylontmp$$b$$4);
         );
     }
     
@@ -144,9 +144,9 @@ class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
         return (
             let
             {
-                boolean $ceylontmp$b$$5 = m2$b(i);
+                boolean $ceylontmp$$b$$5 = m2$b(i);
             }
-            returning m2$(i, $ceylontmp$b$$5);
+            returning m2$(i, $ceylontmp$$b$$5);
         );
     }
     
@@ -165,8 +165,8 @@ class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.concrete.C.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.C.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.C.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.C.class);
 }

@@ -19,10 +19,10 @@ final class callableAndDefaultedArguments_ {
     }
     
     static void callableAndDefaultedArguments() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableAndDefaultedArguments_foo_.callableAndDefaultedArguments_foo(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableAndDefaultedArguments_foo_.callableAndDefaultedArguments_foo(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call() {
+            public .java.lang.Object $call$() {
                 return (
                     let
                     {

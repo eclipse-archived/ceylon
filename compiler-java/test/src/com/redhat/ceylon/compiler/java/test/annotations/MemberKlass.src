@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.SharedAnnotation$annotation
+@.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.class)})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -10,12 +10,12 @@ public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member Member$new() {
+    public .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member Member$new$() {
         return new Member();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.MemberMember.class)})
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.class)
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -25,12 +25,12 @@ public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.mod
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        public .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.MemberMember MemberMember$new() {
+        public .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.MemberMember MemberMember$new$() {
             return new MemberMember();
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-        @.ceylon.language.SharedAnnotation$annotation
+        @.ceylon.language.SharedAnnotation$annotation$
         @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.class)
         @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
         public class MemberMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -40,15 +40,15 @@ public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.mod
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.MemberMember.class));
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.MemberMember.class));
             }
         }
         
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.class));
         }
     }
     
@@ -60,14 +60,14 @@ public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.SharedAnnotation$annotation
+@.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.foo_.class)})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -78,12 +78,12 @@ public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.mod
 public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public ParameterisedMemberKlass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        this.$reifiedT = $reifiedT;
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
         this.foo = new .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     private final .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_ foo;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
@@ -96,12 +96,12 @@ public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        public <TTT>.com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_.MemberMember<TTT> MemberMember$new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedTTT) {
-            return new MemberMember<TTT>($reifiedTTT);
+        public <TTT>.com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_.MemberMember<TTT> MemberMember$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TTT) {
+            return new MemberMember<TTT>($reified$TTT);
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-        @.ceylon.language.SharedAnnotation$annotation
+        @.ceylon.language.SharedAnnotation$annotation$
         @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.foo_.class)
         @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -112,27 +112,27 @@ public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.
         public class MemberMember<TTT> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             protected MemberMember(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-            final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedTTT) {
-                this.$reifiedTTT = $reifiedTTT;
+            final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TTT) {
+                this.$reified$TTT = $reified$TTT;
             }
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedTTT;
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TTT;
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.class, .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.foo_.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.foo_.MemberMember.class, $reifiedTTT));
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.class, .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.foo_.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.foo_.MemberMember.class, $reified$TTT));
             }
         }
         
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.class, .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.foo_.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.class, .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.foo_.class));
         }
     }
     
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::ParameterisedMemberKlass<T>.foo")
     public final .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_ getFoo() {
@@ -147,7 +147,7 @@ public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.class, $reifiedT);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.class, $reified$T);
     }
 }

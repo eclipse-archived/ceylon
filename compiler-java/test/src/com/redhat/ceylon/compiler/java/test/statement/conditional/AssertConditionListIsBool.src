@@ -5,39 +5,39 @@ class AssertConditionListIsBool implements .com.redhat.ceylon.compiler.java.runt
     AssertConditionListIsBool() {
     }
     
-    private final void m$priv(final .java.lang.Object x) {
-        .java.lang.String $ceylontmpassert$0 = null;
+    private final void m$priv$(final .java.lang.Object x) {
+        .java.lang.String $ceylontmp$assert$0 = null;
         final .java.lang.String x$2;
         .java.lang.Object x$1 = null;
         if ((x$1 = x) instanceof .ceylon.language.String) {
             x$2 = ((.ceylon.language.String)x$1).toString();
             if (.ceylon.language.String.getUppercased(x$2).equals("S")) {
             } else {
-                $ceylontmpassert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "is String x" + (.java.lang.System.lineSeparator() + "\tviolated ") + "x.uppercased==\"S\"";
+                $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "is String x" + (.java.lang.System.lineSeparator() + "\tviolated ") + "x.uppercased==\"S\"";
             }
         } else {
             x$2 = null;
-            $ceylontmpassert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "is String x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "x.uppercased==\"S\"";
+            $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "is String x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "x.uppercased==\"S\"";
         }
-        if ($ceylontmpassert$0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert$0);
+        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$0);
         .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased(x$2)));
     }
     
-    private final void mvar$priv(final .java.lang.Object x) {
-        .java.lang.String $ceylontmpassert$3 = null;
+    private final void mvar$priv$(final .java.lang.Object x) {
+        .java.lang.String $ceylontmp$assert$3 = null;
         final .java.lang.String z$5;
         .java.lang.Object z$4 = null;
         if ((z$4 = x) instanceof .ceylon.language.String) {
             z$5 = ((.ceylon.language.String)z$4).toString();
             if (.ceylon.language.String.getUppercased(z$5).equals("S")) {
             } else {
-                $ceylontmpassert$3 = .java.lang.System.lineSeparator() + "\tunviolated " + "is String z=x" + (.java.lang.System.lineSeparator() + "\tviolated ") + "z.uppercased==\"S\"";
+                $ceylontmp$assert$3 = .java.lang.System.lineSeparator() + "\tunviolated " + "is String z=x" + (.java.lang.System.lineSeparator() + "\tviolated ") + "z.uppercased==\"S\"";
             }
         } else {
             z$5 = null;
-            $ceylontmpassert$3 = .java.lang.System.lineSeparator() + "\tviolated " + "is String z=x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "z.uppercased==\"S\"";
+            $ceylontmp$assert$3 = .java.lang.System.lineSeparator() + "\tviolated " + "is String z=x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "z.uppercased==\"S\"";
         }
-        if ($ceylontmpassert$3 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert$3);
+        if ($ceylontmp$assert$3 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$3);
         .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased(z$5)));
     }
     
@@ -47,8 +47,8 @@ class AssertConditionListIsBool implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertConditionListIsBool.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertConditionListIsBool.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.AssertConditionListIsBool.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.AssertConditionListIsBool.class);
 }

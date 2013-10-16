@@ -5,13 +5,13 @@ class ValueKeyword implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     ValueKeyword() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         final .java.lang.String f = "";
         final .java.lang.String l = f;
-        final long l2 = test$priv();
+        final long l2 = test$priv$();
     }
     
-    private final long test$priv() {
+    private final long test$priv$() {
         return 0L;
     }
     
@@ -21,8 +21,8 @@ class ValueKeyword implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.local.ValueKeyword.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.local.ValueKeyword.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.local.ValueKeyword.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.local.ValueKeyword.class);
 }

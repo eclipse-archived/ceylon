@@ -6,17 +6,17 @@ final class nullSafeMethodReference_ {
     }
     
     static void nullSafeMethodReference(final .ceylon.language.String s) {
-        final .ceylon.language.Callable<? extends .ceylon.language.String> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String?(Integer)", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.String> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String?(Integer)", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
-                final long $ceylontmplength = ((.ceylon.language.Integer)$param$0).longValue();
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$length = ((.ceylon.language.Integer)$param$0).longValue();
                 return (
                     let
                     {
                         .ceylon.language.String safe$1 = s;
                     }
-                    returning safe$1 != null ? safe$1.initial($ceylontmplength) : null;
+                    returning safe$1 != null ? safe$1.initial($ceylontmp$length) : null;
                 );
             }
         };

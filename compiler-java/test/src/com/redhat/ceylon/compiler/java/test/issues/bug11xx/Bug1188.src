@@ -5,7 +5,7 @@ interface Bug1188 {
     public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188$impl $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1188$impl();
     
     public abstract .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188> getParents();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188.class);
 }
 final class Bug1188$impl {
     
@@ -18,13 +18,13 @@ abstract class AbstractBug1188 implements .com.redhat.ceylon.compiler.java.runti
     
     AbstractBug1188(final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188> parents) {
         this.parents = parents;
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1188$this = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1188$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188$impl $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1188$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188$impl $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1188$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188$impl $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1188$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1188$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1188$this$;
     }
     private final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188> parents;
     
@@ -34,10 +34,10 @@ abstract class AbstractBug1188 implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.AbstractBug1188.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.AbstractBug1188.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.AbstractBug1188.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.AbstractBug1188.class);
 }
 class RefiningBug1188 extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.AbstractBug1188 {
     
@@ -50,8 +50,8 @@ class RefiningBug1188 extends .com.redhat.ceylon.compiler.java.test.issues.bug11
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.RefiningBug1188.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.RefiningBug1188.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.RefiningBug1188.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.RefiningBug1188.class);
 }

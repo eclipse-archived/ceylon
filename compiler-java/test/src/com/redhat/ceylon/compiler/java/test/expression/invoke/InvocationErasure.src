@@ -5,34 +5,34 @@ class MethodErasure implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     MethodErasure() {
     }
     
-    private final long m1$priv() {
+    private final long m1$priv$() {
         return hashCode();
     }
     
-    private final long m2$priv() {
+    private final long m2$priv$() {
         return this.hashCode();
     }
     
-    private final .java.lang.String m3$priv() {
+    private final .java.lang.String m3$priv$() {
         return toString();
     }
     
-    private final .java.lang.String m4$priv() {
+    private final .java.lang.String m4$priv$() {
         return this.toString();
     }
     
-    private final void m5$priv() {
-        hashCode$priv();
-        this.hashCode$priv();
-        toString$priv();
-        this.toString$priv();
+    private final void m5$priv$() {
+        hashCode$priv$();
+        this.hashCode$priv$();
+        toString$priv$();
+        this.toString$priv$();
     }
     
-    private final .java.lang.String hashCode$priv() {
+    private final .java.lang.String hashCode$priv$() {
         return "bar";
     }
     
-    private final long toString$priv() {
+    private final long toString$priv$() {
         return 0L;
     }
     
@@ -42,8 +42,8 @@ class MethodErasure implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.invoke.MethodErasure.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.MethodErasure.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.MethodErasure.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.MethodErasure.class);
 }

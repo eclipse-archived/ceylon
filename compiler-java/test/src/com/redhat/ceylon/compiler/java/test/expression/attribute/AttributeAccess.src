@@ -8,7 +8,7 @@ class AttributeAccess implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     private final boolean b1;
     
-    private final boolean getB1$priv() {
+    private final boolean getB1$priv$() {
         return b1;
     }
     private final boolean b2;
@@ -17,7 +17,7 @@ class AttributeAccess implements .com.redhat.ceylon.compiler.java.runtime.model.
         return b2;
     }
     
-    private final boolean getB3$priv() {
+    private final boolean getB3$priv$() {
         return true;
     }
     
@@ -25,10 +25,10 @@ class AttributeAccess implements .com.redhat.ceylon.compiler.java.runtime.model.
         return true;
     }
     
-    private final void m$priv() {
-        final boolean bb1 = getB1$priv();
+    private final void m$priv$() {
+        final boolean bb1 = getB1$priv$();
         final boolean bb2 = getB2();
-        final boolean bb3 = getB3$priv();
+        final boolean bb3 = getB3$priv$();
         final boolean bb4 = getB4();
     }
     
@@ -38,8 +38,8 @@ class AttributeAccess implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeAccess.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeAccess.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeAccess.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeAccess.class);
 }

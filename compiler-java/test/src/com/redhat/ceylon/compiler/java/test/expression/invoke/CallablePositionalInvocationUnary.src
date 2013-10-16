@@ -6,6 +6,6 @@ final class callablePositionalInvocationUnary_f_ {
     }
     
     static void callablePositionalInvocationUnary_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
-        foo.$call(.ceylon.language.Integer.instance(1L));
+        foo.$call$(.ceylon.language.Integer.instance(1L));
     }
 }

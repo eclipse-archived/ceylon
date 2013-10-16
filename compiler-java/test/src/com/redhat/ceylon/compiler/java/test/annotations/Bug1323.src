@@ -2,126 +2,126 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
-@interface Bug1323_1$annotation {
+@interface Bug1323_1$annotation$ {
     
     public abstract long i();
     
     public abstract .java.lang.String[] a();
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface Bug1323_1$annotations {
+@interface Bug1323_1$annotations$ {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1$annotation[] value();
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1$annotation$[] value();
 }
-@.ceylon.language.FinalAnnotation$annotation
-@.ceylon.language.AnnotationAnnotation$annotation
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
 final class Bug1323_1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, .ceylon.language.meta.declaration.FunctionDeclaration> {
     
     Bug1323_1(final long i) {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$a$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                this(i, $ceylontmp$a$$0);
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$a$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this(i, $ceylontmp$$a$$0);
             }
             returning null;
         );
     }
     
-    Bug1323_1(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1$annotation anno) {
+    Bug1323_1(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1$annotation$ anno) {
         this(anno.i(), .com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.a()));
     }
     
     Bug1323_1(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.String> a) {
-        this.$ceylon$language$SequencedAnnotation$this = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1.$TypeDescriptor, .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1>, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1.$TypeDescriptor), .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1.$TypeDescriptor, this);
+        this.$ceylon$language$SequencedAnnotation$this$ = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1.$TypeDescriptor$, .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1>, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1.$TypeDescriptor$), .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1.$TypeDescriptor$, this);
     }
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$impl() {
-        return $ceylon$language$SequencedAnnotation$this;
+        return $ceylon$language$SequencedAnnotation$this$;
     }
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1>, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1>, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1>, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1.class);
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
-@interface Bug1323_2$annotation {
+@interface Bug1323_2$annotation$ {
     
     public abstract long i();
     
     public abstract .java.lang.String[] a();
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface Bug1323_2$annotations {
+@interface Bug1323_2$annotations$ {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2$annotation[] value();
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2$annotation$[] value();
 }
-@.ceylon.language.FinalAnnotation$annotation
-@.ceylon.language.AnnotationAnnotation$annotation
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
 final class Bug1323_2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, .ceylon.language.meta.declaration.FunctionDeclaration> {
     
-    Bug1323_2(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2$annotation anno) {
+    Bug1323_2(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2$annotation$ anno) {
         this(anno.i(), .com.redhat.ceylon.compiler.java.Util.sequentialInstanceBoxed(anno.a()));
     }
     
     Bug1323_2(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.String> a) {
-        this.$ceylon$language$SequencedAnnotation$this = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2.$TypeDescriptor, .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2>, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2.$TypeDescriptor), .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2.$TypeDescriptor, this);
+        this.$ceylon$language$SequencedAnnotation$this$ = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2.$TypeDescriptor$, .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2>, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2.$TypeDescriptor$), .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2.$TypeDescriptor$, this);
     }
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$impl() {
-        return $ceylon$language$SequencedAnnotation$this;
+        return $ceylon$language$SequencedAnnotation$this$;
     }
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2>, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2>, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2>, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {
@@ -137,13 +137,13 @@ final class bug1223Spread1_1_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$a$$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$a$$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning bug1223Spread1_1(i, $ceylontmp$a$$1);
+            returning bug1223Spread1_1(i, $ceylontmp$$a$$1);
         );
     }
     
-    @.ceylon.language.AnnotationAnnotation$annotation
+    @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1 bug1223Spread1_1(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.String> a) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1(i, a);
     }
@@ -158,7 +158,7 @@ final class bug1223Spread1_2_ {
     private bug1223Spread1_2_() {
     }
     
-    @.ceylon.language.AnnotationAnnotation$annotation
+    @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1 bug1223Spread1_2(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.String> a) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1(i, a);
     }
@@ -177,9 +177,9 @@ final class bug1223Spread1_3_ {
         return (
             let
             {
-                long $ceylontmp$i$$2 = .com.redhat.ceylon.compiler.java.test.annotations.bug1223Spread1_3_.bug1223Spread1_3$i(a);
+                long $ceylontmp$$i$$2 = .com.redhat.ceylon.compiler.java.test.annotations.bug1223Spread1_3_.bug1223Spread1_3$i(a);
             }
-            returning bug1223Spread1_3(a, $ceylontmp$i$$2);
+            returning bug1223Spread1_3(a, $ceylontmp$$i$$2);
         );
     }
     
@@ -188,7 +188,7 @@ final class bug1223Spread1_3_ {
         return 0L;
     }
     
-    @.ceylon.language.AnnotationAnnotation$annotation
+    @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1 bug1223Spread1_3(final .ceylon.language.Sequential<? extends .ceylon.language.String> a, final long i) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1(i, a);
     }
@@ -207,13 +207,13 @@ final class bug1223Spread2_1_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$a$$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$a$$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning bug1223Spread2_1(i, $ceylontmp$a$$3);
+            returning bug1223Spread2_1(i, $ceylontmp$$a$$3);
         );
     }
     
-    @.ceylon.language.AnnotationAnnotation$annotation
+    @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2 bug1223Spread2_1(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.String> a) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2(i, a);
     }
@@ -228,7 +228,7 @@ final class bug1223Spread2_2_ {
     private bug1223Spread2_2_() {
     }
     
-    @.ceylon.language.AnnotationAnnotation$annotation
+    @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2 bug1223Spread2_2(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.String> a) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2(i, a);
     }
@@ -247,9 +247,9 @@ final class bug1223Spread2_3_ {
         return (
             let
             {
-                long $ceylontmp$i$$4 = .com.redhat.ceylon.compiler.java.test.annotations.bug1223Spread2_3_.bug1223Spread2_3$i(a);
+                long $ceylontmp$$i$$4 = .com.redhat.ceylon.compiler.java.test.annotations.bug1223Spread2_3_.bug1223Spread2_3$i(a);
             }
-            returning bug1223Spread2_3(a, $ceylontmp$i$$4);
+            returning bug1223Spread2_3(a, $ceylontmp$$i$$4);
         );
     }
     
@@ -258,7 +258,7 @@ final class bug1223Spread2_3_ {
         return 0L;
     }
     
-    @.ceylon.language.AnnotationAnnotation$annotation
+    @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2 bug1223Spread2_3(final .ceylon.language.Sequential<? extends .ceylon.language.String> a, final long i) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2(i, a);
     }
@@ -268,42 +268,42 @@ public final class bug1323_ {
     private bug1323_() {
     }
     
-    @.ceylon.language.AuthorsAnnotation$annotation(authors = {
+    @.ceylon.language.AuthorsAnnotation$annotation$(authors = {
             "Gavin",
             "Tako"})
-    @.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1$annotations({
-            @.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1$annotation(
+    @.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1$annotations$({
+            @.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1$annotation$(
                     i = 0L,
                     a = {
                             "a",
                             "A"}),
-            @.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1$annotation(
+            @.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1$annotation$(
                     i = 0L,
                     a = {
                             "b",
                             "B"}),
-            @.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1$annotation(
+            @.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1$annotation$(
                     i = 0L,
                     a = {
                             "c",
                             "C"})})
-    @.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2$annotations({
-            @.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2$annotation(
+    @.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2$annotations$({
+            @.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2$annotation$(
                     i = 0L,
                     a = {
                             "d",
                             "D"}),
-            @.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2$annotation(
+            @.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2$annotation$(
                     i = 0L,
                     a = {
                             "e",
                             "E"}),
-            @.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2$annotation(
+            @.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2$annotation$(
                     i = 0L,
                     a = {
                             "f",
                             "F"})})
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     public static void bug1323() {
     }
     

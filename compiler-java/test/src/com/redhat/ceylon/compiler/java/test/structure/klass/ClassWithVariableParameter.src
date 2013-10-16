@@ -7,26 +7,26 @@ class ClassWithVariableParameterInit implements .com.redhat.ceylon.compiler.java
         (
             let
             {
-                long $ceylontmpop$0 = i;
-                i = $ceylontmpop$0 + 1;
+                long $ceylontmp$op$0 = i;
+                i = $ceylontmp$op$0 + 1;
             }
-            returning $ceylontmpop$0;
+            returning $ceylontmp$op$0;
         );
         (
             let
             {
-                long $ceylontmpop$1 = i + 1L;
-                i = $ceylontmpop$1;
+                long $ceylontmp$op$1 = i + 1L;
+                i = $ceylontmp$op$1;
             }
-            returning $ceylontmpop$1;
+            returning $ceylontmp$op$1;
         );
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterInit.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterInit.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterInit.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterInit.class);
 }
 class ClassWithVariableParameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -36,18 +36,18 @@ class ClassWithVariableParameter implements .com.redhat.ceylon.compiler.java.run
         (
             let
             {
-                long $ceylontmpop$2 = getI();
-                setI($ceylontmpop$2 + 1);
+                long $ceylontmp$op$2 = getI();
+                setI($ceylontmp$op$2 + 1);
             }
-            returning $ceylontmpop$2;
+            returning $ceylontmp$op$2;
         );
         (
             let
             {
-                long $ceylontmpop$3 = getI() + 1L;
-                setI($ceylontmpop$3);
+                long $ceylontmp$op$3 = getI() + 1L;
+                setI($ceylontmp$op$3);
             }
-            returning $ceylontmpop$3;
+            returning $ceylontmp$op$3;
         );
     }
     private long i;
@@ -61,10 +61,10 @@ class ClassWithVariableParameter implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameter.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameter.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameter.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameter.class);
 }
 class ClassWithHiddenVariableParameterInit implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -73,26 +73,26 @@ class ClassWithHiddenVariableParameterInit implements .com.redhat.ceylon.compile
         (
             let
             {
-                long $ceylontmpop$4 = i;
-                i = $ceylontmpop$4 + 1;
+                long $ceylontmp$op$4 = i;
+                i = $ceylontmp$op$4 + 1;
             }
-            returning $ceylontmpop$4;
+            returning $ceylontmp$op$4;
         );
         (
             let
             {
-                long $ceylontmpop$5 = i + 1L;
-                i = $ceylontmpop$5;
+                long $ceylontmp$op$5 = i + 1L;
+                i = $ceylontmp$op$5;
             }
-            returning $ceylontmpop$5;
+            returning $ceylontmp$op$5;
         );
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithHiddenVariableParameterInit.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithHiddenVariableParameterInit.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithHiddenVariableParameterInit.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithHiddenVariableParameterInit.class);
 }
 class ClassWithHiddenVariableParameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -102,18 +102,18 @@ class ClassWithHiddenVariableParameter implements .com.redhat.ceylon.compiler.ja
         (
             let
             {
-                long $ceylontmpop$6 = getI();
-                setI($ceylontmpop$6 + 1);
+                long $ceylontmp$op$6 = getI();
+                setI($ceylontmp$op$6 + 1);
             }
-            returning $ceylontmpop$6;
+            returning $ceylontmp$op$6;
         );
         (
             let
             {
-                long $ceylontmpop$7 = getI() + 1L;
-                setI($ceylontmpop$7);
+                long $ceylontmp$op$7 = getI() + 1L;
+                setI($ceylontmp$op$7);
             }
-            returning $ceylontmpop$7;
+            returning $ceylontmp$op$7;
         );
     }
     private long i;
@@ -127,58 +127,58 @@ class ClassWithHiddenVariableParameter implements .com.redhat.ceylon.compiler.ja
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithHiddenVariableParameter.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithHiddenVariableParameter.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithHiddenVariableParameter.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithHiddenVariableParameter.class);
 }
 class ClassWithVariableParameterCapturedInit implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    ClassWithVariableParameterCapturedInit(long i$param) {
-        this.i = i$param;
-        fn$priv();
+    ClassWithVariableParameterCapturedInit(long i$param$) {
+        this.i = i$param$;
+        fn$priv$();
     }
     private long i;
     
-    private final long getI$priv() {
+    private final long getI$priv$() {
         return i;
     }
     
-    private final void setI$priv(final long i) {
+    private final void setI$priv$(final long i) {
         this.i = i;
     }
     
-    private final void fn$priv() {
-        setI$priv(0L);
+    private final void fn$priv$() {
+        setI$priv$(0L);
         (
             let
             {
-                long $ceylontmpop$8 = getI$priv();
-                setI$priv($ceylontmpop$8 + 1);
+                long $ceylontmp$op$8 = getI$priv$();
+                setI$priv$($ceylontmp$op$8 + 1);
             }
-            returning $ceylontmpop$8;
+            returning $ceylontmp$op$8;
         );
         (
             let
             {
-                long $ceylontmpop$9 = getI$priv() + 1L;
-                setI$priv($ceylontmpop$9);
+                long $ceylontmp$op$9 = getI$priv$() + 1L;
+                setI$priv$($ceylontmp$op$9);
             }
-            returning $ceylontmpop$9;
+            returning $ceylontmp$op$9;
         );
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterCapturedInit.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterCapturedInit.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterCapturedInit.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterCapturedInit.class);
 }
 class ClassWithVariableParameterCaptured implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    ClassWithVariableParameterCaptured(long i$param) {
-        this.i = i$param;
-        fn$priv();
+    ClassWithVariableParameterCaptured(long i$param$) {
+        this.i = i$param$;
+        fn$priv$();
     }
     private long i;
     
@@ -190,79 +190,79 @@ class ClassWithVariableParameterCaptured implements .com.redhat.ceylon.compiler.
         this.i = i;
     }
     
-    private final void fn$priv() {
+    private final void fn$priv$() {
         setI(0L);
         (
             let
             {
-                long $ceylontmpop$10 = getI();
-                setI($ceylontmpop$10 + 1);
+                long $ceylontmp$op$10 = getI();
+                setI($ceylontmp$op$10 + 1);
             }
-            returning $ceylontmpop$10;
+            returning $ceylontmp$op$10;
         );
         (
             let
             {
-                long $ceylontmpop$11 = getI() + 1L;
-                setI($ceylontmpop$11);
+                long $ceylontmp$op$11 = getI() + 1L;
+                setI($ceylontmp$op$11);
             }
-            returning $ceylontmpop$11;
+            returning $ceylontmp$op$11;
         );
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterCaptured.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterCaptured.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterCaptured.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterCaptured.class);
 }
 class ClassWithHiddenVariableParameterCapturedInit implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    ClassWithHiddenVariableParameterCapturedInit(long i$param) {
-        this.i = i$param;
-        fn$priv();
+    ClassWithHiddenVariableParameterCapturedInit(long i$param$) {
+        this.i = i$param$;
+        fn$priv$();
     }
     private long i;
     
-    private final long getI$priv() {
+    private final long getI$priv$() {
         return i;
     }
     
-    private final void setI$priv(final long i) {
+    private final void setI$priv$(final long i) {
         this.i = i;
     }
     
-    private final void fn$priv() {
-        setI$priv(0L);
+    private final void fn$priv$() {
+        setI$priv$(0L);
         (
             let
             {
-                long $ceylontmpop$12 = getI$priv();
-                setI$priv($ceylontmpop$12 + 1);
+                long $ceylontmp$op$12 = getI$priv$();
+                setI$priv$($ceylontmp$op$12 + 1);
             }
-            returning $ceylontmpop$12;
+            returning $ceylontmp$op$12;
         );
         (
             let
             {
-                long $ceylontmpop$13 = getI$priv() + 1L;
-                setI$priv($ceylontmpop$13);
+                long $ceylontmp$op$13 = getI$priv$() + 1L;
+                setI$priv$($ceylontmp$op$13);
             }
-            returning $ceylontmpop$13;
+            returning $ceylontmp$op$13;
         );
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithHiddenVariableParameterCapturedInit.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithHiddenVariableParameterCapturedInit.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithHiddenVariableParameterCapturedInit.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithHiddenVariableParameterCapturedInit.class);
 }
 class ClassWithHiddenVariableParameterCaptured implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    ClassWithHiddenVariableParameterCaptured(long i$param) {
-        this.i = i$param;
-        fn$priv();
+    ClassWithHiddenVariableParameterCaptured(long i$param$) {
+        this.i = i$param$;
+        fn$priv$();
     }
     private long i;
     
@@ -274,79 +274,79 @@ class ClassWithHiddenVariableParameterCaptured implements .com.redhat.ceylon.com
         this.i = i;
     }
     
-    private final void fn$priv() {
+    private final void fn$priv$() {
         setI(0L);
         (
             let
             {
-                long $ceylontmpop$14 = getI();
-                setI($ceylontmpop$14 + 1);
+                long $ceylontmp$op$14 = getI();
+                setI($ceylontmp$op$14 + 1);
             }
-            returning $ceylontmpop$14;
+            returning $ceylontmp$op$14;
         );
         (
             let
             {
-                long $ceylontmpop$15 = getI() + 1L;
-                setI($ceylontmpop$15);
+                long $ceylontmp$op$15 = getI() + 1L;
+                setI($ceylontmp$op$15);
             }
-            returning $ceylontmpop$15;
+            returning $ceylontmp$op$15;
         );
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithHiddenVariableParameterCaptured.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithHiddenVariableParameterCaptured.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithHiddenVariableParameterCaptured.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithHiddenVariableParameterCaptured.class);
 }
 class ClassWithVariableParameterCapturedInitSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterCapturedInit {
     
-    ClassWithVariableParameterCapturedInitSub(long i$param) {
+    ClassWithVariableParameterCapturedInitSub(long i$param$) {
         super((
             let
             {
-                long $ceylontmpop$16 = i$param;
-                i$param = $ceylontmpop$16 + 1;
+                long $ceylontmp$op$16 = i$param$;
+                i$param$ = $ceylontmp$op$16 + 1;
             }
-            returning $ceylontmpop$16;
+            returning $ceylontmp$op$16;
         ));
-        this.i = i$param;
-        fn$priv();
+        this.i = i$param$;
+        fn$priv$();
     }
     private long i;
     
-    private final long getI$priv() {
+    private final long getI$priv$() {
         return i;
     }
     
-    private final void setI$priv(final long i) {
+    private final void setI$priv$(final long i) {
         this.i = i;
     }
     
-    private final void fn$priv() {
-        setI$priv(0L);
+    private final void fn$priv$() {
+        setI$priv$(0L);
         (
             let
             {
-                long $ceylontmpop$17 = getI$priv();
-                setI$priv($ceylontmpop$17 + 1);
+                long $ceylontmp$op$17 = getI$priv$();
+                setI$priv$($ceylontmp$op$17 + 1);
             }
-            returning $ceylontmpop$17;
+            returning $ceylontmp$op$17;
         );
         (
             let
             {
-                long $ceylontmpop$18 = getI$priv() + 1L;
-                setI$priv($ceylontmpop$18);
+                long $ceylontmp$op$18 = getI$priv$() + 1L;
+                setI$priv$($ceylontmp$op$18);
             }
-            returning $ceylontmpop$18;
+            returning $ceylontmp$op$18;
         );
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterCapturedInitSub.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterCapturedInitSub.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterCapturedInitSub.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterCapturedInitSub.class);
 }

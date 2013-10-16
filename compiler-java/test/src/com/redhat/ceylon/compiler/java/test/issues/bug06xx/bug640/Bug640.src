@@ -21,8 +21,8 @@ public final class bug640_ {
         final .ceylon.language.Array<.ceylon.language.String> y = (
             let
             {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.String.$TypeDescriptor;
-                .ceylon.language.Iterable arg$1$0 = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.String.$TypeDescriptor$;
+                .ceylon.language.Iterable arg$1$0 = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                         .ceylon.language.String.instance("aap"),
                         .ceylon.language.String.instance("noot"),
                         .ceylon.language.String.instance("mies")});
@@ -33,8 +33,8 @@ public final class bug640_ {
         final .ceylon.language.Array<.ceylon.language.Integer> z = (
             let
             {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
-                .ceylon.language.Iterable arg$2$0 = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+                .ceylon.language.Iterable arg$2$0 = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                         .ceylon.language.Integer.instance(1L),
                         .ceylon.language.Integer.instance(2L),
                         .ceylon.language.Integer.instance(3L)});
@@ -54,7 +54,7 @@ public final class bug640gen_ {
     private bug640gen_() {
     }
     
-    public static <T>void bug640gen(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.SequenceBuilder<T> sb) {
-        final .ceylon.language.Array<T> x = new .ceylon.language.Array<T>($reifiedT, sb.getSequence());
+    public static <T>void bug640gen(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.SequenceBuilder<T> sb) {
+        final .ceylon.language.Array<T> x = new .ceylon.language.Array<T>($reified$T, sb.getSequence());
     }
 }

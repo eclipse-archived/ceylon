@@ -7,12 +7,12 @@ class AttributeHidingMethodParam implements .com.redhat.ceylon.compiler.java.run
     }
     private final boolean b;
     
-    private final boolean getB$priv() {
+    private final boolean getB$priv$() {
         return b;
     }
     
-    private final boolean m$priv(final boolean b) {
-        return this.getB$priv();
+    private final boolean m$priv$(final boolean b) {
+        return this.getB$priv$();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -21,8 +21,8 @@ class AttributeHidingMethodParam implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeHidingMethodParam.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeHidingMethodParam.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeHidingMethodParam.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeHidingMethodParam.class);
 }

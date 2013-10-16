@@ -5,30 +5,30 @@ final class methodArgumentNamedIncovation2_ {
     private methodArgumentNamedIncovation2_() {
     }
     
-    static <A, B>void methodArgumentNamedIncovation2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB, final A a) {
+    static <A, B>void methodArgumentNamedIncovation2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B, final A a) {
         
         final class callFunction_ {
             
             private callFunction_() {
             }
             
-            <X, Y>void callFunction(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, final .ceylon.language.Callable<? extends X> f) {
+            <X, Y>void callFunction(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final .ceylon.language.Callable<? extends X> f) {
             }
         }
         final callFunction_ callFunction = new callFunction_();
         (
             let
             {
-                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(Integer)", (short)-1){
+                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(Integer)", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                    public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                         final long i = ((.ceylon.language.Integer)$param$0).longValue();
                         return .ceylon.language.String.instance(.ceylon.language.Integer.instance(i).power(.ceylon.language.Integer.instance(2L)).toString());
                     }
                 };
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.String.$TypeDescriptor;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$1 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.String.$TypeDescriptor$;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$1 = .ceylon.language.Integer.$TypeDescriptor$;
                 callFunction.<.ceylon.language.String, .ceylon.language.Integer>callFunction(arg$0$reified$0, arg$0$reified$1, arg$0$0);
             }
             returning null;
@@ -36,16 +36,16 @@ final class methodArgumentNamedIncovation2_ {
         (
             let
             {
-                .ceylon.language.Callable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<A>($reifiedA, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reifiedB, $reifiedB, .ceylon.language.Empty.$TypeDescriptor), "A(B)", (short)-1){
+                .ceylon.language.Callable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<A>($reified$A, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$B, $reified$B, .ceylon.language.Empty.$TypeDescriptor$), "A(B)", (short)-1){
                     
                     @.java.lang.Override
-                    public A $call(final .java.lang.Object $param$0) {
+                    public A $call$(final .java.lang.Object $param$0) {
                         final B i = (B)$param$0;
                         return a;
                     }
                 };
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = $reifiedA;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$1 = $reifiedB;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = $reified$A;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$1 = $reified$B;
                 callFunction.<A, B>callFunction(arg$1$reified$0, arg$1$reified$1, arg$1$0);
             }
             returning null;

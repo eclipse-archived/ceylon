@@ -9,8 +9,8 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                f1$($ceylontmp$ns$$2);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$ns$$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                f1$($ceylontmp$$ns$$2);
             }
             returning null;
         );
@@ -18,7 +18,7 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     private void f1$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
         .java.lang.Object elem$0;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iter$1 = ns.iterator(); !((elem$0 = n$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$1 = ns.iterator(); !((elem$0 = n$iterator$$1.next()) instanceof .ceylon.language.Finished); ) {
             final long n = ((.ceylon.language.Integer)elem$0).longValue();
         }
     }
@@ -37,8 +37,8 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$$5 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                f2$(i, $ceylontmp$ns$$5);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$ns$$5 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                f2$(i, $ceylontmp$$ns$$5);
             }
             returning null;
         );
@@ -46,7 +46,7 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     private void f2$(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
         .java.lang.Object elem$3;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iter$4 = ns.iterator(); !((elem$3 = n$iter$4.next()) instanceof .ceylon.language.Finished); ) {
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$4 = ns.iterator(); !((elem$3 = n$iterator$$4.next()) instanceof .ceylon.language.Finished); ) {
             final long n = ((.ceylon.language.Integer)elem$3).longValue();
         }
     }
@@ -65,8 +65,8 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$os$$8 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                f3$($ceylontmp$os$$8);
+                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$$os$$8 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                f3$($ceylontmp$$os$$8);
             }
             returning null;
         );
@@ -74,7 +74,7 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     private void f3$(final .ceylon.language.Sequential<? extends .java.lang.Object> os) {
         .java.lang.Object elem$6;
-        for (.ceylon.language.Iterator<? extends .java.lang.Object> o$iter$7 = os.iterator(); !((elem$6 = o$iter$7.next()) instanceof .ceylon.language.Finished); ) {
+        for (.ceylon.language.Iterator<? extends .java.lang.Object> o$iterator$$7 = os.iterator(); !((elem$6 = o$iterator$$7.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.Object o = (.java.lang.Object)elem$6;
         }
     }
@@ -89,36 +89,36 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         );
     }
     
-    private final void m$priv() {
-        f1(.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+    private final void m$priv$() {
+        f1(.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L)}));
-        f2(1L, .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+        f2(1L, .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L)}));
         f1();
         f2(1L);
-        f1(new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+        f1(new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L)}));
-        f2(1L, new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+        f2(1L, new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L)}));
-        f3(.ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Object.$TypeDescriptor, new .java.lang.Object[]{
+        f3(.ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L)}));
-        f3(.ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Object.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+        f3(.ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L)})}));
-        f3(new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+        f3(new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L)}));
-        f3(.ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Object.$TypeDescriptor, new .java.lang.Object[]{
+        f3(.ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.String.instance("foo"),
                 .ceylon.language.Float.instance(5.0)}));
@@ -130,8 +130,8 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithVarargs.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithVarargs.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithVarargs.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithVarargs.class);
 }

@@ -5,7 +5,7 @@ class ObjectInStatement implements .com.redhat.ceylon.compiler.java.runtime.mode
     ObjectInStatement() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         if (true) {
             final long i = 1L;
             
@@ -22,7 +22,7 @@ class ObjectInStatement implements .com.redhat.ceylon.compiler.java.runtime.mode
                 }
                 
                 @.java.lang.Override
-                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                     return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(foo_.class);
                 }
             }
@@ -37,8 +37,8 @@ class ObjectInStatement implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInStatement.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInStatement.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInStatement.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInStatement.class);
 }

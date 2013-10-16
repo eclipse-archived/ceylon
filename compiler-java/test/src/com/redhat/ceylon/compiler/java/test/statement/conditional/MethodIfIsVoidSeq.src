@@ -11,7 +11,7 @@ final class methodIfIsAnythingSeq_ {
         if ((args$1 = args) instanceof .ceylon.language.Sequential) {
             final .ceylon.language.Sequential<? extends .java.lang.Object> args$2 = (.ceylon.language.Sequential)args$1;
             .java.lang.Object elem$3;
-            for (.ceylon.language.Iterator<? extends .java.lang.Object> arg$iter$4 = args$2.iterator(); !((elem$3 = arg$iter$4.next()) instanceof .ceylon.language.Finished); ) {
+            for (.ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$4 = args$2.iterator(); !((elem$3 = arg$iterator$$4.next()) instanceof .ceylon.language.Finished); ) {
                 final .java.lang.Object arg = (.java.lang.Object)elem$3;
             }
         }

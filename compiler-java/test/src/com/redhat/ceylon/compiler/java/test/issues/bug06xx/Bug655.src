@@ -5,26 +5,26 @@ class Bug655 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     Bug655() {
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655 select$priv(final .ceylon.language.Callable<? extends .ceylon.language.String> predicates) {
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655 select$priv$(final .ceylon.language.Callable<? extends .ceylon.language.String> predicates) {
         return this;
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655 where$priv() {
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655 where$priv$() {
         return this;
     }
     
-    private final .java.lang.String nome$priv() {
+    private final .java.lang.String nome$priv$() {
         return "";
     }
     
-    private final void get$priv() {
-        select$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+    private final void get$priv$() {
+        select$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.String $call() {
-                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655.this.nome$priv());
+            public .ceylon.language.String $call$() {
+                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655.this.nome$priv$());
             }
-        }).where$priv();
+        }).where$priv$();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -33,8 +33,8 @@ class Bug655 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655.class);
 }

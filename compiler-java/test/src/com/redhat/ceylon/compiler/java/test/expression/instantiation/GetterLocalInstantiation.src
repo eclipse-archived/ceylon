@@ -4,9 +4,9 @@ class GetterLocalInstantiation implements .com.redhat.ceylon.compiler.java.runti
     
     GetterLocalInstantiation() {
         
-        final class i$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+        final class i$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
-            private i$getter_() {
+            private i$getter$_() {
             }
             
             public long get_() {
@@ -17,7 +17,7 @@ class GetterLocalInstantiation implements .com.redhat.ceylon.compiler.java.runti
                     }
                     
                     @.java.lang.Override
-                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class);
                     }
                 }
@@ -25,7 +25,7 @@ class GetterLocalInstantiation implements .com.redhat.ceylon.compiler.java.runti
                 return 0L;
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.GetterLong i$getter_ = new i$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong i$getter$_ = new i$getter$_();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -34,8 +34,8 @@ class GetterLocalInstantiation implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.GetterLocalInstantiation.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.GetterLocalInstantiation.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.GetterLocalInstantiation.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.GetterLocalInstantiation.class);
 }

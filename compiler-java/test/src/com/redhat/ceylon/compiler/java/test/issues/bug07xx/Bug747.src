@@ -8,8 +8,8 @@ class Bug747 extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug747
         super();
     }
     
-    @.ceylon.language.SharedAnnotation$annotation
-    @.ceylon.language.ActualAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
@@ -24,9 +24,9 @@ class Bug747 extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug747
                 .ceylon.language.String safe$1 = (
                     let
                     {
-                        .java.lang.String $ceylontmp0 = s;
+                        .java.lang.String $ceylontmp$0 = s;
                     }
-                    returning $ceylontmp0 != null ? .ceylon.language.String.instance($ceylontmp0) : null;
+                    returning $ceylontmp$0 != null ? .ceylon.language.String.instance($ceylontmp$0) : null;
                 );
             }
             returning safe$1 != null ? .ceylon.language.String.instance(safe$1.getUppercased()) : null;
@@ -34,15 +34,15 @@ class Bug747 extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug747
         .ceylon.language.print_.print((
             let
             {
-                .ceylon.language.String $ceylontmp3 = (
+                .ceylon.language.String $ceylontmp$3 = (
                     let
                     {
-                        .java.lang.String $ceylontmp2 = s;
+                        .java.lang.String $ceylontmp$2 = s;
                     }
-                    returning $ceylontmp2 != null ? .ceylon.language.String.instance($ceylontmp2) : null;
+                    returning $ceylontmp$2 != null ? .ceylon.language.String.instance($ceylontmp$2) : null;
                 );
             }
-            returning $ceylontmp3 != null ? $ceylontmp3 : .ceylon.language.String.instance("");
+            returning $ceylontmp$3 != null ? $ceylontmp$3 : .ceylon.language.String.instance("");
         ));
     }
     
@@ -54,9 +54,9 @@ class Bug747 extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug747
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug747.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug747.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug747.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug747.class);
 }

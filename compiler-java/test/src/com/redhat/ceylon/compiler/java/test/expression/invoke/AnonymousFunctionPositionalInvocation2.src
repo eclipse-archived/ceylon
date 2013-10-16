@@ -5,29 +5,29 @@ final class anonymousArgument2_ {
     private anonymousArgument2_() {
     }
     
-    static <Y>void anonymousArgument2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, final Y y) {
+    static <Y>void anonymousArgument2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final Y y) {
         
         final class callFunction_ {
             
             private callFunction_() {
             }
             
-            <X>void callFunction(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, final .ceylon.language.Callable<? extends X> f) {
+            <X>void callFunction(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .ceylon.language.Callable<? extends X> f) {
             }
         }
         final callFunction_ callFunction = new callFunction_();
-        callFunction.<.ceylon.language.String>callFunction(.ceylon.language.String.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(Integer)", (short)-1){
+        callFunction.<.ceylon.language.String>callFunction(.ceylon.language.String.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(Integer)", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                 final long i = ((.ceylon.language.Integer)$param$0).longValue();
                 return .ceylon.language.String.instance(.ceylon.language.Integer.toString(i * 3L));
             }
         });
-        callFunction.<Y>callFunction($reifiedY, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<Y>($reifiedY, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Y(Integer)", (short)-1){
+        callFunction.<Y>callFunction($reified$Y, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<Y>($reified$Y, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Y(Integer)", (short)-1){
             
             @.java.lang.Override
-            public Y $call(final .java.lang.Object $param$0) {
+            public Y $call$(final .java.lang.Object $param$0) {
                 final long i = ((.ceylon.language.Integer)$param$0).longValue();
                 return y;
             }

@@ -6,40 +6,40 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     public final void m(final .ceylon.language.Sequential<? extends .java.lang.Object> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{xs}){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{xs}){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
                     private .java.lang.Object x;
-                    private boolean x$exhausted;
+                    private boolean x$exhausted$;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
-                        if (x$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmpitem$0;
+                            x = (.java.lang.Object)$ceylontmp$item$0;
                             return true;
                         }
                     }
                     
-                    private final boolean next1() {
+                    private final boolean $next$1() {
                         while (true) {
                             if (!this.x()) break;
                             if (x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
                                 break;
                             }
                         }
-                        return !x$exhausted;
+                        return !x$exhausted$;
                     }
                     
                     public final .java.lang.Object next() {
-                        if (this.next1()) {
+                        if (this.$next$1()) {
                             final .java.lang.Object x = this.x;
                             return .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x).common().toString());
                         } else return .ceylon.language.finished_.get_();
@@ -47,40 +47,40 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                 };
             }
         });
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{xs}){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{xs}){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
                     private .java.lang.Object x;
-                    private boolean x$exhausted;
+                    private boolean x$exhausted$;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem$2 = iter$0.next();
-                        x$exhausted = $ceylontmpitem$2 == .ceylon.language.finished_.get_();
-                        if (x$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$2 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$2 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmpitem$2;
+                            x = (.java.lang.Object)$ceylontmp$item$2;
                             return true;
                         }
                     }
                     
-                    private final boolean next1() {
+                    private final boolean $next$1() {
                         while (true) {
                             if (!this.x()) break;
                             if (x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
                                 break;
                             }
                         }
-                        return !x$exhausted;
+                        return !x$exhausted$;
                     }
                     
                     public final .java.lang.Object next() {
-                        if (this.next1()) {
+                        if (this.$next$1()) {
                             final .java.lang.Object x = this.x;
                             return .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x).foo().toString());
                         } else return .ceylon.language.finished_.get_();
@@ -88,40 +88,40 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                 };
             }
         });
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{xs}){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{xs}){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
                     private .java.lang.Object x;
-                    private boolean x$exhausted;
+                    private boolean x$exhausted$;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem$4 = iter$0.next();
-                        x$exhausted = $ceylontmpitem$4 == .ceylon.language.finished_.get_();
-                        if (x$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$4 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$4 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.java.lang.Object)$ceylontmpitem$4;
+                            x = (.java.lang.Object)$ceylontmp$item$4;
                             return true;
                         }
                     }
                     
-                    private final boolean next1() {
+                    private final boolean $next$1() {
                         while (true) {
                             if (!this.x()) break;
                             if (x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
                                 break;
                             }
                         }
-                        return !x$exhausted;
+                        return !x$exhausted$;
                     }
                     
                     public final .java.lang.Object next() {
-                        if (this.next1()) {
+                        if (this.$next$1()) {
                             final .java.lang.Object x = this.x;
                             return .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface)x).bar().toString());
                         } else return .ceylon.language.finished_.get_();
@@ -132,30 +132,30 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     public final void mvar(final .ceylon.language.Sequential<? extends .java.lang.Object> ys) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{ys}){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{ys}){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
                     private .java.lang.Object y;
-                    private boolean y$exhausted;
+                    private boolean y$exhausted$;
                     
                     private final boolean y() {
-                        final .java.lang.Object $ceylontmpitem$6 = iter$0.next();
-                        y$exhausted = $ceylontmpitem$6 == .ceylon.language.finished_.get_();
-                        if (y$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$6 = $iterator$0.next();
+                        y$exhausted$ = $ceylontmp$item$6 == .ceylon.language.finished_.get_();
+                        if (y$exhausted$) {
                             return false;
                         } else {
-                            y = (.java.lang.Object)$ceylontmpitem$6;
+                            y = (.java.lang.Object)$ceylontmp$item$6;
                             return true;
                         }
                     }
                     private .java.lang.Object x$8;
                     
-                    private final boolean next1() {
+                    private final boolean $next$1() {
                         while (true) {
                             if (!this.y()) break;
                             .java.lang.Object x$7 = null;
@@ -164,11 +164,11 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                                 break;
                             }
                         }
-                        return !y$exhausted;
+                        return !y$exhausted$;
                     }
                     
                     public final .java.lang.Object next() {
-                        if (this.next1()) {
+                        if (this.$next$1()) {
                             final .java.lang.Object y = this.y;
                             return .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x$8).common().toString());
                         } else return .ceylon.language.finished_.get_();
@@ -176,30 +176,30 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                 };
             }
         });
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{ys}){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{ys}){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
                     private .java.lang.Object y;
-                    private boolean y$exhausted;
+                    private boolean y$exhausted$;
                     
                     private final boolean y() {
-                        final .java.lang.Object $ceylontmpitem$9 = iter$0.next();
-                        y$exhausted = $ceylontmpitem$9 == .ceylon.language.finished_.get_();
-                        if (y$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$9 = $iterator$0.next();
+                        y$exhausted$ = $ceylontmp$item$9 == .ceylon.language.finished_.get_();
+                        if (y$exhausted$) {
                             return false;
                         } else {
-                            y = (.java.lang.Object)$ceylontmpitem$9;
+                            y = (.java.lang.Object)$ceylontmp$item$9;
                             return true;
                         }
                     }
                     private .java.lang.Object x$11;
                     
-                    private final boolean next1() {
+                    private final boolean $next$1() {
                         while (true) {
                             if (!this.y()) break;
                             .java.lang.Object x$10 = null;
@@ -208,11 +208,11 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                                 break;
                             }
                         }
-                        return !y$exhausted;
+                        return !y$exhausted$;
                     }
                     
                     public final .java.lang.Object next() {
-                        if (this.next1()) {
+                        if (this.$next$1()) {
                             final .java.lang.Object y = this.y;
                             return .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x$11).foo().toString());
                         } else return .ceylon.language.finished_.get_();
@@ -220,30 +220,30 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                 };
             }
         });
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{ys}){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{ys}){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
                     private .java.lang.Object y;
-                    private boolean y$exhausted;
+                    private boolean y$exhausted$;
                     
                     private final boolean y() {
-                        final .java.lang.Object $ceylontmpitem$12 = iter$0.next();
-                        y$exhausted = $ceylontmpitem$12 == .ceylon.language.finished_.get_();
-                        if (y$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$12 = $iterator$0.next();
+                        y$exhausted$ = $ceylontmp$item$12 == .ceylon.language.finished_.get_();
+                        if (y$exhausted$) {
                             return false;
                         } else {
-                            y = (.java.lang.Object)$ceylontmpitem$12;
+                            y = (.java.lang.Object)$ceylontmp$item$12;
                             return true;
                         }
                     }
                     private .java.lang.Object x$14;
                     
-                    private final boolean next1() {
+                    private final boolean $next$1() {
                         while (true) {
                             if (!this.y()) break;
                             .java.lang.Object x$13 = null;
@@ -252,11 +252,11 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                                 break;
                             }
                         }
-                        return !y$exhausted;
+                        return !y$exhausted$;
                     }
                     
                     public final .java.lang.Object next() {
-                        if (this.next1()) {
+                        if (this.$next$1()) {
                             final .java.lang.Object y = this.y;
                             return .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface)x$14).bar().toString());
                         } else return .ceylon.language.finished_.get_();
@@ -272,8 +272,8 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsIntersection.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsIntersection.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsIntersection.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsIntersection.class);
 }

@@ -5,7 +5,7 @@ interface Common {
     public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$impl();
     
     public abstract .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common common();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.class);
 }
 final class Common$impl {
     
@@ -19,7 +19,7 @@ interface FooInterface {
     public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$impl();
     
     public abstract .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface foo();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface.class);
 }
 final class FooInterface$impl {
     
@@ -31,20 +31,20 @@ final class FooInterface$impl {
 class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface {
     
     Foo() {
-        this.$com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this = new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$this = new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this$ = new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$this$ = new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this;
+        return $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this$;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$this;
+        return $com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$this$;
     }
     
     @.java.lang.Override
@@ -63,10 +63,10 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.class);
 }
 class FooSub extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo {
     
@@ -84,17 +84,17 @@ class FooSub extends .com.redhat.ceylon.compiler.java.test.expression.comprehens
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub.class);
 }
 interface BarInterface {
     
     public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$impl();
     
     public abstract .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface bar();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface.class);
 }
 final class BarInterface$impl {
     
@@ -106,20 +106,20 @@ final class BarInterface$impl {
 class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface {
     
     Bar() {
-        this.$com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this = new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$this = new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this$ = new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$this$ = new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this;
+        return $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this$;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$this;
+        return $com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$this$;
     }
     
     @.java.lang.Override
@@ -138,10 +138,10 @@ class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar.class);
 }
 final class isCond_ {
     
@@ -149,30 +149,30 @@ final class isCond_ {
     }
     
     static void isCond(final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> seq) {
-        .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo> foos = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{seq}){
+        .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo> foos = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{seq}){
             
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.$TypeDescriptor){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.$TypeDescriptor$){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> iter$0;
+                    private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> $iterator$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
-                    private boolean x$exhausted;
+                    private boolean x$exhausted$;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
-                        if (x$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$ceylontmpitem$0;
+                            x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$ceylontmp$item$0;
                             return true;
                         }
                     }
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo x$2;
                     
-                    private final boolean next1() {
+                    private final boolean $next$1() {
                         while (true) {
                             if (!this.x()) break;
                             .java.lang.Object x$1 = null;
@@ -181,11 +181,11 @@ final class isCond_ {
                                 break;
                             }
                         }
-                        return !x$exhausted;
+                        return !x$exhausted$;
                     }
                     
                     public final .java.lang.Object next() {
-                        if (this.next1()) {
+                        if (this.$next$1()) {
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             return x$2.foo();
                         } else return .ceylon.language.finished_.get_();
@@ -193,30 +193,30 @@ final class isCond_ {
                 };
             }
         }.getSequence();
-        foos = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{seq}){
+        foos = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{seq}){
             
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.$TypeDescriptor){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.$TypeDescriptor$){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> iter$0;
+                    private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> $iterator$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
-                    private boolean x$exhausted;
+                    private boolean x$exhausted$;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem$3 = iter$0.next();
-                        x$exhausted = $ceylontmpitem$3 == .ceylon.language.finished_.get_();
-                        if (x$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$3 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$3 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$ceylontmpitem$3;
+                            x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$ceylontmp$item$3;
                             return true;
                         }
                     }
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub x$5;
                     
-                    private final boolean next1() {
+                    private final boolean $next$1() {
                         while (true) {
                             if (!this.x()) break;
                             .java.lang.Object x$4 = null;
@@ -225,11 +225,11 @@ final class isCond_ {
                                 break;
                             }
                         }
-                        return !x$exhausted;
+                        return !x$exhausted$;
                     }
                     
                     public final .java.lang.Object next() {
-                        if (this.next1()) {
+                        if (this.$next$1()) {
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             return x$5.foo();
                         } else return .ceylon.language.finished_.get_();
@@ -237,40 +237,40 @@ final class isCond_ {
                 };
             }
         }.getSequence();
-        .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> commons = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{seq}){
+        .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> commons = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{seq}){
             
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.$TypeDescriptor){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.$TypeDescriptor$){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> iter$0;
+                    private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> $iterator$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
-                    private boolean x$exhausted;
+                    private boolean x$exhausted$;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem$6 = iter$0.next();
-                        x$exhausted = $ceylontmpitem$6 == .ceylon.language.finished_.get_();
-                        if (x$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$6 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$6 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$ceylontmpitem$6;
+                            x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$ceylontmp$item$6;
                             return true;
                         }
                     }
                     
-                    private final boolean next1() {
+                    private final boolean $next$1() {
                         while (true) {
                             if (!this.x()) break;
                             if (x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo || x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar) {
                                 break;
                             }
                         }
-                        return !x$exhausted;
+                        return !x$exhausted$;
                     }
                     
                     public final .java.lang.Object next() {
-                        if (this.next1()) {
+                        if (this.$next$1()) {
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             return ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)x).common();
                         } else return .ceylon.language.finished_.get_();
@@ -278,40 +278,40 @@ final class isCond_ {
                 };
             }
         }.getSequence();
-        commons = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{seq}){
+        commons = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{seq}){
             
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.$TypeDescriptor){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.$TypeDescriptor$){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> iter$0;
+                    private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> $iterator$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
-                    private boolean x$exhausted;
+                    private boolean x$exhausted$;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem$8 = iter$0.next();
-                        x$exhausted = $ceylontmpitem$8 == .ceylon.language.finished_.get_();
-                        if (x$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$8 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$8 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$ceylontmpitem$8;
+                            x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$ceylontmp$item$8;
                             return true;
                         }
                     }
                     
-                    private final boolean next1() {
+                    private final boolean $next$1() {
                         while (true) {
                             if (!this.x()) break;
                             if (x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
                                 break;
                             }
                         }
-                        return !x$exhausted;
+                        return !x$exhausted$;
                     }
                     
                     public final .java.lang.Object next() {
-                        if (this.next1()) {
+                        if (this.$next$1()) {
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             return ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x).foo().common();
                         } else return .ceylon.language.finished_.get_();
@@ -319,40 +319,40 @@ final class isCond_ {
                 };
             }
         }.getSequence();
-        .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface> barIs = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{seq}){
+        .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface> barIs = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{seq}){
             
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface.$TypeDescriptor){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface.$TypeDescriptor$){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> iter$0;
+                    private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> $iterator$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
-                    private boolean x$exhausted;
+                    private boolean x$exhausted$;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem$10 = iter$0.next();
-                        x$exhausted = $ceylontmpitem$10 == .ceylon.language.finished_.get_();
-                        if (x$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$10 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$10 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$ceylontmpitem$10;
+                            x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$ceylontmp$item$10;
                             return true;
                         }
                     }
                     
-                    private final boolean next1() {
+                    private final boolean $next$1() {
                         while (true) {
                             if (!this.x()) break;
                             if (x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
                                 break;
                             }
                         }
-                        return !x$exhausted;
+                        return !x$exhausted$;
                     }
                     
                     public final .java.lang.Object next() {
-                        if (this.next1()) {
+                        if (this.$next$1()) {
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             return ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface)x).bar();
                         } else return .ceylon.language.finished_.get_();
@@ -360,40 +360,40 @@ final class isCond_ {
                 };
             }
         }.getSequence();
-        final .ceylon.language.Sequential<? extends .java.lang.Object> nowt = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Null.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, true, new .ceylon.language.Iterable[]{seq}){
+        final .ceylon.language.Sequential<? extends .java.lang.Object> nowt = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{seq}){
             
             public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Null.$TypeDescriptor){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Null.$TypeDescriptor$){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> iter$0;
+                    private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> $iterator$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
-                    private boolean x$exhausted;
+                    private boolean x$exhausted$;
                     
                     private final boolean x() {
-                        final .java.lang.Object $ceylontmpitem$12 = iter$0.next();
-                        x$exhausted = $ceylontmpitem$12 == .ceylon.language.finished_.get_();
-                        if (x$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$12 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$12 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
                             return false;
                         } else {
-                            x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$ceylontmpitem$12;
+                            x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$ceylontmp$item$12;
                             return true;
                         }
                     }
                     
-                    private final boolean next1() {
+                    private final boolean $next$1() {
                         while (true) {
                             if (!this.x()) break;
                             if (x == null) {
                                 break;
                             }
                         }
-                        return !x$exhausted;
+                        return !x$exhausted$;
                     }
                     
                     public final .java.lang.Object next() {
-                        if (this.next1()) {
+                        if (this.$next$1()) {
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             return x;
                         } else return .ceylon.language.finished_.get_();

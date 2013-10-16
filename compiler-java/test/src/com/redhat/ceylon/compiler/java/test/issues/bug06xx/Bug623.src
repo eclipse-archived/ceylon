@@ -12,15 +12,15 @@ class Bug623Direct extends .java.lang.Object implements .com.redhat.ceylon.compi
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623Direct.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623Direct.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623Direct.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623Direct.class);
 }
 interface Bug623 {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug623$impl();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623.class);
 }
 final class Bug623$impl {
     
@@ -33,13 +33,13 @@ class Bug623Indirect extends .java.lang.Object implements .com.redhat.ceylon.com
     
     Bug623Indirect() {
         super();
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug623$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug623$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug623$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug623$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug623$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug623$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug623$this$;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -48,8 +48,8 @@ class Bug623Indirect extends .java.lang.Object implements .com.redhat.ceylon.com
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623Indirect.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623Indirect.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623Indirect.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623Indirect.class);
 }

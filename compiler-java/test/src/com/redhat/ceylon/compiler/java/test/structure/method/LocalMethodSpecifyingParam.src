@@ -13,7 +13,7 @@ final class higher_ {
             }
             
             .java.lang.String f(final long i) {
-                return ref.$call(.ceylon.language.Integer.instance(i)).toString();
+                return ref.$call$(.ceylon.language.Integer.instance(i)).toString();
             }
         }
         final f_ f = new f_();

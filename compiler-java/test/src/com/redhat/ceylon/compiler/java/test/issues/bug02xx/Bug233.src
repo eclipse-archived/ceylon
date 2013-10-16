@@ -11,15 +11,15 @@ class Bug233_Ceylon extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Type $ceylontmp0 = arg;
+                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Type $ceylontmp$0 = arg;
             }
-            returning $ceylontmp0 != null ? $ceylontmp0 : new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Type();
+            returning $ceylontmp$0 != null ? $ceylontmp$0 : new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Type();
         );
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Ceylon.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Ceylon.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Ceylon.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Ceylon.class);
 }

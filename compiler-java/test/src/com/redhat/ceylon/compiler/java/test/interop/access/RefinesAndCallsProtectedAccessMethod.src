@@ -6,7 +6,7 @@ class RefinesAndCallProtectedAccessMethod extends .com.redhat.ceylon.compiler.ja
         super();
     }
     
-    private final void foo$priv(final .com.redhat.ceylon.compiler.java.test.interop.access.JavaAccessModifiers bar) {
+    private final void foo$priv$(final .com.redhat.ceylon.compiler.java.test.interop.access.JavaAccessModifiers bar) {
         bar.protectedAccessMethod();
     }
     
@@ -16,8 +16,8 @@ class RefinesAndCallProtectedAccessMethod extends .com.redhat.ceylon.compiler.ja
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.interop.access.RefinesAndCallProtectedAccessMethod.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.access.RefinesAndCallProtectedAccessMethod.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.access.RefinesAndCallProtectedAccessMethod.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.access.RefinesAndCallProtectedAccessMethod.class);
 }

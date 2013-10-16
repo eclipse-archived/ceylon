@@ -5,7 +5,7 @@ class TopLevelAccess implements .com.redhat.ceylon.compiler.java.runtime.model.R
     TopLevelAccess() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         final boolean bb1 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b1_.get_();
         final boolean bb2 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b2_.get_();
         final boolean bb3 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b3_.get_();
@@ -18,10 +18,10 @@ class TopLevelAccess implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAccess.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAccess.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAccess.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAccess.class);
 }
 final class b1_ {
     

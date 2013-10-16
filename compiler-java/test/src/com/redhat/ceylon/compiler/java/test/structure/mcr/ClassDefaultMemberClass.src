@@ -5,7 +5,7 @@ class ClassDefaultMemberClass implements .com.redhat.ceylon.compiler.java.runtim
     ClassDefaultMemberClass() {
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass.Member Member$new() {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass.Member Member$new$() {
         return new Member();
     }
     
@@ -15,16 +15,16 @@ class ClassDefaultMemberClass implements .com.redhat.ceylon.compiler.java.runtim
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass.Member.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass.Member.class));
         }
     }
     
     public final void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass qual) {
-        Member$new();
-        Member$new();
-        qual.Member$new();
-        qual.Member$new();
+        Member$new$();
+        Member$new$();
+        qual.Member$new$();
+        qual.Member$new$();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -33,10 +33,10 @@ class ClassDefaultMemberClass implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass.class);
 }
 class ClassDefaultMemberClass_sub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass {
     
@@ -45,7 +45,7 @@ class ClassDefaultMemberClass_sub extends .com.redhat.ceylon.compiler.java.test.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub.Member Member$new() {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub.Member Member$new$() {
         return new Member();
     }
     
@@ -56,16 +56,16 @@ class ClassDefaultMemberClass_sub extends .com.redhat.ceylon.compiler.java.test.
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub.Member.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub.Member.class));
         }
     }
     
     public final void m2(final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub qual) {
-        Member$new();
-        Member$new();
-        qual.Member$new();
-        qual.Member$new();
+        Member$new$();
+        Member$new$();
+        qual.Member$new$();
+        qual.Member$new$();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -74,8 +74,8 @@ class ClassDefaultMemberClass_sub extends .com.redhat.ceylon.compiler.java.test.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub.class);
 }

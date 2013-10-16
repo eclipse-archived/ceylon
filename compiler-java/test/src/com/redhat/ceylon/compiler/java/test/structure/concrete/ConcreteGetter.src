@@ -5,7 +5,7 @@ interface ConcreteGetter {
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$impl();
     
     public long getI();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter.class);
 }
 final class ConcreteGetter$impl {
     
@@ -21,18 +21,18 @@ final class ConcreteGetter$impl {
 class ConcreteGetterImplementor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter {
     
     ConcreteGetterImplementor() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this$;
     }
     
     @.java.lang.Override
     public long getI() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this.getI();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this$.getI();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -41,21 +41,21 @@ class ConcreteGetterImplementor implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetterImplementor.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetterImplementor.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetterImplementor.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetterImplementor.class);
 }
 class ConcreteGetterOverrider implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter {
     
     ConcreteGetterOverrider() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this$;
     }
     
     @.java.lang.Override
@@ -69,21 +69,21 @@ class ConcreteGetterOverrider implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetterOverrider.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetterOverrider.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetterOverrider.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetterOverrider.class);
 }
 class ConcreteGetterOverrider2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter {
     
     ConcreteGetterOverrider2() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this$;
     }
     
     @.java.lang.Override
@@ -97,8 +97,8 @@ class ConcreteGetterOverrider2 implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetterOverrider2.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetterOverrider2.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetterOverrider2.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetterOverrider2.class);
 }

@@ -5,7 +5,7 @@ interface Bug824_X {
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$impl();
     
     public .java.lang.String getName();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X.class);
 }
 final class Bug824_X$impl {
     
@@ -25,18 +25,18 @@ interface Bug824_Z {
 class Bug824_W implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X {
     
     Bug824_W() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this$;
     }
     
     @.java.lang.Override
     public final .java.lang.String getName() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this.getName();
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this$.getName();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -45,26 +45,26 @@ class Bug824_W implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_W.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_W.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_W.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_W.class);
 }
 class Bug824_W2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X {
     
     Bug824_W2() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this$;
     }
     
     @.java.lang.Override
     public final .java.lang.String getName() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this.getName();
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this$.getName();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -73,8 +73,8 @@ class Bug824_W2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_W2.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_W2.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_W2.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_W2.class);
 }

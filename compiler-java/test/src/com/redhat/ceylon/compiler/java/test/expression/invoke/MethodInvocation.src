@@ -6,16 +6,16 @@ class MethodInvocation implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     public final void m() {
-        n$priv();
-        o$priv(1L);
+        n$priv$();
+        o$priv$(1L);
         p();
     }
     
-    private final void n$priv() {
+    private final void n$priv$() {
         return;
     }
     
-    private final long o$priv(final long oarg) {
+    private final long o$priv$(final long oarg) {
         return oarg;
     }
     
@@ -29,8 +29,8 @@ class MethodInvocation implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.invoke.MethodInvocation.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.MethodInvocation.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.MethodInvocation.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.MethodInvocation.class);
 }

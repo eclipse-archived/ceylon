@@ -22,18 +22,18 @@ final class callableArgumentNary_m_ {
     }
     
     static void callableArgumentNary_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNary_f_.callableArgumentNary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor), .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor), .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor), .ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Character.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)))), "Anything(Integer, String, Boolean, Character)", (short)-1){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNary_f_.callableArgumentNary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)))), "Anything(Integer, String, Boolean, Character)", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object... $param$0) {
-                final long $ceylontmpi = ((.ceylon.language.Integer)$param$0[0]).longValue();
-                final .java.lang.String $ceylontmps = ((.ceylon.language.String)$param$0[1]).toString();
-                final boolean $ceylontmpb = ((.ceylon.language.Boolean)$param$0[2]).booleanValue();
-                final int $ceylontmpc = ((.ceylon.language.Character)$param$0[3]).intValue();
+            public .java.lang.Object $call$(final .java.lang.Object... $param$0) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0[0]).longValue();
+                final .java.lang.String $ceylontmp$s = ((.ceylon.language.String)$param$0[1]).toString();
+                final boolean $ceylontmp$b = ((.ceylon.language.Boolean)$param$0[2]).booleanValue();
+                final int $ceylontmp$c = ((.ceylon.language.Character)$param$0[3]).intValue();
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNary_bar_.callableArgumentNary_bar($ceylontmpi, $ceylontmps, $ceylontmpb, $ceylontmpc);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNary_bar_.callableArgumentNary_bar($ceylontmp$i, $ceylontmp$s, $ceylontmp$b, $ceylontmp$c);
                     }
                     returning null;
                 );

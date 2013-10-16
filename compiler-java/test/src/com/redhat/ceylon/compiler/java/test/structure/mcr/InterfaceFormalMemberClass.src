@@ -4,10 +4,10 @@ interface InterfaceFormalMemberClass {
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$impl();
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl.Member Member$new();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl.Member Member$new$();
     
     public void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass qual);
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass.class);
 }
 final class InterfaceFormalMemberClass$impl {
     
@@ -22,60 +22,60 @@ final class InterfaceFormalMemberClass$impl {
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl.Member.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl.Member.class));
         }
     }
     
     public void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass qual) {
-        $this.Member$new();
-        $this.Member$new();
-        $this.Member$new();
-        $this.Member$new();
-        qual.Member$new();
-        qual.Member$new();
+        $this.Member$new$();
+        $this.Member$new$();
+        $this.Member$new$();
+        $this.Member$new$();
+        qual.Member$new$();
+        qual.Member$new$();
     }
 }
 class InterfaceFormalMemberClass_sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass {
     
     InterfaceFormalMemberClass_sub() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$this = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$this$ = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$this$;
     }
     
     @.java.lang.Override
     public final void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass qual) {
-        $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$this.m1(qual);
+        $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$this$.m1(qual);
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass_sub.Member Member$new() {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass_sub.Member Member$new$() {
         return new Member();
     }
     
     public class Member extends .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl.Member {
         
         protected Member() {
-            $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$this.super();
+            $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$this$.super();
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass_sub.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass_sub.Member.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass_sub.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass_sub.Member.class));
         }
     }
     
     public final void m2(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass_sub qual) {
-        Member$new();
-        Member$new();
-        this.Member$new();
-        this.Member$new();
-        qual.Member$new();
-        qual.Member$new();
+        Member$new$();
+        Member$new$();
+        this.Member$new$();
+        this.Member$new$();
+        qual.Member$new$();
+        qual.Member$new$();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -84,8 +84,8 @@ class InterfaceFormalMemberClass_sub implements .com.redhat.ceylon.compiler.java
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass_sub.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass_sub.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass_sub.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass_sub.class);
 }

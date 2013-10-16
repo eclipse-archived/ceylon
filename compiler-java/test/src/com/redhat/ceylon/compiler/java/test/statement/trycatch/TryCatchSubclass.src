@@ -7,32 +7,32 @@ class E extends .ceylon.language.Exception {
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.E.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.E.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.E.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.E.class);
 }
 class TryCatchSubclass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     TryCatchSubclass() {
     }
     
-    private final void t$priv() {
+    private final void t$priv$() {
     }
     
-    private final void ce$priv(final .com.redhat.ceylon.compiler.java.test.statement.trycatch.E e) {
+    private final void ce$priv$(final .com.redhat.ceylon.compiler.java.test.statement.trycatch.E e) {
     }
     
-    private final void cexception$priv(final .java.lang.Throwable e) {
+    private final void cexception$priv$(final .java.lang.Throwable e) {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         try {
-            t$priv();
+            t$priv$();
         } catch (final .com.redhat.ceylon.compiler.java.test.statement.trycatch.E e) {
-            ce$priv(e);
+            ce$priv$(e);
         } catch (final .java.lang.Exception e) {
-            cexception$priv(e);
+            cexception$priv$(e);
         }
     }
     
@@ -42,8 +42,8 @@ class TryCatchSubclass implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatchSubclass.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatchSubclass.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatchSubclass.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatchSubclass.class);
 }

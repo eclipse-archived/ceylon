@@ -2,12 +2,12 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
 class Bug620<T extends .ceylon.language.Numeric<T>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug620(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        this.$reifiedT = $reifiedT;
+    Bug620(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
-    private final void m$priv(final .ceylon.language.Numeric<T> init) {
+    private final void m$priv$(final .ceylon.language.Numeric<T> init) {
         T n = (T)init;
         n = ((.ceylon.language.Summable<T>)(.ceylon.language.Summable)n).plus((T)n);
     }
@@ -18,7 +18,7 @@ class Bug620<T extends .ceylon.language.Numeric<T>> implements .com.redhat.ceylo
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug620.class, $reifiedT);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug620.class, $reified$T);
     }
 }

@@ -6,15 +6,15 @@ interface Bug1157_Anno<Value extends .com.redhat.ceylon.compiler.java.test.issue
 }
 final class Bug1157_Anno$impl<Value extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno<? extends Value>> {
     
-    Bug1157_Anno$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno<? extends Value> $this) {
-        this.$reifiedValue = $reifiedValue;
+    Bug1157_Anno$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno<? extends Value> $this) {
+        this.$reified$Value = $reified$Value;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno<? extends Value> $this;
     
-    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
-        this.$reifiedValue = $reifiedValue;
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
+        this.$reified$Value = $reified$Value;
     }
 }
 interface Bug1157_AnnoSub<Value extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno<? extends Value>> extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno<Value> {
@@ -23,15 +23,15 @@ interface Bug1157_AnnoSub<Value extends .com.redhat.ceylon.compiler.java.test.is
 }
 final class Bug1157_AnnoSub$impl<Value extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno<? extends Value>> {
     
-    Bug1157_AnnoSub$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_AnnoSub<? extends Value> $this) {
-        this.$reifiedValue = $reifiedValue;
+    Bug1157_AnnoSub$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_AnnoSub<? extends Value> $this) {
+        this.$reified$Value = $reified$Value;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_AnnoSub<? extends Value> $this;
     
-    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
-        this.$reifiedValue = $reifiedValue;
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
+        this.$reified$Value = $reified$Value;
     }
 }
 final class bug1157_annotations_ {
@@ -39,7 +39,7 @@ final class bug1157_annotations_ {
     private bug1157_annotations_() {
     }
     
-    static <A extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno<? extends A>>.ceylon.language.Sequential<? extends A> bug1157_annotations(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA) {
+    static <A extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno<? extends A>>.ceylon.language.Sequential<? extends A> bug1157_annotations(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A) {
         return (.ceylon.language.Sequential).ceylon.language.nothing_.get_();
     }
     

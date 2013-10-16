@@ -5,7 +5,7 @@ class ThrowExceptionNamedArgs implements .com.redhat.ceylon.compiler.java.runtim
     ThrowExceptionNamedArgs() {
     }
     
-    private final void t$priv() {
+    private final void t$priv$() {
         throw (
             let
             {
@@ -22,8 +22,8 @@ class ThrowExceptionNamedArgs implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ThrowExceptionNamedArgs.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ThrowExceptionNamedArgs.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ThrowExceptionNamedArgs.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ThrowExceptionNamedArgs.class);
 }

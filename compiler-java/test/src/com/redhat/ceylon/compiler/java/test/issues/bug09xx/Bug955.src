@@ -6,7 +6,7 @@ final class bug955_ {
     }
     
     static void bug955(final .ceylon.language.Callable<? extends .ceylon.language.String> str) {
-        .ceylon.language.print_.print(str.$call());
+        .ceylon.language.print_.print(str.$call$());
     }
 }
 class Bug595 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -15,10 +15,10 @@ class Bug595 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug595.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug595.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug595.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug595.class);
 }
 final class testbug955_ {
     
@@ -29,10 +29,10 @@ final class testbug955_ {
         (
             let
             {
-                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.String $call() {
+                    public .ceylon.language.String $call$() {
                         return .ceylon.language.String.instance("hello world");
                     }
                 };
@@ -43,10 +43,10 @@ final class testbug955_ {
         (
             let
             {
-                .ceylon.language.Callable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+                .ceylon.language.Callable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.String $call() {
+                    public .ceylon.language.String $call$() {
                         return .ceylon.language.String.instance("hello world");
                     }
                 };
@@ -57,10 +57,10 @@ final class testbug955_ {
         (
             let
             {
-                .ceylon.language.Callable arg$2$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+                .ceylon.language.Callable arg$2$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.String $call() {
+                    public .ceylon.language.String $call$() {
                         return .ceylon.language.String.instance("hello world");
                     }
                 };
@@ -71,10 +71,10 @@ final class testbug955_ {
         (
             let
             {
-                .ceylon.language.Callable arg$3$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+                .ceylon.language.Callable arg$3$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.String $call() {
+                    public .ceylon.language.String $call$() {
                         return .ceylon.language.String.instance("hello world");
                     }
                 };
@@ -96,10 +96,10 @@ final class testbug955_ {
         (
             let
             {
-                .ceylon.language.Callable arg$5$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+                .ceylon.language.Callable arg$5$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.String $call() {
+                    public .ceylon.language.String $call$() {
                         return .ceylon.language.String.instance("hello world");
                     }
                 };
@@ -121,10 +121,10 @@ final class testbug955_ {
         (
             let
             {
-                .ceylon.language.Callable arg$7$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+                .ceylon.language.Callable arg$7$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.String $call() {
+                    public .ceylon.language.String $call$() {
                         return .ceylon.language.String.instance("hello world");
                     }
                 };

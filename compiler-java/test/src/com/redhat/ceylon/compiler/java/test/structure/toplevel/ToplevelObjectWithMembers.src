@@ -17,7 +17,7 @@ final class topLevelObjectWithMembers_ implements .com.redhat.ceylon.compiler.ja
     }
     private final boolean valCaptured;
     
-    private final boolean getValCaptured$priv() {
+    private final boolean getValCaptured$priv$() {
         return valCaptured;
     }
     private boolean varShared;
@@ -31,20 +31,20 @@ final class topLevelObjectWithMembers_ implements .com.redhat.ceylon.compiler.ja
     }
     private boolean varCaptured;
     
-    private final boolean getVarCaptured$priv() {
+    private final boolean getVarCaptured$priv$() {
         return varCaptured;
     }
     
-    private final void setVarCaptured$priv(final boolean varCaptured) {
+    private final void setVarCaptured$priv$(final boolean varCaptured) {
         this.varCaptured = varCaptured;
     }
     
-    private final boolean y$priv() {
-        return getValCaptured$priv();
+    private final boolean y$priv$() {
+        return getValCaptured$priv$();
     }
     
     public final boolean yShared() {
-        return getVarCaptured$priv();
+        return getVarCaptured$priv$();
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_[] value;
     static {
@@ -60,7 +60,7 @@ final class topLevelObjectWithMembers_ implements .com.redhat.ceylon.compiler.ja
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_.class);
     }
 }

@@ -65,7 +65,7 @@ class StaticMethodsAndSubClasses extends .com.redhat.ceylon.compiler.java.test.i
         super();
     }
     
-    private final void test$priv() {
+    private final void test$priv$() {
         .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method();
         .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method(1L);
         .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.method(1L, 2L);
@@ -80,10 +80,10 @@ class StaticMethodsAndSubClasses extends .com.redhat.ceylon.compiler.java.test.i
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.interop.StaticMethodsAndSubClasses.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.StaticMethodsAndSubClasses.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.StaticMethodsAndSubClasses.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.StaticMethodsAndSubClasses.class);
 }
 final class staticFields_ {
     

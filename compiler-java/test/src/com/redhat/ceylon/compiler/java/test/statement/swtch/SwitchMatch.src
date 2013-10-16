@@ -6,10 +6,10 @@ abstract class SwitchMatchTop implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop.class);
 }
 final class switchMatch_foo_ extends .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop {
     
@@ -30,7 +30,7 @@ final class switchMatch_foo_ extends .com.redhat.ceylon.compiler.java.test.state
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_.class);
     }
 }
@@ -53,7 +53,7 @@ final class switchMatch_bar_ extends .com.redhat.ceylon.compiler.java.test.state
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_.class);
     }
 }
@@ -62,7 +62,7 @@ class SwitchMatch implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     SwitchMatch() {
     }
     
-    private final void onObject$priv() {
+    private final void onObject$priv$() {
         final .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop fb = .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_.get_();
         {
             .java.lang.Object sel$0 = fb;
@@ -74,7 +74,7 @@ class SwitchMatch implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         }
     }
     
-    private final void onBoolean$priv() {
+    private final void onBoolean$priv$() {
         final boolean b = true;
         {
             .java.lang.Object sel$1 = .ceylon.language.Boolean.instance(b);
@@ -86,14 +86,14 @@ class SwitchMatch implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         }
     }
     
-    private final <T>T box$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
+    private final <T>T box$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
         return t;
     }
     
-    private final void onBoxedBoolean$priv() {
+    private final void onBoxedBoolean$priv$() {
         final boolean b = true;
         {
-            .java.lang.Object sel$2 = <.ceylon.language.Boolean>box$priv(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.instance(b));
+            .java.lang.Object sel$2 = <.ceylon.language.Boolean>box$priv$(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.instance(b));
             if (sel$2 == .ceylon.language.Boolean.instance(true)) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("true"));
             } else if (sel$2 == .ceylon.language.Boolean.instance(false)) {
@@ -102,7 +102,7 @@ class SwitchMatch implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         }
     }
     
-    private final void onNullableType$priv() {
+    private final void onNullableType$priv$() {
         final .ceylon.language.Boolean b = .ceylon.language.Boolean.instance(true);
         {
             .java.lang.Object sel$3 = b;
@@ -122,8 +122,8 @@ class SwitchMatch implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatch.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatch.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatch.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatch.class);
 }

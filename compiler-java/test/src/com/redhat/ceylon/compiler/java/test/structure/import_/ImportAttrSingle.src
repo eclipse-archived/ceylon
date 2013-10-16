@@ -5,7 +5,7 @@ class ImportAttrSingle implements .com.redhat.ceylon.compiler.java.runtime.model
     ImportAttrSingle() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         final boolean b = .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.f1_.get_();
     }
     
@@ -15,8 +15,8 @@ class ImportAttrSingle implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.import_.ImportAttrSingle.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.import_.ImportAttrSingle.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.import_.ImportAttrSingle.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.import_.ImportAttrSingle.class);
 }

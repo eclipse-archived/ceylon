@@ -5,16 +5,16 @@ class CE implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     CE() {
     }
     
-    private final long call$priv() {
+    private final long call$priv$() {
         return 1L;
     }
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar$priv() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()", (short)-1){
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar$priv$() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.Integer $call() {
-                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.structure.method.CE.this.call$priv());
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.structure.method.CE.this.call$priv$());
             }
         };
     }
@@ -25,8 +25,8 @@ class CE implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.CE.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.CE.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.CE.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.CE.class);
 }

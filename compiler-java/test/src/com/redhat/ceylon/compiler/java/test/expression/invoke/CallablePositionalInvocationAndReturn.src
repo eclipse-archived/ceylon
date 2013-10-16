@@ -6,6 +6,6 @@ final class testCallable_ {
     }
     
     static .java.lang.String testCallable(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
-        return f.$call(.ceylon.language.Integer.instance(1L)).toString();
+        return f.$call$(.ceylon.language.Integer.instance(1L)).toString();
     }
 }

@@ -9,7 +9,7 @@ public interface Bug965_Interface {
     public boolean $getFoo();
     
     public boolean foo();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface.class);
 }
 public final class Bug965_Interface$impl {
     
@@ -33,13 +33,13 @@ public final class Bug965_Interface$impl {
 public class Bug965_Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface {
     
     public Bug965_Class() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug965_Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug965_Interface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug965_Interface$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug965_Interface$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug965_Interface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug965_Interface$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug965_Interface$this$;
     }
     
     @.java.lang.Override
@@ -63,8 +63,8 @@ public class Bug965_Class implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Class.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Class.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Class.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Class.class);
 }

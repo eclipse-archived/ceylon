@@ -5,14 +5,14 @@ class MethodIfConditionListBoolBool implements .com.redhat.ceylon.compiler.java.
     MethodIfConditionListBoolBool() {
     }
     
-    private final boolean m$priv(final long x) {
-        boolean $ceylontmpif$0 = false;
+    private final boolean m$priv$(final long x) {
+        boolean $ceylontmp$if$0 = false;
         if (x > 0L) {
             if (x < 10L) {
-                $ceylontmpif$0 = true;
+                $ceylontmp$if$0 = true;
             }
         }
-        if ($ceylontmpif$0) {
+        if ($ceylontmp$if$0) {
             return x == 1L;
         } else {
             return false;
@@ -25,8 +25,8 @@ class MethodIfConditionListBoolBool implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionListBoolBool.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionListBoolBool.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionListBoolBool.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionListBoolBool.class);
 }

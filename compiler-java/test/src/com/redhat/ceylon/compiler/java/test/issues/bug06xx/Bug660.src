@@ -6,7 +6,7 @@ public final class bug660_ {
     }
     
     public static void bug660() {
-        .ceylon.language.print_.print(.ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Null.$TypeDescriptor, new .java.lang.Object[]{null}));
+        .ceylon.language.print_.print(.ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Null.$TypeDescriptor$, new .java.lang.Object[]{null}));
     }
     
     public static void main(.java.lang.String[] args) {

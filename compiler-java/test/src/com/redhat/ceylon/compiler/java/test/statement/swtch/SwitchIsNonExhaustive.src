@@ -5,7 +5,7 @@ class SwitchIsNonExhaustive implements .com.redhat.ceylon.compiler.java.runtime.
     SwitchIsNonExhaustive() {
     }
     
-    private final .java.lang.String m$priv(final .java.lang.Object b) {
+    private final .java.lang.String m$priv$(final .java.lang.Object b) {
         final .java.lang.String name;
         {
             .java.lang.Object sel$0 = b;
@@ -25,8 +25,8 @@ class SwitchIsNonExhaustive implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchIsNonExhaustive.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchIsNonExhaustive.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchIsNonExhaustive.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchIsNonExhaustive.class);
 }

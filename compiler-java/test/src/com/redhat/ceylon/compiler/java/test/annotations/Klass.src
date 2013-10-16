@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.SharedAnnotation$annotation
+@.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -10,9 +10,9 @@ public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                .ceylon.language.Integer $ceylontmp$p2$$0 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$default$p2(p1);
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$p3$$1 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$default$p3(p1, $ceylontmp$p2$$0);
-                this(p1, $ceylontmp$p2$$0, $ceylontmp$p3$$1);
+                .ceylon.language.Integer $ceylontmp$$p2$$0 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$default$p2(p1);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$p3$$1 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$default$p3(p1, $ceylontmp$$p2$$0);
+                this(p1, $ceylontmp$$p2$$0, $ceylontmp$$p3$$1);
             }
             returning null;
         );
@@ -23,8 +23,8 @@ public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$p3$$2 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$default$p3(p1, p2);
-                this(p1, p2, $ceylontmp$p3$$2);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$p3$$2 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$default$p3(p1, p2);
+                this(p1, p2, $ceylontmp$$p3$$2);
             }
             returning null;
         );
@@ -51,7 +51,7 @@ public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
     }
     
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long m1(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
@@ -60,7 +60,7 @@ public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         return 1L;
     }
     
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public final .ceylon.language.Integer m2(@.com.redhat.ceylon.compiler.java.metadata.Name("p2")
@@ -69,20 +69,20 @@ public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         return .ceylon.language.Integer.instance(1L);
     }
     
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m3(@.com.redhat.ceylon.compiler.java.metadata.Name("p3")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
     final .ceylon.language.Sequential<? extends .ceylon.language.Integer> p3) {
-        return new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
+        return new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.Klass.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Klass.$TypeDescriptor$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Klass.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Klass.class);
 }

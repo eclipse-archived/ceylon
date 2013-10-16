@@ -3,13 +3,13 @@ package com.redhat.ceylon.compiler.java.test.expression.operator;
 class ScaleOp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Scalable<.ceylon.language.Float, .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp> {
     
     ScaleOp() {
-        this.$ceylon$language$Scalable$this = new .ceylon.language.Scalable$impl<.ceylon.language.Float, .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp>(.ceylon.language.Float.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp.$TypeDescriptor, this);
+        this.$ceylon$language$Scalable$this$ = new .ceylon.language.Scalable$impl<.ceylon.language.Float, .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp.$TypeDescriptor$, this);
     }
-    protected final .ceylon.language.Scalable$impl<? super .ceylon.language.Float, ? extends .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp> $ceylon$language$Scalable$this;
+    protected final .ceylon.language.Scalable$impl<? super .ceylon.language.Float, ? extends .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp> $ceylon$language$Scalable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Scalable$impl<? super .ceylon.language.Float, ? extends .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp> $ceylon$language$Scalable$impl() {
-        return $ceylon$language$Scalable$this;
+        return $ceylon$language$Scalable$this$;
     }
     
     @.java.lang.Override
@@ -17,7 +17,7 @@ class ScaleOp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return (.com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp).ceylon.language.nothing_.get_();
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         final .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp twice = (
             let
             {
@@ -42,8 +42,8 @@ class ScaleOp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp.class);
 }

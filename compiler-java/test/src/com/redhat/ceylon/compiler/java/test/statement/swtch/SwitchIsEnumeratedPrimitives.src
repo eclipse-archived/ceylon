@@ -5,7 +5,7 @@ class SwitchIsEnumeratedPrimitive implements .com.redhat.ceylon.compiler.java.ru
     SwitchIsEnumeratedPrimitive() {
     }
     
-    private final <Number>void m$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedNumber, final Number n) {
+    private final <Number>void m$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Number, final Number n) {
         {
             .java.lang.Object sel$0 = n;
             if (sel$0 instanceof .ceylon.language.Integer) {
@@ -27,8 +27,8 @@ class SwitchIsEnumeratedPrimitive implements .com.redhat.ceylon.compiler.java.ru
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchIsEnumeratedPrimitive.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchIsEnumeratedPrimitive.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchIsEnumeratedPrimitive.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchIsEnumeratedPrimitive.class);
 }

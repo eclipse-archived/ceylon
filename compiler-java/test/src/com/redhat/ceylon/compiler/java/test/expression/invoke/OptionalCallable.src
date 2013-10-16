@@ -9,7 +9,7 @@ final class optionalCallable_ {
         .ceylon.language.Callable<? extends .java.lang.Object> callback$1;
         if ((callback$1 = onRead) != null) {
             final .ceylon.language.Callable<? extends .java.lang.Object> callback$2 = callback$1;
-            callback$2.$call();
+            callback$2.$call$();
         }
     }
 }

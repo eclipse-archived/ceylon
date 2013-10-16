@@ -30,7 +30,7 @@ final class booleanArray_ {
         final boolean[] ret = new boolean[(int)values.getSize()];
         long idx = 0L;
         .java.lang.Object elem$0;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Boolean> val$iter$1 = values.iterator(); !((elem$0 = val$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Boolean> val$iterator$$1 = values.iterator(); !((elem$0 = val$iterator$$1.next()) instanceof .ceylon.language.Finished); ) {
             final boolean val = ((.ceylon.language.Boolean)elem$0).booleanValue();
             ret[(int)idx++] = val;
         }
@@ -53,7 +53,7 @@ final class test_booleans_ {
         }
         final .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object> it = .ceylon.language.String.instance("foo");
         java.take_booleans(items);
-        java.take_booleans(.com.redhat.ceylon.compiler.java.test.interop.booleanArray_.booleanArray(new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>>>(.ceylon.language.Boolean.$TypeDescriptor, new .java.lang.Object[]{
+        java.take_booleans(.com.redhat.ceylon.compiler.java.test.interop.booleanArray_.booleanArray(new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>>>(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Boolean.instance(true),
                 .ceylon.language.Boolean.instance(true),
                 .ceylon.language.Boolean.instance(false)})));
@@ -68,7 +68,7 @@ final class test_booleans_ {
             let
             {
                 .com.redhat.ceylon.compiler.java.language.arrays_ arg$6$callable$ = .com.redhat.ceylon.compiler.java.language.arrays_.get_();
-                .ceylon.language.Iterable arg$6$0 = .ceylon.language.ArraySequence.<.ceylon.language.Boolean>instance(.ceylon.language.Boolean.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.Iterable arg$6$0 = .ceylon.language.ArraySequence.<.ceylon.language.Boolean>instance(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{
                         .ceylon.language.Boolean.instance(true),
                         .ceylon.language.Boolean.instance(true),
                         .ceylon.language.Boolean.instance(false)});
@@ -92,11 +92,11 @@ final class test_booleans_ {
             let
             {
                 boolean[] arg$9$callable$ = items;
-                boolean[] arg$9$this$ = arg$9$callable$;
+                boolean[] arg$9$argthis$ = arg$9$callable$;
                 boolean[] arg$9$0 = items;
                 int arg$9$1 = 0;
                 int arg$9$2 = 0;
-                int arg$9$3 = arg$9$this$.length;
+                int arg$9$3 = arg$9$argthis$.length;
                 .com.redhat.ceylon.compiler.java.language.BooleanArray.copyTo(arg$9$callable$, arg$9$0, arg$9$1, arg$9$2, arg$9$3);
             }
             returning null;
@@ -105,18 +105,18 @@ final class test_booleans_ {
             let
             {
                 boolean[] arg$10$callable$ = items;
-                boolean[] arg$10$this$ = arg$10$callable$;
+                boolean[] arg$10$argthis$ = arg$10$callable$;
                 boolean[] arg$10$0 = items;
                 int arg$10$1 = (int)0L;
                 int arg$10$2 = (int)0L;
-                int arg$10$3 = arg$10$this$.length;
+                int arg$10$3 = arg$10$argthis$.length;
                 .com.redhat.ceylon.compiler.java.language.BooleanArray.copyTo(arg$10$callable$, arg$10$0, arg$10$1, arg$10$2, arg$10$3);
             }
             returning null;
         );
         final boolean[][] matrix = new boolean[(int)10L][];
         .java.lang.Object elem$11;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> x$iter$12 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(0L), matrix.length).iterator(); !((elem$11 = x$iter$12.next()) instanceof .ceylon.language.Finished); ) {
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> x$iterator$$12 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), matrix.length).iterator(); !((elem$11 = x$iterator$$12.next()) instanceof .ceylon.language.Finished); ) {
             final long x = ((.ceylon.language.Integer)elem$11).longValue();
             matrix[(int)x] = new boolean[(int)2L];
         }
@@ -127,11 +127,11 @@ final class test_booleans_ {
             final boolean[] o$15 = (boolean[])o$14;
         }
         .java.lang.Object o$17;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(o$17 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .com.redhat.ceylon.compiler.java.language.BooleanArray.$TypeDescriptor))) {
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(o$17 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .com.redhat.ceylon.compiler.java.language.BooleanArray.$TypeDescriptor$))) {
             final boolean[][] o$18 = (boolean[][])o$17;
         }
         .java.lang.Object o$20;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(o$20 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .ceylon.language.Boolean.$TypeDescriptor)))) {
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(o$20 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .ceylon.language.Boolean.$TypeDescriptor$)))) {
             final .ceylon.language.Boolean[][] o$21 = (.ceylon.language.Boolean[][])o$20;
         }
     }

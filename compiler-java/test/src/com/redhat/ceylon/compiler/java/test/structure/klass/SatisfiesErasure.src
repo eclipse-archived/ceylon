@@ -15,9 +15,9 @@ class SatisfiesErasure implements .com.redhat.ceylon.compiler.java.runtime.model
         return (int)(
             let
             {
-                long $ceylontmphash$1 = 0L;
+                long $ceylontmp$hash$1 = 0L;
             }
-            returning $ceylontmphash$1 ^ $ceylontmphash$1 >>> 32;
+            returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
         );
     }
     
@@ -32,8 +32,8 @@ class SatisfiesErasure implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesErasure.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesErasure.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesErasure.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesErasure.class);
 }

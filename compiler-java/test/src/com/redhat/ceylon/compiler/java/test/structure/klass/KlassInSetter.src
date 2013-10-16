@@ -4,20 +4,20 @@ class KlassInSetter implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     
     KlassInSetter() {
         
-        final class foo$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+        final class foo$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
             
-            private foo$getter_() {
+            private foo$getter$_() {
             }
             
             public .java.lang.String get_() {
                 return "";
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> foo$getter_ = new foo$getter_();
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> foo$getter$_ = new foo$getter$_();
         
-        final class foo$setter_ {
+        final class foo$setter$_ {
             
-            private foo$setter_() {
+            private foo$setter$_() {
             }
             private .java.lang.String value;
             
@@ -35,7 +35,7 @@ class KlassInSetter implements .com.redhat.ceylon.compiler.java.runtime.model.Re
                         }
                         
                         @.java.lang.Override
-                        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Bar.class);
                         }
                     }
@@ -43,7 +43,7 @@ class KlassInSetter implements .com.redhat.ceylon.compiler.java.runtime.model.Re
                 }
             }
         }
-        final foo$setter_ foo$setter_ = new foo$setter_();
+        final foo$setter$_ foo$setter$_ = new foo$setter$_();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -52,8 +52,8 @@ class KlassInSetter implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.KlassInSetter.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.KlassInSetter.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassInSetter.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassInSetter.class);
 }

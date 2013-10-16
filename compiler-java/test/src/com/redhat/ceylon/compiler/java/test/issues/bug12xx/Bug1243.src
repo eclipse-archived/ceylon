@@ -2,43 +2,43 @@ package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
 
 class Bug1243<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug1243(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
-        this.$reifiedT = $reifiedT;
+    Bug1243(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        this.$reified$T = $reified$T;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
-    public <S>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243<T>.Y<S> Y$new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final S s) {
-        return new Y<S>($reifiedS, s);
+    public <S>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243<T>.Y<S> Y$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
+        return new Y<S>($reified$S, s);
     }
     
     public class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        protected Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final S s) {
-            this.$reifiedS = $reifiedS;
+        protected Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
+            this.$reified$S = $reified$S;
         }
-        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS;
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S;
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243.class, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243.Y.class, $reifiedS));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243.class, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243.Y.class, $reified$S));
         }
     }
     
-    public final <Z>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243<T>.Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
+    public final <Z>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243<T>.Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z) {
         return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243.Y).ceylon.language.nothing_.get_();
     }
     
-    public final <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ, final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243<T>.Y<Z> arg) {
+    public final <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z, final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243<T>.Y<Z> arg) {
     }
     
-    private final void test$priv() {
+    private final void test$priv$() {
         
         final class new_ {
             
             private new_() {
             }
             
-            <Z>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243<T>.Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
+            <Z>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243<T>.Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z) {
                 return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243.Y).ceylon.language.nothing_.get_();
             }
         }
@@ -49,56 +49,56 @@ class Bug1243<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             private old_() {
             }
             
-            <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ, final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243<T>.Y<Z> arg) {
+            <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z, final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243<T>.Y<Z> arg) {
             }
         }
         final old_ old = new old_();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243.class, $reifiedT);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243.class, $reified$T);
     }
 }
 class Bug1243b<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug1243b(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
-        this.$reifiedT = $reifiedT;
+    Bug1243b(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        this.$reified$T = $reified$T;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
-    public <S>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b<T>.Y<S> Y$new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final S s) {
-        return new Y<S>($reifiedS, s);
+    public <S>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b<T>.Y<S> Y$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
+        return new Y<S>($reified$S, s);
     }
     
     public class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        protected Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final S s) {
-            this.$reifiedS = $reifiedS;
+        protected Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
+            this.$reified$S = $reified$S;
         }
-        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS;
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S;
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b.class, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b.Y.class, $reifiedS));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b.class, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b.Y.class, $reified$S));
         }
     }
     
-    public final <Z>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b<T>.Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
+    public final <Z>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b<T>.Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z) {
         return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b.Y).ceylon.language.nothing_.get_();
     }
     
-    public final <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ, final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b<T>.Y<Z> arg) {
+    public final <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z, final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b<T>.Y<Z> arg) {
     }
     
-    private final void test$priv() {
+    private final void test$priv$() {
         
         final class new_ {
             
             private new_() {
             }
             
-            <Z>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b<T>.Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
+            <Z>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b<T>.Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z) {
                 return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b.Y).ceylon.language.nothing_.get_();
             }
         }
@@ -109,56 +109,56 @@ class Bug1243b<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
             private old_() {
             }
             
-            <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ, final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b<T>.Y<Z> arg) {
+            <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z, final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b<T>.Y<Z> arg) {
             }
         }
         final old_ old = new old_();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b.class, $reifiedT);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b.class, $reified$T);
     }
 }
 class Bug1243c<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug1243c(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
-        this.$reifiedT = $reifiedT;
+    Bug1243c(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        this.$reified$T = $reified$T;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
-    public <S>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c<T>.Y<S> Y$new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final S s) {
-        return new Y<S>($reifiedS, s);
+    public <S>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c<T>.Y<S> Y$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
+        return new Y<S>($reified$S, s);
     }
     
     public class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        protected Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final S s) {
-            this.$reifiedS = $reifiedS;
+        protected Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
+            this.$reified$S = $reified$S;
         }
-        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS;
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S;
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c.class, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c.Y.class, $reifiedS));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c.class, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c.Y.class, $reified$S));
         }
     }
     
-    public final <Z>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c<T>.Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
+    public final <Z>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c<T>.Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z) {
         return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c.Y).ceylon.language.nothing_.get_();
     }
     
-    public final <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ, final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c<T>.Y<Z> arg) {
+    public final <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z, final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c<T>.Y<Z> arg) {
     }
     
-    private final void test$priv() {
+    private final void test$priv$() {
         
         final class new_ {
             
             private new_() {
             }
             
-            <Z>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c<T>.Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
+            <Z>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c<T>.Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z) {
                 return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c.Y).ceylon.language.nothing_.get_();
             }
         }
@@ -169,15 +169,15 @@ class Bug1243c<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
             private old_() {
             }
             
-            <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ, final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c<T>.Y<Z> arg) {
+            <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z, final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c<T>.Y<Z> arg) {
             }
         }
         final old_ old = new old_();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c.class, $reifiedT);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243c.class, $reified$T);
     }
 }
 final class bug1243d_ {
@@ -185,18 +185,18 @@ final class bug1243d_ {
     private bug1243d_() {
     }
     
-    static <T>void bug1243d(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
+    static <T>void bug1243d(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
         
         class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
-            Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final S s) {
-                this.$reifiedS = $reifiedS;
+            Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
+                this.$reified$S = $reified$S;
             }
-            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS;
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S;
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Y.class, $reifiedS);
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Y.class, $reified$S);
             }
         }
         
@@ -205,7 +205,7 @@ final class bug1243d_ {
             private new_() {
             }
             
-            <Z>Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
+            <Z>Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z) {
                 return (Y).ceylon.language.nothing_.get_();
             }
         }
@@ -216,7 +216,7 @@ final class bug1243d_ {
             private old_() {
             }
             
-            <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ, final Y<Z> arg) {
+            <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z, final Y<Z> arg) {
             }
         }
         final old_ old = new old_();
@@ -227,18 +227,18 @@ final class bug1243e_ {
     private bug1243e_() {
     }
     
-    static <T>void bug1243e(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
+    static <T>void bug1243e(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
         
         class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
-            Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final S s) {
-                this.$reifiedS = $reifiedS;
+            Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
+                this.$reified$S = $reified$S;
             }
-            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS;
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S;
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Y.class, $reifiedS);
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Y.class, $reified$S);
             }
         }
         
@@ -247,7 +247,7 @@ final class bug1243e_ {
             private new_() {
             }
             
-            <Z>Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
+            <Z>Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z) {
                 return (Y).ceylon.language.nothing_.get_();
             }
         }
@@ -258,7 +258,7 @@ final class bug1243e_ {
             private old_() {
             }
             
-            <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ, final Y<Z> arg) {
+            <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z, final Y<Z> arg) {
             }
         }
         final old_ old = new old_();
@@ -269,18 +269,18 @@ final class bug1243f_ {
     private bug1243f_() {
     }
     
-    static <T>void bug1243f(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
+    static <T>void bug1243f(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
         
         class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
-            Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final S s) {
-                this.$reifiedS = $reifiedS;
+            Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
+                this.$reified$S = $reified$S;
             }
-            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS;
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S;
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Y.class, $reifiedS);
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Y.class, $reified$S);
             }
         }
         
@@ -289,7 +289,7 @@ final class bug1243f_ {
             private new_() {
             }
             
-            <Z>Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
+            <Z>Y<Z> $new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z) {
                 return (Y).ceylon.language.nothing_.get_();
             }
         }
@@ -300,7 +300,7 @@ final class bug1243f_ {
             private old_() {
             }
             
-            <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ, final Y<Z> arg) {
+            <Z>void old(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z, final Y<Z> arg) {
             }
         }
         final old_ old = new old_();

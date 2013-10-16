@@ -1,12 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.test.annotations.Quoting$annotations({
-        @.com.redhat.ceylon.compiler.java.test.annotations.Quoting$annotation(
+@.com.redhat.ceylon.compiler.java.test.annotations.Quoting$annotations$({
+        @.com.redhat.ceylon.compiler.java.test.annotations.Quoting$annotation$(
                 string = "",
                 $toString = "",
                 hash = -1L,
                 $hashCode = 0L),
-        @.com.redhat.ceylon.compiler.java.test.annotations.Quoting$annotation(
+        @.com.redhat.ceylon.compiler.java.test.annotations.Quoting$annotation$(
                 string = "",
                 $toString = "",
                 hash = -2L,
@@ -22,8 +22,8 @@ class Quoting_callsite implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.Quoting_callsite.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Quoting_callsite.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Quoting_callsite.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Quoting_callsite.class);
 }

@@ -6,24 +6,24 @@ final class comp1_ {
     }
     private static final .ceylon.language.Sequential<? extends .ceylon.language.String>[] value;
     static {
-        value = new .ceylon.language.Sequential[]{new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, false, new .ceylon.language.Iterable[]{.ceylon.language.String.split("hello world")}){
+        value = new .ceylon.language.Sequential[]{new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, false, new .ceylon.language.Iterable[]{.ceylon.language.String.split("hello world")}){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
                     {
-                        iter$0 = $getIterables()[0].iterator();
+                        $iterator$0 = $getIterables$()[0].iterator();
                     }
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0;
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.String> $iterator$0;
                     private .ceylon.language.String str;
-                    private boolean str$exhausted;
+                    private boolean str$exhausted$;
                     
                     private final boolean str() {
-                        final .java.lang.Object $ceylontmpitem$0 = iter$0.next();
-                        str$exhausted = $ceylontmpitem$0 == .ceylon.language.finished_.get_();
-                        if (str$exhausted) {
+                        final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                        str$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                        if (str$exhausted$) {
                             return false;
                         } else {
-                            str = (.ceylon.language.String)$ceylontmpitem$0;
+                            str = (.ceylon.language.String)$ceylontmp$item$0;
                             return true;
                         }
                     }

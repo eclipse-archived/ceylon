@@ -5,7 +5,7 @@ class Variable implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     Variable() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         final boolean abstract = false;
         final boolean boolean = false;
         final boolean byte = false;
@@ -42,8 +42,8 @@ class Variable implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.misc.keyword.Variable.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.misc.keyword.Variable.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.keyword.Variable.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.keyword.Variable.class);
 }

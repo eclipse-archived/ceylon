@@ -8,27 +8,27 @@ interface Bug1289_Bar<Key> {
 }
 final class Bug1289_Bar$impl<Key> {
     
-    Bug1289_Bar$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar<Key> $this) {
-        this.$reifiedKey = $reifiedKey;
+    Bug1289_Bar$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar<Key> $this) {
+        this.$reified$Key = $reified$Key;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar<Key> $this;
     
-    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey) {
-        this.$reifiedKey = $reifiedKey;
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key) {
+        this.$reified$Key = $reified$Key;
     }
 }
 class Bug1289_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar<.ceylon.language.Integer> {
     
     Bug1289_Foo() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this$;
     }
     
     @.java.lang.Override
@@ -214,21 +214,21 @@ class Bug1289_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo.class);
 }
 class Bug1289_Foo2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar<.ceylon.language.Float> {
     
     Bug1289_Foo2() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor, this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$, this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<.ceylon.language.Float> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<.ceylon.language.Float> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<.ceylon.language.Float> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this$;
     }
     
     @.java.lang.Override
@@ -414,23 +414,23 @@ class Bug1289_Foo2 implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo2.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo2.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo2.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo2.class);
 }
 class Bug1289_Foo3<Element extends .ceylon.language.Comparable<? super Element>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar<Element> {
     
-    Bug1289_Foo3(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
-        this.$reifiedElement = $reifiedElement;
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<Element>($reifiedElement, this);
+    Bug1289_Foo3(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<Element>($reified$Element, this);
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1289_Bar$this$;
     }
     
     @.java.lang.Override
@@ -616,7 +616,7 @@ class Bug1289_Foo3<Element extends .ceylon.language.Comparable<? super Element>>
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo3.class, $reifiedElement);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo3.class, $reified$Element);
     }
 }

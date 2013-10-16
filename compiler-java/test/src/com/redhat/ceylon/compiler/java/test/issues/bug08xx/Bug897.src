@@ -5,13 +5,13 @@ class Bug897 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     Bug897() {
     }
     
-    private final long m$priv(final long i) {
+    private final long m$priv$(final long i) {
         return i;
     }
     
     public final void bar() {
         long index = 0L;
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong captured = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(m$priv(index));
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong captured = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(m$priv$(index));
         
         final class foo_ {
             
@@ -31,8 +31,8 @@ class Bug897 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug897.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug897.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug897.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug897.class);
 }

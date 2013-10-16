@@ -7,35 +7,35 @@ class MethodDefaultedParamCaptureInitParam implements .com.redhat.ceylon.compile
     }
     private final .java.lang.String s;
     
-    private final .java.lang.String getS$priv() {
+    private final .java.lang.String getS$priv$() {
         return s;
     }
     
-    private final .java.lang.String m$priv() {
+    private final .java.lang.String m$priv$() {
         return (
             let
             {
-                .java.lang.String $ceylontmp$t$$0 = m$t();
+                .java.lang.String $ceylontmp$$t$$0 = m$t();
             }
-            returning m$priv$($ceylontmp$t$$0);
+            returning m$priv$$($ceylontmp$$t$$0);
         );
     }
     
     private final .java.lang.String m$t() {
-        return getS$priv();
+        return getS$priv$();
     }
     
-    private .java.lang.String m$priv$(final .java.lang.String t) {
+    private .java.lang.String m$priv$$(final .java.lang.String t) {
         return t;
     }
     
-    private final .java.lang.String m$priv(final .java.lang.String t) {
-        return m$priv$(t);
+    private final .java.lang.String m$priv$(final .java.lang.String t) {
+        return m$priv$$(t);
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodDefaultedParamCaptureInitParam.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodDefaultedParamCaptureInitParam.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodDefaultedParamCaptureInitParam.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodDefaultedParamCaptureInitParam.class);
 }

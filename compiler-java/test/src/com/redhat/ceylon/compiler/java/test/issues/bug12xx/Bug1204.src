@@ -6,7 +6,7 @@ final class bug1204_ {
     }
     
     static void bug1204() {
-        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1204getter_.get_().$call();
+        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1204getter_.get_().$call$();
     }
     
     public static void main(.java.lang.String[] args) {

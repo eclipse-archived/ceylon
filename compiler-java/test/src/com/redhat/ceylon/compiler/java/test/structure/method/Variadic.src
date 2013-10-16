@@ -5,31 +5,31 @@ class Variadic implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     Variadic() {
     }
     
-    private final void possiblyEmpty$priv() {
+    private final void possiblyEmpty$priv$() {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                possiblyEmpty$priv$($ceylontmp$args$$0);
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$$args$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                possiblyEmpty$priv$$($ceylontmp$$args$$0);
             }
             returning null;
         );
     }
     
-    private void possiblyEmpty$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
+    private void possiblyEmpty$priv$$(final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
     }
     
-    private final void possiblyEmpty$priv(final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
+    private final void possiblyEmpty$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
         (
             let
             {
-                possiblyEmpty$priv$(args);
+                possiblyEmpty$priv$$(args);
             }
             returning null;
         );
     }
     
-    private final void notEmpty$priv(final .ceylon.language.Sequence<? extends .ceylon.language.String> args) {
+    private final void notEmpty$priv$(final .ceylon.language.Sequence<? extends .ceylon.language.String> args) {
     }
     
     public static void main(.java.lang.String[] args) {
@@ -38,8 +38,8 @@ class Variadic implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.Variadic.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.Variadic.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.Variadic.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.Variadic.class);
 }

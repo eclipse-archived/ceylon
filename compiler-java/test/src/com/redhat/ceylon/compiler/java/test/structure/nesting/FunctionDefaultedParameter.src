@@ -9,8 +9,8 @@ final class f1_ {
         (
             let
             {
-                long $ceylontmp$i$$0 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f1_.f1$i();
-                f1($ceylontmp$i$$0);
+                long $ceylontmp$$i$$0 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f1_.f1$i();
+                f1($ceylontmp$$i$$0);
             }
             returning null;
         );
@@ -37,9 +37,9 @@ final class f2_ {
         return (
             let
             {
-                long $ceylontmp$i$$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f2_.f2$i();
+                long $ceylontmp$$i$$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f2_.f2$i();
             }
-            returning f2($ceylontmp$i$$1);
+            returning f2($ceylontmp$$i$$1);
         );
     }
     
@@ -65,10 +65,10 @@ final class f3_ {
         return (
             let
             {
-                long $ceylontmp$i$$2 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3$i();
-                long $ceylontmp$n$$3 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3$n($ceylontmp$i$$2);
+                long $ceylontmp$$i$$2 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3$i();
+                long $ceylontmp$$n$$3 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3$n($ceylontmp$$i$$2);
             }
-            returning f3($ceylontmp$i$$2, $ceylontmp$n$$3);
+            returning f3($ceylontmp$$i$$2, $ceylontmp$$n$$3);
         );
     }
     
@@ -80,9 +80,9 @@ final class f3_ {
         return (
             let
             {
-                long $ceylontmp$n$$4 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3$n(i);
+                long $ceylontmp$$n$$4 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3$n(i);
             }
-            returning f3(i, $ceylontmp$n$$4);
+            returning f3(i, $ceylontmp$$n$$4);
         );
     }
     
@@ -108,9 +108,9 @@ final class f4_ {
         return (
             let
             {
-                long $ceylontmp$n$$5 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f4_.f4$n(i);
+                long $ceylontmp$$n$$5 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f4_.f4$n(i);
             }
-            returning f4(i, $ceylontmp$n$$5);
+            returning f4(i, $ceylontmp$$n$$5);
         );
     }
     
@@ -127,21 +127,21 @@ final class f5_ {
     private f5_() {
     }
     
-    static <U>long f5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i) {
+    static <U>long f5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i) {
         return (
             let
             {
-                U $ceylontmp$u$$6 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f5_.f5$u($reifiedU, i);
+                U $ceylontmp$$u$$6 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f5_.f5$u($reified$U, i);
             }
-            returning f5($reifiedU, i, $ceylontmp$u$$6);
+            returning f5($reified$U, i, $ceylontmp$$u$$6);
         );
     }
     
-    static final <U>U f5$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i) {
+    static final <U>U f5$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i) {
         return null;
     }
     
-    static <U>long f5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i, final U u) {
+    static <U>long f5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i, final U u) {
         return i;
     }
 }
@@ -160,8 +160,8 @@ final class positional_ {
         .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3(1L, 2L);
         .com.redhat.ceylon.compiler.java.test.structure.nesting.f4_.f4(1L);
         .com.redhat.ceylon.compiler.java.test.structure.nesting.f4_.f4(1L, 4L);
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.f5_.<.ceylon.language.String>f5(.ceylon.language.String.$TypeDescriptor, 1L);
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.f5_.<.ceylon.language.String>f5(.ceylon.language.String.$TypeDescriptor, 1L, .ceylon.language.String.instance(""));
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.f5_.<.ceylon.language.String>f5(.ceylon.language.String.$TypeDescriptor$, 1L);
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.f5_.<.ceylon.language.String>f5(.ceylon.language.String.$TypeDescriptor$, 1L, .ceylon.language.String.instance(""));
     }
     
     public static void main(.java.lang.String[] args) {
@@ -273,7 +273,7 @@ final class named_ {
             let
             {
                 long arg$19$0 = 1L;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$19$reified$0 = .ceylon.language.String.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$19$reified$0 = .ceylon.language.String.$TypeDescriptor$;
                 .ceylon.language.String arg$19$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f5_.f5$u(arg$19$reified$0, arg$19$0);
             }
             returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f5_.<.ceylon.language.String>f5(arg$19$reified$0, arg$19$0, arg$19$1);
@@ -283,7 +283,7 @@ final class named_ {
             {
                 long arg$20$0 = 1L;
                 .ceylon.language.String arg$20$1 = .ceylon.language.String.instance("");
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$20$reified$0 = .ceylon.language.String.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$20$reified$0 = .ceylon.language.String.$TypeDescriptor$;
             }
             returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f5_.<.ceylon.language.String>f5(arg$20$reified$0, arg$20$0, arg$20$1);
         );
@@ -292,7 +292,7 @@ final class named_ {
             {
                 .ceylon.language.String arg$21$1 = .ceylon.language.String.instance("");
                 long arg$21$0 = 1L;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$21$reified$0 = .ceylon.language.String.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$21$reified$0 = .ceylon.language.String.$TypeDescriptor$;
             }
             returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f5_.<.ceylon.language.String>f5(arg$21$reified$0, arg$21$0, arg$21$1);
         );

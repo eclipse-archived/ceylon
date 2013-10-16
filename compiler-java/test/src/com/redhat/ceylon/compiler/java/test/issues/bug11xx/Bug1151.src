@@ -9,7 +9,7 @@ public interface Bug1151_A {
     public abstract long methodA$a();
     
     public .java.lang.Object methodA(final long a);
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_A.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_A.class);
 }
 public final class Bug1151_A$impl {
     
@@ -22,9 +22,9 @@ public final class Bug1151_A$impl {
         return (
             let
             {
-                long $ceylontmp$a$$0 = methodA$a();
+                long $ceylontmp$$a$$0 = methodA$a();
             }
-            returning methodA$($ceylontmp$a$$0);
+            returning methodA$($ceylontmp$$a$$0);
         );
     }
     
@@ -40,13 +40,13 @@ public final class Bug1151_A$impl {
         return methodA$(a);
     }
     
-    private .java.lang.Object methodA2$priv() {
+    private .java.lang.Object methodA2$priv$() {
         return (
             let
             {
-                long $ceylontmp$a$$1 = methodA2$a();
+                long $ceylontmp$$a$$1 = methodA2$a();
             }
-            returning methodA2$priv$($ceylontmp$a$$1);
+            returning methodA2$priv$$($ceylontmp$$a$$1);
         );
     }
     
@@ -54,21 +54,21 @@ public final class Bug1151_A$impl {
         return 1L;
     }
     
-    private .java.lang.Object methodA2$priv$(final long a) {
+    private .java.lang.Object methodA2$priv$$(final long a) {
         return null;
     }
     
-    private .java.lang.Object methodA2$priv(final long a) {
-        return methodA2$priv$(a);
+    private .java.lang.Object methodA2$priv$(final long a) {
+        return methodA2$priv$$(a);
     }
     
-    private .java.lang.Object methodA3$priv() {
+    private .java.lang.Object methodA3$priv$() {
         return (
             let
             {
-                long $ceylontmp$a$$2 = methodA3$a();
+                long $ceylontmp$$a$$2 = methodA3$a();
             }
-            returning methodA3$priv$($ceylontmp$a$$2);
+            returning methodA3$priv$$($ceylontmp$$a$$2);
         );
     }
     
@@ -76,12 +76,12 @@ public final class Bug1151_A$impl {
         return 1L;
     }
     
-    private .java.lang.Object methodA3$priv$(final long a) {
+    private .java.lang.Object methodA3$priv$$(final long a) {
         return null;
     }
     
-    private .java.lang.Object methodA3$priv(final long a) {
-        return methodA3$priv$(a);
+    private .java.lang.Object methodA3$priv$(final long a) {
+        return methodA3$priv$$(a);
     }
 }
 public class Bug1151_B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -93,9 +93,9 @@ public class Bug1151_B implements .com.redhat.ceylon.compiler.java.runtime.model
         return (
             let
             {
-                long $ceylontmp$a$$3 = methodB$a();
+                long $ceylontmp$$a$$3 = methodB$a();
             }
-            returning methodB$($ceylontmp$a$$3);
+            returning methodB$($ceylontmp$$a$$3);
         );
     }
     
@@ -111,13 +111,13 @@ public class Bug1151_B implements .com.redhat.ceylon.compiler.java.runtime.model
         return methodB$(a);
     }
     
-    private final .java.lang.Object methodB2$priv() {
+    private final .java.lang.Object methodB2$priv$() {
         return (
             let
             {
-                long $ceylontmp$a$$4 = methodB2$a();
+                long $ceylontmp$$a$$4 = methodB2$a();
             }
-            returning methodB2$priv$($ceylontmp$a$$4);
+            returning methodB2$priv$$($ceylontmp$$a$$4);
         );
     }
     
@@ -125,12 +125,12 @@ public class Bug1151_B implements .com.redhat.ceylon.compiler.java.runtime.model
         return 1L;
     }
     
-    private .java.lang.Object methodB2$priv$(final long a) {
+    private .java.lang.Object methodB2$priv$$(final long a) {
         return null;
     }
     
-    private final .java.lang.Object methodB2$priv(final long a) {
-        return methodB2$priv$(a);
+    private final .java.lang.Object methodB2$priv$(final long a) {
+        return methodB2$priv$$(a);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -139,36 +139,36 @@ public class Bug1151_B implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_B.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_B.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_B.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_B.class);
 }
 public class Bug1151_C extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_B implements .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_A {
     
     public Bug1151_C() {
         super();
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1151_A$this = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_A$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1151_A$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_A$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_A$impl $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1151_A$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_A$impl $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1151_A$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_A$impl $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1151_A$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1151_A$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1151_A$this$;
     }
     
     @.java.lang.Override
     public final long methodA$a() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1151_A$this.methodA$a();
+        return $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1151_A$this$.methodA$a();
     }
     
     public final .ceylon.language.Integer methodA() {
         return (
             let
             {
-                long $ceylontmp$a$$5 = methodA$a();
+                long $ceylontmp$$a$$5 = methodA$a();
             }
-            returning methodA$($ceylontmp$a$$5);
+            returning methodA$($ceylontmp$$a$$5);
         );
     }
     
@@ -185,9 +185,9 @@ public class Bug1151_C extends .com.redhat.ceylon.compiler.java.test.issues.bug1
         return (
             let
             {
-                long $ceylontmp$a$$6 = methodB$a();
+                long $ceylontmp$$a$$6 = methodB$a();
             }
-            returning methodB$($ceylontmp$a$$6);
+            returning methodB$($ceylontmp$$a$$6);
         );
     }
     
@@ -200,11 +200,11 @@ public class Bug1151_C extends .com.redhat.ceylon.compiler.java.test.issues.bug1
         return methodB$(a);
     }
     
-    private final long methodA2$priv(final long a) {
+    private final long methodA2$priv$(final long a) {
         return a;
     }
     
-    private final long methodB2$priv(final long a) {
+    private final long methodB2$priv$(final long a) {
         return a;
     }
     
@@ -214,10 +214,10 @@ public class Bug1151_C extends .com.redhat.ceylon.compiler.java.test.issues.bug1
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_C.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_C.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_C.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_C.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method

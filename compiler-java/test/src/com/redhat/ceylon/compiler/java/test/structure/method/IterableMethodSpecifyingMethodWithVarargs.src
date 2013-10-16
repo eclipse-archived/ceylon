@@ -5,35 +5,35 @@ class IterableMethodSpecifyingMethodWithVarargs implements .com.redhat.ceylon.co
     IterableMethodSpecifyingMethodWithVarargs() {
     }
     
-    private final void foo$priv() {
+    private final void foo$priv$() {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                foo$priv$($ceylontmp$seq$$0);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$seq$$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                foo$priv$$($ceylontmp$$seq$$0);
             }
             returning null;
         );
     }
     
-    private void foo$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    private void foo$priv$$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
     }
     
-    private final void foo$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    private final void foo$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
         (
             let
             {
-                foo$priv$(seq);
+                foo$priv$$(seq);
             }
             returning null;
         );
     }
     
-    private final .java.lang.Object bar$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
+    private final .java.lang.Object bar$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
         return (
             let
             {
-                foo$priv(ints);
+                foo$priv$(ints);
             }
             returning null;
         );
@@ -45,8 +45,8 @@ class IterableMethodSpecifyingMethodWithVarargs implements .com.redhat.ceylon.co
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.IterableMethodSpecifyingMethodWithVarargs.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.IterableMethodSpecifyingMethodWithVarargs.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.IterableMethodSpecifyingMethodWithVarargs.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.IterableMethodSpecifyingMethodWithVarargs.class);
 }

@@ -2,34 +2,34 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
 class QualifiedParameterisedInstantiation<G> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    QualifiedParameterisedInstantiation(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedG) {
-        this.$reifiedG = $reifiedG;
+    QualifiedParameterisedInstantiation(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G) {
+        this.$reified$G = $reified$G;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedG;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G;
     
     class Inner<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        Inner(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .java.lang.String s) {
-            this.$reifiedT = $reifiedT;
+        Inner(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String s) {
+            this.$reified$T = $reified$T;
         }
-        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation.class, .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation.this.$reifiedG), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation.Inner.class, $reifiedT));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation.class, .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation.this.$reified$G), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation.Inner.class, $reified$T));
         }
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> other = this;
-        this.new Inner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, "");
-        other.new Inner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, "");
+        this.new Inner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, "");
+        other.new Inner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, "");
         (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> arg$0$callable$ = this;
                 .java.lang.String arg$0$0 = "";
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
             }
             returning arg$0$callable$.new Inner<.ceylon.language.Integer>(arg$0$reified$0, arg$0$0);
         );
@@ -38,7 +38,7 @@ class QualifiedParameterisedInstantiation<G> implements .com.redhat.ceylon.compi
             {
                 .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> arg$1$callable$ = other;
                 .java.lang.String arg$1$0 = "";
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
             }
             returning arg$1$callable$.new Inner<.ceylon.language.Integer>(arg$1$reified$0, arg$1$0);
         );
@@ -50,7 +50,7 @@ class QualifiedParameterisedInstantiation<G> implements .com.redhat.ceylon.compi
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation.class, $reifiedG);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation.class, $reified$G);
     }
 }

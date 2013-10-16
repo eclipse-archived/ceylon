@@ -5,7 +5,7 @@ class ImportTypeSingle implements .com.redhat.ceylon.compiler.java.runtime.model
     ImportTypeSingle() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         new .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.C1();
     }
     
@@ -15,8 +15,8 @@ class ImportTypeSingle implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.import_.ImportTypeSingle.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.import_.ImportTypeSingle.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.import_.ImportTypeSingle.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.import_.ImportTypeSingle.class);
 }

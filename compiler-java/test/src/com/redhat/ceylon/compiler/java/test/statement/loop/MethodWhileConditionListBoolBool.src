@@ -5,7 +5,7 @@ class MethodWhileConditionListBoolBool implements .com.redhat.ceylon.compiler.ja
     MethodWhileConditionListBoolBool() {
     }
     
-    private final boolean m$priv(final long x) {
+    private final boolean m$priv$(final long x) {
         while (true) {
             if (x > 0L) {
                 if (x < 10L) {
@@ -22,8 +22,8 @@ class MethodWhileConditionListBoolBool implements .com.redhat.ceylon.compiler.ja
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListBoolBool.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListBoolBool.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListBoolBool.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListBoolBool.class);
 }

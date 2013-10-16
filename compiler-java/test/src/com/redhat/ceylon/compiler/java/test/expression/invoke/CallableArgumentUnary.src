@@ -22,15 +22,15 @@ final class callableArgumentUnary_m_ {
     }
     
     static void callableArgumentUnary_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentUnary_f_.callableArgumentUnary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(Integer)", (short)-1){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentUnary_f_.callableArgumentUnary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Integer)", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final long $ceylontmpi = ((.ceylon.language.Integer)$param$0).longValue();
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentUnary_bar_.callableArgumentUnary_bar($ceylontmpi);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentUnary_bar_.callableArgumentUnary_bar($ceylontmp$i);
                     }
                     returning null;
                 );

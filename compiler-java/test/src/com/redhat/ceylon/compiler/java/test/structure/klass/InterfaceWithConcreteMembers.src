@@ -11,7 +11,7 @@ interface InterfaceWithConcreteMembers {
     public long getBar();
     
     public long getBar2();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers.class);
 }
 final class InterfaceWithConcreteMembers$impl {
     
@@ -39,33 +39,33 @@ final class InterfaceWithConcreteMembers$impl {
 class InterfaceWithConcreteMembersImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers {
     
     InterfaceWithConcreteMembersImpl() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$;
     }
     
     @.java.lang.Override
     public long foo(final boolean b) {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this.foo(b);
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$.foo(b);
     }
     
     @.java.lang.Override
     public long foo2(final boolean b) {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this.foo2(b);
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$.foo2(b);
     }
     
     @.java.lang.Override
     public long getBar() {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this.getBar();
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$.getBar();
     }
     
     @.java.lang.Override
     public long getBar2() {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this.getBar2();
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$.getBar2();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -74,8 +74,8 @@ class InterfaceWithConcreteMembersImpl implements .com.redhat.ceylon.compiler.ja
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembersImpl.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembersImpl.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembersImpl.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembersImpl.class);
 }

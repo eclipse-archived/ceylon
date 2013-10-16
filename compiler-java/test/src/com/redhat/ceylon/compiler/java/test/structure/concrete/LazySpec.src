@@ -7,7 +7,7 @@ public interface LazySpec {
     public .java.lang.Object a();
     
     public abstract .java.lang.Object b();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpec.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpec.class);
 }
 public final class LazySpec$impl {
     
@@ -26,7 +26,7 @@ public interface LazySpecSub extends .com.redhat.ceylon.compiler.java.test.struc
     
     @.java.lang.Override
     public .java.lang.Object a();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpecSub.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpecSub.class);
 }
 public final class LazySpecSub$impl {
     

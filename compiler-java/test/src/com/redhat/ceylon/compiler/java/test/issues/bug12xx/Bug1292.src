@@ -21,10 +21,10 @@ class Bug1292 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292.class);
 }
 interface Bug1292I {
     
@@ -32,7 +32,7 @@ interface Bug1292I {
     
     @.java.lang.Override
     public boolean equals(final .java.lang.Object other);
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I.class);
 }
 final class Bug1292I$impl {
     
@@ -49,13 +49,13 @@ class Bug1292_2 extends .java.lang.Object implements .com.redhat.ceylon.compiler
     
     Bug1292_2() {
         super();
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1292I$this = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1292I$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1292I$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1292I$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1292I$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1292I$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1292I$this$;
     }
     
     @.java.lang.Override
@@ -69,8 +69,8 @@ class Bug1292_2 extends .java.lang.Object implements .com.redhat.ceylon.compiler
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292_2.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292_2.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292_2.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292_2.class);
 }

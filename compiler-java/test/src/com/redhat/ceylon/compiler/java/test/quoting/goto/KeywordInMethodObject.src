@@ -5,7 +5,7 @@ class KeywordInMethodObject implements .com.redhat.ceylon.compiler.java.runtime.
     KeywordInMethodObject() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         
         final class goto_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
@@ -13,7 +13,7 @@ class KeywordInMethodObject implements .com.redhat.ceylon.compiler.java.runtime.
             }
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(goto_.class);
             }
         }
@@ -27,8 +27,8 @@ class KeywordInMethodObject implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInMethodObject.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInMethodObject.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInMethodObject.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInMethodObject.class);
 }

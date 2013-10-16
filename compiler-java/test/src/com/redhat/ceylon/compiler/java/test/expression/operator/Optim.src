@@ -2,18 +2,18 @@ package com.redhat.ceylon.compiler.java.test.expression.operator;
 
 abstract class OptimSuperclass<I, F, C, S, B> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    OptimSuperclass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedI, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedF, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB) {
-        this.$reifiedI = $reifiedI;
-        this.$reifiedF = $reifiedF;
-        this.$reifiedC = $reifiedC;
-        this.$reifiedS = $reifiedS;
-        this.$reifiedB = $reifiedB;
+    OptimSuperclass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$I, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$F, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B) {
+        this.$reified$I = $reified$I;
+        this.$reified$F = $reified$F;
+        this.$reified$C = $reified$C;
+        this.$reified$S = $reified$S;
+        this.$reified$B = $reified$B;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedI;
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedF;
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC;
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS;
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$I;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$F;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B;
     
     public abstract .java.lang.Object boxedIntegerArithmetic(final I n2);
     
@@ -34,30 +34,30 @@ abstract class OptimSuperclass<I, F, C, S, B> implements .com.redhat.ceylon.comp
     public abstract .java.lang.Object boxedBooleanComparison(final B b2);
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.OptimSuperclass.class, $reifiedI, $reifiedF, $reifiedC, $reifiedS, $reifiedB);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.OptimSuperclass.class, $reified$I, $reified$F, $reified$C, $reified$S, $reified$B);
     }
 }
 class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.OptimSuperclass<.ceylon.language.Integer, .ceylon.language.Float, .ceylon.language.Character, .ceylon.language.String, .ceylon.language.Boolean> {
     
     Optim() {
-        super(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor);
+        super(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$);
         this.fieldInteger = 0L;
     }
     
-    private final long $getInteger$priv() {
+    private final long $getInteger$priv$() {
         return 1L;
     }
     
-    private final double $getFloat$priv() {
+    private final double $getFloat$priv$() {
         return 1.0;
     }
     
-    private final <T>T getBoxed$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
+    private final <T>T getBoxed$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
         return t;
     }
     
-    private final void unboxedIntegerArithmetic$priv() {
+    private final void unboxedIntegerArithmetic$priv$() {
         long n1 = 0L;
         long n2 = 0L;
         long n3 = 0L;
@@ -67,10 +67,10 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         --n1;
         n1 = n2;
         n1 = 0L;
-        n1 = $getInteger$priv();
+        n1 = $getInteger$priv$();
         n1 = -n2;
         n1 = 0L;
-        n1 = -$getInteger$priv();
+        n1 = -$getInteger$priv$();
         n1 = n2 + n3;
         n1 = n2 - n3;
         n1 = n2 * n3;
@@ -93,10 +93,10 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         --n1;
         n1 = n2.getPositiveValue().longValue();
         n1 = 0L;
-        n1 = <.ceylon.language.Integer>getBoxed$priv(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getPositiveValue().longValue();
+        n1 = <.ceylon.language.Integer>getBoxed$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)).getPositiveValue().longValue();
         n1 = n2.getNegativeValue().longValue();
         n1 = 0L;
-        n1 = <.ceylon.language.Integer>getBoxed$priv(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getNegativeValue().longValue();
+        n1 = <.ceylon.language.Integer>getBoxed$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)).getNegativeValue().longValue();
         n1 = n2.plus(.ceylon.language.Integer.instance(n3)).longValue();
         n1 = n2.minus(.ceylon.language.Integer.instance(n3)).longValue();
         n1 = n2.times(.ceylon.language.Integer.instance(n3)).longValue();
@@ -106,48 +106,48 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         n1 = (
             let
             {
-                .ceylon.language.Integer $ceylontmpop$0 = .ceylon.language.Integer.instance(n3).plus(n2);
-                n3 = $ceylontmpop$0.longValue();
+                .ceylon.language.Integer $ceylontmp$op$0 = .ceylon.language.Integer.instance(n3).plus(n2);
+                n3 = $ceylontmp$op$0.longValue();
             }
-            returning $ceylontmpop$0;
+            returning $ceylontmp$op$0;
         ).longValue();
         n1 = (
             let
             {
-                .ceylon.language.Integer $ceylontmpop$1 = .ceylon.language.Integer.instance(n3).times(n2);
-                n3 = $ceylontmpop$1.longValue();
+                .ceylon.language.Integer $ceylontmp$op$1 = .ceylon.language.Integer.instance(n3).times(n2);
+                n3 = $ceylontmp$op$1.longValue();
             }
-            returning $ceylontmpop$1;
+            returning $ceylontmp$op$1;
         ).longValue();
         n1 = (
             let
             {
-                .ceylon.language.Integer $ceylontmpop$2 = .ceylon.language.Integer.instance(n3).divided(n2);
-                n3 = $ceylontmpop$2.longValue();
+                .ceylon.language.Integer $ceylontmp$op$2 = .ceylon.language.Integer.instance(n3).divided(n2);
+                n3 = $ceylontmp$op$2.longValue();
             }
-            returning $ceylontmpop$2;
+            returning $ceylontmp$op$2;
         ).longValue();
         n1 = (
             let
             {
-                .ceylon.language.Integer $ceylontmpop$3 = .ceylon.language.Integer.instance(n3).remainder(n2);
-                n3 = $ceylontmpop$3.longValue();
+                .ceylon.language.Integer $ceylontmp$op$3 = .ceylon.language.Integer.instance(n3).remainder(n2);
+                n3 = $ceylontmp$op$3.longValue();
             }
-            returning $ceylontmpop$3;
+            returning $ceylontmp$op$3;
         ).longValue();
         return null;
     }
     
-    private final void unboxedFloatArithmetic$priv() {
+    private final void unboxedFloatArithmetic$priv$() {
         double n1 = 0.0;
         double n2 = 0.0;
         double n3 = 0.0;
         n1 = n2;
         n1 = 0.0;
-        n1 = $getFloat$priv();
+        n1 = $getFloat$priv$();
         n1 = -n2;
         n1 = -0.0;
-        n1 = -$getFloat$priv();
+        n1 = -$getFloat$priv$();
         n1 = n2 + n3;
         n1 = n2 - n3;
         n1 = n2 * n3;
@@ -164,10 +164,10 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         double n3 = 0.0;
         n1 = n2.getPositiveValue().doubleValue();
         n1 = 0.0;
-        n1 = <.ceylon.language.Float>getBoxed$priv(.ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.instance(0.0)).getPositiveValue().doubleValue();
+        n1 = <.ceylon.language.Float>getBoxed$priv$(.ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Float.instance(0.0)).getPositiveValue().doubleValue();
         n1 = n2.getNegativeValue().doubleValue();
         n1 = -0.0;
-        n1 = <.ceylon.language.Float>getBoxed$priv(.ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.instance(0.0)).getNegativeValue().doubleValue();
+        n1 = <.ceylon.language.Float>getBoxed$priv$(.ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Float.instance(0.0)).getNegativeValue().doubleValue();
         n1 = n2.plus(.ceylon.language.Float.instance(n3)).doubleValue();
         n1 = n2.minus(.ceylon.language.Float.instance(n3)).doubleValue();
         n1 = n2.times(.ceylon.language.Float.instance(n3)).doubleValue();
@@ -176,31 +176,31 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         n1 = (
             let
             {
-                .ceylon.language.Float $ceylontmpop$4 = .ceylon.language.Float.instance(n3).plus(n2);
-                n3 = $ceylontmpop$4.doubleValue();
+                .ceylon.language.Float $ceylontmp$op$4 = .ceylon.language.Float.instance(n3).plus(n2);
+                n3 = $ceylontmp$op$4.doubleValue();
             }
-            returning $ceylontmpop$4;
+            returning $ceylontmp$op$4;
         ).doubleValue();
         n1 = (
             let
             {
-                .ceylon.language.Float $ceylontmpop$5 = .ceylon.language.Float.instance(n3).times(n2);
-                n3 = $ceylontmpop$5.doubleValue();
+                .ceylon.language.Float $ceylontmp$op$5 = .ceylon.language.Float.instance(n3).times(n2);
+                n3 = $ceylontmp$op$5.doubleValue();
             }
-            returning $ceylontmpop$5;
+            returning $ceylontmp$op$5;
         ).doubleValue();
         n1 = (
             let
             {
-                .ceylon.language.Float $ceylontmpop$6 = .ceylon.language.Float.instance(n3).divided(n2);
-                n3 = $ceylontmpop$6.doubleValue();
+                .ceylon.language.Float $ceylontmp$op$6 = .ceylon.language.Float.instance(n3).divided(n2);
+                n3 = $ceylontmp$op$6.doubleValue();
             }
-            returning $ceylontmpop$6;
+            returning $ceylontmp$op$6;
         ).doubleValue();
         return null;
     }
     
-    private final void unboxedCharacterArithmetic$priv() {
+    private final void unboxedCharacterArithmetic$priv$() {
         int n1 = 97;
         int n2 = 97;
         int n3 = 97;
@@ -210,7 +210,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         --n1;
     }
     
-    private final void unboxedBooleanLogical$priv() {
+    private final void unboxedBooleanLogical$priv$() {
         boolean b1 = false;
         boolean b2 = false;
         boolean b3 = false;
@@ -235,7 +235,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         return null;
     }
     
-    private final void unboxedStringOperators$priv() {
+    private final void unboxedStringOperators$priv$() {
         .java.lang.String s1 = "";
         .java.lang.String s2 = "";
         .java.lang.String s3 = "";
@@ -251,179 +251,179 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         s1 = (
             let
             {
-                .ceylon.language.String $ceylontmpop$7 = .ceylon.language.String.instance(s3).plus(s2);
-                s3 = $ceylontmpop$7.toString();
+                .ceylon.language.String $ceylontmp$op$7 = .ceylon.language.String.instance(s3).plus(s2);
+                s3 = $ceylontmp$op$7.toString();
             }
-            returning $ceylontmpop$7;
+            returning $ceylontmp$op$7;
         ).toString();
         return null;
     }
     private long fieldInteger;
     
-    private final long getFieldInteger$priv() {
+    private final long getFieldInteger$priv$() {
         return fieldInteger;
     }
     
-    private final void setFieldInteger$priv(final long fieldInteger) {
+    private final void setFieldInteger$priv$(final long fieldInteger) {
         this.fieldInteger = fieldInteger;
     }
     
-    private final long getFieldGetterInteger$priv() {
+    private final long getFieldGetterInteger$priv$() {
         return 0L;
     }
     
-    private final void setFieldGetterInteger$priv(final long fieldGetterInteger) {
+    private final void setFieldGetterInteger$priv$(final long fieldGetterInteger) {
     }
     
-    private final void nonOptimisableArithmetic$priv() {
+    private final void nonOptimisableArithmetic$priv$() {
         
-        final class localGetterInteger$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+        final class localGetterInteger$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
-            private localGetterInteger$getter_() {
+            private localGetterInteger$getter$_() {
             }
             
             public long get_() {
                 return 0L;
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.GetterLong localGetterInteger$getter_ = new localGetterInteger$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong localGetterInteger$getter$_ = new localGetterInteger$getter$_();
         
-        final class localGetterInteger$setter_ {
+        final class localGetterInteger$setter$_ {
             
-            private localGetterInteger$setter_() {
+            private localGetterInteger$setter$_() {
             }
             private long value;
             
             public void set_(final long localGetterInteger) {
             }
         }
-        final localGetterInteger$setter_ localGetterInteger$setter_ = new localGetterInteger$setter_();
-        setFieldInteger$priv((
+        final localGetterInteger$setter$_ localGetterInteger$setter$_ = new localGetterInteger$setter$_();
+        setFieldInteger$priv$((
             let
             {
-                long $ceylontmpop$8 = getFieldInteger$priv();
-                setFieldInteger$priv($ceylontmpop$8 + 1);
+                long $ceylontmp$op$8 = getFieldInteger$priv$();
+                setFieldInteger$priv$($ceylontmp$op$8 + 1);
             }
-            returning $ceylontmpop$8;
+            returning $ceylontmp$op$8;
         ));
-        this.setFieldInteger$priv((
+        this.setFieldInteger$priv$((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.operator.Optim $ceylontmpopE$9 = this;
-                long $ceylontmpopV$10 = $ceylontmpopE$9.getFieldInteger$priv();
-                $ceylontmpopE$9.setFieldInteger$priv($ceylontmpopV$10 + 1);
+                .com.redhat.ceylon.compiler.java.test.expression.operator.Optim $ceylontmp$opE$9 = this;
+                long $ceylontmp$opV$10 = $ceylontmp$opE$9.getFieldInteger$priv$();
+                $ceylontmp$opE$9.setFieldInteger$priv$($ceylontmp$opV$10 + 1);
             }
-            returning $ceylontmpopV$10;
+            returning $ceylontmp$opV$10;
         ));
-        setFieldGetterInteger$priv((
+        setFieldGetterInteger$priv$((
             let
             {
-                long $ceylontmpop$11 = getFieldGetterInteger$priv();
-                setFieldGetterInteger$priv($ceylontmpop$11 + 1);
+                long $ceylontmp$op$11 = getFieldGetterInteger$priv$();
+                setFieldGetterInteger$priv$($ceylontmp$op$11 + 1);
             }
-            returning $ceylontmpop$11;
+            returning $ceylontmp$op$11;
         ));
-        localGetterInteger$setter_.set_((
+        localGetterInteger$setter$_.set_((
             let
             {
-                long $ceylontmpop$12 = localGetterInteger$getter_.get_();
-                localGetterInteger$setter_.set_($ceylontmpop$12 + 1);
+                long $ceylontmp$op$12 = localGetterInteger$getter$_.get_();
+                localGetterInteger$setter$_.set_($ceylontmp$op$12 + 1);
             }
-            returning $ceylontmpop$12;
-        ));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.set_((
-            let
-            {
-                long $ceylontmpop$13 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.get_();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.set_($ceylontmpop$13 + 1);
-            }
-            returning $ceylontmpop$13;
-        ));
-        setFieldInteger$priv((
-            let
-            {
-                long $ceylontmpop$14 = getFieldInteger$priv() + 1;
-                setFieldInteger$priv($ceylontmpop$14);
-            }
-            returning $ceylontmpop$14;
-        ));
-        this.setFieldInteger$priv((
-            let
-            {
-                .com.redhat.ceylon.compiler.java.test.expression.operator.Optim $ceylontmpopE$15 = this;
-                long $ceylontmpopV$16 = $ceylontmpopE$15.getFieldInteger$priv() + 1;
-                $ceylontmpopE$15.setFieldInteger$priv($ceylontmpopV$16);
-            }
-            returning $ceylontmpopV$16;
-        ));
-        setFieldGetterInteger$priv((
-            let
-            {
-                long $ceylontmpop$17 = getFieldGetterInteger$priv() + 1;
-                setFieldGetterInteger$priv($ceylontmpop$17);
-            }
-            returning $ceylontmpop$17;
-        ));
-        localGetterInteger$setter_.set_((
-            let
-            {
-                long $ceylontmpop$18 = localGetterInteger$getter_.get_() + 1;
-                localGetterInteger$setter_.set_($ceylontmpop$18);
-            }
-            returning $ceylontmpop$18;
+            returning $ceylontmp$op$12;
         ));
         .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.set_((
             let
             {
-                long $ceylontmpop$19 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.get_() + 1;
-                .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.set_($ceylontmpop$19);
+                long $ceylontmp$op$13 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.get_();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.set_($ceylontmp$op$13 + 1);
             }
-            returning $ceylontmpop$19;
+            returning $ceylontmp$op$13;
         ));
-        setFieldInteger$priv((
+        setFieldInteger$priv$((
             let
             {
-                long $ceylontmpop$20 = getFieldInteger$priv() + getFieldInteger$priv();
-                setFieldInteger$priv($ceylontmpop$20);
+                long $ceylontmp$op$14 = getFieldInteger$priv$() + 1;
+                setFieldInteger$priv$($ceylontmp$op$14);
             }
-            returning $ceylontmpop$20;
+            returning $ceylontmp$op$14;
         ));
-        this.setFieldInteger$priv((
+        this.setFieldInteger$priv$((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.operator.Optim $ceylontmpopE$21 = this;
-                long $ceylontmpopV$22 = $ceylontmpopE$21.getFieldInteger$priv() + this.getFieldInteger$priv();
-                $ceylontmpopE$21.setFieldInteger$priv($ceylontmpopV$22);
+                .com.redhat.ceylon.compiler.java.test.expression.operator.Optim $ceylontmp$opE$15 = this;
+                long $ceylontmp$opV$16 = $ceylontmp$opE$15.getFieldInteger$priv$() + 1;
+                $ceylontmp$opE$15.setFieldInteger$priv$($ceylontmp$opV$16);
             }
-            returning $ceylontmpopV$22;
+            returning $ceylontmp$opV$16;
         ));
-        setFieldGetterInteger$priv((
+        setFieldGetterInteger$priv$((
             let
             {
-                long $ceylontmpop$23 = getFieldGetterInteger$priv() + getFieldGetterInteger$priv();
-                setFieldGetterInteger$priv($ceylontmpop$23);
+                long $ceylontmp$op$17 = getFieldGetterInteger$priv$() + 1;
+                setFieldGetterInteger$priv$($ceylontmp$op$17);
             }
-            returning $ceylontmpop$23;
+            returning $ceylontmp$op$17;
         ));
-        localGetterInteger$setter_.set_((
+        localGetterInteger$setter$_.set_((
             let
             {
-                long $ceylontmpop$24 = localGetterInteger$getter_.get_() + localGetterInteger$getter_.get_();
-                localGetterInteger$setter_.set_($ceylontmpop$24);
+                long $ceylontmp$op$18 = localGetterInteger$getter$_.get_() + 1;
+                localGetterInteger$setter$_.set_($ceylontmp$op$18);
             }
-            returning $ceylontmpop$24;
+            returning $ceylontmp$op$18;
         ));
         .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.set_((
             let
             {
-                long $ceylontmpop$25 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.get_() + .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.get_();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.set_($ceylontmpop$25);
+                long $ceylontmp$op$19 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.get_() + 1;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.set_($ceylontmp$op$19);
             }
-            returning $ceylontmpop$25;
+            returning $ceylontmp$op$19;
+        ));
+        setFieldInteger$priv$((
+            let
+            {
+                long $ceylontmp$op$20 = getFieldInteger$priv$() + getFieldInteger$priv$();
+                setFieldInteger$priv$($ceylontmp$op$20);
+            }
+            returning $ceylontmp$op$20;
+        ));
+        this.setFieldInteger$priv$((
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.Optim $ceylontmp$opE$21 = this;
+                long $ceylontmp$opV$22 = $ceylontmp$opE$21.getFieldInteger$priv$() + this.getFieldInteger$priv$();
+                $ceylontmp$opE$21.setFieldInteger$priv$($ceylontmp$opV$22);
+            }
+            returning $ceylontmp$opV$22;
+        ));
+        setFieldGetterInteger$priv$((
+            let
+            {
+                long $ceylontmp$op$23 = getFieldGetterInteger$priv$() + getFieldGetterInteger$priv$();
+                setFieldGetterInteger$priv$($ceylontmp$op$23);
+            }
+            returning $ceylontmp$op$23;
+        ));
+        localGetterInteger$setter$_.set_((
+            let
+            {
+                long $ceylontmp$op$24 = localGetterInteger$getter$_.get_() + localGetterInteger$getter$_.get_();
+                localGetterInteger$setter$_.set_($ceylontmp$op$24);
+            }
+            returning $ceylontmp$op$24;
+        ));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.set_((
+            let
+            {
+                long $ceylontmp$op$25 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.get_() + .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.get_();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.set_($ceylontmp$op$25);
+            }
+            returning $ceylontmp$op$25;
         ));
     }
     
-    private final void unboxedIntegerComparison$priv() {
+    private final void unboxedIntegerComparison$priv$() {
         long n1 = 0L;
         long n2 = 0L;
         boolean sync = false;
@@ -450,7 +450,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         return null;
     }
     
-    private final void unboxedFloatComparison$priv() {
+    private final void unboxedFloatComparison$priv$() {
         double n1 = 0.0;
         double n2 = 0.0;
         boolean sync = false;
@@ -477,7 +477,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         return null;
     }
     
-    private final void unboxedCharacterComparison$priv() {
+    private final void unboxedCharacterComparison$priv$() {
         int n1 = 97;
         int n2 = 97;
         boolean sync = false;
@@ -504,7 +504,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         return null;
     }
     
-    private final void unboxedBooleanComparison$priv() {
+    private final void unboxedBooleanComparison$priv$() {
         boolean b1 = false;
         boolean b2 = false;
         boolean sync = false;
@@ -523,7 +523,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         return null;
     }
     
-    private final void unboxedStringComparison$priv() {
+    private final void unboxedStringComparison$priv$() {
         .java.lang.String s1 = "";
         .java.lang.String s2 = "";
         boolean sync = false;
@@ -550,7 +550,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         return null;
     }
     
-    private final void nonOptimisableComparison$priv(final .java.lang.Object o) {
+    private final void nonOptimisableComparison$priv$(final .java.lang.Object o) {
         .java.lang.String s1 = "";
         boolean b2 = false;
         boolean sync = false;
@@ -565,10 +565,10 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.Optim.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.Optim.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.Optim.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.Optim.class);
 }
 final class optimToplevelInteger_ {
     

@@ -5,7 +5,7 @@ class CallableArgumentReturningQualifiedClass implements .com.redhat.ceylon.comp
     CallableArgumentReturningQualifiedClass() {
     }
     
-    public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D D$new() {
+    public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D D$new$() {
         return new D();
     }
     
@@ -15,20 +15,20 @@ class CallableArgumentReturningQualifiedClass implements .com.redhat.ceylon.comp
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D.class));
         }
     }
     
-    private final void f$priv(final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D> foo) {
+    private final void f$priv$(final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D> foo) {
     }
     
-    private final void m$priv() {
-        f$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D.class)), .ceylon.language.Empty.$TypeDescriptor, "CallableArgumentReturningQualifiedClass.D()", (short)-1){
+    private final void m$priv$() {
+        f$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D.class)), .ceylon.language.Empty.$TypeDescriptor$, "CallableArgumentReturningQualifiedClass.D()", (short)-1){
             
             @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D $call() {
-                return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.this.D$new();
+            public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D $call$() {
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.this.D$new$();
             }
         });
     }
@@ -39,8 +39,8 @@ class CallableArgumentReturningQualifiedClass implements .com.redhat.ceylon.comp
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.class);
 }

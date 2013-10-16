@@ -19,12 +19,12 @@ final class bug1250_ {
             }
             
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            .java.lang.Object Bar$new() {
+            .java.lang.Object Bar$new$() {
                 return new Bar();
             }
             
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-            @.ceylon.language.SharedAnnotation$annotation
+            @.ceylon.language.SharedAnnotation$annotation$
             @.com.redhat.ceylon.compiler.java.metadata.Container(klass = Foo.class)
             @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
             class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -34,19 +34,19 @@ final class bug1250_ {
                 
                 @.java.lang.Override
                 @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                     return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.Bar.class));
                 }
             }
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.class);
             }
         }
         final Foo foo = new Foo();
-        final Foo.Bar bar2 = (Foo.Bar)foo.Bar$new();
+        final Foo.Bar bar2 = (Foo.Bar)foo.Bar$new$();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

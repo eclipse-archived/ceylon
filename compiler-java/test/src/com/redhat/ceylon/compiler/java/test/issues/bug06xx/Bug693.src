@@ -5,7 +5,7 @@ public interface Bug693_Interface {
     public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug693_Interface$impl();
     
     public abstract .ceylon.language.Integer getX();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface.class);
 }
 public final class Bug693_Interface$impl {
     
@@ -20,8 +20,8 @@ public class Bug693_Class implements .com.redhat.ceylon.compiler.java.runtime.mo
         (
             let
             {
-                boolean $ceylontmp$b$$0 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Class.$default$b(x);
-                this(x, $ceylontmp$b$$0);
+                boolean $ceylontmp$$b$$0 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Class.$default$b(x);
+                this(x, $ceylontmp$$b$$0);
             }
             returning null;
         );
@@ -29,17 +29,17 @@ public class Bug693_Class implements .com.redhat.ceylon.compiler.java.runtime.mo
     
     public Bug693_Class(final .ceylon.language.Integer x, final boolean b) {
         this.x = x;
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug693_Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug693_Interface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface$impl(this);
     }
     
     public static boolean $default$b(final .ceylon.language.Integer x) {
         return false;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug693_Interface$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug693_Interface$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug693_Interface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug693_Interface$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug693_Interface$this$;
     }
     private final .ceylon.language.Integer x;
     
@@ -49,10 +49,10 @@ public class Bug693_Class implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Class.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Class.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Class.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Class.class);
 }
 final class bug693_ {
     

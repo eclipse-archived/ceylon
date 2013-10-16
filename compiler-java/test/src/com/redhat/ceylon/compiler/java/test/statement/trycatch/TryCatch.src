@@ -5,17 +5,17 @@ class TryCatch implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     TryCatch() {
     }
     
-    private final void t$priv() {
+    private final void t$priv$() {
     }
     
-    private final void c$priv(final .java.lang.Throwable e) {
+    private final void c$priv$(final .java.lang.Throwable e) {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         try {
-            t$priv();
+            t$priv$();
         } catch (final .java.lang.Exception e) {
-            c$priv(e);
+            c$priv$(e);
         }
     }
     
@@ -25,8 +25,8 @@ class TryCatch implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatch.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatch.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatch.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatch.class);
 }

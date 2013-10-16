@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 interface Satisfies {
     
     public .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl $com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$impl();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies.class);
 }
 final class Satisfies$impl {
     
@@ -15,13 +15,13 @@ final class Satisfies$impl {
 class SatisfiesClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies {
     
     SatisfiesClass() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl $com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl $com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl $com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$this$;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -30,8 +30,8 @@ class SatisfiesClass implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesClass.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesClass.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesClass.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesClass.class);
 }

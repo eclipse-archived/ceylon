@@ -8,29 +8,29 @@ interface I<T extends .ceylon.language.String, X extends .ceylon.language.Boolea
     
     public .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl<? extends T, ? super X> $com$redhat$ceylon$compiler$java$test$structure$nesting$ici$I$impl();
     
-    public abstract <U>T m1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final X b);
+    public abstract <U>T m1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final X b);
     
-    public abstract <U>U m1$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final X b);
+    public abstract <U>U m1$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final X b);
     
-    public abstract <U>T m1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final X b, final U u);
+    public abstract <U>T m1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final X b, final U u);
 }
 final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
-    I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I<? extends T, ? super X> $this) {
-        this.$reifiedT = $reifiedT;
-        this.$reifiedX = $reifiedX;
+    I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I<? extends T, ? super X> $this) {
+        this.$reified$T = $reified$T;
+        this.$reified$X = $reified$X;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
     private final .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I<? extends T, ? super X> $this;
     
-    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
-        this.$reifiedX = $reifiedX;
-        this.$reifiedT = $reifiedT;
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
+        this.$reified$X = $reified$X;
+        this.$reified$T = $reified$T;
     }
     
-    public final <U>U m1$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final X b) {
+    public final <U>U m1$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final X b) {
         return null;
     }
     
@@ -46,14 +46,14 @@ final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language
             }
             private final .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$IC$ICI<? extends T, ? super X> $this;
             
-            private T m2$priv() {
+            private T m2$priv$() {
                 return (T)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl.this.$this.<.java.lang.Object>m1(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null);
             }
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I.class, .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl.this.$reifiedT, .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl.this.$reifiedX), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl.IC.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I.class, .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl.this.$reified$T, .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl.this.$reified$X), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl.IC.class));
         }
     }
 }

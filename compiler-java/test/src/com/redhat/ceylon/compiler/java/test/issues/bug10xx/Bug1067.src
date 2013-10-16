@@ -6,8 +6,8 @@ class Bug1067 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$g$$0 = .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1067.$default$g(f);
-                this(f, $ceylontmp$g$$0);
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$$g$$0 = .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1067.$default$g(f);
+                this(f, $ceylontmp$$g$$0);
             }
             returning null;
         );
@@ -20,27 +20,27 @@ class Bug1067 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private final .ceylon.language.Callable<? extends .java.lang.Object> f;
     
     public final void f() {
-        f.$call();
+        f.$call$();
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> g;
     
     public final void g() {
-        g.$call();
+        g.$call$();
     }
     
     static .ceylon.language.Callable<? extends .java.lang.Object> $default$g(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call() {
+            public .java.lang.Object $call$() {
                 return null;
             }
         };
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1067.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1067.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1067.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1067.class);
 }

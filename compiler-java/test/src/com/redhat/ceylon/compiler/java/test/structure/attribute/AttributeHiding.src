@@ -26,10 +26,10 @@ class AttributeHiding implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.attribute.AttributeHiding.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.AttributeHiding.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.AttributeHiding.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.AttributeHiding.class);
 }
 class AttributeHidingSub extends .com.redhat.ceylon.compiler.java.test.structure.attribute.AttributeHiding {
     
@@ -39,17 +39,17 @@ class AttributeHidingSub extends .com.redhat.ceylon.compiler.java.test.structure
     }
     private .java.lang.String name;
     
-    private final .java.lang.String getName$priv() {
+    private final .java.lang.String getName$priv$() {
         return name;
     }
     
-    private final void setName$priv(final .java.lang.String name) {
+    private final void setName$priv$(final .java.lang.String name) {
         this.name = name;
     }
     
     @.java.lang.Override
     public .java.lang.String toString() {
-        return getName$priv();
+        return getName$priv$();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -58,8 +58,8 @@ class AttributeHidingSub extends .com.redhat.ceylon.compiler.java.test.structure
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.attribute.AttributeHidingSub.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.AttributeHidingSub.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.AttributeHidingSub.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.AttributeHidingSub.class);
 }

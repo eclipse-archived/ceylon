@@ -5,21 +5,21 @@ class MethodWhileIsWithMethod implements .com.redhat.ceylon.compiler.java.runtim
     MethodWhileIsWithMethod() {
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.statement.loop.Foo give$priv() {
+    private final .com.redhat.ceylon.compiler.java.test.statement.loop.Foo give$priv$() {
         return new .com.redhat.ceylon.compiler.java.test.statement.loop.FooSub();
     }
     
     public final void m() {
         while (true) {
             .java.lang.Object y$0;
-            if ((y$0 = give$priv()) instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.FooSub) {
+            if ((y$0 = give$priv$()) instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.FooSub) {
                 final .com.redhat.ceylon.compiler.java.test.statement.loop.FooSub y$1 = (.com.redhat.ceylon.compiler.java.test.statement.loop.FooSub)y$0;
                 y$1.foo();
             } else break;
         }
         while (true) {
             .java.lang.Object y$2;
-            if ((y$2 = give$priv()) == null) {
+            if ((y$2 = give$priv$()) == null) {
                 final .java.lang.Object y$3 = y$2;
             } else break;
         }
@@ -31,8 +31,8 @@ class MethodWhileIsWithMethod implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsWithMethod.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsWithMethod.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsWithMethod.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsWithMethod.class);
 }

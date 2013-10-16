@@ -8,10 +8,10 @@ abstract class Bug1117Tree implements .com.redhat.ceylon.compiler.java.runtime.m
     public abstract long evaluate();
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree.class);
 }
 class Bug1117Constant extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree {
     
@@ -21,20 +21,20 @@ class Bug1117Constant extends .com.redhat.ceylon.compiler.java.test.issues.bug11
     }
     private final long val;
     
-    private final long getVal$priv() {
+    private final long getVal$priv$() {
         return val;
     }
     
     @.java.lang.Override
     public final long evaluate() {
-        return getVal$priv();
+        return getVal$priv$();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Constant.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Constant.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Constant.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Constant.class);
 }
 class Bug1117UnaryOperator extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree {
     
@@ -45,25 +45,25 @@ class Bug1117UnaryOperator extends .com.redhat.ceylon.compiler.java.test.issues.
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree branch;
     
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree getBranch$priv() {
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree getBranch$priv$() {
         return branch;
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> f;
     
-    private final long f$priv(final long i) {
-        return f.$call(.ceylon.language.Integer.instance(i)).longValue();
+    private final long f$priv$(final long i) {
+        return f.$call$(.ceylon.language.Integer.instance(i)).longValue();
     }
     
     @.java.lang.Override
     public final long evaluate() {
-        return f$priv(getBranch$priv().evaluate());
+        return f$priv$(getBranch$priv$().evaluate());
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117UnaryOperator.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117UnaryOperator.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117UnaryOperator.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117UnaryOperator.class);
 }
 class Bug1117BinaryOperator extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree {
     
@@ -75,38 +75,38 @@ class Bug1117BinaryOperator extends .com.redhat.ceylon.compiler.java.test.issues
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree left;
     
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree getLeft$priv() {
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree getLeft$priv$() {
         return left;
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree right;
     
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree getRight$priv() {
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree getRight$priv$() {
         return right;
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> f;
     
-    private final long f$priv(final long i, final long j) {
-        return f.$call(.ceylon.language.Integer.instance(i), .ceylon.language.Integer.instance(j)).longValue();
+    private final long f$priv$(final long i, final long j) {
+        return f.$call$(.ceylon.language.Integer.instance(i), .ceylon.language.Integer.instance(j)).longValue();
     }
     
     @.java.lang.Override
     public final long evaluate() {
-        return f$priv(getLeft$priv().evaluate(), getRight$priv().evaluate());
+        return f$priv$(getLeft$priv$().evaluate(), getRight$priv$().evaluate());
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117BinaryOperator.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117BinaryOperator.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117BinaryOperator.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117BinaryOperator.class);
 }
 class Bug1117UnaryMinus extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117UnaryOperator {
     
     Bug1117UnaryMinus(final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree t) {
-        super(t, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Integer(Integer)", (short)-1){
+        super(t, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
                 final long t = ((.ceylon.language.Integer)$param$0).longValue();
                 return .ceylon.language.Integer.instance(-t);
             }
@@ -114,18 +114,18 @@ class Bug1117UnaryMinus extends .com.redhat.ceylon.compiler.java.test.issues.bug
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117UnaryMinus.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117UnaryMinus.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117UnaryMinus.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117UnaryMinus.class);
 }
 class Bug1117Plus extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117BinaryOperator {
     
     Bug1117Plus(final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree left, final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree right) {
-        super(left, right, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), "Integer(Integer, Integer)", (short)-1){
+        super(left, right, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "Integer(Integer, Integer)", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.Integer $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final long l = ((.ceylon.language.Integer)$param$0).longValue();
                 final long r = ((.ceylon.language.Integer)$param$1).longValue();
                 return .ceylon.language.Integer.instance(l + r);
@@ -134,10 +134,10 @@ class Bug1117Plus extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.B
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Plus.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Plus.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Plus.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Plus.class);
 }
 final class bug1117_ {
     

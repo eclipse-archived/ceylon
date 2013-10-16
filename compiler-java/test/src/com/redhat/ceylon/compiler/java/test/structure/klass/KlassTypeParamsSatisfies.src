@@ -2,14 +2,14 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class KlassTypeParamsSatisfies<U extends .ceylon.language.Container<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, V extends .ceylon.language.Summable<.ceylon.language.Integer>, W extends .ceylon.language.Container<? extends .ceylon.language.Integer, ? extends .java.lang.Object> & .ceylon.language.Summable<.ceylon.language.Integer>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    KlassTypeParamsSatisfies(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedW) {
-        this.$reifiedU = $reifiedU;
-        this.$reifiedV = $reifiedV;
-        this.$reifiedW = $reifiedW;
+    KlassTypeParamsSatisfies(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$W) {
+        this.$reified$U = $reified$U;
+        this.$reified$V = $reified$V;
+        this.$reified$W = $reified$W;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU;
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV;
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedW;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$W;
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.get_().setupArguments(args);
@@ -17,7 +17,7 @@ class KlassTypeParamsSatisfies<U extends .ceylon.language.Container<? extends .c
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassTypeParamsSatisfies.class, $reifiedU, $reifiedV, $reifiedW);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassTypeParamsSatisfies.class, $reified$U, $reified$V, $reified$W);
     }
 }

@@ -15,7 +15,7 @@ interface This {
     public abstract long m2$i2(final long i1);
     
     public long m2(final long i1, final long i2);
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.This.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.This.class);
 }
 final class This$impl {
     
@@ -28,10 +28,10 @@ final class This$impl {
         return (
             let
             {
-                long $ceylontmp$i1$$0 = m2$i1();
-                long $ceylontmp$i2$$1 = m2$i2($ceylontmp$i1$$0);
+                long $ceylontmp$$i1$$0 = m2$i1();
+                long $ceylontmp$$i2$$1 = m2$i2($ceylontmp$$i1$$0);
             }
-            returning m2$($ceylontmp$i1$$0, $ceylontmp$i2$$1);
+            returning m2$($ceylontmp$$i1$$0, $ceylontmp$$i2$$1);
         );
     }
     
@@ -43,9 +43,9 @@ final class This$impl {
         return (
             let
             {
-                long $ceylontmp$i2$$2 = m2$i2(i1);
+                long $ceylontmp$$i2$$2 = m2$i2(i1);
             }
-            returning m2$(i1, $ceylontmp$i2$$2);
+            returning m2$(i1, $ceylontmp$$i2$$2);
         );
     }
     
@@ -66,13 +66,13 @@ final class This$impl {
         Inner() {
         }
         
-        private final void m3$priv() {
+        private final void m3$priv$() {
             $this.m2(1L, 2L);
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.concrete.This.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.This$impl.Inner.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.concrete.This.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.This$impl.Inner.class));
         }
     }
 }

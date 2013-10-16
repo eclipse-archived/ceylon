@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.structure.reified;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.SharedAnnotation$annotation
+@.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -22,22 +22,22 @@ public interface CompositeInterface<Key, Value> {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class CompositeInterface$impl<Key, Value> {
     
-    public CompositeInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeInterface<Key, Value> $this) {
-        this.$reifiedKey = $reifiedKey;
-        this.$reifiedValue = $reifiedValue;
+    public CompositeInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeInterface<Key, Value> $this) {
+        this.$reified$Key = $reified$Key;
+        this.$reified$Value = $reified$Value;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey;
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value;
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeInterface<Key, Value> $this;
     
-    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
-        this.$reifiedValue = $reifiedValue;
-        this.$reifiedKey = $reifiedKey;
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
+        this.$reified$Value = $reified$Value;
+        this.$reified$Key = $reified$Key;
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.ceylon.language.SharedAnnotation$annotation
+@.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::CompositeInterface<Key,Value|ceylon.language::Integer>"})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
@@ -54,23 +54,23 @@ public final class CompositeInterface$impl<Key, Value> {
 public class CompositeClass<Key, Value> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeInterface<Key, .java.lang.Object> {
     
     public CompositeClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
-        this.$reifiedKey = $reifiedKey;
-        this.$reifiedValue = $reifiedValue;
-        this.$com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeInterface$impl<Key, .java.lang.Object>($reifiedKey, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reifiedValue, .ceylon.language.Integer.$TypeDescriptor), this);
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
+        this.$reified$Key = $reified$Key;
+        this.$reified$Value = $reified$Value;
+        this.$com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeInterface$impl<Key, .java.lang.Object>($reified$Key, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$Value, .ceylon.language.Integer.$TypeDescriptor$), this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeInterface$impl<Key, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeInterface$impl<Key, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeInterface$impl<Key, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -81,8 +81,8 @@ public class CompositeClass<Key, Value> implements .com.redhat.ceylon.compiler.j
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.CompositeClass.class, $reifiedKey, $reifiedValue);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.CompositeClass.class, $reified$Key, $reified$Value);
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
@@ -105,9 +105,9 @@ final class reifiedCompositeInstantiate_ {
                     satisfies = {},
                     caseTypes = {})})
     static <Key, Value>void reifiedCompositeInstantiate(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
-        final .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeClass c = new .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reifiedKey, .ceylon.language.Number.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reifiedValue, .ceylon.language.Integer.$TypeDescriptor));
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeClass c = new .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Key, .ceylon.language.Number.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$Value, .ceylon.language.Integer.$TypeDescriptor$));
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

@@ -6,8 +6,8 @@ class SubclassInstantiationDefaultParam implements .com.redhat.ceylon.compiler.j
         (
             let
             {
-                .java.lang.String $ceylontmp$name$$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam.$default$name();
-                this($ceylontmp$name$$0);
+                .java.lang.String $ceylontmp$$name$$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam.$default$name();
+                this($ceylontmp$$name$$0);
             }
             returning null;
         );
@@ -26,10 +26,10 @@ class SubclassInstantiationDefaultParam implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam.class);
 }
 class SubclassInstantiationDefaultParamSub extends .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam {
     
@@ -43,8 +43,8 @@ class SubclassInstantiationDefaultParamSub extends .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParamSub.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParamSub.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParamSub.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParamSub.class);
 }

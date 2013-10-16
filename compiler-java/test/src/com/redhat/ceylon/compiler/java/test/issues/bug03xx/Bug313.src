@@ -26,7 +26,7 @@ interface Bug310 {
     public .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug310$impl $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug310$impl();
     
     public abstract long getI();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug310.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug310.class);
 }
 final class Bug310$impl {
     
@@ -66,7 +66,7 @@ final class bug310_2_ {
         final boolean b = (
             let
             {
-                .ceylon.language.Boolean $ceylontmp3 = (
+                .ceylon.language.Boolean $ceylontmp$3 = (
                     let
                     {
                         .ceylon.language.String safe$2 = s1;
@@ -74,7 +74,7 @@ final class bug310_2_ {
                     returning safe$2 != null ? .ceylon.language.Boolean.instance(safe$2.equals(.ceylon.language.String.instance(""))) : null;
                 );
             }
-            returning $ceylontmp3 != null ? $ceylontmp3 : .ceylon.language.Boolean.instance(false);
+            returning $ceylontmp$3 != null ? $ceylontmp$3 : .ceylon.language.Boolean.instance(false);
         ).booleanValue();
     }
     

@@ -8,12 +8,12 @@ class InitializerParamAccessWithExtends extends .java.lang.Object implements .co
     }
     private final boolean b;
     
-    private final boolean getB$priv() {
+    private final boolean getB$priv$() {
         return b;
     }
     
-    private final boolean m$priv() {
-        return getB$priv();
+    private final boolean m$priv$() {
+        return getB$priv$();
     }
     
     @.java.lang.Override
@@ -26,17 +26,17 @@ class InitializerParamAccessWithExtends extends .java.lang.Object implements .co
         return (int)(
             let
             {
-                long $ceylontmphash$1 = 0L;
+                long $ceylontmp$hash$1 = 0L;
             }
-            returning $ceylontmphash$1 ^ $ceylontmphash$1 >>> 32;
+            returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
         );
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends.class);
 }
 class InitializerParamAccessWithExtends2 extends .com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends {
     
@@ -46,17 +46,17 @@ class InitializerParamAccessWithExtends2 extends .com.redhat.ceylon.compiler.jav
     }
     private final boolean b;
     
-    private final boolean getB$priv() {
+    private final boolean getB$priv$() {
         return b;
     }
     
-    private final boolean m$priv() {
-        return getB$priv();
+    private final boolean m$priv$() {
+        return getB$priv$();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends2.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends2.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends2.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends2.class);
 }

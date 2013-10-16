@@ -6,12 +6,12 @@ final class bug1311_ {
     }
     
     static void bug1311() {
-        final .ceylon.language.Callable<? extends .ceylon.language.Integer> temp = (.ceylon.language.Callable<? extends .ceylon.language.Integer>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), .ceylon.language.Empty.$TypeDescriptor), "Integer?({Integer*})", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> temp = (.ceylon.language.Callable<? extends .ceylon.language.Integer>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), "Integer?({Integer*})", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
-                final .ceylon.language.Iterable $ceylontmpvalues = (.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0;
-                return (.ceylon.language.Integer).ceylon.language.max_.max(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, $ceylontmpvalues);
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Iterable $ceylontmp$values = (.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0;
+                return (.ceylon.language.Integer).ceylon.language.max_.max(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, $ceylontmp$values);
             }
         };
     }

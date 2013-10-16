@@ -2,26 +2,26 @@ package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 class BoxedLocalVariable<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    BoxedLocalVariable(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        this.$reifiedT = $reifiedT;
+    BoxedLocalVariable(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
     public .java.lang.Object m2(final T t) {
         final VariableBox<T> t2 = new VariableBox<T>();
         t2.ref = t;
         t2.ref = t2.ref;
         
-        final class t3$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<T> {
+        final class t3$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<T> {
             
-            private t3$getter_() {
+            private t3$getter$_() {
             }
             
             public T get_() {
                 return t2.ref;
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.Getter<T> t3$getter_ = new t3$getter_();
+        final .com.redhat.ceylon.compiler.java.language.Getter<T> t3$getter$_ = new t3$getter$_();
         return null;
     }
     
@@ -31,14 +31,14 @@ class BoxedLocalVariable<T> implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.BoxedLocalVariable.class, $reifiedT);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.BoxedLocalVariable.class, $reified$T);
     }
 }
 class BoxedLocalVariable_sub extends .com.redhat.ceylon.compiler.java.test.expression.attribute.BoxedLocalVariable<.ceylon.language.String> {
     
     BoxedLocalVariable_sub() {
-        super(.ceylon.language.String.$TypeDescriptor);
+        super(.ceylon.language.String.$TypeDescriptor$);
     }
     
     @.java.lang.Override
@@ -47,16 +47,16 @@ class BoxedLocalVariable_sub extends .com.redhat.ceylon.compiler.java.test.expre
         t2.ref = t.toString();
         t2.ref = t2.ref;
         
-        final class t3$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+        final class t3$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
             
-            private t3$getter_() {
+            private t3$getter$_() {
             }
             
             public .java.lang.String get_() {
                 return t2.ref;
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> t3$getter_ = new t3$getter_();
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> t3$getter$_ = new t3$getter$_();
         return null;
     }
     
@@ -66,8 +66,8 @@ class BoxedLocalVariable_sub extends .com.redhat.ceylon.compiler.java.test.expre
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.BoxedLocalVariable_sub.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.BoxedLocalVariable_sub.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.BoxedLocalVariable_sub.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.BoxedLocalVariable_sub.class);
 }

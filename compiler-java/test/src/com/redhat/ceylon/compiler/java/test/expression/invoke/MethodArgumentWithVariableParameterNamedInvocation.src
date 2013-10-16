@@ -17,27 +17,27 @@ final class methodArgumentWithVariableParameter_fn_ {
         (
             let
             {
-                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Integer(Integer)", (short)-1){
+                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
                         long x = ((.ceylon.language.Integer)$param$0).longValue();
                         x = 0L;
                         (
                             let
                             {
-                                long $ceylontmpop$1 = x;
-                                x = $ceylontmpop$1 + 1;
+                                long $ceylontmp$op$1 = x;
+                                x = $ceylontmp$op$1 + 1;
                             }
-                            returning $ceylontmpop$1;
+                            returning $ceylontmp$op$1;
                         );
                         (
                             let
                             {
-                                long $ceylontmpop$2 = x + 1L;
-                                x = $ceylontmpop$2;
+                                long $ceylontmp$op$2 = x + 1L;
+                                x = $ceylontmp$op$2;
                             }
-                            returning $ceylontmpop$2;
+                            returning $ceylontmp$op$2;
                         );
                         return .ceylon.language.Integer.instance(x);
                     }
@@ -49,12 +49,12 @@ final class methodArgumentWithVariableParameter_fn_ {
         (
             let
             {
-                .ceylon.language.Callable arg$3$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Integer(Integer)", (short)-1){
+                .ceylon.language.Callable arg$3$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
-                        long y$param = ((.ceylon.language.Integer)$param$0).longValue();
-                        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong y = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(y$param);
+                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                        long y$param$ = ((.ceylon.language.Integer)$param$0).longValue();
+                        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong y = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(y$param$);
                         
                         final class fn_ {
                             
@@ -66,18 +66,18 @@ final class methodArgumentWithVariableParameter_fn_ {
                                 (
                                     let
                                     {
-                                        long $ceylontmpop$4 = y.ref;
-                                        y.ref = $ceylontmpop$4 + 1;
+                                        long $ceylontmp$op$4 = y.ref;
+                                        y.ref = $ceylontmp$op$4 + 1;
                                     }
-                                    returning $ceylontmpop$4;
+                                    returning $ceylontmp$op$4;
                                 );
                                 (
                                     let
                                     {
-                                        long $ceylontmpop$5 = y.ref + 1L;
-                                        y.ref = $ceylontmpop$5;
+                                        long $ceylontmp$op$5 = y.ref + 1L;
+                                        y.ref = $ceylontmp$op$5;
                                     }
-                                    returning $ceylontmpop$5;
+                                    returning $ceylontmp$op$5;
                                 );
                                 return y.ref;
                             }

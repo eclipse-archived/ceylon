@@ -5,31 +5,31 @@ class MethodLocalAccess implements .com.redhat.ceylon.compiler.java.runtime.mode
     MethodLocalAccess() {
     }
     
-    private final long m1$priv() {
+    private final long m1$priv$() {
         final long n1 = 1L;
         return n1;
     }
     
-    private final long m2$priv() {
+    private final long m2$priv$() {
         
-        final class n2$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+        final class n2$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
-            private n2$getter_() {
+            private n2$getter$_() {
             }
             
             public long get_() {
                 return 1L;
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.GetterLong n2$getter_ = new n2$getter_();
-        return n2$getter_.get_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong n2$getter$_ = new n2$getter$_();
+        return n2$getter$_.get_();
     }
     
-    private final long m3$priv() {
+    private final long m3$priv$() {
         
-        final class selfref$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+        final class selfref$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
-            private selfref$getter_() {
+            private selfref$getter$_() {
             }
             
             public long get_() {
@@ -40,8 +40,8 @@ class MethodLocalAccess implements .com.redhat.ceylon.compiler.java.runtime.mode
                 }
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.GetterLong selfref$getter_ = new selfref$getter_();
-        return selfref$getter_.get_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong selfref$getter$_ = new selfref$getter$_();
+        return selfref$getter$_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -50,8 +50,8 @@ class MethodLocalAccess implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalAccess.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalAccess.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalAccess.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalAccess.class);
 }

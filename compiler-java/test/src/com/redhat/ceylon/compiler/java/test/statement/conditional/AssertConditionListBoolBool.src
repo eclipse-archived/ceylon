@@ -5,17 +5,17 @@ class AssertConditionListBoolBool implements .com.redhat.ceylon.compiler.java.ru
     AssertConditionListBoolBool() {
     }
     
-    private final boolean m$priv(final long x) {
-        .java.lang.String $ceylontmpassert$0 = null;
+    private final boolean m$priv$(final long x) {
+        .java.lang.String $ceylontmp$assert$0 = null;
         if (x > 0L) {
             if (x < 10L) {
             } else {
-                $ceylontmpassert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "x > 0" + (.java.lang.System.lineSeparator() + "\tviolated ") + "x < 10";
+                $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "x > 0" + (.java.lang.System.lineSeparator() + "\tviolated ") + "x < 10";
             }
         } else {
-            $ceylontmpassert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "x > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "x < 10";
+            $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "x > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "x < 10";
         }
-        if ($ceylontmpassert$0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert$0);
+        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$0);
         return x == 1L;
     }
     
@@ -25,8 +25,8 @@ class AssertConditionListBoolBool implements .com.redhat.ceylon.compiler.java.ru
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertConditionListBoolBool.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertConditionListBoolBool.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.AssertConditionListBoolBool.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.AssertConditionListBoolBool.class);
 }

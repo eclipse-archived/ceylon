@@ -9,7 +9,7 @@ interface Bug994 extends .ceylon.language.Correspondence<.ceylon.language.Intege
     public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug994$impl();
     
     public .java.lang.Object m();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994.class);
 }
 final class Bug994$impl {
     
@@ -29,10 +29,10 @@ final class Bug994$impl {
             }
         }
         final localMethod_ localMethod = new localMethod_();
-        final .ceylon.language.Callable<? extends .java.lang.Object> b = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
+        final .ceylon.language.Callable<? extends .java.lang.Object> b = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call() {
+            public .java.lang.Object $call$() {
                 return (
                     let
                     {
@@ -45,7 +45,7 @@ final class Bug994$impl {
         return null;
     }
     
-    private void mprivate$priv() {
+    private void mprivate$priv$() {
     }
     
     final class Inner$impl {
@@ -55,17 +55,17 @@ final class Bug994$impl {
         }
         private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$Inner $this;
         
-        private void m2$priv() {
+        private void m2$priv$() {
             long x = 0L;
             final .ceylon.language.Integer i1 = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.get(.ceylon.language.Integer.instance(1L));
             final .ceylon.language.Integer i2 = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.get(.ceylon.language.Integer.instance(1L));
             final .ceylon.language.Integer i3 = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.get(.ceylon.language.Integer.instance(x++));
             final .ceylon.language.Integer i4 = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.get(.ceylon.language.Integer.instance(x++));
             .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.m();
-            .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug994$impl().mprivate$priv();
+            .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug994$impl().mprivate$priv$();
             final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994 foo = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this;
             foo.m();
-            foo.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug994$impl().mprivate$priv();
+            foo.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug994$impl().mprivate$priv$();
         }
     }
 }

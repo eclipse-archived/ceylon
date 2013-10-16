@@ -2,74 +2,74 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
-@interface AnnotationClassInteger$annotation {
+@interface AnnotationClassInteger$annotation$ {
     
     public abstract long i();
     
     public abstract long j() default 1L;
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@interface AnnotationClassInteger$annotations {
+@interface AnnotationClassInteger$annotations$ {
     
-    public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation[] value();
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation$[] value();
 }
-@.ceylon.language.AnnotationAnnotation$annotation
-@.ceylon.language.FinalAnnotation$annotation
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
 final class AnnotationClassInteger implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> {
     
     AnnotationClassInteger(final long i) {
         (
             let
             {
-                long $ceylontmp$j$$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.$default$j(i);
-                this(i, $ceylontmp$j$$0);
+                long $ceylontmp$$j$$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.$default$j(i);
+                this(i, $ceylontmp$$j$$0);
             }
             returning null;
         );
     }
     
-    AnnotationClassInteger(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation anno) {
+    AnnotationClassInteger(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation$ anno) {
         this(anno.i(), anno.j());
     }
     
     AnnotationClassInteger(final long i, final long j) {
-        this.$ceylon$language$SequencedAnnotation$this = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.$TypeDescriptor, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$ConstrainedAnnotation$this = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.$TypeDescriptor), .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.$TypeDescriptor, this);
+        this.$ceylon$language$SequencedAnnotation$this$ = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.$TypeDescriptor$, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.$TypeDescriptor$), .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.$TypeDescriptor$, this);
     }
     
     static long $default$j(final long i) {
         return 1L;
     }
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this;
+    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$impl() {
-        return $ceylon$language$SequencedAnnotation$this;
+        return $ceylon$language$SequencedAnnotation$this$;
     }
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
-        return $ceylon$language$ConstrainedAnnotation$this;
+        return $ceylon$language$ConstrainedAnnotation$this$;
     }
     
     @.java.lang.Override
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
-        return $ceylon$language$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger> $ceylon$language$Annotation$this;
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger> $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger> $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this;
+        return $ceylon$language$Annotation$this$;
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -79,7 +79,7 @@ final class annotationClassIntegerDefault_ {
     private annotationClassIntegerDefault_() {
     }
     
-    @.ceylon.language.AnnotationAnnotation$annotation
+    @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger annotationClassIntegerDefault(final long i) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger(i);
     }
@@ -94,7 +94,7 @@ final class annotationClassIntegerSwapped_ {
     private annotationClassIntegerSwapped_() {
     }
     
-    @.ceylon.language.AnnotationAnnotation$annotation
+    @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger annotationClassIntegerSwapped(final long j, final long i) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger(i, j);
     }
@@ -109,7 +109,7 @@ final class annotationClassIntegerNames_ {
     private annotationClassIntegerNames_() {
     }
     
-    @.ceylon.language.AnnotationAnnotation$annotation
+    @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger annotationClassIntegerNames(final long jj, final long ii) {
         return (
             let
@@ -128,17 +128,17 @@ final class annotationClassIntegerNames_ {
         primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.class)
 @.com.redhat.ceylon.compiler.java.metadata.IntegerExprs({
         @.com.redhat.ceylon.compiler.java.metadata.IntegerValue(
-                name = "arg$i",
+                name = "$arg$i",
                 value = 40L),
         @.com.redhat.ceylon.compiler.java.metadata.IntegerValue(
-                name = "arg$j",
+                name = "$arg$j",
                 value = 41L)})
 final class annotationClassIntegerStatic_ {
     
     private annotationClassIntegerStatic_() {
     }
     
-    @.ceylon.language.AnnotationAnnotation$annotation
+    @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger annotationClassIntegerStatic() {
         return (
             let
@@ -155,15 +155,15 @@ final class annotationClassIntegerStatic_ {
         .com.redhat.ceylon.compiler.java.test.annotations.annotationClassIntegerStatic_.annotationClassIntegerStatic();
     }
 }
-@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotations({
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation(i = -10L),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation(
+@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotations$({
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation$(i = -10L),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation$(
                 i = 20L,
                 j = 21L),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation(
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation$(
                 i = 30L,
                 j = 31L),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation(
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation$(
                 i = 40L,
                 j = 41L)})
 class AnnotationClassInteger_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -177,8 +177,8 @@ class AnnotationClassInteger_callsite implements .com.redhat.ceylon.compiler.jav
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger_callsite.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger_callsite.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger_callsite.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger_callsite.class);
 }

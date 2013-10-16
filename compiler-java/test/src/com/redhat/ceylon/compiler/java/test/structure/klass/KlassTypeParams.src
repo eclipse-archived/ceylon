@@ -2,69 +2,69 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class KlassTypeParams<U, V> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    KlassTypeParams(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final U uu, final V vv) {
-        this.$reifiedU = $reifiedU;
-        this.$reifiedV = $reifiedV;
+    KlassTypeParams(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, final U uu, final V vv) {
+        this.$reified$U = $reified$U;
+        this.$reified$V = $reified$V;
         this.attr = uu;
         this.var = vv;
         
-        final class getter$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<U> {
+        final class getter$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<U> {
             
-            private getter$getter_() {
+            private getter$getter$_() {
             }
             
             public U get_() {
-                return getAttr$priv();
+                return getAttr$priv$();
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.Getter<U> getter$getter_ = new getter$getter_();
+        final .com.redhat.ceylon.compiler.java.language.Getter<U> getter$getter$_ = new getter$getter$_();
         
-        final class getset$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<V> {
+        final class getset$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<V> {
             
-            private getset$getter_() {
+            private getset$getter$_() {
             }
             
             public V get_() {
-                return getVar$priv();
+                return getVar$priv$();
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.Getter<V> getset$getter_ = new getset$getter_();
+        final .com.redhat.ceylon.compiler.java.language.Getter<V> getset$getter$_ = new getset$getter$_();
         
-        final class getset$setter_ {
+        final class getset$setter$_ {
             
-            private getset$setter_() {
+            private getset$setter$_() {
             }
             private V value;
             
             public void set_(final V getset) {
-                setVar$priv(getset);
+                setVar$priv$(getset);
             }
         }
-        final getset$setter_ getset$setter_ = new getset$setter_();
+        final getset$setter$_ getset$setter$_ = new getset$setter$_();
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU;
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V;
     
-    private final U foo$priv(final U u, final V v) {
+    private final U foo$priv$(final U u, final V v) {
         return u;
     }
     private final U attr;
     
-    private final U getAttr$priv() {
+    private final U getAttr$priv$() {
         return attr;
     }
     private V var;
     
-    private final V getVar$priv() {
+    private final V getVar$priv$() {
         return var;
     }
     
-    private final void setVar$priv(final V var) {
+    private final void setVar$priv$(final V var) {
         this.var = var;
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassTypeParams.class, $reifiedU, $reifiedV);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassTypeParams.class, $reified$U, $reified$V);
     }
 }

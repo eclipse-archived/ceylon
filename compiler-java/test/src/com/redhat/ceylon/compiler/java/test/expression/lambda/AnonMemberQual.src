@@ -6,74 +6,74 @@ class AnonMemberQualClass implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     public final .ceylon.language.Callable<? extends .ceylon.language.String> getS1() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.String $call() {
+            public .ceylon.language.String $call$() {
                 return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.toString());
             }
         };
     }
     
     public final .ceylon.language.Callable<? extends .ceylon.language.String> getS2() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.String $call() {
+            public .ceylon.language.String $call$() {
                 return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.toString());
             }
         };
     }
     
     public final .ceylon.language.Callable<? extends .ceylon.language.Integer> getH1() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.Integer $call() {
+            public .ceylon.language.Integer $call$() {
                 return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.hashCode());
             }
         };
     }
     
     public final .ceylon.language.Callable<? extends .ceylon.language.Integer> getH2() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.Integer $call() {
+            public .ceylon.language.Integer $call$() {
                 return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.hashCode());
             }
         };
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         (
             let
             {
-                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$f$$0 = m$f();
-                m$priv$($ceylontmp$f$$0);
+                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$$f$$0 = m$f();
+                m$priv$$($ceylontmp$$f$$0);
             }
             returning null;
         );
     }
     
     private final .ceylon.language.Callable<? extends .ceylon.language.String> m$f() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.String $call() {
+            public .ceylon.language.String $call$() {
                 return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.toString() + .com.redhat.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.toString() + .ceylon.language.Integer.toString(.com.redhat.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.hashCode()) + .ceylon.language.Integer.toString(.com.redhat.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.hashCode()));
             }
         };
     }
     
-    private void m$priv$(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
+    private void m$priv$$(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
     }
     
-    private final void m$priv(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
+    private final void m$priv$(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
         (
             let
             {
-                m$priv$(f);
+                m$priv$$(f);
             }
             returning null;
         );
@@ -85,8 +85,8 @@ class AnonMemberQualClass implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.class);
 }

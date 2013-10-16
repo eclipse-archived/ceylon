@@ -4,46 +4,46 @@ interface InstantiatorDelegates<X> {
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X> $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$impl();
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Nullary Nullary$new();
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Nullary Nullary$new$();
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Unary Unary$new(final boolean b);
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Unary Unary$new$(final boolean b);
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary Binary$new(final boolean b, final long i);
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary Binary$new$(final boolean b, final long i);
     
     public abstract long $default$Binary$i(final boolean b);
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary Binary$new(final boolean b);
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary Binary$new$(final boolean b);
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new(final boolean b, final long i);
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new$(final boolean b, final long i);
     
     public abstract boolean $default$Binary2$b();
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new();
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new$();
     
     public abstract long $default$Binary2$i(final boolean b);
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new(final boolean b);
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new$(final boolean b);
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new(final boolean b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i);
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new$(final boolean b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i);
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new(final boolean b);
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new$(final boolean b);
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.TypeArg TypeArg$new(final X x);
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.TypeArg TypeArg$new$(final X x);
 }
 final class InstantiatorDelegates$impl<X> {
     
-    InstantiatorDelegates$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<X> $this) {
-        this.$reifiedX = $reifiedX;
+    InstantiatorDelegates$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<X> $this) {
+        this.$reified$X = $reified$X;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
     private final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<X> $this;
     
-    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
-        this.$reifiedX = $reifiedX;
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
+        this.$reified$X = $reified$X;
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Nullary Nullary$new() {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Nullary Nullary$new$() {
         return new Nullary();
     }
     
@@ -53,12 +53,12 @@ final class InstantiatorDelegates$impl<X> {
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.this.$reifiedX), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.Nullary.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.this.$reified$X), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.Nullary.class));
         }
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Unary Unary$new(final boolean b) {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Unary Unary$new$(final boolean b) {
         return new Unary(b);
     }
     
@@ -68,12 +68,12 @@ final class InstantiatorDelegates$impl<X> {
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.this.$reifiedX), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.Unary.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.this.$reified$X), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.Unary.class));
         }
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary Binary$new(final boolean b, final long i) {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary Binary$new$(final boolean b, final long i) {
         return new Binary(b, i);
     }
     
@@ -81,13 +81,13 @@ final class InstantiatorDelegates$impl<X> {
         return 1L;
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary Binary$new(final boolean b) {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary Binary$new$(final boolean b) {
         return (
             let
             {
-                long $ceylontmp$i$$0 = $default$Binary$i(b);
+                long $ceylontmp$$i$$0 = $default$Binary$i(b);
             }
-            returning new Binary(b, $ceylontmp$i$$0);
+            returning new Binary(b, $ceylontmp$$i$$0);
         );
     }
     
@@ -97,12 +97,12 @@ final class InstantiatorDelegates$impl<X> {
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.this.$reifiedX), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.Binary.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.this.$reified$X), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.Binary.class));
         }
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new(final boolean b, final long i) {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new$(final boolean b, final long i) {
         return new Binary2(b, i);
     }
     
@@ -110,14 +110,14 @@ final class InstantiatorDelegates$impl<X> {
         return true;
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new() {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new$() {
         return (
             let
             {
-                boolean $ceylontmp$b$$1 = $default$Binary2$b();
-                long $ceylontmp$i$$2 = $default$Binary2$i($ceylontmp$b$$1);
+                boolean $ceylontmp$$b$$1 = $default$Binary2$b();
+                long $ceylontmp$$i$$2 = $default$Binary2$i($ceylontmp$$b$$1);
             }
-            returning new Binary2($ceylontmp$b$$1, $ceylontmp$i$$2);
+            returning new Binary2($ceylontmp$$b$$1, $ceylontmp$$i$$2);
         );
     }
     
@@ -125,13 +125,13 @@ final class InstantiatorDelegates$impl<X> {
         return 1L;
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new(final boolean b) {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new$(final boolean b) {
         return (
             let
             {
-                long $ceylontmp$i$$3 = $default$Binary2$i(b);
+                long $ceylontmp$$i$$3 = $default$Binary2$i(b);
             }
-            returning new Binary2(b, $ceylontmp$i$$3);
+            returning new Binary2(b, $ceylontmp$$i$$3);
         );
     }
     
@@ -141,22 +141,22 @@ final class InstantiatorDelegates$impl<X> {
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.this.$reifiedX), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.Binary2.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.this.$reified$X), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.Binary2.class));
         }
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new(final boolean b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new$(final boolean b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
         return new Sequenced(b, i);
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new(final boolean b) {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new$(final boolean b) {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$$4 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$$i$$4 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new Sequenced(b, $ceylontmp$i$$4);
+            returning new Sequenced(b, $ceylontmp$$i$$4);
         );
     }
     
@@ -166,12 +166,12 @@ final class InstantiatorDelegates$impl<X> {
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.this.$reifiedX), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.Sequenced.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.this.$reified$X), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.Sequenced.class));
         }
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.TypeArg TypeArg$new(final X x) {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.TypeArg TypeArg$new$(final X x) {
         return new TypeArg(x);
     }
     
@@ -181,88 +181,88 @@ final class InstantiatorDelegates$impl<X> {
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.this.$reifiedX), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.TypeArg.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.this.$reified$X), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.TypeArg.class));
         }
     }
 }
 class InstantiatorDelegatesImpl<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<X> {
     
-    InstantiatorDelegatesImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
-        this.$reifiedX = $reifiedX;
-        this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>($reifiedX, this);
+    InstantiatorDelegatesImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
+        this.$reified$X = $reified$X;
+        this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$ = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>($reified$X, this);
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;
-    protected final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X> $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X> $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X> $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$;
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Nullary Nullary$new() {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this.Nullary$new();
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Nullary Nullary$new$() {
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.Nullary$new$();
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Unary Unary$new(final boolean b) {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this.Unary$new(b);
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Unary Unary$new$(final boolean b) {
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.Unary$new$(b);
     }
     
     @.java.lang.Override
     public final long $default$Binary$i(final boolean b) {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this.$default$Binary$i(b);
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.$default$Binary$i(b);
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary Binary$new(final boolean b) {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this.Binary$new(b);
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary Binary$new$(final boolean b) {
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.Binary$new$(b);
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary Binary$new(final boolean b, final long i) {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this.Binary$new(b, i);
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary Binary$new$(final boolean b, final long i) {
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.Binary$new$(b, i);
     }
     
     @.java.lang.Override
     public final boolean $default$Binary2$b() {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this.$default$Binary2$b();
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.$default$Binary2$b();
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new() {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this.Binary2$new();
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new$() {
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.Binary2$new$();
     }
     
     @.java.lang.Override
     public final long $default$Binary2$i(final boolean b) {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this.$default$Binary2$i(b);
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.$default$Binary2$i(b);
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new(final boolean b) {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this.Binary2$new(b);
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new$(final boolean b) {
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.Binary2$new$(b);
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new(final boolean b, final long i) {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this.Binary2$new(b, i);
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new$(final boolean b, final long i) {
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.Binary2$new$(b, i);
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new(final boolean b) {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this.Sequenced$new(b);
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new$(final boolean b) {
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.Sequenced$new$(b);
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new(final boolean b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this.Sequenced$new(b, i);
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new$(final boolean b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.Sequenced$new$(b, i);
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.TypeArg TypeArg$new(final X x) {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this.TypeArg$new(x);
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.TypeArg TypeArg$new$(final X x) {
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.TypeArg$new$(x);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -271,8 +271,8 @@ class InstantiatorDelegatesImpl<X> implements .com.redhat.ceylon.compiler.java.r
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegatesImpl.class, $reifiedX);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegatesImpl.class, $reified$X);
     }
 }
 final class instantiatorDelegates_ {
@@ -281,18 +281,18 @@ final class instantiatorDelegates_ {
     }
     
     static void instantiatorDelegates(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> a) {
-        a.Nullary$new();
-        a.Nullary$new();
-        a.Unary$new(true);
+        a.Nullary$new$();
+        a.Nullary$new$();
+        a.Unary$new$(true);
         (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> arg$6$callable$ = a;
                 boolean arg$6$0 = true;
             }
-            returning arg$6$callable$.Unary$new(arg$6$0);
+            returning arg$6$callable$.Unary$new$(arg$6$0);
         );
-        a.Binary$new(true);
+        a.Binary$new$(true);
         (
             let
             {
@@ -300,9 +300,9 @@ final class instantiatorDelegates_ {
                 boolean arg$7$0 = true;
                 long arg$7$1 = arg$7$callable$.$default$Binary$i(arg$7$0);
             }
-            returning arg$7$callable$.Binary$new(arg$7$0, arg$7$1);
+            returning arg$7$callable$.Binary$new$(arg$7$0, arg$7$1);
         );
-        a.Binary$new(true, 2L);
+        a.Binary$new$(true, 2L);
         (
             let
             {
@@ -310,9 +310,9 @@ final class instantiatorDelegates_ {
                 boolean arg$8$0 = true;
                 long arg$8$1 = 2L;
             }
-            returning arg$8$callable$.Binary$new(arg$8$0, arg$8$1);
+            returning arg$8$callable$.Binary$new$(arg$8$0, arg$8$1);
         );
-        a.Binary2$new();
+        a.Binary2$new$();
         (
             let
             {
@@ -320,9 +320,9 @@ final class instantiatorDelegates_ {
                 boolean arg$9$0 = arg$9$callable$.$default$Binary2$b();
                 long arg$9$1 = arg$9$callable$.$default$Binary2$i(arg$9$0);
             }
-            returning arg$9$callable$.Binary2$new(arg$9$0, arg$9$1);
+            returning arg$9$callable$.Binary2$new$(arg$9$0, arg$9$1);
         );
-        a.Binary2$new(true);
+        a.Binary2$new$(true);
         (
             let
             {
@@ -330,9 +330,9 @@ final class instantiatorDelegates_ {
                 boolean arg$10$0 = true;
                 long arg$10$1 = arg$10$callable$.$default$Binary2$i(arg$10$0);
             }
-            returning arg$10$callable$.Binary2$new(arg$10$0, arg$10$1);
+            returning arg$10$callable$.Binary2$new$(arg$10$0, arg$10$1);
         );
-        a.Binary2$new(true, 2L);
+        a.Binary2$new$(true, 2L);
         (
             let
             {
@@ -340,9 +340,9 @@ final class instantiatorDelegates_ {
                 boolean arg$11$0 = true;
                 long arg$11$1 = 2L;
             }
-            returning arg$11$callable$.Binary2$new(arg$11$0, arg$11$1);
+            returning arg$11$callable$.Binary2$new$(arg$11$0, arg$11$1);
         );
-        a.Sequenced$new(true);
+        a.Sequenced$new$(true);
         (
             let
             {
@@ -350,19 +350,19 @@ final class instantiatorDelegates_ {
                 boolean arg$12$0 = true;
                 .ceylon.language.Sequential arg$12$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning arg$12$callable$.Sequenced$new(arg$12$0, arg$12$1);
+            returning arg$12$callable$.Sequenced$new$(arg$12$0, arg$12$1);
         );
-        a.Sequenced$new(true, .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}));
+        a.Sequenced$new$(true, .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}));
         (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> arg$13$callable$ = a;
                 boolean arg$13$0 = true;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> arg$13$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> arg$13$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
             }
-            returning arg$13$callable$.Sequenced$new(arg$13$0, arg$13$1);
+            returning arg$13$callable$.Sequenced$new$(arg$13$0, arg$13$1);
         );
-        a.Sequenced$new(true, .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+        a.Sequenced$new$(true, .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L)}));
         (
@@ -370,20 +370,20 @@ final class instantiatorDelegates_ {
             {
                 .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> arg$14$callable$ = a;
                 boolean arg$14$0 = true;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> arg$14$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> arg$14$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                         .ceylon.language.Integer.instance(1L),
                         .ceylon.language.Integer.instance(2L)});
             }
-            returning arg$14$callable$.Sequenced$new(arg$14$0, arg$14$1);
+            returning arg$14$callable$.Sequenced$new$(arg$14$0, arg$14$1);
         );
-        a.TypeArg$new(.ceylon.language.String.instance(""));
+        a.TypeArg$new$(.ceylon.language.String.instance(""));
         (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> arg$15$callable$ = a;
                 .ceylon.language.String arg$15$0 = .ceylon.language.String.instance("");
             }
-            returning arg$15$callable$.TypeArg$new(arg$15$0);
+            returning arg$15$callable$.TypeArg$new$(arg$15$0);
         );
     }
 }

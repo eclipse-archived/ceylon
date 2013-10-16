@@ -14,15 +14,15 @@ interface Boxer<T> {
 }
 final class Boxer$impl<T> {
     
-    Boxer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<T> $this) {
-        this.$reifiedT = $reifiedT;
+    Boxer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<T> $this) {
+        this.$reified$T = $reified$T;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<T> $this;
     
-    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        this.$reifiedT = $reifiedT;
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
     }
     
     public final void setOne(final T one) {
@@ -36,15 +36,15 @@ final class Boxer$impl<T> {
 class IntBoxer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<.ceylon.language.Integer> {
     
     IntBoxer() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$this = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);
         this.one = .ceylon.language.Integer.instance(1L);
         this.two = .ceylon.language.Integer.instance(2L);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$this$;
     }
     private .ceylon.language.Integer one;
     
@@ -75,10 +75,10 @@ class IntBoxer implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.IntBoxer.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.IntBoxer.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.IntBoxer.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.IntBoxer.class);
 }
 final class bug253_ {
     
@@ -92,11 +92,11 @@ final class bug253_ {
         boxer.setOne((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.IntBoxer $ceylontmpopE$0 = boxer;
-                .ceylon.language.Integer $ceylontmpopV$1 = .ceylon.language.Integer.instance(3L);
-                $ceylontmpopE$0.setTwo($ceylontmpopV$1);
+                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.IntBoxer $ceylontmp$opE$0 = boxer;
+                .ceylon.language.Integer $ceylontmp$opV$1 = .ceylon.language.Integer.instance(3L);
+                $ceylontmp$opE$0.setTwo($ceylontmp$opV$1);
             }
-            returning $ceylontmpopV$1;
+            returning $ceylontmp$opV$1;
         ));
     }
     

@@ -19,9 +19,9 @@ class Bug323 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             (
                 let
                 {
-                    long $ceylontmp$f$$0 = $default$Inner$f();
-                    long $ceylontmp$g$$1 = $default$Inner$g($ceylontmp$f$$0);
-                    this($ceylontmp$f$$0, $ceylontmp$g$$1);
+                    long $ceylontmp$$f$$0 = $default$Inner$f();
+                    long $ceylontmp$$g$$1 = $default$Inner$g($ceylontmp$$f$$0);
+                    this($ceylontmp$$f$$0, $ceylontmp$$g$$1);
                 }
                 returning null;
             );
@@ -31,8 +31,8 @@ class Bug323 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             (
                 let
                 {
-                    long $ceylontmp$g$$2 = $default$Inner$g(f);
-                    this(f, $ceylontmp$g$$2);
+                    long $ceylontmp$$g$$2 = $default$Inner$g(f);
+                    this(f, $ceylontmp$$g$$2);
                 }
                 returning null;
             );
@@ -42,12 +42,12 @@ class Bug323 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner.class));
         }
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner v1 = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner();
         final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner v2 = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner(3L);
         final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner v3 = this.new Inner();
@@ -60,8 +60,8 @@ class Bug323 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.class);
 }

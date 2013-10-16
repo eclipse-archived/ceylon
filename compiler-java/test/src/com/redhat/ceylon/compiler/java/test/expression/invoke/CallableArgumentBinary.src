@@ -22,16 +22,16 @@ final class callableArgumentBinary_m_ {
     }
     
     static void callableArgumentBinary_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentBinary_f_.callableArgumentBinary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), "Anything(Integer, String)", (short)-1){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentBinary_f_.callableArgumentBinary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "Anything(Integer, String)", (short)-1){
             
             @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final long $ceylontmpi = ((.ceylon.language.Integer)$param$0).longValue();
-                final .java.lang.String $ceylontmps = ((.ceylon.language.String)$param$1).toString();
+            public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String $ceylontmp$s = ((.ceylon.language.String)$param$1).toString();
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentBinary_bar_.callableArgumentBinary_bar($ceylontmpi, $ceylontmps);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentBinary_bar_.callableArgumentBinary_bar($ceylontmp$i, $ceylontmp$s);
                     }
                     returning null;
                 );

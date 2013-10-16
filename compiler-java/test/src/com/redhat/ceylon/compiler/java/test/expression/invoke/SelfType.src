@@ -2,10 +2,10 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 abstract class SelfType<T extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<T>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    SelfType(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        this.$reifiedT = $reifiedT;
+    SelfType(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
     public abstract long compareTo(final T other);
     
@@ -19,8 +19,8 @@ abstract class SelfType<T extends .com.redhat.ceylon.compiler.java.test.expressi
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType.class, $reifiedT);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType.class, $reified$T);
     }
 }
 final class selfType_ {
@@ -28,16 +28,16 @@ final class selfType_ {
     private selfType_() {
     }
     
-    static <X extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X>>void selfType(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X> x, final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X> y) {
+    static <X extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X>>void selfType(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X> x, final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X> y) {
         ((.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X>)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType)x).compareTo((X)y);
     }
 }
 abstract class SelfType2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    SelfType2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        this.$reifiedT = $reifiedT;
+    SelfType2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
     public abstract long compareTo(final T other);
     
@@ -47,8 +47,8 @@ abstract class SelfType2<T> implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2.class, $reifiedT);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2.class, $reified$T);
     }
 }
 final class selfType2_ {
@@ -56,14 +56,14 @@ final class selfType2_ {
     private selfType2_() {
     }
     
-    static <X>void selfType2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2<X> x, final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2<X> y) {
+    static <X>void selfType2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2<X> x, final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2<X> y) {
         x.compareTo((X)y);
     }
 }
 interface D extends .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.invoke.D> {
     
     public .com.redhat.ceylon.compiler.java.test.expression.invoke.D$impl $com$redhat$ceylon$compiler$java$test$expression$invoke$D$impl();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.D.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.D.class);
 }
 final class D$impl {
     

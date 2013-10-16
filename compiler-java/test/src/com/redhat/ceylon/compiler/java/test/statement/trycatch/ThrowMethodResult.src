@@ -5,12 +5,12 @@ class ThrowMethodResult implements .com.redhat.ceylon.compiler.java.runtime.mode
     ThrowMethodResult() {
     }
     
-    private final .java.lang.Throwable e$priv() {
+    private final .java.lang.Throwable e$priv$() {
         return new .ceylon.language.Exception(.ceylon.language.String.instance("Bang!"), null);
     }
     
-    private final void t$priv() {
-        throw e$priv();
+    private final void t$priv$() {
+        throw e$priv$();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -19,8 +19,8 @@ class ThrowMethodResult implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ThrowMethodResult.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ThrowMethodResult.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ThrowMethodResult.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ThrowMethodResult.class);
 }

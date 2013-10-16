@@ -1,73 +1,73 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotations({
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation(seq = {
+@.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotations$({
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation$(seq = {
                 "a",
                 "b",
                 "c"}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation(seq = {}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation(seq = {
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation$(seq = {}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation$(seq = {
                 "A",
                 "B",
                 "C"}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation(seq = {})})
-@.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotations({
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation(seq = {
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation$(seq = {})})
+@.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotations$({
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation$(seq = {
                 true,
                 false}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation(seq = {}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation(seq = {
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation$(seq = {}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation$(seq = {
                 false,
                 true}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation(seq = {})})
-@.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotations({
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation(seq = {
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation$(seq = {})})
+@.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotations$({
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation$(seq = {
                 97,
                 98,
                 99}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation(seq = {}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation(seq = {
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation$(seq = {}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation$(seq = {
                 65,
                 66,
                 67}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation(seq = {})})
-@.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotations({
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation(seq = {
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation$(seq = {})})
+@.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotations$({
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation$(seq = {
                 1.0,
                 2.0,
                 3.0}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation(seq = {}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation(seq = {
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation$(seq = {}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation$(seq = {
                 4.0,
                 5.0,
                 6.0}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation(seq = {})})
-@.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotations({
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation(seq = {
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation$(seq = {})})
+@.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotations$({
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation$(seq = {
                 1L,
                 2L,
                 3L}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation(seq = {}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation(seq = {
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation$(seq = {}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation$(seq = {
                 4L,
                 5L,
                 6L}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation(seq = {})})
-@.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotations({
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation(seq = {
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation$(seq = {})})
+@.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotations$({
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation$(seq = {
                 .ceylon.language.empty_.class,
                 .ceylon.language.empty_.class}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation(seq = {}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation(seq = {
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation$(seq = {}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation$(seq = {
                 .ceylon.language.empty_.class,
                 .ceylon.language.empty_.class,
                 .ceylon.language.empty_.class}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation(seq = {})})
-@.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotations({
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation(seq = {"::1.0.0:ceylon.language::Vempty"}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation(seq = {}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation(seq = {"::1.0.0:ceylon.language::Vempty"}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation(seq = {})})
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation$(seq = {})})
+@.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotations$({
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$(seq = {"::1.0.0:ceylon.language::Vempty"}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$(seq = {}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$(seq = {"::1.0.0:ceylon.language::Vempty"}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$(seq = {})})
 class SequenceDefaults_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     SequenceDefaults_callsite() {
@@ -79,8 +79,8 @@ class SequenceDefaults_callsite implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_callsite.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_callsite.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_callsite.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_callsite.class);
 }

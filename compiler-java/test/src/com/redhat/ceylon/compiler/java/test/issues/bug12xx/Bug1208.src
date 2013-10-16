@@ -14,27 +14,27 @@ interface Bug1208I<T> {
 }
 final class Bug1208I$impl<T> {
     
-    Bug1208I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208I<T> $this) {
-        this.$reifiedT = $reifiedT;
+    Bug1208I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208I<T> $this) {
+        this.$reified$T = $reified$T;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208I<T> $this;
     
-    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        this.$reifiedT = $reifiedT;
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
     }
 }
 class Bug1208 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208I<.ceylon.language.Integer> {
     
     Bug1208() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1208I$this = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208I$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1208I$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208I$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208I$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1208I$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208I$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1208I$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208I$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1208I$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1208I$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1208I$this$;
     }
     
     @.java.lang.Override
@@ -63,8 +63,8 @@ class Bug1208 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208.class);
 }

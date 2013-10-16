@@ -5,15 +5,15 @@ class MethodWhileIsNull implements .com.redhat.ceylon.compiler.java.runtime.mode
     MethodWhileIsNull() {
     }
     
-    private final long owt$priv(final .ceylon.language.Integer n) {
+    private final long owt$priv$(final .ceylon.language.Integer n) {
         return 0L;
     }
     
-    private final long nowt$priv(final .java.lang.Object n) {
+    private final long nowt$priv$(final .java.lang.Object n) {
         return 0L;
     }
     
-    private final long m1$priv(final .ceylon.language.Integer x) {
+    private final long m1$priv$(final .ceylon.language.Integer x) {
         while (true) {
             .java.lang.Object x$0;
             if ((x$0 = x) != null) {
@@ -21,10 +21,10 @@ class MethodWhileIsNull implements .com.redhat.ceylon.compiler.java.runtime.mode
                 return x$1;
             } else break;
         }
-        return owt$priv(x);
+        return owt$priv$(x);
     }
     
-    private final long m2$priv(final .ceylon.language.Integer x) {
+    private final long m2$priv$(final .ceylon.language.Integer x) {
         while (true) {
             .java.lang.Object y$2;
             if ((y$2 = x) != null) {
@@ -32,27 +32,27 @@ class MethodWhileIsNull implements .com.redhat.ceylon.compiler.java.runtime.mode
                 return y$3;
             } else break;
         }
-        return owt$priv(x);
+        return owt$priv$(x);
     }
     
-    private final long m3$priv(final .ceylon.language.Integer x) {
+    private final long m3$priv$(final .ceylon.language.Integer x) {
         while (true) {
             if (x == null) {
-                return nowt$priv(x);
+                return nowt$priv$(x);
             } else break;
         }
-        return owt$priv(x);
+        return owt$priv$(x);
     }
     
-    private final long m4$priv(final .ceylon.language.Integer x) {
+    private final long m4$priv$(final .ceylon.language.Integer x) {
         while (true) {
             .java.lang.Object y$5;
             if ((y$5 = x) == null) {
                 final .java.lang.Object y$6 = y$5;
-                return nowt$priv(y$6);
+                return nowt$priv$(y$6);
             } else break;
         }
-        return owt$priv(x);
+        return owt$priv$(x);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -61,8 +61,8 @@ class MethodWhileIsNull implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsNull.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsNull.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsNull.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsNull.class);
 }

@@ -5,7 +5,7 @@ class MethodWhileConditionListExistsIsBool implements .com.redhat.ceylon.compile
     MethodWhileConditionListExistsIsBool() {
     }
     
-    private final boolean m$priv(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
+    private final boolean m$priv$(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
         while (true) {
             .java.lang.Object y$2;
             .java.lang.Object z$0;
@@ -28,8 +28,8 @@ class MethodWhileConditionListExistsIsBool implements .com.redhat.ceylon.compile
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListExistsIsBool.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListExistsIsBool.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListExistsIsBool.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListExistsIsBool.class);
 }

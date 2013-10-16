@@ -17,15 +17,15 @@ final class bug1284_ {
         
         final class Consumer$impl<E> {
             
-            Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1284$0$Consumer_<? super E> $this) {
-                this.$reifiedE = $reifiedE;
+            Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1284$0$Consumer_<? super E> $this) {
+                this.$reified$E = $reified$E;
                 this.$this = $this;
             }
-            private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE;
+            private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E;
             private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1284$0$Consumer_<? super E> $this;
             
-            public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE) {
-                this.$reifiedE = $reifiedE;
+            public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E) {
+                this.$reified$E = $reified$E;
             }
             
             public void add(final E e) {

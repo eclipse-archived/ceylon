@@ -5,7 +5,7 @@ class ImportWildcard implements .com.redhat.ceylon.compiler.java.runtime.model.R
     ImportWildcard() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         new .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.C1();
         new .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.C2();
         boolean b = .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.f1_.get_();
@@ -20,8 +20,8 @@ class ImportWildcard implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.import_.ImportWildcard.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.import_.ImportWildcard.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.import_.ImportWildcard.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.import_.ImportWildcard.class);
 }

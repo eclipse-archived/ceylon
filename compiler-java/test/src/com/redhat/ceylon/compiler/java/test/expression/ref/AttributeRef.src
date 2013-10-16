@@ -2,16 +2,16 @@ package com.redhat.ceylon.compiler.java.test.expression.ref;
 
 class AttributeRef<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    AttributeRef(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
-        this.$reifiedT = $reifiedT;
+    AttributeRef(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        this.$reified$T = $reified$T;
         this.t = t;
         this.val = "val";
-        this.typeParam = getT$priv();
+        this.typeParam = getT$priv$();
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     private final T t;
     
-    private final T getT$priv() {
+    private final T getT$priv$() {
         return t;
     }
     private final .java.lang.String val;
@@ -26,128 +26,128 @@ class AttributeRef<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     public final void simple(final .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<.ceylon.language.String> other) {
-        final .ceylon.language.Callable<? extends .ceylon.language.String> valRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, $reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, $reifiedT), .ceylon.language.Empty.$TypeDescriptor), "String(AttributeRef<T>)", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.String> valRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, $reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, $reified$T), .ceylon.language.Empty.$TypeDescriptor$), "String(AttributeRef<T>)", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
-                final .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<T> $instance = (.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<T>)(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef)$param$0;
-                return .ceylon.language.String.instance($instance.getVal());
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<T> $instance$ = (.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<T>)(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef)$param$0;
+                return .ceylon.language.String.instance($instance$.getVal());
             }
         };
-        if (.ceylon.language.String.instance("val").equals(valRef.$call(this))) {
+        if (.ceylon.language.String.instance("val").equals(valRef.$call$(this))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"val\" == valRef(this)"));
-        final .ceylon.language.Callable<? extends .ceylon.language.String> valRef2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, .ceylon.language.String.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, .ceylon.language.String.$TypeDescriptor), .ceylon.language.Empty.$TypeDescriptor), "String(AttributeRef<String>)", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.String> valRef2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), "String(AttributeRef<String>)", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
-                final .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<.ceylon.language.String> $instance = (.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<.ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef)$param$0;
-                return .ceylon.language.String.instance($instance.getVal());
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<.ceylon.language.String> $instance$ = (.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<.ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef)$param$0;
+                return .ceylon.language.String.instance($instance$.getVal());
             }
         };
-        if (.ceylon.language.String.instance("val").equals(valRef2.$call(other))) {
+        if (.ceylon.language.String.instance("val").equals(valRef2.$call$(other))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"val\" == valRef2(other)"));
-        final .ceylon.language.Callable<? extends T> typeParamRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<T>($reifiedT, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, $reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, $reifiedT), .ceylon.language.Empty.$TypeDescriptor), "T(AttributeRef<T>)", (short)-1){
+        final .ceylon.language.Callable<? extends T> typeParamRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<T>($reified$T, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, $reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, $reified$T), .ceylon.language.Empty.$TypeDescriptor$), "T(AttributeRef<T>)", (short)-1){
             
             @.java.lang.Override
-            public T $call(final .java.lang.Object $param$0) {
-                final .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<T> $instance = (.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<T>)(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef)$param$0;
-                return $instance.getTypeParam();
+            public T $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<T> $instance$ = (.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<T>)(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef)$param$0;
+                return $instance$.getTypeParam();
             }
         };
-        if (getT$priv().equals(typeParamRef.$call(this))) {
+        if (getT$priv$().equals(typeParamRef.$call$(this))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "t == typeParamRef(this)"));
-        final .ceylon.language.Callable<? extends .ceylon.language.String> stringTypeParamRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, .ceylon.language.String.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, .ceylon.language.String.$TypeDescriptor), .ceylon.language.Empty.$TypeDescriptor), "String(AttributeRef<String>)", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.String> stringTypeParamRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), "String(AttributeRef<String>)", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
-                final .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<.ceylon.language.String> $instance = (.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<.ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef)$param$0;
-                return $instance.getTypeParam();
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<.ceylon.language.String> $instance$ = (.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<.ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef)$param$0;
+                return $instance$.getTypeParam();
             }
         };
-        if (.ceylon.language.String.instance("foo").equals(stringTypeParamRef.$call(other))) {
+        if (.ceylon.language.String.instance("foo").equals(stringTypeParamRef.$call$(other))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"foo\" == stringTypeParamRef(other)"));
     }
     
     public final void assortedLanguage() {
-        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Boolean>> objectEqualsRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Boolean>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Boolean(Object)(Object)", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Boolean>> objectEqualsRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Boolean>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Boolean(Object)(Object)", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.Callable<? extends .ceylon.language.Boolean> $call(final .java.lang.Object $param$0) {
-                final .java.lang.Object $instance = $param$0;
-                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Boolean(Object)", (short)-1){
+            public .ceylon.language.Callable<? extends .ceylon.language.Boolean> $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $instance$ = $param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Boolean(Object)", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.Boolean $call(final .java.lang.Object $param$0) {
+                    public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
                         final .java.lang.Object that = $param$0;
-                        return .ceylon.language.Boolean.instance($instance.equals(that));
+                        return .ceylon.language.Boolean.instance($instance$.equals(that));
                     }
                 };
             }
         };
-        if (objectEqualsRef.$call(this).$call(this).booleanValue()) {
+        if (objectEqualsRef.$call$(this).$call$(this).booleanValue()) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "objectEqualsRef(this)(this)"));
-        if (!objectEqualsRef.$call(this).$call(.ceylon.language.String.instance("")).booleanValue()) {
+        if (!objectEqualsRef.$call$(this).$call$(.ceylon.language.String.instance("")).booleanValue()) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!objectEqualsRef(this)(\"\")"));
-        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Boolean>> stringEqualsRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Boolean>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Boolean(Object)(String)", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Boolean>> stringEqualsRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Boolean>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Boolean(Object)(String)", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.Callable<? extends .ceylon.language.Boolean> $call(final .java.lang.Object $param$0) {
-                final .ceylon.language.String $instance = (.ceylon.language.String)$param$0;
-                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Boolean(Object)", (short)-1){
+            public .ceylon.language.Callable<? extends .ceylon.language.Boolean> $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.String $instance$ = (.ceylon.language.String)$param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Boolean(Object)", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.Boolean $call(final .java.lang.Object $param$0) {
+                    public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
                         final .java.lang.Object that = $param$0;
-                        return .ceylon.language.Boolean.instance($instance.equals(that));
+                        return .ceylon.language.Boolean.instance($instance$.equals(that));
                     }
                 };
             }
         };
-        if (stringEqualsRef.$call(.ceylon.language.String.instance("")).$call(.ceylon.language.String.instance("")).booleanValue()) {
+        if (stringEqualsRef.$call$(.ceylon.language.String.instance("")).$call$(.ceylon.language.String.instance("")).booleanValue()) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stringEqualsRef(\"\")(\"\")"));
-        if (!stringEqualsRef.$call(.ceylon.language.String.instance("")).$call(this).booleanValue()) {
+        if (!stringEqualsRef.$call$(.ceylon.language.String.instance("")).$call$(this).booleanValue()) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!stringEqualsRef(\"\")(this)"));
-        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> integerPlus = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Integer(Integer)(Integer)", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> integerPlus = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)(Integer)", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.Callable<? extends .ceylon.language.Integer> $call(final .java.lang.Object $param$0) {
-                final .ceylon.language.Integer $instance = (.ceylon.language.Integer)$param$0;
-                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Integer(Integer)", (short)-1){
+            public .ceylon.language.Callable<? extends .ceylon.language.Integer> $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer $instance$ = (.ceylon.language.Integer)$param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
                         final .ceylon.language.Integer other = (.ceylon.language.Integer)$param$0;
-                        return $instance.plus(other);
+                        return $instance$.plus(other);
                     }
                 };
             }
         };
-        if (.ceylon.language.Integer.instance(2L).equals(integerPlus.$call(.ceylon.language.Integer.instance(1L)).$call(.ceylon.language.Integer.instance(1L)))) {
+        if (.ceylon.language.Integer.instance(2L).equals(integerPlus.$call$(.ceylon.language.Integer.instance(1L)).$call$(.ceylon.language.Integer.instance(1L)))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "2 == integerPlus(1)(1)"));
-        if (.ceylon.language.Integer.instance(1L).equals(integerPlus.$call(.ceylon.language.Integer.instance(0L)).$call(.ceylon.language.Integer.instance(1L)))) {
+        if (.ceylon.language.Integer.instance(1L).equals(integerPlus.$call$(.ceylon.language.Integer.instance(0L)).$call$(.ceylon.language.Integer.instance(1L)))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == integerPlus(0)(1)"));
-        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> stringPlus = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(String)(String)", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> stringPlus = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String)(String)", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.Callable<? extends .ceylon.language.String> $call(final .java.lang.Object $param$0) {
-                final .ceylon.language.String $instance = (.ceylon.language.String)$param$0;
-                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(String)", (short)-1){
+            public .ceylon.language.Callable<? extends .ceylon.language.String> $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.String $instance$ = (.ceylon.language.String)$param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String)", (short)-1){
                     
                     @.java.lang.Override
-                    public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                    public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                         final .ceylon.language.String other = (.ceylon.language.String)$param$0;
-                        return $instance.plus(other);
+                        return $instance$.plus(other);
                     }
                 };
             }
         };
-        if (.ceylon.language.String.instance("foobar").equals(stringPlus.$call(.ceylon.language.String.instance("foo")).$call(.ceylon.language.String.instance("bar")))) {
+        if (.ceylon.language.String.instance("foobar").equals(stringPlus.$call$(.ceylon.language.String.instance("foo")).$call$(.ceylon.language.String.instance("bar")))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"foobar\" == stringPlus(\"foo\")(\"bar\")"));
-        if (stringEqualsRef.$call(.ceylon.language.String.instance("foobar")).$call(stringPlus.$call(.ceylon.language.String.instance("foo")).$call(.ceylon.language.String.instance("bar"))).booleanValue()) {
+        if (stringEqualsRef.$call$(.ceylon.language.String.instance("foobar")).$call$(stringPlus.$call$(.ceylon.language.String.instance("foo")).$call$(.ceylon.language.String.instance("bar"))).booleanValue()) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stringEqualsRef(\"foobar\")(stringPlus(\"foo\")(\"bar\"))"));
     }
     
-    public .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<T>.Inner Inner$new(final .java.lang.String s) {
+    public .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<T>.Inner Inner$new$(final .java.lang.String s) {
         return new Inner(s);
     }
     
@@ -158,36 +158,36 @@ class AttributeRef<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
         }
         private final .java.lang.String s;
         
-        private final .java.lang.String getS$priv() {
+        private final .java.lang.String getS$priv$() {
             return s;
         }
         
         public final .java.lang.String getBar() {
-            return new .java.lang.StringBuilder().append("Inner(").append(getS$priv()).append(")").toString();
+            return new .java.lang.StringBuilder().append("Inner(").append(getS$priv$()).append(")").toString();
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.Inner.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.Inner.class));
         }
     }
     
     public final void innerClass() {
-        final .ceylon.language.Callable<? extends .ceylon.language.String> innerRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.Inner.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.Inner.class)), .ceylon.language.Empty.$TypeDescriptor), "String(AttributeRef<T>.Inner)", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.String> innerRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.Inner.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.Inner.class)), .ceylon.language.Empty.$TypeDescriptor$), "String(AttributeRef<T>.Inner)", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
-                final .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<T>.Inner $instance = (.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<T>.Inner)$param$0;
-                return .ceylon.language.String.instance($instance.getBar());
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<T>.Inner $instance$ = (.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<T>.Inner)$param$0;
+                return .ceylon.language.String.instance($instance$.getBar());
             }
         };
-        if (.ceylon.language.String.instance("Inner(bar)").equals(innerRef.$call(Inner$new("bar")))) {
+        if (.ceylon.language.String.instance("Inner(bar)").equals(innerRef.$call$(Inner$new$("bar")))) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"Inner(bar)\" == innerRef(Inner(\"bar\"))"));
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, $reifiedT);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef.class, $reified$T);
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
@@ -199,7 +199,7 @@ final class attributeRef_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void attributeRef() {
-        final .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<.ceylon.language.String> ar = new .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("foo"));
+        final .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<.ceylon.language.String> ar = new .com.redhat.ceylon.compiler.java.test.expression.ref.AttributeRef<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("foo"));
         ar.simple(ar);
         ar.assortedLanguage();
         ar.innerClass();

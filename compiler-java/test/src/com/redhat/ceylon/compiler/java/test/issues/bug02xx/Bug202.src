@@ -8,27 +8,27 @@ interface Bug202_ReadList<T> {
 }
 final class Bug202_ReadList$impl<T> {
     
-    Bug202_ReadList$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends T> $this) {
-        this.$reifiedT = $reifiedT;
+    Bug202_ReadList$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends T> $this) {
+        this.$reified$T = $reified$T;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends T> $this;
     
-    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        this.$reifiedT = $reifiedT;
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
     }
 }
 class Bug202_Tricky implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky>> {
     
     Bug202_Tricky() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug202_ReadList$this = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList$impl<.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList.class, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky.$TypeDescriptor), this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug202_ReadList$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList$impl<.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList.class, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky.$TypeDescriptor$), this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList$impl<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky>> $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug202_ReadList$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList$impl<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky>> $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug202_ReadList$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList$impl<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky>> $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug202_ReadList$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug202_ReadList$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug202_ReadList$this$;
     }
     
     @.java.lang.Override
@@ -42,10 +42,10 @@ class Bug202_Tricky implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky.class);
 }
 final class bug202_tricky_ {
     

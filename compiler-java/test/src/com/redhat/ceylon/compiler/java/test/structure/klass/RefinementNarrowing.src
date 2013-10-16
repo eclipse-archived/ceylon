@@ -10,18 +10,18 @@ interface RNParameters<Element, Absent> {
 }
 final class RNParameters$impl<Element, Absent> {
     
-    RNParameters$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAbsent, .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters<Element, Absent> $this) {
-        this.$reifiedElement = $reifiedElement;
-        this.$reifiedAbsent = $reifiedAbsent;
+    RNParameters$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters<Element, Absent> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$reified$Absent = $reified$Absent;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAbsent;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent;
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters<Element, Absent> $this;
     
-    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAbsent) {
-        this.$reifiedAbsent = $reifiedAbsent;
-        this.$reifiedElement = $reifiedElement;
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent) {
+        this.$reified$Absent = $reified$Absent;
+        this.$reified$Element = $reified$Element;
     }
     
     public .java.lang.Object m2(final .java.lang.Object p) {
@@ -30,21 +30,21 @@ final class RNParameters$impl<Element, Absent> {
 }
 class RNParametersImpl<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters<Element, .java.lang.Object> {
     
-    RNParametersImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
-        this.$reifiedElement = $reifiedElement;
-        this.$com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters$impl<Element, .java.lang.Object>($reifiedElement, .ceylon.language.Null.$TypeDescriptor, this);
+    RNParametersImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters$impl<Element, .java.lang.Object>($reified$Element, .ceylon.language.Null.$TypeDescriptor$, this);
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
-    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters$impl<Element, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$this;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters$impl<Element, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters$impl<Element, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$this;
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$this$;
     }
     
     @.java.lang.Override
     public .java.lang.Object m2(final .java.lang.Object p) {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$this.m2(p);
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$this$.m2(p);
     }
     
     @.java.lang.Override
@@ -58,7 +58,7 @@ class RNParametersImpl<Element> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RNParametersImpl.class, $reifiedElement);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RNParametersImpl.class, $reified$Element);
     }
 }

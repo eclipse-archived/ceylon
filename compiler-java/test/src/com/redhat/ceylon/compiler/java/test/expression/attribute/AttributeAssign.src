@@ -8,11 +8,11 @@ class AttributeAssign implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     private boolean b1;
     
-    private final boolean getB1$priv() {
+    private final boolean getB1$priv$() {
         return b1;
     }
     
-    private final void setB1$priv(final boolean b1) {
+    private final void setB1$priv$(final boolean b1) {
         this.b1 = b1;
     }
     private boolean b2;
@@ -25,11 +25,11 @@ class AttributeAssign implements .com.redhat.ceylon.compiler.java.runtime.model.
         this.b2 = b2;
     }
     
-    private final boolean getB3$priv() {
+    private final boolean getB3$priv$() {
         return true;
     }
     
-    private final void setB3$priv(final boolean b3) {
+    private final void setB3$priv$(final boolean b3) {
         final boolean _b3 = b3;
     }
     
@@ -41,10 +41,10 @@ class AttributeAssign implements .com.redhat.ceylon.compiler.java.runtime.model.
         final boolean _b4 = b4;
     }
     
-    private final void m$priv() {
-        setB1$priv(false);
+    private final void m$priv$() {
+        setB1$priv$(false);
         setB2(false);
-        setB3$priv(false);
+        setB3$priv$(false);
         setB4(false);
     }
     
@@ -54,8 +54,8 @@ class AttributeAssign implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeAssign.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeAssign.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeAssign.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeAssign.class);
 }

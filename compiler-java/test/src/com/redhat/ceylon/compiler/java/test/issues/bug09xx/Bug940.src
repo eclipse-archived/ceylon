@@ -3,13 +3,13 @@ package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 public class Bug940 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public Bug940(final .ceylon.language.Callable<? extends .java.lang.Object> callable) {
-        final .ceylon.language.Callable<? extends .java.lang.Object> z = (.ceylon.language.Callable)callable.$call();
-        z.$call();
+        final .ceylon.language.Callable<? extends .java.lang.Object> z = (.ceylon.language.Callable)callable.$call$();
+        z.$call$();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug940.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug940.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug940.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug940.class);
 }

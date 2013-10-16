@@ -5,7 +5,7 @@ class ExceptionAttributes implements .com.redhat.ceylon.compiler.java.runtime.mo
     ExceptionAttributes() {
     }
     
-    private final void m$priv(final .java.lang.Throwable e) {
+    private final void m$priv$(final .java.lang.Throwable e) {
         final .java.lang.Throwable c = e.getCause();
         .java.lang.Throwable cause$1;
         if ((cause$1 = e.getCause()) != null) {
@@ -22,8 +22,8 @@ class ExceptionAttributes implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.class);
 }

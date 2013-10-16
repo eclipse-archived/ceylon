@@ -5,12 +5,12 @@ class MethodSpecifierGetter implements .com.redhat.ceylon.compiler.java.runtime.
     MethodSpecifierGetter() {
     }
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getF$priv() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getF$priv$() {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final long foo$priv(final boolean b) {
-        return getF$priv().$call(.ceylon.language.Boolean.instance(b)).longValue();
+    private final long foo$priv$(final boolean b) {
+        return getF$priv$().$call$(.ceylon.language.Boolean.instance(b)).longValue();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -19,8 +19,8 @@ class MethodSpecifierGetter implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierGetter.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierGetter.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierGetter.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierGetter.class);
 }

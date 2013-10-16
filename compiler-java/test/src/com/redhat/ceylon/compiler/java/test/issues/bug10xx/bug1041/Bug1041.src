@@ -2,22 +2,22 @@ package com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041;
 
 abstract class Buffer<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Buffer(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        this.$reifiedT = $reifiedT;
+    Buffer(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
     public abstract T get();
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.Buffer.class, $reifiedT);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.Buffer.class, $reified$T);
     }
 }
 class ByteBuffer extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.Buffer<.ceylon.language.Integer> {
     
     ByteBuffer() {
-        super(.ceylon.language.Integer.$TypeDescriptor);
+        super(.ceylon.language.Integer.$TypeDescriptor$);
     }
     
     @.java.lang.Override
@@ -31,19 +31,19 @@ class ByteBuffer extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bu
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.ByteBuffer.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.ByteBuffer.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.ByteBuffer.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.ByteBuffer.class);
 }
 class Bug1041<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug1041(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        this.$reifiedT = $reifiedT;
+    Bug1041(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
         this.stringProp = null;
         this.taProp = null;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     private final .ceylon.language.String stringProp;
     
     public final .ceylon.language.String getStringProp() {
@@ -70,9 +70,9 @@ class Bug1041<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                 .ceylon.language.String safe$1 = (
                     let
                     {
-                        .java.lang.String $ceylontmp0 = java.getStringProp();
+                        .java.lang.String $ceylontmp$0 = java.getStringProp();
                     }
-                    returning $ceylontmp0 != null ? .ceylon.language.String.instance($ceylontmp0) : null;
+                    returning $ceylontmp$0 != null ? .ceylon.language.String.instance($ceylontmp$0) : null;
                 );
             }
             returning safe$1 != null ? .ceylon.language.Integer.instance(safe$1.getSize()) : null;
@@ -83,9 +83,9 @@ class Bug1041<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                 .ceylon.language.String safe$3 = (
                     let
                     {
-                        .java.lang.String $ceylontmp2 = java.stringMethod();
+                        .java.lang.String $ceylontmp$2 = java.stringMethod();
                     }
-                    returning $ceylontmp2 != null ? .ceylon.language.String.instance($ceylontmp2) : null;
+                    returning $ceylontmp$2 != null ? .ceylon.language.String.instance($ceylontmp$2) : null;
                 );
             }
             returning safe$3 != null ? .ceylon.language.Integer.instance(safe$3.getSize()) : null;
@@ -107,56 +107,56 @@ class Bug1041<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         final .java.lang.String elseOp1 = (
             let
             {
-                .ceylon.language.String $ceylontmp7 = (
+                .ceylon.language.String $ceylontmp$7 = (
                     let
                     {
-                        .java.lang.String $ceylontmp6 = java.getStringProp();
+                        .java.lang.String $ceylontmp$6 = java.getStringProp();
                     }
-                    returning $ceylontmp6 != null ? .ceylon.language.String.instance($ceylontmp6) : null;
+                    returning $ceylontmp$6 != null ? .ceylon.language.String.instance($ceylontmp$6) : null;
                 );
             }
-            returning $ceylontmp7 != null ? $ceylontmp7 : .ceylon.language.String.instance("");
+            returning $ceylontmp$7 != null ? $ceylontmp$7 : .ceylon.language.String.instance("");
         ).toString();
         final .java.lang.String elseOp2 = (
             let
             {
-                .ceylon.language.String $ceylontmp9 = (
+                .ceylon.language.String $ceylontmp$9 = (
                     let
                     {
-                        .java.lang.String $ceylontmp8 = java.stringMethod();
+                        .java.lang.String $ceylontmp$8 = java.stringMethod();
                     }
-                    returning $ceylontmp8 != null ? .ceylon.language.String.instance($ceylontmp8) : null;
+                    returning $ceylontmp$8 != null ? .ceylon.language.String.instance($ceylontmp$8) : null;
                 );
             }
-            returning $ceylontmp9 != null ? $ceylontmp9 : .ceylon.language.String.instance("");
+            returning $ceylontmp$9 != null ? $ceylontmp$9 : .ceylon.language.String.instance("");
         ).toString();
         final long elseOp3 = (
             let
             {
-                .ceylon.language.Integer $ceylontmp10 = java.getTaProp();
+                .ceylon.language.Integer $ceylontmp$10 = java.getTaProp();
             }
-            returning $ceylontmp10 != null ? $ceylontmp10 : .ceylon.language.Integer.instance(0L);
+            returning $ceylontmp$10 != null ? $ceylontmp$10 : .ceylon.language.Integer.instance(0L);
         ).longValue();
         final long elseOp4 = (
             let
             {
-                .ceylon.language.Integer $ceylontmp11 = java.taMethod();
+                .ceylon.language.Integer $ceylontmp$11 = java.taMethod();
             }
-            returning $ceylontmp11 != null ? $ceylontmp11 : .ceylon.language.Integer.instance(0L);
+            returning $ceylontmp$11 != null ? $ceylontmp$11 : .ceylon.language.Integer.instance(0L);
         ).longValue();
         final boolean existsOp1 = (
             let
             {
-                .java.lang.String $ceylontmp12 = java.getStringProp();
+                .java.lang.String $ceylontmp$12 = java.getStringProp();
             }
-            returning $ceylontmp12 != null ? .ceylon.language.String.instance($ceylontmp12) : null;
+            returning $ceylontmp$12 != null ? .ceylon.language.String.instance($ceylontmp$12) : null;
         ) != null;
         final boolean existsOp2 = (
             let
             {
-                .java.lang.String $ceylontmp13 = java.stringMethod();
+                .java.lang.String $ceylontmp$13 = java.stringMethod();
             }
-            returning $ceylontmp13 != null ? .ceylon.language.String.instance($ceylontmp13) : null;
+            returning $ceylontmp$13 != null ? .ceylon.language.String.instance($ceylontmp$13) : null;
         ) != null;
         final boolean existsOp3 = java.getTaProp() != null;
         final boolean existsOp4 = java.taMethod() != null;
@@ -195,30 +195,30 @@ class Bug1041<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         final .java.lang.String elseOp1 = (
             let
             {
-                .ceylon.language.String $ceylontmp18 = java.getStringProp();
+                .ceylon.language.String $ceylontmp$18 = java.getStringProp();
             }
-            returning $ceylontmp18 != null ? $ceylontmp18 : .ceylon.language.String.instance("");
+            returning $ceylontmp$18 != null ? $ceylontmp$18 : .ceylon.language.String.instance("");
         ).toString();
         final .java.lang.String elseOp2 = (
             let
             {
-                .ceylon.language.String $ceylontmp19 = java.stringMethod();
+                .ceylon.language.String $ceylontmp$19 = java.stringMethod();
             }
-            returning $ceylontmp19 != null ? $ceylontmp19 : .ceylon.language.String.instance("");
+            returning $ceylontmp$19 != null ? $ceylontmp$19 : .ceylon.language.String.instance("");
         ).toString();
         final long elseOp3 = (
             let
             {
-                .ceylon.language.Integer $ceylontmp20 = java.getTaProp();
+                .ceylon.language.Integer $ceylontmp$20 = java.getTaProp();
             }
-            returning $ceylontmp20 != null ? $ceylontmp20 : .ceylon.language.Integer.instance(0L);
+            returning $ceylontmp$20 != null ? $ceylontmp$20 : .ceylon.language.Integer.instance(0L);
         ).longValue();
         final long elseOp4 = (
             let
             {
-                .ceylon.language.Integer $ceylontmp21 = java.taMethod();
+                .ceylon.language.Integer $ceylontmp$21 = java.taMethod();
             }
-            returning $ceylontmp21 != null ? $ceylontmp21 : .ceylon.language.Integer.instance(0L);
+            returning $ceylontmp$21 != null ? $ceylontmp$21 : .ceylon.language.Integer.instance(0L);
         ).longValue();
         final boolean existsOp1 = java.getStringProp() != null;
         final boolean existsOp2 = java.stringMethod() != null;
@@ -232,7 +232,7 @@ class Bug1041<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.Bug1041.class, $reifiedT);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.Bug1041.class, $reified$T);
     }
 }

@@ -126,52 +126,52 @@ class BasicTypes implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     private final long privateAttrInteger;
     
-    private final long getPrivateAttrInteger$priv() {
+    private final long getPrivateAttrInteger$priv$() {
         return privateAttrInteger;
     }
     private final double privateAttrFloat;
     
-    private final double getPrivateAttrFloat$priv() {
+    private final double getPrivateAttrFloat$priv$() {
         return privateAttrFloat;
     }
     private final .java.lang.String privateAttrString;
     
-    private final .java.lang.String getPrivateAttrString$priv() {
+    private final .java.lang.String getPrivateAttrString$priv$() {
         return privateAttrString;
     }
     private final boolean privateAttrBoolean;
     
-    private final boolean getPrivateAttrBoolean$priv() {
+    private final boolean getPrivateAttrBoolean$priv$() {
         return privateAttrBoolean;
     }
     private final int privateAttrCharacter;
     
-    private final int getPrivateAttrCharacter$priv() {
+    private final int getPrivateAttrCharacter$priv$() {
         return privateAttrCharacter;
     }
     private final .ceylon.language.Integer privateAttrOptionalInteger;
     
-    private final .ceylon.language.Integer getPrivateAttrOptionalInteger$priv() {
+    private final .ceylon.language.Integer getPrivateAttrOptionalInteger$priv$() {
         return privateAttrOptionalInteger;
     }
     private final .ceylon.language.Float privateAttrOptionalFloat;
     
-    private final .ceylon.language.Float getPrivateAttrOptionalFloat$priv() {
+    private final .ceylon.language.Float getPrivateAttrOptionalFloat$priv$() {
         return privateAttrOptionalFloat;
     }
     private final .ceylon.language.String privateAttrOptionalString;
     
-    private final .ceylon.language.String getPrivateAttrOptionalString$priv() {
+    private final .ceylon.language.String getPrivateAttrOptionalString$priv$() {
         return privateAttrOptionalString;
     }
     private final .ceylon.language.Boolean privateAttrOptionalBoolean;
     
-    private final .ceylon.language.Boolean getPrivateAttrOptionalBoolean$priv() {
+    private final .ceylon.language.Boolean getPrivateAttrOptionalBoolean$priv$() {
         return privateAttrOptionalBoolean;
     }
     private final .ceylon.language.Character privateAttrOptionalCharacter;
     
-    private final .ceylon.language.Character getPrivateAttrOptionalCharacter$priv() {
+    private final .ceylon.language.Character getPrivateAttrOptionalCharacter$priv$() {
         return privateAttrOptionalCharacter;
     }
     private final long sharedAttrInteger;
@@ -225,85 +225,85 @@ class BasicTypes implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         return sharedAttrOptionalCharacter;
     }
     
-    private final void m$priv() {
-        final long localAttrInteger = getPrivateAttrInteger$priv();
-        final double localAttrFloat = getPrivateAttrFloat$priv();
-        final .java.lang.String localAttrString = getPrivateAttrString$priv();
-        final boolean localAttrBoolean = getPrivateAttrBoolean$priv();
-        final int localAttrCharacter = getPrivateAttrCharacter$priv();
-        final .ceylon.language.Integer localAttrOptionalInteger = getPrivateAttrOptionalInteger$priv();
-        final .ceylon.language.Float localAttrOptionalFloat = getPrivateAttrOptionalFloat$priv();
-        final .ceylon.language.String localAttrOptionalString = getPrivateAttrOptionalString$priv();
-        final .ceylon.language.Boolean localAttrOptionalBoolean = getPrivateAttrOptionalBoolean$priv();
-        final .ceylon.language.Character localAttrOptionalCharacter = getPrivateAttrOptionalCharacter$priv();
+    private final void m$priv$() {
+        final long localAttrInteger = getPrivateAttrInteger$priv$();
+        final double localAttrFloat = getPrivateAttrFloat$priv$();
+        final .java.lang.String localAttrString = getPrivateAttrString$priv$();
+        final boolean localAttrBoolean = getPrivateAttrBoolean$priv$();
+        final int localAttrCharacter = getPrivateAttrCharacter$priv$();
+        final .ceylon.language.Integer localAttrOptionalInteger = getPrivateAttrOptionalInteger$priv$();
+        final .ceylon.language.Float localAttrOptionalFloat = getPrivateAttrOptionalFloat$priv$();
+        final .ceylon.language.String localAttrOptionalString = getPrivateAttrOptionalString$priv$();
+        final .ceylon.language.Boolean localAttrOptionalBoolean = getPrivateAttrOptionalBoolean$priv$();
+        final .ceylon.language.Character localAttrOptionalCharacter = getPrivateAttrOptionalCharacter$priv$();
     }
     
-    private final long methodInteger$priv(final long i) {
+    private final long methodInteger$priv$(final long i) {
         return i;
     }
     
-    private final double methodFloat$priv(final double i) {
+    private final double methodFloat$priv$(final double i) {
         return i;
     }
     
-    private final .java.lang.String methodString$priv(final .java.lang.String i) {
+    private final .java.lang.String methodString$priv$(final .java.lang.String i) {
         return i;
     }
     
-    private final boolean methodBoolean$priv(final boolean i) {
+    private final boolean methodBoolean$priv$(final boolean i) {
         return i;
     }
     
-    private final int methodCharacter$priv(final int i) {
+    private final int methodCharacter$priv$(final int i) {
         return i;
     }
     
-    private final .ceylon.language.Integer methodOptionalInteger$priv(final .ceylon.language.Integer i) {
+    private final .ceylon.language.Integer methodOptionalInteger$priv$(final .ceylon.language.Integer i) {
         return i;
     }
     
-    private final .ceylon.language.Float methodOptionalFloat$priv(final .ceylon.language.Float i) {
+    private final .ceylon.language.Float methodOptionalFloat$priv$(final .ceylon.language.Float i) {
         return i;
     }
     
-    private final .ceylon.language.String methodOptionalString$priv(final .ceylon.language.String i) {
+    private final .ceylon.language.String methodOptionalString$priv$(final .ceylon.language.String i) {
         return i;
     }
     
-    private final .ceylon.language.Boolean methodOptionalBoolean$priv(final .ceylon.language.Boolean i) {
+    private final .ceylon.language.Boolean methodOptionalBoolean$priv$(final .ceylon.language.Boolean i) {
         return i;
     }
     
-    private final .ceylon.language.Character methodOptionalCharacter$priv(final .ceylon.language.Character i) {
+    private final .ceylon.language.Character methodOptionalCharacter$priv$(final .ceylon.language.Character i) {
         return i;
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.type.BasicTypes.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.type.BasicTypes.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.BasicTypes.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.BasicTypes.class);
 }
 abstract class TypeParameterClass<ClassParam> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    TypeParameterClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedClassParam, final ClassParam classParam) {
-        this.$reifiedClassParam = $reifiedClassParam;
+    TypeParameterClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ClassParam, final ClassParam classParam) {
+        this.$reified$ClassParam = $reified$ClassParam;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedClassParam;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ClassParam;
     
     public abstract ClassParam getAttr();
     
     public abstract ClassParam classParamMethod(final ClassParam param);
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.TypeParameterClass.class, $reifiedClassParam);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.TypeParameterClass.class, $reified$ClassParam);
     }
 }
 class IntegerParameterClass extends .com.redhat.ceylon.compiler.java.test.structure.type.TypeParameterClass<.ceylon.language.Integer> {
     
     IntegerParameterClass(final .ceylon.language.Integer classParam) {
-        super(.ceylon.language.Integer.$TypeDescriptor, classParam);
+        super(.ceylon.language.Integer.$TypeDescriptor$, classParam);
         this.attr = classParam;
     }
     private final .ceylon.language.Integer attr;
@@ -319,10 +319,10 @@ class IntegerParameterClass extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.type.IntegerParameterClass.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.type.IntegerParameterClass.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.IntegerParameterClass.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.IntegerParameterClass.class);
 }
 public final class globalAttrInteger_ {
     

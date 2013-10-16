@@ -5,7 +5,7 @@ class NamedArgumentGetterInvocation implements .com.redhat.ceylon.compiler.java.
     NamedArgumentGetterInvocation() {
     }
     
-    private final boolean m$priv() {
+    private final boolean m$priv$() {
         return (
             let
             {
@@ -34,11 +34,11 @@ class NamedArgumentGetterInvocation implements .com.redhat.ceylon.compiler.java.
                 final .com.redhat.ceylon.compiler.java.language.GetterLong n$2 = new n$2();
                 final long arg$0$0 = n$2.get_();
             }
-            returning f$priv(arg$0$0, arg$0$1);
+            returning f$priv$(arg$0$0, arg$0$1);
         );
     }
     
-    private final boolean f$priv(final long n, final .java.lang.String s) {
+    private final boolean f$priv$(final long n, final .java.lang.String s) {
         return true;
     }
     
@@ -48,8 +48,8 @@ class NamedArgumentGetterInvocation implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentGetterInvocation.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentGetterInvocation.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentGetterInvocation.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentGetterInvocation.class);
 }

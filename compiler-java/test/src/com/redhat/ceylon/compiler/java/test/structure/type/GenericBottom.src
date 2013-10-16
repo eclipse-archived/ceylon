@@ -2,53 +2,53 @@ package com.redhat.ceylon.compiler.java.test.structure.type;
 
 class GenericBottom<T, U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    GenericBottom(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final .java.lang.Object argObject) {
-        this.$reifiedT = $reifiedT;
-        this.$reifiedU = $reifiedU;
+    GenericBottom(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final .java.lang.Object argObject) {
+        this.$reified$T = $reified$T;
+        this.$reified$U = $reified$U;
         this.attrTp = (T).ceylon.language.nothing_.get_();
         this.attrIntersection = .ceylon.language.nothing_.get_();
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U;
     private final T attrTp;
     
-    private final T getAttrTp$priv() {
+    private final T getAttrTp$priv$() {
         return attrTp;
     }
     private final .java.lang.Object attrIntersection;
     
-    private final .java.lang.Object getAttrIntersection$priv() {
+    private final .java.lang.Object getAttrIntersection$priv$() {
         return attrIntersection;
     }
     
-    private final T methodTp$priv(final T o) {
+    private final T methodTp$priv$(final T o) {
         return (T).ceylon.language.nothing_.get_();
     }
     
-    private final .java.lang.Object methodIntersection$priv(final .java.lang.Object o) {
+    private final .java.lang.Object methodIntersection$priv$(final .java.lang.Object o) {
         return .ceylon.language.nothing_.get_();
     }
     
-    private final T getGetterTp$priv() {
+    private final T getGetterTp$priv$() {
         return (T).ceylon.language.nothing_.get_();
     }
     
-    private final .java.lang.Object getGetterIntersection$priv() {
+    private final .java.lang.Object getGetterIntersection$priv$() {
         return .ceylon.language.nothing_.get_();
     }
     
-    private final void f$priv() {
-        final .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U> g = new .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U>($reifiedT, $reifiedU, .ceylon.language.nothing_.get_());
-        T t = g.getAttrTp$priv();
-        t = (T)g.getAttrIntersection$priv();
-        t = g.methodTp$priv((T).ceylon.language.nothing_.get_());
-        t = (T)g.methodIntersection$priv(.ceylon.language.nothing_.get_());
-        t = g.getGetterTp$priv();
-        t = (T)g.getGetterIntersection$priv();
+    private final void f$priv$() {
+        final .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U> g = new .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U>($reified$T, $reified$U, .ceylon.language.nothing_.get_());
+        T t = g.getAttrTp$priv$();
+        t = (T)g.getAttrIntersection$priv$();
+        t = g.methodTp$priv$((T).ceylon.language.nothing_.get_());
+        t = (T)g.methodIntersection$priv$(.ceylon.language.nothing_.get_());
+        t = g.getGetterTp$priv$();
+        t = (T)g.getGetterIntersection$priv$();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom.class, $reifiedT, $reifiedU);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom.class, $reified$T, $reified$U);
     }
 }

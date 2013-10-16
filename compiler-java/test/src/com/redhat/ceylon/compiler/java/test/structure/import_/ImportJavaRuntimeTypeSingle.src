@@ -5,7 +5,7 @@ class ImportJavaRuntimeTypeSingle implements .com.redhat.ceylon.compiler.java.ru
     ImportJavaRuntimeTypeSingle() {
     }
     
-    private final void m$priv(final .java.util.List<.ceylon.language.Integer> l) {
+    private final void m$priv$(final .java.util.List<.ceylon.language.Integer> l) {
         new .java.lang.Exception();
     }
     
@@ -15,8 +15,8 @@ class ImportJavaRuntimeTypeSingle implements .com.redhat.ceylon.compiler.java.ru
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.import_.ImportJavaRuntimeTypeSingle.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.import_.ImportJavaRuntimeTypeSingle.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.import_.ImportJavaRuntimeTypeSingle.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.import_.ImportJavaRuntimeTypeSingle.class);
 }

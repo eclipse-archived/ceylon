@@ -5,7 +5,7 @@ class Bug1095B implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     Bug1095B() {
     }
     
-    private final <Summand extends .ceylon.language.Summable<Summand>>void selfType$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedSummand, final Summand x) {
+    private final <Summand extends .ceylon.language.Summable<Summand>>void selfType$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Summand, final Summand x) {
         final Summand y = (Summand)(.java.lang.Object)(
             let
             {
@@ -39,8 +39,8 @@ class Bug1095B implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095B.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095B.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095B.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095B.class);
 }

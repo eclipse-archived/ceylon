@@ -5,23 +5,23 @@ class StringTemplate implements .com.redhat.ceylon.compiler.java.runtime.model.R
     StringTemplate() {
     }
     
-    private final void m1$priv(final .java.lang.String s) {
+    private final void m1$priv$(final .java.lang.String s) {
         final .java.lang.String t = new .java.lang.StringBuilder().append("Foo ").append(s).append(" bar").toString();
     }
     
-    private final void m2$priv(final .java.lang.String s) {
+    private final void m2$priv$(final .java.lang.String s) {
         final .java.lang.String t = new .java.lang.StringBuilder().append("Foo ").append(s).toString();
     }
     
-    private final void m3$priv(final long n) {
+    private final void m3$priv$(final long n) {
         final .java.lang.String t = new .java.lang.StringBuilder().append("Foo ").append(n).append(" bar").toString();
     }
     
-    private final void m4$priv() {
+    private final void m4$priv$() {
         final .java.lang.String t = new .java.lang.StringBuilder().append("Foo ").append("").append(" bar").toString();
     }
     
-    private final void m5$priv() {
+    private final void m5$priv$() {
         final .java.lang.String t = new .java.lang.StringBuilder().append("Foo ").append(4L).append(" bar").toString();
     }
     
@@ -31,8 +31,8 @@ class StringTemplate implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.stringtemp.StringTemplate.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.stringtemp.StringTemplate.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.stringtemp.StringTemplate.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.stringtemp.StringTemplate.class);
 }

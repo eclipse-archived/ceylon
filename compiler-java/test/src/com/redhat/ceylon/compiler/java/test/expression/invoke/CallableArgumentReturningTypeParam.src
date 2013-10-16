@@ -5,7 +5,7 @@ final class callableArgumentReturningTypeParam_f_ {
     private callableArgumentReturningTypeParam_f_() {
     }
     
-    static <T extends .ceylon.language.Numeric<T>>void callableArgumentReturningTypeParam_f(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Callable<? extends T> foo) {
+    static <T extends .ceylon.language.Numeric<T>>void callableArgumentReturningTypeParam_f(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Callable<? extends T> foo) {
     }
 }
 final class callableArgumentReturningTypeParam_bar_ {
@@ -13,7 +13,7 @@ final class callableArgumentReturningTypeParam_bar_ {
     private callableArgumentReturningTypeParam_bar_() {
     }
     
-    static <X>X callableArgumentReturningTypeParam_bar(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
+    static <X>X callableArgumentReturningTypeParam_bar(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
         throw new .ceylon.language.Exception(null, null);
     }
     
@@ -42,17 +42,17 @@ final class callableArgumentReturningTypeParam_m_ {
     }
     
     static void callableArgumentReturningTypeParam_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_f_.<.ceylon.language.Integer>callableArgumentReturningTypeParam_f(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()", (short)-1){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_f_.<.ceylon.language.Integer>callableArgumentReturningTypeParam_f(.ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.Integer $call() {
-                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_bar_.<.ceylon.language.Integer>callableArgumentReturningTypeParam_bar(.ceylon.language.Integer.$TypeDescriptor);
+            public .ceylon.language.Integer $call$() {
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_bar_.<.ceylon.language.Integer>callableArgumentReturningTypeParam_bar(.ceylon.language.Integer.$TypeDescriptor$);
             }
         });
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_f_.<.ceylon.language.Integer>callableArgumentReturningTypeParam_f(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()", (short)-1){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_f_.<.ceylon.language.Integer>callableArgumentReturningTypeParam_f(.ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.Integer $call() {
+            public .ceylon.language.Integer $call$() {
                 return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_baz_.callableArgumentReturningTypeParam_baz());
             }
         });

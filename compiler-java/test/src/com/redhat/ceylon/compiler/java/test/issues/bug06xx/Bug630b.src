@@ -4,23 +4,23 @@ class Bug630Impl extends .java.lang.Object implements .com.redhat.ceylon.compile
     
     Bug630Impl() {
         super();
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630$impl(this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$this$;
     }
     
     @.java.lang.Override
     public int hashCode() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$this.hashCode();
+        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$this$.hashCode();
     }
     
     @.java.lang.Override
     public boolean equals(final .java.lang.Object that) {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$this.equals(that);
+        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$this$.equals(that);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -29,8 +29,8 @@ class Bug630Impl extends .java.lang.Object implements .com.redhat.ceylon.compile
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630Impl.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630Impl.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630Impl.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630Impl.class);
 }

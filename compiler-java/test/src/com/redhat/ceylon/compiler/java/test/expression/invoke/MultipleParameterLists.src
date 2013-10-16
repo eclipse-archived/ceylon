@@ -7,15 +7,15 @@ public final class multipleParameterLists_ {
     private multipleParameterLists_() {
     }
     
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::String,ceylon.language::Tuple<ceylon.language::Integer,ceylon.language::Integer,ceylon.language::Empty>>")
     public static .ceylon.language.Callable<? extends .ceylon.language.String> multipleParameterLists() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                 final long x = ((.ceylon.language.Integer)$param$0).longValue();
                 return .ceylon.language.String.instance(.ceylon.language.Integer.toString(x));
             }
@@ -29,23 +29,23 @@ public final class multipleParameterLists2_ {
     private multipleParameterLists2_() {
     }
     
-    @.ceylon.language.SharedAnnotation$annotation
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Callable<ceylon.language::String,ceylon.language::Tuple<ceylon.language::Object,ceylon.language::Object,ceylon.language::Empty>>,ceylon.language::Tuple<ceylon.language::Float,ceylon.language::Float,ceylon.language::Empty>>")
     public static .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> multipleParameterLists2(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long a) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Empty.$TypeDescriptor, "String()()", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "String()()", (short)-1){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            public .ceylon.language.Callable<? extends .ceylon.language.String> $call(final .java.lang.Object $param$0) {
+            public .ceylon.language.Callable<? extends .ceylon.language.String> $call$(final .java.lang.Object $param$0) {
                 final double b = ((.ceylon.language.Float)$param$0).doubleValue();
-                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                    public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                         final .java.lang.Object c = $param$0;
                         return .ceylon.language.String.instance(.ceylon.language.Integer.toString(a) + .ceylon.language.Float.toString(b) + c.toString());
                     }

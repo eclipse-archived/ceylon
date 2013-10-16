@@ -5,38 +5,38 @@ class InnerAttributeGetterLateInitialisation implements .com.redhat.ceylon.compi
     InnerAttributeGetterLateInitialisation() {
     }
     
-    private final void m$priv() {
+    private final void m$priv$() {
         final long m;
         m = 2L;
         
-        final class innerGetter$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+        final class innerGetter$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
-            private innerGetter$getter_() {
+            private innerGetter$getter$_() {
             }
             
             public long get_() {
                 return m;
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.GetterLong innerGetter$getter_ = new innerGetter$getter_();
-        final long n = innerGetter$getter_.get_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong innerGetter$getter$_ = new innerGetter$getter$_();
+        final long n = innerGetter$getter$_.get_();
     }
     
-    private final void m2$priv() {
+    private final void m2$priv$() {
         final long m;
         m = 2L;
         
-        final class innerGetter$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+        final class innerGetter$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
-            private innerGetter$getter_() {
+            private innerGetter$getter$_() {
             }
             
             public long get_() {
                 return m;
             }
         }
-        final .com.redhat.ceylon.compiler.java.language.GetterLong innerGetter$getter_ = new innerGetter$getter_();
-        final long n = innerGetter$getter_.get_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong innerGetter$getter$_ = new innerGetter$getter$_();
+        final long n = innerGetter$getter$_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -45,8 +45,8 @@ class InnerAttributeGetterLateInitialisation implements .com.redhat.ceylon.compi
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterLateInitialisation.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterLateInitialisation.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterLateInitialisation.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterLateInitialisation.class);
 }

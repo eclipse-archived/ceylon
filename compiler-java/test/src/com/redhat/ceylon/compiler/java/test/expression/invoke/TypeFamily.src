@@ -2,14 +2,14 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 abstract class TypeFamily<N extends .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<N, E>.Node, E extends .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<N, E>.Edge> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    TypeFamily(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedN, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE) {
-        this.$reifiedN = $reifiedN;
-        this.$reifiedE = $reifiedE;
+    TypeFamily(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$N, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E) {
+        this.$reified$N = $reified$N;
+        this.$reified$E = $reified$E;
     }
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedN;
-    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$N;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E;
     
-    public abstract .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<N, E>.Edge Edge$new(final N n1, final N n2);
+    public abstract .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<N, E>.Edge Edge$new$(final N n1, final N n2);
     
     public abstract class Edge implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
@@ -33,12 +33,12 @@ abstract class TypeFamily<N extends .com.redhat.ceylon.compiler.java.test.expres
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily.class, .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily.this.$reifiedN, .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily.this.$reifiedE), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily.Edge.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily.class, .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily.this.$reified$N, .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily.this.$reified$E), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily.Edge.class));
         }
     }
     
-    public abstract .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<N, E>.Node Node$new();
+    public abstract .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<N, E>.Node Node$new$();
     
     public abstract class Node implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
@@ -50,24 +50,24 @@ abstract class TypeFamily<N extends .com.redhat.ceylon.compiler.java.test.expres
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily.class, .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily.this.$reifiedN, .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily.this.$reifiedE), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily.Node.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily.class, .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily.this.$reified$N, .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily.this.$reified$E), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily.Node.class));
         }
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily.class, $reifiedN, $reifiedE);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily.class, $reified$N, $reified$E);
     }
 }
 class TypeFamilyBasic extends .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node, .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Edge> {
     
     TypeFamilyBasic() {
-        super(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Edge.class)));
+        super(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Edge.class)));
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node Node$new() {
+    public .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node Node$new$() {
         return new Node();
     }
     
@@ -78,13 +78,13 @@ class TypeFamilyBasic extends .com.redhat.ceylon.compiler.java.test.expression.i
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node.class));
         }
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Edge Edge$new(final .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node n1, final .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node n2) {
+    public .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Edge Edge$new$(final .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node n1, final .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node n2) {
         return new Edge(n1, n2);
     }
     
@@ -95,8 +95,8 @@ class TypeFamilyBasic extends .com.redhat.ceylon.compiler.java.test.expression.i
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Edge.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Edge.class));
         }
     }
     
@@ -106,8 +106,8 @@ class TypeFamilyBasic extends .com.redhat.ceylon.compiler.java.test.expression.i
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.class);
 }

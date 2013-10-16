@@ -8,24 +8,24 @@ interface Bug633Ranged<Index, Span> {
 }
 final class Bug633Ranged$impl<Index, Span> {
     
-    Bug633Ranged$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedIndex, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedSpan, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<? super Index, ? extends Span> $this) {
-        this.$reifiedIndex = $reifiedIndex;
-        this.$reifiedSpan = $reifiedSpan;
+    Bug633Ranged$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Index, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Span, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<? super Index, ? extends Span> $this) {
+        this.$reified$Index = $reified$Index;
+        this.$reified$Span = $reified$Span;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedIndex;
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedSpan;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Index;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Span;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<? super Index, ? extends Span> $this;
     
-    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedIndex, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedSpan) {
-        this.$reifiedSpan = $reifiedSpan;
-        this.$reifiedIndex = $reifiedIndex;
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Index, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Span) {
+        this.$reified$Span = $reified$Span;
+        this.$reified$Index = $reified$Index;
     }
 }
 interface Bug633Empty extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<.ceylon.language.Integer, .java.lang.Object> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$impl();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty.class);
 }
 final class Bug633Empty$impl {
     
@@ -37,20 +37,20 @@ final class Bug633Empty$impl {
 class Bug633EmptyImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty {
     
     Bug633EmptyImpl() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$this$;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<? super .ceylon.language.Integer, ? extends .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<? super .ceylon.language.Integer, ? extends .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<? super .ceylon.language.Integer, ? extends .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this;
+        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this$;
     }
     
     @.java.lang.Override
@@ -64,10 +64,10 @@ class Bug633EmptyImpl implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl.class);
 }
 final class bug633_ {
     

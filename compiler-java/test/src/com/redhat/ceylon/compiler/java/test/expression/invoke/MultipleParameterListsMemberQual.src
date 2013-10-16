@@ -5,11 +5,11 @@ class MplMemberQualClass implements .com.redhat.ceylon.compiler.java.runtime.mod
     MplMemberQualClass() {
     }
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.String> mpl$priv() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> mpl$priv$() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.String $call() {
+            public .ceylon.language.String $call$() {
                 return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.MplMemberQualClass.this.toString() + .ceylon.language.Integer.toString(.com.redhat.ceylon.compiler.java.test.expression.invoke.MplMemberQualClass.this.hashCode()));
             }
         };
@@ -21,8 +21,8 @@ class MplMemberQualClass implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.invoke.MplMemberQualClass.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.MplMemberQualClass.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.MplMemberQualClass.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.MplMemberQualClass.class);
 }

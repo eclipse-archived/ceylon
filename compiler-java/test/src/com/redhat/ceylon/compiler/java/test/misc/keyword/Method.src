@@ -5,88 +5,88 @@ class Method implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     Method() {
     }
     
-    private final void abstract$priv() {
+    private final void abstract$priv$() {
     }
     
-    private final void boolean$priv() {
+    private final void boolean$priv$() {
     }
     
-    private final void byte$priv() {
+    private final void byte$priv$() {
     }
     
-    private final void char$priv() {
+    private final void char$priv$() {
     }
     
-    private final void const$priv() {
+    private final void const$priv$() {
     }
     
-    private final void default$priv() {
+    private final void default$priv$() {
     }
     
-    private final void do$priv() {
+    private final void do$priv$() {
     }
     
-    private final void double$priv() {
+    private final void double$priv$() {
     }
     
-    private final void enum$priv() {
+    private final void enum$priv$() {
     }
     
-    private final void final$priv() {
+    private final void final$priv$() {
     }
     
-    private final void float$priv() {
+    private final void float$priv$() {
     }
     
-    private final void goto$priv() {
+    private final void goto$priv$() {
     }
     
-    private final void implements$priv() {
+    private final void implements$priv$() {
     }
     
-    private final void instanceof$priv() {
+    private final void instanceof$priv$() {
     }
     
-    private final void int$priv() {
+    private final void int$priv$() {
     }
     
-    private final void long$priv() {
+    private final void long$priv$() {
     }
     
-    private final void native$priv() {
+    private final void native$priv$() {
     }
     
-    private final void new$priv() {
+    private final void new$priv$() {
     }
     
-    private final void private$priv() {
+    private final void private$priv$() {
     }
     
-    private final void protected$priv() {
+    private final void protected$priv$() {
     }
     
-    private final void public$priv() {
+    private final void public$priv$() {
     }
     
-    private final void short$priv() {
+    private final void short$priv$() {
     }
     
-    private final void static$priv() {
+    private final void static$priv$() {
     }
     
-    private final void strictfp$priv() {
+    private final void strictfp$priv$() {
     }
     
-    private final void synchronized$priv() {
+    private final void synchronized$priv$() {
     }
     
-    private final void throws$priv() {
+    private final void throws$priv$() {
     }
     
-    private final void transient$priv() {
+    private final void transient$priv$() {
     }
     
-    private final void volatile$priv() {
+    private final void volatile$priv$() {
     }
     
     public static void main(.java.lang.String[] args) {
@@ -95,8 +95,8 @@ class Method implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.misc.keyword.Method.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.misc.keyword.Method.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.keyword.Method.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.keyword.Method.class);
 }

@@ -5,7 +5,7 @@ class OuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     OuterClass() {
     }
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.InnerClass InnerClass$new() {
+    public .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.InnerClass InnerClass$new$() {
         return new InnerClass();
     }
     
@@ -15,8 +15,8 @@ class OuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.InnerClass.class));
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.InnerClass.class));
         }
     }
     
@@ -26,10 +26,10 @@ class OuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.$TypeDescriptor;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.class);
 }
 final class m_ {
     
@@ -38,7 +38,7 @@ final class m_ {
     
     static void m() {
         final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass o = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass();
-        final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.InnerClass i = o.InnerClass$new();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.InnerClass i = o.InnerClass$new$();
     }
     
     public static void main(.java.lang.String[] args) {
