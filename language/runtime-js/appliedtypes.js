@@ -273,7 +273,7 @@ function $init$AppliedIntersectionType(){
 exports.$init$AppliedIntersectionType$meta$model=$init$AppliedIntersectionType;
 $init$AppliedIntersectionType();
 
-function AppliedFunction(m,$$targs$$,o) {
+function AppliedFunction(m,$$targs$$,o,mptypes) {
   var f = o===undefined?function(){return m.apply(this,arguments);}:function(){return m.apply(o,arguments);}
   var mm=m.$$metamodel$$;
   if (typeof(mm)==='function') {mm=mm();m.$$metamodel$$=mm;}
@@ -301,10 +301,16 @@ function AppliedFunction(m,$$targs$$,o) {
   } else {
     f.$$targs$$=$$targs$$;
   }
+  var dummy=new AppliedFunction.$$;
+  Function$meta$model(dummy,$$targs$$);
+  f.$$=dummy.$$;
+  f.getT$all=function(){return dummy.getT$all();};
+  f.getT$name=function(){return dummy.getT$name();};
   return f;
 }
 AppliedFunction.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.model','Function'],satisfies:{t:Function$meta$model,a:{Type:'Type',Arguments:'Arguments'}},$an:function(){return [shared(),actual()];}};};
 exports.AppliedFunction$meta$model=AppliedFunction;
+initTypeProto(AppliedFunction,'ceylon.language.meta.model::AppliedFunction',Basic,Function$meta$model);
 
 function AppliedValue(obj,attr,$$targs$$,$$appliedValue){
   var mm = attr.$$metamodel$$;
