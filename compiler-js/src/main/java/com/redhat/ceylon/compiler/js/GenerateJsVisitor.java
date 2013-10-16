@@ -4555,7 +4555,7 @@ public class GenerateJsVisitor extends Visitor
             } else if (that instanceof Tree.TypeParameterLiteral) {
                 out("/*TODO: applied type parameter*/");
             } else {
-                out(clAlias, "/*TODO closed type literal", that.getClass().getName(),"*/typeLiteral$meta({Type:");
+                out(clAlias, "/*TODO: closed type literal", that.getClass().getName(),"*/typeLiteral$meta({Type:");
                 TypeUtils.typeNameOrList(that, ltype, this);
                 out("})");
             }
@@ -4600,10 +4600,12 @@ public class GenerateJsVisitor extends Visitor
                     out(".$$.prototype.");
                 }
                 if (d instanceof Value) {
-                    out("$prop$", names.getter(d), ")");
+                    out("$prop$", names.getter(d),",");
                 } else {
-                    out(names.name(d), ")");
+                    out(names.name(d),",");
                 }
+                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
+                out(")");
             } else {
                 out(clAlias, "/*TODO:closed member literal*/typeLiteral$meta({Type:");
                 out("{t:");
