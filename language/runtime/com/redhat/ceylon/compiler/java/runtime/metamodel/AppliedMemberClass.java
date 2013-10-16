@@ -52,6 +52,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
 
     private Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     protected void init() {
         super.init();
@@ -64,8 +65,9 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
             // get a list of produced parameter types
             java.util.List<ProducedType> parameterProducedTypes = Metamodel.getParameterProducedTypes(decl.getParameterList().getParameters(), producedType);
             this.parameterTypes = Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
+        }else{
+            this.parameterTypes = (Sequential) empty_.get_();
         }
-
     }
     
     @Override

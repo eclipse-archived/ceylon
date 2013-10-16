@@ -804,6 +804,8 @@ shared void checkObjectDeclaration(){
     assert(!is Class<Anything, []> topLevelObjectClass);
     assert(is Class<Anything, Nothing> topLevelObjectClass);
     
+    assert(topLevelObjectClass.parameterTypes == []);
+    
     // make sure we get a proper exception when trying to instantiate it
     try{
         topLevelObjectClass.apply();

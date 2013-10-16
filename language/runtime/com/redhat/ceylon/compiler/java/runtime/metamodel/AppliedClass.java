@@ -77,6 +77,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         return (ceylon.language.meta.declaration.ClassDeclaration) super.getDeclaration();
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     protected void init() {
         super.init();
@@ -87,6 +88,8 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         // FIXME: so we really want to disallow that in the metamodel?
         if(!decl.isAnonymous() && !Metamodel.isLocalType(decl)){
             initConstructor(decl);
+        }else{
+            this.parameterTypes = (Sequential) empty_.get_();
         }
     }
 
