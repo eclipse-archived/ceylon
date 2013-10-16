@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 public class FreeClassType extends FreeClassOrInterfaceType implements ceylon.language.meta.declaration.OpenClassType {
 
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeClassType.class);
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeClassType.class);
 
     FreeClassType(ProducedType producedType) {
         super(producedType);
@@ -31,7 +31,7 @@ public class FreeClassType extends FreeClassOrInterfaceType implements ceylon.la
 
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

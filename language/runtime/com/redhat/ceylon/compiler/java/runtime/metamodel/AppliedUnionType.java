@@ -30,7 +30,7 @@ public class AppliedUnionType<Union>
 
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AppliedUnionType.class, $reifiedUnion);
     }
     
@@ -63,7 +63,7 @@ public class AppliedUnionType<Union>
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : caseTypes){
             types[i++] = Metamodel.getAppliedMetamodel(pt);
         }
-        this.caseTypes = Util.<ceylon.language.meta.model.Type<? extends Union>>sequentialInstance(TypeDescriptor.klass(ceylon.language.meta.model.Type.class, ceylon.language.Anything.$TypeDescriptor), types);
+        this.caseTypes = Util.<ceylon.language.meta.model.Type<? extends Union>>sequentialInstance(TypeDescriptor.klass(ceylon.language.meta.model.Type.class, ceylon.language.Anything.$TypeDescriptor$), types);
     }
     
     @Override

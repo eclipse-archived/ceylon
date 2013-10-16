@@ -31,7 +31,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public final class CharArray implements ReifiedType {
 
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(char[].class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(char[].class);
 
     public CharArray(@Name("size") int size, @TypeInfo("ceylon.language::Character") @Defaulted @Name("element") char element){
         throw Util.makeJavaArrayWrapperException();
@@ -120,7 +120,7 @@ public final class CharArray implements ReifiedType {
 
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         throw Util.makeJavaArrayWrapperException();
     }
 }

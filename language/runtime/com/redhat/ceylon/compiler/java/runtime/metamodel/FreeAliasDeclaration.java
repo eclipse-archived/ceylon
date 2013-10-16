@@ -15,7 +15,7 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
     implements ceylon.language.meta.declaration.AliasDeclaration {
 
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeAliasDeclaration.class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeAliasDeclaration.class);
 
     private OpenType openType;
 
@@ -179,7 +179,7 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
 
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

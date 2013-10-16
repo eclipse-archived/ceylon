@@ -260,13 +260,13 @@ class DeclarationParser {
         return package_;
     }
     
-    // .ceylon.language.meta.model.typeLiteral_.typeLiteral(.ceylon.language.Anything.$TypeDescriptor)
+    // .ceylon.language.meta.model.typeLiteral_.typeLiteral(.ceylon.language.Anything.$TypeDescriptor$)
     protected ClassOrInterfaceDeclaration makeClassOrInterface(Declaration packageOrType, String typeName) {
         final ClassOrInterfaceDeclaration result;
         if (packageOrType instanceof Package) {
             result = ((Package)packageOrType).getClassOrInterface(typeName);
         } else if (packageOrType instanceof ClassOrInterfaceDeclaration) {
-            result = ((ClassOrInterfaceDeclaration)packageOrType).<ClassOrInterfaceDeclaration>getMemberDeclaration(ClassOrInterfaceDeclaration.$TypeDescriptor, typeName);
+            result = ((ClassOrInterfaceDeclaration)packageOrType).<ClassOrInterfaceDeclaration>getMemberDeclaration(ClassOrInterfaceDeclaration.$TypeDescriptor$, typeName);
         } else {
             throw metamodelError("Unexpected container " + packageOrType.getClass() + " for type " + typeName);
         }
@@ -281,7 +281,7 @@ class DeclarationParser {
         if (packageOrType instanceof Package) {
             result = ((Package)packageOrType).getFunction(fn);
         } else if (packageOrType instanceof ClassOrInterfaceDeclaration) {
-            result = ((ClassOrInterfaceDeclaration)packageOrType).<FunctionDeclaration>getMemberDeclaration(FunctionDeclaration.$TypeDescriptor, fn);
+            result = ((ClassOrInterfaceDeclaration)packageOrType).<FunctionDeclaration>getMemberDeclaration(FunctionDeclaration.$TypeDescriptor$, fn);
         } else {
             throw metamodelError("Unexpected container " + packageOrType.getClass() + " for function " + fn);
         }
@@ -297,7 +297,7 @@ class DeclarationParser {
         if (packageOrType instanceof Package) {
             result = ((Package)packageOrType).getValue(val);
         } else if (packageOrType instanceof ClassOrInterfaceDeclaration) {
-            result = ((ClassOrInterfaceDeclaration)packageOrType).<ValueDeclaration>getMemberDeclaration(ValueDeclaration.$TypeDescriptor, val);
+            result = ((ClassOrInterfaceDeclaration)packageOrType).<ValueDeclaration>getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, val);
         } else {
             throw metamodelError("Unexpected container " + packageOrType.getClass() + " for value " + val);
         }

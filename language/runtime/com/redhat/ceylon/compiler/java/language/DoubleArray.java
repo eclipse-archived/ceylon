@@ -31,7 +31,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public final class DoubleArray implements ReifiedType {
     
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(double[].class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(double[].class);
 
     public DoubleArray(@Name("size") int size, @TypeInfo("ceylon.language::Float") @Defaulted @Name("element") double element){
         throw Util.makeJavaArrayWrapperException();
@@ -120,7 +120,7 @@ public final class DoubleArray implements ReifiedType {
 
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         throw Util.makeJavaArrayWrapperException();
     }
 }

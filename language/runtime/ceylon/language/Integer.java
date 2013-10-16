@@ -27,7 +27,7 @@ public final class Integer
                Exponentiable<Integer,Integer>, ReifiedType {
 
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Integer.class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Integer.class);
 
     @Ignore
     final long value;
@@ -708,7 +708,7 @@ public final class Integer
 
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

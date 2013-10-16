@@ -25,7 +25,7 @@ public class FreeSetter
         implements SetterDeclaration, AnnotationBearing, ReifiedType {
 
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeSetter.class);
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeSetter.class);
     
     private FreeVariable variable;
     
@@ -49,7 +49,7 @@ public class FreeSetter
     }
 
     @Override
-    public Annotation[] $getJavaAnnotations() {
+    public Annotation[] $getJavaAnnotations$() {
         return declaredSetter != null ? declaredSetter.getDeclaredAnnotations() : AnnotationBearing.NONE;
     }
     
@@ -80,7 +80,7 @@ public class FreeSetter
 
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

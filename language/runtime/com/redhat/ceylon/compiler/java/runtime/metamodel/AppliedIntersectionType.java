@@ -30,7 +30,7 @@ public class AppliedIntersectionType<Intersection>
 
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AppliedIntersectionType.class, $reifiedIntersection);
     }
         
@@ -62,7 +62,7 @@ public class AppliedIntersectionType<Intersection>
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : satisfiedTypes){
             types[i++] = Metamodel.getAppliedMetamodel(pt);
         }
-        this.satisfiedTypes = Util.sequentialInstance(TypeDescriptor.klass(ceylon.language.meta.model.Type.class, ceylon.language.Anything.$TypeDescriptor), types);
+        this.satisfiedTypes = Util.sequentialInstance(TypeDescriptor.klass(ceylon.language.meta.model.Type.class, ceylon.language.Anything.$TypeDescriptor$), types);
     }
 
     @Override

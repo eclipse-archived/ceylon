@@ -32,7 +32,7 @@ public class SequenceAppender<Element> extends SequenceBuilder<Element> {
 
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(SequenceAppender.class, $reifiedElement);
     }
 }

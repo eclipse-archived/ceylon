@@ -34,14 +34,14 @@ public abstract class FreeClassOrInterface
     implements ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, AnnotationBearing {
 
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeClassOrInterface.class);
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeClassOrInterface.class);
     
     @Ignore
-    private static final TypeDescriptor $FunctionTypeDescriptor = TypeDescriptor.klass(ceylon.language.meta.declaration.FunctionDeclaration.class, Anything.$TypeDescriptor, Empty.$TypeDescriptor);
+    private static final TypeDescriptor $FunctionTypeDescriptor = TypeDescriptor.klass(ceylon.language.meta.declaration.FunctionDeclaration.class, Anything.$TypeDescriptor$, Empty.$TypeDescriptor$);
     @Ignore
-    private static final TypeDescriptor $AttributeTypeDescriptor = TypeDescriptor.klass(ceylon.language.meta.declaration.ValueDeclaration.class, Anything.$TypeDescriptor);
+    private static final TypeDescriptor $AttributeTypeDescriptor = TypeDescriptor.klass(ceylon.language.meta.declaration.ValueDeclaration.class, Anything.$TypeDescriptor$);
     @Ignore
-    private static final TypeDescriptor $ClassOrInterfaceTypeDescriptor = TypeDescriptor.klass(ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.class, Anything.$TypeDescriptor);
+    private static final TypeDescriptor $ClassOrInterfaceTypeDescriptor = TypeDescriptor.klass(ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.class, Anything.$TypeDescriptor$);
     
     private volatile boolean initialised = false;
     private ceylon.language.meta.declaration.OpenClassType superclass;
@@ -81,7 +81,7 @@ public abstract class FreeClassOrInterface
         for(ProducedType pt : satisfiedTypes){
             interfaces[i++] = (ceylon.language.meta.declaration.OpenInterfaceType) Metamodel.getMetamodel(pt);
         }
-        this.interfaces = Util.sequentialInstance(ceylon.language.meta.declaration.OpenInterfaceType.$TypeDescriptor, interfaces);
+        this.interfaces = Util.sequentialInstance(ceylon.language.meta.declaration.OpenInterfaceType.$TypeDescriptor$, interfaces);
 
         if(declaration.getCaseTypes() != null)
             this.caseTypes = Metamodel.getMetamodelSequential(declaration.getCaseTypes());
@@ -319,8 +319,8 @@ public abstract class FreeClassOrInterface
 
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 
     FreeFunction findMethod(String name) {
@@ -356,7 +356,7 @@ public abstract class FreeClassOrInterface
     
     @Override
     @Ignore
-    public java.lang.annotation.Annotation[] $getJavaAnnotations() {
+    public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
         checkInit();
         return Metamodel.getJavaClass(declaration).getAnnotations();
     }

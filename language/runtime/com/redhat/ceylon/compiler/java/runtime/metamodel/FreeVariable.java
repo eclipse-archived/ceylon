@@ -27,7 +27,7 @@ public class FreeVariable
         implements VariableDeclaration {
 
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeVariable.class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeVariable.class);
     
     public FreeVariable(com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration value) {
         super(value);
@@ -47,7 +47,7 @@ public class FreeVariable
     @TypeInfo("ceylon.language::Anything")
     @Override
     public Object set(@TypeInfo("ceylon.language::Anything") @Name("newValue") Object newValue){
-        return apply(Anything.$TypeDescriptor).unsafeSet(newValue);
+        return apply(Anything.$TypeDescriptor$).unsafeSet(newValue);
     }
 
     @TypeInfo("ceylon.language::Anything")
@@ -55,7 +55,7 @@ public class FreeVariable
     public Object memberSet(@Name("container") @TypeInfo("ceylon.language::Object") Object container,
             @TypeInfo("ceylon.language::Anything") @Name("newValue") Object newValue){
         ceylon.language.meta.model.Type<?> containerType = Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(container));
-        return memberApply(TypeDescriptor.NothingType, Anything.$TypeDescriptor, containerType).bind(container).unsafeSet(newValue);
+        return memberApply(TypeDescriptor.NothingType, Anything.$TypeDescriptor$, containerType).bind(container).unsafeSet(newValue);
     }
 
     @Override
@@ -109,8 +109,8 @@ public class FreeVariable
 
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
     
     @TypeInfo("ceylon.language.meta.declaration::SetterDeclaration")

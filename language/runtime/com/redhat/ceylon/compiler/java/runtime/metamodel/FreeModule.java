@@ -25,7 +25,7 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
         ReifiedType {
 
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeModule.class);
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeModule.class);
     protected com.redhat.ceylon.compiler.typechecker.model.Module declaration;
     private Sequential<Package> packages;
     private Sequential<Import> dependencies;
@@ -60,7 +60,7 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
     
     @Override
     @Ignore
-    public java.lang.annotation.Annotation[] $getJavaAnnotations() {
+    public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
         return Metamodel.getJavaClass(declaration).getAnnotations();
     }
 
@@ -81,7 +81,7 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
             for(int i=0;i<packages.length;i++){
                 packages[i] = Metamodel.getOrCreateMetamodel(modelPackages.get(i));
             }
-            this.packages = Util.sequentialInstance(Package.$TypeDescriptor, packages);
+            this.packages = Util.sequentialInstance(Package.$TypeDescriptor$, packages);
         }
         return this.packages;
     }
@@ -107,7 +107,7 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
         if(this.dependencies == null){
             List<com.redhat.ceylon.compiler.typechecker.model.ModuleImport> modelImports = declaration.getImports();
             //FreeImport[] imports = new FreeImport[modelImports.size()];
-            SequenceBuilder sb = new SequenceBuilder<>(Import.$TypeDescriptor, modelImports.size()-1);
+            SequenceBuilder sb = new SequenceBuilder<>(Import.$TypeDescriptor$, modelImports.size()-1);
             for(com.redhat.ceylon.compiler.typechecker.model.ModuleImport moduleImport : modelImports){
                 if ("ceylon.language".equals(moduleImport.getModule().getNameAsString())) {
                     continue;
@@ -166,7 +166,7 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
 
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

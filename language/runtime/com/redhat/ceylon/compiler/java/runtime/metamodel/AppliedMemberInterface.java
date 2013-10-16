@@ -48,37 +48,37 @@ public class AppliedMemberInterface<Container, Type>
 
     @Override
     @Ignore
-    public Interface<? extends Type> $call() {
+    public Interface<? extends Type> $call$() {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Interface<? extends Type> $call(Object arg0) {
+    public Interface<? extends Type> $call$(Object arg0) {
         return new AppliedInterface<Type>($reifiedType, super.producedType, getContainer(), arg0);
     }
 
     @Override
     @Ignore
-    public Interface<? extends Type> $call(Object arg0, Object arg1) {
+    public Interface<? extends Type> $call$(Object arg0, Object arg1) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Interface<? extends Type> $call(Object arg0, Object arg1, Object arg2) {
+    public Interface<? extends Type> $call$(Object arg0, Object arg1, Object arg2) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Interface<? extends Type> $call(Object... args) {
+    public Interface<? extends Type> $call$(Object... args) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public short $getVariadicParameterIndex() {
+    public short $getVariadicParameterIndex$() {
         return -1;
     }
 
@@ -96,67 +96,67 @@ public class AppliedMemberInterface<Container, Type>
 
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AppliedMemberInterface.class, $reifiedContainer, $reifiedType);
     }
 
     @Override
     @Ignore
-    public Interface<? extends Type> $call$variadic() {
-        return $call$variadic(empty_.get_());
+    public Interface<? extends Type> $callvariadic$() {
+        return $callvariadic$(empty_.get_());
     }
     
     @Override
     @Ignore
-    public Interface<? extends Type> $call$variadic(
+    public Interface<? extends Type> $callvariadic$(
             Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Interface<? extends Type> $call$variadic(
+    public Interface<? extends Type> $callvariadic$(
             Object arg0, Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Interface<? extends Type> $call$variadic(
+    public Interface<? extends Type> $callvariadic$(
             Object arg0, Object arg1, Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Interface<? extends Type> $call$variadic(
+    public Interface<? extends Type> $callvariadic$(
             Object arg0, Object arg1, Object arg2, Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Interface<? extends Type> $call$variadic(Object... argsAndVarargs) {
+    public Interface<? extends Type> $callvariadic$(Object... argsAndVarargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Interface<? extends Type> $call$variadic(Object arg0) {
-        return $call$variadic(arg0, empty_.get_());
+    public Interface<? extends Type> $callvariadic$(Object arg0) {
+        return $callvariadic$(arg0, empty_.get_());
     }
 
     @Override
     @Ignore
-    public Interface<? extends Type> $call$variadic(Object arg0, Object arg1) {
-        return $call$variadic(arg0, arg1, empty_.get_());
+    public Interface<? extends Type> $callvariadic$(Object arg0, Object arg1) {
+        return $callvariadic$(arg0, arg1, empty_.get_());
     }
 
     @Override
     @Ignore
-    public Interface<? extends Type> $call$variadic(Object arg0, Object arg1,
+    public Interface<? extends Type> $callvariadic$(Object arg0, Object arg1,
             Object arg2) {
-        return $call$variadic(arg0, arg1, arg2, empty_.get_());
+        return $callvariadic$(arg0, arg1, arg2, empty_.get_());
     }
 
     @SuppressWarnings("unchecked")

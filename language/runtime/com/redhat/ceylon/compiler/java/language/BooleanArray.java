@@ -31,7 +31,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public final class BooleanArray implements ReifiedType {
     
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(boolean[].class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(boolean[].class);
 
     public BooleanArray(@Name("size") int size, @TypeInfo("ceylon.language::Boolean") @Defaulted @Name("element") boolean element){
         throw Util.makeJavaArrayWrapperException();
@@ -120,7 +120,7 @@ public final class BooleanArray implements ReifiedType {
     
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         throw Util.makeJavaArrayWrapperException();
     }
 }

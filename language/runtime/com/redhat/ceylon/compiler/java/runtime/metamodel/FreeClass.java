@@ -32,7 +32,7 @@ public class FreeClass
     implements ceylon.language.meta.declaration.ClassDeclaration {
 
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeClass.class);
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeClass.class);
     private Sequential<? extends ceylon.language.meta.declaration.FunctionOrValueDeclaration> parameters;
     
     public FreeClass(com.redhat.ceylon.compiler.typechecker.model.Class declaration) {
@@ -52,7 +52,7 @@ public class FreeClass
                 parameters[i] = (ceylon.language.meta.declaration.FunctionOrValueDeclaration) Metamodel.getOrCreateMetamodel(modelParameter.getModel());
                 i++;
             }
-            this.parameters = Util.sequentialInstance(ceylon.language.meta.declaration.FunctionOrValueDeclaration.$TypeDescriptor, parameters);
+            this.parameters = Util.sequentialInstance(ceylon.language.meta.declaration.FunctionOrValueDeclaration.$TypeDescriptor$, parameters);
         }else{
             this.parameters = (Sequential) empty_.get_();
         }
@@ -219,7 +219,7 @@ public class FreeClass
             ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> typeArguments,
             @Name("arguments") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>") 
             ceylon.language.Sequential<? extends java.lang.Object> arguments){
-        return classApply(Anything.$TypeDescriptor, TypeDescriptor.NothingType, typeArguments).apply(arguments);
+        return classApply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType, typeArguments).apply(arguments);
     }
 
     @Ignore
@@ -254,7 +254,7 @@ public class FreeClass
             @Name("arguments") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>") 
             ceylon.language.Sequential<? extends java.lang.Object> arguments){
         ceylon.language.meta.model.Type<?> containerType = Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(container));
-        return memberClassApply(TypeDescriptor.NothingType, Anything.$TypeDescriptor, TypeDescriptor.NothingType, 
+        return memberClassApply(TypeDescriptor.NothingType, Anything.$TypeDescriptor$, TypeDescriptor.NothingType, 
                 containerType, typeArguments).bind(container).apply(arguments);
     }
 
@@ -288,7 +288,7 @@ public class FreeClass
     
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

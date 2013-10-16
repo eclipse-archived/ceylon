@@ -21,7 +21,7 @@ public class FreeTypeParameter
     implements ceylon.language.meta.declaration.TypeParameter, ReifiedType {
 
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeTypeParameter.class);
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeTypeParameter.class);
     
     TypeParameter declaration;
 
@@ -77,8 +77,8 @@ public class FreeTypeParameter
     
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 
     @Override

@@ -86,7 +86,7 @@ public class AppliedInterface<Type>
 
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         checkInit();
         return TypeDescriptor.klass(AppliedInterface.class, $reifiedType);
     }

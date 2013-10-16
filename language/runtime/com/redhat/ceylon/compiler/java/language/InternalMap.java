@@ -56,9 +56,9 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     public InternalMap(@Ignore TypeDescriptor $reifiedKey, @Ignore TypeDescriptor $reifiedItem,
             final java.util.Map<? extends Key, ? extends Item> map) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Entry<? extends Key,? extends Item>,java.lang.Object>(TypeDescriptor.klass(Entry.class, $reifiedKey, $reifiedItem), Null.$TypeDescriptor, this);
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Entry<? extends Key,? extends Item>,java.lang.Object>(TypeDescriptor.klass(Entry.class, $reifiedKey, $reifiedItem), Null.$TypeDescriptor, this);
-        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<java.lang.Object, Item>(ceylon.language.Object.$TypeDescriptor, $reifiedItem, this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Entry<? extends Key,? extends Item>,java.lang.Object>(TypeDescriptor.klass(Entry.class, $reifiedKey, $reifiedItem), Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Entry<? extends Key,? extends Item>,java.lang.Object>(TypeDescriptor.klass(Entry.class, $reifiedKey, $reifiedItem), Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<java.lang.Object, Item>(ceylon.language.Object.$TypeDescriptor$, $reifiedItem, this);
         this.$ceylon$language$Map$this = new ceylon.language.Map$impl<Key, Item>($reifiedKey, $reifiedItem, this);
         this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Entry<? extends Key,? extends Item>>(TypeDescriptor.klass(Entry.class, $reifiedKey, $reifiedItem), this);
         this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(TypeDescriptor.klass(Map.class, $reifiedKey, $reifiedItem), (Map)this);
@@ -515,7 +515,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(InternalMap.class, $reifiedKey, $reifiedItem);
     }
     

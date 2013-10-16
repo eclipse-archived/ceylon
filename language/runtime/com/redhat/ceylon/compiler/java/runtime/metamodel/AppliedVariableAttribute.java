@@ -40,99 +40,99 @@ public class AppliedVariableAttribute<Container, Type>
     @SuppressWarnings("unchecked")
     @Override
     @Ignore
-    public ceylon.language.meta.model.Variable<Type> $call$variadic() {
-        return (ceylon.language.meta.model.Variable<Type>)super.$call$variadic();
+    public ceylon.language.meta.model.Variable<Type> $callvariadic$() {
+        return (ceylon.language.meta.model.Variable<Type>)super.$callvariadic$();
     }
 
     @SuppressWarnings("unchecked")
     @Override
     @Ignore
-    public ceylon.language.meta.model.Variable<Type> $call$variadic(Object arg0) {
-        return (ceylon.language.meta.model.Variable<Type>)super.$call$variadic(arg0);
+    public ceylon.language.meta.model.Variable<Type> $callvariadic$(Object arg0) {
+        return (ceylon.language.meta.model.Variable<Type>)super.$callvariadic$(arg0);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     @Ignore
-    public ceylon.language.meta.model.Variable<Type> $call$variadic(Object arg0, Object arg1) {
-        return (ceylon.language.meta.model.Variable<Type>)super.$call$variadic(arg0, arg1);
+    public ceylon.language.meta.model.Variable<Type> $callvariadic$(Object arg0, Object arg1) {
+        return (ceylon.language.meta.model.Variable<Type>)super.$callvariadic$(arg0, arg1);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     @Ignore
-    public ceylon.language.meta.model.Variable<Type> $call$variadic(Object arg0, Object arg1, Object arg2) {
-        return (ceylon.language.meta.model.Variable<Type>)super.$call$variadic(arg0, arg1, arg2);
+    public ceylon.language.meta.model.Variable<Type> $callvariadic$(Object arg0, Object arg1, Object arg2) {
+        return (ceylon.language.meta.model.Variable<Type>)super.$callvariadic$(arg0, arg1, arg2);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     @Ignore
-    public ceylon.language.meta.model.Variable<Type> $call$variadic(Object... args) {
-        return (ceylon.language.meta.model.Variable<Type>)super.$call$variadic(args);
+    public ceylon.language.meta.model.Variable<Type> $callvariadic$(Object... args) {
+        return (ceylon.language.meta.model.Variable<Type>)super.$callvariadic$(args);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     @Ignore
-    public ceylon.language.meta.model.Variable<Type> $call$variadic(Sequential<?> varargs) {
-        return (ceylon.language.meta.model.Variable<Type>)super.$call$variadic(varargs);
+    public ceylon.language.meta.model.Variable<Type> $callvariadic$(Sequential<?> varargs) {
+        return (ceylon.language.meta.model.Variable<Type>)super.$callvariadic$(varargs);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     @Ignore
-    public ceylon.language.meta.model.Variable<Type> $call$variadic(Object arg0, Sequential<?> varargs) {
-        return (ceylon.language.meta.model.Variable<Type>)super.$call$variadic(arg0, varargs);
+    public ceylon.language.meta.model.Variable<Type> $callvariadic$(Object arg0, Sequential<?> varargs) {
+        return (ceylon.language.meta.model.Variable<Type>)super.$callvariadic$(arg0, varargs);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     @Ignore
-    public ceylon.language.meta.model.Variable<Type> $call$variadic(Object arg0, Object arg1, Sequential<?> varargs) {
-        return (ceylon.language.meta.model.Variable<Type>)super.$call$variadic(arg0, arg1, varargs);
+    public ceylon.language.meta.model.Variable<Type> $callvariadic$(Object arg0, Object arg1, Sequential<?> varargs) {
+        return (ceylon.language.meta.model.Variable<Type>)super.$callvariadic$(arg0, arg1, varargs);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     @Ignore
-    public ceylon.language.meta.model.Variable<Type> $call$variadic(Object arg0, Object arg1, Object arg2, Sequential<?> varargs) {
-        return (ceylon.language.meta.model.Variable<Type>)super.$call$variadic(arg0, arg1, arg2, varargs);
+    public ceylon.language.meta.model.Variable<Type> $callvariadic$(Object arg0, Object arg1, Object arg2, Sequential<?> varargs) {
+        return (ceylon.language.meta.model.Variable<Type>)super.$callvariadic$(arg0, arg1, arg2, varargs);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     @Ignore
-    public ceylon.language.meta.model.Variable<Type> $call() {
-        return (ceylon.language.meta.model.Variable<Type>)super.$call();
+    public ceylon.language.meta.model.Variable<Type> $call$() {
+        return (ceylon.language.meta.model.Variable<Type>)super.$call$();
     }
 
     @SuppressWarnings("unchecked")
     @Override
     @Ignore
-    public ceylon.language.meta.model.Variable<Type> $call(Object arg0) {
-        return (ceylon.language.meta.model.Variable<Type>)super.$call(arg0);
+    public ceylon.language.meta.model.Variable<Type> $call$(Object arg0) {
+        return (ceylon.language.meta.model.Variable<Type>)super.$call$(arg0);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     @Ignore
-    public ceylon.language.meta.model.Variable<Type> $call(Object arg0, Object arg1) {
-        return (ceylon.language.meta.model.Variable<Type>)super.$call(arg0, arg1);
+    public ceylon.language.meta.model.Variable<Type> $call$(Object arg0, Object arg1) {
+        return (ceylon.language.meta.model.Variable<Type>)super.$call$(arg0, arg1);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     @Ignore
-    public ceylon.language.meta.model.Variable<Type> $call(Object arg0, Object arg1, Object arg2) {
-        return (ceylon.language.meta.model.Variable<Type>)super.$call(arg0, arg1, arg2);
+    public ceylon.language.meta.model.Variable<Type> $call$(Object arg0, Object arg1, Object arg2) {
+        return (ceylon.language.meta.model.Variable<Type>)super.$call$(arg0, arg1, arg2);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     @Ignore
-    public ceylon.language.meta.model.Variable<Type> $call(Object... args) {
-        return (ceylon.language.meta.model.Variable<Type>)super.$call(args);
+    public ceylon.language.meta.model.Variable<Type> $call$(Object... args) {
+        return (ceylon.language.meta.model.Variable<Type>)super.$call$(args);
     }
 
     @Override
@@ -159,7 +159,7 @@ public class AppliedVariableAttribute<Container, Type>
     
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AppliedVariableAttribute.class, super.$reifiedContainer, $reifiedType);
     }
 

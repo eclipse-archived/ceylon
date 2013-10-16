@@ -227,7 +227,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 
     @Ignore
     @Override
-    public Type $call() {
+    public Type $call$() {
         if(method == null)
             throw new RuntimeException("No method found for: "+declaration.getName());
         try {
@@ -243,7 +243,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 
     @Ignore
     @Override
-    public Type $call(Object arg0) {
+    public Type $call$(Object arg0) {
         if(method == null)
             throw new RuntimeException("No method found for: "+declaration.getName());
         try {
@@ -259,7 +259,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 
     @Ignore
     @Override
-    public Type $call(Object arg0, Object arg1) {
+    public Type $call$(Object arg0, Object arg1) {
         if(method == null)
             throw new RuntimeException("No method found for: "+declaration.getName());
         try {
@@ -275,7 +275,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 
     @Ignore
     @Override
-    public Type $call(Object arg0, Object arg1, Object arg2) {
+    public Type $call$(Object arg0, Object arg1, Object arg2) {
         if(method == null)
             throw new RuntimeException("No method found for: "+declaration.getName());
         try {
@@ -291,7 +291,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 
     @Ignore
     @Override
-    public Type $call(Object... args) {
+    public Type $call$(Object... args) {
         if(method == null)
             throw new RuntimeException("No method found for: "+declaration.getName());
         try {
@@ -308,7 +308,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 
     @Ignore
     @Override
-    public short $getVariadicParameterIndex() {
+    public short $getVariadicParameterIndex$() {
         return (short)variadicIndex;
     }
 
@@ -320,59 +320,59 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 
     @Override
     @Ignore
-    public Type $call$variadic() {
-        return $call();
+    public Type $callvariadic$() {
+        return $call$();
     }
     
     @Override
     @Ignore
-    public Type $call$variadic(Sequential<?> varargs) {
-        return $call(varargs);
+    public Type $callvariadic$(Sequential<?> varargs) {
+        return $call$(varargs);
     }
 
     @Override
     @Ignore
-    public Type $call$variadic(Object arg0,
+    public Type $callvariadic$(Object arg0,
             Sequential<?> varargs) {
-        return $call(arg0, varargs);
+        return $call$(arg0, varargs);
     }
 
     @Override
     @Ignore
-    public Type $call$variadic(Object arg0,
+    public Type $callvariadic$(Object arg0,
             Object arg1, Sequential<?> varargs) {
-        return $call(arg0, arg1, varargs);
+        return $call$(arg0, arg1, varargs);
     }
 
     @Override
     @Ignore
-    public Type $call$variadic(Object arg0,
+    public Type $callvariadic$(Object arg0,
             Object arg1, Object arg2, Sequential<?> varargs) {
-        return $call(arg0, arg1, arg2, varargs);
+        return $call$(arg0, arg1, arg2, varargs);
     }
 
     @Override
     @Ignore
-    public Type $call$variadic(Object... argsAndVarargs) {
-        return $call((Object[])argsAndVarargs);
+    public Type $callvariadic$(Object... argsAndVarargs) {
+        return $call$((Object[])argsAndVarargs);
     }
 
     @Override
     @Ignore
-    public Type $call$variadic(Object arg0) {
-        return $call(arg0, empty_.get_());
+    public Type $callvariadic$(Object arg0) {
+        return $call$(arg0, empty_.get_());
     }
 
     @Override
     @Ignore
-    public Type $call$variadic(Object arg0, Object arg1) {
-        return $call(arg0, arg1, empty_.get_());
+    public Type $callvariadic$(Object arg0, Object arg1) {
+        return $call$(arg0, arg1, empty_.get_());
     }
 
     @Override
     @Ignore
-    public Type $call$variadic(Object arg0, Object arg1, Object arg2) {
-        return $call(arg0, arg1, arg2, empty_.get_());
+    public Type $callvariadic$(Object arg0, Object arg1, Object arg2) {
+        return $call$(arg0, arg1, arg2, empty_.get_());
     }
 
     @Ignore
@@ -437,7 +437,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AppliedFunction.class, $reifiedType, $reifiedArguments);
     }
 }

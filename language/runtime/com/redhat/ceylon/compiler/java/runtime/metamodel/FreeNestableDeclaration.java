@@ -23,7 +23,7 @@ public abstract class FreeNestableDeclaration
     implements ceylon.language.meta.declaration.NestableDeclaration, ReifiedType {
     
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeNestableDeclaration.class);
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeNestableDeclaration.class);
 
     @Ignore
     protected com.redhat.ceylon.compiler.typechecker.model.Declaration declaration;
@@ -134,7 +134,7 @@ public abstract class FreeNestableDeclaration
     
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

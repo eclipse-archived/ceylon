@@ -28,7 +28,7 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
         ReifiedType {
 
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreePackage.class);
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreePackage.class);
     
     private com.redhat.ceylon.compiler.typechecker.model.Package declaration;
 
@@ -64,7 +64,7 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
     
     @Override
     @Ignore
-    public java.lang.annotation.Annotation[] $getJavaAnnotations() {
+    public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
         Class<?> javaClass = Metamodel.getJavaClass(declaration);
         return javaClass != null ? javaClass.getAnnotations() : AnnotationBearing.NONE;
     }
@@ -245,8 +245,8 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
 
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 
 }

@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public class Exception extends RuntimeException implements ReifiedType {
 
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Exception.class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Exception.class);
 
 	private static final long serialVersionUID = -1790691559137471641L;
 
@@ -35,12 +35,12 @@ public class Exception extends RuntimeException implements ReifiedType {
     
     @Ignore
     public Exception(String description) {
-        this(description, $init$cause(description));
+        this(description, $default$cause(description));
     }
     
     @Ignore
     public Exception() {
-        this($init$description());
+        this($default$description());
     }
         
     @TypeInfo("ceylon.language::Exception|ceylon.language::Null")
@@ -72,17 +72,17 @@ public class Exception extends RuntimeException implements ReifiedType {
     }
 
     @Ignore
-    public static String $init$description(){
+    public static String $default$description(){
         return null;
     }
     @Ignore
-    public static Throwable $init$cause(String description){
+    public static Throwable $default$cause(String description){
         return null;
     }
 
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

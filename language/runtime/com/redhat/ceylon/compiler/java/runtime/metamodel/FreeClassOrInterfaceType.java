@@ -26,7 +26,7 @@ public abstract class FreeClassOrInterfaceType
     implements ceylon.language.meta.declaration.OpenClassOrInterfaceType, ReifiedType {
 
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeClassOrInterfaceType.class);
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeClassOrInterfaceType.class);
     
     private volatile boolean initialised;
     final com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType;
@@ -79,8 +79,8 @@ public abstract class FreeClassOrInterfaceType
             typeArguments.put(tp, ptArgWrapped);
         }
         this.typeArguments = new InternalMap<ceylon.language.meta.declaration.TypeParameter, 
-                                             ceylon.language.meta.declaration.OpenType>(ceylon.language.meta.declaration.TypeParameter.$TypeDescriptor, 
-                                                                                             ceylon.language.meta.declaration.OpenType.$TypeDescriptor, 
+                                             ceylon.language.meta.declaration.OpenType>(ceylon.language.meta.declaration.TypeParameter.$TypeDescriptor$, 
+                                                                                             ceylon.language.meta.declaration.OpenType.$TypeDescriptor$, 
                                                                                              typeArguments);
         
         com.redhat.ceylon.compiler.typechecker.model.ProducedType superType = decl.getExtendedType();
@@ -98,7 +98,7 @@ public abstract class FreeClassOrInterfaceType
             interfaces[i++] = (ceylon.language.meta.declaration.OpenInterfaceType) 
                     Metamodel.getMetamodel(resolvedPt);
         }
-        this.interfaces = Util.sequentialInstance(ceylon.language.meta.declaration.OpenInterfaceType.$TypeDescriptor, interfaces);
+        this.interfaces = Util.sequentialInstance(ceylon.language.meta.declaration.OpenInterfaceType.$TypeDescriptor$, interfaces);
     }
 
     @Override
@@ -163,7 +163,7 @@ public abstract class FreeClassOrInterfaceType
     
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

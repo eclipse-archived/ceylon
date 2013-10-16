@@ -47,7 +47,7 @@ public abstract class AppliedMember<Container, Kind extends ceylon.language.meta
 
     @Override
     @Ignore
-    public Kind $call() {
+    public Kind $call$() {
         throw new UnsupportedOperationException();
     }
 
@@ -55,37 +55,37 @@ public abstract class AppliedMember<Container, Kind extends ceylon.language.meta
     
     @Override
     @Ignore
-    public Kind $call(Object instance) {
+    public Kind $call$(Object instance) {
         return bindTo(instance);
     }
 
     @Override
     @Ignore
-    public Kind $call(Object arg0, Object arg1) {
+    public Kind $call$(Object arg0, Object arg1) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Kind $call(Object arg0, Object arg1, Object arg2) {
+    public Kind $call$(Object arg0, Object arg1, Object arg2) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Kind $call(Object... args) {
+    public Kind $call$(Object... args) {
         throw new UnsupportedOperationException();
     }
 
     @Ignore
     @Override
-    public short $getVariadicParameterIndex() {
+    public short $getVariadicParameterIndex$() {
         return -1;
     }
 
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AppliedMember.class, $reifiedContainer, $reifiedKind);
     }
 }

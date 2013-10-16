@@ -13,7 +13,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public class StringBuilder implements ReifiedType {
     
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(StringBuilder.class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(StringBuilder.class);
 
     final java.lang.StringBuilder builder = new java.lang.StringBuilder();
     
@@ -120,7 +120,7 @@ public class StringBuilder implements ReifiedType {
 
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

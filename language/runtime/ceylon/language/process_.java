@@ -200,7 +200,7 @@ public final class process_ {
             for (int i = 0; i < args.length; i++) {
                 newArgs[i] = String.instance(args[i]);
             }
-            this.args = ArraySequence.<String>instance(String.$TypeDescriptor, newArgs);
+            this.args = ArraySequence.<String>instance(String.$TypeDescriptor$, newArgs);
         }
     }
     

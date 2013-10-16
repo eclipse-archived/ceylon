@@ -26,14 +26,14 @@ public class SequenceBuilderTest {
     
     @Test
     public void testEmpty() {
-        SequenceBuilder<String> sb = new SequenceBuilder<String>(String.$TypeDescriptor);
+        SequenceBuilder<String> sb = new SequenceBuilder<String>(String.$TypeDescriptor$);
         Assert.assertEquals(0, sb.getSize());
         Assert.assertTrue(sb.getEmpty());
         Assert.assertEquals(empty, sb.getSequence());
     }
     @Test
     public void test123() {
-        SequenceBuilder<String> sb = new SequenceBuilder<String>(String.$TypeDescriptor);
+        SequenceBuilder<String> sb = new SequenceBuilder<String>(String.$TypeDescriptor$);
         sb.append(s("1"));
         sb.append(s("2"));
         sb.append(s("3"));
@@ -53,7 +53,7 @@ public class SequenceBuilderTest {
     }
     @Test
     public void test1000() {
-        SequenceBuilder<String> sb = new SequenceBuilder<String>(String.$TypeDescriptor);
+        SequenceBuilder<String> sb = new SequenceBuilder<String>(String.$TypeDescriptor$);
         for (int ii = 0; ii < 1000; ii++) {
             sb.append(s(""+ii));
         }

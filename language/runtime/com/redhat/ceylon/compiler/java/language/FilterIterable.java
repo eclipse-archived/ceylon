@@ -74,16 +74,16 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
 
         public java.lang.Object next() {
             java.lang.Object elem = iter.next();
-            boolean flag = elem instanceof Finished ? true : f.$call(elem).booleanValue();
+            boolean flag = elem instanceof Finished ? true : f.$call$(elem).booleanValue();
             while (!flag) {
                 elem = iter.next();
-                flag = elem instanceof Finished ? true : f.$call(elem).booleanValue();
+                flag = elem instanceof Finished ? true : f.$call$(elem).booleanValue();
             }
             return elem;
         }
         @Override
         @Ignore
-        public TypeDescriptor $getType() {
+        public TypeDescriptor $getType$() {
             return TypeDescriptor.klass(FilterIterator.class, $reifiedElement);
         }
     }
@@ -160,7 +160,7 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
     @Override
     @Ignore
     public Iterable<? extends Element, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor, this, f);
+        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor$, this, f);
     }
     @Override
     @Ignore
@@ -269,7 +269,7 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
 //    }
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(FilterIterable.class, $reifiedElement);
     }
 }

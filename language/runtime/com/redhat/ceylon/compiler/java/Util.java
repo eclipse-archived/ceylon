@@ -579,7 +579,7 @@ public class Util {
             newArray[i++] = ceylon.language.String.instance(element);
         }
         // TODO Annoyingly this results in an extra copy
-        return ArraySequence.instance(ceylon.language.String.$TypeDescriptor, newArray);
+        return ArraySequence.instance(ceylon.language.String.$TypeDescriptor$, newArray);
     }
 
     public static Sequential<? extends ceylon.language.Integer> sequentialInstanceBoxed(long[] elements) {
@@ -594,7 +594,7 @@ public class Util {
             newArray[i++] = ceylon.language.Integer.instance(element);
         }
         // TODO Annoyingly this results in an extra copy
-        return ArraySequence.instance(ceylon.language.Integer.$TypeDescriptor, newArray);
+        return ArraySequence.instance(ceylon.language.Integer.$TypeDescriptor$, newArray);
     }
 
     public static Sequential<? extends ceylon.language.Character> sequentialInstanceBoxed(int[] elements) {
@@ -609,7 +609,7 @@ public class Util {
             newArray[i++] = ceylon.language.Character.instance(element);
         }
         // TODO Annoyingly this results in an extra copy
-        return ArraySequence.instance(ceylon.language.Character.$TypeDescriptor, newArray);
+        return ArraySequence.instance(ceylon.language.Character.$TypeDescriptor$, newArray);
     }
 
     public static Sequential<? extends ceylon.language.Boolean> sequentialInstanceBoxed(boolean[] elements) {
@@ -624,7 +624,7 @@ public class Util {
             newArray[i++] = ceylon.language.Boolean.instance(element);
         }
         // TODO Annoyingly this results in an extra copy
-        return ArraySequence.instance(ceylon.language.Boolean.$TypeDescriptor, newArray);
+        return ArraySequence.instance(ceylon.language.Boolean.$TypeDescriptor$, newArray);
     }
 
     public static Sequential<? extends ceylon.language.Float> sequentialInstanceBoxed(double[] elements) {
@@ -639,7 +639,7 @@ public class Util {
             newArray[i++] = ceylon.language.Float.instance(element);
         }
         // TODO Annoyingly this results in an extra copy
-        return ArraySequence.instance(ceylon.language.Float.$TypeDescriptor, newArray);
+        return ArraySequence.instance(ceylon.language.Float.$TypeDescriptor$, newArray);
     }
 
 
@@ -825,64 +825,64 @@ public class Util {
      * @return the function's return value
      */
     public static <Return> Return apply(Callable<? extends Return> function, Sequential<? extends Object> arguments){
-        int variadicParameterIndex = function.$getVariadicParameterIndex();
+        int variadicParameterIndex = function.$getVariadicParameterIndex$();
         switch ((int) arguments.getSize()) {
         case 0:
             // even if the function is variadic it will overload $call so we're good
-            return function.$call();
+            return function.$call$();
         case 1:
             // if the first param is variadic, just pass the sequence along
             if(variadicParameterIndex == 0)
-                return function.$call$variadic(arguments);
-            return function.$call(arguments.get(Integer.instance(0)));
+                return function.$callvariadic$(arguments);
+            return function.$call$(arguments.get(Integer.instance(0)));
         case 2:
             switch(variadicParameterIndex){
             // pass the sequence along
-            case 0: return function.$call$variadic(arguments);
+            case 0: return function.$callvariadic$(arguments);
             // extract the first, pass the rest
-            case 1: return function.$call$variadic(arguments.get(Integer.instance(0)), 
+            case 1: return function.$callvariadic$(arguments.get(Integer.instance(0)), 
                                               (Sequential)arguments.spanFrom(Integer.instance(1)));
             // no variadic param, or after we run out of elements to pass
             default:
-                return function.$call(arguments.get(Integer.instance(0)), 
+                return function.$call$(arguments.get(Integer.instance(0)), 
                                           arguments.get(Integer.instance(1)));
             }
         case 3:
             switch(variadicParameterIndex){
             // pass the sequence along
-            case 0: return function.$call$variadic(arguments);
+            case 0: return function.$callvariadic$(arguments);
             // extract the first, pass the rest
-            case 1: return function.$call$variadic(arguments.get(Integer.instance(0)), 
+            case 1: return function.$callvariadic$(arguments.get(Integer.instance(0)), 
                                               (Sequential)arguments.spanFrom(Integer.instance(1)));
             // extract the first and second, pass the rest
-            case 2: return function.$call$variadic(arguments.get(Integer.instance(0)),
+            case 2: return function.$callvariadic$(arguments.get(Integer.instance(0)),
                                               arguments.get(Integer.instance(1)),
                                               (Sequential)arguments.spanFrom(Integer.instance(2)));
             // no variadic param, or after we run out of elements to pass
             default:
-            return function.$call(arguments.get(Integer.instance(0)), 
+            return function.$call$(arguments.get(Integer.instance(0)), 
                                       arguments.get(Integer.instance(1)), 
                                       arguments.get(Integer.instance(2)));
             }
         default:
             switch(variadicParameterIndex){
             // pass the sequence along
-            case 0: return function.$call$variadic(arguments);
+            case 0: return function.$callvariadic$(arguments);
             // extract the first, pass the rest
-            case 1: return function.$call$variadic(arguments.get(Integer.instance(0)), 
+            case 1: return function.$callvariadic$(arguments.get(Integer.instance(0)), 
                                              (Sequential)arguments.spanFrom(Integer.instance(1)));
             // extract the first and second, pass the rest
-            case 2: return function.$call$variadic(arguments.get(Integer.instance(0)),
+            case 2: return function.$callvariadic$(arguments.get(Integer.instance(0)),
                                               arguments.get(Integer.instance(1)),
                                               (Sequential)arguments.spanFrom(Integer.instance(2)));
-            case 3: return function.$call$variadic(arguments.get(Integer.instance(0)),
+            case 3: return function.$callvariadic$(arguments.get(Integer.instance(0)),
                                             arguments.get(Integer.instance(1)),
                                             arguments.get(Integer.instance(2)),
                                             (Sequential)arguments.spanFrom(Integer.instance(3)));
             // no variadic param
             case -1:
                 java.lang.Object[] args = Util.toArray(arguments, new java.lang.Object[(int) arguments.getSize()]);
-                return function.$call(args);
+                return function.$call$(args);
             // we have a variadic param in there bothering us
             default:
                 // we stuff everything before the variadic into an array
@@ -898,9 +898,9 @@ public class Util {
                 // add the remainder as a variadic arg if required
                 if(needsVariadic){
                     args[i] = arguments.spanFrom(Integer.instance(beforeVariadic));
-                    return function.$call$variadic(args);
+                    return function.$callvariadic$(args);
                 }
-                return function.$call(args);
+                return function.$call$(args);
             }
         }
     }

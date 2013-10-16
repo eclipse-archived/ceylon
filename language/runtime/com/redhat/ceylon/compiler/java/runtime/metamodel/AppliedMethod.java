@@ -114,70 +114,70 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
 
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AppliedMethod.class, super.$reifiedContainer, $reifiedType, $reifiedArguments);
     }
     
     @Override
     @Ignore
-    public Function<? extends Type, ? super Arguments> $call$variadic() {
-        return $call$variadic(empty_.get_());
+    public Function<? extends Type, ? super Arguments> $callvariadic$() {
+        return $callvariadic$(empty_.get_());
     }
     
     @Override
     @Ignore
-    public Function<? extends Type, ? super Arguments> $call$variadic(
+    public Function<? extends Type, ? super Arguments> $callvariadic$(
             Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Function<? extends Type, ? super Arguments> $call$variadic(
+    public Function<? extends Type, ? super Arguments> $callvariadic$(
             Object arg0, Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Function<? extends Type, ? super Arguments> $call$variadic(
+    public Function<? extends Type, ? super Arguments> $callvariadic$(
             Object arg0, Object arg1, Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Function<? extends Type, ? super Arguments> $call$variadic(
+    public Function<? extends Type, ? super Arguments> $callvariadic$(
             Object arg0, Object arg1, Object arg2, Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Function<? extends Type, ? super Arguments> $call$variadic(
+    public Function<? extends Type, ? super Arguments> $callvariadic$(
             Object... argsAndVarargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Function<? extends Type, ? super Arguments> $call$variadic(
+    public Function<? extends Type, ? super Arguments> $callvariadic$(
             Object arg0) {
-        return $call$variadic(arg0, empty_.get_());
+        return $callvariadic$(arg0, empty_.get_());
     }
 
     @Override
     @Ignore
-    public Function<? extends Type, ? super Arguments> $call$variadic(
+    public Function<? extends Type, ? super Arguments> $callvariadic$(
             Object arg0, Object arg1) {
-        return $call$variadic(arg0, arg1, empty_.get_());
+        return $callvariadic$(arg0, arg1, empty_.get_());
     }
 
     @Override
     @Ignore
-    public Function<? extends Type, ? super Arguments> $call$variadic(
+    public Function<? extends Type, ? super Arguments> $callvariadic$(
             Object arg0, Object arg1, Object arg2) {
-        return $call$variadic(arg0, arg1, arg2, empty_.get_());
+        return $callvariadic$(arg0, arg1, arg2, empty_.get_());
     }
 
     @SuppressWarnings("unchecked")

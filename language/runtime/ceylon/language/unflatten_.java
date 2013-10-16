@@ -30,35 +30,35 @@ public final class unflatten_ {
         return new AbstractCallable<Return>($reifiedReturn, $reifiedArgs, null, (short)-1) {
 
             @Override
-            public Return $call() {
+            public Return $call$() {
                 throw new UnsupportedOperationException();
             }
 
             @Override
-            public Return $call(java.lang.Object arg0) {
+            public Return $call$(java.lang.Object arg0) {
                 Sequential<?> seq = (Sequential<?>) arg0;
                 return Util.<Return>apply(flatFunction, seq);
             }
 
             @Override
-            public Return $call(java.lang.Object arg0, java.lang.Object arg1) {
+            public Return $call$(java.lang.Object arg0, java.lang.Object arg1) {
                 throw new UnsupportedOperationException();
             }
 
             @Override
-            public Return $call(java.lang.Object arg0, java.lang.Object arg1, java.lang.Object arg2) {
+            public Return $call$(java.lang.Object arg0, java.lang.Object arg1, java.lang.Object arg2) {
                 throw new UnsupportedOperationException();
             }
 
             @Override
-            public Return $call(java.lang.Object... args) {
+            public Return $call$(java.lang.Object... args) {
                 throw new UnsupportedOperationException();
             }
             
 
             
             public java.lang.String toString() {
-                return $getType().toString();
+                return $getType$().toString();
             }
         };
     }

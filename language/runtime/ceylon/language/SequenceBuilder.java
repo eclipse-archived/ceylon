@@ -38,13 +38,13 @@ public class SequenceBuilder<Element> implements ReifiedType {
     public SequenceBuilder(@Ignore TypeDescriptor $reifiedElement, int initialCapacity) {
         this($reifiedElement);
         if (initialCapacity >= 0) {
-            resize$priv(initialCapacity);
+            resize$priv$(initialCapacity);
         }
     }
     
     /** Ensures the array has at least the given capacity (it may allocate more) */
     @Ignore
-    private void ensureCapacity$priv(long capacity) {
+    private void ensureCapacity$priv$(long capacity) {
         
         if ((array == null && capacity > 0) 
                 || (capacity > array.length)) {
@@ -58,12 +58,12 @@ public class SequenceBuilder<Element> implements ReifiedType {
                     throw new RuntimeException("Can't allocate array bigger than " + MAX_CAPACITY);
                 }
             }
-            resize$priv(newcapacity);
+            resize$priv$(newcapacity);
         }
     }
     /** Resizes the array to the given size */
     @Ignore
-    private void resize$priv(long newcapacity) {
+    private void resize$priv$(long newcapacity) {
         java.lang.Object[] newarray = new java.lang.Object[(int)newcapacity];
         if (array != null) {
             System.arraycopy(array, 0, newarray, 0, length);
@@ -74,7 +74,7 @@ public class SequenceBuilder<Element> implements ReifiedType {
     @Ignore
     SequenceBuilder trim$priv() {
         if (array.length != length) {
-            resize$priv(length);
+            resize$priv$(length);
         }
         return this;
     }
@@ -90,7 +90,7 @@ public class SequenceBuilder<Element> implements ReifiedType {
     }
     
     public final SequenceBuilder<Element> append(@Name("element") Element element) {
-        ensureCapacity$priv(length+1);
+        ensureCapacity$priv$(length+1);
     	array[length] = element;
     	length+=1;
     	return this;
@@ -102,7 +102,7 @@ public class SequenceBuilder<Element> implements ReifiedType {
         if (elements instanceof ArraySequence) {
             ArraySequence as = (ArraySequence)elements;
             int size = (int)as.getSize();
-            ensureCapacity$priv(length + size);
+            ensureCapacity$priv$(length + size);
             java.lang.Object[] a = as.array;
             System.arraycopy(a, as.first, array, length, size);
             length += size;
@@ -112,7 +112,7 @@ public class SequenceBuilder<Element> implements ReifiedType {
         	for (Iterator<? extends Element> iter=elements.iterator(); !((elem = iter.next()) instanceof Finished);) {
         	    // In general, Iterable.getSize() could cause an iteration 
                 // through all the elements, so we can't allocate before the loop 
-        	    ensureCapacity$priv(length + 1);
+        	    ensureCapacity$priv$(length + 1);
         	    array[index] = elem;
         	    index++;
         	    length++;
@@ -137,7 +137,7 @@ public class SequenceBuilder<Element> implements ReifiedType {
      
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(SequenceBuilder.class, $reifiedElement);
     }
 }

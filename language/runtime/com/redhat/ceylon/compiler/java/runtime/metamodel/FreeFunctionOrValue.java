@@ -14,7 +14,7 @@ public abstract class FreeFunctionOrValue
     implements ceylon.language.meta.declaration.FunctionOrValueDeclaration {
 
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeFunctionOrValue.class);
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeFunctionOrValue.class);
     
     protected Parameter parameter;
 
@@ -46,7 +46,7 @@ public abstract class FreeFunctionOrValue
 
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

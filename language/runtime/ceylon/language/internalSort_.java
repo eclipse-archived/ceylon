@@ -42,7 +42,7 @@ final class internalSort_ {
             final Callable<? extends Comparison> comparing) {
         return new Comparator<Element>() {
             public int compare(Element x, Element y) {
-                Comparison result = comparing.$call(x, y);
+                Comparison result = comparing.$call$(x, y);
                 if (result.largerThan()) return 1;
                 if (result.smallerThan()) return -1;
                 return 0;

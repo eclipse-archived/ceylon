@@ -82,7 +82,7 @@ public class AppliedAttribute<Container, Type>
 
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AppliedAttribute.class, super.$reifiedContainer, $reifiedType);
     }
 
@@ -98,61 +98,61 @@ public class AppliedAttribute<Container, Type>
     
     @Override
     @Ignore
-    public Value<? extends Type> $call$variadic() {
-        return $call$variadic(empty_.get_());
+    public Value<? extends Type> $callvariadic$() {
+        return $callvariadic$(empty_.get_());
     }
     
     @Override
     @Ignore
-    public Value<? extends Type> $call$variadic(
+    public Value<? extends Type> $callvariadic$(
             Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Value<? extends Type> $call$variadic(
+    public Value<? extends Type> $callvariadic$(
             Object arg0, Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Value<? extends Type> $call$variadic(
+    public Value<? extends Type> $callvariadic$(
             Object arg0, Object arg1, Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Value<? extends Type> $call$variadic(
+    public Value<? extends Type> $callvariadic$(
             Object arg0, Object arg1, Object arg2, Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Value<? extends Type> $call$variadic(Object... argsAndVarargs) {
+    public Value<? extends Type> $callvariadic$(Object... argsAndVarargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Value<? extends Type> $call$variadic(Object arg0) {
-        return $call$variadic(arg0, empty_.get_());
+    public Value<? extends Type> $callvariadic$(Object arg0) {
+        return $callvariadic$(arg0, empty_.get_());
     }
 
     @Override
     @Ignore
-    public Value<? extends Type> $call$variadic(Object arg0, Object arg1) {
-        return $call$variadic(arg0, arg1, empty_.get_());
+    public Value<? extends Type> $callvariadic$(Object arg0, Object arg1) {
+        return $callvariadic$(arg0, arg1, empty_.get_());
     }
 
     @Override
     @Ignore
-    public Value<? extends Type> $call$variadic(Object arg0, Object arg1,
+    public Value<? extends Type> $callvariadic$(Object arg0, Object arg1,
             Object arg2) {
-        return $call$variadic(arg0, arg1, arg2, empty_.get_());
+        return $callvariadic$(arg0, arg1, arg2, empty_.get_());
     }
 
     @SuppressWarnings("unchecked")

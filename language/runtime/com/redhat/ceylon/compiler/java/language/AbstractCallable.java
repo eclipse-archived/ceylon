@@ -51,31 +51,31 @@ public abstract class AbstractCallable<Return> implements Callable<Return>, Reif
     
     @Override
     @Ignore
-    public Return $call() {
+    public Return $call$() {
         throw new UnsupportedOperationException();
     }
     
     @Override
     @Ignore
-    public Return $call(java.lang.Object arg0) {
+    public Return $call$(java.lang.Object arg0) {
         throw new UnsupportedOperationException();
     }
     
     @Override
     @Ignore
-    public Return $call(java.lang.Object arg0, java.lang.Object arg1) {
+    public Return $call$(java.lang.Object arg0, java.lang.Object arg1) {
         throw new UnsupportedOperationException();
     }
     
     @Override
     @Ignore
-    public Return $call(java.lang.Object arg0, java.lang.Object arg1, java.lang.Object arg2) {
+    public Return $call$(java.lang.Object arg0, java.lang.Object arg1, java.lang.Object arg2) {
         throw new UnsupportedOperationException();
     }
     
     @Override
     @Ignore
-    public Return $call(java.lang.Object... args) {
+    public Return $call$(java.lang.Object... args) {
         throw new UnsupportedOperationException();
     }
     
@@ -85,42 +85,42 @@ public abstract class AbstractCallable<Return> implements Callable<Return>, Reif
     }
 
     @Override
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AbstractCallable.class, $reifiedReturn, $reifiedArguments);
     }
 
     @Override
-    public short $getVariadicParameterIndex() {
+    public short $getVariadicParameterIndex$() {
         return variadicParameterIndex;
     }
     
     @Override
     @Ignore
-    public Return $call$variadic(Sequential<?> varargs) {
+    public Return $callvariadic$(Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Return $call$variadic(Object arg0, Sequential<?> varargs) {
+    public Return $callvariadic$(Object arg0, Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Return $call$variadic(Object arg0, Object arg1, Sequential<?> varargs) {
+    public Return $callvariadic$(Object arg0, Object arg1, Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Return $call$variadic(Object arg0, Object arg1, Object arg2, Sequential<?> varargs) {
+    public Return $callvariadic$(Object arg0, Object arg1, Object arg2, Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Return $call$variadic(Object... argsAndVarargs) {
+    public Return $callvariadic$(Object... argsAndVarargs) {
         throw new UnsupportedOperationException();
     }
 
@@ -132,10 +132,10 @@ public abstract class AbstractCallable<Return> implements Callable<Return>, Reif
      * <li>the last element of the given array is a Sequential, whose elements 
      *     make up the rest of the elements in the returned sequential.
      */
-    protected static Sequential $spreadVarargs(TypeDescriptor $reifiedElement, 
+    protected static Sequential $spreadVarargs$(TypeDescriptor $reifiedElement, 
             int start, Object[] argsAndVarargs) {
         Sequential<?> callsiteVarargs = (Sequential<?>)argsAndVarargs[argsAndVarargs.length-1];
-        return $spreadVarargs($reifiedElement,  
+        return $spreadVarargs$($reifiedElement,  
                 start, argsAndVarargs.length - 1 - start, argsAndVarargs, 
                 callsiteVarargs);
     }
@@ -148,7 +148,7 @@ public abstract class AbstractCallable<Return> implements Callable<Return>, Reif
      * <li>elements of {@code rest} 
      *     make up the rest of the elements in the returned sequential.
      */
-    protected static Sequential $spreadVarargs(TypeDescriptor $reifiedElement, 
+    protected static Sequential $spreadVarargs$(TypeDescriptor $reifiedElement, 
             int start, int length, Object[] initial, Sequential<?> rest) {
         return Util.sequentialInstance($reifiedElement, 
                 start, length, initial, false, rest);
@@ -156,25 +156,25 @@ public abstract class AbstractCallable<Return> implements Callable<Return>, Reif
     
     @Override
     @Ignore
-    public Return $call$variadic() {
-        return $call$variadic(empty_.get_());
+    public Return $callvariadic$() {
+        return $callvariadic$(empty_.get_());
     }
 
     @Override
     @Ignore
-    public Return $call$variadic(Object arg0) {
-        return $call$variadic(arg0, empty_.get_());
+    public Return $callvariadic$(Object arg0) {
+        return $callvariadic$(arg0, empty_.get_());
     }
 
     @Override
     @Ignore
-    public Return $call$variadic(Object arg0, Object arg1) {
-        return $call$variadic(arg0, arg1, empty_.get_());
+    public Return $callvariadic$(Object arg0, Object arg1) {
+        return $callvariadic$(arg0, arg1, empty_.get_());
     }
 
     @Override
     @Ignore
-    public Return $call$variadic(Object arg0, Object arg1, Object arg2) {
-        return $call$variadic(arg0, arg1, arg2, empty_.get_());
+    public Return $callvariadic$(Object arg0, Object arg1, Object arg2) {
+        return $callvariadic$(arg0, arg1, arg2, empty_.get_());
     }
 }

@@ -478,14 +478,14 @@ class Predicates {
             };
         } else {
             try {
-                refAnnotationType = Class.forName(refAnnotationClass.getName()+"$annotation", 
+                refAnnotationType = Class.forName(refAnnotationClass.getName()+"$annotation$", 
                         false, refAnnotationClass.getClassLoader());
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
             Class<?> c;
             try {
-                c = Class.forName(refAnnotationClass.getName()+"$annotations", 
+                c = Class.forName(refAnnotationClass.getName()+"$annotations$", 
                         false, refAnnotationClass.getClassLoader());
             } catch (ClassNotFoundException e) {
                 c = null;

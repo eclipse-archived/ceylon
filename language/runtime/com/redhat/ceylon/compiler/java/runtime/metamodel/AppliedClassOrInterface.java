@@ -100,7 +100,7 @@ public abstract class AppliedClassOrInterface<Type>
             com.redhat.ceylon.compiler.typechecker.model.ProducedType resolvedPt = pt.substitute(producedType.getTypeArguments());
             interfaces[i++] = (ceylon.language.meta.model.InterfaceModel<?>) Metamodel.getAppliedMetamodel(resolvedPt);
         }
-        this.interfaces = Util.sequentialInstance(TypeDescriptor.klass(ceylon.language.meta.model.InterfaceModel.class, ceylon.language.Anything.$TypeDescriptor), interfaces);
+        this.interfaces = Util.sequentialInstance(TypeDescriptor.klass(ceylon.language.meta.model.InterfaceModel.class, ceylon.language.Anything.$TypeDescriptor$), interfaces);
     }
 
     @Override
@@ -359,7 +359,7 @@ public abstract class AppliedClassOrInterface<Type>
 
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AppliedClassOrInterface.class, $reifiedType);
     }
 }

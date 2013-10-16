@@ -60,7 +60,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     }
     
     @Ignore
-    public Iterable[] $getIterables() {
+    public Iterable[] $getIterables$() {
         return $iterables;
     }
     
@@ -99,8 +99,8 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     }
     
     @Ignore
-    private long $getSequenceSize$() {
-        Iterable[] iterables = $getIterables();
+    private long getSequenceSize$priv$() {
+        Iterable[] iterables = $getIterables$();
         if (iterables.length == 0) {
             return -1L;
         }
@@ -109,7 +109,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
             if (it instanceof Collection) {
                 size *= ((Collection)it).getSize();
             } else if (it instanceof AbstractIterable) {
-                size *= ((AbstractIterable)it).$getSequenceSize$();
+                size *= ((AbstractIterable)it).getSequenceSize$priv$();
             } else {
                 size = -1L;
                 break;
@@ -121,7 +121,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     @Override
     @Ignore
     public Sequential<? extends Element> getSequence() {
-        long size = $getSequenceSize$();
+        long size = getSequenceSize$priv$();
         final SequenceBuilder<Element> sb = size < 0 || size > java.lang.Integer.MAX_VALUE ? new SequenceBuilder<Element>($reifiedElement) : new SequenceBuilder<Element>($reifiedElement, (int)size) ;
         java.lang.Object next = null;
         for (Iterator<? extends Element> iter = iterator(); (next = iter.next()) != finished_.get_();) {
@@ -156,7 +156,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     @Override
     public Iterable<? extends Element, ? extends java.lang.Object> filter(
             Callable<? extends Boolean> selecting) {
-        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor, this, selecting);
+        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor$, this, selecting);
     }
 
     @Override
@@ -301,7 +301,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
 //    }
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AbstractIterable.class, $reifiedElement);
     }
 }

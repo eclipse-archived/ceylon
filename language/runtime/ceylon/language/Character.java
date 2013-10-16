@@ -19,7 +19,7 @@ public final class Character
         implements Comparable<Character>, Enumerable<Character>, ReifiedType {
 
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Character.class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Character.class);
 
     @Ignore
     public final int codePoint;
@@ -265,7 +265,7 @@ public final class Character
 
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

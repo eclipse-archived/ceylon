@@ -130,9 +130,9 @@ public class Metamodel {
     
     public static TypeDescriptor getTypeDescriptor(Object instance) {
         if(instance == null)
-            return Null.$TypeDescriptor;
+            return Null.$TypeDescriptor$;
         else if(instance instanceof ReifiedType)
-            return((ReifiedType) instance).$getType();
+            return((ReifiedType) instance).$getType$();
         else
             return null; // FIXME: interop?
     }
@@ -264,7 +264,7 @@ public class Metamodel {
         for(ProducedType pt : types){
             ret[i++] = Metamodel.getMetamodel(pt);
         }
-        return Util.sequentialInstance(ceylon.language.meta.declaration.OpenType.$TypeDescriptor, ret);
+        return Util.sequentialInstance(ceylon.language.meta.declaration.OpenType.$TypeDescriptor$, ret);
     }
 
     public static Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> getAppliedMetamodelSequential(List<ProducedType> types) {
@@ -275,7 +275,7 @@ public class Metamodel {
         for(ProducedType pt : types){
             ret[i++] = Metamodel.getAppliedMetamodel(pt);
         }
-        return Util.sequentialInstance(TypeDescriptor.klass(ceylon.language.meta.model.Type.class, Anything.$TypeDescriptor), 
+        return Util.sequentialInstance(TypeDescriptor.klass(ceylon.language.meta.model.Type.class, Anything.$TypeDescriptor$), 
                                        ret);
     }
 
@@ -506,7 +506,7 @@ public class Metamodel {
             addProxyCeylonAnnotation(ceylonAnnotations, jAnnotation);
             return;
         }
-        if (jAnnotationType.getName().endsWith("$annotations")) {
+        if (jAnnotationType.getName().endsWith("$annotations$")) {
             java.lang.annotation.Annotation[] jAnnotations;
             try {
                 jAnnotations = (java.lang.annotation.Annotation[])jAnnotationType.getMethod("value").invoke(jAnnotation);
@@ -519,10 +519,10 @@ public class Metamodel {
         } else {
             // Find the annotation class
             String annotationName = jAnnotationType.getName();
-            if (!annotationName.endsWith("$annotation")) {
+            if (!annotationName.endsWith("$annotation$")) {
                 throw new RuntimeException();
             }
-            String className = annotationName.substring(0, annotationName.length() - "$annotation".length());
+            String className = annotationName.substring(0, annotationName.length() - "$annotation$".length());
             java.lang.Class<A> annotationClass;
             try {
                 annotationClass = (java.lang.Class<A>)Class.forName(className, false, jAnnotationType.getClassLoader());
@@ -573,7 +573,7 @@ public class Metamodel {
 
     public static <A extends ceylon.language.Annotation<? extends A>> Sequential<? extends A> annotations(TypeDescriptor $reifiedValues,
             Annotated annotated, Predicates.Predicate<A> predicate) {
-        java.lang.annotation.Annotation[] jAnnotations = ((AnnotationBearing)annotated).$getJavaAnnotations();
+        java.lang.annotation.Annotation[] jAnnotations = ((AnnotationBearing)annotated).$getJavaAnnotations$();
         if (jAnnotations == null) {
             throw new RuntimeException("Unable to find java.lang.reflect.AnnotatedElement for " + annotated);
         }
@@ -626,7 +626,7 @@ public class Metamodel {
         for(com.redhat.ceylon.compiler.typechecker.model.Module module : modules){
             array[i++] = getOrCreateMetamodel(module);
         }
-        return Util.sequentialInstance(Module.$TypeDescriptor, array);
+        return Util.sequentialInstance(Module.$TypeDescriptor$, array);
     }
 
     public static ceylon.language.meta.declaration.Module findLoadedModule(String name, String version) {
@@ -763,7 +763,7 @@ public class Metamodel {
         for(com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp : typeParameters){
             typeParametersArray[i++] = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter(tp);
         }
-        return Util.sequentialInstance(ceylon.language.meta.declaration.TypeParameter.$TypeDescriptor, typeParametersArray);
+        return Util.sequentialInstance(ceylon.language.meta.declaration.TypeParameter.$TypeDescriptor$, typeParametersArray);
     }
 
     @SuppressWarnings("hiding")
@@ -811,8 +811,8 @@ public class Metamodel {
             typeArguments.put(tp, ptArgWrapped);
         }
         return new InternalMap<ceylon.language.meta.declaration.TypeParameter, 
-                               ceylon.language.meta.model.Type<?>>(ceylon.language.meta.declaration.TypeParameter.$TypeDescriptor, 
-                                                              TypeDescriptor.klass(ceylon.language.meta.model.Type.class, ceylon.language.Anything.$TypeDescriptor), 
+                               ceylon.language.meta.model.Type<?>>(ceylon.language.meta.declaration.TypeParameter.$TypeDescriptor$, 
+                                                              TypeDescriptor.klass(ceylon.language.meta.model.Type.class, ceylon.language.Anything.$TypeDescriptor$), 
                                                               typeArguments);
     }
     
@@ -1054,6 +1054,6 @@ public class Metamodel {
         ProducedType argumentType = Metamodel.getProducedType(container);
         if(!argumentType.isSubtypeOf(containerType))
             throw new IncompatibleTypeException("Invalid container "+container+", expected type "+containerType+" but got "+argumentType);
-        return member.$call(container);
+        return member.$call$(container);
     }
 }

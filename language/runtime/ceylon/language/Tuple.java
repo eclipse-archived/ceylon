@@ -245,7 +245,7 @@ public final class Tuple<Element, First extends Element, Rest extends ceylon.lan
     
     @java.lang.Override
     @com.redhat.ceylon.compiler.java.metadata.Ignore
-    public com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+    public com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         TypeDescriptor type = ($cachedType != null) ? $cachedType.get() : null;
         if (type == null) {
             type = $getType(0);
@@ -259,7 +259,7 @@ public final class Tuple<Element, First extends Element, Rest extends ceylon.lan
         if (offset < getSize()) {
             return TypeDescriptor.klass(Tuple.class, $getUnionOfAllType(offset), $getElementType(offset), $getType(offset + 1));
         } else {
-            return empty_.$TypeDescriptor;
+            return empty_.$TypeDescriptor$;
         }
     }
     
@@ -275,6 +275,6 @@ public final class Tuple<Element, First extends Element, Rest extends ceylon.lan
     @com.redhat.ceylon.compiler.java.metadata.Ignore
     private TypeDescriptor $getElementType(int index) {
         ReifiedType element = (ReifiedType)array[first + index];
-        return (element != null) ? element.$getType() : Null.$TypeDescriptor;
+        return (element != null) ? element.$getType$() : Null.$TypeDescriptor$;
     }
 }

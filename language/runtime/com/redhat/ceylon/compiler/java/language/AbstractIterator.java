@@ -27,7 +27,7 @@ public abstract class AbstractIterator<Element> implements Iterator<Element>, Re
 
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AbstractIterator.class, $reifiedElement);
     }
 }

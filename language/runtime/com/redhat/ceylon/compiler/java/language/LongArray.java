@@ -31,7 +31,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public final class LongArray implements ReifiedType {
     
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(long[].class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(long[].class);
 
     public LongArray(@Name("size") int size, @TypeInfo("ceylon.language::Integer") @Defaulted @Name("element") long element){
         throw Util.makeJavaArrayWrapperException();
@@ -120,7 +120,7 @@ public final class LongArray implements ReifiedType {
 
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         throw Util.makeJavaArrayWrapperException();
     }
 }

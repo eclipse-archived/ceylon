@@ -18,6 +18,6 @@ public interface AnnotationBearing extends Annotated {
      * @return the Java annotations for this Annotated
      */
     @Ignore
-    java.lang.annotation.Annotation[] $getJavaAnnotations();
+    java.lang.annotation.Annotation[] $getJavaAnnotations$();
     
 }

@@ -15,7 +15,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public abstract class Boolean implements ReifiedType {
 
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Boolean.class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Boolean.class);
 
     @Ignore
     public static Boolean instance(boolean b) {
@@ -53,7 +53,7 @@ public abstract class Boolean implements ReifiedType {
 
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

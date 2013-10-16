@@ -19,7 +19,7 @@ public class FreeImport
         AnnotationBearing,
         ReifiedType {
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeImport.class);
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeImport.class);
     
     private final FreeModule module;
     
@@ -44,7 +44,7 @@ public class FreeImport
     
     @Override
     @Ignore
-    public java.lang.annotation.Annotation[] $getJavaAnnotations() {
+    public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
         final Field field = getField();
         return field != null ? field.getAnnotations() : AnnotationBearing.NONE;
     }
@@ -118,7 +118,7 @@ public class FreeImport
 
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

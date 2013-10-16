@@ -28,7 +28,7 @@ public final class String
                Summable<String>, ReifiedType {
     
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(String.class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(String.class);
     
     @Ignore
     protected final ceylon.language.Category$impl $ceylon$language$Category$this;
@@ -58,15 +58,15 @@ public final class String
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
     final Iterable<? extends Character, ? extends java.lang.Object> characters) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Character,java.lang.Object>(Character.$TypeDescriptor, Null.$TypeDescriptor, this);
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Character,java.lang.Object>(Character.$TypeDescriptor, Null.$TypeDescriptor, this);
-        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<Integer,Character>(Integer.$TypeDescriptor, Character.$TypeDescriptor, this);
-        this.$ceylon$language$List$this = new ceylon.language.List$impl<Character>(Character.$TypeDescriptor, this);
-        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Character>(Character.$TypeDescriptor, this);
-        this.$ceylon$language$Comparable$this = new ceylon.language.Comparable$impl<String>(String.$TypeDescriptor, this);
-        this.$ceylon$language$Summable$this = new ceylon.language.Summable$impl<String>(String.$TypeDescriptor, this);
-        this.$ceylon$language$Ranged$this = new ceylon.language.Ranged$impl<Integer,List<Character>>(Integer.$TypeDescriptor, String.$TypeDescriptor,(Ranged)this);
-        this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(String.$TypeDescriptor, this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Character,java.lang.Object>(Character.$TypeDescriptor$, Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Character,java.lang.Object>(Character.$TypeDescriptor$, Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<Integer,Character>(Integer.$TypeDescriptor$, Character.$TypeDescriptor$, this);
+        this.$ceylon$language$List$this = new ceylon.language.List$impl<Character>(Character.$TypeDescriptor$, this);
+        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Character>(Character.$TypeDescriptor$, this);
+        this.$ceylon$language$Comparable$this = new ceylon.language.Comparable$impl<String>(String.$TypeDescriptor$, this);
+        this.$ceylon$language$Summable$this = new ceylon.language.Summable$impl<String>(String.$TypeDescriptor$, this);
+        this.$ceylon$language$Ranged$this = new ceylon.language.Ranged$impl<Integer,List<Character>>(Integer.$TypeDescriptor$, String.$TypeDescriptor$,(Ranged)this);
+        this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(String.$TypeDescriptor$, this);
         if (characters instanceof String) {
             value = ((String)characters).value;
         } else {
@@ -83,15 +83,15 @@ public final class String
     @Ignore
     public String(final java.lang.String string) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Character,java.lang.Object>(Character.$TypeDescriptor, Null.$TypeDescriptor, this);
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Character,java.lang.Object>(Character.$TypeDescriptor, Null.$TypeDescriptor, this);
-        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<Integer,Character>(Integer.$TypeDescriptor, Character.$TypeDescriptor, this);
-        this.$ceylon$language$List$this = new ceylon.language.List$impl<Character>(Character.$TypeDescriptor, this);
-        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Character>(Character.$TypeDescriptor, this);
-        this.$ceylon$language$Comparable$this = new ceylon.language.Comparable$impl<String>(String.$TypeDescriptor, this);
-        this.$ceylon$language$Summable$this = new ceylon.language.Summable$impl<String>(String.$TypeDescriptor, this);
-        this.$ceylon$language$Ranged$this = new ceylon.language.Ranged$impl<Integer,List<Character>>(Integer.$TypeDescriptor, String.$TypeDescriptor,(Ranged)this);
-        this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(String.$TypeDescriptor, this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Character,java.lang.Object>(Character.$TypeDescriptor$, Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Character,java.lang.Object>(Character.$TypeDescriptor$, Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<Integer,Character>(Integer.$TypeDescriptor$, Character.$TypeDescriptor$, this);
+        this.$ceylon$language$List$this = new ceylon.language.List$impl<Character>(Character.$TypeDescriptor$, this);
+        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Character>(Character.$TypeDescriptor$, this);
+        this.$ceylon$language$Comparable$this = new ceylon.language.Comparable$impl<String>(String.$TypeDescriptor$, this);
+        this.$ceylon$language$Summable$this = new ceylon.language.Summable$impl<String>(String.$TypeDescriptor$, this);
+        this.$ceylon$language$Ranged$this = new ceylon.language.Ranged$impl<Integer,List<Character>>(Integer.$TypeDescriptor$, String.$TypeDescriptor$,(Ranged)this);
+        this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(String.$TypeDescriptor$, this);
         value = string;
     }
 
@@ -692,7 +692,7 @@ public final class String
         class StringIterator extends AbstractIterator<Character> implements ReifiedType {
 
             public StringIterator() {
-                super(Character.$TypeDescriptor);
+                super(Character.$TypeDescriptor$);
             }
 
             private int offset = 0;
@@ -712,7 +712,7 @@ public final class String
 
             @Override
             @Ignore
-            public TypeDescriptor $getType() {
+            public TypeDescriptor $getType$() {
                 return TypeDescriptor.klass(StringIterator.class);
             }
         }
@@ -873,10 +873,10 @@ public final class String
     public static java.lang.String getTrimmed(java.lang.String value) {
         // Don't use value.trim() because that has a definition of ws that is 
         // inconsistent with ceylon.language::Character.whitespace
-        return internalTrim(value, new AbstractCallable<Boolean>(Boolean.$TypeDescriptor, 
-                TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor, Character.$TypeDescriptor, Empty.$TypeDescriptor),
+        return internalTrim(value, new AbstractCallable<Boolean>(Boolean.$TypeDescriptor$, 
+                TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, Character.$TypeDescriptor$, Empty.$TypeDescriptor$),
                 "whitespace", (short)-1) {
-            public Boolean $call(java.lang.Object c) {
+            public Boolean $call$(java.lang.Object c) {
                 return Boolean.instance(((Character) c).getWhitespace());
             }
         });
@@ -895,7 +895,7 @@ public final class String
         int from = 0;
         while (from < value.length()) {
             int c = java.lang.Character.codePointAt(value, from);
-            if (!characters.$call(Character.instance(c)).booleanValue()) {
+            if (!characters.$call$(Character.instance(c)).booleanValue()) {
                 break;
             }
             from += java.lang.Character.charCount(c);
@@ -916,7 +916,7 @@ public final class String
         int to = value.length();
         while (to > 0) {
             int c = java.lang.Character.codePointBefore(value, to);
-            if (!characters.$call(Character.instance(c)).booleanValue()) {
+            if (!characters.$call$(Character.instance(c)).booleanValue()) {
                 break;
             }
             to -= java.lang.Character.charCount(c);
@@ -944,7 +944,7 @@ public final class String
         int from = 0;
         while (from < value.length()) {
             int c = java.lang.Character.codePointAt(value, from);
-            if (!characters.$call(Character.instance(c)).booleanValue()) {
+            if (!characters.$call$(Character.instance(c)).booleanValue()) {
                 break;
             }
             from += java.lang.Character.charCount(c);
@@ -952,7 +952,7 @@ public final class String
         int to = value.length();
         while (to > from) {
             int c = java.lang.Character.codePointBefore(value, to);
-            if (!characters.$call(Character.instance(c)).booleanValue()) {
+            if (!characters.$call$(Character.instance(c)).booleanValue()) {
                 break;
             }
             to -= java.lang.Character.charCount(c);
@@ -1226,7 +1226,7 @@ public final class String
             @Defaulted
             @Name("groupSeparators") boolean groupSeparators) {
         if (value.isEmpty()) {
-            return new Singleton<String>(String.$TypeDescriptor, this);
+            return new Singleton<String>(String.$TypeDescriptor$, this);
         }
         return new Tokens(value, splitting, !discardSeparators, groupSeparators);
     }
@@ -1237,7 +1237,7 @@ public final class String
             boolean discardSeparators,
             boolean groupSeparators) {
         if (value.isEmpty()) {
-            return new Singleton<String>(String.$TypeDescriptor, instance(value));
+            return new Singleton<String>(String.$TypeDescriptor$, instance(value));
         }
         return new Tokens(value, splitting, !discardSeparators, groupSeparators);
     }
@@ -1280,11 +1280,11 @@ public final class String
 
     @Ignore
     public static Callable<? extends Boolean> split$splitting(){
-        return new AbstractCallable<Boolean>(Boolean.$TypeDescriptor, 
-                TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor, Character.$TypeDescriptor, Empty.$TypeDescriptor),
+        return new AbstractCallable<Boolean>(Boolean.$TypeDescriptor$, 
+                TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, Character.$TypeDescriptor$, Empty.$TypeDescriptor$),
                 "whitespace", (short)-1) {
             @Override
-            public Boolean $call(java.lang.Object ch) {
+            public Boolean $call$(java.lang.Object ch) {
                 return Boolean.instance(((Character) ch).getWhitespace());
             }
         };
@@ -1302,11 +1302,11 @@ public final class String
 
     @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
     public Iterable<? extends String, ? extends java.lang.Object> getLines() {
-        return split(new AbstractCallable<Boolean>(Boolean.$TypeDescriptor, 
-                TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor, Character.$TypeDescriptor, Empty.$TypeDescriptor),
+        return split(new AbstractCallable<Boolean>(Boolean.$TypeDescriptor$, 
+                TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, Character.$TypeDescriptor$, Empty.$TypeDescriptor$),
                 "whitespace", (short)-1) {
             @Override
-            public Boolean $call(java.lang.Object ch) {
+            public Boolean $call$(java.lang.Object ch) {
                 return Boolean.instance(((Character) ch).toString().equals("\n"));
             }
         }, true);
@@ -1314,11 +1314,11 @@ public final class String
 
     @Ignore
     public static Iterable<? extends String, ? extends java.lang.Object> getLines(java.lang.String value) {
-        return split(value, new AbstractCallable<Boolean>(Boolean.$TypeDescriptor, 
-                TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor, Character.$TypeDescriptor, Empty.$TypeDescriptor),
+        return split(value, new AbstractCallable<Boolean>(Boolean.$TypeDescriptor$, 
+                TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, Character.$TypeDescriptor$, Empty.$TypeDescriptor$),
                 "whitespace", (short)-1) {
             @Override
-            public Boolean $call(java.lang.Object ch) {
+            public Boolean $call$(java.lang.Object ch) {
                 return Boolean.instance(((Character) ch).toString().equals("\n"));
             }
         }, true);
@@ -1341,12 +1341,12 @@ public final class String
 
     @Override @Ignore
     public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-        return new MapIterable<Character, java.lang.Object, Result>(Character.$TypeDescriptor, Null.$TypeDescriptor, $reifiedResult, this, f);
+        return new MapIterable<Character, java.lang.Object, Result>(Character.$TypeDescriptor$, Null.$TypeDescriptor$, $reifiedResult, this, f);
     }
 
     @Ignore
     public static <Result> Iterable<? extends Result, ? extends java.lang.Object> map(@Ignore TypeDescriptor $reifiedResult, java.lang.String value, Callable<? extends Result> f) {
-        return new MapIterable<Character, java.lang.Object, Result>(Character.$TypeDescriptor, Null.$TypeDescriptor, $reifiedResult, instance(value), f);
+        return new MapIterable<Character, java.lang.Object, Result>(Character.$TypeDescriptor$, Null.$TypeDescriptor$, $reifiedResult, instance(value), f);
     }
 
     @Override @Ignore
@@ -1488,17 +1488,17 @@ public final class String
     @Override
     @Ignore
     public Iterable<? extends Character, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
-        return new FilterIterable<Character,java.lang.Object>(Character.$TypeDescriptor, Null.$TypeDescriptor, this, f);
+        return new FilterIterable<Character,java.lang.Object>(Character.$TypeDescriptor$, Null.$TypeDescriptor$, this, f);
     }
     
     @Ignore
     public static Iterable<? extends Character, ?> filter(java.lang.String value, Callable<? extends Boolean> f) {
-        return new FilterIterable<Character, java.lang.Object>(Character.$TypeDescriptor, Null.$TypeDescriptor, instance(value), f);
+        return new FilterIterable<Character, java.lang.Object>(Character.$TypeDescriptor$, Null.$TypeDescriptor$, instance(value), f);
     }
     
     @Override @Ignore
     public <Result> Sequence<? extends Result> collect(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-        return (Sequence<? extends Result>)new MapIterable<Character,java.lang.Object,Result>(Character.$TypeDescriptor, Null.$TypeDescriptor, $reifiedResult, this, f).getSequence();
+        return (Sequence<? extends Result>)new MapIterable<Character,java.lang.Object,Result>(Character.$TypeDescriptor$, Null.$TypeDescriptor$, $reifiedResult, this, f).getSequence();
     }
 
     @Ignore
@@ -1711,8 +1711,8 @@ public final class String
                 @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
                 Callable<? extends Boolean> separator,
                 boolean keepSeparators, boolean groupSeparators) {
-            this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<String,java.lang.Object>(String.$TypeDescriptor, Null.$TypeDescriptor, this);
-            this.$ceylon$language$Container$this = new ceylon.language.Container$impl<String,java.lang.Object>(String.$TypeDescriptor, Null.$TypeDescriptor, this);
+            this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<String,java.lang.Object>(String.$TypeDescriptor$, Null.$TypeDescriptor$, this);
+            this.$ceylon$language$Container$this = new ceylon.language.Container$impl<String,java.lang.Object>(String.$TypeDescriptor$, Null.$TypeDescriptor$, this);
             this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
             this.str = str;
             this.separator = separator;
@@ -1750,7 +1750,7 @@ public final class String
             abstract class TokenIterator extends AbstractIterator<String> implements ReifiedType {
                 
                 public TokenIterator() {
-                    super(String.$TypeDescriptor);
+                    super(String.$TypeDescriptor$);
                 }
 
                 protected final char[] chars = str.toCharArray();
@@ -1823,7 +1823,7 @@ public final class String
 
                 @Override
                 @Ignore
-                public TypeDescriptor $getType() {
+                public TypeDescriptor $getType$() {
                     return TypeDescriptor.klass(TokenIterator.class);
                 }
             }
@@ -1834,7 +1834,7 @@ public final class String
                         if(eof())
                             return false;
                         int charCodePoint = java.lang.Character.codePointAt(chars, index);
-                        return separator.$call(Character.instance(charCodePoint)).booleanValue();
+                        return separator.$call$(Character.instance(charCodePoint)).booleanValue();
                     }
                 };
             /*} else if (separator instanceof java.lang.String) {
@@ -1960,22 +1960,22 @@ public final class String
         @Override
         @Ignore
         public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-            return new MapIterable<String, java.lang.Object, Result>(String.$TypeDescriptor, Null.$TypeDescriptor, $reifiedResult, this, f);
+            return new MapIterable<String, java.lang.Object, Result>(String.$TypeDescriptor$, Null.$TypeDescriptor$, $reifiedResult, this, f);
         }
         @Override
         @Ignore
         public Iterable<? extends String, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
-            return new FilterIterable<String,java.lang.Object>(String.$TypeDescriptor, Null.$TypeDescriptor, this, f);
+            return new FilterIterable<String,java.lang.Object>(String.$TypeDescriptor$, Null.$TypeDescriptor$, this, f);
         }
         @Override
         @Ignore
         public <Result> Sequential<? extends Result> collect(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-            return new MapIterable<String, java.lang.Object, Result>(String.$TypeDescriptor, Null.$TypeDescriptor, $reifiedResult, this, f).getSequence();
+            return new MapIterable<String, java.lang.Object, Result>(String.$TypeDescriptor$, Null.$TypeDescriptor$, $reifiedResult, this, f).getSequence();
         }
         @Override
         @Ignore
         public Sequential<? extends String> select(Callable<? extends Boolean> f) {
-            return new FilterIterable<String,java.lang.Object>(String.$TypeDescriptor, Null.$TypeDescriptor, this, f).getSequence();
+            return new FilterIterable<String,java.lang.Object>(String.$TypeDescriptor$, Null.$TypeDescriptor$, this, f).getSequence();
         }
         @Override
         @Ignore
@@ -2071,7 +2071,7 @@ public final class String
         
         @Override
         @Ignore
-        public TypeDescriptor $getType() {
+        public TypeDescriptor $getType$() {
             return TypeDescriptor.klass(Tokens.class);
         }
     }
@@ -2091,8 +2091,8 @@ public final class String
         private final java.lang.String oc;
 
         public Inclusions(java.lang.String str, java.lang.String oc) {
-            this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Integer,java.lang.Object>(Integer.$TypeDescriptor, Null.$TypeDescriptor, this);
-            this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Integer,java.lang.Object>(Integer.$TypeDescriptor, Null.$TypeDescriptor, this);
+            this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Integer,java.lang.Object>(Integer.$TypeDescriptor$, Null.$TypeDescriptor$, this);
+            this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Integer,java.lang.Object>(Integer.$TypeDescriptor$, Null.$TypeDescriptor$, this);
             this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
             this.str = str;
             this.oc = oc;
@@ -2120,7 +2120,7 @@ public final class String
         public Iterator<? extends Integer> iterator() {
             class InclusionIterator extends AbstractIterator<Integer> implements ReifiedType {
                 public InclusionIterator() {
-                    super(Integer.$TypeDescriptor);
+                    super(Integer.$TypeDescriptor$);
                 }
 
                 private int pos=0;
@@ -2137,7 +2137,7 @@ public final class String
 
                 @Override
                 @Ignore
-                public TypeDescriptor $getType() {
+                public TypeDescriptor $getType$() {
                     return TypeDescriptor.klass(InclusionIterator.class);
                 }
             }
@@ -2225,20 +2225,20 @@ public final class String
         @Override
         @Ignore
         public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-            return new MapIterable<Integer, java.lang.Object, Result>(Integer.$TypeDescriptor, Null.$TypeDescriptor, $reifiedResult, this, f);
+            return new MapIterable<Integer, java.lang.Object, Result>(Integer.$TypeDescriptor$, Null.$TypeDescriptor$, $reifiedResult, this, f);
         }
         @Override
         @Ignore
         public Iterable<? extends Integer, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
-            return new FilterIterable<Integer, java.lang.Object>(Integer.$TypeDescriptor, Null.$TypeDescriptor, this, f);
+            return new FilterIterable<Integer, java.lang.Object>(Integer.$TypeDescriptor$, Null.$TypeDescriptor$, this, f);
         }
         @Override @Ignore
         public <Result> Sequential<? extends Result> collect(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-            return new MapIterable<Integer, java.lang.Object, Result>(Integer.$TypeDescriptor, Null.$TypeDescriptor, $reifiedResult, this, f).getSequence();
+            return new MapIterable<Integer, java.lang.Object, Result>(Integer.$TypeDescriptor$, Null.$TypeDescriptor$, $reifiedResult, this, f).getSequence();
         }
         @Override @Ignore
         public Sequential<? extends Integer> select(Callable<? extends Boolean> f) {
-            return new FilterIterable<Integer, java.lang.Object>(Integer.$TypeDescriptor, Null.$TypeDescriptor, this, f).getSequence();
+            return new FilterIterable<Integer, java.lang.Object>(Integer.$TypeDescriptor$, Null.$TypeDescriptor$, this, f).getSequence();
         }
         @Override
         @Ignore
@@ -2337,7 +2337,7 @@ public final class String
 //        }
         @Override
         @Ignore
-        public TypeDescriptor $getType() {
+        public TypeDescriptor $getType$() {
             return TypeDescriptor.klass(Inclusions.class);
         }
     }
@@ -2366,7 +2366,7 @@ public final class String
     
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

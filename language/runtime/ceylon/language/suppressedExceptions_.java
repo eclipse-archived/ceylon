@@ -18,7 +18,7 @@ public final class suppressedExceptions_ {
             final java.lang.Throwable exception) {
         Throwable[] sup = exception.getSuppressed();
         if (sup.length > 0) {
-            return ArraySequence.backedBy$hidden(ceylon.language.Exception.$TypeDescriptor, sup, 0, sup.length);
+            return ArraySequence.backedBy$hidden(ceylon.language.Exception.$TypeDescriptor$, sup, 0, sup.length);
         } else {
             return (ceylon.language.Sequential)empty_.get_();
         }

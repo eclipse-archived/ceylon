@@ -23,7 +23,7 @@ public class FreeUnionType
     implements ceylon.language.meta.declaration.OpenUnion, ReifiedType {
 
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeUnionType.class);
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeUnionType.class);
     
     protected Sequential<ceylon.language.meta.declaration.OpenType> caseTypes;
 
@@ -38,7 +38,7 @@ public class FreeUnionType
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : caseTypes){
             types[i++] = Metamodel.getMetamodel(pt);
         }
-        this.caseTypes = Util.sequentialInstance(ceylon.language.meta.declaration.OpenType.$TypeDescriptor, types);
+        this.caseTypes = Util.sequentialInstance(ceylon.language.meta.declaration.OpenType.$TypeDescriptor$, types);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class FreeUnionType
 
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

@@ -37,7 +37,7 @@ public class FreeFunction
     implements ceylon.language.meta.declaration.FunctionDeclaration, AnnotationBearing {
 
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeFunction.class);
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeFunction.class);
     
     private Sequential<? extends ceylon.language.meta.declaration.TypeParameter> typeParameters;
     
@@ -56,7 +56,7 @@ public class FreeFunction
         for(com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp : typeParameters){
             typeParametersArray[i++] = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter(tp);
         }
-        this.typeParameters = Util.sequentialInstance(ceylon.language.meta.declaration.TypeParameter.$TypeDescriptor, typeParametersArray);
+        this.typeParameters = Util.sequentialInstance(ceylon.language.meta.declaration.TypeParameter.$TypeDescriptor$, typeParametersArray);
         
         this.type = Metamodel.getMetamodel(declaration.getType());
         
@@ -69,7 +69,7 @@ public class FreeFunction
             parameters[i] = (ceylon.language.meta.declaration.FunctionOrValueDeclaration)Metamodel.getOrCreateMetamodel(modelParameter.getModel());
             i++;
         }
-        this.parameterList = Util.sequentialInstance(ceylon.language.meta.declaration.FunctionOrValueDeclaration.$TypeDescriptor, parameters);
+        this.parameterList = Util.sequentialInstance(ceylon.language.meta.declaration.FunctionOrValueDeclaration.$TypeDescriptor$, parameters);
     }
 
     @Override
@@ -257,7 +257,7 @@ public class FreeFunction
             ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> typeArguments,
             @Name("arguments") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>") 
             ceylon.language.Sequential<? extends java.lang.Object> arguments){
-        return apply(Anything.$TypeDescriptor, TypeDescriptor.NothingType, typeArguments).apply(arguments);
+        return apply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType, typeArguments).apply(arguments);
     }
 
     @Ignore
@@ -292,7 +292,7 @@ public class FreeFunction
             @Name("arguments") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>") 
             ceylon.language.Sequential<? extends java.lang.Object> arguments){
         ceylon.language.meta.model.Type<?> containerType = Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(container));
-        return memberApply(TypeDescriptor.NothingType, Anything.$TypeDescriptor, TypeDescriptor.NothingType, 
+        return memberApply(TypeDescriptor.NothingType, Anything.$TypeDescriptor$, TypeDescriptor.NothingType, 
                 containerType, typeArguments).bind(container).apply(arguments);
     }
 
@@ -326,13 +326,13 @@ public class FreeFunction
     
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 
     @Ignore
     @Override
-    public java.lang.annotation.Annotation[] $getJavaAnnotations() {
+    public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
         // FIXME: this could be a FunctionalParameter!
         return Metamodel.getJavaMethod((Method) declaration).getAnnotations();
     }

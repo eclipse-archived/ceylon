@@ -231,7 +231,7 @@ public class AppliedValue<Type>
 
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AppliedValue.class, $reifiedType);
     }
 

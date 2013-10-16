@@ -21,7 +21,7 @@ public class FreeInterface
     implements ceylon.language.meta.declaration.InterfaceDeclaration {
 
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeInterface.class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeInterface.class);
     
     public FreeInterface(com.redhat.ceylon.compiler.typechecker.model.Interface declaration) {
         super(declaration);
@@ -111,7 +111,7 @@ public class FreeInterface
     
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

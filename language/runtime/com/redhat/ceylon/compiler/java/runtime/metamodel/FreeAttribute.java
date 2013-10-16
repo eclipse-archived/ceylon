@@ -29,7 +29,7 @@ public class FreeAttribute
     implements ceylon.language.meta.declaration.ValueDeclaration, AnnotationBearing {
 
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeAttribute.class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeAttribute.class);
     
     private OpenType type;
 
@@ -105,14 +105,14 @@ public class FreeAttribute
     @TypeInfo("ceylon.language::Anything")
     @Override
     public Object get(){
-        return apply(Anything.$TypeDescriptor).get();
+        return apply(Anything.$TypeDescriptor$).get();
     }
 
     @TypeInfo("ceylon.language::Anything")
     @Override
     public Object memberGet(@Name("container") @TypeInfo("ceylon.language::Object") Object container){
         ceylon.language.meta.model.Type<?> containerType = Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(container));
-        return memberApply(TypeDescriptor.NothingType, Anything.$TypeDescriptor, containerType).bind(container).get();
+        return memberApply(TypeDescriptor.NothingType, Anything.$TypeDescriptor$, containerType).bind(container).get();
     }
 
     @Override
@@ -145,13 +145,13 @@ public class FreeAttribute
 
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 
     @Override
     @Ignore
-    public java.lang.annotation.Annotation[] $getJavaAnnotations() {
+    public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
         if(parameter != null
                 && !parameter.getModel().isShared()){
             // get the annotations from the parameter itself

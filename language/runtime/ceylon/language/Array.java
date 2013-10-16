@@ -143,12 +143,12 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     private Array(@Ignore TypeDescriptor $reifiedElement, java.lang.Object array) {
         assert(array.getClass().isArray());
         this.$ceylon$language$Category$this = new Category$impl(this);
-        this.$ceylon$language$Container$this = new Container$impl<Element,java.lang.Object>($reifiedElement, Null.$TypeDescriptor, this);
-        this.$ceylon$language$Iterable$this = new Iterable$impl<Element,java.lang.Object>($reifiedElement, Null.$TypeDescriptor, this);
+        this.$ceylon$language$Container$this = new Container$impl<Element,java.lang.Object>($reifiedElement, Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Iterable$this = new Iterable$impl<Element,java.lang.Object>($reifiedElement, Null.$TypeDescriptor$, this);
         this.$ceylon$language$Collection$this = new Collection$impl<Element>($reifiedElement, this);
         this.$ceylon$language$List$this = new List$impl<Element>($reifiedElement, this);
-        this.$ceylon$language$Correspondence$this = new Correspondence$impl<Integer,Element>(Integer.$TypeDescriptor, $reifiedElement, this);
-        this.$ceylon$language$Ranged$this = new Ranged$impl<Integer,List<Element>>(Integer.$TypeDescriptor, 
+        this.$ceylon$language$Correspondence$this = new Correspondence$impl<Integer,Element>(Integer.$TypeDescriptor$, $reifiedElement, this);
+        this.$ceylon$language$Ranged$this = new Ranged$impl<Integer,List<Element>>(Integer.$TypeDescriptor$, 
                 TypeDescriptor.klass(Array.class, $reifiedElement), (Ranged<Integer, ? extends List<Element>>)this);
         this.$ceylon$language$Cloneable$this = new Cloneable$impl(TypeDescriptor.klass(Array.class, $reifiedElement), this);
         this.array = array;
@@ -219,7 +219,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         if (array == null) {
             return null;
         }
-        return new Array<Character>(Character.$TypeDescriptor, array);
+        return new Array<Character>(Character.$TypeDescriptor$, array);
     }
 
     @Ignore
@@ -227,7 +227,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         if (array == null) {
             return null;
         }
-        return new Array<Character>(Character.$TypeDescriptor, array);
+        return new Array<Character>(Character.$TypeDescriptor$, array);
     }
 
     @Ignore
@@ -235,7 +235,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         if (array == null) {
             return null;
         }
-        return new Array<Integer>(Integer.$TypeDescriptor, array);
+        return new Array<Integer>(Integer.$TypeDescriptor$, array);
     }
 
     @Ignore
@@ -243,7 +243,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         if (array == null) {
             return null;
         }
-        return new Array<Integer>(Integer.$TypeDescriptor, array);
+        return new Array<Integer>(Integer.$TypeDescriptor$, array);
     }
 
     @Ignore
@@ -251,7 +251,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         if (array == null) {
             return null;
         }
-        return new Array<Integer>(Integer.$TypeDescriptor, array);
+        return new Array<Integer>(Integer.$TypeDescriptor$, array);
     }
 
     @Ignore
@@ -259,7 +259,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         if (array == null) {
             return null;
         }
-        return new Array<Integer>(Integer.$TypeDescriptor, array);
+        return new Array<Integer>(Integer.$TypeDescriptor$, array);
     }
 
     @Ignore
@@ -267,7 +267,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         if (array == null) {
             return null;
         }
-        return new Array<Float>(Float.$TypeDescriptor, array);
+        return new Array<Float>(Float.$TypeDescriptor$, array);
     }
 
     @Ignore
@@ -275,7 +275,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         if (array == null) {
             return null;
         }
-        return new Array<Float>(Float.$TypeDescriptor, array);
+        return new Array<Float>(Float.$TypeDescriptor$, array);
     }
 
     @Ignore
@@ -283,7 +283,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         if (array == null) {
             return null;
         }
-        return new Array<Boolean>(Boolean.$TypeDescriptor, array);
+        return new Array<Boolean>(Boolean.$TypeDescriptor$, array);
     }
     
     @Override
@@ -441,7 +441,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
 
             @Override
             @Ignore
-            public TypeDescriptor $getType() {
+            public TypeDescriptor $getType$() {
                 return TypeDescriptor.klass(ArrayIterator.class, $reifiedElement);
             }
         }
@@ -471,7 +471,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
             return (Element) Integer.instance(((short[])array)[index]);
         } else if (typeClass == int.class) {
             int val = ((int[])array)[index];
-            if($reifiedElement == Character.$TypeDescriptor)
+            if($reifiedElement == Character.$TypeDescriptor$)
                 return (Element) Character.instance(val);
             else
                 return (Element) Integer.instance(val);
@@ -630,7 +630,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         Iterator<Element> iter = iterator();
         java.lang.Object elem;
         while (!((elem = iter.next()) instanceof Finished)) {
-            if (elem != null && selecting.$call(elem).booleanValue()) {
+            if (elem != null && selecting.$call$(elem).booleanValue()) {
                 count++;
             }
         }
@@ -815,12 +815,12 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     @Override
     @Ignore
     public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-        return new MapIterable<Element, java.lang.Object, Result>($reifiedElement, Null.$TypeDescriptor, $reifiedResult, this, f);
+        return new MapIterable<Element, java.lang.Object, Result>($reifiedElement, Null.$TypeDescriptor$, $reifiedResult, this, f);
     }
     @Override
     @Ignore
     public Iterable<? extends Element, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor, this, f);
+        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor$, this, f);
     }
     @Override
     @Ignore
@@ -829,11 +829,11 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     }
     @Override @Ignore
     public <Result> Sequential<? extends Result> collect(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-        return new MapIterable<Element, java.lang.Object, Result>($reifiedElement, Null.$TypeDescriptor, $reifiedResult, this, f).getSequence();
+        return new MapIterable<Element, java.lang.Object, Result>($reifiedElement, Null.$TypeDescriptor$, $reifiedResult, this, f).getSequence();
     }
     @Override @Ignore
     public Sequential<? extends Element> select(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor, this, f).getSequence();
+        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor$, this, f).getSequence();
     }
     @Override
     @Ignore
@@ -1313,7 +1313,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     }
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(Array.class, $reifiedElement);
     }
 }

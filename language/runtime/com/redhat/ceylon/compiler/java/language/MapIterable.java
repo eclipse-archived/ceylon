@@ -79,13 +79,13 @@ public class MapIterable<Element, Absent, Result> implements Iterable<Result,Abs
         public java.lang.Object next() {
             elem = orig.next();
             if (!(elem instanceof Finished)) {
-                return sel.$call(elem);
+                return sel.$call$(elem);
             }
             return elem;
         }
         @Override
         @Ignore
-        public TypeDescriptor $getType() {
+        public TypeDescriptor $getType$() {
             return TypeDescriptor.klass(MapIterator.class);
         }
     }
@@ -164,7 +164,7 @@ public class MapIterable<Element, Absent, Result> implements Iterable<Result,Abs
     @Override
     @Ignore
     public Iterable<? extends Result, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
-        return new FilterIterable<Result,java.lang.Object>($reifiedResult, Null.$TypeDescriptor, this, f);
+        return new FilterIterable<Result,java.lang.Object>($reifiedResult, Null.$TypeDescriptor$, this, f);
     }
     @Override
     @Ignore
@@ -273,7 +273,7 @@ public class MapIterable<Element, Absent, Result> implements Iterable<Result,Abs
 //    }
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(MapIterable.class, $reifiedElement, $reifiedResult);
     }
 }

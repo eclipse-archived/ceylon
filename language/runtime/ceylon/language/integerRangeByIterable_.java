@@ -41,7 +41,7 @@ final class integerRangeByIterable_ {
                     final long step) {
         final ceylon.language.Range<ceylon.language.Integer> r = (ceylon.language.Range)range; 
         //Optimize for Integer ranges
-        return new AbstractIterable<Element,java.lang.Object>($reifiedElement, Null.$TypeDescriptor, false, range) {
+        return new AbstractIterable<Element,java.lang.Object>($reifiedElement, Null.$TypeDescriptor$, false, range) {
             @Override
             @Annotations(@Annotation("formal"))
             @TypeInfo("ceylon.language::Iterator<Element>")

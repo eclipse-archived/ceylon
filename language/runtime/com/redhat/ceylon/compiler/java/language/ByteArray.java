@@ -120,7 +120,7 @@ public final class ByteArray implements ReifiedType {
 
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         throw Util.makeJavaArrayWrapperException();
     }
 }

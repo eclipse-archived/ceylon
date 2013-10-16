@@ -23,7 +23,7 @@ public class FreeIntersectionType
     implements ceylon.language.meta.declaration.OpenIntersection, ReifiedType {
 
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeIntersectionType.class);
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeIntersectionType.class);
     
     protected Sequential<ceylon.language.meta.declaration.OpenType> satisfiedTypes;
     
@@ -38,7 +38,7 @@ public class FreeIntersectionType
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : satisfiedTypes){
             types[i++] = Metamodel.getMetamodel(pt);
         }
-        this.satisfiedTypes = Util.sequentialInstance(ceylon.language.meta.declaration.OpenType.$TypeDescriptor, types);
+        this.satisfiedTypes = Util.sequentialInstance(ceylon.language.meta.declaration.OpenType.$TypeDescriptor$, types);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class FreeIntersectionType
 
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

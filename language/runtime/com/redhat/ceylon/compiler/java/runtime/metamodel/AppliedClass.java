@@ -138,7 +138,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                 found = constr;
             }
         }else{
-            String builderName = declaration.getName() + "$new";
+            String builderName = declaration.getName() + "$new$";
             // FIXME: this probably doesn't work for local classes
             // FIXME: perhaps store and access the container class literal from an extra param of @Container?
             java.lang.Class<?> outerJavaClass = Metamodel.getJavaClass((Declaration) declaration.declaration.getContainer());
@@ -237,7 +237,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
 
     @Ignore
     @Override
-    public Type $call() {
+    public Type $call$() {
         checkInit();
         checkConstructor();
         try {
@@ -262,7 +262,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
 
     @Ignore
     @Override
-    public Type $call(Object arg0) {
+    public Type $call$(Object arg0) {
         checkInit();
         checkConstructor();
         try {
@@ -278,7 +278,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
 
     @Ignore
     @Override
-    public Type $call(Object arg0, Object arg1) {
+    public Type $call$(Object arg0, Object arg1) {
         checkInit();
         checkConstructor();
         try {
@@ -294,7 +294,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
 
     @Ignore
     @Override
-    public Type $call(Object arg0, Object arg1, Object arg2) {
+    public Type $call$(Object arg0, Object arg1, Object arg2) {
         checkInit();
         checkConstructor();
         try {
@@ -310,7 +310,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
 
     @Ignore
     @Override
-    public Type $call(Object... args) {
+    public Type $call$(Object... args) {
         checkInit();
         checkConstructor();
         try {
@@ -327,64 +327,64 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     
     @Override
     @Ignore
-    public Type $call$variadic() {
-        return $call();
+    public Type $callvariadic$() {
+        return $call$();
     }
     
     @Override
     @Ignore
-    public Type $call$variadic(Sequential<?> varargs) {
-        return $call(varargs);
+    public Type $callvariadic$(Sequential<?> varargs) {
+        return $call$(varargs);
     }
 
     @Override
     @Ignore
-    public Type $call$variadic(Object arg0,
+    public Type $callvariadic$(Object arg0,
             Sequential<?> varargs) {
-        return $call(arg0, varargs);
+        return $call$(arg0, varargs);
     }
 
     @Override
     @Ignore
-    public Type $call$variadic(Object arg0,
+    public Type $callvariadic$(Object arg0,
             Object arg1, Sequential<?> varargs) {
-        return $call(arg0, arg1, varargs);
+        return $call$(arg0, arg1, varargs);
     }
 
     @Override
     @Ignore
-    public Type $call$variadic(Object arg0,
+    public Type $callvariadic$(Object arg0,
             Object arg1, Object arg2, Sequential<?> varargs) {
-        return $call(arg0, arg1, arg2, varargs);
+        return $call$(arg0, arg1, arg2, varargs);
     }
 
     @Override
     @Ignore
-    public Type $call$variadic(Object... argsAndVarargs) {
-        return $call((Object[])argsAndVarargs);
+    public Type $callvariadic$(Object... argsAndVarargs) {
+        return $call$((Object[])argsAndVarargs);
     }
 
     @Override
     @Ignore
-    public Type $call$variadic(Object arg0) {
-        return $call(arg0, empty_.get_());
+    public Type $callvariadic$(Object arg0) {
+        return $call$(arg0, empty_.get_());
     }
 
     @Override
     @Ignore
-    public Type $call$variadic(Object arg0, Object arg1) {
-        return $call(arg0, arg1, empty_.get_());
+    public Type $callvariadic$(Object arg0, Object arg1) {
+        return $call$(arg0, arg1, empty_.get_());
     }
 
     @Override
     @Ignore
-    public Type $call$variadic(Object arg0, Object arg1, Object arg2) {
-        return $call(arg0, arg1, arg2, empty_.get_());
+    public Type $callvariadic$(Object arg0, Object arg1, Object arg2) {
+        return $call$(arg0, arg1, arg2, empty_.get_());
     }
 
     @Ignore
     @Override
-    public short $getVariadicParameterIndex() {
+    public short $getVariadicParameterIndex$() {
         checkInit();
         return (short)variadicIndex;
     }
@@ -447,7 +447,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
 
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AppliedClass.class, $reifiedType, $reifiedArguments);
     }
 }

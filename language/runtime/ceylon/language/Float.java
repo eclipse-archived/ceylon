@@ -22,7 +22,7 @@ public final class Float
     implements Scalar<Float>, Exponentiable<Float,Float>, ReifiedType {
     
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Float.class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Float.class);
 
     @Ignore
     final double value;
@@ -433,7 +433,7 @@ public final class Float
 
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
     }
 }

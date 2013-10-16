@@ -88,7 +88,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
         // make sure we dont' create ArrayIterables with no fixed elements
         if(array.length == 0)
             return rest;
-        return new ArrayIterable<Element, Null>($reifiedElement, Null.$TypeDescriptor, rest, array);
+        return new ArrayIterable<Element, Null>($reifiedElement, Null.$TypeDescriptor$, rest, array);
     }
     
     @Override
@@ -117,7 +117,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     @Override
     public Iterable<? extends Element, ? extends java.lang.Object> getRest() {
         if(first + 1 < array.length){
-            return new ArrayIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor, rest, array, first + 1);
+            return new ArrayIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor$, rest, array, first + 1);
         }else{
             return rest;
         }
@@ -175,7 +175,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
 
         @Override
         @Ignore
-        public TypeDescriptor $getType() {
+        public TypeDescriptor $getType$() {
             return TypeDescriptor.klass(ArrayIterableIterator.class, $reifiedElement);
         }
     }
@@ -188,7 +188,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     
     @Override
     public Iterable<? extends Element, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor, this, f);
+        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor$, this, f);
     }
 
     @Override
@@ -220,7 +220,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
 
     @Override
     public Sequential<? extends Element> select(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor, this, f).getSequence();
+        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor$, this, f).getSequence();
     }
     
     @Override @Ignore
@@ -401,7 +401,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     }
     @Override
     @Ignore
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(ArrayIterable.class, $reifiedElement);
     }
 }

@@ -118,7 +118,7 @@ public final class ObjectArray<T> implements ReifiedType {
 
     @Ignore
     @Override
-    public TypeDescriptor $getType() {
+    public TypeDescriptor $getType$() {
         throw Util.makeJavaArrayWrapperException();
     }
 }
