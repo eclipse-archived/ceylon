@@ -86,7 +86,7 @@ public abstract class AbstractCallable<Return> implements Callable<Return>, Reif
 
     @Override
     public TypeDescriptor $getType() {
-        return TypeDescriptor.klass(Callable.class, $reifiedReturn, $reifiedArguments);
+        return TypeDescriptor.klass(AbstractCallable.class, $reifiedReturn, $reifiedArguments);
     }
 
     @Override
