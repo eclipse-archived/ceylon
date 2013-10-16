@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import ceylon.language.Anything;
 import ceylon.language.meta.model.Variable;
 import ceylon.language.meta.model.VariableAttribute;
 import ceylon.language.meta.declaration.SetterDeclaration;
@@ -41,6 +42,20 @@ public class FreeVariable
     @Override
     public boolean getVariable(){
         return true;
+    }
+
+    @TypeInfo("ceylon.language::Anything")
+    @Override
+    public Object set(@TypeInfo("ceylon.language::Anything") @Name("newValue") Object newValue){
+        return apply(Anything.$TypeDescriptor).unsafeSet(newValue);
+    }
+
+    @TypeInfo("ceylon.language::Anything")
+    @Override
+    public Object memberSet(@Name("container") @TypeInfo("ceylon.language::Object") Object container,
+            @TypeInfo("ceylon.language::Anything") @Name("newValue") Object newValue){
+        ceylon.language.meta.model.Type<?> containerType = Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(container));
+        return memberApply(TypeDescriptor.NothingType, Anything.$TypeDescriptor, containerType).bind(container).unsafeSet(newValue);
     }
 
     @Override

@@ -53,4 +53,14 @@ shared interface ValueDeclaration
      See [this code sample](#member-sample) for an example on how to use this."
     throws(`class IncompatibleTypeException`, "If the specified `Container` or `Type` type arguments are not compatible with the actual result.")
     shared formal Attribute<Container, Type> memberApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType);
+    
+    "Reads the current value of this toplevel value."
+    shared default Anything get()
+            => apply<Anything>().get();
+    
+    "Reads the current value of this attribute on the given container instance."
+    throws(`class IncompatibleTypeException`, "If the specified container is not compatible with this attribute.")
+    shared default Anything memberGet(Object container)
+            => memberApply<Nothing, Anything>(`Nothing`).bind(container).get();
+
 }

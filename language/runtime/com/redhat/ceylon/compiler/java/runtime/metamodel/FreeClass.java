@@ -2,16 +2,17 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.util.List;
 
+import ceylon.language.Anything;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.meta.declaration.ClassDeclaration$impl;
 import ceylon.language.meta.declaration.FunctionalDeclaration$impl;
-import ceylon.language.meta.model.ClassOrInterface;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
@@ -189,6 +190,72 @@ public class FreeClass
                 Variance.OUT, actualType, $reifiedType,
                 Variance.IN, Metamodel.getProducedType(actualReifiedArguments), $reifiedArguments);
         return member;
+    }
+
+    @Ignore
+    @Override
+    public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> instantiate$typeArguments(){
+        return (ceylon.language.Sequential)empty_.get_();
+    }
+
+    @Ignore
+    @Override
+    public java.lang.Object instantiate(){
+        return instantiate((ceylon.language.Sequential)empty_.get_());
+    }
+
+    @Ignore
+    @Override
+    public java.lang.Object instantiate(
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> typeArguments){
+        return instantiate(typeArguments, empty_.get_());
+    }
+
+    @TypeInfo("ceylon.language::Anything")
+    @Override
+    public java.lang.Object instantiate(
+            @Name("typeArguments") @Defaulted 
+            @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>")
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> typeArguments,
+            @Name("arguments") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>") 
+            ceylon.language.Sequential<? extends java.lang.Object> arguments){
+        return classApply(Anything.$TypeDescriptor, TypeDescriptor.NothingType, typeArguments).apply(arguments);
+    }
+
+    @Ignore
+    @Override
+    public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> 
+        memberInstantiate$typeArguments(java.lang.Object container){
+        return (ceylon.language.Sequential)empty_.get_();
+    }
+
+    @Ignore
+    @Override
+    public java.lang.Object memberInstantiate(java.lang.Object container){
+        return memberInstantiate(container, (ceylon.language.Sequential)empty_.get_());
+    }
+
+    @Ignore
+    @Override
+    public java.lang.Object memberInstantiate(
+            java.lang.Object container,
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> typeArguments){
+        return memberInstantiate(container, typeArguments, empty_.get_());
+    }
+
+    @TypeInfo("ceylon.language::Anything")
+    @Override
+    public java.lang.Object memberInstantiate(
+            @Name("container") @TypeInfo("ceylon.language::Anything")
+            java.lang.Object container,
+            @Name("typeArguments") @Defaulted 
+            @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>")
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> typeArguments,
+            @Name("arguments") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>") 
+            ceylon.language.Sequential<? extends java.lang.Object> arguments){
+        ceylon.language.meta.model.Type<?> containerType = Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(container));
+        return memberClassApply(TypeDescriptor.NothingType, Anything.$TypeDescriptor, TypeDescriptor.NothingType, 
+                containerType, typeArguments).bind(container).apply(arguments);
     }
 
     @Override

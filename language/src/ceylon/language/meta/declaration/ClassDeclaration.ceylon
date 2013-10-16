@@ -73,4 +73,14 @@ shared interface ClassDeclaration
     throws(`class TypeApplicationException`, "If the specified closed container type or type argument values are not compatible with the actual result's container type or type parameters.")
     shared formal MemberClass<Container, Type, Arguments> memberClassApply<Container=Nothing, Type=Anything, Arguments=Nothing>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments)
         given Arguments satisfies Anything[];
+
+    "Creates a new instance of this toplevel class, by applying the specified type arguments and value arguments."
+    throws(`class IncompatibleTypeException`, "If the specified type or value arguments are not compatible with this toplevel class.")
+    shared default Anything instantiate(AppliedType<Anything>[] typeArguments = [], Anything* arguments)
+        => classApply<Anything, Nothing>(*typeArguments).apply(*arguments);
+    
+    "Creates a new instance of this member class, by applying the specified type arguments and value arguments."
+    throws(`class IncompatibleTypeException`, "If the specified container, type or value arguments are not compatible with this method.")
+    shared default Anything memberInstantiate(Object container, AppliedType<Anything>[] typeArguments = [], Anything* arguments)
+        => memberClassApply<Nothing, Anything, Nothing>(`Nothing`, *typeArguments).bind(container).apply(*arguments);
 }

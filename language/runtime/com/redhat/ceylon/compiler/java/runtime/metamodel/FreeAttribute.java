@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.List;
 
+import ceylon.language.Anything;
 import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.declaration.ValueDeclaration$impl;
 
@@ -100,7 +101,20 @@ public class FreeAttribute
     public OpenType getOpenType() {
         return type;
     }
-    
+
+    @TypeInfo("ceylon.language::Anything")
+    @Override
+    public Object get(){
+        return apply(Anything.$TypeDescriptor).get();
+    }
+
+    @TypeInfo("ceylon.language::Anything")
+    @Override
+    public Object memberGet(@Name("container") @TypeInfo("ceylon.language::Object") Object container){
+        ceylon.language.meta.model.Type<?> containerType = Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(container));
+        return memberApply(TypeDescriptor.NothingType, Anything.$TypeDescriptor, containerType).bind(container).get();
+    }
+
     @Override
     public int hashCode() {
         int result = 1;

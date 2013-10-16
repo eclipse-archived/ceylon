@@ -39,6 +39,8 @@ shared void checkConstructors(){
     assert(is FixedParams fixedParams);
     Anything fixedParams2 = fixedParamsType.apply("a", 1, 1.2, 'a', true, noParams);
     assert(is FixedParams fixedParams2);
+    Anything fixedParams3 = fixedParamsType.declaration.instantiate([], "a", 1, 1.2, 'a', true, noParams);
+    assert(is FixedParams fixedParams3);
 
     // typed parameters
     value typeParamsType = type(TypeParams("a", 1));
@@ -51,6 +53,9 @@ shared void checkConstructors(){
     Anything typeParams2 = typeParamsType.apply("a", 1);
     // this checks that we did pass the reified type arguments correctly
     assert(is TypeParams<String> typeParams2);
+    Anything typeParams3 = typeParamsClass.instantiate([`String`], "a", 1);
+    // this checks that we did pass the reified type arguments correctly
+    assert(is TypeParams<String> typeParams3);
 
     // defaulted parameters
     value defaultedParamsType = typeLiteral<DefaultedParams>();
@@ -59,10 +64,14 @@ shared void checkConstructors(){
     assert(is DefaultedParams defaultedParams1);
     Anything defaultedParams1b = defaultedParamsType.apply();
     assert(is DefaultedParams defaultedParams1b);
+    Anything defaultedParams1c = defaultedParamsType.declaration.instantiate();
+    assert(is DefaultedParams defaultedParams1c);
     Anything defaultedParams2 = defaultedParamsType(0);
     assert(is DefaultedParams defaultedParams2);
     Anything defaultedParams2b = defaultedParamsType.apply(0);
     assert(is DefaultedParams defaultedParams2b);
+    Anything defaultedParams2c = defaultedParamsType.declaration.instantiate([], 0);
+    assert(is DefaultedParams defaultedParams2c);
     Anything defaultedParams3 = defaultedParamsType(1, "b");
     assert(is DefaultedParams defaultedParams3);
     Anything defaultedParams3b = defaultedParamsType.apply(1, "b");
@@ -137,6 +146,7 @@ shared void checkMemberAttributes(){
     assert(string.declaration.qualifiedName == "metamodel::NoParams.str");
     assert(string(noParamsInstance).get() == "a");
     assert(string.bind(noParamsInstance).get() == "a");
+    assert(exists stringValue = string.declaration.memberGet(noParamsInstance), stringValue == "a");
     
     assert(exists integer = noParamsType.getAttribute<NoParams, Integer>("integer"));
     assert(integer(noParamsInstance).get() == 1);
@@ -164,6 +174,7 @@ shared void checkMemberAttributes(){
     assert(string2Bound.get() == "a");
     string2Bound.set("b");
     string2Bound.unsafeSet("b");
+    string2Bound.declaration.memberSet(noParamsInstance, "b");
     assert(string2Bound.get() == "b");
     assert(noParamsInstance.str2 == "b");
     
@@ -227,6 +238,12 @@ shared void checkMemberAttributes(){
     }catch(Exception x){
         assert(x is MyException);
     }
+    try {
+        `value Throws.getter`.memberSet(t, 1);
+        assert(false);
+    }catch(Exception x){
+        assert(x is MyException);
+    }
 }
 
 @test
@@ -243,18 +260,24 @@ shared void checkMemberFunctions(){
     assert(is NoParams o1);
     Anything o1b = f1.bind(noParamsInstance).apply();
     assert(is NoParams o1b);
+    Anything o1c = f1.declaration.memberInvoke(noParamsInstance);
+    assert(is NoParams o1c);
     
     assert(exists f2 = noParamsType.getMethod<NoParams, NoParams, [String, Integer, Float, Character, Boolean, Object]>("fixedParams"));
     Anything o3 = f2(noParamsInstance)("a", 1, 1.2, 'a', true, noParamsInstance);
     assert(is NoParams o3);
     Anything o3b = f2.bind(noParamsInstance).apply("a", 1, 1.2, 'a', true, noParamsInstance);
     assert(is NoParams o3b);
+    Anything o3c = f2.declaration.memberInvoke(noParamsInstance, [], "a", 1, 1.2, 'a', true, noParamsInstance);
+    assert(is NoParams o3c);
     
     assert(exists f3 = noParamsType.getMethod<NoParams, NoParams, [String, Integer]>("typeParams", stringType));
     Anything o5 = f3(noParamsInstance)("a", 1);
     assert(is NoParams o5);
     Anything o5b = f3.bind(noParamsInstance).apply("a", 1);
     assert(is NoParams o5b);
+    Anything o5c = f3.declaration.memberInvoke(noParamsInstance, [stringType], "a", 1);
+    assert(is NoParams o5c);
 
     assert(exists f4 = noParamsType.getMethod<NoParams, String, []>("getString"));
     assert(f4(noParamsInstance)() == "a");
@@ -306,6 +329,8 @@ shared void checkMemberTypes(){
     assert(is ContainerClass.InnerClass o1);
     Anything o1b = innerClassType.bind(containerClassInstance).apply();
     assert(is ContainerClass.InnerClass o1b);
+    Anything o1c = innerClassType.declaration.memberInstantiate(containerClassInstance);
+    assert(is ContainerClass.InnerClass o1c);
     // make sure type doesn't throw at it
     assert(type(o1) == innerClassType);
     assert(`class ContainerClass.InnerClass`.name == "InnerClass");
@@ -465,6 +490,7 @@ shared void checkToplevelAttributes(){
     assert(is ValueDeclaration toplevelIntegerDecl = pkg.getValue("toplevelInteger"));
     Value<Integer> toplevelIntegerAttribute = toplevelIntegerDecl.apply<Integer>();
     assert(toplevelIntegerAttribute.get() == 1);
+    assert(exists toplevelIntegerValue = toplevelIntegerDecl.get(), toplevelIntegerValue == 1);
 
     assert(is ValueDeclaration toplevelStringDecl = pkg.getValue("toplevelString"));
     Value<String> toplevelStringAttribute = toplevelStringDecl.apply<String>();
@@ -510,6 +536,7 @@ shared void checkToplevelAttributes(){
     assert(toplevelStringVariable.get() == "a");
     toplevelStringVariable.set("b");
     toplevelStringVariable.unsafeSet("b");
+    toplevelStringVariableDecl.set("b");
     assert(toplevelStringVariable.get() == "b");
     assert(toplevelString2 == "b");
 
@@ -575,11 +602,13 @@ shared void checkToplevelFunctions(){
     assert(is Function<Anything,[String, Integer, Float, Character, Boolean, Object, NoParams]> f2a = f2.apply<Anything,Nothing>());
     f2a("a", 1, 1.2, 'a', true, noParamsInstance, noParamsInstance);
     f2a.apply("a", 1, 1.2, 'a', true, noParamsInstance, noParamsInstance);
+    f2a.declaration.invoke([], "a", 1, 1.2, 'a', true, noParamsInstance, noParamsInstance);
 
     assert(exists f3 = pkg.getFunction("typeParams"));
     assert(is Function<String, [String, Integer]> f3a = f3.apply<Anything,Nothing>(stringType));
     assert(f3a("a", 1) == "a");
     assert(f3a.apply("a", 1) == "a");
+    assert(exists f3aret = f3a.declaration.invoke([stringType], "a", 1), f3aret == "a");
 
     assert(exists f4 = pkg.getFunction("getString"));
     assert(is Function<String, []> f4a = f4.apply<Anything,Nothing>());
