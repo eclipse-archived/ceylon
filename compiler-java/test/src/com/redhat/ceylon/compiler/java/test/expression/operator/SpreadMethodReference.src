@@ -10,7 +10,7 @@ class SpreadMethodReference implements .com.redhat.ceylon.compiler.java.runtime.
             
             @.java.lang.Override
             public .ceylon.language.Sequential<? extends .ceylon.language.String> $call(final .java.lang.Object $param$0) {
-                final long $$length = ((.ceylon.language.Integer)$param$0).longValue();
+                final long $ceylontmplength = ((.ceylon.language.Integer)$param$0).longValue();
                 return (
                     let
                     {
@@ -19,7 +19,7 @@ class SpreadMethodReference implements .com.redhat.ceylon.compiler.java.runtime.
                         .java.lang.Object spread$1$iteration;
                         for (.ceylon.language.Iterator<? extends .ceylon.language.String> spread$1$iterator = spread$1$iterable.iterator(); !((spread$1$iteration = spread$1$iterator.next()) instanceof .ceylon.language.Finished); ) {
                             .ceylon.language.String spread$1$element = (.ceylon.language.String)spread$1$iteration;
-                            spread$1$sequenceBuilder.append(spread$1$element.initial($$length));
+                            spread$1$sequenceBuilder.append(spread$1$element.initial($ceylontmplength));
                         }
                     }
                     returning spread$1$sequenceBuilder.getSequence();

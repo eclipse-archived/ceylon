@@ -148,11 +148,11 @@ final class erasureCasting_ {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised $$elements = (.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised)$param$0;
+                final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised $ceylontmpelements = (.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised)$param$0;
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.erasure.ec_boundsOnElement3_.<.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A>ec_boundsOnElement3(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, $$elements);
+                        .com.redhat.ceylon.compiler.java.test.expression.erasure.ec_boundsOnElement3_.<.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A>ec_boundsOnElement3(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, $ceylontmpelements);
                     }
                     returning null;
                 );

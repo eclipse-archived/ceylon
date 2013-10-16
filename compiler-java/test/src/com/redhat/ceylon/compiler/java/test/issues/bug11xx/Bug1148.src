@@ -11,32 +11,32 @@ public final class bug1148_ {
                     
                     @.java.lang.Override
                     public .ceylon.language.String $call(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Iterable $$characters = (.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0;
-                        return new .ceylon.language.String($$characters);
+                        final .ceylon.language.Iterable $ceylontmpcharacters = (.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0;
+                        return new .ceylon.language.String($ceylontmpcharacters);
                     }
                 },
                 new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Float(Float)", (short)-1){
                     
                     @.java.lang.Override
                     public .ceylon.language.Float $call(final .java.lang.Object $param$0) {
-                        final double $$float = ((.ceylon.language.Float)$param$0).doubleValue();
-                        return new .ceylon.language.Float($$float);
+                        final double $ceylontmpfloat = ((.ceylon.language.Float)$param$0).doubleValue();
+                        return new .ceylon.language.Float($ceylontmpfloat);
                     }
                 },
                 new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Integer(Integer)", (short)-1){
                     
                     @.java.lang.Override
                     public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
-                        final long $$integer = ((.ceylon.language.Integer)$param$0).longValue();
-                        return new .ceylon.language.Integer($$integer);
+                        final long $ceylontmpinteger = ((.ceylon.language.Integer)$param$0).longValue();
+                        return new .ceylon.language.Integer($ceylontmpinteger);
                     }
                 },
                 new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Character>(.ceylon.language.Character.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Character(Integer)", (short)-1){
                     
                     @.java.lang.Override
                     public .ceylon.language.Character $call(final .java.lang.Object $param$0) {
-                        final int $$character = (int)((.ceylon.language.Integer)$param$0).longValue();
-                        return new .ceylon.language.Character($$character);
+                        final int $ceylontmpcharacter = (int)((.ceylon.language.Integer)$param$0).longValue();
+                        return new .ceylon.language.Character($ceylontmpcharacter);
                     }
                 }});
     }

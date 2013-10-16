@@ -56,32 +56,32 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .ceylon.language.String $call$variadic(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
-                final .java.lang.String $$s1 = ((.ceylon.language.String)$param$0).toString();
-                final .java.lang.String $$s2 = ((.ceylon.language.String)$param$1).toString();
-                final .java.lang.String $$s3 = ((.ceylon.language.String)$param$2).toString();
-                final .java.lang.String $$s4 = ((.ceylon.language.String)$param$3.get(.ceylon.language.Integer.instance(3))).toString();
-                final .ceylon.language.Sequential $$s = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$3.spanFrom(.ceylon.language.Integer.instance(4));
-                return $call$typed($$s1, $$s2, $$s3, $$s4, $$s);
+                final .java.lang.String $ceylontmps1 = ((.ceylon.language.String)$param$0).toString();
+                final .java.lang.String $ceylontmps2 = ((.ceylon.language.String)$param$1).toString();
+                final .java.lang.String $ceylontmps3 = ((.ceylon.language.String)$param$2).toString();
+                final .java.lang.String $ceylontmps4 = ((.ceylon.language.String)$param$3.get(.ceylon.language.Integer.instance(3))).toString();
+                final .ceylon.language.Sequential $ceylontmps = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$3.spanFrom(.ceylon.language.Integer.instance(4));
+                return $call$typed($ceylontmps1, $ceylontmps2, $ceylontmps3, $ceylontmps4, $ceylontmps);
             }
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .ceylon.language.String $call(final .java.lang.Object... $param$0) {
-                final .java.lang.String $$s1 = ((.ceylon.language.String)$param$0[0]).toString();
-                final .java.lang.String $$s2 = ((.ceylon.language.String)$param$0[1]).toString();
-                final .java.lang.String $$s3 = ((.ceylon.language.String)$param$0[2]).toString();
-                final .java.lang.String $$s4 = ((.ceylon.language.String)$param$0[3]).toString();
-                return $call$typed($$s1, $$s2, $$s3, $$s4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0.length - 4, $param$0, .ceylon.language.empty_.get_()));
+                final .java.lang.String $ceylontmps1 = ((.ceylon.language.String)$param$0[0]).toString();
+                final .java.lang.String $ceylontmps2 = ((.ceylon.language.String)$param$0[1]).toString();
+                final .java.lang.String $ceylontmps3 = ((.ceylon.language.String)$param$0[2]).toString();
+                final .java.lang.String $ceylontmps4 = ((.ceylon.language.String)$param$0[3]).toString();
+                return $call$typed($ceylontmps1, $ceylontmps2, $ceylontmps3, $ceylontmps4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0.length - 4, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .ceylon.language.String $call$variadic(final .java.lang.Object... $param$0) {
-                final .java.lang.String $$s1 = ((.ceylon.language.String)$param$0[0]).toString();
-                final .java.lang.String $$s2 = ((.ceylon.language.String)$param$0[1]).toString();
-                final .java.lang.String $$s3 = ((.ceylon.language.String)$param$0[2]).toString();
-                final .java.lang.String $$s4 = ((.ceylon.language.String)$param$0[3]).toString();
-                return $call$typed($$s1, $$s2, $$s3, $$s4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0));
+                final .java.lang.String $ceylontmps1 = ((.ceylon.language.String)$param$0[0]).toString();
+                final .java.lang.String $ceylontmps2 = ((.ceylon.language.String)$param$0[1]).toString();
+                final .java.lang.String $ceylontmps3 = ((.ceylon.language.String)$param$0[2]).toString();
+                final .java.lang.String $ceylontmps4 = ((.ceylon.language.String)$param$0[3]).toString();
+                return $call$typed($ceylontmps1, $ceylontmps2, $ceylontmps3, $ceylontmps4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0));
             }
             
             private .ceylon.language.String $call$typed(.java.lang.String s1, .java.lang.String s2, .java.lang.String s3, .java.lang.String s4, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
@@ -93,32 +93,32 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .ceylon.language.String $call$variadic(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
-                final .java.lang.String $$s1 = ((.ceylon.language.String)$param$0).toString();
-                final .java.lang.String $$s2 = ((.ceylon.language.String)$param$1).toString();
-                final .java.lang.String $$s3 = ((.ceylon.language.String)$param$2).toString();
-                final .java.lang.String $$s4 = ((.ceylon.language.String)$param$3.get(.ceylon.language.Integer.instance(3))).toString();
-                final .ceylon.language.Sequential $$s = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$3.spanFrom(.ceylon.language.Integer.instance(4));
-                return $call$typed($$s1, $$s2, $$s3, $$s4, $$s);
+                final .java.lang.String $ceylontmps1 = ((.ceylon.language.String)$param$0).toString();
+                final .java.lang.String $ceylontmps2 = ((.ceylon.language.String)$param$1).toString();
+                final .java.lang.String $ceylontmps3 = ((.ceylon.language.String)$param$2).toString();
+                final .java.lang.String $ceylontmps4 = ((.ceylon.language.String)$param$3.get(.ceylon.language.Integer.instance(3))).toString();
+                final .ceylon.language.Sequential $ceylontmps = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$3.spanFrom(.ceylon.language.Integer.instance(4));
+                return $call$typed($ceylontmps1, $ceylontmps2, $ceylontmps3, $ceylontmps4, $ceylontmps);
             }
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .ceylon.language.String $call(final .java.lang.Object... $param$0) {
-                final .java.lang.String $$s1 = ((.ceylon.language.String)$param$0[0]).toString();
-                final .java.lang.String $$s2 = ((.ceylon.language.String)$param$0[1]).toString();
-                final .java.lang.String $$s3 = ((.ceylon.language.String)$param$0[2]).toString();
-                final .java.lang.String $$s4 = ((.ceylon.language.String)$param$0[3]).toString();
-                return $call$typed($$s1, $$s2, $$s3, $$s4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0.length - 4, $param$0, .ceylon.language.empty_.get_()));
+                final .java.lang.String $ceylontmps1 = ((.ceylon.language.String)$param$0[0]).toString();
+                final .java.lang.String $ceylontmps2 = ((.ceylon.language.String)$param$0[1]).toString();
+                final .java.lang.String $ceylontmps3 = ((.ceylon.language.String)$param$0[2]).toString();
+                final .java.lang.String $ceylontmps4 = ((.ceylon.language.String)$param$0[3]).toString();
+                return $call$typed($ceylontmps1, $ceylontmps2, $ceylontmps3, $ceylontmps4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0.length - 4, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .ceylon.language.String $call$variadic(final .java.lang.Object... $param$0) {
-                final .java.lang.String $$s1 = ((.ceylon.language.String)$param$0[0]).toString();
-                final .java.lang.String $$s2 = ((.ceylon.language.String)$param$0[1]).toString();
-                final .java.lang.String $$s3 = ((.ceylon.language.String)$param$0[2]).toString();
-                final .java.lang.String $$s4 = ((.ceylon.language.String)$param$0[3]).toString();
-                return $call$typed($$s1, $$s2, $$s3, $$s4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0));
+                final .java.lang.String $ceylontmps1 = ((.ceylon.language.String)$param$0[0]).toString();
+                final .java.lang.String $ceylontmps2 = ((.ceylon.language.String)$param$0[1]).toString();
+                final .java.lang.String $ceylontmps3 = ((.ceylon.language.String)$param$0[2]).toString();
+                final .java.lang.String $ceylontmps4 = ((.ceylon.language.String)$param$0[3]).toString();
+                return $call$typed($ceylontmps1, $ceylontmps2, $ceylontmps3, $ceylontmps4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0));
             }
             
             private .ceylon.language.String $call$typed(.java.lang.String s1, .java.lang.String s2, .java.lang.String s3, .java.lang.String s4, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
@@ -130,32 +130,32 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .ceylon.language.String $call$variadic(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
-                final .java.lang.String $$s1 = ((.ceylon.language.String)$param$0).toString();
-                final .java.lang.String $$s2 = ((.ceylon.language.String)$param$1).toString();
-                final .java.lang.String $$s3 = ((.ceylon.language.String)$param$2).toString();
-                final .java.lang.String $$s4 = ((.ceylon.language.String)$param$3.get(.ceylon.language.Integer.instance(3))).toString();
-                final .ceylon.language.Sequential $$s = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$3.spanFrom(.ceylon.language.Integer.instance(4));
-                return $call$typed($$s1, $$s2, $$s3, $$s4, $$s);
+                final .java.lang.String $ceylontmps1 = ((.ceylon.language.String)$param$0).toString();
+                final .java.lang.String $ceylontmps2 = ((.ceylon.language.String)$param$1).toString();
+                final .java.lang.String $ceylontmps3 = ((.ceylon.language.String)$param$2).toString();
+                final .java.lang.String $ceylontmps4 = ((.ceylon.language.String)$param$3.get(.ceylon.language.Integer.instance(3))).toString();
+                final .ceylon.language.Sequential $ceylontmps = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$3.spanFrom(.ceylon.language.Integer.instance(4));
+                return $call$typed($ceylontmps1, $ceylontmps2, $ceylontmps3, $ceylontmps4, $ceylontmps);
             }
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .ceylon.language.String $call(final .java.lang.Object... $param$0) {
-                final .java.lang.String $$s1 = ((.ceylon.language.String)$param$0[0]).toString();
-                final .java.lang.String $$s2 = ((.ceylon.language.String)$param$0[1]).toString();
-                final .java.lang.String $$s3 = ((.ceylon.language.String)$param$0[2]).toString();
-                final .java.lang.String $$s4 = ((.ceylon.language.String)$param$0[3]).toString();
-                return $call$typed($$s1, $$s2, $$s3, $$s4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0.length - 4, $param$0, .ceylon.language.empty_.get_()));
+                final .java.lang.String $ceylontmps1 = ((.ceylon.language.String)$param$0[0]).toString();
+                final .java.lang.String $ceylontmps2 = ((.ceylon.language.String)$param$0[1]).toString();
+                final .java.lang.String $ceylontmps3 = ((.ceylon.language.String)$param$0[2]).toString();
+                final .java.lang.String $ceylontmps4 = ((.ceylon.language.String)$param$0[3]).toString();
+                return $call$typed($ceylontmps1, $ceylontmps2, $ceylontmps3, $ceylontmps4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0.length - 4, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .ceylon.language.String $call$variadic(final .java.lang.Object... $param$0) {
-                final .java.lang.String $$s1 = ((.ceylon.language.String)$param$0[0]).toString();
-                final .java.lang.String $$s2 = ((.ceylon.language.String)$param$0[1]).toString();
-                final .java.lang.String $$s3 = ((.ceylon.language.String)$param$0[2]).toString();
-                final .java.lang.String $$s4 = ((.ceylon.language.String)$param$0[3]).toString();
-                return $call$typed($$s1, $$s2, $$s3, $$s4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0));
+                final .java.lang.String $ceylontmps1 = ((.ceylon.language.String)$param$0[0]).toString();
+                final .java.lang.String $ceylontmps2 = ((.ceylon.language.String)$param$0[1]).toString();
+                final .java.lang.String $ceylontmps3 = ((.ceylon.language.String)$param$0[2]).toString();
+                final .java.lang.String $ceylontmps4 = ((.ceylon.language.String)$param$0[3]).toString();
+                return $call$typed($ceylontmps1, $ceylontmps2, $ceylontmps3, $ceylontmps4, $spreadVarargs(.ceylon.language.String.$TypeDescriptor, 4, $param$0));
             }
             
             private .ceylon.language.String $call$typed(.java.lang.String s1, .java.lang.String s2, .java.lang.String s3, .java.lang.String s4, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {

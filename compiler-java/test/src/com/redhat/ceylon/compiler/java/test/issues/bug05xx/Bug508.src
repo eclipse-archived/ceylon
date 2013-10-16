@@ -32,8 +32,8 @@ final class bug508_ {
             
             @.java.lang.Override
             public .ceylon.language.String $call(final .java.lang.Object $param$0) {
-                final long $$i = ((.ceylon.language.Integer)$param$0).longValue();
-                return .ceylon.language.String.instance(f.f($$i));
+                final long $ceylontmpi = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.String.instance(f.f($ceylontmpi));
             }
         });
     }

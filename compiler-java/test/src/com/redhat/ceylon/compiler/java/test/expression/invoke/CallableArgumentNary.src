@@ -26,14 +26,14 @@ final class callableArgumentNary_m_ {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object... $param$0) {
-                final long $$i = ((.ceylon.language.Integer)$param$0[0]).longValue();
-                final .java.lang.String $$s = ((.ceylon.language.String)$param$0[1]).toString();
-                final boolean $$b = ((.ceylon.language.Boolean)$param$0[2]).booleanValue();
-                final int $$c = ((.ceylon.language.Character)$param$0[3]).intValue();
+                final long $ceylontmpi = ((.ceylon.language.Integer)$param$0[0]).longValue();
+                final .java.lang.String $ceylontmps = ((.ceylon.language.String)$param$0[1]).toString();
+                final boolean $ceylontmpb = ((.ceylon.language.Boolean)$param$0[2]).booleanValue();
+                final int $ceylontmpc = ((.ceylon.language.Character)$param$0[3]).intValue();
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNary_bar_.callableArgumentNary_bar($$i, $$s, $$b, $$c);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNary_bar_.callableArgumentNary_bar($ceylontmpi, $ceylontmps, $ceylontmpb, $ceylontmpc);
                     }
                     returning null;
                 );

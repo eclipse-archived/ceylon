@@ -38,54 +38,54 @@ class CallableArgumentParameterTypeParamMixed<X> implements .com.redhat.ceylon.c
             
             @.java.lang.Override
             public .ceylon.language.Integer $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final long $$i = ((.ceylon.language.Integer)$param$0).longValue();
-                final boolean $$b = ((.ceylon.language.Boolean)$param$1).booleanValue();
-                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_baz_.callableArgumentParameterTypeParamMixed_baz($$i, $$b));
+                final long $ceylontmpi = ((.ceylon.language.Integer)$param$0).longValue();
+                final boolean $ceylontmpb = ((.ceylon.language.Boolean)$param$1).booleanValue();
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_baz_.callableArgumentParameterTypeParamMixed_baz($ceylontmpi, $ceylontmpb));
             }
         });
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.<.ceylon.language.Boolean, .ceylon.language.Integer>callableArgumentParameterTypeParamMixed_f(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), "Boolean(Boolean, Integer)", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Boolean $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final .ceylon.language.Boolean $$u = (.ceylon.language.Boolean)$param$0;
-                final .ceylon.language.Integer $$v = (.ceylon.language.Integer)$param$1;
-                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<.ceylon.language.Boolean, .ceylon.language.Integer>callableArgumentParameterTypeParamMixed_bar(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, $$u, $$v);
+                final .ceylon.language.Boolean $ceylontmpu = (.ceylon.language.Boolean)$param$0;
+                final .ceylon.language.Integer $ceylontmpv = (.ceylon.language.Integer)$param$1;
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<.ceylon.language.Boolean, .ceylon.language.Integer>callableArgumentParameterTypeParamMixed_bar(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, $ceylontmpu, $ceylontmpv);
             }
         });
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.<X, .ceylon.language.Integer>callableArgumentParameterTypeParamMixed_f($reifiedX, .ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<X>($reifiedX, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reifiedX, .ceylon.language.Integer.$TypeDescriptor), $reifiedX, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), "X(X, Integer)", (short)-1){
             
             @.java.lang.Override
             public X $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final X $$u = (X)$param$0;
-                final .ceylon.language.Integer $$v = (.ceylon.language.Integer)$param$1;
-                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<X, .ceylon.language.Integer>callableArgumentParameterTypeParamMixed_bar($reifiedX, .ceylon.language.Integer.$TypeDescriptor, $$u, $$v);
+                final X $ceylontmpu = (X)$param$0;
+                final .ceylon.language.Integer $ceylontmpv = (.ceylon.language.Integer)$param$1;
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<X, .ceylon.language.Integer>callableArgumentParameterTypeParamMixed_bar($reifiedX, .ceylon.language.Integer.$TypeDescriptor, $ceylontmpu, $ceylontmpv);
             }
         });
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.<X, Y>callableArgumentParameterTypeParamMixed_f($reifiedX, $reifiedY, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<X>($reifiedX, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reifiedX, $reifiedY), $reifiedX, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reifiedY, $reifiedY, .ceylon.language.Empty.$TypeDescriptor)), "X(X, Y)", (short)-1){
             
             @.java.lang.Override
             public X $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final X $$u = (X)$param$0;
-                final Y $$v = (Y)$param$1;
-                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<X, Y>callableArgumentParameterTypeParamMixed_bar($reifiedX, $reifiedY, $$u, $$v);
+                final X $ceylontmpu = (X)$param$0;
+                final Y $ceylontmpv = (Y)$param$1;
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<X, Y>callableArgumentParameterTypeParamMixed_bar($reifiedX, $reifiedY, $ceylontmpu, $ceylontmpv);
             }
         });
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.<.java.lang.Object, Y>callableArgumentParameterTypeParamMixed_f(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reifiedX, $reifiedY), $reifiedY, new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reifiedX, $reifiedY), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reifiedY, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reifiedX, $reifiedY), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reifiedY, $reifiedY, .ceylon.language.Empty.$TypeDescriptor)), "<X&Y>(X&Y, Y)", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final .java.lang.Object $$u = $param$0;
-                final Y $$v = (Y)$param$1;
-                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<.java.lang.Object, Y>callableArgumentParameterTypeParamMixed_bar(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reifiedX, $reifiedY), $reifiedY, $$u, $$v);
+                final .java.lang.Object $ceylontmpu = $param$0;
+                final Y $ceylontmpv = (Y)$param$1;
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<.java.lang.Object, Y>callableArgumentParameterTypeParamMixed_bar(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reifiedX, $reifiedY), $reifiedY, $ceylontmpu, $ceylontmpv);
             }
         });
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.<.java.lang.Object, Y>callableArgumentParameterTypeParamMixed_f(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reifiedX, $reifiedY), $reifiedY, new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reifiedX, $reifiedY), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reifiedX, $reifiedY), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reifiedX, $reifiedY), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reifiedY, $reifiedY, .ceylon.language.Empty.$TypeDescriptor)), "<X|Y>(X|Y, Y)", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final .java.lang.Object $$u = $param$0;
-                final Y $$v = (Y)$param$1;
-                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<.java.lang.Object, Y>callableArgumentParameterTypeParamMixed_bar(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reifiedX, $reifiedY), $reifiedY, $$u, $$v);
+                final .java.lang.Object $ceylontmpu = $param$0;
+                final Y $ceylontmpv = (Y)$param$1;
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<.java.lang.Object, Y>callableArgumentParameterTypeParamMixed_bar(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reifiedX, $reifiedY), $reifiedY, $ceylontmpu, $ceylontmpv);
             }
         });
     }

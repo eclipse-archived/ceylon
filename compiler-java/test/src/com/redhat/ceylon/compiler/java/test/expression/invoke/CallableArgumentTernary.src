@@ -26,13 +26,13 @@ final class callableArgumentTernary_m_ {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                final long $$i = ((.ceylon.language.Integer)$param$0).longValue();
-                final .java.lang.String $$s = ((.ceylon.language.String)$param$1).toString();
-                final boolean $$b = ((.ceylon.language.Boolean)$param$2).booleanValue();
+                final long $ceylontmpi = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String $ceylontmps = ((.ceylon.language.String)$param$1).toString();
+                final boolean $ceylontmpb = ((.ceylon.language.Boolean)$param$2).booleanValue();
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentTernary_bar_.callableArgumentTernary_bar($$i, $$s, $$b);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentTernary_bar_.callableArgumentTernary_bar($ceylontmpi, $ceylontmps, $ceylontmpb);
                     }
                     returning null;
                 );

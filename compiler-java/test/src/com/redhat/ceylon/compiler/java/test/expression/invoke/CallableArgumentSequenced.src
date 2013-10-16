@@ -53,20 +53,20 @@ final class callableArgumentSequenced_m_ {
             
             @.java.lang.Override
             public .java.lang.Object $call() {
-                final .ceylon.language.Sequential $$s$variadic = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                return $call$typed($$s$variadic);
+                final .ceylon.language.Sequential $ceylontmps$variadic = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                return $call$typed($ceylontmps$variadic);
             }
             
             @.java.lang.Override
             public .java.lang.Object $call$variadic(final .ceylon.language.Sequential $param$0) {
-                final .ceylon.language.Sequential $$s = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0;
-                return $call$typed($$s);
+                final .ceylon.language.Sequential $ceylontmps = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0;
+                return $call$typed($ceylontmps);
             }
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .ceylon.language.Sequential $$s$variadic = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{$param$0});
-                return $call$typed($$s$variadic);
+                final .ceylon.language.Sequential $ceylontmps$variadic = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{$param$0});
+                return $call$typed($ceylontmps$variadic);
             }
             
             @.java.lang.Override
@@ -76,10 +76,10 @@ final class callableArgumentSequenced_m_ {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final .ceylon.language.Sequential $$s$variadic = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
+                final .ceylon.language.Sequential $ceylontmps$variadic = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
                         $param$0,
                         $param$1});
-                return $call$typed($$s$variadic);
+                return $call$typed($ceylontmps$variadic);
             }
             
             @.java.lang.Override
@@ -91,11 +91,11 @@ final class callableArgumentSequenced_m_ {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                final .ceylon.language.Sequential $$s$variadic = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
+                final .ceylon.language.Sequential $ceylontmps$variadic = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
                         $param$0,
                         $param$1,
                         $param$2});
-                return $call$typed($$s$variadic);
+                return $call$typed($ceylontmps$variadic);
             }
             
             @.java.lang.Override
@@ -130,14 +130,14 @@ final class callableArgumentSequenced_m_ {
             
             @.java.lang.Override
             public .java.lang.Object $call$variadic(final .ceylon.language.Sequential $param$0) {
-                final .ceylon.language.Sequence $$s = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)$param$0;
-                return $call$typed($$s);
+                final .ceylon.language.Sequence $ceylontmps = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)$param$0;
+                return $call$typed($ceylontmps);
             }
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .ceylon.language.Sequence $$s$variadic = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{$param$0});
-                return $call$typed($$s$variadic);
+                final .ceylon.language.Sequence $ceylontmps$variadic = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{$param$0});
+                return $call$typed($ceylontmps$variadic);
             }
             
             @.java.lang.Override
@@ -147,10 +147,10 @@ final class callableArgumentSequenced_m_ {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final .ceylon.language.Sequence $$s$variadic = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
+                final .ceylon.language.Sequence $ceylontmps$variadic = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
                         $param$0,
                         $param$1});
-                return $call$typed($$s$variadic);
+                return $call$typed($ceylontmps$variadic);
             }
             
             @.java.lang.Override
@@ -162,11 +162,11 @@ final class callableArgumentSequenced_m_ {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                final .ceylon.language.Sequence $$s$variadic = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
+                final .ceylon.language.Sequence $ceylontmps$variadic = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
                         $param$0,
                         $param$1,
                         $param$2});
-                return $call$typed($$s$variadic);
+                return $call$typed($ceylontmps$variadic);
             }
             
             @.java.lang.Override

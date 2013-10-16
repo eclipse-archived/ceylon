@@ -92,11 +92,11 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .ceylon.language.Iterable $$elements = (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0;
+                final .ceylon.language.Iterable $ceylontmpelements = (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0;
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug687.this.<.ceylon.language.Number>sort3(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, $$elements);
+                        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug687.this.<.ceylon.language.Number>sort3(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, $ceylontmpelements);
                     }
                     returning null;
                 );

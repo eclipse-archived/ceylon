@@ -34,11 +34,11 @@ final class callableArgumentParameterTypeParam_m_ {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .ceylon.language.String $$s = (.ceylon.language.String)$param$0;
+                final .ceylon.language.String $ceylontmps = (.ceylon.language.String)$param$0;
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_bar_.<.ceylon.language.String>callableArgumentParameterTypeParam_bar(.ceylon.language.String.$TypeDescriptor, $$s);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_bar_.<.ceylon.language.String>callableArgumentParameterTypeParam_bar(.ceylon.language.String.$TypeDescriptor, $ceylontmps);
                     }
                     returning null;
                 );
@@ -48,11 +48,11 @@ final class callableArgumentParameterTypeParam_m_ {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final long $$i = ((.ceylon.language.Integer)$param$0).longValue();
+                final long $ceylontmpi = ((.ceylon.language.Integer)$param$0).longValue();
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_baz_.callableArgumentParameterTypeParam_baz($$i);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_baz_.callableArgumentParameterTypeParam_baz($ceylontmpi);
                     }
                     returning null;
                 );
