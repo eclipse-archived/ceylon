@@ -599,17 +599,17 @@ public class CeylonDocToolTest {
 
     private void assertParametersDocumentation(File destDir) throws Exception {
     	assertMatchInFile(destDir, "index.html", 
-    			Pattern.compile("<div class='parameters section'><span class='title'>Parameters: </span><ul><li><span class='parameter'>numbers</span><p>Sequenced parameters <code>numbers</code></p>"));
+    			Pattern.compile("<div class='parameters section'><span class='title'>Parameters: </span><ul><li><span class='parameter' id='stubTopLevelMethod-numbers'>numbers</span><p>Sequenced parameters <code>numbers</code></p>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<div class='parameters section'><span class='title'>Parameters:"));        
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<li><span class='parameter'>a</span><p>Initializer parameter <code>a</code></p>"));
+                Pattern.compile("<li><span class='parameter' id='StubClass-a'>a</span><p>Initializer parameter <code>a</code></p>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<li><span class='parameter'>b</span><p>Initializer parameter <code>b</code></p>"));        
+                Pattern.compile("<li><span class='parameter' id='StubClass-b'>b</span><p>Initializer parameter <code>b</code></p>"));        
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<li><span class='parameter'>a</span><p>Method parameter <code>a</code></p>"));
+                Pattern.compile("<li><span class='parameter' id='methodWithParametersDocumentation-a'>a</span><p>Method parameter <code>a</code></p>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<li><span class='parameter'>b</span><p>Method parameter <code>b</code></p>"));
+                Pattern.compile("<li><span class='parameter' id='methodWithParametersDocumentation-b'>b</span><p>Method parameter <code>b</code></p>"));
 	}
 
 	private void assertThrows(File destDir) throws Exception {
