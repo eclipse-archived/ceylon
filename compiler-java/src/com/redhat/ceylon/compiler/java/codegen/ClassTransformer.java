@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
+import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.DeferredSpecification;
@@ -330,7 +331,7 @@ public class ClassTransformer extends AbstractTransformer {
      * is transformed into
      * <pre>
      * @Retention(RetentionPolicy.RUNTIME)
-     * @interface Foo$annotation {
+     * @interface Foo$annotation$ {
      *     String s();
      *     long i() default 1;
      * }
@@ -339,14 +340,14 @@ public class ClassTransformer extends AbstractTransformer {
      * annotation is also generated:
      * <pre>
      * @Retention(RetentionPolicy.RUNTIME)
-     * @interface Foo$annotations{
-     *     Foo$annotation[] value();
+     * @interface Foo$annotations${
+     *     Foo$annotation$[] value();
      * }
      * </pre>
      */
     private List<JCTree> transformAnnotationClass(Tree.AnyClass def) {
         Class klass = (Class)def.getDeclarationModel();
-        String annotationName = klass.getName()+"$annotation";
+        String annotationName = Naming.suffixName(Suffix.$annotation$, klass.getName());
         ClassDefinitionBuilder annoBuilder = ClassDefinitionBuilder.klass(this, annotationName, null);
         
         // annotations are never explicitly final in Java
@@ -360,7 +361,7 @@ public class ClassTransformer extends AbstractTransformer {
         List<JCTree> result;
         if (isSequencedAnnotation(klass)) {
             result = annoBuilder.annotations(makeAtAnnotationTarget()).build();
-            String wrapperName = klass.getName()+"$annotations";
+            String wrapperName = Naming.suffixName(Suffix.$annotations$, klass.getName());
             ClassDefinitionBuilder sequencedBuilder = ClassDefinitionBuilder.klass(this, wrapperName, null);
             // annotations are never explicitely final in Java
             sequencedBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | (transformClassDeclFlags(def) & ~FINAL));

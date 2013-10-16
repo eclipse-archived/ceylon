@@ -41,7 +41,7 @@ public class AnnotationArgument implements AnnotationFieldName {
     }
     @Override
     public Prefix getFieldNamePrefix() {
-        return Prefix.arg$;
+        return Prefix.$arg$;
     }
     @Override
     public Parameter getAnnotationField() {

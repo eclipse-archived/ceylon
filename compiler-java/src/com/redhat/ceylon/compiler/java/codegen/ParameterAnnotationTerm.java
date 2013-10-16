@@ -49,7 +49,7 @@ public class ParameterAnnotationTerm extends AnnotationTerm implements Annotatio
     
     @Override
     public Prefix getFieldNamePrefix() {
-        return Prefix.default$;
+        return Prefix.$default$;
     }
 
     @Override

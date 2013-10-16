@@ -48,7 +48,7 @@ public class AnnotationConstructorParameter implements AnnotationFieldName {
     
     @Override
     public Prefix getFieldNamePrefix() {
-        return Prefix.default$;
+        return Prefix.$default$;
     }
 
     @Override

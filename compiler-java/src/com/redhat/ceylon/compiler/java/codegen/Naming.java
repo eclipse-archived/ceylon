@@ -102,29 +102,28 @@ public class Naming implements LocalId {
      * Should start and end with a {@code $} and contain no {@code $}
      */
     enum Suffix implements Affix {
-        $annotation,
-        $annotations,
+        $annotation$,
+        $annotations$,
         $arg$,
         $callable$,
-        $element,
-        $exhausted,
-        $getter,
-        $impl,
-        $iter,
-        $iterable,
-        $iteration,
-        $iterator,
-        $new,
-        $param,
-        $priv,
-        $qual,
+        $element$,
+        $exhausted$,
+        $getter$,
+        $impl, // special case, since it's used in type names
+        $iterable$,
+        $iteration$,
+        $iterator$,
+        $new$,
+        $param$,
+        $priv$,
+        $qual$,
         $reified$,
-        $sequenceBuilder,
-        $setter,
-        $specifier,
-        $this,
+        $sb$,
+        $setter$,
+        $specifier$,
         $this$,
-        $variadic
+        $argthis$,
+        $variadic$
     }
     
     /**
@@ -133,17 +132,15 @@ public class Naming implements LocalId {
      * Should start and end with a {@code $} and contain no {@code $}
      */
     enum Prefix implements Affix {
-        next,
-        arg$,
+        $next$,
         $arg$,
-        $ceylontmp,
-        default$,
+        $ceylontmp$,
         $default$,
         $init$,
-        iter$,
-        kv$, 
-        $reified,
-        super$arg$
+        $iterator$,
+        $kv$, 
+        $reified$,
+        $superarg$
     }
     
     static String name(Unfix unfix) {
@@ -168,7 +165,7 @@ public class Naming implements LocalId {
         return sb.toString();
     }
     
-    private static String suffixName(Suffix suffix, String s) {
+    static String suffixName(Suffix suffix, String s) {
         return s + suffix.toString();
     }
     
@@ -202,8 +199,8 @@ public class Naming implements LocalId {
     }
     
     private static final String IMPL_POSTFIX = Suffix.$impl.toString();
-    private static final String ANNO_POSTFIX = Suffix.$annotation.toString();
-    private static final String ANNOS_POSTFIX = Suffix.$annotations.toString();
+    private static final String ANNO_POSTFIX = Suffix.$annotation$.toString();
+    private static final String ANNOS_POSTFIX = Suffix.$annotations$.toString();
 
     static enum DeclNameFlag {
         /** 
@@ -319,7 +316,7 @@ public class Naming implements LocalId {
         
         String getterName = getGetterName(property);
         if (decl.isMember() && !decl.isShared()) {
-            getterName = suffixName(Suffix.$priv, getterName);
+            getterName = suffixName(Suffix.$priv$, getterName);
         }
         return getterName;
     }
@@ -660,7 +657,7 @@ public class Naming implements LocalId {
     private static String quoteMethodNameIfProperty(Method method) {
         String name = method.getName();
         if (!method.isShared()) {
-            name = suffixName(Suffix.$priv, name);
+            name = suffixName(Suffix.$priv$, name);
         }
         // Toplevel methods keep their original name because their names might be mangled
         if (method instanceof LazyMethod) {
@@ -735,7 +732,7 @@ public class Naming implements LocalId {
         } else if (Decl.withinClassOrInterface(decl) && !Decl.isLocalToInitializer(decl)) {
             String setterName = getSetterName(decl.getName());
             if (decl.isMember() && !decl.isShared()) {
-                setterName = suffixName(Suffix.$priv, setterName);
+                setterName = suffixName(Suffix.$priv$, setterName);
             }
             return setterName;
         } else if (decl instanceof TypedDeclaration && Decl.isBoxedVariable((TypedDeclaration)decl)) {
@@ -763,7 +760,7 @@ public class Naming implements LocalId {
     }
     
     String getInstantiatorMethodName(Class model) {
-        return suffixName(Suffix.$new, model.getName());
+        return suffixName(Suffix.$new$, model.getName());
     }
     
     JCExpression makeInstantiatorMethodName(JCExpression qual, Class model) {
@@ -779,7 +776,7 @@ public class Naming implements LocalId {
         MethodOrValue mov = parameter;
         if ((mov instanceof Method && ((Method)mov).isDeferred())
                 || (mov instanceof Value && mov.isVariable() && mov.isCaptured())) {
-            return suffixName(Suffix.$param, parameter.getName());
+            return suffixName(Suffix.$param$, parameter.getName());
         }
         return parameter.getName();
     }
@@ -1285,10 +1282,10 @@ public class Naming implements LocalId {
         if (Decl.isLocal(decl)) {
             if ((Decl.isGetter(decl) && (namingOptions & NA_SETTER) == 0)
                     || (namingOptions & NA_GETTER) != 0){
-                name = suffixName(Suffix.$getter, name);
+                name = suffixName(Suffix.$getter$, name);
             } else if ((decl instanceof Setter && (namingOptions & NA_GETTER) == 0)
                     || (namingOptions & NA_SETTER) != 0) {
-                name = suffixName(Suffix.$setter, name);
+                name = suffixName(Suffix.$setter$, name);
             }
         }
         if ((namingOptions & NA_WRAPPER_UNQUOTED) == 0) {
@@ -1312,7 +1309,7 @@ public class Naming implements LocalId {
         // resolve aliases
         if(def.isAlias())
             def = (Interface) def.getExtendedTypeDeclaration();
-        return suffixName(Suffix.$this, "$" + Decl.className(def).replace('.', '$'));
+        return suffixName(Suffix.$this$, "$" + Decl.className(def).replace('.', '$'));
     }
 
     /**
@@ -1369,12 +1366,12 @@ public class Naming implements LocalId {
     }
     
     String newTemp() {
-        String result = prefixName(Prefix.$ceylontmp, Long.toString(nextUniqueId()));
+        String result = prefixName(Prefix.$ceylontmp$, Long.toString(nextUniqueId()));
         return result;
     }
 
     String newTemp(String prefix) {
-        String result = prefixName(Prefix.$ceylontmp, prefix, Long.toString(nextUniqueId()));
+        String result = prefixName(Prefix.$ceylontmp$, prefix, Long.toString(nextUniqueId()));
         return result;
     }
 
@@ -1933,7 +1930,7 @@ public class Naming implements LocalId {
      * Makes a name for a local attribute where we store a method specifier
      */
     public String getMethodSpecifierAttributeName(Method m) {
-        return suffixName(Suffix.$specifier, m.getName());
+        return suffixName(Suffix.$specifier$, m.getName());
     }
     
     public static String getCallableMethodName() {
@@ -1955,7 +1952,7 @@ public class Naming implements LocalId {
     }
     
     public static String getCallableTempVarName(Parameter param){
-        return prefixName(Prefix.$ceylontmp, param.getName());
+        return prefixName(Prefix.$ceylontmp$, param.getName());
     }
     
     public static String getImplClassName(String name){
@@ -1963,7 +1960,7 @@ public class Naming implements LocalId {
     }
     
     public String getTypeArgumentDescriptorName(String name) {
-        return prefixName(Prefix.$reified, name);
+        return prefixName(Prefix.$reified$, name);
     }
     
     public String getGetTypeMethodName() {

@@ -174,13 +174,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_TRANSIENT_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Transient";
     private static final String JAVA_DEPRECATED_ANNOTATION = "java.lang.Deprecated";
     
-    private static final String CEYLON_LANGUAGE_ABSTRACT_ANNOTATION = "ceylon.language.AbstractAnnotation$annotation";
-    private static final String CEYLON_LANGUAGE_ACTUAL_ANNOTATION = "ceylon.language.ActualAnnotation$annotation";
-    private static final String CEYLON_LANGUAGE_ANNOTATION_ANNOTATION = "ceylon.language.AnnotationAnnotation$annotation";
-    private static final String CEYLON_LANGUAGE_DEFAULT_ANNOTATION = "ceylon.language.DefaultAnnotation$annotation";
-    private static final String CEYLON_LANGUAGE_FORMAL_ANNOTATION = "ceylon.language.FormalAnnotation$annotation";
-    private static final String CEYLON_LANGUAGE_LATE_ANNOTATION = "ceylon.language.LateAnnotation$annotation";
-    private static final String CEYLON_LANGUAGE_SHARED_ANNOTATION = "ceylon.language.SharedAnnotation$annotation";
+    private static final String CEYLON_LANGUAGE_ABSTRACT_ANNOTATION = "ceylon.language.AbstractAnnotation$annotation$";
+    private static final String CEYLON_LANGUAGE_ACTUAL_ANNOTATION = "ceylon.language.ActualAnnotation$annotation$";
+    private static final String CEYLON_LANGUAGE_ANNOTATION_ANNOTATION = "ceylon.language.AnnotationAnnotation$annotation$";
+    private static final String CEYLON_LANGUAGE_DEFAULT_ANNOTATION = "ceylon.language.DefaultAnnotation$annotation$";
+    private static final String CEYLON_LANGUAGE_FORMAL_ANNOTATION = "ceylon.language.FormalAnnotation$annotation$";
+    private static final String CEYLON_LANGUAGE_LATE_ANNOTATION = "ceylon.language.LateAnnotation$annotation$";
+    private static final String CEYLON_LANGUAGE_SHARED_ANNOTATION = "ceylon.language.SharedAnnotation$annotation$";
 
     private static final TypeMirror OBJECT_TYPE = simpleCeylonObjectType("java.lang.Object");
     private static final TypeMirror CEYLON_OBJECT_TYPE = simpleCeylonObjectType("ceylon.language.Object");

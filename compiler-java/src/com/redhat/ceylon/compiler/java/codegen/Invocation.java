@@ -1064,7 +1064,7 @@ class NamedArgumentInvocation extends Invocation {
             thisExpr = callVarName.makeIdent();
             break;
         case INIT_COMPANION:
-            thisExpr = varBaseName.suffixedBy(Suffix.$this$).makeIdent();
+            thisExpr = varBaseName.suffixedBy(Suffix.$argthis$).makeIdent();
             if (isOnValueType()) {
                 thisExpr = gen.boxType(thisExpr, getQmePrimary().getTypeModel());
             }
@@ -1083,7 +1083,7 @@ class NamedArgumentInvocation extends Invocation {
         ListBuffer<JCExpression> names = ListBuffer.<JCExpression> lb();
         if (!Strategy.defaultParameterMethodStatic(getPrimaryDeclaration())
                 && Strategy.defaultParameterMethodTakesThis(param.getModel())) {
-            names.append(varBaseName.suffixedBy(Suffix.$this$).makeIdent());
+            names.append(varBaseName.suffixedBy(Suffix.$argthis$).makeIdent());
         }
         // put all the required reified type args too
         int tpCount = gen.getTypeParameters(producedReference).size();
@@ -1340,7 +1340,7 @@ class NamedArgumentInvocation extends Invocation {
                                 argExpr = gen.makeInteger(0);
                                 hasDefaulted |= true;
                             }else if(param.getName().equals("length")){
-                                argExpr = gen.makeSelect(varBaseName.suffixedBy(Suffix.$this$).makeIdent(), "length");
+                                argExpr = gen.makeSelect(varBaseName.suffixedBy(Suffix.$argthis$).makeIdent(), "length");
                                 hasDefaulted |= true;
                             }else{
                                 argExpr = gen.makeErroneous(this.getNode(), "compiler bug: argument to copyTo method of java array type not supported: "+param.getName());
@@ -1402,7 +1402,7 @@ class NamedArgumentInvocation extends Invocation {
             }
             defaultedParameterInstance = callVarName.makeIdent();
         }
-        JCVariableDecl thisDecl = gen.makeVar(varBaseName.suffixedBy(Suffix.$this$), 
+        JCVariableDecl thisDecl = gen.makeVar(varBaseName.suffixedBy(Suffix.$argthis$), 
                 thisType, 
                 defaultedParameterInstance);
         return thisDecl;

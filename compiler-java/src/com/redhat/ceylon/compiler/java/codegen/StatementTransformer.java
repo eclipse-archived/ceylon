@@ -1402,7 +1402,7 @@ public class StatementTransformer extends AbstractTransformer {
             }
             JCVariableDecl itemOrKeyDecl = at(stmt).VarDef(make().Modifiers(FINAL, annots), loopVarName.asName(), makeJavaType(loopVarType), 
                     boxUnboxIfNecessary(loopVarInit, true, loopVarType, CodegenUtil.getBoxingStrategy(variable.getDeclarationModel())));
-            final SyntheticName iteratorVarName = loopVarName.suffixedBy(Suffix.$iter).alias();
+            final SyntheticName iteratorVarName = loopVarName.suffixedBy(Suffix.$iterator$).alias();
             List<JCStatement> itemDecls = List.<JCStatement> of(itemOrKeyDecl);
 
             if (valueVariable != null) {

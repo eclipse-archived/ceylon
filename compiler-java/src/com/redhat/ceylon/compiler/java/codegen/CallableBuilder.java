@@ -797,7 +797,7 @@ public class CallableBuilder {
                         varargsSequence = gen.makeSequence(varargs.toList(), 
                                 getVariadicIteratedType(), 0);
                     }
-                    SyntheticName vname = getCallableTempVarName(getVariadicParameter(), forwardCallTo).suffixedBy(Suffix.$variadic);
+                    SyntheticName vname = getCallableTempVarName(getVariadicParameter(), forwardCallTo).suffixedBy(Suffix.$variadic$);
                     args.append(vname.makeIdent());
                     makeVar(stmts, variadicParameter, getVariadicType(), 
                             forwardCallTo, vname, varargsSequence);
@@ -830,7 +830,7 @@ public class CallableBuilder {
                 varargsSequence = gen.makeSequence(varargs.toList(), 
                         getVariadicIteratedType(), 0);
             }
-            SyntheticName vname = getCallableTempVarName(getVariadicParameter(), forwardCallTo).suffixedBy(Suffix.$variadic);
+            SyntheticName vname = getCallableTempVarName(getVariadicParameter(), forwardCallTo).suffixedBy(Suffix.$variadic$);
             args.append(vname.makeIdent());
             makeVar(stmts, getVariadicParameter(), getVariadicType(), 
                     forwardCallTo, vname, varargsSequence);
@@ -879,7 +879,7 @@ public class CallableBuilder {
                 varargsSequence = gen.makeSequence(varargs.toList(), 
                         getVariadicIteratedType(), 0);
             }
-            SyntheticName vname = getCallableTempVarName(getVariadicParameter(), forwardCallTo).suffixedBy(Suffix.$variadic);
+            SyntheticName vname = getCallableTempVarName(getVariadicParameter(), forwardCallTo).suffixedBy(Suffix.$variadic$);
             args.append(vname.makeIdent());
             makeVar(stmts, getVariadicParameter(), getVariadicType(), 
                     forwardCallTo, vname, varargsSequence);

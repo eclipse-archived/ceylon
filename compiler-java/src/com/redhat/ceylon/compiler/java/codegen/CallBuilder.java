@@ -263,7 +263,7 @@ public class CallBuilder {
     }
 
     private SyntheticName getQualifierName(Naming.SyntheticName basename) {
-        SyntheticName qualName = basename.suffixedBy(Suffix.$qual);
+        SyntheticName qualName = basename.suffixedBy(Suffix.$qual$);
         return qualName;
     }
 
