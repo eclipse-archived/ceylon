@@ -115,18 +115,11 @@
     <target name="ide-quick">
         <copy 
             overwrite="true"
-            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository/${ceylon.module-resolver.dir}">
-            <fileset dir="${ceylon.module-resolver.dist}">
+            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository">
+            <fileset dir="${build.dist.repo}">
                 <include name="**/*"/>
                 <exclude name="**/module-doc/**/*"/>
                 <exclude name="**/*.src*"/>
-            </fileset>
-        </copy>
-        <copy 
-            overwrite="true"
-            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository/${ceylon.maven-support.dir}">
-            <fileset dir="${ceylon.maven-support.dist}">
-                <include name="**/*"/>
             </fileset>
         </copy>
     </target>
