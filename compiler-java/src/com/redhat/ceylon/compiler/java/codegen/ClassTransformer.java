@@ -2489,7 +2489,7 @@ public class ClassTransformer extends AbstractTransformer {
                     } else {
                         defaultArgument = makeErroneous(null, "compiler bug: parameter " + parameterModel.getName() + " has an unsupported default value");
                     }
-                    Naming.SyntheticName varName = naming.temp("$"+parameterModel.getName()+"$");
+                    Naming.SyntheticName varName = naming.temp(parameterModel.getName());
                     ProducedType paramType = overloaded.parameterType(parameterModel);
                     vars.append(makeVar(varName, 
                             makeJavaType(paramType, CodegenUtil.isUnBoxed(parameterModel.getModel()) ? 0 : JT_NO_PRIMITIVES), 
@@ -2922,7 +2922,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (!Strategy.defaultParameterMethodStatic(klass)
                     && !Strategy.defaultParameterMethodOnOuter(klass)
                     && currentParameter != null) {
-                companionInstanceName = naming.temp("$impl$");
+                companionInstanceName = naming.temp("impl");
                 vars.append(makeVar(companionInstanceName, 
                         makeJavaType(klass.getType(), AbstractTransformer.JT_COMPANION),
                         make().NewClass(null, 
