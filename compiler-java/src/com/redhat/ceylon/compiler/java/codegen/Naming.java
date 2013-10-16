@@ -1337,17 +1337,17 @@ public class Naming implements LocalId {
     }
     
     String newTemp() {
-        String result = "$ceylontmp" + nextUniqueId();
+        String result = prefixName(Prefix.$ceylontmp, Long.toString(nextUniqueId()));
         return result;
     }
 
     String newTemp(String prefix) {
-        String result = "$ceylontmp" + prefix + nextUniqueId();
+        String result = prefixName(Prefix.$ceylontmp, prefix, Long.toString(nextUniqueId()));
         return result;
     }
 
     private String newAlias(String name) {
-        String result = "$" + name + "$" + nextUniqueId();
+        String result = compoundName(name, Long.toString(nextUniqueId()));
         return result;
     }
     
