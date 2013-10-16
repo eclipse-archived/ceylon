@@ -33,19 +33,15 @@
     <property name="build.lib" location="${build}/lib" />
     <property name="build.api" location="${build}/api" />
     <property name="build.dist" location="${build}/dist" />
+    <property name="build.dist.repo" location="${build.dist}/repo" />
     <property name="test.reports" location="${build}/test-reports" />
-
-    <property name="markdown.version" value="0.8-c0dcd373ce" />
-    <property name="markdown.lib" location="${base.path}/txtmark-${markdown.version}.jar" />
-    <property name="markdown-papers.version" value="1.2.7" />
-    <property name="markdown-papers.lib" location="${base.path}/markdownpapers-core-${markdown-papers.version}.jar" />
 
     <!-- Jarfiles everything ends up in -->
     <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}" />
     <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar" />
     <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}" />
     <property name="ceylon.compiler.repo" value="${ceylon.repo.dir}/${ceylon.compiler.dir}" />
-    <property name="ceylon.compiler.dist" value="${build.dist}/${ceylon.compiler.dir}" />
+    <property name="ceylon.compiler.dist" value="${build.dist.repo}/${ceylon.compiler.dir}" />
     <property name="ceylon-tests.dir" location="${build.ceylon.cars}/com/redhat/ceylon/compiler/java/test/ceylon/${module.com.redhat.ceylon.compiler.version}" />
     <property name="ceylon-tests.car" location="${ceylon-tests.dir}/com.redhat.ceylon.compiler.java.test.ceylon-${module.com.redhat.ceylon.compiler.version}.car" />
     <property name="ceylon.bootstrap.lib" location="${build.lib}/ceylon-bootstrap.jar" />
@@ -61,8 +57,8 @@
         <pathelement path="${ceylon.typechecker.lib}" />
         <pathelement path="${ceylon.language.lib}" />
         <pathelement path="${antlr.lib}" />
-        <pathelement path="${markdown.lib}" />
-        <pathelement path="${markdown-papers.lib}" />
+        <pathelement path="${txtmark.lib}" />
+        <pathelement path="${markdownpapers.lib}" />
     </path>
 
     <path id="test.compile.classpath">
@@ -130,16 +126,18 @@
 
     <target name="dist" depends="build" description="Create Ceylon compiler distribution">
         <antcall target="sha1sum">
-            <param name="file" value="${build.dist}/${ceylon.compiler.jar}" />
+            <param name="file" value="${build.dist.repo}/${ceylon.compiler.jar}" />
         </antcall>
+        <copy file="${txtmark.lib}" tofile="${build.dist.repo}/${txtmark.repo}"/>
+        <copy file="${markdownpapers.lib}" tofile="${build.dist.repo}/${markdownpapers.repo}"/>
     </target>
 
     <target name="publish" depends="dist,clean.repo,init.repo,publish-internal" description="Publish Ceylon compiler module to default repo">
     </target>
 
     <target name="publish-internal" depends="init.repo">
-        <copy todir="${ceylon.compiler.repo}" overwrite="true">
-            <fileset dir="${ceylon.compiler.dist}" />
+        <copy todir="${ceylon.repo.dir}" overwrite="true">
+            <fileset dir="${build.dist.repo}" />
         </copy>
     </target>
 
@@ -216,8 +214,8 @@
 
     <!-- Rule to build compiler jar -->
     <target name="compiler.jar" depends="compiler.classes">
-        <mkdir dir="${build.lib}" />
-        <jar destfile="${build.dist}/${ceylon.compiler.jar}">
+        <mkdir dir="${build.dist.repo}" />
+        <jar destfile="${build.dist.repo}/${ceylon.compiler.jar}">
             <fileset dir="${build.classes}">
                 <exclude name="ceylon/**" />
                 <exclude name="com/redhat/ceylon/compiler/java/test/**" />
@@ -267,12 +265,6 @@
                 <include name="ceylon" />
             </fileset>
         </chmod>
-        <copy todir="${build.lib}">
-            <fileset dir="${basedir}/lib">
-                <include name="txtmark-*.jar" />
-                <include name="markdownpapers-core-*.jar" />
-            </fileset>
-        </copy>
     </target>
 
     <target name="-test.cond">
@@ -337,7 +329,7 @@
             </fileset>
         </copy>
 
-        <copy overwrite="true" file="${build.dist}/${ceylon.compiler.jar}" tofile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}-ide.jar" />
+        <copy overwrite="true" file="${build.dist.repo}/${ceylon.compiler.jar}" tofile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}-ide.jar" />
         <jar destfile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/compiler-tests-${module.com.redhat.ceylon.compiler.version}.jar">
             <fileset dir="${build.classes}">
                 <include name="com/redhat/ceylon/compiler/java/test/**" />
