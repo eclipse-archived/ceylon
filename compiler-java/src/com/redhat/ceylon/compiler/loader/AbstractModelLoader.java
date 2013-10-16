@@ -796,7 +796,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
             // if we are expecting Ceylon code, check that we have enough reified type parameters
             if(classMirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null){
-                if(!checkReifiedTypeDescriptors(classMirror.getTypeParameters().size(), classMirror, methodMirror, true))
+                List<AnnotationMirror> tpAnnotations = getTypeParametersFromAnnotations(classMirror);
+                int tpCount = tpAnnotations != null ? tpAnnotations.size() : classMirror.getTypeParameters().size();
+                if(!checkReifiedTypeDescriptors(tpCount, classMirror, methodMirror, true))
                     continue;
             }
             
