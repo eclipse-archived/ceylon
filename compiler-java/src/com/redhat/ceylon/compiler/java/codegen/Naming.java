@@ -102,7 +102,7 @@ public class Naming implements LocalId {
         $annotation, 
         $annotations, 
         $this$, 
-        $qual, $callable$, $iter, $exhausted, $iterable, $sequenceBuilder, $element, $iteration, $iterator, $arg$, $reified$, $variadic,
+        $qual, $callable$, $iter, $exhausted, $iterable, $sequenceBuilder, $element, $iteration, $iterator, $arg$, $reified$, $variadic, $param,
     }
     
     /**
@@ -110,7 +110,7 @@ public class Naming implements LocalId {
      */
     enum Prefix implements Affix {
         $reified,
-        $init$, arg$, default$, iter$, next, super$arg$, $arg$, kv$, $ceylontmp,
+        $init$, arg$, default$, iter$, next, super$arg$, $arg$, kv$, $ceylontmp, $default$,
     }
     
     static String name(Unfix unfix) {
@@ -714,16 +714,15 @@ public class Naming implements LocalId {
 
     public static String getDefaultedParamMethodName(Declaration decl, Parameter param) {
         if (decl instanceof Method) {
-            return ((Method) decl).getName() + "$" + CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getName();
+            return compoundName(((Method) decl).getName(), CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getName());
         } else if (decl instanceof ClassOrInterface) {
             if (decl.isToplevel() || Decl.isLocalNotInitializer(decl)) {
-                return prefixName(Prefix.$init$, param.getName());
+                return prefixName(Prefix.$default$, param.getName());
             } else {
-                return "$" + decl.getName() + "$init$" + param.getName();
+                return prefixName(Prefix.$default$, decl.getName() , param.getName());
             }
         } else if (decl == null) {
-            // for Callables, we get a double dollar to not walk on $call methods if we have a "call" parameter
-            return "$$" + param.getName();
+            return prefixName(Prefix.$default$, param.getName());
         } else {
             // Should never happen (for now at least)
             return null;
@@ -747,7 +746,7 @@ public class Naming implements LocalId {
         MethodOrValue mov = parameter;
         if ((mov instanceof Method && ((Method)mov).isDeferred())
                 || (mov instanceof Value && mov.isVariable() && mov.isCaptured())) {
-            return parameter.getName()+"$";
+            return suffixName(Suffix.$param, parameter.getName());
         }
         return parameter.getName();
     }
