@@ -5,6 +5,7 @@
     <!-- Set build directories for all formats. -->
     <property name="build.dir" value="${basedir}/build" />
     <property name="build.dist" value="${build.dir}/dist" />
+    <property name="build.dist.repo" value="${build.dist}/repo" />
     <property name="build.classes" location="${build.dir}/classes" />
 
     <property name="src" location="src" />
@@ -82,27 +83,25 @@
     <target name="ide-quick">
         <copy 
             overwrite="true"
-            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository/${ceylon.common.dir}">
-            <fileset dir="${ceylon.common.dist}">
-                <include name="**/*"/>
-            </fileset>
+            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository">
+            <fileset dir="${build.dist.repo}"/>
         </copy>
         
         <copy overwrite="true"
-            file="${build.dist}/${ceylon.common.jar}"
+            file="${build.dist.repo}/${ceylon.common.jar}"
             tofile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}-ide.jar" />
     </target>
 
     <target name="dist" depends="compile">
-        <mkdir dir="${build.dist}" />
+        <mkdir dir="${build.dist.repo}" />
 
-        <zip destfile="${build.dist}/${ceylon.common.jar}">
+        <zip destfile="${build.dist.repo}/${ceylon.common.jar}">
             <fileset dir="${build.classes}">
                 <include name="**/*" />
             </fileset>
         </zip>
         <antcall target="sha1sum">
-            <param name="file" value="${build.dist}/${ceylon.common.jar}" />
+            <param name="file" value="${build.dist.repo}/${ceylon.common.jar}" />
         </antcall>
     </target>
 
@@ -112,8 +111,8 @@
     </target>
 
     <target name="publish-internal" depends="init.repo">
-        <copy todir="${ceylon.common.repo}" overwrite="true">
-            <fileset dir="${ceylon.common.dist}" />
+        <copy todir="${ceylon.repo.dir}" overwrite="true">
+            <fileset dir="${build.dist.repo}" />
         </copy>
     </target>
 
