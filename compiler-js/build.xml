@@ -7,6 +7,7 @@
     <property name="build.classes" location="${build.dir}/classes/main" />
     <property name="build.test-classes" location="${build.dir}/classes/test" />
     <property name="build.dist" location="${build.dir}/dist" />
+    <property name="build.dist.repo" location="${build.dist}/repo" />
     <property name="build.bin" location="${build.dir}/bin" />
     <property name="build.lib" location="${build.dir}/lib" />
     <property name="build.test" location="${build.dir}/test" />
@@ -27,7 +28,7 @@
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo" />
     <property name="ceylon.js.dir" value="com/redhat/ceylon/compiler/js/${module.com.redhat.ceylon.compiler.js.version}" />
     <property name="ceylon.js.repo" value="${ceylon.repo.dir}/${ceylon.js.dir}" />
-    <property name="ceylon.js.dist" value="${build.dist}/${ceylon.js.dir}"/>
+    <property name="ceylon.js.dist" value="${build.dist.repo}/${ceylon.js.dir}"/>
     <property name="ceylon.js.jar" value="com.redhat.ceylon.compiler.js-${module.com.redhat.ceylon.compiler.js.version}.jar" />
     <property name="ceylon.js.lib" location="${ceylon.js.dist}/${ceylon.js.jar}" />
 
@@ -189,6 +190,9 @@
 
     <target name="dist" depends="build"
             description="Create Ceylon JS compiler distribution">
+        <copy overwrite="true"
+              file="${json.lib}"
+              tofile="${build.dist.repo}/${json.repo}"/>
     </target>
 
     <target name="publish"
@@ -198,7 +202,7 @@
 
     <target name="publish-internal" depends="init.repo">
         <copy todir="${ceylon.repo.dir}" overwrite="true">
-            <fileset dir="${build.dist}"/>
+            <fileset dir="${build.dist.repo}"/>
             <fileset dir="${runtime}"/>
         </copy>
     </target>
