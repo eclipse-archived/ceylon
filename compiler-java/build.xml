@@ -143,66 +143,6 @@
         </copy>
     </target>
 
-    <target name="publish.maven" depends="publish" description="install Ceylon compiler module to local maven repo" unless="no-maven" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
-        <path id="maven-ant-tasks.classpath" path="lib/maven-ant-tasks-2.1.3.jar" />
-        <!-- need to install compiler and all its dependencies in a mvn repo
-         before we can use mvn to build the plugin -->
-        <!-- Also to work around MANTTASKS-170 we have to write out the poms
-         to disk, rather than using in-memory -->
-        <typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant" classpathref="maven-ant-tasks.classpath" />
-
-        <mkdir dir="${build.poms}" />
-
-        <artifact:pom id="antlr.pom.tmp" groupId="org.ceylon-lang" artifactId="antlr-runtime" name="antlr-runtime" version="${antlr.version}">
-        </artifact:pom>
-        <artifact:writepom pomrefid="antlr.pom.tmp" file="${build.poms}/antlr.xml" />
-        <artifact:pom id="antlr.pom" file="${build.poms}/antlr.xml" />
-        <artifact:install pomrefid="antlr.pom" file="${antlr.lib}" />
-
-        <artifact:pom id="common.pom.tmp" groupId="org.ceylon-lang" artifactId="ceylon-common" name="ceylon-common" version="${module.com.redhat.ceylon.common.version}">
-        </artifact:pom>
-        <artifact:writepom pomrefid="common.pom.tmp" file="${build.poms}/common.xml" />
-        <artifact:pom id="common.pom" file="${build.poms}/common.xml" />
-        <artifact:install pomrefid="common.pom" file="${ceylon.common.lib}" />
-
-        <artifact:pom id="typechecker.pom.tmp" groupId="org.ceylon-lang" artifactId="ceylon-spec" name="ceylon-spec" version="${module.com.redhat.ceylon.typechecker.version}">
-            <dependency groupId="org.ceylon-lang" artifactId="antlr-runtime" version="${antlr.version}" />
-        </artifact:pom>
-        <artifact:writepom pomrefid="typechecker.pom.tmp" file="${build.poms}/typechecker.xml" />
-        <artifact:pom id="typechecker.pom" file="${build.poms}/typechecker.xml" />
-        <artifact:install pomrefid="typechecker.pom" file="${ceylon.typechecker.lib}" />
-
-        <artifact:pom id="module-resolver.pom.tmp" groupId="org.ceylon-lang" artifactId="ceylon-module-resolver" name="ceylon-module-resolver" version="${module.com.redhat.ceylon.module-resolver.version}">
-        </artifact:pom>
-        <artifact:writepom pomrefid="module-resolver.pom.tmp" file="${build.poms}/module-resolver.xml" />
-        <artifact:pom id="module-resolver.pom" file="${build.poms}/module-resolver.xml" />
-        <artifact:install pomrefid="module-resolver.pom" file="${ceylon.module-resolver.lib}" />
-
-        <artifact:pom id="language.pom.tmp" groupId="org.ceylon-lang" artifactId="ceylon.language" name="ceylon.language" version="${module.ceylon.language.version}">
-        </artifact:pom>
-        <artifact:writepom pomrefid="language.pom.tmp" file="${build.poms}/language.xml" />
-        <artifact:pom id="language.pom" file="${build.poms}/language.xml" />
-        <artifact:install pomrefid="language.pom" file="${ceylon.language.lib}" />
-
-        <artifact:pom id="markdown.pom.tmp" groupId="org.ceylon-lang" artifactId="markdown" name="markdown" version="${markdown.version}">
-        </artifact:pom>
-        <artifact:writepom pomrefid="markdown.pom.tmp" file="${build.poms}/markdown.xml" />
-        <artifact:pom id="markdown.pom" file="${build.poms}/markdown.xml" />
-        <artifact:install pomrefid="markdown.pom" file="${markdown.lib}" />
-
-        <artifact:pom id="compiler.pom.tmp" groupId="org.ceylon-lang" artifactId="ceylon-compiler" name="ceylon-compiler" version="${module.com.redhat.ceylon.compiler.version}">
-            <dependency groupId="org.ceylon-lang" artifactId="ceylon-common" version="${module.com.redhat.ceylon.common.version}" />
-            <dependency groupId="org.ceylon-lang" artifactId="ceylon-spec" version="${module.com.redhat.ceylon.typechecker.version}" />
-            <dependency groupId="org.ceylon-lang" artifactId="ceylon-module-resolver" version="${module.com.redhat.ceylon.module-resolver.version}" />
-            <dependency groupId="org.ceylon-lang" artifactId="ceylon.language" version="${module.ceylon.language.version}" />
-            <dependency groupId="org.ceylon-lang" artifactId="markdown" version="${markdown.version}" />
-        </artifact:pom>
-        <artifact:writepom pomrefid="compiler.pom.tmp" file="${build.poms}/compiler.xml" />
-        <artifact:pom id="compiler.pom" file="${build.poms}/compiler.xml" />
-        <artifact:install pomrefid="compiler.pom" file="${build.dist}/${ceylon.compiler.jar}" />
-
-    </target>
-
     <!-- Rule to compile and test -->
     <target name="all" depends="test" />
 
