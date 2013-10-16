@@ -484,7 +484,11 @@ public abstract class CompilerTest {
                 }
                 java.lang.Class<?> klass = java.lang.Class.forName(mainClass, true, loader);
                 if (Util.isInitialLowerCase(mainMethod)) {
-                    // A main method
+                    // A method, we need to quote the name though
+                    if ("main".equals(mainMethod)
+                            || "finalize".equals(mainMethod)) {
+                        mainMethod = "$" + mainMethod;
+                    }
                     Method m = klass.getDeclaredMethod(mainMethod);
                     m.setAccessible(true);
                     result = m.invoke(null);
