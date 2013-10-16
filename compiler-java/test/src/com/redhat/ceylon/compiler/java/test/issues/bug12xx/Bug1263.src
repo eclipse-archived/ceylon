@@ -9,7 +9,7 @@ final class bug1263_ {
         
         final class Node$impl {
             
-            private final Node $init$foo() {
+            private final Node $default$foo() {
                 return null;
             }
         }
@@ -21,7 +21,7 @@ final class bug1263_ {
                     let
                     {
                         Node$impl $ceylontmp$impl$$0 = new Node$impl();
-                        Node $ceylontmp$foo$$1 = $ceylontmp$impl$$0.$init$foo();
+                        Node $ceylontmp$foo$$1 = $ceylontmp$impl$$0.$default$foo();
                         this($ceylontmp$foo$$1);
                     }
                     returning null;

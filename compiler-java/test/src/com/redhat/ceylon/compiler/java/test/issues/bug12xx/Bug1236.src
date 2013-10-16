@@ -6,7 +6,7 @@ public class Bug1236<P> implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .java.lang.String $ceylontmp$a$$0 = .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1236.<P>$init$a($reifiedP, parent);
+                .java.lang.String $ceylontmp$a$$0 = .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1236.<P>$default$a($reifiedP, parent);
                 this($reifiedP, parent, $ceylontmp$a$$0);
             }
             returning null;
@@ -24,7 +24,7 @@ public class Bug1236<P> implements .com.redhat.ceylon.compiler.java.runtime.mode
         return parent.$call(p).toString();
     }
     
-    public static <P>.java.lang.String $init$a(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedP, final .ceylon.language.Callable<? extends .ceylon.language.String> parent) {
+    public static <P>.java.lang.String $default$a(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedP, final .ceylon.language.Callable<? extends .ceylon.language.String> parent) {
         return "";
     }
     

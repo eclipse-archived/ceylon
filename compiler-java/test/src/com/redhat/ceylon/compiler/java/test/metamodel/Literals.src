@@ -563,7 +563,7 @@ class RelativeLiterals<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
         (
             let
             {
-                .java.lang.String $ceylontmp$str$$0 = .com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.<T>$init$str($reifiedT);
+                .java.lang.String $ceylontmp$str$$0 = .com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.<T>$default$str($reifiedT);
                 this($reifiedT, $ceylontmp$str$$0);
             }
             returning null;
@@ -592,7 +592,7 @@ class RelativeLiterals<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static <T>.java.lang.String $init$str(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    static <T>.java.lang.String $default$str(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         return "a";
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

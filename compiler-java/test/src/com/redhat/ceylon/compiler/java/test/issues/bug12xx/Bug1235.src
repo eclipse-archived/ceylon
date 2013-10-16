@@ -20,7 +20,7 @@ public class Bug1235A implements .com.redhat.ceylon.compiler.java.runtime.model.
         (
             let
             {
-                .ceylon.language.String $ceylontmp$s$$0 = .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235A.$init$s();
+                .ceylon.language.String $ceylontmp$s$$0 = .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235A.$default$s();
                 this($ceylontmp$s$$0);
             }
             returning null;
@@ -38,7 +38,7 @@ public class Bug1235A implements .com.redhat.ceylon.compiler.java.runtime.model.
         return s;
     }
     
-    public static .ceylon.language.String $init$s() {
+    public static .ceylon.language.String $default$s() {
         return .ceylon.language.String.instance("");
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235I$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1235I$this;
@@ -65,7 +65,7 @@ public class Bug1235B implements .com.redhat.ceylon.compiler.java.runtime.model.
         (
             let
             {
-                .ceylon.language.String $ceylontmp$s$$1 = .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235B.$init$s();
+                .ceylon.language.String $ceylontmp$s$$1 = .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235B.$default$s();
                 this($ceylontmp$s$$1);
             }
             returning null;
@@ -77,7 +77,7 @@ public class Bug1235B implements .com.redhat.ceylon.compiler.java.runtime.model.
         this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1235I$this = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235I$impl(this);
     }
     
-    public static .ceylon.language.String $init$s() {
+    public static .ceylon.language.String $default$s() {
         return .ceylon.language.String.instance("");
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235I$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1235I$this;

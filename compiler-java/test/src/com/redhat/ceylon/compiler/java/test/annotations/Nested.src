@@ -27,7 +27,7 @@ final class NestedLeaf implements .com.redhat.ceylon.compiler.java.runtime.model
         (
             let
             {
-                long $ceylontmp$i1$$0 = .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf.$init$i1();
+                long $ceylontmp$i1$$0 = .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf.$default$i1();
                 this($ceylontmp$i1$$0);
             }
             returning null;
@@ -59,7 +59,7 @@ final class NestedLeaf implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static long $init$i1() {
+    static long $default$i1() {
         return 1L;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

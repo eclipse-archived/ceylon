@@ -73,7 +73,7 @@ final class AnnotationClassFloatDefaulted implements .com.redhat.ceylon.compiler
         (
             let
             {
-                double $ceylontmp$f$$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted.$init$f();
+                double $ceylontmp$f$$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted.$default$f();
                 this($ceylontmp$f$$0);
             }
             returning null;
@@ -90,7 +90,7 @@ final class AnnotationClassFloatDefaulted implements .com.redhat.ceylon.compiler
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted.$TypeDescriptor, this);
     }
     
-    static double $init$f() {
+    static double $default$f() {
         return 3.141;
     }
     protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this;

@@ -6,7 +6,7 @@ class C1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         (
             let
             {
-                long $ceylontmp$i$$0 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C1.$init$i();
+                long $ceylontmp$i$$0 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C1.$default$i();
                 this($ceylontmp$i$$0);
             }
             returning null;
@@ -16,7 +16,7 @@ class C1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     C1(final long i) {
     }
     
-    static long $init$i() {
+    static long $default$i() {
         return 1L;
     }
     
@@ -37,8 +37,8 @@ class C3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         (
             let
             {
-                long $ceylontmp$i$$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C3.$init$i();
-                long $ceylontmp$n$$2 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C3.$init$n($ceylontmp$i$$1);
+                long $ceylontmp$i$$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C3.$default$i();
+                long $ceylontmp$n$$2 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C3.$default$n($ceylontmp$i$$1);
                 this($ceylontmp$i$$1, $ceylontmp$n$$2);
             }
             returning null;
@@ -49,7 +49,7 @@ class C3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         (
             let
             {
-                long $ceylontmp$n$$3 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C3.$init$n(i);
+                long $ceylontmp$n$$3 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C3.$default$n(i);
                 this(i, $ceylontmp$n$$3);
             }
             returning null;
@@ -59,11 +59,11 @@ class C3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     C3(final long i, final long n) {
     }
     
-    static long $init$i() {
+    static long $default$i() {
         return 1L;
     }
     
-    static long $init$n(final long i) {
+    static long $default$n(final long i) {
         return 2L * i;
     }
     
@@ -84,7 +84,7 @@ class C4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         (
             let
             {
-                long $ceylontmp$n$$4 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C4.$init$n(i);
+                long $ceylontmp$n$$4 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C4.$default$n(i);
                 this(i, $ceylontmp$n$$4);
             }
             returning null;
@@ -94,7 +94,7 @@ class C4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     C4(final long i, final long n) {
     }
     
-    static long $init$n(final long i) {
+    static long $default$n(final long i) {
         return 2L * i;
     }
     
@@ -110,7 +110,7 @@ class C5<U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
         (
             let
             {
-                U $ceylontmp$u$$5 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C5.<U>$init$u($reifiedU, i);
+                U $ceylontmp$u$$5 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C5.<U>$default$u($reifiedU, i);
                 this($reifiedU, i, $ceylontmp$u$$5);
             }
             returning null;
@@ -122,7 +122,7 @@ class C5<U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU;
     
-    static <U>U $init$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i) {
+    static <U>U $default$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i) {
         return null;
     }
     
@@ -162,7 +162,7 @@ final class named_ {
         (
             let
             {
-                long arg$6$0 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C1.$init$i();
+                long arg$6$0 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C1.$default$i();
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.nesting.C1(arg$6$0);
         );
@@ -176,8 +176,8 @@ final class named_ {
         (
             let
             {
-                long arg$8$0 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C3.$init$i();
-                long arg$8$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C3.$init$n(arg$8$0);
+                long arg$8$0 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C3.$default$i();
+                long arg$8$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C3.$default$n(arg$8$0);
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.nesting.C3(arg$8$0, arg$8$1);
         );
@@ -185,7 +185,7 @@ final class named_ {
             let
             {
                 long arg$9$0 = 10L;
-                long arg$9$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C3.$init$n(arg$9$0);
+                long arg$9$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C3.$default$n(arg$9$0);
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.nesting.C3(arg$9$0, arg$9$1);
         );
@@ -209,7 +209,7 @@ final class named_ {
             let
             {
                 long arg$12$1 = 10L;
-                long arg$12$0 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C3.$init$i();
+                long arg$12$0 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C3.$default$i();
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.nesting.C3(arg$12$0, arg$12$1);
         );
@@ -234,7 +234,7 @@ final class named_ {
             {
                 long arg$15$0 = 10L;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$15$reified$0 = .ceylon.language.String.$TypeDescriptor;
-                .ceylon.language.String arg$15$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C5.$init$u(arg$15$reified$0, arg$15$0);
+                .ceylon.language.String arg$15$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.C5.$default$u(arg$15$reified$0, arg$15$0);
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.nesting.C5<.ceylon.language.String>(arg$15$reified$0, arg$15$0, arg$15$1);
         );

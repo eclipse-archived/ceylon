@@ -182,7 +182,7 @@ final class AnnotationClassAnnotationClassDefaulted implements .com.redhat.ceylo
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam $ceylontmp$a$$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted.$init$a();
+                .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam $ceylontmp$a$$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted.$default$a();
                 this($ceylontmp$a$$0);
             }
             returning null;
@@ -197,7 +197,7 @@ final class AnnotationClassAnnotationClassDefaulted implements .com.redhat.ceylo
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted.$TypeDescriptor, this);
     }
     
-    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam $init$a() {
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam $default$a() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam("defaulted");
     }
     protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted> $ceylon$language$Annotation$this;

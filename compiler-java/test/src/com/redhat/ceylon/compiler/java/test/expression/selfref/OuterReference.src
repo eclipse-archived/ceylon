@@ -34,7 +34,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
         super();
     }
     
-    private final boolean $InnerClass$init$b() {
+    private final boolean $default$InnerClass$b() {
         return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
     }
     
@@ -44,7 +44,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
             (
                 let
                 {
-                    boolean $ceylontmp$b$$0 = $InnerClass$init$b();
+                    boolean $ceylontmp$b$$0 = $default$InnerClass$b();
                     this($ceylontmp$b$$0);
                 }
                 returning null;
@@ -118,7 +118,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
         
         final class LocalClass$impl {
             
-            private final boolean $init$b() {
+            private final boolean $default$b() {
                 return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
             }
         }
@@ -130,7 +130,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
                     let
                     {
                         LocalClass$impl $ceylontmp$impl$$3 = new LocalClass$impl();
-                        boolean $ceylontmp$b$$4 = $ceylontmp$impl$$3.$init$b();
+                        boolean $ceylontmp$b$$4 = $ceylontmp$impl$$3.$default$b();
                         this($ceylontmp$b$$4);
                     }
                     returning null;

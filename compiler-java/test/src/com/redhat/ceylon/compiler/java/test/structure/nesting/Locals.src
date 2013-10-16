@@ -16,7 +16,7 @@ interface Local$local$0$LI {
     
     public .java.lang.Object LI$impl();
     
-    public abstract long $LIC$init$j();
+    public abstract long $default$LIC$j();
 }
 interface Local$C$local2$1$CL$LCI {
     
@@ -62,7 +62,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
         
         final class LC$impl {
             
-            private final long $init$j() {
+            private final long $default$j() {
                 return 0L;
             }
         }
@@ -74,7 +74,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                     let
                     {
                         LC$impl $ceylontmp$impl$$0 = new LC$impl();
-                        long $ceylontmp$j$$1 = $ceylontmp$impl$$0.$init$j();
+                        long $ceylontmp$j$$1 = $ceylontmp$impl$$0.$default$j();
                         this($ceylontmp$j$$1);
                     }
                     returning null;
@@ -102,7 +102,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                 }
             }
             
-            private final long $LCC$init$k() {
+            private final long $default$LCC$k() {
                 return 0L;
             }
             
@@ -112,7 +112,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                     (
                         let
                         {
-                            long $ceylontmp$k$$2 = $LCC$init$k();
+                            long $ceylontmp$k$$2 = $default$LCC$k();
                             this($ceylontmp$k$$2);
                         }
                         returning null;
@@ -171,7 +171,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                 }
             }
             
-            private final long $LIC$init$j() {
+            private final long $default$LIC$j() {
                 return 0L;
             }
             
@@ -181,7 +181,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                     (
                         let
                         {
-                            long $ceylontmp$j$$3 = $LIC$init$j();
+                            long $ceylontmp$j$$3 = $default$LIC$j();
                             this($ceylontmp$j$$3);
                         }
                         returning null;
@@ -227,7 +227,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
         );
     }
     
-    private final long $C$init$i() {
+    private final long $default$C$i() {
         return 0L;
     }
     
@@ -237,7 +237,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
             (
                 let
                 {
-                    long $ceylontmp$i$$5 = $C$init$i();
+                    long $ceylontmp$i$$5 = $default$C$i();
                     this($ceylontmp$i$$5);
                 }
                 returning null;
@@ -272,7 +272,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
             
             final class CL$impl {
                 
-                private final long $init$k() {
+                private final long $default$k() {
                     return 0L;
                 }
             }
@@ -284,7 +284,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                         let
                         {
                             CL$impl $ceylontmp$impl$$6 = new CL$impl();
-                            long $ceylontmp$k$$7 = $ceylontmp$impl$$6.$init$k();
+                            long $ceylontmp$k$$7 = $ceylontmp$impl$$6.$default$k();
                             this($ceylontmp$k$$7);
                         }
                         returning null;
@@ -312,7 +312,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                     }
                 }
                 
-                private final long $CLC$init$l() {
+                private final long $default$CLC$l() {
                     return 0L;
                 }
                 
@@ -322,7 +322,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                         (
                             let
                             {
-                                long $ceylontmp$l$$8 = $CLC$init$l();
+                                long $ceylontmp$l$$8 = $default$CLC$l();
                                 this($ceylontmp$l$$8);
                             }
                             returning null;
@@ -405,7 +405,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
             
             final class IL$impl {
                 
-                private final long $init$j() {
+                private final long $default$j() {
                     return 0L;
                 }
             }
@@ -417,7 +417,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                         let
                         {
                             IL$impl $ceylontmp$impl$$10 = new IL$impl();
-                            long $ceylontmp$j$$11 = $ceylontmp$impl$$10.$init$j();
+                            long $ceylontmp$j$$11 = $ceylontmp$impl$$10.$default$j();
                             this($ceylontmp$j$$11);
                         }
                         returning null;
@@ -445,7 +445,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                     }
                 }
                 
-                private final long $ILC$init$k() {
+                private final long $default$ILC$k() {
                     return 0L;
                 }
                 
@@ -455,7 +455,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                         (
                             let
                             {
-                                long $ceylontmp$k$$12 = $ILC$init$k();
+                                long $ceylontmp$k$$12 = $default$ILC$k();
                                 this($ceylontmp$k$$12);
                             }
                             returning null;

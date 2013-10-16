@@ -259,7 +259,7 @@ final class EnumeratedReferenceDefaulted implements .com.redhat.ceylon.compiler.
         (
             let
             {
-                .ceylon.language.Comparison $ceylontmp$comparison$$2 = .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted.$init$comparison();
+                .ceylon.language.Comparison $ceylontmp$comparison$$2 = .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted.$default$comparison();
                 this($ceylontmp$comparison$$2);
             }
             returning null;
@@ -291,7 +291,7 @@ final class EnumeratedReferenceDefaulted implements .com.redhat.ceylon.compiler.
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .ceylon.language.Comparison $init$comparison() {
+    static .ceylon.language.Comparison $default$comparison() {
         return .ceylon.language.larger_.get_();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

@@ -20,7 +20,7 @@ public class Bug693_Class implements .com.redhat.ceylon.compiler.java.runtime.mo
         (
             let
             {
-                boolean $ceylontmp$b$$0 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Class.$init$b(x);
+                boolean $ceylontmp$b$$0 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Class.$default$b(x);
                 this(x, $ceylontmp$b$$0);
             }
             returning null;
@@ -32,7 +32,7 @@ public class Bug693_Class implements .com.redhat.ceylon.compiler.java.runtime.mo
         this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug693_Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface$impl(this);
     }
     
-    public static boolean $init$b(final .ceylon.language.Integer x) {
+    public static boolean $default$b(final .ceylon.language.Integer x) {
         return false;
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug693_Interface$this;

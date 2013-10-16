@@ -262,7 +262,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new UnaryDefaulted(s);
     }
     
-    public final .java.lang.String $UnaryDefaulted$init$s() {
+    public final .java.lang.String $default$UnaryDefaulted$s() {
         return "s";
     }
     
@@ -270,7 +270,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s$$5 = $UnaryDefaulted$init$s();
+                .java.lang.String $ceylontmp$s$$5 = $default$UnaryDefaulted$s();
             }
             returning new UnaryDefaulted($ceylontmp$s$$5);
         );
@@ -302,7 +302,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new BinaryDefaulted(s1, s2);
     }
     
-    public final .java.lang.String $BinaryDefaulted$init$s1() {
+    public final .java.lang.String $default$BinaryDefaulted$s1() {
         return "s1";
     }
     
@@ -310,14 +310,14 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s1$$6 = $BinaryDefaulted$init$s1();
-                .java.lang.String $ceylontmp$s2$$7 = $BinaryDefaulted$init$s2($ceylontmp$s1$$6);
+                .java.lang.String $ceylontmp$s1$$6 = $default$BinaryDefaulted$s1();
+                .java.lang.String $ceylontmp$s2$$7 = $default$BinaryDefaulted$s2($ceylontmp$s1$$6);
             }
             returning new BinaryDefaulted($ceylontmp$s1$$6, $ceylontmp$s2$$7);
         );
     }
     
-    public final .java.lang.String $BinaryDefaulted$init$s2(final .java.lang.String s1) {
+    public final .java.lang.String $default$BinaryDefaulted$s2(final .java.lang.String s1) {
         return "s2";
     }
     
@@ -325,7 +325,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s2$$8 = $BinaryDefaulted$init$s2(s1);
+                .java.lang.String $ceylontmp$s2$$8 = $default$BinaryDefaulted$s2(s1);
             }
             returning new BinaryDefaulted(s1, $ceylontmp$s2$$8);
         );
@@ -363,7 +363,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new TernaryDefaulted(s1, s2, s3);
     }
     
-    public final .java.lang.String $TernaryDefaulted$init$s1() {
+    public final .java.lang.String $default$TernaryDefaulted$s1() {
         return "s1";
     }
     
@@ -371,15 +371,15 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s1$$9 = $TernaryDefaulted$init$s1();
-                .java.lang.String $ceylontmp$s2$$10 = $TernaryDefaulted$init$s2($ceylontmp$s1$$9);
-                .java.lang.String $ceylontmp$s3$$11 = $TernaryDefaulted$init$s3($ceylontmp$s1$$9, $ceylontmp$s2$$10);
+                .java.lang.String $ceylontmp$s1$$9 = $default$TernaryDefaulted$s1();
+                .java.lang.String $ceylontmp$s2$$10 = $default$TernaryDefaulted$s2($ceylontmp$s1$$9);
+                .java.lang.String $ceylontmp$s3$$11 = $default$TernaryDefaulted$s3($ceylontmp$s1$$9, $ceylontmp$s2$$10);
             }
             returning new TernaryDefaulted($ceylontmp$s1$$9, $ceylontmp$s2$$10, $ceylontmp$s3$$11);
         );
     }
     
-    public final .java.lang.String $TernaryDefaulted$init$s2(final .java.lang.String s1) {
+    public final .java.lang.String $default$TernaryDefaulted$s2(final .java.lang.String s1) {
         return "s2";
     }
     
@@ -387,14 +387,14 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s2$$12 = $TernaryDefaulted$init$s2(s1);
-                .java.lang.String $ceylontmp$s3$$13 = $TernaryDefaulted$init$s3(s1, $ceylontmp$s2$$12);
+                .java.lang.String $ceylontmp$s2$$12 = $default$TernaryDefaulted$s2(s1);
+                .java.lang.String $ceylontmp$s3$$13 = $default$TernaryDefaulted$s3(s1, $ceylontmp$s2$$12);
             }
             returning new TernaryDefaulted(s1, $ceylontmp$s2$$12, $ceylontmp$s3$$13);
         );
     }
     
-    public final .java.lang.String $TernaryDefaulted$init$s3(final .java.lang.String s1, final .java.lang.String s2) {
+    public final .java.lang.String $default$TernaryDefaulted$s3(final .java.lang.String s1, final .java.lang.String s2) {
         return "s3";
     }
     
@@ -402,7 +402,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s3$$14 = $TernaryDefaulted$init$s3(s1, s2);
+                .java.lang.String $ceylontmp$s3$$14 = $default$TernaryDefaulted$s3(s1, s2);
             }
             returning new TernaryDefaulted(s1, s2, $ceylontmp$s3$$14);
         );
@@ -446,7 +446,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new NaryDefaulted(s1, s2, s3, s4);
     }
     
-    public final .java.lang.String $NaryDefaulted$init$s1() {
+    public final .java.lang.String $default$NaryDefaulted$s1() {
         return "s1";
     }
     
@@ -454,16 +454,16 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s1$$15 = $NaryDefaulted$init$s1();
-                .java.lang.String $ceylontmp$s2$$16 = $NaryDefaulted$init$s2($ceylontmp$s1$$15);
-                .java.lang.String $ceylontmp$s3$$17 = $NaryDefaulted$init$s3($ceylontmp$s1$$15, $ceylontmp$s2$$16);
-                .java.lang.String $ceylontmp$s4$$18 = $NaryDefaulted$init$s4($ceylontmp$s1$$15, $ceylontmp$s2$$16, $ceylontmp$s3$$17);
+                .java.lang.String $ceylontmp$s1$$15 = $default$NaryDefaulted$s1();
+                .java.lang.String $ceylontmp$s2$$16 = $default$NaryDefaulted$s2($ceylontmp$s1$$15);
+                .java.lang.String $ceylontmp$s3$$17 = $default$NaryDefaulted$s3($ceylontmp$s1$$15, $ceylontmp$s2$$16);
+                .java.lang.String $ceylontmp$s4$$18 = $default$NaryDefaulted$s4($ceylontmp$s1$$15, $ceylontmp$s2$$16, $ceylontmp$s3$$17);
             }
             returning new NaryDefaulted($ceylontmp$s1$$15, $ceylontmp$s2$$16, $ceylontmp$s3$$17, $ceylontmp$s4$$18);
         );
     }
     
-    public final .java.lang.String $NaryDefaulted$init$s2(final .java.lang.String s1) {
+    public final .java.lang.String $default$NaryDefaulted$s2(final .java.lang.String s1) {
         return "s2";
     }
     
@@ -471,15 +471,15 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s2$$19 = $NaryDefaulted$init$s2(s1);
-                .java.lang.String $ceylontmp$s3$$20 = $NaryDefaulted$init$s3(s1, $ceylontmp$s2$$19);
-                .java.lang.String $ceylontmp$s4$$21 = $NaryDefaulted$init$s4(s1, $ceylontmp$s2$$19, $ceylontmp$s3$$20);
+                .java.lang.String $ceylontmp$s2$$19 = $default$NaryDefaulted$s2(s1);
+                .java.lang.String $ceylontmp$s3$$20 = $default$NaryDefaulted$s3(s1, $ceylontmp$s2$$19);
+                .java.lang.String $ceylontmp$s4$$21 = $default$NaryDefaulted$s4(s1, $ceylontmp$s2$$19, $ceylontmp$s3$$20);
             }
             returning new NaryDefaulted(s1, $ceylontmp$s2$$19, $ceylontmp$s3$$20, $ceylontmp$s4$$21);
         );
     }
     
-    public final .java.lang.String $NaryDefaulted$init$s3(final .java.lang.String s1, final .java.lang.String s2) {
+    public final .java.lang.String $default$NaryDefaulted$s3(final .java.lang.String s1, final .java.lang.String s2) {
         return "s3";
     }
     
@@ -487,14 +487,14 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s3$$22 = $NaryDefaulted$init$s3(s1, s2);
-                .java.lang.String $ceylontmp$s4$$23 = $NaryDefaulted$init$s4(s1, s2, $ceylontmp$s3$$22);
+                .java.lang.String $ceylontmp$s3$$22 = $default$NaryDefaulted$s3(s1, s2);
+                .java.lang.String $ceylontmp$s4$$23 = $default$NaryDefaulted$s4(s1, s2, $ceylontmp$s3$$22);
             }
             returning new NaryDefaulted(s1, s2, $ceylontmp$s3$$22, $ceylontmp$s4$$23);
         );
     }
     
-    public final .java.lang.String $NaryDefaulted$init$s4(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
+    public final .java.lang.String $default$NaryDefaulted$s4(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
         return "s4";
     }
     
@@ -502,7 +502,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s4$$24 = $NaryDefaulted$init$s4(s1, s2, s3);
+                .java.lang.String $ceylontmp$s4$$24 = $default$NaryDefaulted$s4(s1, s2, s3);
             }
             returning new NaryDefaulted(s1, s2, s3, $ceylontmp$s4$$24);
         );
@@ -558,7 +558,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.UnaryDefaulted $call() {
-                        final .java.lang.String s = $instance.$UnaryDefaulted$init$s();
+                        final .java.lang.String s = $instance.$default$UnaryDefaulted$s();
                         return $call$typed(s);
                     }
                     
@@ -587,15 +587,15 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.BinaryDefaulted $call() {
-                        final .java.lang.String s1 = $instance.$BinaryDefaulted$init$s1();
-                        final .java.lang.String s2 = $instance.$BinaryDefaulted$init$s2(s1);
+                        final .java.lang.String s1 = $instance.$default$BinaryDefaulted$s1();
+                        final .java.lang.String s2 = $instance.$default$BinaryDefaulted$s2(s1);
                         return $call$typed(s1, s2);
                     }
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.BinaryDefaulted $call(final .java.lang.Object $param$0) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = $instance.$BinaryDefaulted$init$s2(s1);
+                        final .java.lang.String s2 = $instance.$default$BinaryDefaulted$s2(s1);
                         return $call$typed(s1, s2);
                     }
                     
@@ -627,17 +627,17 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.TernaryDefaulted $call() {
-                        final .java.lang.String s1 = $instance.$TernaryDefaulted$init$s1();
-                        final .java.lang.String s2 = $instance.$TernaryDefaulted$init$s2(s1);
-                        final .java.lang.String s3 = $instance.$TernaryDefaulted$init$s3(s1, s2);
+                        final .java.lang.String s1 = $instance.$default$TernaryDefaulted$s1();
+                        final .java.lang.String s2 = $instance.$default$TernaryDefaulted$s2(s1);
+                        final .java.lang.String s3 = $instance.$default$TernaryDefaulted$s3(s1, s2);
                         return $call$typed(s1, s2, s3);
                     }
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.TernaryDefaulted $call(final .java.lang.Object $param$0) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = $instance.$TernaryDefaulted$init$s2(s1);
-                        final .java.lang.String s3 = $instance.$TernaryDefaulted$init$s3(s1, s2);
+                        final .java.lang.String s2 = $instance.$default$TernaryDefaulted$s2(s1);
+                        final .java.lang.String s3 = $instance.$default$TernaryDefaulted$s3(s1, s2);
                         return $call$typed(s1, s2, s3);
                     }
                     
@@ -645,7 +645,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.TernaryDefaulted $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        final .java.lang.String s3 = $instance.$TernaryDefaulted$init$s3(s1, s2);
+                        final .java.lang.String s3 = $instance.$default$TernaryDefaulted$s3(s1, s2);
                         return $call$typed(s1, s2, s3);
                     }
                     
@@ -680,19 +680,19 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NaryDefaulted $call() {
-                        final .java.lang.String s1 = $instance.$NaryDefaulted$init$s1();
-                        final .java.lang.String s2 = $instance.$NaryDefaulted$init$s2(s1);
-                        final .java.lang.String s3 = $instance.$NaryDefaulted$init$s3(s1, s2);
-                        final .java.lang.String s4 = $instance.$NaryDefaulted$init$s4(s1, s2, s3);
+                        final .java.lang.String s1 = $instance.$default$NaryDefaulted$s1();
+                        final .java.lang.String s2 = $instance.$default$NaryDefaulted$s2(s1);
+                        final .java.lang.String s3 = $instance.$default$NaryDefaulted$s3(s1, s2);
+                        final .java.lang.String s4 = $instance.$default$NaryDefaulted$s4(s1, s2, s3);
                         return $call$typed(s1, s2, s3, s4);
                     }
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NaryDefaulted $call(final .java.lang.Object $param$0) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
-                        final .java.lang.String s2 = $instance.$NaryDefaulted$init$s2(s1);
-                        final .java.lang.String s3 = $instance.$NaryDefaulted$init$s3(s1, s2);
-                        final .java.lang.String s4 = $instance.$NaryDefaulted$init$s4(s1, s2, s3);
+                        final .java.lang.String s2 = $instance.$default$NaryDefaulted$s2(s1);
+                        final .java.lang.String s3 = $instance.$default$NaryDefaulted$s3(s1, s2);
+                        final .java.lang.String s4 = $instance.$default$NaryDefaulted$s4(s1, s2, s3);
                         return $call$typed(s1, s2, s3, s4);
                     }
                     
@@ -700,8 +700,8 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NaryDefaulted $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
-                        final .java.lang.String s3 = $instance.$NaryDefaulted$init$s3(s1, s2);
-                        final .java.lang.String s4 = $instance.$NaryDefaulted$init$s4(s1, s2, s3);
+                        final .java.lang.String s3 = $instance.$default$NaryDefaulted$s3(s1, s2);
+                        final .java.lang.String s4 = $instance.$default$NaryDefaulted$s4(s1, s2, s3);
                         return $call$typed(s1, s2, s3, s4);
                     }
                     
@@ -710,16 +710,16 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                         final .java.lang.String s1 = ((.ceylon.language.String)$param$0).toString();
                         final .java.lang.String s2 = ((.ceylon.language.String)$param$1).toString();
                         final .java.lang.String s3 = ((.ceylon.language.String)$param$2).toString();
-                        final .java.lang.String s4 = $instance.$NaryDefaulted$init$s4(s1, s2, s3);
+                        final .java.lang.String s4 = $instance.$default$NaryDefaulted$s4(s1, s2, s3);
                         return $call$typed(s1, s2, s3, s4);
                     }
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NaryDefaulted $call(final .java.lang.Object... $param$0) {
-                        final .java.lang.String s1 = $param$0.length > 0 ? ((.ceylon.language.String)$param$0[0]).toString() : $instance.$NaryDefaulted$init$s1();
-                        final .java.lang.String s2 = $param$0.length > 1 ? ((.ceylon.language.String)$param$0[1]).toString() : $instance.$NaryDefaulted$init$s2(s1);
-                        final .java.lang.String s3 = $param$0.length > 2 ? ((.ceylon.language.String)$param$0[2]).toString() : $instance.$NaryDefaulted$init$s3(s1, s2);
-                        final .java.lang.String s4 = $param$0.length > 3 ? ((.ceylon.language.String)$param$0[3]).toString() : $instance.$NaryDefaulted$init$s4(s1, s2, s3);
+                        final .java.lang.String s1 = $param$0.length > 0 ? ((.ceylon.language.String)$param$0[0]).toString() : $instance.$default$NaryDefaulted$s1();
+                        final .java.lang.String s2 = $param$0.length > 1 ? ((.ceylon.language.String)$param$0[1]).toString() : $instance.$default$NaryDefaulted$s2(s1);
+                        final .java.lang.String s3 = $param$0.length > 2 ? ((.ceylon.language.String)$param$0[2]).toString() : $instance.$default$NaryDefaulted$s3(s1, s2);
+                        final .java.lang.String s4 = $param$0.length > 3 ? ((.ceylon.language.String)$param$0[3]).toString() : $instance.$default$NaryDefaulted$s4(s1, s2, s3);
                         return $call$typed(s1, s2, s3, s4);
                     }
                     

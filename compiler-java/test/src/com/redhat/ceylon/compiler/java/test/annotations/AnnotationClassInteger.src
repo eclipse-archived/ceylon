@@ -21,7 +21,7 @@ final class AnnotationClassInteger implements .com.redhat.ceylon.compiler.java.r
         (
             let
             {
-                long $ceylontmp$j$$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.$init$j(i);
+                long $ceylontmp$j$$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.$default$j(i);
                 this(i, $ceylontmp$j$$0);
             }
             returning null;
@@ -38,7 +38,7 @@ final class AnnotationClassInteger implements .com.redhat.ceylon.compiler.java.r
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger.$TypeDescriptor, this);
     }
     
-    static long $init$j(final long i) {
+    static long $default$j(final long i) {
         return 1L;
     }
     protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this;

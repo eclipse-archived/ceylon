@@ -10,8 +10,8 @@ public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                .ceylon.language.Integer $ceylontmp$p2$$0 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$init$p2(p1);
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$p3$$1 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$init$p3(p1, $ceylontmp$p2$$0);
+                .ceylon.language.Integer $ceylontmp$p2$$0 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$default$p2(p1);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$p3$$1 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$default$p3(p1, $ceylontmp$p2$$0);
                 this(p1, $ceylontmp$p2$$0, $ceylontmp$p3$$1);
             }
             returning null;
@@ -23,7 +23,7 @@ public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$p3$$2 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$init$p3(p1, p2);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$p3$$2 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$default$p3(p1, p2);
                 this(p1, p2, $ceylontmp$p3$$2);
             }
             returning null;
@@ -42,12 +42,12 @@ public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static .ceylon.language.Integer $init$p2(final long p1) {
+    public static .ceylon.language.Integer $default$p2(final long p1) {
         return .ceylon.language.Integer.instance(1L);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static .ceylon.language.Sequential<? extends .ceylon.language.Integer> $init$p3(final long p1, final .ceylon.language.Integer p2) {
+    public static .ceylon.language.Sequential<? extends .ceylon.language.Integer> $default$p3(final long p1, final .ceylon.language.Integer p2) {
         return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
     }
     

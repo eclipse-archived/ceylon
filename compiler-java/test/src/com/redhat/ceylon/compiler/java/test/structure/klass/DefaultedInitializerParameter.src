@@ -6,7 +6,7 @@ public class DefaultedInitializerParameter implements .com.redhat.ceylon.compile
         (
             let
             {
-                long $ceylontmp$n$$0 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter.$init$n();
+                long $ceylontmp$n$$0 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter.$default$n();
                 this($ceylontmp$n$$0);
             }
             returning null;
@@ -16,7 +16,7 @@ public class DefaultedInitializerParameter implements .com.redhat.ceylon.compile
     public DefaultedInitializerParameter(final long n) {
     }
     
-    public static long $init$n() {
+    public static long $default$n() {
         return 5L;
     }
     
@@ -37,7 +37,7 @@ class DefaultedInitializerParameter2 implements .com.redhat.ceylon.compiler.java
         (
             let
             {
-                .java.lang.String $ceylontmp$s$$1 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter2.$init$s(n);
+                .java.lang.String $ceylontmp$s$$1 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter2.$default$s(n);
                 this(n, $ceylontmp$s$$1);
             }
             returning null;
@@ -47,7 +47,7 @@ class DefaultedInitializerParameter2 implements .com.redhat.ceylon.compiler.java
     DefaultedInitializerParameter2(final long n, final .java.lang.String s) {
     }
     
-    static .java.lang.String $init$s(final long n) {
+    static .java.lang.String $default$s(final long n) {
         return "test";
     }
     
@@ -63,8 +63,8 @@ class DefaultedInitializerParameter3 implements .com.redhat.ceylon.compiler.java
         (
             let
             {
-                long $ceylontmp$n$$2 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter3.$init$n();
-                long $ceylontmp$m$$3 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter3.$init$m($ceylontmp$n$$2);
+                long $ceylontmp$n$$2 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter3.$default$n();
+                long $ceylontmp$m$$3 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter3.$default$m($ceylontmp$n$$2);
                 this($ceylontmp$n$$2, $ceylontmp$m$$3);
             }
             returning null;
@@ -75,7 +75,7 @@ class DefaultedInitializerParameter3 implements .com.redhat.ceylon.compiler.java
         (
             let
             {
-                long $ceylontmp$m$$4 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter3.$init$m(n);
+                long $ceylontmp$m$$4 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter3.$default$m(n);
                 this(n, $ceylontmp$m$$4);
             }
             returning null;
@@ -85,11 +85,11 @@ class DefaultedInitializerParameter3 implements .com.redhat.ceylon.compiler.java
     DefaultedInitializerParameter3(final long n, final long m) {
     }
     
-    static long $init$n() {
+    static long $default$n() {
         return 5L;
     }
     
-    static long $init$m(final long n) {
+    static long $default$m(final long n) {
         return n;
     }
     
@@ -110,8 +110,8 @@ class DefaultedInitializerParameter4 implements .com.redhat.ceylon.compiler.java
         (
             let
             {
-                long $ceylontmp$n$$5 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter4.$init$n();
-                long $ceylontmp$m$$6 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter4.$init$m($ceylontmp$n$$5);
+                long $ceylontmp$n$$5 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter4.$default$n();
+                long $ceylontmp$m$$6 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter4.$default$m($ceylontmp$n$$5);
                 this($ceylontmp$n$$5, $ceylontmp$m$$6);
             }
             returning null;
@@ -122,7 +122,7 @@ class DefaultedInitializerParameter4 implements .com.redhat.ceylon.compiler.java
         (
             let
             {
-                long $ceylontmp$m$$7 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter4.$init$m(n);
+                long $ceylontmp$m$$7 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter4.$default$m(n);
                 this(n, $ceylontmp$m$$7);
             }
             returning null;
@@ -132,11 +132,11 @@ class DefaultedInitializerParameter4 implements .com.redhat.ceylon.compiler.java
     DefaultedInitializerParameter4(final long n, final long m) {
     }
     
-    static long $init$n() {
+    static long $default$n() {
         return 5L;
     }
     
-    static long $init$m(final long n) {
+    static long $default$m(final long n) {
         return n + 1L;
     }
     
@@ -157,7 +157,7 @@ class DefaultedInitializerParameter5 implements .com.redhat.ceylon.compiler.java
         (
             let
             {
-                long $ceylontmp$n$$8 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter5.$init$n();
+                long $ceylontmp$n$$8 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter5.$default$n();
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$$9 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 this($ceylontmp$n$$8, $ceylontmp$seq$$9);
             }
@@ -179,7 +179,7 @@ class DefaultedInitializerParameter5 implements .com.redhat.ceylon.compiler.java
     DefaultedInitializerParameter5(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
     }
     
-    static long $init$n() {
+    static long $default$n() {
         return 5L;
     }
     

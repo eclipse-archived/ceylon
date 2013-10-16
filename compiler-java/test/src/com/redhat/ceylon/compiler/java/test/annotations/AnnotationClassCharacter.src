@@ -74,7 +74,7 @@ final class AnnotationClassCharacterDefaulted implements .com.redhat.ceylon.comp
         (
             let
             {
-                int $ceylontmp$c$$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted.$init$c();
+                int $ceylontmp$c$$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted.$default$c();
                 this($ceylontmp$c$$0);
             }
             returning null;
@@ -98,7 +98,7 @@ final class AnnotationClassCharacterDefaulted implements .com.redhat.ceylon.comp
         return c;
     }
     
-    static int $init$c() {
+    static int $default$c() {
         return 97;
     }
     protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$OptionalAnnotation$this;

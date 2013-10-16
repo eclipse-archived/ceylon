@@ -134,8 +134,8 @@ class ClassWithHiddenVariableParameter implements .com.redhat.ceylon.compiler.ja
 }
 class ClassWithVariableParameterCapturedInit implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    ClassWithVariableParameterCapturedInit(long i$) {
-        this.i = i$;
+    ClassWithVariableParameterCapturedInit(long i$param) {
+        this.i = i$param;
         fn$priv();
     }
     private long i;
@@ -176,8 +176,8 @@ class ClassWithVariableParameterCapturedInit implements .com.redhat.ceylon.compi
 }
 class ClassWithVariableParameterCaptured implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    ClassWithVariableParameterCaptured(long i$) {
-        this.i = i$;
+    ClassWithVariableParameterCaptured(long i$param) {
+        this.i = i$param;
         fn$priv();
     }
     private long i;
@@ -218,8 +218,8 @@ class ClassWithVariableParameterCaptured implements .com.redhat.ceylon.compiler.
 }
 class ClassWithHiddenVariableParameterCapturedInit implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    ClassWithHiddenVariableParameterCapturedInit(long i$) {
-        this.i = i$;
+    ClassWithHiddenVariableParameterCapturedInit(long i$param) {
+        this.i = i$param;
         fn$priv();
     }
     private long i;
@@ -260,8 +260,8 @@ class ClassWithHiddenVariableParameterCapturedInit implements .com.redhat.ceylon
 }
 class ClassWithHiddenVariableParameterCaptured implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    ClassWithHiddenVariableParameterCaptured(long i$) {
-        this.i = i$;
+    ClassWithHiddenVariableParameterCaptured(long i$param) {
+        this.i = i$param;
         fn$priv();
     }
     private long i;
@@ -302,16 +302,16 @@ class ClassWithHiddenVariableParameterCaptured implements .com.redhat.ceylon.com
 }
 class ClassWithVariableParameterCapturedInitSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterCapturedInit {
     
-    ClassWithVariableParameterCapturedInitSub(long i$) {
+    ClassWithVariableParameterCapturedInitSub(long i$param) {
         super((
             let
             {
-                long $ceylontmpop$16 = i$;
-                i$ = $ceylontmpop$16 + 1;
+                long $ceylontmpop$16 = i$param;
+                i$param = $ceylontmpop$16 + 1;
             }
             returning $ceylontmpop$16;
         ));
-        this.i = i$;
+        this.i = i$param;
         fn$priv();
     }
     private long i;

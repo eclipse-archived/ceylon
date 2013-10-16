@@ -20,11 +20,11 @@ interface InterfaceErasure<Element, Absent> {
     
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, Absent>.Class Class$new(final .java.lang.Object p, final .java.lang.Object p2);
     
-    public abstract .java.lang.Object $Class$init$p();
+    public abstract .java.lang.Object $default$Class$p();
     
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, Absent>.Class Class$new();
     
-    public abstract .java.lang.Object $Class$init$p2(final .java.lang.Object p);
+    public abstract .java.lang.Object $default$Class$p2(final .java.lang.Object p);
     
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, Absent>.Class Class$new(final .java.lang.Object p);
 }
@@ -93,7 +93,7 @@ final class InterfaceErasure$impl<Element, Absent> {
         return new Class(p, p2);
     }
     
-    public final .java.lang.Object $Class$init$p() {
+    public final .java.lang.Object $default$Class$p() {
         return .ceylon.language.nothing_.get_();
     }
     
@@ -101,14 +101,14 @@ final class InterfaceErasure$impl<Element, Absent> {
         return (
             let
             {
-                .java.lang.Object $ceylontmp$p$$3 = $Class$init$p();
-                .java.lang.Object $ceylontmp$p2$$4 = $Class$init$p2($ceylontmp$p$$3);
+                .java.lang.Object $ceylontmp$p$$3 = $default$Class$p();
+                .java.lang.Object $ceylontmp$p2$$4 = $default$Class$p2($ceylontmp$p$$3);
             }
             returning new Class($ceylontmp$p$$3, $ceylontmp$p2$$4);
         );
     }
     
-    public final .java.lang.Object $Class$init$p2(final .java.lang.Object p) {
+    public final .java.lang.Object $default$Class$p2(final .java.lang.Object p) {
         return .ceylon.language.nothing_.get_();
     }
     
@@ -116,7 +116,7 @@ final class InterfaceErasure$impl<Element, Absent> {
         return (
             let
             {
-                .java.lang.Object $ceylontmp$p2$$5 = $Class$init$p2(p);
+                .java.lang.Object $ceylontmp$p2$$5 = $default$Class$p2(p);
             }
             returning new Class(p, $ceylontmp$p2$$5);
         );
@@ -200,8 +200,8 @@ class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public final Element $Class$init$p() {
-        return (Element)$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this.$Class$init$p();
+    public final Element $default$Class$p() {
+        return (Element)$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this.$default$Class$p();
     }
     
     @.java.lang.Override
@@ -210,8 +210,8 @@ class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public final Element $Class$init$p2(final .java.lang.Object p) {
-        return (Element)$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this.$Class$init$p2(p);
+    public final Element $default$Class$p2(final .java.lang.Object p) {
+        return (Element)$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this.$default$Class$p2(p);
     }
     
     @.java.lang.Override

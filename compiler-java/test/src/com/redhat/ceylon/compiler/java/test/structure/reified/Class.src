@@ -77,8 +77,8 @@ public class Class<Key, Value> implements .com.redhat.ceylon.compiler.java.runti
         (
             let
             {
-                long $ceylontmp$a$$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.<Key, Value>$init$a($reifiedKey, $reifiedValue);
-                long $ceylontmp$b$$1 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.<Key, Value>$init$b($reifiedKey, $reifiedValue, $ceylontmp$a$$0);
+                long $ceylontmp$a$$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.<Key, Value>$default$a($reifiedKey, $reifiedValue);
+                long $ceylontmp$b$$1 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.<Key, Value>$default$b($reifiedKey, $reifiedValue, $ceylontmp$a$$0);
                 this($reifiedKey, $reifiedValue, $ceylontmp$a$$0, $ceylontmp$b$$1);
             }
             returning null;
@@ -90,7 +90,7 @@ public class Class<Key, Value> implements .com.redhat.ceylon.compiler.java.runti
         (
             let
             {
-                long $ceylontmp$b$$2 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.<Key, Value>$init$b($reifiedKey, $reifiedValue, a);
+                long $ceylontmp$b$$2 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.<Key, Value>$default$b($reifiedKey, $reifiedValue, a);
                 this($reifiedKey, $reifiedValue, a, $ceylontmp$b$$2);
             }
             returning null;
@@ -116,12 +116,12 @@ public class Class<Key, Value> implements .com.redhat.ceylon.compiler.java.runti
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static <Key, Value>long $init$a(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
+    public static <Key, Value>long $default$a(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
         return 2L;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static <Key, Value>long $init$b(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, final long a) {
+    public static <Key, Value>long $default$b(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, final long a) {
         return 3L;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -232,8 +232,8 @@ final class reifiedInstantiate_ {
             {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$3$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$3$reified$1 = .ceylon.language.String.$TypeDescriptor;
-                long arg$3$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$a(arg$3$reified$0, arg$3$reified$1);
-                long arg$3$1 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$b(arg$3$reified$0, arg$3$reified$1, arg$3$0);
+                long arg$3$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$default$a(arg$3$reified$0, arg$3$reified$1);
+                long arg$3$1 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$default$b(arg$3$reified$0, arg$3$reified$1, arg$3$0);
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(arg$3$reified$0, arg$3$reified$1, arg$3$0, arg$3$1);
         );
@@ -267,7 +267,7 @@ final class reifiedInstantiate_ {
                 long arg$4$1 = 5L;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$4$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$4$reified$1 = .ceylon.language.String.$TypeDescriptor;
-                long arg$4$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$a(arg$4$reified$0, arg$4$reified$1);
+                long arg$4$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$default$a(arg$4$reified$0, arg$4$reified$1);
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(arg$4$reified$0, arg$4$reified$1, arg$4$0, arg$4$1);
         );

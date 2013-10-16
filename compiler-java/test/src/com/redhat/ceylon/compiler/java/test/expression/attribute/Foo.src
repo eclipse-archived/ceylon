@@ -66,9 +66,9 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType 
 }
 class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bar(final .ceylon.language.String init, .ceylon.language.String variableInit$) {
+    Bar(final .ceylon.language.String init, .ceylon.language.String variableInit$param) {
         this.init = init;
-        this.variableInit = variableInit$;
+        this.variableInit = variableInit$param;
         this.variableAttr = getVariableInit$priv();
         this.attr = getVariableInit$priv();
     }

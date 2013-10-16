@@ -5,14 +5,14 @@ public final class multipleParameterListsWithVariationParameters_ {
     private multipleParameterListsWithVariationParameters_() {
     }
     
-    public static .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> multipleParameterListsWithVariationParameters(final long a$) {
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong a = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(a$);
+    public static .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> multipleParameterListsWithVariationParameters(final long a$param) {
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong a = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(a$param);
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Empty.$TypeDescriptor, "String()()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Callable<? extends .ceylon.language.String> $call(final .java.lang.Object $param$0) {
-                double b$ = ((.ceylon.language.Float)$param$0).doubleValue();
-                final .com.redhat.ceylon.compiler.java.language.VariableBoxDouble b = new .com.redhat.ceylon.compiler.java.language.VariableBoxDouble(b$);
+                double b$param = ((.ceylon.language.Float)$param$0).doubleValue();
+                final .com.redhat.ceylon.compiler.java.language.VariableBoxDouble b = new .com.redhat.ceylon.compiler.java.language.VariableBoxDouble(b$param);
                 return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
                     
                     @.java.lang.Override
@@ -47,20 +47,20 @@ public final class multipleParameterListsWithVariationParameters2_ {
     private multipleParameterListsWithVariationParameters2_() {
     }
     
-    public static .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> multipleParameterListsWithVariationParameters2(final long a$) {
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong a = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(a$);
+    public static .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> multipleParameterListsWithVariationParameters2(final long a$param) {
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong a = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(a$param);
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Empty.$TypeDescriptor, "String()()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Callable<? extends .ceylon.language.String> $call(final .java.lang.Object $param$0) {
-                double b$ = ((.ceylon.language.Float)$param$0).doubleValue();
-                final .com.redhat.ceylon.compiler.java.language.VariableBoxDouble b = new .com.redhat.ceylon.compiler.java.language.VariableBoxDouble(b$);
+                double b$param = ((.ceylon.language.Float)$param$0).doubleValue();
+                final .com.redhat.ceylon.compiler.java.language.VariableBoxDouble b = new .com.redhat.ceylon.compiler.java.language.VariableBoxDouble(b$param);
                 return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
                     
                     @.java.lang.Override
                     public .ceylon.language.String $call(final .java.lang.Object $param$0) {
-                        .java.lang.Object c$ = $param$0;
-                        final VariableBox<.java.lang.Object> c = new VariableBox<.java.lang.Object>(c$);
+                        .java.lang.Object c$param = $param$0;
+                        final VariableBox<.java.lang.Object> c = new VariableBox<.java.lang.Object>(c$param);
                         
                         final class fn_ {
                             

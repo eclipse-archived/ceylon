@@ -53,8 +53,8 @@ final class methodArgumentWithVariableParameter_fn_ {
                     
                     @.java.lang.Override
                     public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
-                        long y$ = ((.ceylon.language.Integer)$param$0).longValue();
-                        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong y = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(y$);
+                        long y$param = ((.ceylon.language.Integer)$param$0).longValue();
+                        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong y = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(y$param);
                         
                         final class fn_ {
                             

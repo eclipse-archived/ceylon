@@ -6,8 +6,8 @@ class DefaultedParameterClassInstantiation implements .com.redhat.ceylon.compile
         (
             let
             {
-                long $ceylontmp$m$$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$m();
-                long $ceylontmp$n$$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$n($ceylontmp$m$$0);
+                long $ceylontmp$m$$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$default$m();
+                long $ceylontmp$n$$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$default$n($ceylontmp$m$$0);
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 this($ceylontmp$m$$0, $ceylontmp$n$$1, $ceylontmp$seq$$2);
             }
@@ -19,7 +19,7 @@ class DefaultedParameterClassInstantiation implements .com.redhat.ceylon.compile
         (
             let
             {
-                long $ceylontmp$n$$3 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$n(m);
+                long $ceylontmp$n$$3 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$default$n(m);
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$$4 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 this(m, $ceylontmp$n$$3, $ceylontmp$seq$$4);
             }
@@ -41,11 +41,11 @@ class DefaultedParameterClassInstantiation implements .com.redhat.ceylon.compile
     DefaultedParameterClassInstantiation(final long m, final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
     }
     
-    static long $init$m() {
+    static long $default$m() {
         return 1L;
     }
     
-    static long $init$n(final long m) {
+    static long $default$n(final long m) {
         return m + 1L;
     }
     
@@ -60,8 +60,8 @@ class DefaultedParameterClassInstantiation implements .com.redhat.ceylon.compile
         final .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation e = (
             let
             {
-                long arg$6$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$m();
-                long arg$6$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$n(arg$6$0);
+                long arg$6$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$default$m();
+                long arg$6$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$default$n(arg$6$0);
                 .ceylon.language.Sequential arg$6$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning new .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation(arg$6$0, arg$6$1, arg$6$2);
@@ -70,7 +70,7 @@ class DefaultedParameterClassInstantiation implements .com.redhat.ceylon.compile
             let
             {
                 long arg$7$0 = 6L;
-                long arg$7$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$n(arg$7$0);
+                long arg$7$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$default$n(arg$7$0);
                 .ceylon.language.Sequential arg$7$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning new .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation(arg$7$0, arg$7$1, arg$7$2);

@@ -94,8 +94,8 @@ public class Html implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head $ceylontmp$head$$1 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html.$init$head();
-                .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body $ceylontmp$body$$2 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html.$init$body($ceylontmp$head$$1);
+                .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head $ceylontmp$head$$1 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html.$default$head();
+                .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body $ceylontmp$body$$2 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html.$default$body($ceylontmp$head$$1);
                 this($ceylontmp$head$$1, $ceylontmp$body$$2);
             }
             returning null;
@@ -106,7 +106,7 @@ public class Html implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body $ceylontmp$body$$3 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html.$init$body(head);
+                .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body $ceylontmp$body$$3 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html.$default$body(head);
                 this(head, $ceylontmp$body$$3);
             }
             returning null;
@@ -119,11 +119,11 @@ public class Html implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl(this);
     }
     
-    public static .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head $init$head() {
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head $default$head() {
         return null;
     }
     
-    public static .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body $init$body(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head head) {
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body $default$body(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head head) {
         return null;
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this;
@@ -196,7 +196,7 @@ public class Head implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         (
             let
             {
-                .ceylon.language.String $ceylontmp$title$$5 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head.$init$title();
+                .ceylon.language.String $ceylontmp$title$$5 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head.$default$title();
                 this($ceylontmp$title$$5);
             }
             returning null;
@@ -208,7 +208,7 @@ public class Head implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl(this);
     }
     
-    public static .ceylon.language.String $init$title() {
+    public static .ceylon.language.String $default$title() {
         return null;
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this;

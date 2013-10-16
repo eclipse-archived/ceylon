@@ -6,7 +6,7 @@ class SubclassInstantiationDefaultParam implements .com.redhat.ceylon.compiler.j
         (
             let
             {
-                .java.lang.String $ceylontmp$name$$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam.$init$name();
+                .java.lang.String $ceylontmp$name$$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam.$default$name();
                 this($ceylontmp$name$$0);
             }
             returning null;
@@ -16,7 +16,7 @@ class SubclassInstantiationDefaultParam implements .com.redhat.ceylon.compiler.j
     SubclassInstantiationDefaultParam(final .java.lang.String name) {
     }
     
-    static .java.lang.String $init$name() {
+    static .java.lang.String $default$name() {
         return "tom";
     }
     

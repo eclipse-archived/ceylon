@@ -169,7 +169,7 @@ class Bug1334_7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         (
             let
             {
-                long $ceylontmp$hash$$10 = .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_7.$init$hash();
+                long $ceylontmp$hash$$10 = .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_7.$default$hash();
                 this($ceylontmp$hash$$10);
             }
             returning null;
@@ -192,7 +192,7 @@ class Bug1334_7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         );
     }
     
-    static long $init$hash() {
+    static long $default$hash() {
         return 23L;
     }
     
@@ -237,7 +237,7 @@ class Bug1334_9 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         (
             let
             {
-                long $ceylontmp$hash$$12 = .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_9.$init$hash();
+                long $ceylontmp$hash$$12 = .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_9.$default$hash();
                 this($ceylontmp$hash$$12);
             }
             returning null;
@@ -248,7 +248,7 @@ class Bug1334_9 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         this.hash = hash;
     }
     
-    static long $init$hash() {
+    static long $default$hash() {
         return 23L;
     }
     private final long hash;

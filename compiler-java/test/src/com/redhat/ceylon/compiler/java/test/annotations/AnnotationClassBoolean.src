@@ -100,7 +100,7 @@ final class AnnotationClassBooleanDefaulted implements .com.redhat.ceylon.compil
         (
             let
             {
-                boolean $ceylontmp$b$$1 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanDefaulted.$init$b();
+                boolean $ceylontmp$b$$1 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanDefaulted.$default$b();
                 this($ceylontmp$b$$1);
             }
             returning null;
@@ -117,7 +117,7 @@ final class AnnotationClassBooleanDefaulted implements .com.redhat.ceylon.compil
         this.$ceylon$language$Annotation$this = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanDefaulted>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanDefaulted.$TypeDescriptor, this);
     }
     
-    static boolean $init$b() {
+    static boolean $default$b() {
         return true;
     }
     protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanDefaulted, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$OptionalAnnotation$this;

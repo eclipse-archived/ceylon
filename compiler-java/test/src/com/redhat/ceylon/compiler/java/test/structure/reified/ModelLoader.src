@@ -15,8 +15,8 @@ final class reifiedInstantiateFromModelLoader_ {
             {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$1 = .ceylon.language.String.$TypeDescriptor;
-                long arg$0$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$a(arg$0$reified$0, arg$0$reified$1);
-                long arg$0$1 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$b(arg$0$reified$0, arg$0$reified$1, arg$0$0);
+                long arg$0$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$default$a(arg$0$reified$0, arg$0$reified$1);
+                long arg$0$1 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$default$b(arg$0$reified$0, arg$0$reified$1, arg$0$0);
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(arg$0$reified$0, arg$0$reified$1, arg$0$0, arg$0$1);
         );
@@ -50,7 +50,7 @@ final class reifiedInstantiateFromModelLoader_ {
                 long arg$1$1 = 5L;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$1 = .ceylon.language.String.$TypeDescriptor;
-                long arg$1$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$a(arg$1$reified$0, arg$1$reified$1);
+                long arg$1$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$default$a(arg$1$reified$0, arg$1$reified$1);
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(arg$1$reified$0, arg$1$reified$1, arg$1$0, arg$1$1);
         );

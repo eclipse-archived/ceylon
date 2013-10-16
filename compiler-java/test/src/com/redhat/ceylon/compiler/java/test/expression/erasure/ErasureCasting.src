@@ -429,7 +429,7 @@ interface EC_ErasedMember<Element, Absent> {
     
     public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, Absent>.Class Class$new(final .java.lang.Object p);
     
-    public abstract .java.lang.Object $Class$init$p();
+    public abstract .java.lang.Object $default$Class$p();
     
     public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, Absent>.Class Class$new();
 }
@@ -483,7 +483,7 @@ final class EC_ErasedMember$impl<Element, Absent> {
         return new Class(p);
     }
     
-    public final .java.lang.Object $Class$init$p() {
+    public final .java.lang.Object $default$Class$p() {
         return .ceylon.language.nothing_.get_();
     }
     
@@ -491,7 +491,7 @@ final class EC_ErasedMember$impl<Element, Absent> {
         return (
             let
             {
-                .java.lang.Object $ceylontmp$p$$23 = $Class$init$p();
+                .java.lang.Object $ceylontmp$p$$23 = $default$Class$p();
             }
             returning new Class($ceylontmp$p$$23);
         );
@@ -558,8 +558,8 @@ class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.r
     }
     
     @.java.lang.Override
-    public final Element $Class$init$p() {
-        return (Element)$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this.$Class$init$p();
+    public final Element $default$Class$p() {
+        return (Element)$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this.$default$Class$p();
     }
     
     @.java.lang.Override
