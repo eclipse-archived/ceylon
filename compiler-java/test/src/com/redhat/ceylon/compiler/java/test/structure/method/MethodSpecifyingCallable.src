@@ -36,8 +36,8 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
             
             @.java.lang.Override
             public .java.lang.Object $call() {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                return $call$typed(i$);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                return $call$typed(i$variadic);
             }
             
             @.java.lang.Override
@@ -48,8 +48,8 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$ = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{$param$0});
-                return $call$typed(i$);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{$param$0});
+                return $call$typed(i$variadic);
             }
             
             @.java.lang.Override
@@ -59,10 +59,10 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$ = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
                         $param$0,
                         $param$1});
-                return $call$typed(i$);
+                return $call$typed(i$variadic);
             }
             
             @.java.lang.Override
@@ -74,11 +74,11 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$ = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
                         $param$0,
                         $param$1,
                         $param$2});
-                return $call$typed(i$);
+                return $call$typed(i$variadic);
             }
             
             @.java.lang.Override
@@ -115,8 +115,8 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                return $call$typed(a, i$);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                return $call$typed(a, i$variadic);
             }
             
             @.java.lang.Override
@@ -129,8 +129,8 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$ = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{$param$1});
-                return $call$typed(a, i$);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{$param$1});
+                return $call$typed(a, i$variadic);
             }
             
             @.java.lang.Override
@@ -142,10 +142,10 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$ = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
                         $param$1,
                         $param$2});
-                return $call$typed(a, i$);
+                return $call$typed(a, i$variadic);
             }
             
             @.java.lang.Override

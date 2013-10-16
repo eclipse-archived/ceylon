@@ -483,8 +483,8 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
                 final long b = $$b(a);
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> c$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                return $call$typed(a, b, c$);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> c$variadic = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                return $call$typed(a, b, c$variadic);
             }
             
             @.java.lang.Override
@@ -498,8 +498,8 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             public .ceylon.language.Integer $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
                 final long b = ((.ceylon.language.Integer)$param$1).longValue();
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> c$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                return $call$typed(a, b, c$);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> c$variadic = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                return $call$typed(a, b, c$variadic);
             }
             
             @.java.lang.Override
@@ -514,8 +514,8 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             public .ceylon.language.Integer $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
                 final long b = ((.ceylon.language.Integer)$param$1).longValue();
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> c$ = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{$param$2});
-                return $call$typed(a, b, c$);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> c$variadic = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{$param$2});
+                return $call$typed(a, b, c$variadic);
             }
             
             @.java.lang.Override
@@ -557,8 +557,8 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             public .ceylon.language.Integer $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
                 final long b = ((.ceylon.language.Integer)$param$1).longValue();
-                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> c$ = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{$param$2});
-                return $call$typed(a, b, c$);
+                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> c$variadic = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{$param$2});
+                return $call$typed(a, b, c$variadic);
             }
             
             @.java.lang.Override
