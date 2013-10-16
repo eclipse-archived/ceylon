@@ -7,8 +7,11 @@ import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -65,29 +68,85 @@ public class CeylonInfoTool extends RepoUsingTool {
     @Override
     public void run() throws Exception {
         for (ModuleSpec module : modules) {
-            // TODO Figure out how to use Type.ALL instead of Type.JVM
-            Collection<ModuleVersionDetails> versions = getModuleVersions(module.getName(), module.getVersion(), ModuleQuery.Type.ALL, null);
-            if (versions.isEmpty()) {
-                errorMsg("module.not.found", module, getRepositoryManager().getRepositoriesDisplayString());
-                continue;
+            String name = module.getName();
+            if (!module.isVersioned() && (name.startsWith("*") || name.endsWith("*"))) {
+                Collection<ModuleDetails> modules = getModules(name, ModuleQuery.Type.ALL, null, null);
+                if (modules.isEmpty()) {
+                    errorMsg("module.not.found", module, getRepositoryManager().getRepositoriesDisplayString());
+                    continue;
+                }
+                outputModules(module, modules);
+            } else {
+                Collection<ModuleVersionDetails> versions = getModuleVersions(module.getName(), module.getVersion(), ModuleQuery.Type.ALL, null);
+                if (versions.isEmpty()) {
+                    errorMsg("module.not.found", module, getRepositoryManager().getRepositoriesDisplayString());
+                    continue;
+                }
+                if (module.getVersion() == null || module.getVersion().isEmpty()) {
+                    outputVersions(module, versions);
+                } else {
+                    outputDetails(module, versions.iterator().next());
+                }
             }
-            outputModuleVersions(module, versions);
         }
     }
 
-    private void outputModuleVersions(ModuleSpec module, Collection<ModuleVersionDetails> versions) throws IOException {
-        msg("module.name").append(module.getName()).newline();
-        boolean first = true;
-        for (ModuleVersionDetails version : versions) {
-            if (!first) {
+    private Collection<ModuleDetails> getModules(String name, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
+        return getModules(getRepositoryManager(), name, type, binaryMajor, binaryMinor);
+    }
+
+    private Collection<ModuleDetails> getModules(RepositoryManager repoMgr, String name, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
+        String queryString = name;
+        if (queryString.startsWith("*")) {
+            queryString = queryString.substring(1);
+        }
+        if (queryString.endsWith("*")) {
+            queryString = queryString.substring(0, queryString.length() - 1);
+        }
+        
+        ModuleQuery query = new ModuleQuery(queryString, type);
+        if (binaryMajor != null) {
+            query.setBinaryMajor(binaryMajor);
+        }
+        if (binaryMinor != null) {
+            query.setBinaryMinor(binaryMinor);
+        }
+        ModuleSearchResult result;
+        if (!name.startsWith("*")) {
+            result = repoMgr.completeModules(query);
+        } else {
+            result = repoMgr.searchModules(query);
+        }
+        return result.getResults();
+    }
+
+    private void outputModules(ModuleSpec query, Collection<ModuleDetails> modules) throws IOException {
+        msg("module.query").append(query.getName()).newline();
+        for (ModuleDetails module : modules) {
+            append("    ").append(module.getName()).newline();
+            for (ModuleVersionDetails version : module.getVersions()) {
+                append("        ").append(version.getVersion());
+                if (version.isRemote()) {
+                    append(" *");
+                }
                 newline();
             }
-            outputVersion(version);
-            first = false;
         }
     }
 
-    private void outputVersion(ModuleVersionDetails version) throws IOException {
+    private void outputVersions(ModuleSpec module, Collection<ModuleVersionDetails> versions) throws IOException {
+        msg("version.query").append(module.getName()).newline();
+        for (ModuleVersionDetails version : versions) {
+            append("    ").append(version.getVersion());
+            if (version.isRemote()) {
+                append(" *");
+            }
+            newline();
+        }
+    }
+
+    private void outputDetails(ModuleSpec module, ModuleVersionDetails version) throws IOException {
+        msg("module.name").append(module.getName()).newline();
         msg("module.version").append(version.getVersion()).newline();
         outputArtifacts(version.getArtifactTypes());
         msg("module.available").msg((version.isRemote() ? "available.remote" : "available.local")).newline();
