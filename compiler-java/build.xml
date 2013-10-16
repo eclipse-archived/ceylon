@@ -323,10 +323,8 @@
     <target name="ide-quick" depends="test.classes">
         <copy 
             overwrite="true"
-            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository/${ceylon.compiler.dir}">
-            <fileset dir="${ceylon.compiler.dist}">
-                <include name="**/*"/>
-            </fileset>
+            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository">
+            <fileset dir="${build.dist.repo}"/>
         </copy>
 
         <copy overwrite="true" file="${build.dist.repo}/${ceylon.compiler.jar}" tofile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}-ide.jar" />
