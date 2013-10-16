@@ -325,6 +325,7 @@ function AppliedValue(obj,attr,$$targs$$,$$appliedValue){
   }
   set_type_args($$appliedValue,$$targs$$);
   Value$meta$model($$appliedValue.$$targs$$===undefined?$$targs$$:{Type:$$appliedValue.$$targs$$.Type},$$appliedValue);
+  if($$targs$$.Container)Attribute$meta$model($$targs$$,$$appliedValue);
   $$appliedValue.obj=obj;
   $$appliedValue.tipo=attr;
   return $$appliedValue;
@@ -333,7 +334,7 @@ AppliedValue.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic}
 exports.AppliedValue$meta$model=AppliedValue;
 function $init$AppliedValue(){
   if (AppliedValue.$$===undefined){
-    initTypeProto(AppliedValue,'ceylon.language.meta.model::AppliedValue',Basic,Attribute$meta$model);
+    initTypeProto(AppliedValue,'ceylon.language.meta.model::AppliedValue',Basic,Value$meta$model,Attribute$meta$model);
     (function($$appliedValue){
       defineAttr($$appliedValue,'declaration',function(){
         var $$av=this;
