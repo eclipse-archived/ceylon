@@ -97,25 +97,28 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply=function(types,
   }
   var tparms = this.tipo.$$metamodel$$.$tp;
   if (tparms){
-    if (types===undefined)throw TypeApplicationException$meta$model();
+    if (types===undefined)
+      throw TypeApplicationException$meta$model(String$("Missing type arguments in call to ClassOrInterfaceDeclaration.apply()"));
     var i=0;
     _t.a={};
     for (var tp in tparms) {
-      if (types[i]===undefined)throw TypeApplicationException$meta$model();
+      if (types[i]===undefined)
+        throw TypeApplicationException$meta$model(String$("Missing type argument for " + tp));
       var _tp = tparms[tp];
       var _ta = types[i].tipo;
       _t.a[tp]= _ta.t ? _ta : {t:types[i].tipo};
       if ((_tp.satisfies && _tp.satisfies.length>0) || (_tp.of && _tp.of.length > 0)) {
         var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satifies:_tp.of;
         for (var j=0; j<restraints.length;j++) {
-          if (!extendsType(_t.a[tp],restraints[j])) {
-            throw TypeApplicationException$meta$model(); //TODO message
-          }
+          if (!extendsType(_t.a[tp],restraints[j]))
+            throw TypeApplicationException$meta$model(String$("Type argument for " + tp + " violates type parameter constraints"));
         }
       }
       i++;
     }
   }
+  if (!extendsType(_t, $mptypes.Type))
+    throw IncompatibleTypeException$meta$model(String$("Type argument for 'Type' must be a supertype of " + this));
   if (this.meta.$mt==='ifc')
     return AppliedInterface(_t, $mptypes);
   return AppliedClass(_t, $mptypes);
