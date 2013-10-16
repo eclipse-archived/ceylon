@@ -215,7 +215,7 @@ public class CallableBuilder {
                     // and it's default is always empty.
                     return gen.makeEmptyAsSequential(true);
                 }
-                JCExpression fn = gen.makeQualIdent(gen.naming.makeUnquotedIdent(Unfix.$instance), 
+                JCExpression fn = gen.makeQualIdent(gen.naming.makeUnquotedIdent(Unfix.$instance$), 
                         Naming.getDefaultedParamMethodName((Declaration)methodOrClass, defaultedParam));
                 return gen.make().Apply(null, 
                         fn,
@@ -225,15 +225,15 @@ public class CallableBuilder {
         inner.defaultValueCall = new InstanceDefaultValueCall();
         CallBuilder callBuilder = CallBuilder.instance(gen);
         if (methodOrClass instanceof Method) {
-            callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance), (Method)methodOrClass, Naming.NA_MEMBER));
+            callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance$), (Method)methodOrClass, Naming.NA_MEMBER));
         } else if (methodOrClass instanceof Method
                 && ((Method)methodOrClass).isParameter()) {
-            callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance), (Method)methodOrClass, Naming.NA_MEMBER));
+            callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance$), (Method)methodOrClass, Naming.NA_MEMBER));
         } else if (methodOrClass instanceof Class) {
             if (Strategy.generateInstantiator((Class)methodOrClass)) {
-                callBuilder.invoke(gen.naming.makeInstantiatorMethodName(gen.naming.makeUnquotedIdent(Unfix.$instance), (Class)methodOrClass));
+                callBuilder.invoke(gen.naming.makeInstantiatorMethodName(gen.naming.makeUnquotedIdent(Unfix.$instance$), (Class)methodOrClass));
             } else {
-                callBuilder.instantiate(new ExpressionAndType(gen.naming.makeUnquotedIdent(Unfix.$instance), null), 
+                callBuilder.instantiate(new ExpressionAndType(gen.naming.makeUnquotedIdent(Unfix.$instance$), null), 
                         gen.makeJavaType(((Class)methodOrClass).getType(), JT_CLASS_NEW));
             }
         } else {
@@ -266,7 +266,7 @@ public class CallableBuilder {
         
         ParameterList outerPl = new ParameterList();
         Parameter instanceParameter = new Parameter();
-        instanceParameter.setName(Naming.name(Unfix.$instance));
+        instanceParameter.setName(Naming.name(Unfix.$instance$));
         Value valueModel = new Value();
         instanceParameter.setModel(valueModel);
         valueModel.setType(gen.getParameterTypeOfCallable(typeModel, 0));
@@ -292,13 +292,13 @@ public class CallableBuilder {
             ProducedType typeModel, 
             final TypedDeclaration value) {
         CallBuilder callBuilder = CallBuilder.instance(gen);
-        callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance), value, Naming.NA_GETTER | Naming.NA_MEMBER));
+        callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance$), value, Naming.NA_GETTER | Naming.NA_MEMBER));
         JCExpression innerInvocation = callBuilder.build();
         innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, value.getType(), !value.getUnboxed(), BoxingStrategy.BOXED, value.getType());
         
         ParameterList outerPl = new ParameterList();
         Parameter instanceParameter = new Parameter();
-        instanceParameter.setName(Naming.name(Unfix.$instance));
+        instanceParameter.setName(Naming.name(Unfix.$instance$));
         Value valueModel = new Value();
         instanceParameter.setModel(valueModel);
         valueModel.setType(gen.getParameterTypeOfCallable(typeModel, 0));
@@ -677,7 +677,7 @@ public class CallableBuilder {
     private JCExpression makeRespread(List<JCExpression> arguments) {
         
         JCExpression invocation = gen.make().Apply(null, 
-                gen.naming.makeUnquotedIdent(Naming.name(Unfix.$spreadVarargs)), 
+                gen.naming.makeUnquotedIdent(Naming.name(Unfix.$spreadVarargs$)), 
                 arguments);
         if (getVariadicParameter().isAtLeastOne()) {
             //invocation = gen.expressionGen().applyErasureAndBoxing(

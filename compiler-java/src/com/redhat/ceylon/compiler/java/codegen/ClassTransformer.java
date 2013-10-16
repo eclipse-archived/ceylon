@@ -262,9 +262,9 @@ public class ClassTransformer extends AbstractTransformer {
                     // the Java annotations in their Ceylon annotation class
                     argExpr = make().Apply(null, naming.makeUnquotedIdent(naming.getAnnotationSequenceMethodName()), List.of(annoAttr));
                     ListBuffer<JCStatement> stmts = ListBuffer.lb();
-                    SyntheticName array = naming.synthetic(Unfix.array$);
-                    SyntheticName sb = naming.synthetic(Unfix.sb$);
-                    SyntheticName element = naming.synthetic(Unfix.element$);
+                    SyntheticName array = naming.synthetic(Unfix.$array$);
+                    SyntheticName sb = naming.synthetic(Unfix.$sb$);
+                    SyntheticName element = naming.synthetic(Unfix.$element$);
                     stmts.append(makeVar(FINAL, sb, 
                             makeJavaType(typeFact().getSequenceBuilderType(iteratedType)),
                             make().NewClass(null, null, makeJavaType(typeFact().getSequenceBuilderType(iteratedType), JT_CLASS_NEW), List.<JCExpression>of(makeReifiedTypeArgument(iteratedType)), null)));

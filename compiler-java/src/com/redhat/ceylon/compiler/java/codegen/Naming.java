@@ -72,45 +72,78 @@ public class Naming implements LocalId {
     }
     
     /**
-     * Enumerates suffixes used in synthetic names
+     * An internally used identifier (not used as a prefix or suffix).
+     * Should start and end with a {@code $} and contain no {@code $}
      */
     enum Unfix implements Affix {
-        $annotationSequence,
-        $TypeDescriptor,
-        $refine,
-        $getType,
-        $call,
-        $call$variadic,
-        $call$typed, 
-        ref, 
-        set_, 
-        get_, 
-        value, array$, sb$, element$, $getIterables, $spreadVarargs, $instance,
+        ref,
+        set_,
+        get_,
+        value,
+        
+        $annotationSequence$,
+        $array$,
+        $call$,
+        $callvariadic$,
+        $calltyped$,
+        $element$,
+        $getType$,
+        $getIterables$,
+        $instance$,
+        $refine$,
+        $sb$,
+        $spreadVarargs$,
+        $TypeDescriptor$
     }
     
     /**
-     * Enumerates suffixes used in synthetic names
+     * Enumerates suffixes used in synthetic names.
+     * 
+     * Should start and end with a {@code $} and contain no {@code $}
      */
     enum Suffix implements Affix {
-        $impl,
-        $specifier,
-        $new,
+        $annotation,
+        $annotations,
+        $arg$,
+        $callable$,
+        $element,
+        $exhausted,
         $getter,
+        $impl,
+        $iter,
+        $iterable,
+        $iteration,
+        $iterator,
+        $new,
+        $param,
+        $priv,
+        $qual,
+        $reified$,
+        $sequenceBuilder,
         $setter,
-        $priv, 
-        $this, 
-        $annotation, 
-        $annotations, 
-        $this$, 
-        $qual, $callable$, $iter, $exhausted, $iterable, $sequenceBuilder, $element, $iteration, $iterator, $arg$, $reified$, $variadic, $param,
+        $specifier,
+        $this,
+        $this$,
+        $variadic
     }
     
     /**
-     * Enumerates prefixes used in synthetic names
+     * Enumerates prefixes used in synthetic names.
+     * 
+     * Should start and end with a {@code $} and contain no {@code $}
      */
     enum Prefix implements Affix {
+        next,
+        arg$,
+        $arg$,
+        $ceylontmp,
+        default$,
+        $default$,
+        $init$,
+        iter$,
+        kv$, 
         $reified,
-        $init$, arg$, default$, iter$, next, super$arg$, $arg$, kv$, $ceylontmp, $default$,
+        super$arg$
     }
     
     static String name(Unfix unfix) {
@@ -1904,15 +1937,15 @@ public class Naming implements LocalId {
     }
     
     public static String getCallableMethodName() {
-        return name(Unfix.$call);
+        return name(Unfix.$call$);
     }
 
     public static String getCallableTypedMethodName() {
-        return name(Unfix.$call$typed);
+        return name(Unfix.$calltyped$);
     }
     
     public static String getCallableVariadicMethodName() {
-        return name(Unfix.$call$variadic);
+        return name(Unfix.$callvariadic$);
     }
     
     public static String getCallableMethodName(Method method) {
@@ -1934,15 +1967,15 @@ public class Naming implements LocalId {
     }
     
     public String getGetTypeMethodName() {
-        return name(Unfix.$getType);
+        return name(Unfix.$getType$);
     }
 
     public String getRefineTypeParametersMethodName() {
-        return name(Unfix.$refine);
+        return name(Unfix.$refine$);
     }
 
     public String getTypeDescriptorAliasName() {
-        return name(Unfix.$TypeDescriptor);
+        return name(Unfix.$TypeDescriptor$);
     }
     
     /**
@@ -1964,7 +1997,7 @@ public class Naming implements LocalId {
     }
 
     public String getAnnotationSequenceMethodName() {
-        return name(Unfix.$annotationSequence);
+        return name(Unfix.$annotationSequence$);
     }
     
 }

@@ -4233,7 +4233,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 boolean prev = uninitializedOperand(true);
                 iterables.add(transformExpression(specexpr.getExpression()));
                 uninitializedOperand(prev);
-                iterableExpr = make().Indexed(make().Apply(null, naming.makeUnquotedIdent(Unfix.$getIterables), List.<JCExpression>nil()),
+                iterableExpr = make().Indexed(make().Apply(null, naming.makeUnquotedIdent(Unfix.$getIterables$), List.<JCExpression>nil()),
                         make().Literal(iterables.size()-1));
             } else {
                 iterableExpr =  transformExpression(specexpr.getExpression());
