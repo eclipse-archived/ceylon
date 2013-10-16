@@ -42,6 +42,9 @@ shared void checkConstructors(){
     Anything fixedParams3 = fixedParamsType.declaration.instantiate([], "a", 1, 1.2, 'a', true, noParams);
     assert(is FixedParams fixedParams3);
 
+    // check its parameter types
+    assert(fixedParamsType.parameterTypes == [`String`, `Integer`, `Float`, `Character`, `Boolean`, `Object`]);
+
     // typed parameters
     value typeParamsType = type(TypeParams("a", 1));
     assert(is Class<TypeParams<String>, [String, Integer]> typeParamsType);
@@ -56,6 +59,9 @@ shared void checkConstructors(){
     Anything typeParams3 = typeParamsClass.instantiate([`String`], "a", 1);
     // this checks that we did pass the reified type arguments correctly
     assert(is TypeParams<String> typeParams3);
+
+    // check its parameter types
+    assert(typeParamsType.parameterTypes == [`String`, `Integer`]);
 
     // defaulted parameters
     value defaultedParamsType = typeLiteral<DefaultedParams>();
@@ -256,6 +262,9 @@ shared void checkMemberFunctions(){
     assert(exists f1 = noParamsType.getMethod<NoParams, NoParams, []>("noParams"));
     assert(f1.declaration.name == "noParams");
     assert(f1.declaration.qualifiedName == "metamodel::NoParams.noParams");
+    // check its parameter types
+    assert(f1.parameterTypes == []);
+
     Anything o1 = f1(noParamsInstance)();
     assert(is NoParams o1);
     Anything o1b = f1.bind(noParamsInstance).apply();
@@ -264,6 +273,9 @@ shared void checkMemberFunctions(){
     assert(is NoParams o1c);
     
     assert(exists f2 = noParamsType.getMethod<NoParams, NoParams, [String, Integer, Float, Character, Boolean, Object]>("fixedParams"));
+    // check its parameter types
+    assert(f2.parameterTypes == [`String`, `Integer`, `Float`, `Character`, `Boolean`, `Object`]);
+
     Anything o3 = f2(noParamsInstance)("a", 1, 1.2, 'a', true, noParamsInstance);
     assert(is NoParams o3);
     Anything o3b = f2.bind(noParamsInstance).apply("a", 1, 1.2, 'a', true, noParamsInstance);
@@ -272,6 +284,9 @@ shared void checkMemberFunctions(){
     assert(is NoParams o3c);
     
     assert(exists f3 = noParamsType.getMethod<NoParams, NoParams, [String, Integer]>("typeParams", stringType));
+    // check its parameter types
+    assert(f3.parameterTypes == [`String`, `Integer`]);
+
     Anything o5 = f3(noParamsInstance)("a", 1);
     assert(is NoParams o5);
     Anything o5b = f3.bind(noParamsInstance).apply("a", 1);
@@ -325,6 +340,9 @@ shared void checkMemberTypes(){
     assert(is Class<ContainerClass, []> containerClassType);
 
     assert(exists innerClassType = containerClassType.getClass<ContainerClass, ContainerClass.InnerClass, []>("InnerClass"));
+    // check its parameter types
+    assert(innerClassType.parameterTypes == []);
+
     Anything o1 = innerClassType(containerClassInstance)();
     assert(is ContainerClass.InnerClass o1);
     Anything o1b = innerClassType.bind(containerClassInstance).apply();
@@ -337,6 +355,9 @@ shared void checkMemberTypes(){
     assert(`class ContainerClass.InnerClass`.qualifiedName == "metamodel::ContainerClass.InnerClass");
 
     assert(exists innerDefaultedClassType = containerClassType.getClass<ContainerClass, ContainerClass.DefaultedParams, [Integer, Integer=]>("DefaultedParams"));
+    // check its parameter types
+    assert(innerDefaultedClassType.parameterTypes == [`Integer`, `Integer`]);
+
     Anything o1_2 = innerDefaultedClassType(containerClassInstance)(0);
     assert(is ContainerClass.DefaultedParams o1_2);
     Anything o1_2b = innerDefaultedClassType.bind(containerClassInstance).apply(0);
@@ -600,12 +621,20 @@ shared void checkToplevelFunctions(){
 
     assert(exists f2 = pkg.getFunction("fixedParams"));
     assert(is Function<Anything,[String, Integer, Float, Character, Boolean, Object, NoParams]> f2a = f2.apply<Anything,Nothing>());
+
+    // check its parameter types
+    assert(f2a.parameterTypes == [`String`, `Integer`, `Float`, `Character`, `Boolean`, `Object`, `NoParams`]);
+
     f2a("a", 1, 1.2, 'a', true, noParamsInstance, noParamsInstance);
     f2a.apply("a", 1, 1.2, 'a', true, noParamsInstance, noParamsInstance);
     f2a.declaration.invoke([], "a", 1, 1.2, 'a', true, noParamsInstance, noParamsInstance);
 
     assert(exists f3 = pkg.getFunction("typeParams"));
     assert(is Function<String, [String, Integer]> f3a = f3.apply<Anything,Nothing>(stringType));
+
+    // check its parameter types
+    assert(f3a.parameterTypes == [`String`, `Integer`]);
+
     assert(f3a("a", 1) == "a");
     assert(f3a.apply("a", 1) == "a");
     assert(exists f3aret = f3a.declaration.invoke([stringType], "a", 1), f3aret == "a");
