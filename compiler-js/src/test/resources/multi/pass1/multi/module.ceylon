@@ -1,1 +1,1 @@
-module multi '1.0.0' {}
+module multi "1.0.0" {}

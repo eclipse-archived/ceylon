@@ -1,1 +1,1 @@
-module t3 '0.1' {}
+module t3 "0.1" {}
