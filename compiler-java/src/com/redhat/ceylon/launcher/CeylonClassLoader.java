@@ -81,7 +81,7 @@ public class CeylonClassLoader extends URLClassLoader {
         // Maven support for CMR
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.maven-support", "1.0")); // optional
         // For the typechecker
-        archives.add(getRepoJar(ceylonRepo, "org.antlr-runtime", "3.4"));
+        archives.add(getRepoJar(ceylonRepo, "org.antlr.runtime", "3.4"));
         // For the JS backend
         archives.add(getRepoJar(ceylonRepo, "net.minidev.json-smart", "1.1.1"));
         // For the "doc" tool
