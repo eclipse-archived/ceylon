@@ -19,6 +19,7 @@ public class Generate {
         //builder(file);
         walker(file);
         visitor(file);
+        visitorAdaptor(file);
         validator(file);
     }
     
