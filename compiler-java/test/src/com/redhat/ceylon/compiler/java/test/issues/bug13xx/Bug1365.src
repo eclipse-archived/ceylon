@@ -1,0 +1,61 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
+
+public abstract class Bug1365_A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Bug1365_A(final .ceylon.language.Callable<? extends .ceylon.language.Float> ff) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1365_A.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1365_A.class);
+}
+class Bug1365_B extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1365_A {
+    
+    Bug1365_B(final double f) {
+        super(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Float()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Float $call$() {
+                return .ceylon.language.Float.instance(f);
+            }
+        });
+        this.f = f;
+    }
+    private final double f;
+    
+    private final double getF$priv$() {
+        return f;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1365_B.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1365_B.class);
+}
+class Bug1365_C extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1365_A {
+    
+    Bug1365_C(final double f) {
+        super(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Float()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Float $call$() {
+                return .ceylon.language.Float.instance(f);
+            }
+        });
+        this.f = f;
+    }
+    private final double f;
+    
+    private final double getF$priv$() {
+        return f;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1365_C.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1365_C.class);
+}
