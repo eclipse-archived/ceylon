@@ -241,27 +241,13 @@ public abstract class AppliedClassOrInterface<Type>
         
         checkInit();
         final FreeClassOrInterface type = declaration.findType(name);
-        if(type == null)
-            return null;
-        Member<Container, ceylon.language.meta.model.Class<Type,Arguments>> member = 
-                type.getAppliedClassOrInterface(null, null, types, (AppliedClassOrInterface<Container>)this);
-
-        
-        if(member instanceof AppliedMemberClass == false)
+        if(type instanceof FreeClass == false)
             throw new IncompatibleTypeException("Specified member is not a class: "+name);
-            
-        // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
-        // implementation types to the user, such as AppliedMemberClass
-        TypeDescriptor actualReifiedContainer = ((AppliedMemberClass)member).$reifiedContainer;
-        TypeDescriptor actualType = ((AppliedMemberClass) member).$reifiedType; 
-        TypeDescriptor actualArguments = ((AppliedMemberClass) member).$reifiedArguments;
+        ceylon.language.meta.model.Type<Container> appliedContainer = getAppliedContainer($reifiedContainer, type);
+        return ((FreeClass)type).memberClassApply($reifiedContainer, $reifiedType, $reifiedArguments, 
+                                                  appliedContainer, types);
         
-        Metamodel.checkReifiedTypeArgument("getClass", "MemberClass<$1,$2,$3>", 
-                Variance.IN, Metamodel.getProducedType(actualReifiedContainer), $reifiedContainer, 
-                Variance.OUT, Metamodel.getProducedType(actualType), $reifiedType,
-                Variance.IN, Metamodel.getProducedType(actualArguments), $reifiedArguments);
 
-        return (ceylon.language.meta.model.MemberClass)member;
     }
 
     @Ignore
@@ -274,6 +260,7 @@ public abstract class AppliedClassOrInterface<Type>
         return getInterface($reifiedContainer, $reifiedType, name, (Sequential)empty_.get_());
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @TypeParameters({
         @TypeParameter(value = "Container"),
@@ -288,25 +275,12 @@ public abstract class AppliedClassOrInterface<Type>
         
         checkInit();
         final FreeClassOrInterface type = declaration.findType(name);
-        if(type == null)
-            return null;
-        Member<Container, ceylon.language.meta.model.Interface<Type>> member = 
-                type.getAppliedClassOrInterface(null, null, types, (AppliedClassOrInterface<Container>)this);
-
-        
-        if(member instanceof AppliedMemberInterface == false)
+        if(type instanceof FreeInterface == false)
             throw new IncompatibleTypeException("Specified member is not an interface: "+name);
-            
-        // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
-        // implementation types to the user, such as AppliedMemberClass
-        TypeDescriptor actualReifiedContainer = ((AppliedMemberInterface)member).$reifiedContainer;
-        TypeDescriptor actualType = ((AppliedMemberInterface) member).$reifiedType; 
         
-        Metamodel.checkReifiedTypeArgument("getClass", "MemberInterface<$1,$2>", 
-                Variance.IN, Metamodel.getProducedType(actualReifiedContainer), $reifiedContainer, 
-                Variance.OUT, Metamodel.getProducedType(actualType), $reifiedType);
-
-        return (ceylon.language.meta.model.MemberInterface)member;
+        ceylon.language.meta.model.Type<Container> appliedContainer = getAppliedContainer($reifiedContainer, type);
+        return (ceylon.language.meta.model.MemberInterface<Container, Type>) 
+                type.memberApply($reifiedContainer, $reifiedType, appliedContainer);
     }
 
     @Override
