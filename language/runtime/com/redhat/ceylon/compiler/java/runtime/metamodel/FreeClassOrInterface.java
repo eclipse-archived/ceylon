@@ -1,7 +1,10 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import ceylon.language.Anything;
 import ceylon.language.Empty;
@@ -24,6 +27,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
@@ -48,6 +52,7 @@ public abstract class FreeClassOrInterface
     private Sequential<ceylon.language.meta.declaration.OpenInterfaceType> interfaces;
     private Sequential<? extends ceylon.language.meta.declaration.TypeParameter> typeParameters;
 
+    private List<ceylon.language.meta.declaration.NestableDeclaration> declaredDeclarations;
     private List<ceylon.language.meta.declaration.NestableDeclaration> declarations;
 
     private Sequential<? extends ceylon.language.meta.declaration.OpenType> caseTypes;
@@ -91,17 +96,50 @@ public abstract class FreeClassOrInterface
         this.typeParameters = Metamodel.getTypeParameters(declaration);
         
         List<com.redhat.ceylon.compiler.typechecker.model.Declaration> memberModelDeclarations = declaration.getMembers();
-        i=0;
-        this.declarations = new LinkedList<ceylon.language.meta.declaration.NestableDeclaration>();
+        this.declaredDeclarations = new LinkedList<ceylon.language.meta.declaration.NestableDeclaration>();
         for(com.redhat.ceylon.compiler.typechecker.model.Declaration memberModelDeclaration : memberModelDeclarations){
-            if(memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value
-                    || memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method
-                    || memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.TypeAlias
-                    || memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)
+            if(isSupportedType(memberModelDeclaration))
+                declaredDeclarations.add(Metamodel.getOrCreateMetamodel(memberModelDeclaration));
+        }
+
+        Collection<com.redhat.ceylon.compiler.typechecker.model.Declaration> inheritedModelDeclarations = 
+                collectMembers(declaration);
+        this.declarations = new LinkedList<ceylon.language.meta.declaration.NestableDeclaration>();
+        for(com.redhat.ceylon.compiler.typechecker.model.Declaration memberModelDeclaration : inheritedModelDeclarations){
+            if(isSupportedType(memberModelDeclaration))
                 declarations.add(Metamodel.getOrCreateMetamodel(memberModelDeclaration));
         }
     }
+
+    private boolean isSupportedType(Declaration memberModelDeclaration) {
+        return memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value
+                || memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method
+                || memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.TypeAlias
+                || memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+    }
+
+    private Collection<com.redhat.ceylon.compiler.typechecker.model.Declaration> collectMembers(com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration base){
+        Map<String, com.redhat.ceylon.compiler.typechecker.model.Declaration> byName = 
+                new HashMap<String, com.redhat.ceylon.compiler.typechecker.model.Declaration>();
+        collectMembers(base, byName);
+        return byName.values();
+    }
     
+    private void collectMembers(com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration base, Map<String, Declaration> byName) {
+        for(com.redhat.ceylon.compiler.typechecker.model.Declaration decl : base.getMembers()){
+            if(decl.isShared() && com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable(decl)){
+                Declaration otherDeclaration = byName.get(decl.getName());
+                if(otherDeclaration == null || decl.refines(otherDeclaration))
+                    byName.put(decl.getName(), decl);
+            }
+        }
+        if(base.getExtendedTypeDeclaration() != null)
+            collectMembers(base.getExtendedTypeDeclaration(), byName);
+        for(com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration st : base.getSatisfiedTypeDeclarations()){
+            collectMembers(st, byName);
+        }
+    }
+
     protected final void checkInit(){
         if(!initialised){
             synchronized(Metamodel.getLock()){
@@ -126,6 +164,17 @@ public abstract class FreeClassOrInterface
 
     @Override
     @TypeInfo("ceylon.language::Sequential<Kind>")
+    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.declaration::NestableDeclaration"))
+    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration> Sequential<? extends Kind> 
+    declaredMemberDeclarations(@Ignore TypeDescriptor $reifiedKind) {
+        
+        Predicates.Predicate<?> predicate = Predicates.isDeclarationOfKind($reifiedKind);
+        
+        return filteredDeclaredMembers($reifiedKind, predicate);
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Sequential<Kind>")
     @TypeParameters({
             @TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.declaration::NestableDeclaration"),
             @TypeParameter("Annotation")
@@ -138,6 +187,22 @@ public abstract class FreeClassOrInterface
                 Predicates.isDeclarationAnnotatedWith($reifiedAnnotation));
         
         return filteredMembers($reifiedKind, predicate);
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Sequential<Kind>")
+    @TypeParameters({
+            @TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.declaration::NestableDeclaration"),
+            @TypeParameter("Annotation")
+    })
+    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration, Annotation> Sequential<? extends Kind> 
+    annotatedDeclaredMemberDeclarations(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
+        
+        Predicates.Predicate<?> predicate = Predicates.and(
+                Predicates.isDeclarationOfKind($reifiedKind),
+                Predicates.isDeclarationAnnotatedWith($reifiedAnnotation));
+        
+        return filteredDeclaredMembers($reifiedKind, predicate);
     }
 
     private <Kind> Sequential<? extends Kind> filteredMembers(
@@ -155,22 +220,53 @@ public abstract class FreeClassOrInterface
         }
         return members.getSequence();
     }
-    
+
+    private <Kind> Sequential<? extends Kind> filteredDeclaredMembers(
+            @Ignore TypeDescriptor $reifiedKind,
+            Predicates.Predicate predicate) {
+        if (predicate == Predicates.false_()) {
+            return (Sequential<? extends Kind>)empty_.get_();
+        }
+        checkInit();
+        SequenceBuilder<Kind> members = new SequenceBuilder<Kind>($reifiedKind, declarations.size());
+        for(ceylon.language.meta.declaration.NestableDeclaration decl : declaredDeclarations){
+            if (predicate.accept(((FreeNestableDeclaration)decl).declaration)) {
+                members.append((Kind) decl);
+            }
+        }
+        return members.getSequence();
+    }
+
     private <Kind> Kind filteredMember(
             @Ignore TypeDescriptor $reifiedKind,
             Predicates.Predicate predicate) {
         if (predicate == Predicates.false_()) {
             return null;
         }
-        List<com.redhat.ceylon.compiler.typechecker.model.Declaration> modelMembers = declaration.getMembers();
-        for(com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl : modelMembers){
-            if (predicate.accept(modelDecl)) {
-                return (Kind)Metamodel.getOrCreateMetamodel(modelDecl);
+        checkInit();
+        for(ceylon.language.meta.declaration.NestableDeclaration decl : declarations){
+            if (predicate.accept(((FreeNestableDeclaration)decl).declaration)) {
+                return (Kind)decl;
             }
         }
         return null;
     }
-    
+
+    private <Kind> Kind filteredDeclaredMember(
+            @Ignore TypeDescriptor $reifiedKind,
+            Predicates.Predicate predicate) {
+        if (predicate == Predicates.false_()) {
+            return null;
+        }
+        checkInit();
+        for(ceylon.language.meta.declaration.NestableDeclaration decl : declaredDeclarations){
+            if (predicate.accept(((FreeNestableDeclaration)decl).declaration)) {
+                return (Kind)decl;
+            }
+        }
+        return null;
+    }
+
     @Override
     @TypeInfo("Kind")
     @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.declaration::NestableDeclaration"))
@@ -184,7 +280,21 @@ public abstract class FreeClassOrInterface
         
         return filteredMember($reifiedKind, predicate);
     }
-    
+
+    @Override
+    @TypeInfo("Kind")
+    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.declaration::NestableDeclaration"))
+    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration> Kind 
+    getDeclaredMemberDeclaration(@Ignore TypeDescriptor $reifiedKind, @Name("name") String name) {
+        
+        Predicates.Predicate<?> predicate = Predicates.and(
+                Predicates.isDeclarationNamed(name),
+                Predicates.isDeclarationOfKind($reifiedKind)
+        );
+        
+        return filteredDeclaredMember($reifiedKind, predicate);
+    }
+
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::OpenInterfaceType>")
     public Sequential<? extends ceylon.language.meta.declaration.OpenInterfaceType> getSatisfiedTypes() {
@@ -328,19 +438,43 @@ public abstract class FreeClassOrInterface
         return decl instanceof FreeFunction ? (FreeFunction)decl : null;
     }
 
+    FreeFunction findDeclaredMethod(String name) {
+        FreeNestableDeclaration decl = this.findDeclaredDeclaration(null, name);
+        return decl instanceof FreeFunction ? (FreeFunction)decl : null;
+    }
+
     FreeAttribute findValue(String name) {
         FreeNestableDeclaration decl = this.findDeclaration(null, name);
         return decl instanceof FreeAttribute ? (FreeAttribute)decl : null;
     }
 
+    FreeAttribute findDeclaredValue(String name) {
+        FreeNestableDeclaration decl = this.findDeclaredDeclaration(null, name);
+        return decl instanceof FreeAttribute ? (FreeAttribute)decl : null;
+    }
 
     FreeClassOrInterface findType(String name) {
         FreeNestableDeclaration decl = this.findDeclaration(null, name);
         return decl instanceof FreeClassOrInterface ? (FreeClassOrInterface)decl : null;
     }
 
+    FreeClassOrInterface findDeclaredType(String name) {
+        FreeNestableDeclaration decl = this.findDeclaredDeclaration(null, name);
+        return decl instanceof FreeClassOrInterface ? (FreeClassOrInterface)decl : null;
+    }
+
     <T extends FreeNestableDeclaration> T findDeclaration(@Ignore TypeDescriptor $reifiedT, String name) {
         checkInit();
+        return findDeclaration($reifiedT, name, declarations);
+    }
+
+    <T extends FreeNestableDeclaration> T findDeclaredDeclaration(@Ignore TypeDescriptor $reifiedT, String name) {
+        checkInit();
+        return findDeclaration($reifiedT, name, declaredDeclarations);
+    }
+
+    <T extends FreeNestableDeclaration> T findDeclaration(@Ignore TypeDescriptor $reifiedT, String name,
+            List<ceylon.language.meta.declaration.NestableDeclaration> declarations) {
         for(ceylon.language.meta.declaration.NestableDeclaration decl : declarations){
             // skip anonymous types which can't be looked up by name
             if(decl instanceof ceylon.language.meta.declaration.ClassDeclaration

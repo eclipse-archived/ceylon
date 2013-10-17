@@ -78,16 +78,30 @@ shared interface ClassOrInterfaceDeclaration
     "Returns the list of member declarations that satisfy the given `Kind` type argument."
     shared formal Kind[] memberDeclarations<Kind>() 
             given Kind satisfies NestableDeclaration;
-    
+
+    "Returns the list of member declarations that satisfy the given `Kind` type argument."
+    shared formal Kind[] declaredMemberDeclarations<Kind>() 
+        given Kind satisfies NestableDeclaration;
+
     "Returns the list of member declarations that satisfy the given `Kind` type argument and
      that are annotated with the given `Annotation` type argument"
     shared formal Kind[] annotatedMemberDeclarations<Kind, Annotation>() 
+        given Kind satisfies NestableDeclaration;
+    
+    "Returns the list of member declarations that satisfy the given `Kind` type argument and
+     that are annotated with the given `Annotation` type argument"
+    shared formal Kind[] annotatedDeclaredMemberDeclarations<Kind, Annotation>() 
             given Kind satisfies NestableDeclaration;
     
     "Looks up a member declaration by name, provided it satisfies the given `Kind` type
      argument. Returns `null` if no such member matches."
     shared formal Kind? getMemberDeclaration<Kind>(String name) 
             given Kind satisfies NestableDeclaration;
+
+    "Looks up a member declaration by name, provided it satisfies the given `Kind` type
+     argument. Returns `null` if no such member matches."
+    shared formal Kind? getDeclaredMemberDeclaration<Kind>(String name) 
+        given Kind satisfies NestableDeclaration;
     
     "Applies the given closed type arguments to this toplevel class or interface declaration in order to obtain a class or interface model. 
      See [this code sample](#toplevel-sample) for an example on how to use this."
