@@ -27,8 +27,8 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
     @Ignore
     public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeModule.class);
     protected com.redhat.ceylon.compiler.typechecker.model.Module declaration;
-    private Sequential<Package> packages;
-    private Sequential<Import> dependencies;
+    private Sequential<? extends Package> packages;
+    private Sequential<? extends Import> dependencies;
     
     public FreeModule(com.redhat.ceylon.compiler.typechecker.model.Module declaration) {
         this.declaration = declaration;
@@ -107,7 +107,7 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
         if(this.dependencies == null){
             List<com.redhat.ceylon.compiler.typechecker.model.ModuleImport> modelImports = declaration.getImports();
             //FreeImport[] imports = new FreeImport[modelImports.size()];
-            SequenceBuilder sb = new SequenceBuilder<>(Import.$TypeDescriptor$, modelImports.size()-1);
+            SequenceBuilder<FreeImport> sb = new SequenceBuilder<>(Import.$TypeDescriptor$, modelImports.size()-1);
             for(com.redhat.ceylon.compiler.typechecker.model.ModuleImport moduleImport : modelImports){
                 if ("ceylon.language".equals(moduleImport.getModule().getNameAsString())) {
                     continue;

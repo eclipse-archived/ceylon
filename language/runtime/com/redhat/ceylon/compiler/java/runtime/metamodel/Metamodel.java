@@ -256,9 +256,10 @@ public class Metamodel {
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
 
+    @SuppressWarnings("unchecked")
     public static Sequential<? extends ceylon.language.meta.declaration.OpenType> getMetamodelSequential(List<ProducedType> types) {
         if(types.isEmpty())
-            return (Sequential)empty_.get_();
+            return (Sequential<? extends ceylon.language.meta.declaration.OpenType>)empty_.get_();
         ceylon.language.meta.declaration.OpenType[] ret = new ceylon.language.meta.declaration.OpenType[types.size()];
         int i=0;
         for(ProducedType pt : types){
@@ -267,9 +268,10 @@ public class Metamodel {
         return Util.sequentialInstance(ceylon.language.meta.declaration.OpenType.$TypeDescriptor$, ret);
     }
 
+    @SuppressWarnings("unchecked")
     public static Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> getAppliedMetamodelSequential(List<ProducedType> types) {
         if(types.isEmpty())
-            return (Sequential)empty_.get_();
+            return (Sequential<? extends ceylon.language.meta.model.Type<? extends Object>>)empty_.get_();
         ceylon.language.meta.model.Type<?>[] ret = new ceylon.language.meta.model.Type[types.size()];
         int i=0;
         for(ProducedType pt : types){
@@ -279,6 +281,7 @@ public class Metamodel {
                                        ret);
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public static <T> ceylon.language.meta.model.Type<T> getAppliedMetamodel(ProducedType pt) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
@@ -493,6 +496,7 @@ public class Metamodel {
         return refAnnotationClass;
     }
     
+    @SuppressWarnings("unchecked")
     private static <A extends ceylon.language.Annotation<? extends A>> void addAnnotation(
             SequenceBuilder<A> ceylonAnnotations,
             java.lang.annotation.Annotation jAnnotation,
@@ -718,6 +722,7 @@ public class Metamodel {
      * constructor or annotation callsite to convert the String representation
      * of a Declaration literal back into the corresponding Declaration.
      */
+    @SuppressWarnings("unchecked")
     public static <T extends ceylon.language.meta.declaration.Declaration> T parseMetamodelReference(String ref/*, java.lang.Class<?> klass*/) {
         DeclarationParser parser = new DeclarationParser();
         return (T)parser.ref(ref);
@@ -728,6 +733,7 @@ public class Metamodel {
      * constructor or annotation callsite to convert an array of String representations
      * of Declaration literals back into a Sequential of Declarations.
      */
+    @SuppressWarnings("unchecked")
     public static <T extends ceylon.language.meta.declaration.Declaration> Sequential<T> parseMetamodelReferences(TypeDescriptor $reifiedElement, String[] refs) {
         DeclarationParser parser = new DeclarationParser();
         ceylon.language.meta.declaration.Declaration[] array = new ceylon.language.meta.declaration.Declaration[refs.length];
@@ -737,6 +743,7 @@ public class Metamodel {
         return ArraySequence.instance($reifiedElement, array);
     }
     
+    @SuppressWarnings("unchecked")
     public static <T> T parseEnumerationReference(java.lang.Class<T> klass) {
         FreeClassOrInterface decl = (FreeClassOrInterface)getOrCreateMetamodel(klass);
         String getterName = Naming.getGetterName(decl.declaration);
@@ -748,7 +755,7 @@ public class Metamodel {
         }
     }
     
-    public static <T> Sequential<T> parseEnumerationReferences(TypeDescriptor $reifiedElement, java.lang.Class[] refs) {
+    public static <T> Sequential<T> parseEnumerationReferences(TypeDescriptor $reifiedElement, java.lang.Class<?>[] refs) {
         Object[] array = new Object[refs.length];
         for (int ii = 0; ii < refs.length; ii++) {
             array[ii] = parseEnumerationReference(refs[ii]);

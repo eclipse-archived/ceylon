@@ -278,7 +278,7 @@ class Predicates {
      */
     public static Predicate<Declaration> isDeclarationOfKind(TypeDescriptor kind) {
         if (kind instanceof TypeDescriptor.Class) {
-            Class<? extends ceylon.language.meta.declaration.NestableDeclaration> declarationClass = (Class)((TypeDescriptor.Class) kind).getKlass();
+            Class<?> declarationClass = (Class<?>)((TypeDescriptor.Class) kind).getKlass();
             if (declarationClass == ceylon.language.meta.declaration.VariableDeclaration.class) {
                 return DECLARATION_IS_VARIABLE;
             } else if (declarationClass == ceylon.language.meta.declaration.ValueDeclaration.class) {
@@ -354,21 +354,22 @@ class Predicates {
      */
     public static <Kind extends ceylon.language.meta.declaration.Declaration, A extends ceylon.language.Annotation<A>>  
             Predicate<Declaration> isDeclarationAnnotatedWith(TypeDescriptor annotation) {
-        Type at = Metamodel.getAppliedMetamodel(annotation);
+        Type<?> at = Metamodel.getAppliedMetamodel(annotation);
         return Predicates.<A>isDeclarationAnnotatedWith(annotation, at);
     }
     
+    @SuppressWarnings("unchecked")
     private static <A extends ceylon.language.Annotation<A>> Predicate<Declaration> 
     isDeclarationAnnotatedWith(TypeDescriptor annotation, Type<?> at) {
         if (at instanceof nothingType_) {
             return false_();
         } else if (at instanceof ClassOrInterface) {
-            return new AnnotatedWith<A>(annotation, (ClassOrInterface)at);
+            return new AnnotatedWith<A>(annotation, (ClassOrInterface<A>)at);
         } else if (at instanceof AppliedUnionType) {
-            Sequential<? extends Type<?>> caseTypes = ((AppliedUnionType)at).getCaseTypes();
+            Sequential<? extends Type<?>> caseTypes = ((AppliedUnionType<?>)at).getCaseTypes();
             return or(mapTypesToDeclarationAnnotatedWith(annotation, caseTypes));
         } else if (at instanceof AppliedIntersectionType) {
-            Sequential<? extends Type<?>> satisfiedTypes = ((AppliedIntersectionType)at).getSatisfiedTypes();
+            Sequential<? extends Type<?>> satisfiedTypes = ((AppliedIntersectionType<?>)at).getSatisfiedTypes();
             return and(mapTypesToDeclarationAnnotatedWith(annotation, satisfiedTypes));
         } else {
             throw new EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive: "+at);
@@ -395,7 +396,7 @@ class Predicates {
      * @return
      */
     public static <A extends ceylon.language.Annotation<? extends A>> Predicate<A> isAnnotationOfType(TypeDescriptor $reifiedAnnotation) {
-        Type at = Metamodel.getAppliedMetamodel($reifiedAnnotation);
+        Type<?> at = Metamodel.getAppliedMetamodel($reifiedAnnotation);
         return isAnnotationOfType($reifiedAnnotation, at);
     }
 
@@ -405,13 +406,14 @@ class Predicates {
         if (at instanceof nothingType_) {
             return false_();
         } else if (at instanceof AppliedUnionType) {
-            Sequential<? extends Type<?>> caseTypes = ((AppliedUnionType)at).getCaseTypes();
+            Sequential<? extends Type<?>> caseTypes = ((AppliedUnionType<?>)at).getCaseTypes();
             return or(Predicates.<A>mapTypesToIsAnnotationOfType($reifiedAnnotation, caseTypes));
         } else if (at instanceof AppliedIntersectionType) {
-            Sequential<? extends Type<?>> satisfiedTypes = ((AppliedIntersectionType)at).getSatisfiedTypes();
+            Sequential<? extends Type<?>> satisfiedTypes = ((AppliedIntersectionType<?>)at).getSatisfiedTypes();
             return and(Predicates.<A>mapTypesToIsAnnotationOfType($reifiedAnnotation, satisfiedTypes));
         } else if (at instanceof ClassOrInterface) {
             // TODO What if reified is Annotation, or ContrainedAnnotation, or OptionalAnnotation, or SequencedAnnotation?
+            @SuppressWarnings({ "rawtypes", "unchecked" })
             AnnotationPredicate<A> predicate = annotationPredicate($reifiedAnnotation, (ClassOrInterface)at);
             return predicate;
         } else {

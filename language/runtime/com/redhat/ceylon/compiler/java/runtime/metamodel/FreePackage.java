@@ -138,6 +138,7 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
         return filteredMembers($reifiedKind, predicate);
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private <Kind> Sequential<? extends Kind> filteredMembers(
             TypeDescriptor $reifiedKind,
             Predicates.Predicate predicate) {
@@ -155,6 +156,7 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
         return members.getSequence();
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private <Kind> Kind filteredMember(
             TypeDescriptor $reifiedKind,
             Predicates.Predicate predicate) {

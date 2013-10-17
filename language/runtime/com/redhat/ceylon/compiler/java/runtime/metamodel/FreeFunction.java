@@ -157,7 +157,7 @@ public class FreeFunction
 
         Metamodel.checkReifiedTypeArgument("apply", "Function<$1,$2>", Variance.OUT, appliedFunction.getType(), $reifiedReturn, 
                 Variance.IN, Metamodel.getProducedTypeForArguments(declaration.getUnit(), (Functional)declaration, appliedFunction), $reifiedArguments);
-        return new AppliedFunction(reifiedType, reifiedArguments, appliedFunction, this, null, null);
+        return new AppliedFunction<Return,Arguments>(reifiedType, reifiedArguments, appliedFunction, this, null, null);
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -216,7 +216,7 @@ public class FreeFunction
                 Variance.OUT, appliedFunction.getType(), $reifiedType,
                 Variance.IN, Metamodel.getProducedTypeForArguments(declaration.getUnit(), (Functional)declaration, appliedFunction), $reifiedArguments);
 
-        return new AppliedMethod(reifiedContainer, reifiedType, reifiedArguments, appliedFunction, this, container);
+        return new AppliedMethod<Container, Type, Arguments>(reifiedContainer, reifiedType, reifiedArguments, appliedFunction, this, container);
     }
     
     @Override
@@ -230,16 +230,18 @@ public class FreeFunction
         return declaration.isAnnotation();
     }
 
+    @SuppressWarnings("unchecked")
     @Ignore
     @Override
     public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> invoke$typeArguments(){
-        return (ceylon.language.Sequential)empty_.get_();
+        return (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)empty_.get_();
     }
 
+    @SuppressWarnings("unchecked")
     @Ignore
     @Override
     public java.lang.Object invoke(){
-        return invoke((ceylon.language.Sequential)empty_.get_());
+        return invoke((ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)empty_.get_());
     }
 
     @Ignore
@@ -260,17 +262,19 @@ public class FreeFunction
         return apply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType, typeArguments).apply(arguments);
     }
 
+    @SuppressWarnings("unchecked")
     @Ignore
     @Override
     public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> 
         memberInvoke$typeArguments(java.lang.Object container){
-        return (ceylon.language.Sequential)empty_.get_();
+        return (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)empty_.get_();
     }
 
+    @SuppressWarnings("unchecked")
     @Ignore
     @Override
     public java.lang.Object memberInvoke(java.lang.Object container){
-        return memberInvoke(container, (ceylon.language.Sequential)empty_.get_());
+        return memberInvoke(container, (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)empty_.get_());
     }
 
     @Ignore

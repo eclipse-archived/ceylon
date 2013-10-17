@@ -308,6 +308,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Ignore
     @Override
     public Type $call$(Object... args) {

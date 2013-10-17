@@ -64,8 +64,8 @@ public class FreeValue
         Metamodel.checkReifiedTypeArgument("apply", "Value<$1>", Variance.OUT, typedReference.getType(), $reifiedType);
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(typedReference.getType());
         return modelDecl.isVariable() 
-                ? new AppliedVariable(reifiedType, this, typedReference, null, null) 
-                : new AppliedValue(reifiedType, this, typedReference, null, null);
+                ? new AppliedVariable<Type>(reifiedType, this, typedReference, null, null) 
+                : new AppliedValue<Type>(reifiedType, this, typedReference, null, null);
     }
 
     @TypeInfo("ceylon.language.meta.model::Attribute<Container,Type>")
@@ -92,8 +92,8 @@ public class FreeValue
                 Variance.IN, qualifyingType, $reifiedContainer,
                 Variance.OUT, typedReference.getType(), $reifiedType);
         return modelDecl.isVariable() 
-                ? new AppliedVariableAttribute(reifiedContainer, reifiedType, this, typedReference, containerType) 
-                : new AppliedAttribute(reifiedContainer, reifiedType, this, typedReference, containerType);
+                ? new AppliedVariableAttribute<Container,Type>(reifiedContainer, reifiedType, this, typedReference, containerType) 
+                : new AppliedAttribute<Container,Type>(reifiedContainer, reifiedType, this, typedReference, containerType);
     }
 
     @Override

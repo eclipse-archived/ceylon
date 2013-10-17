@@ -73,6 +73,7 @@ public abstract class FreeClassOrInterface
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     protected void init(){
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) this.declaration;
         
@@ -91,7 +92,7 @@ public abstract class FreeClassOrInterface
         if(declaration.getCaseTypes() != null)
             this.caseTypes = Metamodel.getMetamodelSequential(declaration.getCaseTypes());
         else
-            this.caseTypes = (Sequential)empty_.get_();
+            this.caseTypes = (Sequential<? extends ceylon.language.meta.declaration.OpenType>)empty_.get_();
 
         this.typeParameters = Metamodel.getTypeParameters(declaration);
         
@@ -205,6 +206,7 @@ public abstract class FreeClassOrInterface
         return filteredDeclaredMembers($reifiedKind, predicate);
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private <Kind> Sequential<? extends Kind> filteredMembers(
             @Ignore TypeDescriptor $reifiedKind,
             Predicates.Predicate predicate) {
@@ -221,6 +223,7 @@ public abstract class FreeClassOrInterface
         return members.getSequence();
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private <Kind> Sequential<? extends Kind> filteredDeclaredMembers(
             @Ignore TypeDescriptor $reifiedKind,
             Predicates.Predicate predicate) {
@@ -237,6 +240,7 @@ public abstract class FreeClassOrInterface
         return members.getSequence();
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private <Kind> Kind filteredMember(
             @Ignore TypeDescriptor $reifiedKind,
             Predicates.Predicate predicate) {
@@ -252,6 +256,7 @@ public abstract class FreeClassOrInterface
         return null;
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private <Kind> Kind filteredDeclaredMember(
             @Ignore TypeDescriptor $reifiedKind,
             Predicates.Predicate predicate) {
@@ -379,6 +384,7 @@ public abstract class FreeClassOrInterface
                                                  (Sequential)empty_.get_());
     }
 
+    @SuppressWarnings("rawtypes")
     @TypeInfo("ceylon.language.meta.model::Member<Container,ceylon.language.meta.model::ClassOrInterface<Type>>&ceylon.language.meta.model::ClassOrInterface<Type>")
     @TypeParameters({
         @TypeParameter("Container"),
@@ -473,6 +479,7 @@ public abstract class FreeClassOrInterface
         return findDeclaration($reifiedT, name, declaredDeclarations);
     }
 
+    @SuppressWarnings("unchecked")
     <T extends FreeNestableDeclaration> T findDeclaration(@Ignore TypeDescriptor $reifiedT, String name,
             List<ceylon.language.meta.declaration.NestableDeclaration> declarations) {
         for(ceylon.language.meta.declaration.NestableDeclaration decl : declarations){

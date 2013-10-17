@@ -50,6 +50,7 @@ public class FreeTypeParameter
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void init() {
         if(declaration.isDefaulted())
             defaultTypeArgument = Metamodel.getMetamodel(declaration.getDefaultTypeArgument());
@@ -58,7 +59,7 @@ public class FreeTypeParameter
         if(declaration.getCaseTypes() != null)
             caseTypes = Metamodel.getMetamodelSequential(declaration.getCaseTypes());
         else
-            caseTypes = (Sequential)empty_.get_();
+            caseTypes = (Sequential<? extends OpenType>)empty_.get_();
         satisfiedTypes = Metamodel.getMetamodelSequential(declaration.getSatisfiedTypes());
         container = Metamodel.getOrCreateMetamodel(declaration.getDeclaration());
     }

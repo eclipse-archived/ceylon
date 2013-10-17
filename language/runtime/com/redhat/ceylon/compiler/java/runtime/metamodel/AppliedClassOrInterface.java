@@ -80,6 +80,7 @@ public abstract class AppliedClassOrInterface<Type>
         }
     }
     
+    @SuppressWarnings("unchecked")
     protected void init() {
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface decl = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) producedType.getDeclaration();
         this.declaration = (FreeClassOrInterface) Metamodel.getOrCreateMetamodel(decl);
@@ -88,7 +89,7 @@ public abstract class AppliedClassOrInterface<Type>
         com.redhat.ceylon.compiler.typechecker.model.ProducedType superType = decl.getExtendedType();
         if(superType != null){
             com.redhat.ceylon.compiler.typechecker.model.ProducedType superTypeResolved = superType.substitute(producedType.getTypeArguments());
-            this.superclass = (ceylon.language.meta.model.ClassModel) Metamodel.getAppliedMetamodel(superTypeResolved);
+            this.superclass = (ceylon.language.meta.model.ClassModel<?,? super Sequential<? extends Object>>) Metamodel.getAppliedMetamodel(superTypeResolved);
         }
         
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes = decl.getSatisfiedTypes();
@@ -128,6 +129,7 @@ public abstract class AppliedClassOrInterface<Type>
         return superclass;
     }
 
+    @SuppressWarnings({ "hiding", "unchecked" })
     @Ignore
     @Override
     public <Container, Type, Arguments extends Sequential<? extends Object>>
@@ -136,9 +138,11 @@ public abstract class AppliedClassOrInterface<Type>
                                                                          @Ignore TypeDescriptor $reifiedArguments, 
                                                                          String name){
         
-        return getMethod($reifiedContainer, $reifiedType, $reifiedArguments, name, (Sequential)empty_.get_());
+        return getMethod($reifiedContainer, $reifiedType, $reifiedArguments, name, 
+                (Sequential<? extends ceylon.language.meta.model.Type<?>>)empty_.get_());
     }
 
+    @SuppressWarnings("hiding")
     @Override
     @TypeParameters({
         @TypeParameter(value = "Container"),
@@ -161,6 +165,7 @@ public abstract class AppliedClassOrInterface<Type>
         return method.memberApply($reifiedContainer, $reifiedType, $reifiedArguments, appliedContainer, types);
     }
 
+    @SuppressWarnings({ "hiding", "unchecked" })
     @Ignore
     @Override
     public <Container, Type, Arguments extends Sequential<? extends Object>>
@@ -169,10 +174,11 @@ public abstract class AppliedClassOrInterface<Type>
                                                                          @Ignore TypeDescriptor $reifiedArguments, 
                                                                          String name){
         
-        return getDeclaredMethod($reifiedContainer, $reifiedType, $reifiedArguments, name, (Sequential)empty_.get_());
+        return getDeclaredMethod($reifiedContainer, $reifiedType, $reifiedArguments, name, 
+                (Sequential<? extends ceylon.language.meta.model.Type<?>>)empty_.get_());
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "hiding" })
     @Override
     @TypeParameters({
         @TypeParameter(value = "Container"),
@@ -195,6 +201,7 @@ public abstract class AppliedClassOrInterface<Type>
                 (ceylon.language.meta.model.Type<Container>)this, types);
     }
 
+    @SuppressWarnings("unchecked")
     @Ignore
     @Override
     public <Container, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
@@ -202,7 +209,8 @@ public abstract class AppliedClassOrInterface<Type>
                                                                             @Ignore TypeDescriptor $reifiedKind, 
                                                                             String name){
         
-        return getClassOrInterface($reifiedContainer, $reifiedKind, name, (Sequential)empty_.get_());
+        return getClassOrInterface($reifiedContainer, $reifiedKind, name, 
+                (Sequential<? extends ceylon.language.meta.model.Type<?>>)empty_.get_());
     }
 
     @Override
@@ -222,6 +230,7 @@ public abstract class AppliedClassOrInterface<Type>
         return applyClassOrInterface($reifiedContainer, $reifiedKind, type, types);
     }
 
+    @SuppressWarnings("unchecked")
     @Ignore
     @Override
     public <Container, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
@@ -229,7 +238,8 @@ public abstract class AppliedClassOrInterface<Type>
                                                                             @Ignore TypeDescriptor $reifiedKind, 
                                                                             String name){
         
-        return getDeclaredClassOrInterface($reifiedContainer, $reifiedKind, name, (Sequential)empty_.get_());
+        return getDeclaredClassOrInterface($reifiedContainer, $reifiedKind, name, 
+                (Sequential<? extends ceylon.language.meta.model.Type<?>>)empty_.get_());
     }
 
     @Override
@@ -249,6 +259,7 @@ public abstract class AppliedClassOrInterface<Type>
         return applyClassOrInterface($reifiedContainer, $reifiedKind, type, types);
     }
     
+    @SuppressWarnings("rawtypes")
     private <Container, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
     ceylon.language.meta.model.Member<Container, Kind> applyClassOrInterface(@Ignore TypeDescriptor $reifiedContainer, 
                                                                         @Ignore TypeDescriptor $reifiedKind, 
@@ -282,6 +293,7 @@ public abstract class AppliedClassOrInterface<Type>
         return member;
     }
 
+    @SuppressWarnings({ "hiding", "unchecked" })
     @Ignore
     @Override
     public <Container, Type, Arguments extends ceylon.language.Sequential<? extends java.lang.Object>>
@@ -290,9 +302,11 @@ public abstract class AppliedClassOrInterface<Type>
                                                                             @Ignore TypeDescriptor $reifiedArguments, 
                                                                             String name){
         
-        return $getClass($reifiedContainer, $reifiedType, $reifiedArguments, name, (Sequential)empty_.get_());
+        return $getClass($reifiedContainer, $reifiedType, $reifiedArguments, name, 
+                (Sequential<? extends ceylon.language.meta.model.Type<?>>)empty_.get_());
     }
 
+    @SuppressWarnings("hiding")
     @Override
     @TypeParameters({
         @TypeParameter(value = "Container"),
@@ -316,6 +330,7 @@ public abstract class AppliedClassOrInterface<Type>
                                                   appliedContainer, types);
     }
     
+    @SuppressWarnings({ "hiding", "unchecked" })
     @Ignore
     @Override
     public <Container, Type, Arguments extends ceylon.language.Sequential<? extends java.lang.Object>>
@@ -324,10 +339,11 @@ public abstract class AppliedClassOrInterface<Type>
                                                                             @Ignore TypeDescriptor $reifiedArguments, 
                                                                             String name){
         
-        return getDeclaredClass($reifiedContainer, $reifiedType, $reifiedArguments, name, (Sequential)empty_.get_());
+        return getDeclaredClass($reifiedContainer, $reifiedType, $reifiedArguments, name, 
+                (Sequential<? extends ceylon.language.meta.model.Type<?>>)empty_.get_());
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "hiding" })
     @Override
     @TypeParameters({
         @TypeParameter(value = "Container"),
@@ -350,6 +366,7 @@ public abstract class AppliedClassOrInterface<Type>
                                                   (ceylon.language.meta.model.Type<Container>)this, types);
     }
 
+    @SuppressWarnings({ "hiding", "unchecked" })
     @Ignore
     @Override
     public <Container, Type>
@@ -357,10 +374,11 @@ public abstract class AppliedClassOrInterface<Type>
                                                                             @Ignore TypeDescriptor $reifiedType, 
                                                                             String name){
         
-        return getInterface($reifiedContainer, $reifiedType, name, (Sequential)empty_.get_());
+        return getInterface($reifiedContainer, $reifiedType, name, 
+                (Sequential<? extends ceylon.language.meta.model.Type<?>>)empty_.get_());
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "hiding" })
     @Override
     @TypeParameters({
         @TypeParameter(value = "Container"),
@@ -382,6 +400,7 @@ public abstract class AppliedClassOrInterface<Type>
                 type.memberApply($reifiedContainer, $reifiedType, appliedContainer);
     }
 
+    @SuppressWarnings({ "hiding", "unchecked" })
     @Ignore
     @Override
     public <Container, Type>
@@ -389,10 +408,11 @@ public abstract class AppliedClassOrInterface<Type>
                                                                             @Ignore TypeDescriptor $reifiedType, 
                                                                             String name){
         
-        return getDeclaredInterface($reifiedContainer, $reifiedType, name, (Sequential)empty_.get_());
+        return getDeclaredInterface($reifiedContainer, $reifiedType, name, 
+                (Sequential<? extends ceylon.language.meta.model.Type<?>>)empty_.get_());
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "hiding" })
     @Override
     @TypeParameters({
         @TypeParameter(value = "Container"),
@@ -414,6 +434,7 @@ public abstract class AppliedClassOrInterface<Type>
                                  (ceylon.language.meta.model.Type<Container>)this);
     }
 
+    @SuppressWarnings("hiding")
     @Override
     @TypeParameters({
         @TypeParameter(value = "Container"),
@@ -445,6 +466,7 @@ public abstract class AppliedClassOrInterface<Type>
         }
     }
 
+    @SuppressWarnings({ "hiding", "unchecked" })
     @Override
     @TypeParameters({
         @TypeParameter(value = "Container"),
@@ -460,7 +482,8 @@ public abstract class AppliedClassOrInterface<Type>
         final FreeValue value = declaration.findDeclaredValue(name);
         if(value == null)
             return null;
-        return value.<Container, Type>memberApply($reifiedContainer, $reifiedType, (ceylon.language.meta.model.Type)this);
+        return value.memberApply($reifiedContainer, $reifiedType, 
+                (ceylon.language.meta.model.Type<Container>)this);
     }
 
     @Override

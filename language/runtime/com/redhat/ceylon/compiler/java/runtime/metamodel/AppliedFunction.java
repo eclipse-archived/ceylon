@@ -289,6 +289,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Ignore
     @Override
     public Type $call$(Object... args) {
@@ -415,7 +416,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             return true;
         if(obj instanceof AppliedFunction == false)
             return false;
-        AppliedFunction other = (AppliedFunction) obj;
+        AppliedFunction<?,?> other = (AppliedFunction<?,?>) obj;
         // in theory, if our instance is the same, our containing type should be the same
         // and if we don't have an instance we're a toplevel and have no containing type
         return getDeclaration().equals(other.getDeclaration())

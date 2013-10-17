@@ -8,6 +8,7 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.meta.declaration.ClassDeclaration$impl;
+import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
 import ceylon.language.meta.declaration.FunctionalDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -39,6 +40,7 @@ public class FreeClass
         super(declaration);
     }
     
+    @SuppressWarnings("unchecked")
     @Override
     protected void init() {
         super.init();
@@ -54,7 +56,7 @@ public class FreeClass
             }
             this.parameters = Util.sequentialInstance(ceylon.language.meta.declaration.FunctionOrValueDeclaration.$TypeDescriptor$, parameters);
         }else{
-            this.parameters = (Sequential) empty_.get_();
+            this.parameters = (Sequential<? extends FunctionOrValueDeclaration>) empty_.get_();
         }
     }
     
@@ -157,7 +159,7 @@ public class FreeClass
                                                  (Sequential)empty_.get_());
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @TypeInfo("ceylon.language.meta.model::MemberClass<Container,Type,Arguments>")
     @TypeParameters({
         @TypeParameter("Container"),
@@ -192,16 +194,18 @@ public class FreeClass
         return member;
     }
 
+    @SuppressWarnings("unchecked")
     @Ignore
     @Override
     public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> instantiate$typeArguments(){
-        return (ceylon.language.Sequential)empty_.get_();
+        return (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)empty_.get_();
     }
 
+    @SuppressWarnings("unchecked")
     @Ignore
     @Override
     public java.lang.Object instantiate(){
-        return instantiate((ceylon.language.Sequential)empty_.get_());
+        return instantiate((ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)empty_.get_());
     }
 
     @Ignore
@@ -222,17 +226,19 @@ public class FreeClass
         return classApply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType, typeArguments).apply(arguments);
     }
 
+    @SuppressWarnings("unchecked")
     @Ignore
     @Override
     public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> 
         memberInstantiate$typeArguments(java.lang.Object container){
-        return (ceylon.language.Sequential)empty_.get_();
+        return (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)empty_.get_();
     }
 
+    @SuppressWarnings("unchecked")
     @Ignore
     @Override
     public java.lang.Object memberInstantiate(java.lang.Object container){
-        return memberInstantiate(container, (ceylon.language.Sequential)empty_.get_());
+        return memberInstantiate(container, (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)empty_.get_());
     }
 
     @Ignore

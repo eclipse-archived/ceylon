@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
-import ceylon.language.Annotated;
 import ceylon.language.Annotated$impl;
 import ceylon.language.meta.declaration.SetterDeclaration;
 import ceylon.language.meta.declaration.SetterDeclaration$impl;
