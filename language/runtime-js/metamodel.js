@@ -20,7 +20,9 @@ function type$meta(x,$$targs$$) {
     if (x.$$metamodel$$.$t) //it's an object
       return AppliedValue(undefined,x.$$metamodel$$.$t.t, {Type:x.$$metamodel$$.$t});
   }
-  return AppliedClass($$targs$$.Type.t, {Type:$$targs$$.Type, Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
+  var c=AppliedClass($$targs$$.Type.t, {Type:$$targs$$.Type, Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
+  if ($$targs$$.Type.a)c.$targs=$$targs$$.Type.a;
+  return c;
 }
 type$meta.$$metamodel$$={$ps:[{t:Anything}],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language.meta','type']};
 exports.type$meta=type$meta;
@@ -45,9 +47,13 @@ function typeLiteral$meta($$targs$$) {
       }
       var mdl = get_model(mm);
       if (mdl['$mt'] === 'cls') {
-        return AppliedClass(t,{Type:$$targs$$.Type,Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
+        var r=AppliedClass(t,{Type:$$targs$$.Type,Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
+        if ($$targs$$.Type.a)r.$targs=$$targs$$.Type.a;
+        return r;
       } else if (mdl['$mt'] === 'ifc') {
-        return AppliedInterface(t,$$targs$$);
+        var r=AppliedInterface(t,$$targs$$);
+        if ($$targs$$.Type.a)r.$targs=$$targs$$.Type.a;
+        return r;
       } else if (mdl['$mt'] === 'mthd') {
         return AppliedFunction(t,{Type:$$targs$$.Type,Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
       } else if (mdl['$mt'] === 'attr' || mdl['$mt'] === 'gttr' || mdl['$mt'] === 'obj') {
