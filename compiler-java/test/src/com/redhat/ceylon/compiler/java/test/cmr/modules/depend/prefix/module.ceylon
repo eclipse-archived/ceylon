@@ -17,4 +17,4 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-module com.redhat.ceylon.compiler.java.test.cmr.modules.depend.prefix '0.1' {}
+module com.redhat.ceylon.compiler.java.test.cmr.modules.depend.prefix "0.1" {}

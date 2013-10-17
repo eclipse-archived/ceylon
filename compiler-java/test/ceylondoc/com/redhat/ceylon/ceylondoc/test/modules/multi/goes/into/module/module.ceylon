@@ -17,6 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-module goes.into.module '1' {}
+module goes.into.module "1" {}
 
 A B B ERROR

@@ -20,6 +20,6 @@
 "Bla bla."
 by("Stef FroMage")
 license("http://www.gnu.org/licenses/gpl.html")
-module com.redhat.ceylon.compiler.java.test.cmr.modules.depend.c '6.6.6' {
-    import com.redhat.ceylon.compiler.java.test.cmr.modules.depend.b '6.6.6';
+module com.redhat.ceylon.compiler.java.test.cmr.modules.depend.c "6.6.6" {
+    import com.redhat.ceylon.compiler.java.test.cmr.modules.depend.b "6.6.6";
 }

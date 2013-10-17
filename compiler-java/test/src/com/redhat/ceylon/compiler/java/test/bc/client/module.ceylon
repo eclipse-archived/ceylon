@@ -17,6 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-module com.redhat.ceylon.compiler.java.test.bc.client '0.1' {
-    import com.redhat.ceylon.compiler.java.test.bc.provider '0.1';
+module com.redhat.ceylon.compiler.java.test.bc.client "0.1" {
+    import com.redhat.ceylon.compiler.java.test.bc.provider "0.1";
 }

@@ -17,4 +17,4 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-module com.redhat.ceylon.tools.test.test_mod_source.src_tool_test '1.0.0' {}
+module com.redhat.ceylon.tools.test.test_mod_source.src_tool_test "1.0.0" {}

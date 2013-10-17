@@ -17,4 +17,4 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-module com.redhat.ceylon.compiler.java.test.issues.bug04xx.bug458.a '1.0.0' {}
+module com.redhat.ceylon.compiler.java.test.issues.bug04xx.bug458.a "1.0.0" {}

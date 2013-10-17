@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-module com.redhat.ceylon.compiler.java.test.interop '1' {
-    import java.base '7';
-    import javax.xml '7';
-    import java.desktop '7';
-    import oracle.jdk.httpserver '7';
-    import javax.annotation '7';
+module com.redhat.ceylon.compiler.java.test.interop "1" {
+    import java.base "7";
+    import javax.xml "7";
+    import java.desktop "7";
+    import oracle.jdk.httpserver "7";
+    import javax.annotation "7";
 }

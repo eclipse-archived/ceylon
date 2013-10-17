@@ -20,6 +20,6 @@
 "Testing transitive imports of legacy modules"
 by("Tako Schotanus")
 license("http://www.gnu.org/licenses/gpl.html")
-module com.redhat.ceylon.compiler.java.test.cmr.modules.legacyimport '6.6.6' {
-    import com.redhat.ceylon.typechecker '1.0.0';
+module com.redhat.ceylon.compiler.java.test.cmr.modules.legacyimport "6.6.6" {
+    import com.redhat.ceylon.typechecker "1.0.0";
 }

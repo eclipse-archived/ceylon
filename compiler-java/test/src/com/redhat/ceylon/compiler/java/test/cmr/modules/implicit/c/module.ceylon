@@ -20,6 +20,6 @@
 "Bla bla."
 by("David Festal")
 license("http://www.gnu.org/licenses/gpl.html")
-module com.redhat.ceylon.compiler.java.test.cmr.modules.implicit.c '1.2.3' {
-    shared import com.redhat.ceylon.compiler.java.test.cmr.modules.implicit.b '1.2.3';
+module com.redhat.ceylon.compiler.java.test.cmr.modules.implicit.c "1.2.3" {
+    shared import com.redhat.ceylon.compiler.java.test.cmr.modules.implicit.b "1.2.3";
 }

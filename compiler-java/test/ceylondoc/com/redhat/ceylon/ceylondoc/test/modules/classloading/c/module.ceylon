@@ -17,6 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-module com.redhat.ceylon.ceylondoc.test.modules.classloading.c '1.0' {
-    import com.redhat.ceylon.ceylondoc.test.modules.classloading.b '1.0';
+module com.redhat.ceylon.ceylondoc.test.modules.classloading.c "1.0" {
+    import com.redhat.ceylon.ceylondoc.test.modules.classloading.b "1.0";
 }

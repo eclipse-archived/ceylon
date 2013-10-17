@@ -20,4 +20,4 @@
 "Bla bla."
 by("David Festal")
 license("http://www.gnu.org/licenses/gpl.html")
-module com.redhat.ceylon.compiler.java.test.cmr.modules.implicit.a '1.2.3' {}
+module com.redhat.ceylon.compiler.java.test.cmr.modules.implicit.a "1.2.3" {}

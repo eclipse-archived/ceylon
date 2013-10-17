@@ -20,4 +20,4 @@
 "Bla bla."
 by("Stef FroMage", "Tomas Hradec")
 license("http://www.gnu.org/licenses/gpl.html")
-module com.redhat.ceylon.compiler.java.test.annotations '1.2.3' {}
+module com.redhat.ceylon.compiler.java.test.annotations "1.2.3" {}
