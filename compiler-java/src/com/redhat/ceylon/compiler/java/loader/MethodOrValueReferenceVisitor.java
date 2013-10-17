@@ -90,9 +90,11 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                     }
                     
                     // Accessing another instance's member passed to a class initializer
-                    if (that instanceof Tree.QualifiedMemberExpression
-                            && ((Tree.QualifiedMemberExpression)that).getPrimary().getTypeModel().getDeclaration().equals(d.getContainer())) {
-                        ((MethodOrValue)d).setCaptured(true);
+                    if (that instanceof Tree.QualifiedMemberExpression) {
+                        if (decl instanceof TypedDeclaration
+                                && ((TypedDeclaration)decl).getOtherInstanceAccess()) {
+                            ((MethodOrValue)d).setCaptured(true);
+                        }
                     }
                     
                     if (isCapturableMplParameter(d)) {
