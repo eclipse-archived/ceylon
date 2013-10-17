@@ -44,6 +44,13 @@ public class CeylonRunAntTask extends CeylonAntTask {
         super("run");
     }
 
+    /**
+     * Calling the run tool ATM needs a new JVM: https://github.com/ceylon/ceylon-compiler/issues/1366
+     */
+    protected boolean shouldSpawnJvm() {
+        return true;
+    }
+
 	/**
      * Set the source directories to find the source Java and Ceylon files.
      * @param src the source directories as a path

@@ -102,14 +102,19 @@ public abstract class CeylonAntTask extends Task {
      */
     protected void executeCommandline(Commandline cmd) {
         try {
-//            Execute exe = new Execute(new LogStreamHandler(this, Project.MSG_INFO, Project.MSG_WARN));
-//            exe.setAntRun(getProject());
-//            exe.setWorkingDirectory(getProject().getBaseDir());
-//            exe.setCommandline(cmd.getCommandline());
-//            exe.execute();
-//            int exitValue = exe.getExitValue();
-            log("Command line " + Arrays.toString(cmd.getCommandline()), Project.MSG_VERBOSE);
-            int exitValue = Launcher.run(cmd.getArguments());
+            int exitValue;
+            if(shouldSpawnJvm()){
+                log("Spawning new process: " + Arrays.toString(cmd.getCommandline()), Project.MSG_VERBOSE);
+                Execute exe = new Execute(new LogStreamHandler(this, Project.MSG_INFO, Project.MSG_WARN));
+                exe.setAntRun(getProject());
+                exe.setWorkingDirectory(getProject().getBaseDir());
+                exe.setCommandline(cmd.getCommandline());
+                exe.execute();
+                exitValue = exe.getExitValue();
+            }else{
+                log("Launching Launcher in this JVM: " + Arrays.toString(cmd.getArguments()), Project.MSG_VERBOSE);
+                exitValue = Launcher.run(cmd.getArguments());
+            }
             if (exitValue != 0) {
                 String message = formatFailureMessage(cmd);
                 exitHandler.handleExit(this, exitValue, message);
@@ -119,6 +124,16 @@ public abstract class CeylonAntTask extends Task {
         } catch (Throwable e) {
             throw new BuildException("Error running Ceylon " + toolName + " tool (an exception was thrown, run ant with -v parameter to see the exception)", e, getLocation());
         }
+    }
+
+    /**
+     * For now this is not a setting, because we must have it for ceylon-run and it's kinda useless for the
+     * other tools.
+     * See https://github.com/ceylon/ceylon-compiler/issues/1076
+     * See https://github.com/ceylon/ceylon-compiler/issues/1366
+     */
+    protected boolean shouldSpawnJvm() {
+        return false;
     }
 
     protected String formatFailureMessage(Commandline cmd) {
