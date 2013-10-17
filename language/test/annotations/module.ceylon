@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 "Some module doc"
-module annotations '0.1' {
+module annotations "0.1" {
     "Not actually needed, but we want to test ModuleImports"
-    deprecated optional import metamodel '0.1';
+    deprecated optional import metamodel "0.1";
 }
