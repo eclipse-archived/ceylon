@@ -53,7 +53,7 @@
     <property name="ceylon.module-resolver.repo" value="${ceylon.repo.dir}/${ceylon.module-resolver.dir}"/>
     <property name="ceylon.module-resolver.dist" value="${build.dist.repo}/${ceylon.module-resolver.dir}"/>
 
-    <property name="ceylon.maven-support.jar" value="${ceylon.maven-support.dir}/main/${ceylon.maven-support.module}"/>
+    <property name="ceylon.maven-support.jar" value="${ceylon.maven-support.repo}"/>
     <property name="ceylon.maven-support.repo" value="${ceylon.repo.dir}/${ceylon.maven-support.dir}"/>
     <property name="ceylon.maven-support.dist" value="${build.dist.repo}/${ceylon.maven-support.dir}"/>
 
