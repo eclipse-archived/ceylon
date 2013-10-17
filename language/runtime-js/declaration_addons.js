@@ -20,13 +20,13 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration.$
 
 defineAttr(FunctionalDeclaration$meta$declaration.$$.prototype,'parameterDeclarations',function(){
   var that=this;
-  var parms = that.tipo.$$metamodel$$['$ps'];
-  if (parms === null || parms === undefined || parms.length === 0)return getEmpty();
+  var parms = that.tipo.$$metamodel$$.$ps;
+  if (!parms || parms.length === 0)return getEmpty();
   var rv = [];
   for (var i=0; i<parms.length;i++) {
     var p = parms[i];
 //TODO set "parameter" to true
-    if (p['$pt'] === 'f') {
+    if (p.$pt === 'f') {
       console.log("parametro funcional");
     } else {
       rv.push(OpenValue(that.containingPackage, p));
@@ -102,13 +102,14 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply=function(types,
     var i=0;
     _t.a={};
     for (var tp in tparms) {
-      if (types[i]===undefined)
+      var _type=types.$get(i);
+      if (_type===undefined)
         throw TypeApplicationException$meta$model(String$("Missing type argument for " + tp));
       var _tp = tparms[tp];
-      var _ta = types[i].tipo;
-      _t.a[tp]= _ta.t ? _ta : {t:types[i].tipo};
+      var _ta = _type.tipo;
+      _t.a[tp]= _ta.t ? _ta : {t:_type.tipo};
       if ((_tp.satisfies && _tp.satisfies.length>0) || (_tp.of && _tp.of.length > 0)) {
-        var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satifies:_tp.of;
+        var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satisfies:_tp.of;
         for (var j=0; j<restraints.length;j++) {
           if (!extendsType(_t.a[tp],restraints[j]))
             throw TypeApplicationException$meta$model(String$("Type argument for " + tp + " violates type parameter constraints"));
@@ -119,8 +120,8 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply=function(types,
   }
   if (!extendsType(_t, $mptypes.Type))
     throw IncompatibleTypeException$meta$model(String$("Type argument for 'Type' must be a supertype of " + this));
-  if (this.meta.$mt==='ifc')
-    return AppliedInterface(_t, $mptypes);
-  return AppliedClass(_t, $mptypes);
+  var rv=this.meta.$mt==='ifc'?AppliedInterface(_t.t, $mptypes):AppliedClass(_t.t, $mptypes);
+  if (_t.a)rv._targs=_t.a;
+  return rv;
 }
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','apply']};};
