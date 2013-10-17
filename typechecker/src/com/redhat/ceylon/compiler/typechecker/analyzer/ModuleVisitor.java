@@ -60,9 +60,35 @@ public class ModuleVisitor extends Visitor {
         super.visit(that);
     }
     
-    private String getVersionString(Tree.QuotedLiteral that) {
-        return that==null ? null : that.getText()
-                .substring(1, that.getText().length() - 1);
+    private static String getVersionString(Tree.QuotedLiteral quoted) {
+        if (quoted==null) {
+            return null;
+        }
+        else {
+            String versionString = quoted.getText();
+            if (versionString.length()<2) {
+                return "";
+            }
+            else {
+                if (versionString.charAt(0)=='\'') {
+                    quoted.addError("version should be double-quoted");
+                }
+                return versionString.substring(1, versionString.length()-1);
+            }
+        }
+    }
+
+    private static String getNameString(Tree.QuotedLiteral quoted) {
+        String nameString = quoted.getText();
+        if (nameString.length()<2) {
+            return "";
+        }
+        else {
+            if (nameString.charAt(0)=='\'') {
+                quoted.addError("module name should be double-quoted");
+            }
+            return nameString.substring(1, nameString.length()-1);
+        }
     }
     
     @Override
@@ -168,13 +194,7 @@ public class ModuleVisitor extends Visitor {
             	node = that.getImportPath();
             }
             else if (that.getQuotedLiteral()!=null) {
-                String nameString = that.getQuotedLiteral().getText();
-                if (nameString.length()<2) {
-                    nameString = "";
-                }
-                else {
-                    nameString = nameString.substring(1, nameString.length()-1);
-                }
+                String nameString = getNameString(that.getQuotedLiteral());
                 name = asList(nameString.split("\\."));
                 node = that.getQuotedLiteral();
             }
