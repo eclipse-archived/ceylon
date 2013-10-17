@@ -23,7 +23,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Class
 @SatisfiedTypes("ceylon.language.meta.declaration::Variable")
 public class FreeVariable
-        extends FreeAttribute
+        extends FreeValue
         implements VariableDeclaration {
 
     @Ignore

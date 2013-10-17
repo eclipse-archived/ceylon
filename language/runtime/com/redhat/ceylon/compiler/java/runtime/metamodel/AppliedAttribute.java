@@ -28,7 +28,7 @@ public class AppliedAttribute<Container, Type>
     extends AppliedMember<Container, ceylon.language.meta.model.Value<? extends Type>>
     implements ceylon.language.meta.model.Attribute<Container, Type> {
 
-    protected FreeAttribute declaration;
+    protected FreeValue declaration;
     protected ProducedTypedReference typedReference;
     private ceylon.language.meta.model.Type<? extends Type> closedType;
     @Ignore
@@ -36,7 +36,7 @@ public class AppliedAttribute<Container, Type>
     
     public AppliedAttribute(@Ignore TypeDescriptor $reifiedContainer, 
                             @Ignore TypeDescriptor $reifiedType,
-                            FreeAttribute declaration, ProducedTypedReference typedReference,
+                            FreeValue declaration, ProducedTypedReference typedReference,
                             ceylon.language.meta.model.Type<? extends Object> container) {
         super($reifiedContainer, TypeDescriptor.klass(ceylon.language.meta.model.Value.class, $reifiedType), container);
         this.declaration = declaration;
@@ -88,7 +88,7 @@ public class AppliedAttribute<Container, Type>
 
     public static <ContainerType, ValueType> ceylon.language.meta.model.Attribute<ContainerType, ValueType> 
         instance(@Ignore TypeDescriptor $reifiedContainer, @Ignore TypeDescriptor reifiedValueType, 
-                 FreeAttribute value, ProducedTypedReference valueTypedReference, 
+                 FreeValue value, ProducedTypedReference valueTypedReference, 
                  com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration decl,
                  ceylon.language.meta.model.ClassOrInterface<? extends Object> container) {
         return decl.isVariable()

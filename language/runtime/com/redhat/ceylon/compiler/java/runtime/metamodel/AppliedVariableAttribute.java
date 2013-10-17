@@ -18,7 +18,7 @@ public class AppliedVariableAttribute<Container, Type>
     implements ceylon.language.meta.model.VariableAttribute<Container, Type> {
 
     public AppliedVariableAttribute(@Ignore TypeDescriptor $reifiedContainer, @Ignore TypeDescriptor $reifiedType, 
-                                    FreeAttribute declaration, ProducedTypedReference typedReference,
+                                    FreeValue declaration, ProducedTypedReference typedReference,
                                     ceylon.language.meta.model.Type<? extends Object> container) {
         super($reifiedContainer, $reifiedType, declaration, typedReference, container);
     }

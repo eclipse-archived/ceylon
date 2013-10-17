@@ -40,13 +40,13 @@ public class AppliedValue<Type>
     private ceylon.language.meta.model.Type<Type> type;
     @Ignore
     protected TypeDescriptor $reifiedType;
-    protected FreeAttribute declaration;
+    protected FreeValue declaration;
     private MethodHandle getter;
     private Object instance;
     private ceylon.language.meta.model.Type<? extends java.lang.Object> container;
     protected ProducedType producedType;
 
-    public AppliedValue(@Ignore TypeDescriptor $reifiedType, FreeAttribute value, ProducedTypedReference valueTypedReference, 
+    public AppliedValue(@Ignore TypeDescriptor $reifiedType, FreeValue value, ProducedTypedReference valueTypedReference, 
             ceylon.language.meta.model.Type<?> container, Object instance) {
         this.producedType = valueTypedReference.getType();
         this.container = container;

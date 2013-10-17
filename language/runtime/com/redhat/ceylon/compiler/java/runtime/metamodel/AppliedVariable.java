@@ -38,7 +38,7 @@ public class AppliedVariable<Type>
 
     private MethodHandle setter;
 
-    public AppliedVariable(@Ignore TypeDescriptor $reifiedType, FreeAttribute value, ProducedTypedReference valueTypedReference, 
+    public AppliedVariable(@Ignore TypeDescriptor $reifiedType, FreeValue value, ProducedTypedReference valueTypedReference, 
             ceylon.language.meta.model.Type<?> container, Object instance) {
         super($reifiedType, value, valueTypedReference, container, instance);
     }

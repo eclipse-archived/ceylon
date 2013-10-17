@@ -443,14 +443,14 @@ public abstract class FreeClassOrInterface
         return decl instanceof FreeFunction ? (FreeFunction)decl : null;
     }
 
-    FreeAttribute findValue(String name) {
+    FreeValue findValue(String name) {
         FreeNestableDeclaration decl = this.findDeclaration(null, name);
-        return decl instanceof FreeAttribute ? (FreeAttribute)decl : null;
+        return decl instanceof FreeValue ? (FreeValue)decl : null;
     }
 
-    FreeAttribute findDeclaredValue(String name) {
+    FreeValue findDeclaredValue(String name) {
         FreeNestableDeclaration decl = this.findDeclaredDeclaration(null, name);
-        return decl instanceof FreeAttribute ? (FreeAttribute)decl : null;
+        return decl instanceof FreeValue ? (FreeValue)decl : null;
     }
 
     FreeClassOrInterface findType(String name) {

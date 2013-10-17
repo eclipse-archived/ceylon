@@ -182,7 +182,7 @@ public class Metamodel {
                     if (value.isVariable()) {
                         ret = new FreeVariable(value);
                     } else {
-                        ret = new FreeAttribute(value);
+                        ret = new FreeValue(value);
                     }
                 }else{
                     throw new RuntimeException("Declaration type not supported yet: "+declaration);

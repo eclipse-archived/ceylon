@@ -177,7 +177,7 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
         if(toplevel instanceof com.redhat.ceylon.compiler.typechecker.model.Value == false)
             return null;
         com.redhat.ceylon.compiler.typechecker.model.Value decl = (com.redhat.ceylon.compiler.typechecker.model.Value) toplevel;
-        return (FreeAttribute) Metamodel.getOrCreateMetamodel(decl);
+        return (FreeValue) Metamodel.getOrCreateMetamodel(decl);
     }
 
     @Override

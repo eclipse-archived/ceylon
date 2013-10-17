@@ -24,16 +24,16 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 
 @Ceylon(major = 6)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class FreeAttribute 
+public class FreeValue 
     extends FreeFunctionOrValue
     implements ceylon.language.meta.declaration.ValueDeclaration, AnnotationBearing {
 
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeAttribute.class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeValue.class);
     
     private OpenType type;
 
-    protected FreeAttribute(com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration declaration) {
+    protected FreeValue(com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration declaration) {
         super(declaration);
 
         this.type = Metamodel.getMetamodel(declaration.getType());

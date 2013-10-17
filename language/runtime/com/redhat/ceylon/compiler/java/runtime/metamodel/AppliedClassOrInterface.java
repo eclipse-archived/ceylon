@@ -426,7 +426,7 @@ public abstract class AppliedClassOrInterface<Type>
                                                                         String name) {
         
         checkInit();
-        final FreeAttribute value = declaration.findValue(name);
+        final FreeValue value = declaration.findValue(name);
         if(value == null)
             return null;
         ceylon.language.meta.model.Type<Container> appliedContainer = getAppliedContainer($reifiedContainer, value);
@@ -457,7 +457,7 @@ public abstract class AppliedClassOrInterface<Type>
                                                                         String name) {
         
         checkInit();
-        final FreeAttribute value = declaration.findDeclaredValue(name);
+        final FreeValue value = declaration.findDeclaredValue(name);
         if(value == null)
             return null;
         return value.<Container, Type>memberApply($reifiedContainer, $reifiedType, (ceylon.language.meta.model.Type)this);
