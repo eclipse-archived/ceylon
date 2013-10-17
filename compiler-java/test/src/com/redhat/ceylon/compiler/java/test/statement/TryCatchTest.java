@@ -6,6 +6,11 @@ import com.redhat.ceylon.compiler.java.test.CompilerTest;
 
 public class TryCatchTest extends CompilerTest {
 
+    @Override
+    protected String transformDestDir(String name) {
+        return name + "-trycatch";
+    }
+    
     protected ModuleWithArtifact getDestModuleWithArtifact() {
         return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.statement.trycatch", "1");
     }
