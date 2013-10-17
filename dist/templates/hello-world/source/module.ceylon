@@ -1,1 +1,1 @@
-module @[module.name] '@[module.version]' {} 
+module @[module.name] "@[module.version]" {} 
