@@ -3635,7 +3635,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             Declaration decl) {
         if (qualExpr == null 
                 && isWithinSyntheticClassBody()
-                && decl.isMember() && !Decl.isLocalToInitializer(decl)) {
+                && decl.isMember() 
+                && !Decl.isLocalToInitializer(decl)
+                && !isWithinSuperInvocation()) {
             // First check whether the expression is captured from an enclosing scope
             TypeDeclaration outer = null;
             Scope stop = decl.getScope();
