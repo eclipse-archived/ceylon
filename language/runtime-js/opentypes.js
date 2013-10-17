@@ -122,32 +122,52 @@ function OpenFunction(pkg, meta, that){
 }
 OpenFunction.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:FunctionDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','FunctionDeclaration']};};
 function $init$OpenFunction(){
-    if (OpenFunction.$$===undefined){
-        initTypeProto(OpenFunction,'ceylon.language.meta.declaration::OpenFunction',Basic,FunctionDeclaration$meta$declaration);
-        (function($$openFunction){
-            
-            //MethodDefinition apply at X (20:4-20:81)
-            $$openFunction.$apply=function $apply(types$2){
-                var $$openFunction=this;
-                if(types$2===undefined){types$2=getEmpty();}
-                throw Error("IMPL OpenFunction.apply");
-            };$$openFunction.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Function$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','apply']};};
-            
-            //MethodDefinition memberApply at X (21:4-21:105)
-            $$openFunction.memberApply=function memberApply(instance$3,types$4,$$$mptypes){
-              var $$openFunction=this;
-              if(types$4===undefined){types$4=getEmpty();}
-              //TODO check for naming rules
-              //WTF is types argument for?
-              return AppliedFunction(instance$3[this.name],undefined,instance$3);
-            };$$openFunction.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Function$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Object$}},{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','memberApply']};};
-            
-            //MethodDefinition memberApply at X (22:4-23:54)
-            $$openFunction.memberApply=function memberApply(instance$3,types$5,$$$mptypes){
-                var $$openFunction=this;
-                if(types$5===undefined){types$5=getEmpty();}
-                throw Error("IMPL OpenFunction.memberApply");
-            };$$openFunction.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Method$meta$model,a:{Arguments:'Arguments',Type:'MethodType',Container:'Container'}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenFunction,$tp:{Container:{},MethodType:{},Arguments:{'satisfies':[{t:Sequential,a:{Element:{t:Anything}}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','memberApply']};};
+  if (OpenFunction.$$===undefined){
+    initTypeProto(OpenFunction,'ceylon.language.meta.declaration::OpenFunction',Basic,FunctionDeclaration$meta$declaration);
+    (function($$openFunction){
+      $$openFunction.$apply=function $apply(types,$mptypes){
+        if (typeof(this.tipo.$$metamodel$$)==='function') {
+          this.tipo.$$metamodel$$=this.tipo.$$metamodel$$();
+        }
+        var tps=this.tipo.$$metamodel$$.$tp;
+        if (tps) {
+          if (types===undefined)
+            throw TypeApplicationException$meta$model(String$("Missing type arguments in call to FunctionDeclaration.apply"));
+          var ta={}; var i=0;
+          for (var tp in tps) {
+            if (types[i]===undefined)
+              throw TypeApplicationException$meta$model(String$("Missing type argument for " + tp));
+            var _tp = tps[tp];
+            var _t = types[i].tipo;
+            ta[tp]={t:_t};
+            if ((_tp.satisfies && _tp.satisfies.length>0) || (_tp.of && _tp.of.length > 0)) {
+              var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satifies:_tp.of;
+              for (var j=0; j<restraints.length;j++) {
+                if (!extendsType(ta[tp],restraints[j]))
+                  throw TypeApplicationException$meta$model(String$("Type argument for " + tp + " violates type parameter constraints"));
+              }
+            }
+            i++;
+          }
+          return AppliedFunction(this.tipo,$mptypes,undefined,ta);
+        }
+        return AppliedFunction(this.tipo,$mptypes);
+      };$$openFunction.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Function$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','apply']};};
+
+      $$openFunction.memberApply=function memberApply(cont,types,$mptypes){
+        if(types && types.length) {
+          var tps=this.tipo.$$metamodel$$.$tp;
+          var ta={}; var i=0;
+          for (var tp in tps) {
+console.log("tp " + tp + "=" + tps[tp]);
+            ta[tp]={t:types[i++].tipo};
+          }
+console.log("targs " + require('util').inspect(ta));
+          return AppliedFunction(this.tipo,$mptypes,cont,ta);
+          throw Error("IMPL OpenFunction.apply");
+        }
+        return AppliedFunction(this.tipo,$mptypes,cont);
+      };$$openFunction.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Method$meta$model,a:{Arguments:'Arguments',Type:'MethodType',Container:'Container'}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenFunction,$tp:{Container:{},MethodType:{},Arguments:{'satisfies':[{t:Sequential,a:{Element:{t:Anything}}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','memberApply']};};
             
             //AttributeDeclaration defaulted at X (25:4-25:44)
             defineAttr($$openFunction,'defaulted',function(){
@@ -391,6 +411,9 @@ function $init$OpenClass(){
     initTypeProto(OpenClass,'ceylon.language.meta.declaration::OpenClass',Basic,ClassDeclaration$meta$declaration);
     (function($$openClass){
 
+$$openClass.classApply=function(targs,$mptypes) {
+  return this.$apply(targs,$mptypes);
+}
       defineAttr($$openClass,'string',function(){
         return String$("class " + this.qualifiedName);
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language','Object']};}); 
@@ -538,6 +561,10 @@ function $init$OpenInterface(){
   if (OpenInterface.$$===undefined){
     initTypeProto(OpenInterface,'ceylon.language.meta.declaration::OpenInterface',Basic,InterfaceDeclaration$meta$declaration);
     (function($$openInterface){
+
+$$openInterface.interfaceApply=function(targs,$mptypes) {
+  return this.$apply(targs,$mptypes);
+}
             
 defineAttr($$openInterface,'string',function(){
   return String$("interface " + this.qualifiedName);
