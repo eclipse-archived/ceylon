@@ -168,9 +168,15 @@ public class ModuleVisitor extends Visitor {
             	node = that.getImportPath();
             }
             else if (that.getQuotedLiteral()!=null) {
-            	name = asList(that.getQuotedLiteral().getText()
-            			.replace("'", "").split("\\."));
-            	node = that.getQuotedLiteral();
+                String nameString = that.getQuotedLiteral().getText();
+                if (nameString.length()<2) {
+                    nameString = "";
+                }
+                else {
+                    nameString = nameString.substring(1, nameString.length()-1);
+                }
+                name = asList(nameString.split("\\."));
+                node = that.getQuotedLiteral();
             }
             else {
             	name = Collections.emptyList();
