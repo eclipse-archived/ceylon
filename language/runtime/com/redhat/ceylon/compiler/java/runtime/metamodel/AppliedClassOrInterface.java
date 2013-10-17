@@ -159,7 +159,8 @@ public abstract class AppliedClassOrInterface<Type>
         final FreeFunction method = declaration.findMethod(name);
         if(method == null)
             return null;
-        return method.<SubType, Type, Arguments>getAppliedMethod(this.$reifiedType, $reifiedType, $reifiedArguments, types, this);
+        ceylon.language.meta.model.Type<SubType> appliedContainer = getAppliedContainer($reifiedSubType, method);
+        return method.memberApply($reifiedSubType, $reifiedType, $reifiedArguments, appliedContainer, types);
     }
 
     @Ignore
@@ -323,13 +324,20 @@ public abstract class AppliedClassOrInterface<Type>
         final FreeAttribute value = declaration.findValue(name);
         if(value == null)
             return null;
-        com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration decl = (com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration) value.declaration;
-        ProducedTypedReference typedReference = decl.getProducedTypedReference(producedType, Collections.<ProducedType>emptyList());
-        TypeDescriptor reifiedValueType = Metamodel.getTypeDescriptorForProducedType(typedReference.getType());
-        Metamodel.checkReifiedTypeArgument("getAttribute", "Attribute<$1,$2>", 
-                Variance.IN, producedType, $reifiedContainer,
-                Variance.OUT, typedReference.getType(), $reifiedType);
-        return AppliedAttribute.instance(this.$reifiedType, reifiedValueType, value, typedReference, decl, this);
+        ceylon.language.meta.model.Type<Container> appliedContainer = getAppliedContainer($reifiedContainer, value);
+        return value.<Container, Type>memberApply($reifiedContainer, $reifiedType, appliedContainer);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <Container> ceylon.language.meta.model.Type<Container> getAppliedContainer(@Ignore TypeDescriptor $reifiedContainer, 
+            FreeNestableDeclaration decl) {
+        FreeClassOrInterface valueContainer = (FreeClassOrInterface) decl.getContainer();
+        if(valueContainer != declaration){
+            ProducedType valueContainerType = this.producedType.getSupertype((com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration)valueContainer.declaration);
+            return Metamodel.getAppliedMetamodel(valueContainerType);
+        }else{
+            return (ceylon.language.meta.model.Type<Container>) this;
+        }
     }
 
     @Override
