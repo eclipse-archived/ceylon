@@ -530,10 +530,10 @@ public class AnnotationVisitor extends Visitor {
                         base = value.getTypeDeclaration();
                     }
                 }
-                if (base instanceof TypeDeclaration) {
-                    Declaration qualified = ((TypeDeclaration) base).getMember(names[i], null, false);
+                if (base instanceof TypeDeclaration || base instanceof Functional) {
+                    Declaration qualified = base.getMember(names[i], null, false);
                     if (qualified==null) {
-                        that.addUsageWarning("member declaration does not exist: " + names[i]);
+                        that.addUsageWarning("member declaration or parameter does not exist: " + names[i]);
                         break;
                     }
                     else {
@@ -542,7 +542,7 @@ public class AnnotationVisitor extends Visitor {
                     }
                 }
                 else {
-                    that.addUsageWarning("not a type declaration: " + base.getName());
+                    that.addUsageWarning("not a type or functional declaration: " + base.getName());
                     break;
                 }
             }
