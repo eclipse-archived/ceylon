@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import java.util.Collections;
 import java.util.List;
 
 import ceylon.language.Map;
@@ -23,7 +22,6 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 
 @Ceylon(major = 6)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -165,6 +163,40 @@ public abstract class AppliedClassOrInterface<Type>
 
     @Ignore
     @Override
+    public <SubType, Type, Arguments extends Sequential<? extends Object>>
+    ceylon.language.meta.model.Method<SubType, Type, Arguments> getDeclaredMethod(@Ignore TypeDescriptor $reifiedSubType, 
+                                                                         @Ignore TypeDescriptor $reifiedType, 
+                                                                         @Ignore TypeDescriptor $reifiedArguments, 
+                                                                         String name){
+        
+        return getDeclaredMethod($reifiedSubType, $reifiedType, $reifiedArguments, name, (Sequential)empty_.get_());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    @TypeParameters({
+        @TypeParameter(value = "SubType"),
+        @TypeParameter(value = "Type"),
+        @TypeParameter(value = "Arguments", satisfies = "ceylon.language::Sequential<ceylon.language::Anything>")
+    })
+    @TypeInfo("ceylon.language.meta.model::Method<SubType,Type,Arguments>|ceylon.language::Null")
+    public <SubType, Type, Arguments extends Sequential<? extends Object>>
+        ceylon.language.meta.model.Method<SubType, Type, Arguments> getDeclaredMethod(@Ignore TypeDescriptor $reifiedSubType, 
+                                                                             @Ignore TypeDescriptor $reifiedType, 
+                                                                             @Ignore TypeDescriptor $reifiedArguments, 
+                                                                             String name, 
+                                                                             @Name("types") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
+        
+        checkInit();
+        final FreeFunction method = declaration.findDeclaredMethod(name);
+        if(method == null)
+            return null;
+        return method.memberApply($reifiedSubType, $reifiedType, $reifiedArguments, 
+                (ceylon.language.meta.model.Type<SubType>)this, types);
+    }
+
+    @Ignore
+    @Override
     public <SubType, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
         ceylon.language.meta.model.Member<SubType, Kind> getClassOrInterface(@Ignore TypeDescriptor $reifiedSubType, 
                                                                             @Ignore TypeDescriptor $reifiedKind, 
@@ -187,9 +219,45 @@ public abstract class AppliedClassOrInterface<Type>
         
         checkInit();
         final FreeClassOrInterface type = declaration.findType(name);
+        return applyClassOrInterface($reifiedSubType, $reifiedKind, type, types);
+    }
+
+    @Ignore
+    @Override
+    public <SubType, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
+        ceylon.language.meta.model.Member<SubType, Kind> getDeclaredClassOrInterface(@Ignore TypeDescriptor $reifiedSubType, 
+                                                                            @Ignore TypeDescriptor $reifiedKind, 
+                                                                            String name){
+        
+        return getDeclaredClassOrInterface($reifiedSubType, $reifiedKind, name, (Sequential)empty_.get_());
+    }
+
+    @Override
+    @TypeParameters({
+        @TypeParameter(value = "SubType"),
+        @TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.model::ClassOrInterface<ceylon.language::Anything,ceylon.language::Nothing>")
+    })
+    @TypeInfo("ceylon.language.meta.model::Member<SubType,Kind>|ceylon.language::Null")
+    public <SubType, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
+        ceylon.language.meta.model.Member<SubType, Kind> getDeclaredClassOrInterface(@Ignore TypeDescriptor $reifiedSubType, 
+                                                                            @Ignore TypeDescriptor $reifiedKind, 
+                                                                            String name, 
+                                                                            @Name("types") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
+        
+        checkInit();
+        final FreeClassOrInterface type = declaration.findDeclaredType(name);
+        return applyClassOrInterface($reifiedSubType, $reifiedKind, type, types);
+    }
+    
+    private <SubType, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
+    ceylon.language.meta.model.Member<SubType, Kind> applyClassOrInterface(@Ignore TypeDescriptor $reifiedSubType, 
+                                                                        @Ignore TypeDescriptor $reifiedKind, 
+                                                                        FreeClassOrInterface type, 
+                                                                        Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
         if(type == null)
             return null;
-        Member<SubType, Kind> member = type.getAppliedClassOrInterface(this.$reifiedType, $reifiedKind, types, (AppliedClassOrInterface<SubType>)this);
+        ceylon.language.meta.model.Type<SubType> appliedContainer = getAppliedContainer($reifiedSubType, type);
+        Member<SubType, Kind> member = type.getAppliedClassOrInterface(this.$reifiedType, $reifiedKind, types, appliedContainer);
 
         // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
         // implementation types to the user, such as AppliedMemberClass
@@ -246,8 +314,40 @@ public abstract class AppliedClassOrInterface<Type>
         ceylon.language.meta.model.Type<Container> appliedContainer = getAppliedContainer($reifiedContainer, type);
         return ((FreeClass)type).memberClassApply($reifiedContainer, $reifiedType, $reifiedArguments, 
                                                   appliedContainer, types);
+    }
+    
+    @Ignore
+    @Override
+    public <Container, Type, Arguments extends ceylon.language.Sequential<? extends java.lang.Object>>
+        ceylon.language.meta.model.MemberClass<Container, Type, Arguments> getDeclaredClass(@Ignore TypeDescriptor $reifiedContainer, 
+                                                                            @Ignore TypeDescriptor $reifiedType, 
+                                                                            @Ignore TypeDescriptor $reifiedArguments, 
+                                                                            String name){
         
+        return getDeclaredClass($reifiedContainer, $reifiedType, $reifiedArguments, name, (Sequential)empty_.get_());
+    }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    @TypeParameters({
+        @TypeParameter(value = "Container"),
+        @TypeParameter(value = "Type"),
+        @TypeParameter(value = "Arguments", satisfies = "ceylon.language::Sequential<ceylon.language::Anything>")
+    })
+    @TypeInfo("ceylon.language.meta.model::MemberClass<Container,Type,Arguments>|ceylon.language::Null")
+    public <Container, Type, Arguments extends ceylon.language.Sequential<? extends java.lang.Object>>
+    ceylon.language.meta.model.MemberClass<Container, Type, Arguments> getDeclaredClass(@Ignore TypeDescriptor $reifiedContainer, 
+                                                                            @Ignore TypeDescriptor $reifiedType, 
+                                                                            @Ignore TypeDescriptor $reifiedArguments, 
+                                                                            String name, 
+                                                                            @Name("types") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
+        
+        checkInit();
+        final FreeClassOrInterface type = declaration.findDeclaredType(name);
+        if(type instanceof FreeClass == false)
+            throw new IncompatibleTypeException("Specified member is not a class: "+name);
+        return ((FreeClass)type).memberClassApply($reifiedContainer, $reifiedType, $reifiedArguments, 
+                                                  (ceylon.language.meta.model.Type<Container>)this, types);
     }
 
     @Ignore
@@ -277,10 +377,41 @@ public abstract class AppliedClassOrInterface<Type>
         final FreeClassOrInterface type = declaration.findType(name);
         if(type instanceof FreeInterface == false)
             throw new IncompatibleTypeException("Specified member is not an interface: "+name);
-        
         ceylon.language.meta.model.Type<Container> appliedContainer = getAppliedContainer($reifiedContainer, type);
         return (ceylon.language.meta.model.MemberInterface<Container, Type>) 
                 type.memberApply($reifiedContainer, $reifiedType, appliedContainer);
+    }
+
+    @Ignore
+    @Override
+    public <Container, Type>
+        ceylon.language.meta.model.MemberInterface<Container, Type> getDeclaredInterface(@Ignore TypeDescriptor $reifiedContainer, 
+                                                                            @Ignore TypeDescriptor $reifiedType, 
+                                                                            String name){
+        
+        return getDeclaredInterface($reifiedContainer, $reifiedType, name, (Sequential)empty_.get_());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    @TypeParameters({
+        @TypeParameter(value = "Container"),
+        @TypeParameter(value = "Type"),
+    })
+    @TypeInfo("ceylon.language.meta.model::MemberInterface<Container,Type>|ceylon.language::Null")
+    public <Container, Type>
+    ceylon.language.meta.model.MemberInterface<Container, Type> getDeclaredInterface(@Ignore TypeDescriptor $reifiedContainer, 
+                                                                            @Ignore TypeDescriptor $reifiedType, 
+                                                                            String name, 
+                                                                            @Name("types") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
+        
+        checkInit();
+        final FreeClassOrInterface type = declaration.findDeclaredType(name);
+        if(type instanceof FreeInterface == false)
+            throw new IncompatibleTypeException("Specified member is not an interface: "+name);
+        return (ceylon.language.meta.model.MemberInterface<Container, Type>) 
+                type.memberApply($reifiedContainer, $reifiedType, 
+                                 (ceylon.language.meta.model.Type<Container>)this);
     }
 
     @Override
@@ -312,6 +443,24 @@ public abstract class AppliedClassOrInterface<Type>
         }else{
             return (ceylon.language.meta.model.Type<Container>) this;
         }
+    }
+
+    @Override
+    @TypeParameters({
+        @TypeParameter(value = "Container"),
+        @TypeParameter(value = "Type")
+    })
+    @TypeInfo("ceylon.language.meta.model::Attribute<Container,Type>|ceylon.language::Null")
+    public <Container, Type>
+        ceylon.language.meta.model.Attribute<Container, Type> getDeclaredAttribute(@Ignore TypeDescriptor $reifiedContainer, 
+                                                                        @Ignore TypeDescriptor $reifiedType, 
+                                                                        String name) {
+        
+        checkInit();
+        final FreeAttribute value = declaration.findDeclaredValue(name);
+        if(value == null)
+            return null;
+        return value.<Container, Type>memberApply($reifiedContainer, $reifiedType, (ceylon.language.meta.model.Type)this);
     }
 
     @Override

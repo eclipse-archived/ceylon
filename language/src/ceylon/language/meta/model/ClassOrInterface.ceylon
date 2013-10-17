@@ -28,12 +28,17 @@ shared interface ClassOrInterface<out Type=Anything>
     // FIXME: introduce MemberClassOrInterface?
     // if I do that I have to give up the enumerated type of ClassModel | InterfaceModel here, so let's not do that for now,
     // since I don't quite see what we would gain
-    // FIXME: should we turn this into getClass and getInterface like we do for the rest?
 
     "Gets a member class or interface by name. Returns `null` if not found."
     throws(`class IncompatibleTypeException`, "If the specified `Container` or `Kind` type arguments are not compatible with the actual result.")
     throws(`class TypeApplicationException`, "If the specified closed type argument values are not compatible with the actual result's type parameters.")
     shared formal Member<Container, Kind>? getClassOrInterface<Container=Nothing, Kind=ClassOrInterface<Anything>>(String name, ClosedType<Anything>* types)
+        given Kind satisfies ClassOrInterface<Anything>;
+
+    "Gets a member class or interface by name. Returns `null` if not found."
+    throws(`class IncompatibleTypeException`, "If the specified `Container` or `Kind` type arguments are not compatible with the actual result.")
+    throws(`class TypeApplicationException`, "If the specified closed type argument values are not compatible with the actual result's type parameters.")
+    shared formal Member<Container, Kind>? getDeclaredClassOrInterface<Container=Nothing, Kind=ClassOrInterface<Anything>>(String name, ClosedType<Anything>* types)
         given Kind satisfies ClassOrInterface<Anything>;
 
     "Gets a member class by name. Returns `null` if not found."
@@ -43,20 +48,43 @@ shared interface ClassOrInterface<out Type=Anything>
     shared formal MemberClass<Container, Type, Arguments>? getClass<Container=Nothing, Type=Anything, Arguments=Nothing>(String name, ClosedType<Anything>* types)
         given Arguments satisfies Anything[];
 
+    "Gets a member class by name. Returns `null` if not found."
+    throws(`class IncompatibleTypeException`, "If the specified `Container`, `Type` or `Arguments` type arguments are not compatible with the actual result, 
+                                               or if the corresponding member is not a `MemberClass`.")
+    throws(`class TypeApplicationException`, "If the specified closed type argument values are not compatible with the actual result's type parameters.")
+    shared formal MemberClass<Container, Type, Arguments>? getDeclaredClass<Container=Nothing, Type=Anything, Arguments=Nothing>(String name, ClosedType<Anything>* types)
+        given Arguments satisfies Anything[];
+
     "Gets a member interface by name. Returns `null` if not found."
     throws(`class IncompatibleTypeException`, "If the specified `Container` or `Type` type arguments are not compatible with the actual result, 
                                                or if the corresponding member is not a `MemberInterface`.")
     throws(`class TypeApplicationException`, "If the specified closed type argument values are not compatible with the actual result's type parameters.")
     shared formal MemberInterface<Container, Type>? getInterface<Container=Nothing, Type=Anything>(String name, ClosedType<Anything>* types);
     
+    "Gets a member interface by name. Returns `null` if not found."
+    throws(`class IncompatibleTypeException`, "If the specified `Container` or `Type` type arguments are not compatible with the actual result, 
+                                               or if the corresponding member is not a `MemberInterface`.")
+    throws(`class TypeApplicationException`, "If the specified closed type argument values are not compatible with the actual result's type parameters.")
+    shared formal MemberInterface<Container, Type>? getDeclaredInterface<Container=Nothing, Type=Anything>(String name, ClosedType<Anything>* types);
+    
     "Gets a method by name. Returns `null` if not found."
     throws(`class IncompatibleTypeException`, "If the specified `Container`, `Type` or `Arguments` type arguments are not compatible with the actual result.")
     throws(`class TypeApplicationException`, "If the specified closed type argument values are not compatible with the actual result's type parameters.")
     shared formal Method<Container, Type, Arguments>? getMethod<Container=Nothing, Type=Anything, Arguments=Nothing>(String name, ClosedType<Anything>* types)
         given Arguments satisfies Anything[];
+
+    "Gets a method by name. Returns `null` if not found."
+    throws(`class IncompatibleTypeException`, "If the specified `Container`, `Type` or `Arguments` type arguments are not compatible with the actual result.")
+    throws(`class TypeApplicationException`, "If the specified closed type argument values are not compatible with the actual result's type parameters.")
+    shared formal Method<Container, Type, Arguments>? getDeclaredMethod<Container=Nothing, Type=Anything, Arguments=Nothing>(String name, ClosedType<Anything>* types)
+        given Arguments satisfies Anything[];
     
     "Gets an attribute by name. Returns `null` if not found."
     throws(`class IncompatibleTypeException`, "If the specified `Container` or `Type` type arguments are not compatible with the actual result.")
     shared formal Attribute<Container, Type>? getAttribute<Container=Nothing, Type=Anything>(String name);
+
+    "Gets an attribute by name. Returns `null` if not found."
+    throws(`class IncompatibleTypeException`, "If the specified `Container` or `Type` type arguments are not compatible with the actual result.")
+    shared formal Attribute<Container, Type>? getDeclaredAttribute<Container=Nothing, Type=Anything>(String name);
 }
 
