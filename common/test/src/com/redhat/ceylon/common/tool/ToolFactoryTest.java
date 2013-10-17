@@ -230,7 +230,7 @@ public class ToolFactoryTest {
         Assert.assertEquals("", ex.getVerbose());
         
         ex = pluginFactory.bindArguments(model, Arrays.asList("--verbose"));
-        Assert.assertEquals("it was null", ex.getVerbose());   
+        Assert.assertEquals("", ex.getVerbose());   
     }
     
     @Test
