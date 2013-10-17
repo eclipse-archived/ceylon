@@ -29,8 +29,8 @@
 
     <dependencies>
         <module name="com.redhat.ceylon.common" slot="@ceylon-version@"/>
-        <module name="org.jboss.jandex"/>
-        <module name="com.redhat.ceylon.maven-support" services="import" optional="true"/>
+        <module name="org.jboss.jandex" slot="1.0.3.Final"/>
+        <module name="com.redhat.ceylon.maven-support" slot="1.0" services="import" optional="true"/>
         <system export="true">
             <paths>
                 <path name="javax/xml"/>

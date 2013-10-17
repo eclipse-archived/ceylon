@@ -22,15 +22,16 @@
 ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
 -->
 
-<module xmlns="urn:jboss:module:1.1" name="org.jboss.modules">
+<module xmlns="urn:jboss:module:1.1" name="org.jboss.logmanager" slot="1.4.0.Final">
     <dependencies>
         <system export="true">
             <paths>
-                <path name="org/jboss/modules"/>
-                <path name="org/jboss/modules/log"/>
-                <path name="org/jboss/modules/filter"/>
-                <path name="org/jboss/modules/ref"/>
-                <path name="org/jboss/modules/management"/>
+                <path name="org/jboss/logmanager"/>
+                <path name="org/jboss/logmanager/config"/>
+                <path name="org/jboss/logmanager/errormanager"/>
+                <path name="org/jboss/logmanager/filters"/>
+                <path name="org/jboss/logmanager/formatters"/>
+                <path name="org/jboss/logmanager/handlers"/>
             </paths>
         </system>
     </dependencies>

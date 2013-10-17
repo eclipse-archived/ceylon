@@ -32,8 +32,8 @@
     <dependencies>
         <module name="ceylon.language" slot="@ceylon-version@"/>
         <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@"/>
-        <module name="com.redhat.ceylon.maven-support" services="import" optional="true"/>
-        <module name="org.jboss.modules"/>
+        <module name="com.redhat.ceylon.maven-support" slot="1.0" services="import" optional="true"/>
+        <module name="org.jboss.modules" slot="1.1.3.GA"/>
         <system export="true">
             <paths>
                 <path name="com/redhat/ceylon/common"/>

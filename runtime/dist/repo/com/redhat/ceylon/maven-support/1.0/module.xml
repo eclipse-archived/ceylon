@@ -16,9 +16,9 @@
   ~ limitations under the License.
   -->
 
-<module xmlns="urn:jboss:module:1.1" name="com.redhat.ceylon.maven-support">
+<module xmlns="urn:jboss:module:1.1" name="com.redhat.ceylon.maven-support" slot="1.0">
     <resources>
-        <resource-root path="com.redhat.ceylon.maven-support-main.jar"/>
+        <resource-root path="com.redhat.ceylon.maven-support-1.0.jar"/>
     </resources>
 
     <dependencies>
