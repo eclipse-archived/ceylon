@@ -11,5 +11,5 @@ import com.redhat.ceylon.common.tool.ToolsSuite;
     ConfigSuite.class,
     ToolsSuite.class
 })
-public class AllTests {
+public class AllCommonTests {
 }
