@@ -130,24 +130,24 @@ public abstract class AppliedClassOrInterface<Type>
 
     @Ignore
     @Override
-    public <SubType, Type, Arguments extends Sequential<? extends Object>>
-    ceylon.language.meta.model.Method<SubType, Type, Arguments> getMethod(@Ignore TypeDescriptor $reifiedSubType, 
+    public <Container, Type, Arguments extends Sequential<? extends Object>>
+    ceylon.language.meta.model.Method<Container, Type, Arguments> getMethod(@Ignore TypeDescriptor $reifiedContainer, 
                                                                          @Ignore TypeDescriptor $reifiedType, 
                                                                          @Ignore TypeDescriptor $reifiedArguments, 
                                                                          String name){
         
-        return getMethod($reifiedSubType, $reifiedType, $reifiedArguments, name, (Sequential)empty_.get_());
+        return getMethod($reifiedContainer, $reifiedType, $reifiedArguments, name, (Sequential)empty_.get_());
     }
 
     @Override
     @TypeParameters({
-        @TypeParameter(value = "SubType"),
+        @TypeParameter(value = "Container"),
         @TypeParameter(value = "Type"),
         @TypeParameter(value = "Arguments", satisfies = "ceylon.language::Sequential<ceylon.language::Anything>")
     })
-    @TypeInfo("ceylon.language.meta.model::Method<SubType,Type,Arguments>|ceylon.language::Null")
-    public <SubType, Type, Arguments extends Sequential<? extends Object>>
-        ceylon.language.meta.model.Method<SubType, Type, Arguments> getMethod(@Ignore TypeDescriptor $reifiedSubType, 
+    @TypeInfo("ceylon.language.meta.model::Method<Container,Type,Arguments>|ceylon.language::Null")
+    public <Container, Type, Arguments extends Sequential<? extends Object>>
+        ceylon.language.meta.model.Method<Container, Type, Arguments> getMethod(@Ignore TypeDescriptor $reifiedContainer, 
                                                                              @Ignore TypeDescriptor $reifiedType, 
                                                                              @Ignore TypeDescriptor $reifiedArguments, 
                                                                              String name, 
@@ -157,31 +157,31 @@ public abstract class AppliedClassOrInterface<Type>
         final FreeFunction method = declaration.findMethod(name);
         if(method == null)
             return null;
-        ceylon.language.meta.model.Type<SubType> appliedContainer = getAppliedContainer($reifiedSubType, method);
-        return method.memberApply($reifiedSubType, $reifiedType, $reifiedArguments, appliedContainer, types);
+        ceylon.language.meta.model.Type<Container> appliedContainer = getAppliedContainer($reifiedContainer, method);
+        return method.memberApply($reifiedContainer, $reifiedType, $reifiedArguments, appliedContainer, types);
     }
 
     @Ignore
     @Override
-    public <SubType, Type, Arguments extends Sequential<? extends Object>>
-    ceylon.language.meta.model.Method<SubType, Type, Arguments> getDeclaredMethod(@Ignore TypeDescriptor $reifiedSubType, 
+    public <Container, Type, Arguments extends Sequential<? extends Object>>
+    ceylon.language.meta.model.Method<Container, Type, Arguments> getDeclaredMethod(@Ignore TypeDescriptor $reifiedContainer, 
                                                                          @Ignore TypeDescriptor $reifiedType, 
                                                                          @Ignore TypeDescriptor $reifiedArguments, 
                                                                          String name){
         
-        return getDeclaredMethod($reifiedSubType, $reifiedType, $reifiedArguments, name, (Sequential)empty_.get_());
+        return getDeclaredMethod($reifiedContainer, $reifiedType, $reifiedArguments, name, (Sequential)empty_.get_());
     }
 
     @SuppressWarnings("unchecked")
     @Override
     @TypeParameters({
-        @TypeParameter(value = "SubType"),
+        @TypeParameter(value = "Container"),
         @TypeParameter(value = "Type"),
         @TypeParameter(value = "Arguments", satisfies = "ceylon.language::Sequential<ceylon.language::Anything>")
     })
-    @TypeInfo("ceylon.language.meta.model::Method<SubType,Type,Arguments>|ceylon.language::Null")
-    public <SubType, Type, Arguments extends Sequential<? extends Object>>
-        ceylon.language.meta.model.Method<SubType, Type, Arguments> getDeclaredMethod(@Ignore TypeDescriptor $reifiedSubType, 
+    @TypeInfo("ceylon.language.meta.model::Method<Container,Type,Arguments>|ceylon.language::Null")
+    public <Container, Type, Arguments extends Sequential<? extends Object>>
+        ceylon.language.meta.model.Method<Container, Type, Arguments> getDeclaredMethod(@Ignore TypeDescriptor $reifiedContainer, 
                                                                              @Ignore TypeDescriptor $reifiedType, 
                                                                              @Ignore TypeDescriptor $reifiedArguments, 
                                                                              String name, 
@@ -191,73 +191,73 @@ public abstract class AppliedClassOrInterface<Type>
         final FreeFunction method = declaration.findDeclaredMethod(name);
         if(method == null)
             return null;
-        return method.memberApply($reifiedSubType, $reifiedType, $reifiedArguments, 
-                (ceylon.language.meta.model.Type<SubType>)this, types);
+        return method.memberApply($reifiedContainer, $reifiedType, $reifiedArguments, 
+                (ceylon.language.meta.model.Type<Container>)this, types);
     }
 
     @Ignore
     @Override
-    public <SubType, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
-        ceylon.language.meta.model.Member<SubType, Kind> getClassOrInterface(@Ignore TypeDescriptor $reifiedSubType, 
+    public <Container, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
+        ceylon.language.meta.model.Member<Container, Kind> getClassOrInterface(@Ignore TypeDescriptor $reifiedContainer, 
                                                                             @Ignore TypeDescriptor $reifiedKind, 
                                                                             String name){
         
-        return getClassOrInterface($reifiedSubType, $reifiedKind, name, (Sequential)empty_.get_());
+        return getClassOrInterface($reifiedContainer, $reifiedKind, name, (Sequential)empty_.get_());
     }
 
     @Override
     @TypeParameters({
-        @TypeParameter(value = "SubType"),
+        @TypeParameter(value = "Container"),
         @TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.model::ClassOrInterface<ceylon.language::Anything,ceylon.language::Nothing>")
     })
-    @TypeInfo("ceylon.language.meta.model::Member<SubType,Kind>|ceylon.language::Null")
-    public <SubType, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
-        ceylon.language.meta.model.Member<SubType, Kind> getClassOrInterface(@Ignore TypeDescriptor $reifiedSubType, 
+    @TypeInfo("ceylon.language.meta.model::Member<Container,Kind>|ceylon.language::Null")
+    public <Container, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
+        ceylon.language.meta.model.Member<Container, Kind> getClassOrInterface(@Ignore TypeDescriptor $reifiedContainer, 
                                                                             @Ignore TypeDescriptor $reifiedKind, 
                                                                             String name, 
                                                                             @Name("types") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
         
         checkInit();
         final FreeClassOrInterface type = declaration.findType(name);
-        return applyClassOrInterface($reifiedSubType, $reifiedKind, type, types);
+        return applyClassOrInterface($reifiedContainer, $reifiedKind, type, types);
     }
 
     @Ignore
     @Override
-    public <SubType, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
-        ceylon.language.meta.model.Member<SubType, Kind> getDeclaredClassOrInterface(@Ignore TypeDescriptor $reifiedSubType, 
+    public <Container, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
+        ceylon.language.meta.model.Member<Container, Kind> getDeclaredClassOrInterface(@Ignore TypeDescriptor $reifiedContainer, 
                                                                             @Ignore TypeDescriptor $reifiedKind, 
                                                                             String name){
         
-        return getDeclaredClassOrInterface($reifiedSubType, $reifiedKind, name, (Sequential)empty_.get_());
+        return getDeclaredClassOrInterface($reifiedContainer, $reifiedKind, name, (Sequential)empty_.get_());
     }
 
     @Override
     @TypeParameters({
-        @TypeParameter(value = "SubType"),
+        @TypeParameter(value = "Container"),
         @TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.model::ClassOrInterface<ceylon.language::Anything,ceylon.language::Nothing>")
     })
-    @TypeInfo("ceylon.language.meta.model::Member<SubType,Kind>|ceylon.language::Null")
-    public <SubType, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
-        ceylon.language.meta.model.Member<SubType, Kind> getDeclaredClassOrInterface(@Ignore TypeDescriptor $reifiedSubType, 
+    @TypeInfo("ceylon.language.meta.model::Member<Container,Kind>|ceylon.language::Null")
+    public <Container, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
+        ceylon.language.meta.model.Member<Container, Kind> getDeclaredClassOrInterface(@Ignore TypeDescriptor $reifiedContainer, 
                                                                             @Ignore TypeDescriptor $reifiedKind, 
                                                                             String name, 
                                                                             @Name("types") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
         
         checkInit();
         final FreeClassOrInterface type = declaration.findDeclaredType(name);
-        return applyClassOrInterface($reifiedSubType, $reifiedKind, type, types);
+        return applyClassOrInterface($reifiedContainer, $reifiedKind, type, types);
     }
     
-    private <SubType, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
-    ceylon.language.meta.model.Member<SubType, Kind> applyClassOrInterface(@Ignore TypeDescriptor $reifiedSubType, 
+    private <Container, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
+    ceylon.language.meta.model.Member<Container, Kind> applyClassOrInterface(@Ignore TypeDescriptor $reifiedContainer, 
                                                                         @Ignore TypeDescriptor $reifiedKind, 
                                                                         FreeClassOrInterface type, 
                                                                         Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
         if(type == null)
             return null;
-        ceylon.language.meta.model.Type<SubType> appliedContainer = getAppliedContainer($reifiedSubType, type);
-        Member<SubType, Kind> member = type.getAppliedClassOrInterface(this.$reifiedType, $reifiedKind, types, appliedContainer);
+        ceylon.language.meta.model.Type<Container> appliedContainer = getAppliedContainer($reifiedContainer, type);
+        Member<Container, Kind> member = type.getAppliedClassOrInterface(this.$reifiedType, $reifiedKind, types, appliedContainer);
 
         // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
         // implementation types to the user, such as AppliedMemberClass
@@ -276,7 +276,7 @@ public abstract class AppliedClassOrInterface<Type>
         }
         
         Metamodel.checkReifiedTypeArgument("getClassOrInterface", "Member<$1,$2>&$2", 
-                Variance.IN, Metamodel.getProducedType(actualReifiedContainer), $reifiedSubType, 
+                Variance.IN, Metamodel.getProducedType(actualReifiedContainer), $reifiedContainer, 
                 Variance.OUT, Metamodel.getProducedType(actualKind), $reifiedKind);
 
         return member;
