@@ -166,8 +166,14 @@ shared class StubClass(
      1. fullUnresolvable1 = [[unresolvable::Bar]]
      1. fullUnresolvable2 = [[unresolvable.bar::Bar.foo]]
      
+     Wiki-style links to parameters:
+     
+     1. parameter s = [[s]]
+     1. parameter methodWithParametersDocumentation.a = [[methodWithParametersDocumentation.a]]
+     1. parameter stubTopLevelMethod.numbers = [[stubTopLevelMethod.numbers]] 
+     
      "
-    shared void methodWithLinksInDoc() {}
+    shared void methodWithLinksInDoc(String s) {}
         
     shared actual void formalMethodFromStubInterface() {}
     

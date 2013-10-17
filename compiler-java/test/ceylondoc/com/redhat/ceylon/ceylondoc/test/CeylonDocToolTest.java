@@ -831,6 +831,13 @@ public class CeylonDocToolTest {
                 Pattern.compile("fullUnresolvable1 = <span class='link-unresolvable'>\\[unresolvable::Bar\\]</span>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("fullUnresolvable2 = <span class='link-unresolvable'>\\[unresolvable.bar::Bar.foo\\]</span>"));
+        
+        assertMatchInFile(destDir, "StubClass.type.html", 
+                Pattern.compile("parameter s = <a class='link' href='StubClass.type.html#methodWithLinksInDoc-s' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.methodWithLinksInDoc.s'>s</a>"));
+        assertMatchInFile(destDir, "StubClass.type.html", 
+                Pattern.compile("parameter methodWithParametersDocumentation.a = <a class='link' href='StubClass.type.html#methodWithParametersDocumentation-a' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.methodWithParametersDocumentation.a'>methodWithParametersDocumentation.a</a>"));
+        assertMatchInFile(destDir, "StubClass.type.html", 
+                Pattern.compile("parameter stubTopLevelMethod.numbers = <a class='link' href='index.html#stubTopLevelMethod-numbers' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubTopLevelMethod.numbers'>stubTopLevelMethod.numbers</a>"));
     }
     
     private void assertConstants(File destDir) throws Exception {
