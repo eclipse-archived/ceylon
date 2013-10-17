@@ -742,7 +742,7 @@ classInstantiation returns [SimpleType type, InvocationExpression invocationExpr
           ie.setNamedArgumentList($namedArguments.namedArgumentList);
           $invocationExpression=ie; 
           p = ie; }*/
-      )
+      )?
     ;
 
 satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
