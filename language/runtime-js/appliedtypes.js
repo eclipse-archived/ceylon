@@ -27,10 +27,59 @@ function AppliedClass(tipo,$$targs$$,that){
 }
 AppliedClass.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Type:{'var':'out','def':{t:Anything}},Arguments:{'var':'in','satisfies':[{t:Sequential,a:{Element:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:Class$meta$model,a:{Arguments:'Arguments',Type:'Type'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Class']};};
 function $init$AppliedClass(){
-    if (AppliedClass.$$===undefined){
-        initTypeProto(AppliedClass,'ceylon.language.meta.model::AppliedClass',Basic,Class$meta$model);
-        (function($$clase){
-            
+  if (AppliedClass.$$===undefined){
+    initTypeProto(AppliedClass,'ceylon.language.meta.model::AppliedClass',Basic,Class$meta$model);
+    (function($$clase){
+
+      $$clase.$apply=function(a){
+        var ps = this.tipo.$$metamodel$$.$ps;
+        if (ps===undefined || ps.length===0){
+          if (a && a.size>0)
+            throw InvocationException$meta$model(String$("Wrong number of arguments (should be 0)"));
+          return this._targs?this.tipo(_targs) : this.tipo();
+        }
+        if (a===undefined)a=[];
+        if (a.size!=ps.length || ps[ps.length-1].seq) {
+          var fa=[];
+          var sarg;
+          for (var i=0; i<ps.length;i++) { //check def/seq params
+            var p=ps[i];
+            if (a[i]===undefined) {
+              if (p.$def||p.seq)fa.push(undefined);
+              else {
+                throw InvocationException$meta$model(String$("Wrong number of arguments (should be " + ps.length + ")"));
+              }
+            } else if (sarg) {
+              sarg.push(a[i]);
+            } else if (p.seq) {
+              sarg=[]; fa.push(sarg);
+              for (var j=i; j<a.size;j++)sarg.push(a[j]);
+            } else {
+              fa.push(a[i]);
+            }
+          }
+          a = fa;
+        }
+        if (this.tipo._targs)a.push(this.tipo._targs);
+        return this.tipo.apply(undefined,a);
+      };$$clase.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.model','Class','$m','apply'],$t:'Type'};};
+
+defineAttr($$clase,'parameterTypes',function(){
+  var ps=this.tipo.$$metamodel$$.$ps;
+  if (!ps || ps.length==0)return getEmpty();
+  var r=[];
+  for (var i=0; i < ps.length; i++) {
+    var pt=ps[i].$t;
+    if (typeof(pt)==='string'){
+      if (!this.$targs)throw TypeApplicationException$meta$model(String$("This class model needs type parameters"));
+      pt=this.$targs[pt];
+      if (!pt)throw TypeApplicationException$meta$model(String$("Class model is missing type argument for <" + ps[i].$t + ">"));
+    }
+    r.push(typeLiteral$meta({Type:pt}));
+  }
+  return r.reifyCeylonType({Element:{t:Type$meta$model,a:{t:Anything}},Absent:{t:Null}});
+},undefined,function(){return{mod:$$METAMODEL$$,$cont:ClassModel$meta$model,d:['ceylon.language.meta.model','ClassModel','$at','parameterTypes'],$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}},Absent:{t:Null}}}};});
+
             defineAttr($$clase,'declaration',function(){
               var $$clase=this;
               if ($$clase._decl)return $$clase._decl;
@@ -55,7 +104,7 @@ function $init$AppliedClass(){
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:ClassModel$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}}]},$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$at','extendedType']};});
 
 
-  $$clase.equals=function(o){return o && (o.tipo$2||o.tipo)==tipo; };
+  $$clase.equals=function(o){return o && (o.tipo$2||o.tipo)==this.tipo; };
 //TODO equals metamodel
 
   defineAttr($$clase,'string',function(){
@@ -306,6 +355,21 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
   f.$$=dummy.$$;
   f.getT$all=function(){return dummy.getT$all();};
   f.getT$name=function(){return dummy.getT$name();};
+defineAttr(f,'parameterTypes',function(){
+  var ps=this.tipo.$$metamodel$$.$ps;
+  if (!ps || ps.length==0)return getEmpty();
+  var r=[];
+  for (var i=0; i < ps.length; i++) {
+    var pt=ps[i].$t;
+    if (typeof(pt)==='string'){
+      if (!this.$targs)throw TypeApplicationException$meta$model(String$("This function model needs type parameters"));
+      pt=this.$targs[pt];
+      if (!pt)throw TypeApplicationException$meta$model(String$("Function model is missing type argument for <" + ps[i].$t + ">"));
+    }
+    r.push(typeLiteral$meta({Type:pt}));
+  }
+  return r.reifyCeylonType({Element:{t:Type$meta$model,a:{t:Anything}},Absent:{t:Null}});
+},undefined,function(){return{mod:$$METAMODEL$$,$cont:FunctionModel$meta$model,d:['ceylon.language.meta.model','FunctionModel','$at','parameterTypes'],$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}},Absent:{t:Null}}}};});
   return f;
 }
 AppliedFunction.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.model','Function'],satisfies:{t:Function$meta$model,a:{Type:'Type',Arguments:'Arguments'}},$an:function(){return [shared(),actual()];}};};
