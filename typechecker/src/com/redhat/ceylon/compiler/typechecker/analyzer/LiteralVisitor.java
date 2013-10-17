@@ -50,8 +50,8 @@ public class LiteralVisitor extends Visitor {
             Matcher m = DOC_LINK_PATTERN.matcher(text);
             while (m.find()) {
                 String group = m.group(1);
-                int start = that.getStartIndex()+m.start(2);
-                int end = that.getStartIndex()+m.end(2);
+                int start = that.getStartIndex()+m.start(1);
+                int end = that.getStartIndex()+m.end(1);
                 CommonToken token = new CommonToken(ASTRING_LITERAL, group);
                 token.setStartIndex(start);
                 token.setStopIndex(end-1);
