@@ -556,7 +556,13 @@ public class CeylonDocTool extends RepoUsingTool {
             copyResource("resources/shCore.css", new File(resourcesDir, "shCore.css"));
             copyResource("resources/shThemeDefault.css", new File(resourcesDir, "shThemeDefault.css"));
             copyResource("resources/shCore.js", new File(resourcesDir, "shCore.js"));
+            copyResource("resources/shAutoloader.js", new File(resourcesDir, "shAutoloader.js"));
             copyResource("resources/shBrushCeylon.js", new File(resourcesDir, "shBrushCeylon.js"));
+            copyResource("resources/shBrushCss.js", new File(resourcesDir, "shBrushCss.js"));
+            copyResource("resources/shBrushJava.js", new File(resourcesDir, "shBrushJava.js"));
+            copyResource("resources/shBrushJScript.js", new File(resourcesDir, "shBrushJScript.js"));
+            copyResource("resources/shBrushPlain.js", new File(resourcesDir, "shBrushPlain.js"));
+            copyResource("resources/shBrushXml.js", new File(resourcesDir, "shBrushXml.js"));
             
             copyResource("resources/favicon.ico", new File(resourcesDir, "favicon.ico"));
             copyResource("resources/ceylondoc-logo.png", new File(resourcesDir, "ceylondoc-logo.png"));

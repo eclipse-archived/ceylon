@@ -31,7 +31,14 @@ $(function(){
 			}
 			SyntaxHighlighter.defaults['highlight'] = lines;
 			SyntaxHighlighter.defaults['gutter'] = false;
-			SyntaxHighlighter.defaults['toolbar'] = false; 
+			SyntaxHighlighter.defaults['toolbar'] = false;
+			SyntaxHighlighter.autoloader(
+					  'css                    .resources/shBrushCss.js',
+					  'java                   .resources/shBrushJava.js',
+					  'js jscript javascript  .resources/shBrushJScript.js',
+					  'plain text             .resources/shBrushPlain.js',
+					  'xml xhtml xslt html    .resources/shBrushXml.js'
+					);
 			SyntaxHighlighter.all();
 			setTimeout(function() {
 				jQuery('div.number'+startLine).each(function() {

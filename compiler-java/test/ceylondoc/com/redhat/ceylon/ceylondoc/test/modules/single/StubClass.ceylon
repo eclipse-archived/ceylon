@@ -115,6 +115,46 @@ shared class StubClass(
      <i>Lorem ipsum dolor sit amet, consectetur...</i>"
     shared void methodWithCodeExamples2() {}
     
+    """Test fenced code block with brushes: html, css, plain, java, javascript ...
+    
+       * HTML
+           
+       ```html
+       <body>
+           <h1>My web page!</h1>
+           <p>Hello world!</p>
+       </body>       
+       ```
+       
+       * CSS
+       
+       ```css
+       body {
+           background-color:#b0c4de;
+       }
+       ```
+       
+       * PLAIN
+       
+       ```plain
+       my custom test
+       ```
+       
+       * JAVA
+       
+       ```java
+       public static void helloWorld(String name); 
+       ```
+       
+       * JAVASCRIPT
+       
+       ```javascript
+       document.write("<p>My Hello World!</p>");
+       ```
+    
+    """
+    shared void methodWithCodeExamples3() {}
+    
     "Test automatic syntax highlighter.
      
          shared default Boolean subset(Set set) {

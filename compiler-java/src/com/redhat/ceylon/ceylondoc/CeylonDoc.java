@@ -87,6 +87,7 @@ public abstract class CeylonDoc extends Markup {
         around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("jquery-1.8.2.min.js") + "'");
         around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("bootstrap.min.js") + "'");
         around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("shCore.js") + "'");
+        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("shAutoloader.js") + "'");
         around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("shBrushCeylon.js") + "'");
         around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("index.js") + "'");
         around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("ceylondoc.js") + "'");
