@@ -562,7 +562,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
     
     public void visit(Tree.FunctionArgument fn) {
-        append(gen.expressionGen().transform(fn));
+        append(gen.expressionGen().transform(fn, fn.getTypeModel()));
     }
 
     public void visit(Tree.ModuleDescriptor that) {

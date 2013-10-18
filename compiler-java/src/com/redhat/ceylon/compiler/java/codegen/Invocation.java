@@ -509,7 +509,7 @@ class IndirectInvocation extends SimpleInvocation {
         Tree.Expression expr = getArgumentExpression(argIndex);
         if (expr.getTerm() instanceof FunctionArgument) {
             FunctionArgument farg = (FunctionArgument)expr.getTerm();
-            return gen.expressionGen().transform(farg);
+            return gen.expressionGen().transform(farg, getParameterType(argIndex));
         }
         return gen.expressionGen().transformArg(this, argIndex);
     }
@@ -657,7 +657,7 @@ class PositionalInvocation extends DirectInvocation {
             Tree.Expression expr = ((Tree.ListedArgument) arg).getExpression();
             if (expr.getTerm() instanceof FunctionArgument) {
                 FunctionArgument farg = (FunctionArgument)expr.getTerm();
-                return gen.expressionGen().transform(farg);
+                return gen.expressionGen().transform(farg, getParameterType(argIndex));
             }
         }
         // special case for comprehensions which are not expressions

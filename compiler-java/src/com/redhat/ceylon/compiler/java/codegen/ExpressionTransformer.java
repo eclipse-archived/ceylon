@@ -80,6 +80,7 @@ import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewArray;
+import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeApply;
@@ -338,7 +339,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result;
     }
     
-    JCExpression transform(Tree.FunctionArgument functionArg) {
+    JCExpression transform(Tree.FunctionArgument functionArg, ProducedType expectedType) {
         Method model = functionArg.getDeclarationModel();
         List<JCStatement> body;
         boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
@@ -371,7 +372,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 model.getParameterLists().get(0),
                 functionArg.getParameterLists().get(0),
                 classGen().transformMplBody(functionArg.getParameterLists(), model, body));
-        return callableBuilder.build();
+        
+        JCExpression result = callableBuilder.build();
+        result = applyErasureAndBoxing(result, callableType, true, BoxingStrategy.BOXED, expectedType);
+        return result;
     }
     
     //
