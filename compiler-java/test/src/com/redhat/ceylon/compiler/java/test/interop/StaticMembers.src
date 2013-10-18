@@ -10,9 +10,9 @@ final class staticMethods_ {
         sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", ""));
         sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", "", sync));
         final .java.lang.Object roots1 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.listRoots());
-        sync = .com.redhat.ceylon.compiler.java.Util.checkNull(sync.createTempFile("", ""));
-        sync = .com.redhat.ceylon.compiler.java.Util.checkNull(sync.createTempFile("", "", sync));
-        final .java.lang.Object roots2 = .com.redhat.ceylon.compiler.java.Util.checkNull(sync.listRoots());
+        sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", ""));
+        sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", "", sync));
+        final .java.lang.Object roots2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.listRoots());
     }
     
     public static void main(.java.lang.String[] args) {
@@ -27,10 +27,10 @@ final class staticMethodsAndSubClassesOnInstance_ {
     
     static void staticMethodsAndSubClassesOnInstance() {
         final .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass inst = new .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass();
-        inst.method();
-        inst.method(1L);
-        inst.method(1L, 2L);
-        inst.topMethod();
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method();
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method(1L);
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.method(1L, 2L);
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topMethod();
         .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field = inst.field;
         .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField = inst.topField;
     }
