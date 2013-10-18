@@ -55,17 +55,13 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
         StructureBuilder structureBuilder;
         if (token.startsWith("http:") || token.startsWith("https:")) {
             structureBuilder = new RemoteContentStore(token, log, offline);
-        } else if (token.equals("mvn") || token.equals("mvn:")) {
-            return MavenRepositoryHelper.getMavenRepository();
-        } else if (token.startsWith("mvn:")) {
-            return MavenRepositoryHelper.getMavenRepository(token.substring("mvn:".length()), log, offline);
         } else if (token.equals("jdk") || token.equals("jdk:")) {
             return new JDKRepository();
-        } else if (token.equals("aether") || token.equals("aether:")) {
+        } else if (token.equals("aether") || token.equals("aether:") || token.equals("mvn") || token.equals("mvn:")) {
             Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
             Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, boolean.class);
             return (Repository) createRepository.invoke(null, log, offline);
-        } else if (token.startsWith("aether:")) {
+        } else if (token.startsWith("aether:") || token.startsWith("mvn:")) {
             String settingsXml = token.substring("aether:".length());
             Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
             Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, boolean.class);
