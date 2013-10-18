@@ -1,0 +1,386 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+interface Bug993Top<E> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl<? extends E> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$impl();
+    
+    public E e();
+}
+final class Bug993Top$impl<E> {
+    
+    Bug993Top$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends E> $this) {
+        this.$reified$E = $reified$E;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends E> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E) {
+        this.$reified$E = $reified$E;
+    }
+    
+    public E e() {
+        return (E).ceylon.language.nothing_.get_();
+    }
+}
+interface Bug993MiddleInterface extends .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993MiddleInterface$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface.class);
+}
+final class Bug993MiddleInterface$impl {
+    
+    Bug993MiddleInterface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface $this;
+}
+class Bug993MiddleClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>> {
+    
+    Bug993MiddleClass() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl<? extends .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl<? extends .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$this$;
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object> e() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$this$.e();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleClass();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleClass.class);
+}
+class Bug993BottomFromInterface implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<.ceylon.language.Sequence<? extends .ceylon.language.Character>> {
+    
+    Bug993BottomFromInterface() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993MiddleInterface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .ceylon.language.Character.$TypeDescriptor$), (.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top)this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993MiddleInterface$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993MiddleInterface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993MiddleInterface$this$;
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl<? extends .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl<? extends .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$this$;
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequence<? extends .ceylon.language.Character> e() {
+        return ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl)$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$this$).e();
+    }
+    
+    public final void f() {
+        final .ceylon.language.Sequence<? extends .ceylon.language.Character> s1 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromInterface.this).e();
+        final .ceylon.language.Sequence<? extends .ceylon.language.Character> s2 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top)this).e();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> s = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{
+                ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromInterface.this).e(),
+                ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromInterface.this).e()}){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = $getIterables$()[0].iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Character> $iterator$0;
+                    private .ceylon.language.Character i;
+                    private boolean i$exhausted$;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                        i$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                        if (i$exhausted$) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Character)$ceylontmp$item$0;
+                            return true;
+                        }
+                    }
+                    private .ceylon.language.Iterator<? extends .ceylon.language.Character> $iterator$1;
+                    
+                    private final boolean $iterator$1() {
+                        if (i$exhausted$) return false;
+                        if ($iterator$1 != null) return true;
+                        if (!this.i()) return false;
+                        $iterator$1 = $getIterables$()[1].iterator();
+                        return true;
+                    }
+                    private .ceylon.language.Character ii;
+                    private boolean ii$exhausted$;
+                    
+                    private final boolean ii() {
+                        while (this.$iterator$1()) {
+                            final .java.lang.Object $ceylontmp$item$1 = $iterator$1.next();
+                            ii$exhausted$ = $ceylontmp$item$1 == .ceylon.language.finished_.get_();
+                            if (ii$exhausted$) {
+                                $iterator$1 = null;
+                            } else {
+                                ii = (.ceylon.language.Character)$ceylontmp$item$1;
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.ii()) {
+                            final .ceylon.language.Character i = this.i;
+                            final .ceylon.language.Character ii = this.ii;
+                            return ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromInterface.this).e().getLastIndex();
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        };
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromInterface.Inner Inner$new$() {
+        return new Inner();
+    }
+    
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        protected Inner() {
+            final .ceylon.language.Sequence<? extends .ceylon.language.Character> s1 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromInterface.this).e();
+            final .ceylon.language.Sequence<? extends .ceylon.language.Character> s2 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromInterface.this).e();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromInterface.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromInterface.Inner.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromInterface();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromInterface.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromInterface.class);
+}
+class Bug993BottomFromClass extends .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleClass implements .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<.ceylon.language.Sequence<? extends .ceylon.language.Character>> {
+    
+    Bug993BottomFromClass() {
+        super();
+        $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$this$.$refine$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .ceylon.language.Character.$TypeDescriptor$));
+    }
+    
+    public final void f() {
+        final .ceylon.language.Sequence<? extends .ceylon.language.Character> s1 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass.this).e();
+        final .ceylon.language.Sequence<? extends .ceylon.language.Character> s2 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top)this).e();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> s = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{
+                ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass.this).e(),
+                ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass.this).e()}){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = $getIterables$()[0].iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Character> $iterator$0;
+                    private .ceylon.language.Character i;
+                    private boolean i$exhausted$;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmp$item$2 = $iterator$0.next();
+                        i$exhausted$ = $ceylontmp$item$2 == .ceylon.language.finished_.get_();
+                        if (i$exhausted$) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Character)$ceylontmp$item$2;
+                            return true;
+                        }
+                    }
+                    private .ceylon.language.Iterator<? extends .ceylon.language.Character> $iterator$1;
+                    
+                    private final boolean $iterator$1() {
+                        if (i$exhausted$) return false;
+                        if ($iterator$1 != null) return true;
+                        if (!this.i()) return false;
+                        $iterator$1 = $getIterables$()[1].iterator();
+                        return true;
+                    }
+                    private .ceylon.language.Character ii;
+                    private boolean ii$exhausted$;
+                    
+                    private final boolean ii() {
+                        while (this.$iterator$1()) {
+                            final .java.lang.Object $ceylontmp$item$3 = $iterator$1.next();
+                            ii$exhausted$ = $ceylontmp$item$3 == .ceylon.language.finished_.get_();
+                            if (ii$exhausted$) {
+                                $iterator$1 = null;
+                            } else {
+                                ii = (.ceylon.language.Character)$ceylontmp$item$3;
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.ii()) {
+                            final .ceylon.language.Character i = this.i;
+                            final .ceylon.language.Character ii = this.ii;
+                            return ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass.this).e().getLastIndex();
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        };
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass.Inner Inner$new$() {
+        return new Inner();
+    }
+    
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        protected Inner() {
+            final .ceylon.language.Sequence<? extends .ceylon.language.Character> s1 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass.this).e();
+            final .ceylon.language.Sequence<? extends .ceylon.language.Character> s2 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass.this).e();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass.Inner.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass.class);
+}
+interface Bug993BottomInterface extends .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<.ceylon.language.Sequence<? extends .ceylon.language.Character>> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993BottomInterface$impl();
+    
+    public void f();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl.Inner Inner$new$();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface.class);
+}
+final class Bug993BottomInterface$impl {
+    
+    Bug993BottomInterface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface $this;
+    
+    public void f() {
+        final .ceylon.language.Sequence<? extends .ceylon.language.Character> s1 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl.this.$this).e();
+        final .ceylon.language.Sequence<? extends .ceylon.language.Character> s2 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top)$this).e();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> s = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{
+                ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl.this.$this).e(),
+                ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl.this.$this).e()}){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = $getIterables$()[0].iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Character> $iterator$0;
+                    private .ceylon.language.Character i;
+                    private boolean i$exhausted$;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmp$item$4 = $iterator$0.next();
+                        i$exhausted$ = $ceylontmp$item$4 == .ceylon.language.finished_.get_();
+                        if (i$exhausted$) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Character)$ceylontmp$item$4;
+                            return true;
+                        }
+                    }
+                    private .ceylon.language.Iterator<? extends .ceylon.language.Character> $iterator$1;
+                    
+                    private final boolean $iterator$1() {
+                        if (i$exhausted$) return false;
+                        if ($iterator$1 != null) return true;
+                        if (!this.i()) return false;
+                        $iterator$1 = $getIterables$()[1].iterator();
+                        return true;
+                    }
+                    private .ceylon.language.Character ii;
+                    private boolean ii$exhausted$;
+                    
+                    private final boolean ii() {
+                        while (this.$iterator$1()) {
+                            final .java.lang.Object $ceylontmp$item$5 = $iterator$1.next();
+                            ii$exhausted$ = $ceylontmp$item$5 == .ceylon.language.finished_.get_();
+                            if (ii$exhausted$) {
+                                $iterator$1 = null;
+                            } else {
+                                ii = (.ceylon.language.Character)$ceylontmp$item$5;
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.ii()) {
+                            final .ceylon.language.Character i = this.i;
+                            final .ceylon.language.Character ii = this.ii;
+                            return ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl.this.$this).e().getLastIndex();
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        };
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl.Inner Inner$new$() {
+        return new Inner();
+    }
+    
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        protected Inner() {
+            final .ceylon.language.Sequence<? extends .ceylon.language.Character> s1 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl.this.$this).e();
+            final .ceylon.language.Sequence<? extends .ceylon.language.Character> s2 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl.this.$this).e();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl.Inner.class));
+        }
+    }
+}
+final class bug993Outside_ {
+    
+    private bug993Outside_() {
+    }
+    
+    static void bug993Outside(final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass b) {
+        final .ceylon.language.Sequence<? extends .ceylon.language.Character> s = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top)b).e();
+    }
+}
