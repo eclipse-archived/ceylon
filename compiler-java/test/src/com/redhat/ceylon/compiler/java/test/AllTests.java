@@ -34,13 +34,16 @@ import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest2;
 import com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionTest;
 import com.redhat.ceylon.compiler.java.test.expression.ref.StaticRefTest;
+import com.redhat.ceylon.compiler.java.test.fordebug.TraceTests;
 import com.redhat.ceylon.compiler.java.test.interop.InteropTest;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_0000_0499;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_0500_0999;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_1000_1499;
 import com.redhat.ceylon.compiler.java.test.issues.PackageIssuesTest;
+import com.redhat.ceylon.compiler.java.test.language.LanguageMetamodelSuite;
 import com.redhat.ceylon.compiler.java.test.language.LanguageSuite;
 import com.redhat.ceylon.compiler.java.test.languagesatisfaction.LanguageSatisfactionSuite;
+import com.redhat.ceylon.compiler.java.test.metamodel.MetamodelTest;
 import com.redhat.ceylon.compiler.java.test.misc.MiscTest;
 import com.redhat.ceylon.compiler.java.test.model.ModelLoaderTest;
 import com.redhat.ceylon.compiler.java.test.model.TypeParserTest;
@@ -57,37 +60,42 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
 
 @RunWith(Suite.class) 
 @SuiteClasses({
-    NamingTest.class,
-    AnnotationsTest.class,
     ExpressionTest.class,
     ExpressionTest2.class,
-    ComprehensionTest.class,
-    StaticRefTest.class,
-    InteropTest.class,
+    StructureTest.class,
+    StructureTest2.class,
+    StructureTest3.class,
+    CMRTestHTTP.class,
     IssuesTest_0000_0499.class,
     IssuesTest_0500_0999.class,
     IssuesTest_1000_1499.class,
-	MiscTest.class,
+    MiscTest.class,
+    CeylonDocToolTest.class,
+    
+    NamingTest.class,
+    AnnotationsTest.class,
+    InteropTest.class,
+    ComprehensionTest.class,
     ModelLoaderTest.class,
     PackageIssuesTest.class,
     RecoveryTest.class,
     StatementTest.class,
     TryCatchTest.class,
-	StructureTest.class,
-    StructureTest2.class,
-    StructureTest3.class,
-	TypeParserTest.class,
-	QuotingTest.class,
-	CMRTest.class,
-    CMRTestHTTP.class,
-	RuntimeSuite.class,
-	LanguageSatisfactionSuite.class,
-	LanguageSuite.class,
-	BcTests.class,
+    TypeParserTest.class,
+    QuotingTest.class,
+    CMRTest.class,
+    RuntimeSuite.class,
+    MetamodelTest.class,
+    LanguageSatisfactionSuite.class,
+    LanguageSuite.class,
+    LanguageMetamodelSuite.class,
+    BcTests.class,
+    ComprehensionTest.class,
+    StaticRefTest.class,
     CompilerToolsTests.class,
     TopLevelToolTest.class,
-    CeylonDocToolTest.class,
-    AntToolTests.class
+    AntToolTests.class,
+    TraceTests.class,
 })
 public class AllTests {
 }

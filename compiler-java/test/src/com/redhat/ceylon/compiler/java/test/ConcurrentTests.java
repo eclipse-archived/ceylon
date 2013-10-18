@@ -54,7 +54,6 @@ import com.redhat.ceylon.compiler.java.test.statement.TryCatchTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest2;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest3;
-import com.redhat.ceylon.tools.TopLevelToolTest;
 import com.redhat.ceylon.tools.test.CompilerToolsTests;
 
 @RunWith(ConcurrentSuite.class) 
@@ -98,7 +97,7 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     // FIXME Disabled: it does not run currently in parallel
     // TopLevelToolTest.class,
     AntToolTests.class,
-    TraceTests.class
+    TraceTests.class,
 })
 public class ConcurrentTests {
 }
