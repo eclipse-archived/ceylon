@@ -267,19 +267,21 @@ public abstract class Declaration
 
     @Override
     public boolean equals(Object object) {
-        if(this == object)
+        if (this==object) {
             return true;
-        if(object == null || object.getClass() != getClass())
+        }
+        else if (object==null || object.getClass()!=getClass()) {
             return false;
-        if (object instanceof Declaration) {
+        }
+        else if (object instanceof Declaration) {
             Declaration that = (Declaration) object;
             String myName = getName();
             String otherName = that.getName();
-            return myName != null && otherName != null &&
-                    myName.equals(otherName) &&
+            return myName!=null && otherName!=null &&
+                        myName.equals(otherName) &&
                     that.getDeclarationKind()==getDeclarationKind() &&
                     (getContainer()==null && that.getContainer()==null ||
-                    that.getContainer().equals(getContainer()));
+                        that.getContainer().equals(getContainer()));
         }
         else {
             return false;
