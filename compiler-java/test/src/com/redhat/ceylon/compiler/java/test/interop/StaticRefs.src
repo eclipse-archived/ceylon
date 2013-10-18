@@ -1,0 +1,63 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class staticRefs_ {
+    
+    private staticRefs_() {
+    }
+    
+    static void staticRefs() {
+        final .java.lang.Runtime runtime = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.Runtime.getRuntime());
+        final .java.io.PrintStream stdout = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.System.out);
+        final .java.io.PrintStream stderr = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.System.err);
+        final .java.lang.Thread.State runnableState = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.Thread.State.RUNNABLE);
+        final .ceylon.language.Callable<? extends .java.lang.Object> exitRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Integer)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final int arg0 = (int)((.ceylon.language.Integer)$param$0).longValue();
+                return (
+                    let
+                    {
+                        .java.lang.System.exit(arg0);
+                    }
+                    returning null;
+                );
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> compareRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "Integer(Boolean, Boolean)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final boolean arg0 = ((.ceylon.language.Boolean)$param$0).booleanValue();
+                final boolean arg1 = ((.ceylon.language.Boolean)$param$1).booleanValue();
+                return .ceylon.language.Integer.instance(.java.lang.Boolean.compare(arg0, arg1));
+            }
+        };
+        final .ceylon.language.Callable<? extends .java.io.File[]> fsRootsRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.io.File[]>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.io.File.class)), .ceylon.language.Empty.$TypeDescriptor$, "ObjectArray<File>()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.io.File[] $call$() {
+                return .java.io.File.listRoots();
+            }
+        };
+        final .ceylon.language.Callable<? extends .java.util.Locale.Builder> localeBuilderRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.util.Locale.Builder>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.util.Locale.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.util.Locale.Builder.class)), .ceylon.language.Empty.$TypeDescriptor$, "Locale.Builder()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.util.Locale.Builder $call$() {
+                return new .java.util.Locale.Builder();
+            }
+        };
+        final long procs = .java.lang.Runtime.getRuntime().availableProcessors();
+        .java.lang.System.out.flush();
+        .java.lang.System.err.flush();
+        .java.lang.System.exit((int)0L);
+        final long cmp = .java.lang.Boolean.compare(true, false);
+        final .java.io.File[] roots = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.listRoots());
+        final .java.util.Locale.Builder localeBuilder = new .java.util.Locale.Builder();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.staticRefs_.staticRefs();
+    }
+}
