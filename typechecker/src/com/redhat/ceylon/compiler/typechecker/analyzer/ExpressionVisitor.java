@@ -4001,7 +4001,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
                 else {
-                    that.setTypeModel(accountForStaticReferenceType(that, t));
+                    that.setTypeModel(accountForStaticReferenceType(that, member, t));
                 }
             //}
         }
@@ -4010,7 +4010,6 @@ public class ExpressionVisitor extends Visitor {
     private ProducedType accountForStaticReferenceReceiverType(Tree.QualifiedMemberOrTypeExpression that, 
             ProducedType receivingType) {
         if (that.getStaticMethodReference()) {
-//            return receivingType.getTypeArgumentList().get(0);
             ProducedReference target = ((Tree.MemberOrTypeExpression) that.getPrimary()).getTarget();
             return target==null ? new UnknownType(unit).getType() : target.getType();
         }
@@ -4020,23 +4019,25 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private ProducedType accountForStaticReferenceType(Tree.QualifiedMemberOrTypeExpression that, 
-            ProducedType type) {
-        if (that.getStaticMethodReference()) {
+            Declaration member, ProducedType type) {
+        if (that.getStaticMethodReference() && !member.isStaticallyImportable()) {
             ProducedReference target = ((Tree.MemberOrTypeExpression) that.getPrimary()).getTarget();
             if (target==null) {
                 return new UnknownType(unit).getType();
             }
             else {
-                ProducedType rt = target.getType();
-                //            ProducedType rt = receivingType.getTypeArgumentList().get(0);
-                return producedType(unit.getCallableDeclaration(), type,
-                        producedType(unit.getTupleDeclaration(), 
-                                rt, rt, unit.getType(unit.getEmptyDeclaration())));
+                return getStaticReferenceType(type, target.getType());
             }
         }
         else {
             return type;
         }
+    }
+    
+    private ProducedType getStaticReferenceType(ProducedType type, ProducedType rt) {
+        return producedType(unit.getCallableDeclaration(), type,
+                producedType(unit.getTupleDeclaration(), 
+                        rt, rt, unit.getType(unit.getEmptyDeclaration())));
     }
     
     private void visitBaseMemberExpression(Tree.StaticMemberOrTypeExpression that, 
@@ -4389,7 +4390,7 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else {
-                that.setTypeModel(accountForStaticReferenceType(that, ft));
+                that.setTypeModel(accountForStaticReferenceType(that, type, ft));
             }
         }
     }
