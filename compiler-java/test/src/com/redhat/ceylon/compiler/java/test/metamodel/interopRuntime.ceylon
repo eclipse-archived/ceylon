@@ -14,73 +14,73 @@ void interopRuntime(){
     assert(exists method = javaType.getMethod<JavaType,Anything,[Boolean,Integer,Integer,Integer,Integer,Float,Float,Character,String,Object]>("method"));
     method(instance)(true,1,2,3,4,1.0,2.0,'a',"a","b");
 
-    assert(exists methodBoolean = javaType.getMethod<Anything,Boolean,[]>("methodBoolean"));
+    assert(exists methodBoolean = javaType.getMethod<JavaType,Boolean,[]>("methodBoolean"));
     assert(true == methodBoolean(instance)());
 
-    assert(exists methodByte = javaType.getMethod<Anything,Integer,[]>("methodByte"));
+    assert(exists methodByte = javaType.getMethod<JavaType,Integer,[]>("methodByte"));
     assert(1 == methodByte(instance)());
 
-    assert(exists methodShort = javaType.getMethod<Anything,Integer,[]>("methodShort"));
+    assert(exists methodShort = javaType.getMethod<JavaType,Integer,[]>("methodShort"));
     assert(2 == methodShort(instance)());
 
-    assert(exists methodInt = javaType.getMethod<Anything,Integer,[]>("methodInt"));
+    assert(exists methodInt = javaType.getMethod<JavaType,Integer,[]>("methodInt"));
     assert(3 == methodInt(instance)());
 
-    assert(exists methodLong = javaType.getMethod<Anything,Integer,[]>("methodLong"));
+    assert(exists methodLong = javaType.getMethod<JavaType,Integer,[]>("methodLong"));
     assert(4 == methodLong(instance)());
 
-    assert(exists methodFloat = javaType.getMethod<Anything,Float,[]>("methodFloat"));
+    assert(exists methodFloat = javaType.getMethod<JavaType,Float,[]>("methodFloat"));
     assert(1.0 == methodFloat(instance)());
 
-    assert(exists methodDouble = javaType.getMethod<Anything,Float,[]>("methodDouble"));
+    assert(exists methodDouble = javaType.getMethod<JavaType,Float,[]>("methodDouble"));
     assert(2.0 == methodDouble(instance)());
 
-    assert(exists methodChar = javaType.getMethod<Anything,Character,[]>("methodChar"));
+    assert(exists methodChar = javaType.getMethod<JavaType,Character,[]>("methodChar"));
     assert('a' == methodChar(instance)());
 
-    assert(exists methodStr = javaType.getMethod<Anything,String,[]>("methodStr"));
+    assert(exists methodStr = javaType.getMethod<JavaType,String,[]>("methodStr"));
     assert("a" == methodStr(instance)());
 
-    assert(exists methodObject = javaType.getMethod<Anything,Object,[]>("methodObject"));
+    assert(exists methodObject = javaType.getMethod<JavaType,Object,[]>("methodObject"));
     assert("b" == methodObject(instance)());
 
     // variadic
 
-    assert(exists methodBooleanVarargs = javaType.getMethod<Anything,Anything,[Integer, Boolean, Boolean*]>("methodBooleanVarargs"));
+    assert(exists methodBooleanVarargs = javaType.getMethod<JavaType,Anything,[Integer, Boolean, Boolean*]>("methodBooleanVarargs"));
     methodBooleanVarargs(instance)(0, true);
     methodBooleanVarargs(instance)(1, true, true);
     methodBooleanVarargs(instance)(2, true, true, true);
 
-    assert(exists methodByteVarargs = javaType.getMethod<Anything,Anything,[Integer, Integer*]>("methodByteVarargs"));
+    assert(exists methodByteVarargs = javaType.getMethod<JavaType,Anything,[Integer, Integer*]>("methodByteVarargs"));
     methodByteVarargs(instance)(1, 1);
 
-    assert(exists methodShortVarargs = javaType.getMethod<Anything,Anything,[Integer, Integer*]>("methodShortVarargs"));
+    assert(exists methodShortVarargs = javaType.getMethod<JavaType,Anything,[Integer, Integer*]>("methodShortVarargs"));
     methodShortVarargs(instance)(2, 2);
 
-    assert(exists methodIntVarargs = javaType.getMethod<Anything,Anything,[Integer, Integer*]>("methodIntVarargs"));
+    assert(exists methodIntVarargs = javaType.getMethod<JavaType,Anything,[Integer, Integer*]>("methodIntVarargs"));
     methodIntVarargs(instance)(3, 3);
 
-    assert(exists methodLongVarargs = javaType.getMethod<Anything,Anything,[Integer, Integer*]>("methodLongVarargs"));
+    assert(exists methodLongVarargs = javaType.getMethod<JavaType,Anything,[Integer, Integer*]>("methodLongVarargs"));
     methodLongVarargs(instance)(4, 4);
 
-    assert(exists methodFloatVarargs = javaType.getMethod<Anything,Anything,[Float, Float*]>("methodFloatVarargs"));
+    assert(exists methodFloatVarargs = javaType.getMethod<JavaType,Anything,[Float, Float*]>("methodFloatVarargs"));
     methodFloatVarargs(instance)(1.0, 1.0);
 
-    assert(exists methodDoubleVarargs = javaType.getMethod<Anything,Anything,[Float, Float*]>("methodDoubleVarargs"));
+    assert(exists methodDoubleVarargs = javaType.getMethod<JavaType,Anything,[Float, Float*]>("methodDoubleVarargs"));
     methodDoubleVarargs(instance)(2.0, 2.0);
 
-    assert(exists methodCharVarargs = javaType.getMethod<Anything,Anything,[Character, Character*]>("methodCharVarargs"));
+    assert(exists methodCharVarargs = javaType.getMethod<JavaType,Anything,[Character, Character*]>("methodCharVarargs"));
     methodCharVarargs(instance)('a', 'a');
 
-    assert(exists methodJavaStringVarargs = javaType.getMethod<Anything,Anything,[String, String*]>("methodJavaStringVarargs"));
+    assert(exists methodJavaStringVarargs = javaType.getMethod<JavaType,Anything,[String, String*]>("methodJavaStringVarargs"));
     methodJavaStringVarargs(instance)("a", "a");
 
-    assert(exists methodObjectVarargs = javaType.getMethod<Anything,Anything,[Integer, Object, Object*]>("methodObjectVarargs"));
+    assert(exists methodObjectVarargs = javaType.getMethod<JavaType,Anything,[Integer, Object, Object*]>("methodObjectVarargs"));
     methodObjectVarargs(instance)(0, "b");
     methodObjectVarargs(instance)(1, "b", "b");
     methodObjectVarargs(instance)(2, "b", "b", "b");
 
-    assert(exists methodBoundObjectVarargs = javaType.getMethod<Anything,Anything,[Integer, Integer, Integer*]>("methodBoundObjectVarargs", `Integer`));
+    assert(exists methodBoundObjectVarargs = javaType.getMethod<JavaType,Anything,[Integer, Integer, Integer*]>("methodBoundObjectVarargs", `Integer`));
     methodBoundObjectVarargs(instance)(0, 1);
     methodBoundObjectVarargs(instance)(1, 1, 1);
     methodBoundObjectVarargs(instance)(2, 1, 1, 1);
