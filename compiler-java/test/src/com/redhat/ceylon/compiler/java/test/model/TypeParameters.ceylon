@@ -172,6 +172,7 @@ shared interface InterfaceContainer<O1> {
         shared interface InnerInterface<O3> {}
         shared class InnerClass<O3>() {}
     }
+    shared interface InnerInterface2 {}
 }
 
 shared interface ClassContainer<O1> {
@@ -183,4 +184,5 @@ shared interface ClassContainer<O1> {
         shared interface InnerInterface<O3> {}
         shared class InnerClass<O3>() {}
     }
+    shared interface InnerInterface2 {}
 }
