@@ -339,6 +339,8 @@ public class MethodDefinitionBuilder {
             if (refinedTypeDecl instanceof TypeParameter
                     && !refinedTypeDecl.getSatisfiedTypes().isEmpty()) {
                 nonWideningType = refinedTypeDecl.getSatisfiedTypes().get(0);
+                // Could be parameterized, and type param won't be in scope, so have to go raw
+                flags |= AbstractTransformer.JT_RAW;
             }
         }
         JCExpression type = gen.makeJavaType(nonWideningDecl, nonWideningType, flags);
