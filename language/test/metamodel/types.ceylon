@@ -229,6 +229,7 @@ shared class ContainerClass(){
 
 shared class ParameterisedContainerClass<Outer>(){
     shared class InnerClass<Inner>(){}
+    shared interface InnerInterface<Inner>{}
 }
 
 shared interface ContainerInterface{

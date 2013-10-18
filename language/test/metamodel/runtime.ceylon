@@ -1248,11 +1248,21 @@ shared void checkApplications(){
     Object memberValue = `value TypeParams.t1`.memberApply<TypeParams<String>,String>(`TypeParams<String>`);
     assert(is Attribute<TypeParams<String>,String> memberValue);
 
+    // application by ClassOrInterface.getAttribute
+    Object? memberValue2 = `TypeParams<String>`.getAttribute<TypeParams<String>, String>("t1");
+    assert(is Attribute<TypeParams<String>,String> memberValue2);
+    assert(memberValue == memberValue2);
+
     Object topLevelFunction = `function typeParams`.apply<String, [String, Integer]>(`String`);
     assert(is Function<String, [String, Integer]> topLevelFunction);
 
     Object method = `function TypeParams.method`.memberApply<TypeParams<String>, String, [String, Integer]>(`TypeParams<String>`, `Integer`);
     assert(is Method<TypeParams<String>, String, [String, Integer]> method);
+
+    // application by ClassOrInterface.getMethod
+    Object? method2 = `TypeParams<String>`.getMethod<TypeParams<String>, String, [String, Integer]>("method", `Integer`);
+    assert(is Method<TypeParams<String>, String, [String, Integer]> method2);
+    assert(method == method2);
 
     Object topLevelClass = `class TypeParams`.classApply<TypeParams<String>, [String, Integer]>(`String`);
     assert(is Class<TypeParams<String>, [String, Integer]> topLevelClass);
@@ -1261,8 +1271,38 @@ shared void checkApplications(){
     
     Object memberClass = `class ParameterisedContainerClass.InnerClass`.memberClassApply<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerClass<String>, []>(`ParameterisedContainerClass<Integer>`, `String`);
     assert(is MemberClass<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerClass<String>, []> memberClass);
+    
     Object memberClass2 = `class ParameterisedContainerClass.InnerClass`.memberApply<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerClass<String>>(`ParameterisedContainerClass<Integer>`, `String`);
     assert(is MemberClass<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerClass<String>, []> memberClass2);
+    assert(memberClass == memberClass2);
+
+    // application by ClassOrInterface.getClass
+    Object? memberClass3 = `ParameterisedContainerClass<Integer>`.getClass<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerClass<String>, []>("InnerClass", `String`);
+    assert(is MemberClass<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerClass<String>, []> memberClass3);
+    assert(memberClass == memberClass3);
+    
+    // application by ClassOrInterface.getClassOrInterface
+    Object? memberClass4 = `ParameterisedContainerClass<Integer>`.getClassOrInterface<ParameterisedContainerClass<Integer>, Class<ParameterisedContainerClass<Integer>.InnerClass<String>, []>>("InnerClass", `String`);
+    assert(is MemberClass<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerClass<String>, []> memberClass4);
+    assert(memberClass == memberClass4);
+
+    // member interfaces
+    Object memberInterface = `interface ParameterisedContainerClass.InnerInterface`.memberInterfaceApply<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerInterface<String>>(`ParameterisedContainerClass<Integer>`, `String`);
+    assert(is MemberInterface<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerInterface<String>> memberInterface);
+    
+    Object memberInterface2 = `interface ParameterisedContainerClass.InnerInterface`.memberApply<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerInterface<String>>(`ParameterisedContainerClass<Integer>`, `String`);
+    assert(is MemberInterface<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerInterface<String>> memberInterface2);
+    assert(memberInterface == memberInterface2);
+    
+    // application by ClassOrInterface.getInterface
+    Object? memberInterface3 = `ParameterisedContainerClass<Integer>`.getInterface<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerInterface<String>>("InnerInterface", `String`);
+    assert(is MemberInterface<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerInterface<String>> memberInterface3);
+    assert(memberInterface == memberInterface3);
+    
+    // application by ClassOrInterface.getClassOrInterface
+    Object? memberInterface4 = `ParameterisedContainerClass<Integer>`.getClassOrInterface<ParameterisedContainerClass<Integer>, Interface<ParameterisedContainerClass<Integer>.InnerInterface<String>>>("InnerInterface", `String`);
+    assert(is MemberInterface<ParameterisedContainerClass<Integer>, ParameterisedContainerClass<Integer>.InnerInterface<String>> memberInterface4);
+    assert(memberInterface == memberInterface4);
 /*
 FIXME: to be determined wrt container types
     Object mixedAlias = `alias TypeAliasToMemberAndTopLevel`.apply<TPA & ContainerInterface.InnerClass>();
