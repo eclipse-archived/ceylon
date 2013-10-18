@@ -134,6 +134,10 @@ public class StructureTest2 extends CompilerTest {
     public void testTypTupleType(){
         compareWithJavaSource("type/TupleType");
     }
+    @Test
+    public void testTypUnionSelfType(){
+        compareWithJavaSource("type/UnionSelfType");
+    }
     
     //
     // import

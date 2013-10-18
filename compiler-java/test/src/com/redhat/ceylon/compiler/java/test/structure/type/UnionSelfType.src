@@ -1,0 +1,58 @@
+package com.redhat.ceylon.compiler.java.test.structure.type;
+
+public class UnionSelfType_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Comparable {
+    
+    public UnionSelfType_Foo() {
+        this.$ceylon$language$Comparable$this$ = new .ceylon.language.Comparable$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Foo.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Bar.$TypeDescriptor$), (.ceylon.language.Comparable)this);
+    }
+    protected final .ceylon.language.Comparable$impl $ceylon$language$Comparable$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Comparable$impl $ceylon$language$Comparable$impl() {
+        return $ceylon$language$Comparable$this$;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Comparison compare(final .ceylon.language.Comparable other) {
+        return (.ceylon.language.Comparison).ceylon.language.nothing_.get_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Foo();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Foo.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Foo.class);
+}
+public class UnionSelfType_Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Comparable {
+    
+    public UnionSelfType_Bar() {
+        this.$ceylon$language$Comparable$this$ = new .ceylon.language.Comparable$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Foo.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Bar.$TypeDescriptor$), (.ceylon.language.Comparable)this);
+    }
+    protected final .ceylon.language.Comparable$impl $ceylon$language$Comparable$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Comparable$impl $ceylon$language$Comparable$impl() {
+        return $ceylon$language$Comparable$this$;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Comparison compare(final .ceylon.language.Comparable other) {
+        return (.ceylon.language.Comparison).ceylon.language.nothing_.get_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Bar();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Bar.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Bar.class);
+}
