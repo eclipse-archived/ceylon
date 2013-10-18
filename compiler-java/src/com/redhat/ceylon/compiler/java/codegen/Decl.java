@@ -767,4 +767,9 @@ public class Decl {
         return false;
         
     }
+    
+    public static boolean isJavaStaticPrimary(Tree.Term term) {
+        return term instanceof Tree.QualifiedMemberOrTypeExpression
+                && ((Tree.QualifiedMemberOrTypeExpression)term).getDeclaration().isStaticallyImportable();
+    }
 }
