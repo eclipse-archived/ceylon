@@ -17,12 +17,13 @@ function String$(/*{Character*}*/value,size) {
     if (size !== undefined) that.codePoints=size;
     return that;
 }
-String$.$$metamodel$$={'super':{t:Object$},
+String$.$$metamodel$$=function(){return{'super':{t:Object$},
+  $ps:[{$nm:'characters',$t:{t:Iterable,a:{Element:{t:Character},Absent:{t:Null}}},$mt:'prm'}],
   'satisfies':[{t:List,a:{Element:{t:Character}}}, {t:Comparable,a:{Other:{t:String$}}},
     {t:Summable,a:{Other:{t:String$}}}, {t:Ranged,a:{Index:{t:Integer},Span:{t:String$}}},
     {t:Cloneable,a:{Clone:{t:String$}}}],
   $an:function(){return[shared(),native(),final()];},
-  mod:$$METAMODEL$$,d:['ceylon.language','String']};
+  mod:$$METAMODEL$$,d:['ceylon.language','String']};};
 
 initExistingType(String$, String, 'ceylon.language::String', Object$, Sequential, Comparable,
         Ranged, Summable, Cloneable);
