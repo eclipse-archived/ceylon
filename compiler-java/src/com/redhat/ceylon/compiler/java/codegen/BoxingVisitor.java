@@ -158,7 +158,8 @@ public abstract class BoxingVisitor extends Visitor {
     @Override
     public void visit(InvocationExpression that) {
         super.visit(that);
-        if (Util.isIndirectInvocation(that)) {
+        if (Util.isIndirectInvocation(that)
+                && !Decl.isJavaStaticPrimary(that.getPrimary())) {
             // These are always boxed
             return;
         }
