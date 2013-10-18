@@ -161,7 +161,7 @@ final class ComprehensionMemberQualInterfaceFormal$impl {
                     public final .java.lang.Object next() {
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
-                            return .ceylon.language.Integer.instance($this.next() + $this.getI());
+                            return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceFormal$impl.this.$this.next() + $this.getI());
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
