@@ -149,8 +149,6 @@ public class Util {
                         return false;
                     }
                     for (int i=0; i<size; i++) {
-                        //ignore optionality for resolving overloads, since
-                        //all Java method params are treated as optional
                         ProducedType pdt = params.get(i).getModel().getType();
                         if (pdt==null) return false;
                         ProducedType sdt = signature.get(i);
@@ -194,11 +192,17 @@ public class Util {
     
     private static boolean matches(ProducedType pdt, ProducedType sdt, Declaration d) {
         if (pdt==null || sdt==null) return false;
-        ProducedType paramType = d.getUnit().getDefiniteType(pdt);
-        ProducedType sigType = d.getUnit().getDefiniteType(sdt);
-        ProducedType ast = sigType.getSupertype(d.getUnit().getArrayDeclaration());
+        //Ignore optionality for resolving overloads, since
+        //all Java parameters are treated as optional
+        //Except in the case of primitive parameters
+        Unit unit = d.getUnit();
+        ProducedType nt = unit.getNullValueDeclaration().getType();
+        if (nt.isSubtypeOf(sdt) && !nt.isSubtypeOf(pdt)) return false; //only for primitives
+        ProducedType paramType = unit.getDefiniteType(pdt);
+        ProducedType sigType = unit.getDefiniteType(sdt);
+        ProducedType ast = sigType.getSupertype(unit.getArrayDeclaration());
         if (ast!=null) sigType = ast;
-        if (sigType.isSubtypeOf(d.getUnit().getNullDeclaration().getType())) {
+        if (sigType.isSubtypeOf(unit.getNullDeclaration().getType())) {
             return true;
         }
         if (isTypeUnknown(sigType) || isTypeUnknown(paramType)) return false;
