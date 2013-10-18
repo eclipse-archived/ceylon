@@ -3779,30 +3779,6 @@ public class ExpressionVisitor extends Visitor {
         return name + " of type " + d.getName();
     }
     
-    private void checkOverloadedReference(Tree.MemberOrTypeExpression that) {
-        if (isAbstraction(that.getDeclaration())) {
-            StringBuilder sb = new StringBuilder();
-            List<ProducedType> sig = that.getSignature();
-            if (sig!=null) {
-                sb.append(" (");
-                for (ProducedType pt: sig) {
-                    if (pt!=null) {
-                        sb.append(pt.getProducedTypeName(unit));
-                    }
-                    sb.append(", ");
-                }
-                if (!sig.isEmpty()) {
-                    sb.setLength(sb.length()-2);
-                }
-                sb.append(")");
-            }
-            that.addError("ambiguous reference to overloaded method or class: " +
-                    "there must be exactly one overloaded declaration of " + 
-                    that.getDeclaration().getName(unit) + 
-                    " that accepts the given argument types" + sb);
-        }
-    }
-    
     @Override public void visit(Tree.BaseMemberExpression that) {
         /*if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
@@ -3838,7 +3814,7 @@ public class ExpressionVisitor extends Visitor {
                     that.addWarning("references to this from default argument expressions not yet supported");
                 }
             }*/
-            checkOverloadedReference(that);
+//            checkOverloadedReference(that);
         }
     }
 
@@ -3939,7 +3915,7 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     typeArgumentsImplicit(that);
                 }
-                checkOverloadedReference(that);
+//                checkOverloadedReference(that);
             }
             checkSuperMember(that);
         }
@@ -4020,13 +3996,20 @@ public class ExpressionVisitor extends Visitor {
     
     private ProducedType accountForStaticReferenceType(Tree.QualifiedMemberOrTypeExpression that, 
             Declaration member, ProducedType type) {
-        if (that.getStaticMethodReference() && !member.isStaticallyImportable()) {
-            ProducedReference target = ((Tree.MemberOrTypeExpression) that.getPrimary()).getTarget();
-            if (target==null) {
-                return new UnknownType(unit).getType();
+        if (that.getStaticMethodReference()) {
+            Tree.MemberOrTypeExpression qmte = (Tree.MemberOrTypeExpression) that.getPrimary();
+            if (member.isStaticallyImportable()) {
+                qmte.setStaticMemberQualifier(true);
+                return type;
             }
             else {
-                return getStaticReferenceType(type, target.getType());
+                ProducedReference target = qmte.getTarget();
+                if (target==null) {
+                    return new UnknownType(unit).getType();
+                }
+                else {
+                    return getStaticReferenceType(type, target.getType());
+                }
             }
         }
         else {
@@ -4113,7 +4096,7 @@ public class ExpressionVisitor extends Visitor {
             else {
                 typeArgumentsImplicit(that);
             }
-            checkOverloadedReference(that);
+//            checkOverloadedReference(that);
         }
     }
 
@@ -4172,7 +4155,7 @@ public class ExpressionVisitor extends Visitor {
                 //else report to user that we could not
                 //find a matching overloaded constructor
             }
-            checkOverloadedReference(that);
+//            checkOverloadedReference(that);
         }
     }
     
@@ -4306,7 +4289,7 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     typeArgumentsImplicit(that);
                 }
-                checkOverloadedReference(that);
+//                checkOverloadedReference(that);
             }
             //TODO: this is temporary until we get metamodel reference expressions!
             /*if (p instanceof Tree.BaseTypeExpression ||
@@ -5246,10 +5229,11 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         inExtendsClause = false;
         
-        if (ie!=null && 
+        //Dupe check:
+        /*if (ie!=null && 
                 ie.getPrimary() instanceof Tree.MemberOrTypeExpression) {
             checkOverloadedReference((Tree.MemberOrTypeExpression) ie.getPrimary());
-        }
+        }*/
     }
 
     @Override 

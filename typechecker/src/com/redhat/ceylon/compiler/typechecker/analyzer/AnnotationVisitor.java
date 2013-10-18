@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
 import static com.redhat.ceylon.compiler.typechecker.model.Module.LANGUAGE_MODULE_NAME;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -617,6 +618,36 @@ public class AnnotationVisitor extends Visitor {
                     }
                 }
             }
+        }
+    }
+    
+    //Note: this simply doesn't belong here at all, since it has
+    //      nothing at all to do with annotations, but it has
+    //      to happen after ExpressionVisitor, and I did not
+    //      want to add a whole new Visitor
+    @Override public void visit(Tree.MemberOrTypeExpression that) {
+        super.visit(that);
+        if (!that.getStaticMemberQualifier() && 
+                isAbstraction(that.getDeclaration())) {
+            StringBuilder sb = new StringBuilder();
+            List<ProducedType> sig = that.getSignature();
+            if (sig!=null) {
+                sb.append(" (");
+                for (ProducedType pt: sig) {
+                    if (pt!=null) {
+                        sb.append(pt.getProducedTypeName(that.getUnit()));
+                    }
+                    sb.append(", ");
+                }
+                if (!sig.isEmpty()) {
+                    sb.setLength(sb.length()-2);
+                }
+                sb.append(")");
+            }
+            that.addError("ambiguous reference to overloaded method or class: " +
+                    "there must be exactly one overloaded declaration of " + 
+                    that.getDeclaration().getName(that.getUnit()) + 
+                    " that accepts the given argument types" + sb);
         }
     }
     
