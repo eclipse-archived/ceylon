@@ -527,8 +527,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         // now check if we need variance casts
         if (canCast) {
-            ret = applyVarianceCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType,
-                    (flags & EXPR_FOR_COMPANION) != 0);
+            ret = applyVarianceCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType, flags);
         }
         ret = applySelfTypeCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType);
         ret = applyJavaTypeConversions(ret, exprType, expectedType, boxingStrategy);
@@ -700,24 +699,32 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private JCExpression applyVarianceCasts(JCExpression result, ProducedType exprType,
             boolean exprBoxed,
-            BoxingStrategy boxingStrategy, ProducedType expectedType, boolean forCompanion) {
+            BoxingStrategy boxingStrategy, ProducedType expectedType, int flags) {
         // unboxed types certainly don't need casting for variance
         if(exprBoxed || boxingStrategy == BoxingStrategy.BOXED){
             VarianceCastResult varianceCastResult = getVarianceCastResult(expectedType, exprType);
             if(varianceCastResult != null){
-                // Types with variance types need a type cast, let's start with a raw cast to get rid
-                // of Java's type system constraint (javac doesn't grok multiple implementations of the same
-                // interface with different type params, which the JVM allows)
-                JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW);
-                // do not change exprType here since this is just a Java workaround
-                result = make().TypeCast(targetType, result);
-                // now, because a raw cast is losing a lot of info, can we do better?
-                if(varianceCastResult.isBetterCastAvailable()){
-                    // let's recast that to something finer than a raw cast
-                    targetType = makeJavaType(varianceCastResult.castType, AbstractTransformer.JT_TYPE_ARGUMENT | (forCompanion ? JT_SATISFIES : 0));
-                    result = make().TypeCast(targetType, result);
-                }
+                result = applyVarianceCasts(result, expectedType, varianceCastResult, flags);
             }
+        }
+        return result;
+    }
+
+    private JCExpression applyVarianceCasts(JCExpression result, ProducedType expectedType, VarianceCastResult varianceCastResult,
+            int flags) {
+        // Types with variance types need a type cast, let's start with a raw cast to get rid
+        // of Java's type system constraint (javac doesn't grok multiple implementations of the same
+        // interface with different type params, which the JVM allows)
+        int forCompanionMask = (flags & EXPR_FOR_COMPANION) != 0 ? JT_SATISFIES : 0;
+        int wantsCompanionMask = (flags & EXPR_WANTS_COMPANION) != 0 ? JT_COMPANION : 0;
+        JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW | wantsCompanionMask);
+        // do not change exprType here since this is just a Java workaround
+        result = make().TypeCast(targetType, result);
+        // now, because a raw cast is losing a lot of info, can we do better?
+        if(varianceCastResult.isBetterCastAvailable()){
+            // let's recast that to something finer than a raw cast
+            targetType = makeJavaType(varianceCastResult.castType, AbstractTransformer.JT_TYPE_ARGUMENT | wantsCompanionMask | forCompanionMask);
+            result = make().TypeCast(targetType, result);
         }
         return result;
     }
