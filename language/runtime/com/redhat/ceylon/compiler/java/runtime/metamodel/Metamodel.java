@@ -888,8 +888,10 @@ public class Metamodel {
             for (TypeParameter tp: typeParameters) { 
                 if (!tp.isDefaulted()) min++;
             }
-            if(typeArguments.size() < min)
-                throw new TypeApplicationException("Not enough type arguments provided: "+typeArguments.size()+", but requires at least "+min);
+            if(typeArguments.size() < min){
+                String requires = (min == typeParameters.size()) ? "exactly" : "at least";
+                throw new TypeApplicationException("Not enough type arguments provided: "+typeArguments.size()+", but requires "+requires+" "+min);
+            }
             for(int i=0;i<typeArguments.size();i++){
                 ProducedType typeArgument = typeArguments.get(i);
                 com.redhat.ceylon.compiler.typechecker.model.TypeParameter typeParameter = typeParameters.get(i);
