@@ -397,7 +397,7 @@ public abstract class AppliedClassOrInterface<Type>
             throw new IncompatibleTypeException("Specified member is not an interface: "+name);
         ceylon.language.meta.model.Type<Container> appliedContainer = getAppliedContainer($reifiedContainer, type);
         return (ceylon.language.meta.model.MemberInterface<Container, Type>) 
-                type.memberApply($reifiedContainer, $reifiedType, appliedContainer);
+                type.memberApply($reifiedContainer, $reifiedType, appliedContainer, types);
     }
 
     @SuppressWarnings({ "hiding", "unchecked", "rawtypes" })
@@ -431,7 +431,7 @@ public abstract class AppliedClassOrInterface<Type>
             throw new IncompatibleTypeException("Specified member is not an interface: "+name);
         return (ceylon.language.meta.model.MemberInterface<Container, Type>) 
                 type.memberApply($reifiedContainer, $reifiedType, 
-                                 (ceylon.language.meta.model.Type<Container>)this);
+                                 (ceylon.language.meta.model.Type<Container>)this, types);
     }
 
     @SuppressWarnings("hiding")
