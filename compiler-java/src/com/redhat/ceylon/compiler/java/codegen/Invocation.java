@@ -184,6 +184,18 @@ abstract class Invocation {
     protected TransformedInvocationPrimary transformPrimary(JCExpression primaryExpr,
             String selector) {
             
+        if (Decl.isJavaStaticPrimary(getPrimary())) {
+            Declaration methodOrClass = ((Tree.QualifiedMemberOrTypeExpression)getPrimary()).getDeclaration();
+            if (methodOrClass instanceof Method) {
+                return new TransformedInvocationPrimary(gen.naming.makeName(
+                        (Method)methodOrClass, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED), 
+                        null);
+            } else if (methodOrClass instanceof Class) {
+                return new TransformedInvocationPrimary(
+                        gen.makeJavaType(((Class)methodOrClass).getType(), JT_RAW | JT_NO_PRIMITIVES),
+                        null);
+            }
+        }
         if (isMemberRefInvocation()) {
             JCExpression callable = gen.expressionGen().transformMemberReference((Tree.QualifiedMemberOrTypeExpression)getPrimary(), (Tree.MemberOrTypeExpression)getQmePrimary());
             // The callable is a Callable we generate ourselves, it can never be erased to Object so there's no need to unerase
@@ -624,7 +636,7 @@ class PositionalInvocation extends DirectInvocation {
             java.util.List<Parameter> parameters) {
         super(gen, primary, primaryDeclaration, producedReference, invocation.getTypeModel(), invocation);
         positional = invocation.getPositionalArgumentList();
-        this.parameters = parameters;    
+        this.parameters = parameters;
     }
     java.util.List<Parameter> getParameters() {
         return parameters;

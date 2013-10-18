@@ -2653,7 +2653,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         Tree.QualifiedTypeExpression qte = (Tree.QualifiedTypeExpression)invocation.getPrimary();
         Declaration declaration = qte.getDeclaration();
         invocation.location(callBuilder);
-        if (!Strategy.generateInstantiator(declaration)) {
+        if (Decl.isJavaStaticPrimary(invocation.getPrimary())) {
+            callBuilder.instantiate(transformedPrimary.expr);
+        } else if (!Strategy.generateInstantiator(declaration)) {
             JCExpression qualifier;
             JCExpression qualifierType;
             if (declaration.getContainer() instanceof Interface) {
@@ -3019,7 +3021,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         Invocation invocation;
         if (ce.getPositionalArgumentList() != null) {
-            if (Util.isIndirectInvocation(ce)){
+            if (Util.isIndirectInvocation(ce)
+                    && !Decl.isJavaStaticPrimary(ce.getPrimary())){
                 // indirect invocation
                 invocation = new IndirectInvocation(this, 
                         primary, primaryDeclaration,
@@ -3315,11 +3318,45 @@ public class ExpressionTransformer extends AbstractTransformer {
             result = transformSuper(expr);
         } else if (isSuperOf(primary)) {
             result = transformSuperOf(expr);
+        } else if (Decl.isJavaStaticPrimary(primary)) {
+            // Java static field or method access
+            result = transformJavaStaticMember((Tree.QualifiedMemberOrTypeExpression)primary, expr.getTypeModel());
         } else {
             result = transformExpression(primary, boxing, type);
         }
         
         return result;
+    }
+
+    private JCExpression transformJavaStaticMember(Tree.QualifiedMemberOrTypeExpression qmte, ProducedType staticType) {
+        Declaration decl = qmte.getDeclaration();
+        if (decl instanceof FieldValue) {
+            Value member = (Value)decl;
+            return naming.makeName(member, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED);
+        } else if (decl instanceof Value) {
+            Value member = (Value)decl;
+            CallBuilder callBuilder = CallBuilder.instance(this);
+            callBuilder.invoke(naming.makeQualifiedName(
+                    makeJavaType(qmte.getTypeModel(), JT_RAW | JT_NO_PRIMITIVES),
+                    member, 
+                    Naming.NA_GETTER | Naming.NA_MEMBER));
+            return callBuilder.build();
+        } else if (decl instanceof Method) {
+            Method method = (Method)decl;
+            final ParameterList parameterList = method.getParameterLists().get(0);
+            ProducedType qualifyingType = qmte.getPrimary().getTypeModel();
+            Tree.TypeArguments typeArguments = qmte.getTypeArguments();
+            ProducedReference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
+            return makeJavaStaticInvocation(gen(),
+                    method, producedReference, parameterList);
+        } else if (decl instanceof Class) {
+            Class class_ = (Class)decl;
+            final ParameterList parameterList = class_.getParameterLists().get(0);
+            ProducedReference producedReference = qmte.getTarget();
+            return makeJavaStaticInvocation(gen(),
+                    class_, producedReference, parameterList);
+        }
+        return makeErroneous(qmte, "compiler bug: unsupported static");
     }
 
     JCExpression makeJavaStaticInvocation(CeylonTransformer gen,
