@@ -1572,6 +1572,8 @@ shared void run() {
         pass++;total++;
         bug308();
         pass++;total++;
+        bug318();
+        pass++;total++;
         bug320();
         pass++;total++;
         // those were filed for the JVM compiler initially
