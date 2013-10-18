@@ -324,9 +324,10 @@ public class ClassDefinitionBuilder {
     }
 
     public ClassDefinitionBuilder typeParameter(String name, java.util.List<ProducedType> satisfiedTypes, java.util.List<ProducedType> caseTypes, 
-                                                boolean covariant, boolean contravariant, ProducedType defaultValue) {
+                                                boolean covariant, boolean contravariant, ProducedType defaultValue, boolean addModelAnnotation) {
         typeParams.append(typeParam(name, gen.makeTypeParameterBounds(satisfiedTypes)));
-        typeParamAnnotations.append(gen.makeAtTypeParameter(name, satisfiedTypes, caseTypes, covariant, contravariant, defaultValue));
+        if(addModelAnnotation)
+            typeParamAnnotations.append(gen.makeAtTypeParameter(name, satisfiedTypes, caseTypes, covariant, contravariant, defaultValue));
         return this;
     }
 
@@ -336,12 +337,17 @@ public class ClassDefinitionBuilder {
     }
 
     public ClassDefinitionBuilder typeParameter(TypeParameter declarationModel) {
+        return typeParameter(declarationModel, true);
+    }
+    
+    public ClassDefinitionBuilder typeParameter(TypeParameter declarationModel, boolean addModelAnnotation) {
         return typeParameter(declarationModel.getName(), 
                 declarationModel.getSatisfiedTypes(),
                 declarationModel.getCaseTypes(),
                 declarationModel.isCovariant(),
                 declarationModel.isContravariant(),
-                declarationModel.getDefaultTypeArgument());
+                declarationModel.getDefaultTypeArgument(),
+                addModelAnnotation);
     }
     
     public ClassDefinitionBuilder typeParameter(Tree.TypeParameterDeclaration param) {

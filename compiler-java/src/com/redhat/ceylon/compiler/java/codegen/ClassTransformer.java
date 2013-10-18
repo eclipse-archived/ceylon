@@ -846,7 +846,7 @@ public class ClassTransformer extends AbstractTransformer {
                 continue;
             }
             for (TypeParameter typeArgument : typeArguments) {
-                classBuilder.typeParameter(typeArgument);
+                classBuilder.typeParameter(typeArgument, false);
             }
             type = type.getQualifyingType();
         }
