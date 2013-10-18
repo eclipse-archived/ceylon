@@ -716,9 +716,9 @@ public class ClassTransformer extends AbstractTransformer {
                     } else if (Strategy.hasDelegatedDpm(cls)) {
                         java.util.List<Parameter> parameters = paramList.getModel().getParameters();
                         MethodDefinitionBuilder mdb = 
-                        makeDelegateToCompanion((Interface)cls.getRefinedDeclaration().getContainer(), 
-                                paramModel.getModel().getProducedTypedReference(((TypeDeclaration)cls.getContainer()).getType(), null),
-                                cls.getType(),
+                        makeDelegateToCompanion((Interface)cls.getRefinedDeclaration().getContainer(),
+                                paramModel.getModel().getProducedTypedReference(cls.getType(), null),
+                                ((TypeDeclaration)cls.getContainer()).getType(),
                                 FINAL | transformClassDeclFlags(cls), 
                                 List.<TypeParameter>nil(), 
                                 paramModel.getType(), 
