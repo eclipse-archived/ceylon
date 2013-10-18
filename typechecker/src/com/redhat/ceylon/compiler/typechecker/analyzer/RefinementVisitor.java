@@ -11,7 +11,9 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIn
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.areConsistentSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isCompletelyVisible;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static java.util.Collections.singletonMap;
 
 import java.util.ArrayList;
@@ -371,14 +373,24 @@ public class RefinementVisitor extends Visitor {
                 that.addError("formal member belongs to non-abstract, non-formal class", 1100);
             }
         }
-        List<Declaration> others = ci.getInheritedMembers( dec.getName() );
+        List<Declaration> others = ci.getInheritedMembers(dec.getName());
         if (others.isEmpty()) {
             if (dec.isActual()) {
                 that.addError("actual member does not refine any inherited member", 1300);
             }
         }
         else {
+            boolean found = false;
             for (Declaration refined: others) {
+                if (isAbstraction(refined)) {
+                    continue;
+                }
+                if (dec instanceof Functional) {
+                    if (isOverloadedVersion(refined)) {
+                        if (!refinesOverloaded(dec, refined)) continue;
+                    }
+                }
+                found = true;
                 if (dec instanceof Method) {
                     if (!(refined instanceof Method)) {
                         that.addError("refined declaration is not a method: " + 
@@ -423,7 +435,34 @@ public class RefinementVisitor extends Visitor {
                     checkRefinedTypeAndParameterTypes(that, dec, ci, refined);
                 }
             }
+            if (!found) {
+                that.addError("actual member does not exactly refine any overloaded inherited member");
+            }
         }
+    }
+
+    private boolean refinesOverloaded(Declaration dec, Declaration refined) {
+        Functional fun1 = (Functional) dec;
+        Functional fun2 = (Functional) refined;
+        if (fun1.getParameterLists().size()!=1 ||
+            fun2.getParameterLists().size()!=1) {
+            return false;
+        }
+        List<Parameter> pl1 = fun1.getParameterLists().get(0).getParameters();
+        List<Parameter> pl2 = fun2.getParameterLists().get(0).getParameters();
+        if (pl1.size()!=pl2.size()) {
+            return false;
+        }
+        for (int i=0; i<pl1.size(); i++) {
+            Parameter p1 = pl1.get(i);
+            Parameter p2 = pl2.get(i);
+            if (p1==null || p2==null ||
+                p1.getType()==null || p2.getType()==null ||
+                !p1.getType().isExactly(p2.getType())) {
+                return false;
+            }
+        }
+        return true;
     }
     
     static String message(Declaration refined) {

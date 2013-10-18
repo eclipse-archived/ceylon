@@ -216,6 +216,13 @@ public abstract class TypeDeclaration extends Declaration
         return getInheritedMembers(name, new ArrayList<TypeDeclaration>());
     }
     
+    private static <T> boolean contains(Iterable<T> iter, T object) {
+        for (Object elem: iter) {
+            if (elem==object) return true;
+        }
+        return false;
+    }
+    
     private List<Declaration> getInheritedMembers(String name, 
             List<TypeDeclaration> visited) {
         List<Declaration> members = new ArrayList<Declaration>();
@@ -223,7 +230,7 @@ public abstract class TypeDeclaration extends Declaration
             //if ( !(t instanceof TypeParameter) ) { //don't look for members in a type parameter with a self-referential lower bound
                 for (Declaration d: t.getMembers(name, visited)) {
                     if (d.isShared() && isResolvable(d)) {
-                        if (!members.contains(d)) {
+                        if (!contains(members, d)) {
                         	members.add(d);
                         }
                     }
@@ -234,7 +241,7 @@ public abstract class TypeDeclaration extends Declaration
         if (et!=null) {
             for (Declaration d: et.getMembers(name, visited)) {
                 if (d.isShared() && isResolvable(d)) {
-                    if (!members.contains(d)) {
+                    if (!contains(members, d)) {
                     	members.add(d);
                     }
                 }
