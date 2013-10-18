@@ -122,6 +122,11 @@ public class ExpressionTransformer extends AbstractTransformer {
      * Use this when the expression being passed contains code to check for nulls coming from Java
      */
     public static final int EXPR_HAS_NULL_CHECK_FENCE = 1 << 4;
+    /** 
+     * This implies inclusion of the JT_COMPANION flags when 
+     * constructing the type casts.
+     */
+    public static final int EXPR_WANTS_COMPANION = 1 << 5;
 
     static{
         // only there to make sure this class is initialised before the enums defined in it, otherwise we
@@ -432,6 +437,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 boolean expectedTypeIsNotRaw = (flags & EXPR_EXPECTED_TYPE_NOT_RAW) != 0;
                 boolean expectedTypeHasConstrainedTypeParameters = (flags & EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS) != 0;
                 boolean downCast = (flags & EXPR_DOWN_CAST) != 0;
+                int companionFlags = (flags & EXPR_WANTS_COMPANION) != 0 ? AbstractTransformer.JT_COMPANION : 0;
 
                 // special case for returning Null expressions
                 if (isNull(exprType)){
@@ -441,12 +447,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                         // returned in a context where we expect a String? (aka ceylon.language.String) so even though
                         // the instance at hand will really be null, we need a up-cast to it
                         // FIXME: this is always true
-                        JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW);
+                        JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW | companionFlags);
                         result = make().TypeCast(targetType, result);
                     }
                 }else if(exprType.getDeclaration() instanceof NothingType){
                     // type param erasure
-                    JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW | AbstractTransformer.JT_NO_PRIMITIVES);
+                    JCExpression targetType = makeJavaType(expectedType, 
+                            AbstractTransformer.JT_RAW | AbstractTransformer.JT_NO_PRIMITIVES | companionFlags);
                     result = make().TypeCast(targetType, result);
                 }else if(// expression was forcibly erased
                          exprErased
@@ -466,7 +473,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // We will need a raw cast if the expected type has type parameters, 
                     // unless the expr is already raw
                     if (!exprIsRaw && hasTypeParameters(expectedType)) {
-                        JCExpression rawType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT | AbstractTransformer.JT_RAW);
+                        JCExpression rawType = makeJavaType(expectedType, 
+                                AbstractTransformer.JT_TYPE_ARGUMENT | AbstractTransformer.JT_RAW | companionFlags);
                         result = make().TypeCast(rawType, result);
                         // expr is now raw
                         exprIsRaw = true;
@@ -495,7 +503,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                             result = make().TypeCast(syms().objectType, result);
                         }
                         // Do the actual cast
-                        JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT);
+                        JCExpression targetType = makeJavaType(expectedType, 
+                                AbstractTransformer.JT_TYPE_ARGUMENT | companionFlags);
                         result = make().TypeCast(targetType, result);
                     }
                 }else
