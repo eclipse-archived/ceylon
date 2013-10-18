@@ -323,6 +323,8 @@ public abstract class AppliedClassOrInterface<Type>
         
         checkInit();
         final FreeClassOrInterface type = declaration.findType(name);
+        if(type == null)
+            return null;
         if(type instanceof FreeClass == false)
             throw new IncompatibleTypeException("Specified member is not a class: "+name);
         ceylon.language.meta.model.Type<Container> appliedContainer = getAppliedContainer($reifiedContainer, type);
@@ -360,6 +362,8 @@ public abstract class AppliedClassOrInterface<Type>
         
         checkInit();
         final FreeClassOrInterface type = declaration.findDeclaredType(name);
+        if(type == null)
+            return null;
         if(type instanceof FreeClass == false)
             throw new IncompatibleTypeException("Specified member is not a class: "+name);
         return ((FreeClass)type).memberClassApply($reifiedContainer, $reifiedType, $reifiedArguments, 
@@ -393,6 +397,8 @@ public abstract class AppliedClassOrInterface<Type>
         
         checkInit();
         final FreeClassOrInterface type = declaration.findType(name);
+        if(type == null)
+            return null;
         if(type instanceof FreeInterface == false)
             throw new IncompatibleTypeException("Specified member is not an interface: "+name);
         ceylon.language.meta.model.Type<Container> appliedContainer = getAppliedContainer($reifiedContainer, type);
@@ -427,6 +433,8 @@ public abstract class AppliedClassOrInterface<Type>
         
         checkInit();
         final FreeClassOrInterface type = declaration.findDeclaredType(name);
+        if(type == null)
+            return null;
         if(type instanceof FreeInterface == false)
             throw new IncompatibleTypeException("Specified member is not an interface: "+name);
         return (ceylon.language.meta.model.MemberInterface<Container, Type>) 
