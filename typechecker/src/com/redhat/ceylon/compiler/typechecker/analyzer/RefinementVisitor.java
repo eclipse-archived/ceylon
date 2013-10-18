@@ -335,9 +335,9 @@ public class RefinementVisitor extends Visitor {
             if (!mayBeRefined) {
                 checkNonrefinableDeclaration(that, dec);
             }
-
+            
             if (!member) {
-                checkNonMember(that, dec);
+                checkNonMember(that, dec, mayBeShared);
             }
             
             /*if (!dec.isShared()) {
@@ -633,8 +633,8 @@ public class RefinementVisitor extends Visitor {
         }
     }
 
-    private void checkNonMember(Tree.Declaration that, Declaration dec) {
-        if (!dec.isClassOrInterfaceMember()) {
+    private void checkNonMember(Tree.Declaration that, Declaration dec, boolean mayBeShared) {
+        if (!dec.isClassOrInterfaceMember() && mayBeShared) {
             if (dec.isActual()) {
                 that.addError("actual declaration is not a member of a class or interface: " + dec.getName(), 1301);
             }
@@ -645,15 +645,15 @@ public class RefinementVisitor extends Visitor {
                 that.addError("default declaration is not a member of a class or interface: " + dec.getName(), 1303);
             }
         }
-        else if (!dec.isShared()) {
+        else if (!dec.isShared() && mayBeShared) {
             if (dec.isActual()) {
-                that.addError("actual declaration must be shared: " + dec.getName(), 1301);
+                that.addError("actual declaration must be shared: " + dec.getName(), 701);
             }
             if (dec.isFormal()) {
-                that.addError("formal declaration must be shared: " + dec.getName(), 1302);
+                that.addError("formal declaration must be shared: " + dec.getName(), 702);
             }
             if (dec.isDefault()) {
-                that.addError("default declaration must be shared: " + dec.getName(), 1303);
+                that.addError("default declaration must be shared: " + dec.getName(), 703);
             }
         }
         else {
