@@ -3684,13 +3684,16 @@ public class ExpressionTransformer extends AbstractTransformer {
                 qualExpr = primaryExpr;
             }
             
+            // FIXME: Stef has a strong suspicion that the four next methods
+            // should be merged since they all add a this qualifier in different
+            // cases
             qualExpr = addQualifierForObjectMembersOfInterface(expr, decl,
                     qualExpr);
             
             qualExpr = addInterfaceImplAccessorIfRequired(qualExpr, expr, decl);
 
-            qualExpr = addAnonymousInnerClassQualifierIfRequired(qualExpr, expr, decl);
-            
+            qualExpr = addThisQualifierIfRequired(qualExpr, expr, decl);
+
             if (qualExpr == null && needDollarThis(expr)) {
                 qualExpr = makeQualifiedDollarThis((Tree.BaseMemberExpression)expr);
             }
@@ -3734,23 +3737,32 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     /**
-     * The compiler generates anonymous local classes for things like
-     * Callables and Comprehensions. When referring to a member foo 
-     * within one of those things we need a qualified {@code this}
-     * to ensure we're accessing the outer instances member, not 
-     * a member of the anonymous local class that happens to have the same name.
+     * We may need to force a qualified this prefix (direct or outer) in the following cases:
+     * 
+     * - Required because of mixin inheritance with different type arguments (the same is already
+     *   done for qualified references, but not for direct references)
+     * - The compiler generates anonymous local classes for things like
+     *   Callables and Comprehensions. When referring to a member foo 
+     *   within one of those things we need a qualified {@code this}
+     *   to ensure we're accessing the outer instances member, not 
+     *   a member of the anonymous local class that happens to have the same name.
      */
-    private JCExpression addAnonymousInnerClassQualifierIfRequired(
+    private JCExpression addThisQualifierIfRequired(
             JCExpression qualExpr, Tree.StaticMemberOrTypeExpression expr,
             Declaration decl) {
         if (qualExpr == null 
-                && isWithinSyntheticClassBody()
-                && decl.isMember() 
+                // statics are not members that can be inherited
+                && !decl.isStaticallyImportable()
+                && decl.isMember()
+                // dodge variable refinements with assert/is (these will be turned to locals
+                // and have a name mapping)
+                && expr.getTarget().getDeclaration() == decl
                 && !Decl.isLocalToInitializer(decl)
                 && !isWithinSuperInvocation()) {
             // First check whether the expression is captured from an enclosing scope
             TypeDeclaration outer = null;
-            Scope stop = decl.getScope();
+            // get the ClassOrInterface container of the declaration
+            Scope stop = Decl.getClassOrInterfaceContainer(decl, false);
             if (stop instanceof TypeDeclaration) {// reified scope
                 Scope scope = expr.getScope();
                 while (!(scope instanceof Package)) {
@@ -3766,13 +3778,25 @@ public class ExpressionTransformer extends AbstractTransformer {
                 outer = expr.getScope().getInheritingDeclaration(decl);
             }
             if (outer != null) {
-                if (decl.isShared() && outer instanceof Interface) {
-                    qualExpr = naming.makeQuotedThis();
-                } else {
-                    // Class or companion class,
-                    qualExpr = naming.makeQualifiedThis(makeJavaType(((TypeDeclaration)outer).getType(), 
-                            JT_RAW | (outer instanceof Interface ? JT_COMPANION : 0)));
-                } 
+                ProducedType targetType = expr.getTarget().getQualifyingType();
+                ProducedType declarationContainerType = ((TypeDeclaration)outer).getType();
+                // check if we need a variance cast
+                VarianceCastResult varianceCastResult = getVarianceCastResult(targetType, declarationContainerType);
+                // if we are within a comprehension body, or if we need a variance cast
+                if(isWithinSyntheticClassBody() || varianceCastResult != null){
+                    if (decl.isShared() && outer instanceof Interface) {
+                        // always prefer qualified
+                        qualExpr = makeQualifiedDollarThis(declarationContainerType);
+                    } else {
+                        // Class or companion class,
+                        qualExpr = naming.makeQualifiedThis(makeJavaType(((TypeDeclaration)outer).getType(), 
+                                JT_RAW | (outer instanceof Interface ? JT_COMPANION : 0)));
+                    }
+                    // add the variance cast if required
+                    if(varianceCastResult != null){
+                        qualExpr = applyVarianceCasts(qualExpr, targetType, varianceCastResult, 0);
+                    }
+                }
             } else if (decl.isMember()) {
                 Assert.fail();
             }
