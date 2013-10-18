@@ -252,16 +252,16 @@ public abstract class CeylonDoc extends Markup {
             write("  evt = evt || window.event;\n");
             write("  var keyCode = evt.keyCode || evt.which;\n");
             
-            write("  if (keyCode == " + (int)'?' + ") {\n");
-            write("    $('#infoDropdown > .dropdown-toggle').click();\n");
-            write("  }\n");
-
+            write("  if( !evt.ctrlKey && !evt.altKey ) {\n");
+            write("    if (keyCode == " + (int)'?' + ") {\n");
+            write("      $('#infoDropdown > .dropdown-toggle').click();\n");
+            write("    }\n");
             for(Map.Entry<Character, String> keyboardShortcut : keyboardShortcuts.entrySet()) {
-                write(" if(keyCode == "+(int)keyboardShortcut.getKey().charValue()+"){\n");
-                write("   document.location = '"+keyboardShortcut.getValue()+"';\n"); 
-                write(" }\n");
+                write("    if(keyCode == "+(int)keyboardShortcut.getKey().charValue()+"){\n");
+                write("      document.location = '"+keyboardShortcut.getValue()+"';\n"); 
+                write("    }\n");
             }
-
+            write("  }\n"); 
             write("});\n");
             
             write("enableInfoKeybordShortcut('\\\\?');\n");

@@ -180,7 +180,7 @@ $(document).ready(function() {
         $('html').keypress(function(evt) {
             evt = evt || window.event;
             var keyCode = evt.keyCode || evt.which;
-            if (keyCode == 102) {
+            if ( !evt.ctrlKey && !evt.altKey && keyCode == 102) {
                 $('#filterDropdown > .dropdown-toggle').click();
             }
         });
@@ -432,7 +432,7 @@ jQuery("#q").each(function(){
     $('html').keypress(function(evt) {
         evt = evt || window.event;
         var keyCode = evt.keyCode || evt.which;
-        if (keyCode == 63) {
+        if ( !evt.ctrlKey && !evt.altKey && keyCode == 63) {
             $('#infoDropdown > .dropdown-toggle').click();
         }
     });
@@ -607,11 +607,13 @@ $(document).ready(function() {
         $('html').keypress(function(evt) {
             evt = evt || window.event;
             var keyCode = evt.keyCode || evt.which;
-            if (keyCode == 43 /* + */) {
-                expandAll();
-            }
-            if (keyCode == 45 /* - */) {
-                collapseAll();
+            if( !evt.ctrlKey && !evt.altKey ) {
+	            if (keyCode == 43 /* + */) {
+	                expandAll();
+	            }
+	            if (keyCode == 45 /* - */) {
+	                collapseAll();
+	            }
             }
         });
     };
