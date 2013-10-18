@@ -159,7 +159,7 @@ public class ClassDefinitionBuilder {
         built = true;
         ListBuffer<JCTree> defs = ListBuffer.lb();
         appendDefinitionsTo(defs);
-        if (!typeParamAnnotations.isEmpty()) {
+        if (!typeParamAnnotations.isEmpty() || typeParams.size() != typeParamAnnotations.size()) {
             annotations(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
         }
         
