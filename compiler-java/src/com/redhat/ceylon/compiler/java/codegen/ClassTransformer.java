@@ -1252,9 +1252,24 @@ public class ClassTransformer extends AbstractTransformer {
             concreteWrapper.parameter(param, type, FINAL, 0, true);
             arguments.add(naming.makeName(param.getModel(), Naming.NA_MEMBER));
         }
+        JCExpression qualifierThis = makeUnquotedIdent(getCompanionFieldName(iface));
+        // if the best satisfied type is not the one we think we implement, we may need to cast
+        // our impl accessor to get the expected bounds of the qualifying type
+        if(explicitReturn){
+            ProducedType javaType = getBestSatisfiedType(currentType, iface);
+            ProducedType ceylonType = typedMember.getQualifyingType();
+            // don't even bother if the impl accessor is turned to raw because casting it to raw doesn't help
+            if(!isTurnedToRaw(ceylonType)
+                    // if it's exactly the same we don't need any cast
+                    && !javaType.isExactly(ceylonType))
+                // this will add the proper cast to the impl accessor
+                qualifierThis = expressionGen().applyErasureAndBoxing(qualifierThis, currentType, 
+                        false, true, BoxingStrategy.BOXED, ceylonType,
+                        ExpressionTransformer.EXPR_WANTS_COMPANION);
+        }
         JCExpression expr = make().Apply(
                 null,  // TODO Type args
-                makeSelect(getCompanionFieldName(iface), (targetMethodName != null) ? targetMethodName : methodName),
+                makeSelect(qualifierThis, (targetMethodName != null) ? targetMethodName : methodName),
                 arguments.toList());
         
         if (!explicitReturn) {
