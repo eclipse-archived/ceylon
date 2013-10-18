@@ -244,10 +244,10 @@ public class ToolFactoryTest {
         Assert.assertEquals(Collections.singletonList(""), ex.getVerbosities());
         
         ex = pluginFactory.bindArguments(model, Arrays.asList("--verbosities"));
-        Assert.assertEquals(Collections.<String>singletonList(null), ex.getVerbosities());
+        Assert.assertEquals(Collections.<String>singletonList(""), ex.getVerbosities());
         
         ex = pluginFactory.bindArguments(model, Arrays.asList("--verbosities=1", "--verbosities=2", "--verbosities"));
-        Assert.assertEquals(Arrays.asList("1", "2", null), ex.getVerbosities());
+        Assert.assertEquals(Arrays.asList("1", "2", ""), ex.getVerbosities());
     }
     
     @Test
